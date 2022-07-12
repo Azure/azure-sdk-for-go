@@ -46,7 +46,7 @@ func NewMonitoredResourcesClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -64,11 +64,12 @@ func NewMonitoredResourcesClient(subscriptionID string, credential azcore.TokenC
 
 // NewListPager - List the resources currently being monitored by the Elastic monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // monitorName - Monitor resource name
 // options - MonitoredResourcesClientListOptions contains the optional parameters for the MonitoredResourcesClient.List method.
 func (client *MonitoredResourcesClient) NewListPager(resourceGroupName string, monitorName string, options *MonitoredResourcesClientListOptions) *runtime.Pager[MonitoredResourcesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MonitoredResourcesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MonitoredResourcesClientListResponse]{
 		More: func(page MonitoredResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -117,7 +118,7 @@ func (client *MonitoredResourcesClient) listCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -24,7 +24,7 @@ func ExampleDefenderSettingsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewDefenderSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -44,7 +44,7 @@ func ExampleDefenderSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewDefenderSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -64,7 +64,7 @@ func ExampleDefenderSettingsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewDefenderSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -95,7 +95,7 @@ func ExampleDefenderSettingsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewDefenderSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -113,7 +113,7 @@ func ExampleDefenderSettingsClient_PackageDownloads() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewDefenderSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -133,7 +133,7 @@ func ExampleDefenderSettingsClient_DownloadManagerActivation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewDefenderSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

@@ -29,7 +29,7 @@ func ExampleAdvancedThreatProtectionClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-id>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,11 +50,11 @@ func ExampleAdvancedThreatProtectionClient_Create() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-id>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
 		armsecurity.AdvancedThreatProtectionSetting{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
-			ID:   to.Ptr("<id>"),
+			Name: to.Ptr("current"),
+			Type: to.Ptr("Microsoft.Security/advancedThreatProtectionSettings"),
+			ID:   to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount/providers/Microsoft.Security/advancedThreatProtectionSettings/current"),
 			Properties: &armsecurity.AdvancedThreatProtectionProperties{
 				IsEnabled: to.Ptr(true),
 			},

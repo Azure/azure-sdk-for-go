@@ -17,33 +17,33 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/Machines_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_CreateOrUpdate.json
 func ExampleMachinesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachinesClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<machine-name>",
+		"myResourceGroup",
+		"myMachine",
 		armhybridcompute.Machine{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus2euap"),
 			Identity: &armhybridcompute.Identity{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("SystemAssigned"),
 			},
 			Properties: &armhybridcompute.MachineProperties{
-				ClientPublicKey: to.Ptr("<client-public-key>"),
+				ClientPublicKey: to.Ptr("string"),
 				LocationData: &armhybridcompute.LocationData{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("Redmond"),
 				},
-				ParentClusterResourceID:    to.Ptr("<parent-cluster-resource-id>"),
-				PrivateLinkScopeResourceID: to.Ptr("<private-link-scope-resource-id>"),
-				VMID:                       to.Ptr("<vmid>"),
+				ParentClusterResourceID:    to.Ptr("{AzureStackHCIResourceId}"),
+				PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+				VMID:                       to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 			},
 		},
 		nil)
@@ -54,44 +54,44 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/Machines_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachinesClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<machine-name>",
+		"myResourceGroup",
+		"myMachine",
 		armhybridcompute.MachineUpdate{
 			Identity: &armhybridcompute.Identity{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("SystemAssigned"),
 			},
 			Properties: &armhybridcompute.MachineUpdateProperties{
 				LocationData: &armhybridcompute.LocationData{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("Redmond"),
 				},
 				OSProfile: &armhybridcompute.OSProfile{
 					LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
 						PatchSettings: &armhybridcompute.PatchSettings{
-							AssessmentMode: to.Ptr("<assessment-mode>"),
-							PatchMode:      to.Ptr("<patch-mode>"),
+							AssessmentMode: to.Ptr(armhybridcompute.AssessmentModeTypesImageDefault),
+							PatchMode:      to.Ptr(armhybridcompute.PatchModeTypesManual),
 						},
 					},
 					WindowsConfiguration: &armhybridcompute.OSProfileWindowsConfiguration{
 						PatchSettings: &armhybridcompute.PatchSettings{
-							AssessmentMode: to.Ptr("<assessment-mode>"),
-							PatchMode:      to.Ptr("<patch-mode>"),
+							AssessmentMode: to.Ptr(armhybridcompute.AssessmentModeTypesImageDefault),
+							PatchMode:      to.Ptr(armhybridcompute.PatchModeTypesManual),
 						},
 					},
 				},
-				ParentClusterResourceID:    to.Ptr("<parent-cluster-resource-id>"),
-				PrivateLinkScopeResourceID: to.Ptr("<private-link-scope-resource-id>"),
+				ParentClusterResourceID:    to.Ptr("{AzureStackHCIResourceId}"),
+				PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 			},
 		},
 		nil)
@@ -102,40 +102,40 @@ func ExampleMachinesClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/Machines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_Delete.json
 func ExampleMachinesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachinesClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<machine-name>",
+		"myResourceGroup",
+		"myMachine",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/Machines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_Get.json
 func ExampleMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachinesClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<machine-name>",
+		"myResourceGroup",
+		"myMachine",
 		&armhybridcompute.MachinesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -144,24 +144,23 @@ func ExampleMachinesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/Machines_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachinesClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -170,14 +169,14 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/Machines_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachinesClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -186,7 +185,6 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

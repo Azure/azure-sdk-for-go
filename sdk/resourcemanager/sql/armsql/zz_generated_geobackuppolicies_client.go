@@ -38,7 +38,7 @@ func NewGeoBackupPoliciesClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewGeoBackupPoliciesClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Updates a database geo backup policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -109,7 +110,7 @@ func (client *GeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -124,6 +125,7 @@ func (client *GeoBackupPoliciesClient) createOrUpdateHandleResponse(resp *http.R
 
 // Get - Gets a geo backup policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -175,7 +177,7 @@ func (client *GeoBackupPoliciesClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -190,6 +192,7 @@ func (client *GeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (G
 
 // NewListByDatabasePager - Returns a list of geo backup policies.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -197,7 +200,7 @@ func (client *GeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (G
 // options - GeoBackupPoliciesClientListByDatabaseOptions contains the optional parameters for the GeoBackupPoliciesClient.ListByDatabase
 // method.
 func (client *GeoBackupPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *GeoBackupPoliciesClientListByDatabaseOptions) *runtime.Pager[GeoBackupPoliciesClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[GeoBackupPoliciesClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[GeoBackupPoliciesClientListByDatabaseResponse]{
 		More: func(page GeoBackupPoliciesClientListByDatabaseResponse) bool {
 			return false
 		},
@@ -244,7 +247,7 @@ func (client *GeoBackupPoliciesClient) listByDatabaseCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

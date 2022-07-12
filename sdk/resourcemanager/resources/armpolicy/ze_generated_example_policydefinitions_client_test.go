@@ -24,33 +24,33 @@ func ExampleDefinitionsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<policy-definition-name>",
+		"ResourceNaming",
 		armpolicy.Definition{
 			Properties: &armpolicy.DefinitionProperties{
-				Description: to.Ptr("<description>"),
-				DisplayName: to.Ptr("<display-name>"),
+				Description: to.Ptr("Force resource names to begin with given 'prefix' and/or end with given 'suffix'"),
+				DisplayName: to.Ptr("Enforce resource naming convention"),
 				Metadata: map[string]interface{}{
 					"category": "Naming",
 				},
-				Mode: to.Ptr("<mode>"),
+				Mode: to.Ptr("All"),
 				Parameters: map[string]*armpolicy.ParameterDefinitionsValue{
 					"prefix": {
 						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.Ptr("<description>"),
-							DisplayName: to.Ptr("<display-name>"),
+							Description: to.Ptr("Resource name prefix"),
+							DisplayName: to.Ptr("Prefix"),
 						},
 					},
 					"suffix": {
 						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.Ptr("<description>"),
-							DisplayName: to.Ptr("<display-name>"),
+							Description: to.Ptr("Resource name suffix"),
+							DisplayName: to.Ptr("Suffix"),
 						},
 					},
 				},
@@ -80,12 +80,12 @@ func ExampleDefinitionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<policy-definition-name>",
+		"ResourceNaming",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,12 +99,12 @@ func ExampleDefinitionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<policy-definition-name>",
+		"ResourceNaming",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -125,7 +125,7 @@ func ExampleDefinitionsClient_GetBuiltIn() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetBuiltIn(ctx,
-		"<policy-definition-name>",
+		"7433c107-6db4-4ad1-b57a-a76dce0154a1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -146,29 +146,29 @@ func ExampleDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdateAtManagementGroup(ctx,
-		"<policy-definition-name>",
-		"<management-group-id>",
+		"ResourceNaming",
+		"MyManagementGroup",
 		armpolicy.Definition{
 			Properties: &armpolicy.DefinitionProperties{
-				Description: to.Ptr("<description>"),
-				DisplayName: to.Ptr("<display-name>"),
+				Description: to.Ptr("Force resource names to begin with given 'prefix' and/or end with given 'suffix'"),
+				DisplayName: to.Ptr("Enforce resource naming convention"),
 				Metadata: map[string]interface{}{
 					"category": "Naming",
 				},
-				Mode: to.Ptr("<mode>"),
+				Mode: to.Ptr("All"),
 				Parameters: map[string]*armpolicy.ParameterDefinitionsValue{
 					"prefix": {
 						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.Ptr("<description>"),
-							DisplayName: to.Ptr("<display-name>"),
+							Description: to.Ptr("Resource name prefix"),
+							DisplayName: to.Ptr("Prefix"),
 						},
 					},
 					"suffix": {
 						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.Ptr("<description>"),
-							DisplayName: to.Ptr("<display-name>"),
+							Description: to.Ptr("Resource name suffix"),
+							DisplayName: to.Ptr("Suffix"),
 						},
 					},
 				},
@@ -203,8 +203,8 @@ func ExampleDefinitionsClient_DeleteAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAtManagementGroup(ctx,
-		"<policy-definition-name>",
-		"<management-group-id>",
+		"ResourceNaming",
+		"MyManagementGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -223,8 +223,8 @@ func ExampleDefinitionsClient_GetAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtManagementGroup(ctx,
-		"<policy-definition-name>",
-		"<management-group-id>",
+		"ResourceNaming",
+		"MyManagementGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -240,7 +240,7 @@ func ExampleDefinitionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -251,7 +251,6 @@ func ExampleDefinitionsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -278,7 +277,6 @@ func ExampleDefinitionsClient_NewListBuiltInPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -298,7 +296,7 @@ func ExampleDefinitionsClient_NewListByManagementGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByManagementGroupPager("<management-group-id>",
+	pager := client.NewListByManagementGroupPager("MyManagementGroup",
 		&armpolicy.DefinitionsClientListByManagementGroupOptions{Filter: nil,
 			Top: nil,
 		})
@@ -306,7 +304,6 @@ func ExampleDefinitionsClient_NewListByManagementGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

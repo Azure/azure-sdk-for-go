@@ -23,18 +23,17 @@ func ExampleServersClient_NewListByServerGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerGroupPager("<resource-group-name>",
-		"<server-group-name>",
+	pager := client.NewListByServerGroupPager("TestGroup",
+		"hsctestsg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleServersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		"<server-name>",
+		"TestGroup",
+		"hsctestsg1",
+		"hsctestsg1-c",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

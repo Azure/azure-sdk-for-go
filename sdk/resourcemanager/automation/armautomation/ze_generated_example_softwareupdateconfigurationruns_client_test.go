@@ -24,15 +24,15 @@ func ExampleSoftwareUpdateConfigurationRunsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSoftwareUpdateConfigurationRunsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSoftwareUpdateConfigurationRunsClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
+		"mygroup",
+		"myaccount",
 		&armautomation.SoftwareUpdateConfigurationRunsClientListOptions{ClientRequestID: nil,
-			Filter: to.Ptr("<filter>"),
+			Filter: to.Ptr("properties/status%20eq%20'Failed'"),
 			Skip:   nil,
 			Top:    nil,
 		})

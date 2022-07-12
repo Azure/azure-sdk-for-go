@@ -38,7 +38,7 @@ func NewAccessReviewInstanceDecisionsClient(subscriptionID string, credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewAccessReviewInstanceDecisionsClient(subscriptionID string, credential az
 
 // NewListPager - Get access review instance decisions
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceDecisionsClient.List
 // method.
 func (client *AccessReviewInstanceDecisionsClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceDecisionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstanceDecisionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstanceDecisionsClientListResponse]{
 		More: func(page AccessReviewInstanceDecisionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -115,7 +116,7 @@ func (client *AccessReviewInstanceDecisionsClient) listCreateRequest(ctx context
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

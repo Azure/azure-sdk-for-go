@@ -36,7 +36,7 @@ func NewPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // GetByBillingProfile - Lists the policies for a billing profile. This operation is supported only for billing accounts with
 // agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - PoliciesClientGetByBillingProfileOptions contains the optional parameters for the PoliciesClient.GetByBillingProfile
@@ -91,7 +92,7 @@ func (client *PoliciesClient) getByBillingProfileCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,6 +108,7 @@ func (client *PoliciesClient) getByBillingProfileHandleResponse(resp *http.Respo
 // GetByCustomer - Lists the policies for a customer. This operation is supported only for billing accounts with agreement
 // type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // customerName - The ID that uniquely identifies a customer.
 // options - PoliciesClientGetByCustomerOptions contains the optional parameters for the PoliciesClient.GetByCustomer method.
@@ -143,7 +145,7 @@ func (client *PoliciesClient) getByCustomerCreateRequest(ctx context.Context, bi
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -159,6 +161,7 @@ func (client *PoliciesClient) getByCustomerHandleResponse(resp *http.Response) (
 // Update - Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
 // type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // parameters - Request parameters that are provided to the update policies operation.
@@ -196,7 +199,7 @@ func (client *PoliciesClient) updateCreateRequest(ctx context.Context, billingAc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -212,6 +215,7 @@ func (client *PoliciesClient) updateHandleResponse(resp *http.Response) (Policie
 // UpdateCustomer - Updates the policies for a customer. This operation is supported only for billing accounts with agreement
 // type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // customerName - The ID that uniquely identifies a customer.
 // parameters - Request parameters that are provided to the update policies operation.
@@ -249,7 +253,7 @@ func (client *PoliciesClient) updateCustomerCreateRequest(ctx context.Context, b
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

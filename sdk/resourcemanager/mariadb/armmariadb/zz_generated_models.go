@@ -1031,6 +1031,11 @@ type ServerPropertiesForCreate struct {
 	Version *ServerVersion `json:"version,omitempty"`
 }
 
+// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForCreate.
+func (s *ServerPropertiesForCreate) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
+	return s
+}
+
 // ServerPropertiesForDefaultCreate - The properties used to create a new server.
 type ServerPropertiesForDefaultCreate struct {
 	// REQUIRED; The administrator's login name of a server. Can only be specified when the server is being created (and is required
@@ -1060,6 +1065,18 @@ type ServerPropertiesForDefaultCreate struct {
 	Version *ServerVersion `json:"version,omitempty"`
 }
 
+// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForDefaultCreate.
+func (s *ServerPropertiesForDefaultCreate) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
+	return &ServerPropertiesForCreate{
+		Version:             s.Version,
+		SSLEnforcement:      s.SSLEnforcement,
+		MinimalTLSVersion:   s.MinimalTLSVersion,
+		PublicNetworkAccess: s.PublicNetworkAccess,
+		StorageProfile:      s.StorageProfile,
+		CreateMode:          s.CreateMode,
+	}
+}
+
 // ServerPropertiesForGeoRestore - The properties used to create a new server by restoring to a different region from a geo
 // replicated backup.
 type ServerPropertiesForGeoRestore struct {
@@ -1086,6 +1103,18 @@ type ServerPropertiesForGeoRestore struct {
 	Version *ServerVersion `json:"version,omitempty"`
 }
 
+// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForGeoRestore.
+func (s *ServerPropertiesForGeoRestore) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
+	return &ServerPropertiesForCreate{
+		Version:             s.Version,
+		SSLEnforcement:      s.SSLEnforcement,
+		MinimalTLSVersion:   s.MinimalTLSVersion,
+		PublicNetworkAccess: s.PublicNetworkAccess,
+		StorageProfile:      s.StorageProfile,
+		CreateMode:          s.CreateMode,
+	}
+}
+
 // ServerPropertiesForReplica - The properties to create a new replica.
 type ServerPropertiesForReplica struct {
 	// REQUIRED; The mode to create a new server.
@@ -1109,6 +1138,18 @@ type ServerPropertiesForReplica struct {
 
 	// Server version.
 	Version *ServerVersion `json:"version,omitempty"`
+}
+
+// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForReplica.
+func (s *ServerPropertiesForReplica) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
+	return &ServerPropertiesForCreate{
+		Version:             s.Version,
+		SSLEnforcement:      s.SSLEnforcement,
+		MinimalTLSVersion:   s.MinimalTLSVersion,
+		PublicNetworkAccess: s.PublicNetworkAccess,
+		StorageProfile:      s.StorageProfile,
+		CreateMode:          s.CreateMode,
+	}
 }
 
 // ServerPropertiesForRestore - The properties used to create a new server by restoring from a backup.
@@ -1137,6 +1178,18 @@ type ServerPropertiesForRestore struct {
 
 	// Server version.
 	Version *ServerVersion `json:"version,omitempty"`
+}
+
+// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForRestore.
+func (s *ServerPropertiesForRestore) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
+	return &ServerPropertiesForCreate{
+		Version:             s.Version,
+		SSLEnforcement:      s.SSLEnforcement,
+		MinimalTLSVersion:   s.MinimalTLSVersion,
+		PublicNetworkAccess: s.PublicNetworkAccess,
+		StorageProfile:      s.StorageProfile,
+		CreateMode:          s.CreateMode,
+	}
 }
 
 // ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerSecurityAlertPoliciesClient.BeginCreateOrUpdate

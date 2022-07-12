@@ -10,7 +10,7 @@ package armdeviceupdate
 
 const (
 	moduleName    = "armdeviceupdate"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -229,5 +229,37 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+	}
+}
+
+// Role - Whether the location is primary or failover
+type Role string
+
+const (
+	RoleFailover Role = "Failover"
+	RolePrimary  Role = "Primary"
+)
+
+// PossibleRoleValues returns the possible values for the Role const type.
+func PossibleRoleValues() []Role {
+	return []Role{
+		RoleFailover,
+		RolePrimary,
+	}
+}
+
+// SKU - Device Update Sku
+type SKU string
+
+const (
+	SKUFree     SKU = "Free"
+	SKUStandard SKU = "Standard"
+)
+
+// PossibleSKUValues returns the possible values for the SKU const type.
+func PossibleSKUValues() []SKU {
+	return []SKU{
+		SKUFree,
+		SKUStandard,
 	}
 }

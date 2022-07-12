@@ -38,7 +38,7 @@ func NewTopologyClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTopologyClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Get - Gets a specific topology component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // topologyResourceName - Name of a topology resources collection.
@@ -101,7 +102,7 @@ func (client *TopologyClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,9 +117,10 @@ func (client *TopologyClient) getHandleResponse(resp *http.Response) (TopologyCl
 
 // NewListPager - Gets a list that allows to build a topology view of a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - TopologyClientListOptions contains the optional parameters for the TopologyClient.List method.
 func (client *TopologyClient) NewListPager(options *TopologyClientListOptions) *runtime.Pager[TopologyClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TopologyClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TopologyClientListResponse]{
 		More: func(page TopologyClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -159,7 +161,7 @@ func (client *TopologyClient) listCreateRequest(ctx context.Context, options *To
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -174,11 +176,12 @@ func (client *TopologyClient) listHandleResponse(resp *http.Response) (TopologyC
 
 // NewListByHomeRegionPager - Gets a list that allows to build a topology view of a subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - TopologyClientListByHomeRegionOptions contains the optional parameters for the TopologyClient.ListByHomeRegion
 // method.
 func (client *TopologyClient) NewListByHomeRegionPager(ascLocation string, options *TopologyClientListByHomeRegionOptions) *runtime.Pager[TopologyClientListByHomeRegionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TopologyClientListByHomeRegionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TopologyClientListByHomeRegionResponse]{
 		More: func(page TopologyClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -223,7 +226,7 @@ func (client *TopologyClient) listByHomeRegionCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

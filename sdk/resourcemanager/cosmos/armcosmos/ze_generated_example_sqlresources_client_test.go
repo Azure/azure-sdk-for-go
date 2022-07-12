@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
@@ -26,19 +24,18 @@ func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListClientEncryptionKeysPager("<resource-group-name>",
-		"<account-name>",
-		"<database-name>",
+	pager := client.NewListClientEncryptionKeysPager("rgName",
+		"accountName",
+		"databaseName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetClientEncryptionKey(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<database-name>",
-		"<client-encryption-key-name>",
+		"rgName",
+		"accountName",
+		"databaseName",
+		"cekName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,35 +75,35 @@ func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateUpdateClientEncryptionKey(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<database-name>",
-		"<client-encryption-key-name>",
+		"rgName",
+		"accountName",
+		"databaseName",
+		"cekName",
 		armcosmos.ClientEncryptionKeyCreateUpdateParameters{
 			Properties: &armcosmos.ClientEncryptionKeyCreateUpdateProperties{
 				Resource: &armcosmos.ClientEncryptionKeyResource{
-					EncryptionAlgorithm: to.Ptr("<encryption-algorithm>"),
-					ID:                  to.Ptr("<id>"),
+					EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+					ID:                  to.Ptr("cekName"),
 					KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
-						Name:      to.Ptr("<name>"),
-						Type:      to.Ptr("<type>"),
-						Algorithm: to.Ptr("<algorithm>"),
-						Value:     to.Ptr("<value>"),
+						Name:      to.Ptr("customerManagedKey"),
+						Type:      to.Ptr("AzureKeyVault"),
+						Algorithm: to.Ptr("RSA-OAEP"),
+						Value:     to.Ptr("AzureKeyVault Key URL"),
 					},
 					WrappedDataEncryptionKey: []byte("This is actually an array of bytes. This request/response is being presented as a string for readability in the example"),
 				},
 			},
 		},
-		&armcosmos.SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -121,23 +118,23 @@ func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<database-name>",
-		"<container-name>",
+		"rgName",
+		"ddb1",
+		"databaseName",
+		"containerName",
 		armcosmos.ContinuousBackupRestoreLocation{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("North Europe"),
 		},
-		&armcosmos.SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

@@ -24,16 +24,15 @@ func ExampleIotSecuritySolutionClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(&armsecurity.IotSecuritySolutionClientListBySubscriptionOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListBySubscriptionPager(&armsecurity.IotSecuritySolutionClientListBySubscriptionOptions{Filter: to.Ptr("properties.iotHubs/any(i eq \"/subscriptions/075423e9-7d33-4166-8bdf-3920b04e3735/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/FirstIotHub\")")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,17 +48,16 @@ func ExampleIotSecuritySolutionClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("MyGroup",
 		&armsecurity.IotSecuritySolutionClientListByResourceGroupOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleIotSecuritySolutionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"MyGroup",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,19 +95,19 @@ func ExampleIotSecuritySolutionClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"MyGroup",
+		"default",
 		armsecurity.IoTSecuritySolutionModel{
 			Tags:     map[string]*string{},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East Us"),
 			Properties: &armsecurity.IoTSecuritySolutionProperties{
 				DisabledDataSources: []*armsecurity.DataSource{},
-				DisplayName:         to.Ptr("<display-name>"),
+				DisplayName:         to.Ptr("Solution Default"),
 				Export:              []*armsecurity.ExportData{},
 				IotHubs: []*string{
 					to.Ptr("/subscriptions/075423e9-7d33-4166-8bdf-3920b04e3735/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/FirstIotHub")},
@@ -125,11 +123,11 @@ func ExampleIotSecuritySolutionClient_CreateOrUpdate() {
 				Status:                  to.Ptr(armsecurity.SecuritySolutionStatusEnabled),
 				UnmaskedIPLoggingStatus: to.Ptr(armsecurity.UnmaskedIPLoggingStatusEnabled),
 				UserDefinedResources: &armsecurity.UserDefinedResourcesProperties{
-					Query: to.Ptr("<query>"),
+					Query: to.Ptr("where type != \"microsoft.devices/iothubs\" | where name contains \"iot\""),
 					QuerySubscriptions: []*string{
 						to.Ptr("075423e9-7d33-4166-8bdf-3920b04e3735")},
 				},
-				Workspace: to.Ptr("<workspace>"),
+				Workspace: to.Ptr("/subscriptions/c4930e90-cd72-4aa5-93e9-2d081d129569/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace1"),
 			},
 		},
 		nil)
@@ -147,13 +145,13 @@ func ExampleIotSecuritySolutionClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"myRg",
+		"default",
 		armsecurity.UpdateIotSecuritySolutionData{
 			Tags: map[string]*string{
 				"foo": to.Ptr("bar"),
@@ -169,7 +167,7 @@ func ExampleIotSecuritySolutionClient_Update() {
 						Status:             to.Ptr(armsecurity.RecommendationConfigStatusDisabled),
 					}},
 				UserDefinedResources: &armsecurity.UserDefinedResourcesProperties{
-					Query: to.Ptr("<query>"),
+					Query: to.Ptr("where type != \"microsoft.devices/iothubs\" | where name contains \"v2\""),
 					QuerySubscriptions: []*string{
 						to.Ptr("075423e9-7d33-4166-8bdf-3920b04e3735")},
 				},
@@ -190,13 +188,13 @@ func ExampleIotSecuritySolutionClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"MyGroup",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

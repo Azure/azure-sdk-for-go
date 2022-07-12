@@ -17,27 +17,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/BackupProtectedItems_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/BackupProtectedItems_List.json
 func ExampleBackupProtectedItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupProtectedItemsClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewBackupProtectedItemsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<vault-name>",
-		"<resource-group-name>",
-		&armrecoveryservicesbackup.BackupProtectedItemsClientListOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListPager("NetSDKTestRsVault",
+		"SwaggerTestRg",
+		&armrecoveryservicesbackup.BackupProtectedItemsClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'"),
 			SkipToken: nil,
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

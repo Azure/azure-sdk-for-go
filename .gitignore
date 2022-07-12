@@ -36,6 +36,7 @@ _testmain.go
 .DS_Store
 .vscode
 .vs
+.idea
 
 # ignore vendor/
 vendor/

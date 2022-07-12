@@ -168,26 +168,6 @@ type DomainsClientUpdateResponse struct {
 	Domain
 }
 
-// EventChannelsClientCreateOrUpdateResponse contains the response from method EventChannelsClient.CreateOrUpdate.
-type EventChannelsClientCreateOrUpdateResponse struct {
-	EventChannel
-}
-
-// EventChannelsClientDeleteResponse contains the response from method EventChannelsClient.Delete.
-type EventChannelsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// EventChannelsClientGetResponse contains the response from method EventChannelsClient.Get.
-type EventChannelsClientGetResponse struct {
-	EventChannel
-}
-
-// EventChannelsClientListByPartnerNamespaceResponse contains the response from method EventChannelsClient.ListByPartnerNamespace.
-type EventChannelsClientListByPartnerNamespaceResponse struct {
-	EventChannelsListResult
-}
-
 // EventSubscriptionsClientCreateOrUpdateResponse contains the response from method EventSubscriptionsClient.CreateOrUpdate.
 type EventSubscriptionsClientCreateOrUpdateResponse struct {
 	EventSubscription
@@ -316,41 +296,6 @@ type PartnerConfigurationsClientUnauthorizePartnerResponse struct {
 // PartnerConfigurationsClientUpdateResponse contains the response from method PartnerConfigurationsClient.Update.
 type PartnerConfigurationsClientUpdateResponse struct {
 	PartnerConfiguration
-}
-
-// PartnerDestinationsClientActivateResponse contains the response from method PartnerDestinationsClient.Activate.
-type PartnerDestinationsClientActivateResponse struct {
-	PartnerDestination
-}
-
-// PartnerDestinationsClientCreateOrUpdateResponse contains the response from method PartnerDestinationsClient.CreateOrUpdate.
-type PartnerDestinationsClientCreateOrUpdateResponse struct {
-	PartnerDestination
-}
-
-// PartnerDestinationsClientDeleteResponse contains the response from method PartnerDestinationsClient.Delete.
-type PartnerDestinationsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// PartnerDestinationsClientGetResponse contains the response from method PartnerDestinationsClient.Get.
-type PartnerDestinationsClientGetResponse struct {
-	PartnerDestination
-}
-
-// PartnerDestinationsClientListByResourceGroupResponse contains the response from method PartnerDestinationsClient.ListByResourceGroup.
-type PartnerDestinationsClientListByResourceGroupResponse struct {
-	PartnerDestinationsListResult
-}
-
-// PartnerDestinationsClientListBySubscriptionResponse contains the response from method PartnerDestinationsClient.ListBySubscription.
-type PartnerDestinationsClientListBySubscriptionResponse struct {
-	PartnerDestinationsListResult
-}
-
-// PartnerDestinationsClientUpdateResponse contains the response from method PartnerDestinationsClient.Update.
-type PartnerDestinationsClientUpdateResponse struct {
-	PartnerDestination
 }
 
 // PartnerNamespacesClientCreateOrUpdateResponse contains the response from method PartnerNamespacesClient.CreateOrUpdate.

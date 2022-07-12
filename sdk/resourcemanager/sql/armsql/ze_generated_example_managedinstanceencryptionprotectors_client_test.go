@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,19 +24,19 @@ func ExampleManagedInstanceEncryptionProtectorsClient_BeginRevalidate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceEncryptionProtectorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceEncryptionProtectorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRevalidate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"sqlcrudtest-7398",
+		"sqlcrudtest-4645",
 		armsql.EncryptionProtectorNameCurrent,
-		&armsql.ManagedInstanceEncryptionProtectorsClientBeginRevalidateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -51,18 +49,17 @@ func ExampleManagedInstanceEncryptionProtectorsClient_NewListByInstancePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceEncryptionProtectorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceEncryptionProtectorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInstancePager("<resource-group-name>",
-		"<managed-instance-name>",
+	pager := client.NewListByInstancePager("sqlcrudtest-7398",
+		"sqlcrudtest-4645",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -78,13 +75,13 @@ func ExampleManagedInstanceEncryptionProtectorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceEncryptionProtectorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceEncryptionProtectorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"sqlcrudtest-7398",
+		"sqlcrudtest-4645",
 		armsql.EncryptionProtectorNameCurrent,
 		nil)
 	if err != nil {
@@ -101,26 +98,26 @@ func ExampleManagedInstanceEncryptionProtectorsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceEncryptionProtectorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceEncryptionProtectorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"sqlcrudtest-7398",
+		"sqlcrudtest-4645",
 		armsql.EncryptionProtectorNameCurrent,
 		armsql.ManagedInstanceEncryptionProtector{
 			Properties: &armsql.ManagedInstanceEncryptionProtectorProperties{
 				AutoRotationEnabled: to.Ptr(false),
-				ServerKeyName:       to.Ptr("<server-key-name>"),
+				ServerKeyName:       to.Ptr("someVault_someKey_01234567890123456789012345678901"),
 				ServerKeyType:       to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
 			},
 		},
-		&armsql.ManagedInstanceEncryptionProtectorsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

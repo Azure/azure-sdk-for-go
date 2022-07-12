@@ -36,7 +36,7 @@ func NewCompliancesClient(credential azcore.TokenCredential, options *arm.Client
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewCompliancesClient(credential azcore.TokenCredential, options *arm.Client
 
 // Get - Details of a specific Compliance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // complianceName - name of the Compliance
@@ -87,7 +88,7 @@ func (client *CompliancesClient) getCreateRequest(ctx context.Context, scope str
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -102,11 +103,12 @@ func (client *CompliancesClient) getHandleResponse(resp *http.Response) (Complia
 
 // NewListPager - The Compliance scores of the specific management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - CompliancesClientListOptions contains the optional parameters for the CompliancesClient.List method.
 func (client *CompliancesClient) NewListPager(scope string, options *CompliancesClientListOptions) *runtime.Pager[CompliancesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CompliancesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CompliancesClientListResponse]{
 		More: func(page CompliancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -144,7 +146,7 @@ func (client *CompliancesClient) listCreateRequest(ctx context.Context, scope st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

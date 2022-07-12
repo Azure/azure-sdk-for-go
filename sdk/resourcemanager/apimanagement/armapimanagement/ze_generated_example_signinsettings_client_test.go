@@ -24,13 +24,13 @@ func ExampleSignInSettingsClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSignInSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignInSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,13 +44,13 @@ func ExampleSignInSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSignInSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignInSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -66,14 +66,14 @@ func ExampleSignInSettingsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSignInSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignInSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"*",
 		armapimanagement.PortalSigninSettings{
 			Properties: &armapimanagement.PortalSigninSettingProperties{
 				Enabled: to.Ptr(true),
@@ -92,19 +92,19 @@ func ExampleSignInSettingsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSignInSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignInSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.PortalSigninSettings{
 			Properties: &armapimanagement.PortalSigninSettingProperties{
 				Enabled: to.Ptr(true),
 			},
 		},
-		&armapimanagement.SignInSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("<if-match>")})
+		&armapimanagement.SignInSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

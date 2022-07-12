@@ -39,7 +39,7 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 // to all resources contained within their scope. For example, when you assign a policy at
 // resource group scope, that policy applies to all resources in the group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // scope - The scope of the policy assignment. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format:
 // '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
@@ -97,7 +98,7 @@ func (client *AssignmentsClient) createCreateRequest(ctx context.Context, scope 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *AssignmentsClient) createHandleResponse(resp *http.Response) (Assi
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyAssignmentID - The ID of the policy assignment to create. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 // parameters - Parameters for policy assignment.
 // options - AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
@@ -148,7 +150,7 @@ func (client *AssignmentsClient) createByIDCreateRequest(ctx context.Context, po
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -165,6 +167,7 @@ func (client *AssignmentsClient) createByIDHandleResponse(resp *http.Response) (
 // assignment is the part of its ID preceding
 // '/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // scope - The scope of the policy assignment. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format:
 // '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
@@ -202,7 +205,7 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, scope 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -223,6 +226,7 @@ func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (Assi
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 // (resource).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyAssignmentID - The ID of the policy assignment to delete. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 // options - AssignmentsClientDeleteByIDOptions contains the optional parameters for the AssignmentsClient.DeleteByID method.
 func (client *AssignmentsClient) DeleteByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientDeleteByIDOptions) (AssignmentsClientDeleteByIDResponse, error) {
@@ -251,7 +255,7 @@ func (client *AssignmentsClient) deleteByIDCreateRequest(ctx context.Context, po
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -266,6 +270,7 @@ func (client *AssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (
 
 // Get - This operation retrieves a single policy assignment, given its name and the scope it was created at.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // scope - The scope of the policy assignment. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format:
 // '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
@@ -303,7 +308,7 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, scope str
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -323,6 +328,7 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 // options - AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
 func (client *AssignmentsClient) GetByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientGetByIDOptions) (AssignmentsClientGetByIDResponse, error) {
@@ -351,7 +357,7 @@ func (client *AssignmentsClient) getByIDCreateRequest(ctx context.Context, polic
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -376,9 +382,10 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (Ass
 // is provided, the returned list includes all policy assignments of the policy
 // definition whose id is {value}.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
 func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
 		More: func(page AssignmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -427,7 +434,7 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, options 
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -448,11 +455,12 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 // If $filter=policyDefinitionId eq '{value}' is provided, the returned list
 // includes all policy assignments of the policy definition whose id is {value} that apply to the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // managementGroupID - The ID of the management group.
 // options - AssignmentsClientListForManagementGroupOptions contains the optional parameters for the AssignmentsClient.ListForManagementGroup
 // method.
 func (client *AssignmentsClient) NewListForManagementGroupPager(managementGroupID string, options *AssignmentsClientListForManagementGroupOptions) *runtime.Pager[AssignmentsClientListForManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListForManagementGroupResponse]{
 		More: func(page AssignmentsClientListForManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -501,7 +509,7 @@ func (client *AssignmentsClient) listForManagementGroupCreateRequest(ctx context
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -536,6 +544,7 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 // format: ({resourceProviderNamespace} == '', {parentResourcePath} == '',
 // {resourceType} == 'Microsoft.Web/sites', {resourceName} == 'MyWebApp').
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group containing the resource.
 // resourceProviderNamespace - The namespace of the resource provider. For example, the namespace of a virtual machine is
 // Microsoft.Compute (from Microsoft.Compute/virtualMachines)
@@ -545,7 +554,7 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 // options - AssignmentsClientListForResourceOptions contains the optional parameters for the AssignmentsClient.ListForResource
 // method.
 func (client *AssignmentsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *AssignmentsClientListForResourceOptions) *runtime.Pager[AssignmentsClientListForResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListForResourceResponse]{
 		More: func(page AssignmentsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -608,7 +617,7 @@ func (client *AssignmentsClient) listForResourceCreateRequest(ctx context.Contex
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -633,11 +642,12 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 // is provided, the returned list includes all policy assignments of the
 // policy definition whose id is {value} that apply to the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group that contains policy assignments.
 // options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.ListForResourceGroup
 // method.
 func (client *AssignmentsClient) NewListForResourceGroupPager(resourceGroupName string, options *AssignmentsClientListForResourceGroupOptions) *runtime.Pager[AssignmentsClientListForResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListForResourceGroupResponse]{
 		More: func(page AssignmentsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -690,7 +700,7 @@ func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.C
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -707,6 +717,7 @@ func (client *AssignmentsClient) listForResourceGroupHandleResponse(resp *http.R
 // contained within their scope. For example, when you assign a policy at resource
 // group scope, that policy applies to all resources in the group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // scope - The scope of the policy assignment. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format:
 // '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
@@ -745,7 +756,7 @@ func (client *AssignmentsClient) updateCreateRequest(ctx context.Context, scope 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -767,6 +778,7 @@ func (client *AssignmentsClient) updateHandleResponse(resp *http.Response) (Assi
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyAssignmentID - The ID of the policy assignment to update. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 // parameters - Parameters for policy assignment patch request.
 // options - AssignmentsClientUpdateByIDOptions contains the optional parameters for the AssignmentsClient.UpdateByID method.
@@ -796,7 +808,7 @@ func (client *AssignmentsClient) updateByIDCreateRequest(ctx context.Context, po
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

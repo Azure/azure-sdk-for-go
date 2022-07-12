@@ -14,16 +14,6 @@ import (
 	"reflect"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type RecordSet.
 func (r RecordSet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -32,14 +22,6 @@ func (r RecordSet) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
 	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecordSetListResult.
-func (r RecordSetListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -75,25 +57,10 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceReference.
-func (r ResourceReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsResources", r.DNSResources)
-	populate(objectMap, "targetResource", r.TargetResource)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ResourceReferenceRequestProperties.
 func (r ResourceReferenceRequestProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "targetResources", r.TargetResources)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceReferenceResultProperties.
-func (r ResourceReferenceResultProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsResourceReferences", r.DNSResourceReferences)
 	return json.Marshal(objectMap)
 }
 
@@ -114,14 +81,6 @@ func (z Zone) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", z.Properties)
 	populate(objectMap, "tags", z.Tags)
 	populate(objectMap, "type", z.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ZoneListResult.
-func (z ZoneListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", z.NextLink)
-	populate(objectMap, "value", z.Value)
 	return json.Marshal(objectMap)
 }
 

@@ -10,7 +10,7 @@ package armdevops
 
 const (
 	moduleName    = "armdevops"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // AuthorizationType - Type of authorization.

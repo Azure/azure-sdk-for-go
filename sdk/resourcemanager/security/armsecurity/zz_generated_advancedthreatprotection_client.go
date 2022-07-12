@@ -35,7 +35,7 @@ func NewAdvancedThreatProtectionClient(credential azcore.TokenCredential, option
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -52,6 +52,7 @@ func NewAdvancedThreatProtectionClient(credential azcore.TokenCredential, option
 
 // Create - Creates or updates the Advanced Threat Protection settings on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01
 // resourceID - The identifier of the resource.
 // advancedThreatProtectionSetting - Advanced Threat Protection Settings
 // options - AdvancedThreatProtectionClientCreateOptions contains the optional parameters for the AdvancedThreatProtectionClient.Create
@@ -83,7 +84,7 @@ func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, advancedThreatProtectionSetting)
 }
 
@@ -98,6 +99,7 @@ func (client *AdvancedThreatProtectionClient) createHandleResponse(resp *http.Re
 
 // Get - Gets the Advanced Threat Protection settings for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01
 // resourceID - The identifier of the resource.
 // options - AdvancedThreatProtectionClientGetOptions contains the optional parameters for the AdvancedThreatProtectionClient.Get
 // method.
@@ -128,7 +130,7 @@ func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

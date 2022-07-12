@@ -38,7 +38,7 @@ func NewEmailEventsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewEmailEventsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Get - Gets a email event of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // emailEventResourceName - The resource name of an email event.
@@ -101,7 +102,7 @@ func (client *EmailEventsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,11 +117,12 @@ func (client *EmailEventsClient) getHandleResponse(resp *http.Response) (EmailEv
 
 // NewListPager - Lists all the email events of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - EmailEventsClientListOptions contains the optional parameters for the EmailEventsClient.List method.
 func (client *EmailEventsClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) *runtime.Pager[EmailEventsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EmailEventsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EmailEventsClientListResponse]{
 		More: func(page EmailEventsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -169,7 +171,7 @@ func (client *EmailEventsClient) listCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

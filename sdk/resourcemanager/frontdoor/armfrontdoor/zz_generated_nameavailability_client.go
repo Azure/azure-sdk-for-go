@@ -33,7 +33,7 @@ func NewNameAvailabilityClient(credential azcore.TokenCredential, options *arm.C
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,6 +50,7 @@ func NewNameAvailabilityClient(credential azcore.TokenCredential, options *arm.C
 
 // Check - Check the availability of a Front Door resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // checkFrontDoorNameAvailabilityInput - Input to check.
 // options - NameAvailabilityClientCheckOptions contains the optional parameters for the NameAvailabilityClient.Check method.
 func (client *NameAvailabilityClient) Check(ctx context.Context, checkFrontDoorNameAvailabilityInput CheckNameAvailabilityInput, options *NameAvailabilityClientCheckOptions) (NameAvailabilityClientCheckResponse, error) {
@@ -77,7 +78,7 @@ func (client *NameAvailabilityClient) checkCreateRequest(ctx context.Context, ch
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, checkFrontDoorNameAvailabilityInput)
 }
 

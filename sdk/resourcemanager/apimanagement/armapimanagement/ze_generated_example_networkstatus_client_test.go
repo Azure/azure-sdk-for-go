@@ -23,13 +23,13 @@ func ExampleNetworkStatusClient_ListByService() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNetworkStatusClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNetworkStatusClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByService(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExampleNetworkStatusClient_ListByLocation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNetworkStatusClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNetworkStatusClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByLocation(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<location-name>",
+		"rg1",
+		"apimService1",
+		"North Central US",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -38,7 +38,7 @@ func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCreden
 
 // ListQuotas - Retrieves the subscription's current quota information in a particular region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // location - The region in which to retrieve the subscription's quota information. You can find out which regions Azure Stream
 // Analytics is supported in here: https://azure.microsoft.com/en-us/regions/
 // options - SubscriptionsClientListQuotasOptions contains the optional parameters for the SubscriptionsClient.ListQuotas
@@ -93,7 +94,7 @@ func (client *SubscriptionsClient) listQuotasCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

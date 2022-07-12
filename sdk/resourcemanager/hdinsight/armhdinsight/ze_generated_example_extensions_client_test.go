@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
@@ -26,22 +24,22 @@ func ExampleExtensionsClient_BeginEnableMonitoring() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginEnableMonitoring(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.ClusterMonitoringRequest{
-			PrimaryKey:  to.Ptr("<primary-key>"),
-			WorkspaceID: to.Ptr("<workspace-id>"),
+			PrimaryKey:  to.Ptr("**********"),
+			WorkspaceID: to.Ptr("a2090ead-8c9f-4fba-b70e-533e3e003163"),
 		},
-		&armhdinsight.ExtensionsClientBeginEnableMonitoringOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -54,13 +52,13 @@ func ExampleExtensionsClient_GetMonitoringStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetMonitoringStatus(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,18 +74,18 @@ func ExampleExtensionsClient_BeginDisableMonitoring() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDisableMonitoring(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		&armhdinsight.ExtensionsClientBeginDisableMonitoringOptions{ResumeToken: ""})
+		"rg1",
+		"cluster1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -100,22 +98,22 @@ func ExampleExtensionsClient_BeginEnableAzureMonitor() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginEnableAzureMonitor(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.AzureMonitorRequest{
-			PrimaryKey:  to.Ptr("<primary-key>"),
-			WorkspaceID: to.Ptr("<workspace-id>"),
+			PrimaryKey:  to.Ptr("**********"),
+			WorkspaceID: to.Ptr("a2090ead-8c9f-4fba-b70e-533e3e003163"),
 		},
-		&armhdinsight.ExtensionsClientBeginEnableAzureMonitorOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -128,13 +126,13 @@ func ExampleExtensionsClient_GetAzureMonitorStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAzureMonitorStatus(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -150,18 +148,18 @@ func ExampleExtensionsClient_BeginDisableAzureMonitor() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDisableAzureMonitor(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		&armhdinsight.ExtensionsClientBeginDisableAzureMonitorOptions{ResumeToken: ""})
+		"rg1",
+		"cluster1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -174,23 +172,23 @@ func ExampleExtensionsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<extension-name>",
+		"rg1",
+		"cluster1",
+		"clustermonitoring",
 		armhdinsight.Extension{
-			PrimaryKey:  to.Ptr("<primary-key>"),
-			WorkspaceID: to.Ptr("<workspace-id>"),
+			PrimaryKey:  to.Ptr("**********"),
+			WorkspaceID: to.Ptr("a2090ead-8c9f-4fba-b70e-533e3e003163"),
 		},
-		&armhdinsight.ExtensionsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -203,14 +201,14 @@ func ExampleExtensionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<extension-name>",
+		"rg1",
+		"cluster1",
+		"clustermonitoring",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -226,19 +224,19 @@ func ExampleExtensionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<extension-name>",
-		&armhdinsight.ExtensionsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"cluster1",
+		"clustermonitoring",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -251,15 +249,15 @@ func ExampleExtensionsClient_GetAzureAsyncOperationStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewExtensionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAzureAsyncOperationStatus(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<extension-name>",
-		"<operation-id>",
+		"rg1",
+		"cluster1",
+		"azuremonitor",
+		"CF938302-6B4D-44A0-A6D2-C0D67E847AEC",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

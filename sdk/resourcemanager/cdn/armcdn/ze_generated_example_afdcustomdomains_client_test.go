@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
@@ -26,18 +24,17 @@ func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewAFDCustomDomainsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDCustomDomainsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProfilePager("<resource-group-name>",
-		"<profile-name>",
+	pager := client.NewListByProfilePager("RG",
+		"profile1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleAFDCustomDomainsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewAFDCustomDomainsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDCustomDomainsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<custom-domain-name>",
+		"RG",
+		"profile1",
+		"domain1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,31 +73,31 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewAFDCustomDomainsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDCustomDomainsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<custom-domain-name>",
+		"RG",
+		"profile1",
+		"domain1",
 		armcdn.AFDDomain{
 			Properties: &armcdn.AFDDomainProperties{
 				AzureDNSZone: &armcdn.ResourceReference{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr(""),
 				},
 				TLSSettings: &armcdn.AFDDomainHTTPSParameters{
 					CertificateType:   to.Ptr(armcdn.AfdCertificateTypeManagedCertificate),
 					MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
 				},
-				HostName: to.Ptr("<host-name>"),
+				HostName: to.Ptr("www.someDomain.net"),
 			},
 		},
-		&armcdn.AFDCustomDomainsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -115,18 +112,18 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewAFDCustomDomainsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDCustomDomainsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<custom-domain-name>",
+		"RG",
+		"profile1",
+		"domain1",
 		armcdn.AFDDomainUpdateParameters{
 			Properties: &armcdn.AFDDomainUpdatePropertiesParameters{
 				AzureDNSZone: &armcdn.ResourceReference{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr(""),
 				},
 				TLSSettings: &armcdn.AFDDomainHTTPSParameters{
 					CertificateType:   to.Ptr(armcdn.AfdCertificateTypeCustomerCertificate),
@@ -134,11 +131,11 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 				},
 			},
 		},
-		&armcdn.AFDCustomDomainsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -153,19 +150,19 @@ func ExampleAFDCustomDomainsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewAFDCustomDomainsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDCustomDomainsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<custom-domain-name>",
-		&armcdn.AFDCustomDomainsClientBeginDeleteOptions{ResumeToken: ""})
+		"RG",
+		"profile1",
+		"domain1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -178,19 +175,19 @@ func ExampleAFDCustomDomainsClient_BeginRefreshValidationToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewAFDCustomDomainsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDCustomDomainsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRefreshValidationToken(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<custom-domain-name>",
-		&armcdn.AFDCustomDomainsClientBeginRefreshValidationTokenOptions{ResumeToken: ""})
+		"RG",
+		"profile1",
+		"domain1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

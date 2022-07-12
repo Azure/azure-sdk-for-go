@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,18 +24,17 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("20D7082A-0FC7-4468-82BD-542694D5042B", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInstancePoolPager("<resource-group-name>",
-		"<instance-pool-name>",
+	pager := client.NewListByInstancePoolPager("Test1",
+		"pool1",
 		&armsql.ManagedInstancesClientListByInstancePoolOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,7 +50,7 @@ func ExampleManagedInstancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("20D7082A-0FC7-4468-82BD-542694D5042B", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -62,7 +59,6 @@ func ExampleManagedInstancesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -78,17 +74,16 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("20D7082A-0FC7-4468-82BD-542694D5042B", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("Test1",
 		&armsql.ManagedInstancesClientListByResourceGroupOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -104,13 +99,13 @@ func ExampleManagedInstancesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("20d7082a-0fc7-4468-82bd-542694d5042b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"testrg",
+		"testinstance",
 		&armsql.ManagedInstancesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -126,34 +121,34 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("20D7082A-0FC7-4468-82BD-542694D5042B", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"testrg",
+		"testinstance",
 		armsql.ManagedInstance{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Japan East"),
 			Tags: map[string]*string{
 				"tagKey1": to.Ptr("TagValue1"),
 			},
 			Properties: &armsql.ManagedInstanceProperties{
-				AdministratorLogin:         to.Ptr("<administrator-login>"),
-				AdministratorLoginPassword: to.Ptr("<administrator-login-password>"),
+				AdministratorLogin:         to.Ptr("dummylogin"),
+				AdministratorLoginPassword: to.Ptr("PLACEHOLDER"),
 				Administrators: &armsql.ManagedInstanceExternalAdministrator{
 					AzureADOnlyAuthentication: to.Ptr(true),
-					Login:                     to.Ptr("<login>"),
+					Login:                     to.Ptr("bob@contoso.com"),
 					PrincipalType:             to.Ptr(armsql.PrincipalTypeUser),
-					Sid:                       to.Ptr("<sid>"),
-					TenantID:                  to.Ptr("<tenant-id>"),
+					Sid:                       to.Ptr("00000011-1111-2222-2222-123456789111"),
+					TenantID:                  to.Ptr("00000011-1111-2222-2222-123456789111"),
 				},
-				Collation:                        to.Ptr("<collation>"),
-				DNSZonePartner:                   to.Ptr("<dnszone-partner>"),
-				InstancePoolID:                   to.Ptr("<instance-pool-id>"),
+				Collation:                        to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+				DNSZonePartner:                   to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+				InstancePoolID:                   to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/pool1"),
 				LicenseType:                      to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-				MaintenanceConfigurationID:       to.Ptr("<maintenance-configuration-id>"),
-				MinimalTLSVersion:                to.Ptr("<minimal-tlsversion>"),
+				MaintenanceConfigurationID:       to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+				MinimalTLSVersion:                to.Ptr("1.2"),
 				ProxyOverride:                    to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 				PublicDataEndpointEnabled:        to.Ptr(false),
 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
@@ -161,20 +156,20 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate() {
 					Type: to.Ptr(armsql.ServicePrincipalTypeSystemAssigned),
 				},
 				StorageSizeInGB: to.Ptr[int32](1024),
-				SubnetID:        to.Ptr("<subnet-id>"),
-				TimezoneID:      to.Ptr("<timezone-id>"),
+				SubnetID:        to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+				TimezoneID:      to.Ptr("UTC"),
 				VCores:          to.Ptr[int32](8),
 			},
 			SKU: &armsql.SKU{
-				Name: to.Ptr("<name>"),
-				Tier: to.Ptr("<tier>"),
+				Name: to.Ptr("GP_Gen5"),
+				Tier: to.Ptr("GeneralPurpose"),
 			},
 		},
-		&armsql.ManagedInstancesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -189,18 +184,18 @@ func ExampleManagedInstancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("20D7082A-0FC7-4468-82BD-542694D5042B", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		&armsql.ManagedInstancesClientBeginDeleteOptions{ResumeToken: ""})
+		"testrg",
+		"testinstance",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -213,23 +208,23 @@ func ExampleManagedInstancesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("20D7082A-0FC7-4468-82BD-542694D5042B", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"testrg",
+		"testinstance",
 		armsql.ManagedInstanceUpdate{
 			Properties: &armsql.ManagedInstanceProperties{
-				MaintenanceConfigurationID: to.Ptr("<maintenance-configuration-id>"),
+				MaintenanceConfigurationID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 			},
 		},
-		&armsql.ManagedInstancesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -244,12 +239,12 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByManagedInstancePager("<resource-group-name>",
-		"<managed-instance-name>",
+	pager := client.NewListByManagedInstancePager("sqlcrudtest-7398",
+		"sqlcrudtest-4645",
 		&armsql.ManagedInstancesClientListByManagedInstanceOptions{NumberOfQueries: nil,
 			Databases:           nil,
 			StartTime:           nil,
@@ -262,7 +257,6 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -278,20 +272,18 @@ func ExampleManagedInstancesClient_BeginFailover() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginFailover(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		&armsql.ManagedInstancesClientBeginFailoverOptions{ReplicaType: to.Ptr(armsql.ReplicaTypePrimary),
-			ResumeToken: "",
-		})
+		"group1",
+		"instanceName",
+		&armsql.ManagedInstancesClientBeginFailoverOptions{ReplicaType: to.Ptr(armsql.ReplicaTypePrimary)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

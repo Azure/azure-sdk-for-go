@@ -38,7 +38,7 @@ func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, credential azc
 
 // Get - Use this method to get IoT Security Analytics metrics.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // options - IotSecuritySolutionAnalyticsClientGetOptions contains the optional parameters for the IotSecuritySolutionAnalyticsClient.Get
@@ -97,7 +98,7 @@ func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -112,6 +113,7 @@ func (client *IotSecuritySolutionAnalyticsClient) getHandleResponse(resp *http.R
 
 // List - Use this method to get IoT security Analytics metrics in an array.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // options - IotSecuritySolutionAnalyticsClientListOptions contains the optional parameters for the IotSecuritySolutionAnalyticsClient.List
@@ -153,7 +155,7 @@ func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

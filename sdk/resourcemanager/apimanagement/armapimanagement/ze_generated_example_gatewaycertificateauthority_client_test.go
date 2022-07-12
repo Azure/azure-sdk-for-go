@@ -24,13 +24,13 @@ func ExampleGatewayCertificateAuthorityClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"gw1",
 		&armapimanagement.GatewayCertificateAuthorityClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -39,7 +39,6 @@ func ExampleGatewayCertificateAuthorityClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,15 +54,15 @@ func ExampleGatewayCertificateAuthorityClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<certificate-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"cert1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,15 +76,15 @@ func ExampleGatewayCertificateAuthorityClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<certificate-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"cert1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,15 +100,15 @@ func ExampleGatewayCertificateAuthorityClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<certificate-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"cert1",
 		armapimanagement.GatewayCertificateAuthorityContract{
 			Properties: &armapimanagement.GatewayCertificateAuthorityContractProperties{
 				IsTrusted: to.Ptr(false),
@@ -130,16 +129,16 @@ func ExampleGatewayCertificateAuthorityClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayCertificateAuthorityClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<certificate-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"default",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

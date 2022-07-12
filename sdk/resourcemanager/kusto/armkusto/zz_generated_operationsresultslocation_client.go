@@ -39,7 +39,7 @@ func NewOperationsResultsLocationClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewOperationsResultsLocationClient(subscriptionID string, credential azcore
 
 // Get - Returns operation results.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // location - Azure location (region) name.
 // operationID - The Guid of the operation ID
 // options - OperationsResultsLocationClientGetOptions contains the optional parameters for the OperationsResultsLocationClient.Get

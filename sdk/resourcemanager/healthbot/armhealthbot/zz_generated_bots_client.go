@@ -38,7 +38,7 @@ func NewBotsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewBotsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // BeginCreate - Create a new Azure Health Bot.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-10
 // resourceGroupName - The name of the Bot resource group in the user subscription.
 // botName - The name of the Bot resource.
 // parameters - The parameters to provide for the created Azure Health Bot.
 // options - BotsClientBeginCreateOptions contains the optional parameters for the BotsClient.BeginCreate method.
-func (client *BotsClient) BeginCreate(ctx context.Context, resourceGroupName string, botName string, parameters HealthBot, options *BotsClientBeginCreateOptions) (*armruntime.Poller[BotsClientCreateResponse], error) {
+func (client *BotsClient) BeginCreate(ctx context.Context, resourceGroupName string, botName string, parameters HealthBot, options *BotsClientBeginCreateOptions) (*runtime.Poller[BotsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, botName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BotsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BotsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[BotsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BotsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create a new Azure Health Bot.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-10
 func (client *BotsClient) create(ctx context.Context, resourceGroupName string, botName string, parameters HealthBot, options *BotsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, botName, parameters, options)
 	if err != nil {
@@ -113,29 +115,31 @@ func (client *BotsClient) createCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Delete a HealthBot.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-10
 // resourceGroupName - The name of the Bot resource group in the user subscription.
 // botName - The name of the Bot resource.
 // options - BotsClientBeginDeleteOptions contains the optional parameters for the BotsClient.BeginDelete method.
-func (client *BotsClient) BeginDelete(ctx context.Context, resourceGroupName string, botName string, options *BotsClientBeginDeleteOptions) (*armruntime.Poller[BotsClientDeleteResponse], error) {
+func (client *BotsClient) BeginDelete(ctx context.Context, resourceGroupName string, botName string, options *BotsClientBeginDeleteOptions) (*runtime.Poller[BotsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, botName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[BotsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BotsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[BotsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BotsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a HealthBot.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-10
 func (client *BotsClient) deleteOperation(ctx context.Context, resourceGroupName string, botName string, options *BotsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, botName, options)
 	if err != nil {
@@ -173,12 +177,13 @@ func (client *BotsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a HealthBot.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-10
 // resourceGroupName - The name of the Bot resource group in the user subscription.
 // botName - The name of the Bot resource.
 // options - BotsClientGetOptions contains the optional parameters for the BotsClient.Get method.
@@ -219,7 +224,7 @@ func (client *BotsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,9 +239,10 @@ func (client *BotsClient) getHandleResponse(resp *http.Response) (BotsClientGetR
 
 // NewListPager - Returns all the resources of a particular type belonging to a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-10
 // options - BotsClientListOptions contains the optional parameters for the BotsClient.List method.
 func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BotsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BotsClientListResponse]{
 		More: func(page BotsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -277,7 +283,7 @@ func (client *BotsClient) listCreateRequest(ctx context.Context, options *BotsCl
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -292,11 +298,12 @@ func (client *BotsClient) listHandleResponse(resp *http.Response) (BotsClientLis
 
 // NewListByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-10
 // resourceGroupName - The name of the Bot resource group in the user subscription.
 // options - BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.ListByResourceGroup
 // method.
 func (client *BotsClient) NewListByResourceGroupPager(resourceGroupName string, options *BotsClientListByResourceGroupOptions) *runtime.Pager[BotsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BotsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BotsClientListByResourceGroupResponse]{
 		More: func(page BotsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -341,7 +348,7 @@ func (client *BotsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -356,6 +363,7 @@ func (client *BotsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // Update - Patch a HealthBot.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-10
 // resourceGroupName - The name of the Bot resource group in the user subscription.
 // botName - The name of the Bot resource.
 // parameters - The parameters to provide for the required Azure Health Bot.
@@ -397,7 +405,7 @@ func (client *BotsClient) updateCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

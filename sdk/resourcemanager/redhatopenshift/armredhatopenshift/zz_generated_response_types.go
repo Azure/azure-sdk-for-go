@@ -23,6 +23,11 @@ type OpenShiftClustersClientGetResponse struct {
 	OpenShiftCluster
 }
 
+// OpenShiftClustersClientListAdminCredentialsResponse contains the response from method OpenShiftClustersClient.ListAdminCredentials.
+type OpenShiftClustersClientListAdminCredentialsResponse struct {
+	OpenShiftClusterAdminKubeconfig
+}
+
 // OpenShiftClustersClientListByResourceGroupResponse contains the response from method OpenShiftClustersClient.ListByResourceGroup.
 type OpenShiftClustersClientListByResourceGroupResponse struct {
 	OpenShiftClusterList

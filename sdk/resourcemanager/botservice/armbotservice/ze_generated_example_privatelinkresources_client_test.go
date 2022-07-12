@@ -23,13 +23,13 @@ func ExamplePrivateLinkResourcesClient_ListByBotResource() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewPrivateLinkResourcesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByBotResource(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"res6977",
+		"sto2527",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

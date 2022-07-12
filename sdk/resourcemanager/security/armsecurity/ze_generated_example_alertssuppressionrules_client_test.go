@@ -26,7 +26,7 @@ func ExampleAlertsSuppressionRulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsSuppressionRulesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsSuppressionRulesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +35,6 @@ func ExampleAlertsSuppressionRulesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,12 +50,12 @@ func ExampleAlertsSuppressionRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsSuppressionRulesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsSuppressionRulesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<alerts-suppression-rule-name>",
+		"dismissIpAnomalyAlerts",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,18 +71,18 @@ func ExampleAlertsSuppressionRulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsSuppressionRulesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsSuppressionRulesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<alerts-suppression-rule-name>",
+		"dismissIpAnomalyAlerts",
 		armsecurity.AlertsSuppressionRule{
 			Properties: &armsecurity.AlertsSuppressionRuleProperties{
-				AlertType:         to.Ptr("<alert-type>"),
-				Comment:           to.Ptr("<comment>"),
+				AlertType:         to.Ptr("IpAnomaly"),
+				Comment:           to.Ptr("Test VM"),
 				ExpirationDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T19:50:47.083633Z"); return t }()),
-				Reason:            to.Ptr("<reason>"),
+				Reason:            to.Ptr("FalsePositive"),
 				State:             to.Ptr(armsecurity.RuleStateEnabled),
 				SuppressionAlertsScope: &armsecurity.SuppressionAlertsScope{
 					AllOf: []*armsecurity.ScopeElement{
@@ -94,13 +93,13 @@ func ExampleAlertsSuppressionRulesClient_Update() {
 									"52.164.206.56",
 								},
 							},
-							Field: to.Ptr("<field>"),
+							Field: to.Ptr("entities.ip.address"),
 						},
 						{
 							AdditionalProperties: map[string]interface{}{
 								"contains": "POWERSHELL.EXE",
 							},
-							Field: to.Ptr("<field>"),
+							Field: to.Ptr("entities.process.commandline"),
 						}},
 				},
 			},
@@ -120,12 +119,12 @@ func ExampleAlertsSuppressionRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsSuppressionRulesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsSuppressionRulesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<alerts-suppression-rule-name>",
+		"dismissIpAnomalyAlerts",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

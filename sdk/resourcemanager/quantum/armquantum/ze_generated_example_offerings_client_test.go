@@ -23,17 +23,16 @@ func ExampleOfferingsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armquantum.NewOfferingsClient("<subscription-id>", cred, nil)
+	client, err := armquantum.NewOfferingsClient("1C4B2828-7D49-494F-933D-061373BE28C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<location-name>",
+	pager := client.NewListPager("westus2",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

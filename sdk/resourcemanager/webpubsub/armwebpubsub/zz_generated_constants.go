@@ -10,7 +10,7 @@ package armwebpubsub
 
 const (
 	moduleName    = "armwebpubsub"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ACLAction - Azure Networking ACL Action.

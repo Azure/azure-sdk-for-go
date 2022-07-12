@@ -39,7 +39,7 @@ func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredent
 
 // Create - Update tenant access information details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // accessName - The identifier of the Access configuration.
@@ -105,8 +106,8 @@ func (client *TenantAccessClient) createCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -124,6 +125,7 @@ func (client *TenantAccessClient) createHandleResponse(resp *http.Response) (Ten
 
 // Get - Get tenant access information details without secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // accessName - The identifier of the Access configuration.
@@ -169,7 +171,7 @@ func (client *TenantAccessClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -186,6 +188,7 @@ func (client *TenantAccessClient) getHandleResponse(resp *http.Response) (Tenant
 }
 
 // GetEntityTag - Tenant access metadata
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // accessName - The identifier of the Access configuration.
@@ -199,6 +202,9 @@ func (client *TenantAccessClient) GetEntityTag(ctx context.Context, resourceGrou
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TenantAccessClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return TenantAccessClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -229,7 +235,7 @@ func (client *TenantAccessClient) getEntityTagCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,20 +245,19 @@ func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByServicePager - Returns list of access infos - for Git and Management endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - TenantAccessClientListByServiceOptions contains the optional parameters for the TenantAccessClient.ListByService
 // method.
 func (client *TenantAccessClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) *runtime.Pager[TenantAccessClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TenantAccessClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TenantAccessClientListByServiceResponse]{
 		More: func(page TenantAccessClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -304,7 +309,7 @@ func (client *TenantAccessClient) listByServiceCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -319,6 +324,7 @@ func (client *TenantAccessClient) listByServiceHandleResponse(resp *http.Respons
 
 // ListSecrets - Get tenant access information details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // accessName - The identifier of the Access configuration.
@@ -365,7 +371,7 @@ func (client *TenantAccessClient) listSecretsCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -383,6 +389,7 @@ func (client *TenantAccessClient) listSecretsHandleResponse(resp *http.Response)
 
 // RegeneratePrimaryKey - Regenerate primary access key
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // accessName - The identifier of the Access configuration.
@@ -429,12 +436,13 @@ func (client *TenantAccessClient) regeneratePrimaryKeyCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // RegenerateSecondaryKey - Regenerate secondary access key
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // accessName - The identifier of the Access configuration.
@@ -481,12 +489,13 @@ func (client *TenantAccessClient) regenerateSecondaryKeyCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Update tenant access information details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // accessName - The identifier of the Access configuration.
@@ -535,8 +544,8 @@ func (client *TenantAccessClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

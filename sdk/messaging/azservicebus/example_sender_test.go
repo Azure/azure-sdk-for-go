@@ -17,6 +17,9 @@ func ExampleClient_NewSender() {
 	if err != nil {
 		panic(err)
 	}
+
+	// close the sender when it's no longer needed
+	defer sender.Close(context.TODO())
 }
 
 func ExampleSender_SendMessage_message() {
@@ -36,6 +39,9 @@ func ExampleSender_SendMessage_messageBatch() {
 	// batch. This can help with message throughput, as you can send multiple
 	// messages in a single send.
 	err = batch.AddMessage(&azservicebus.Message{Body: []byte("hello world")}, nil)
+
+	// We also support adding AMQPMessages directly to a batch as well
+	// batch.AddAMQPMessage(&azservicebus.AMQPMessage{})
 
 	if err != nil {
 		switch err {
@@ -83,4 +89,34 @@ func ExampleSender_ScheduleMessages() {
 			ScheduledEnqueueTime: &future,
 		}, nil)
 	exitOnError("Failed to schedule messages using SendMessage", err)
+}
+
+func ExampleSender_SendAMQPAnnotatedMessage() {
+	// AMQP is the underlying protocol for all interaction with Service Bus.
+	// You can, if needed, send and receive messages that have a 1:1 correspondence
+	// with an AMQP message. This gives you full control over details that are not
+	// exposed via the azservicebus.ReceivedMessage type.
+
+	message := &azservicebus.AMQPAnnotatedMessage{
+		Body: azservicebus.AMQPAnnotatedMessageBody{
+			// there are three kinds of different body encodings
+			// Data, Value and Sequence. See the azservicebus.AMQPMessageBody
+			// documentation for more details.
+			Value: "hello",
+		},
+		// full access to fields not normally exposed in azservicebus.Message, like
+		// the delivery and message annotations.
+		MessageAnnotations: map[any]any{
+			"x-opt-message-test": "test-annotation-value",
+		},
+		DeliveryAnnotations: map[any]any{
+			"x-opt-delivery-test": "test-annotation-value",
+		},
+	}
+
+	err := sender.SendAMQPAnnotatedMessage(context.TODO(), message, nil)
+
+	if err != nil {
+		panic(err)
+	}
 }

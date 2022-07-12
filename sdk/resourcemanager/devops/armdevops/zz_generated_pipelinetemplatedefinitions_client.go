@@ -33,7 +33,7 @@ func NewPipelineTemplateDefinitionsClient(credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,10 +50,11 @@ func NewPipelineTemplateDefinitionsClient(credential azcore.TokenCredential, opt
 
 // NewListPager - Lists all pipeline templates which can be used to configure an Azure Pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-01-preview
 // options - PipelineTemplateDefinitionsClientListOptions contains the optional parameters for the PipelineTemplateDefinitionsClient.List
 // method.
 func (client *PipelineTemplateDefinitionsClient) NewListPager(options *PipelineTemplateDefinitionsClientListOptions) *runtime.Pager[PipelineTemplateDefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PipelineTemplateDefinitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PipelineTemplateDefinitionsClientListResponse]{
 		More: func(page PipelineTemplateDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -90,7 +91,7 @@ func (client *PipelineTemplateDefinitionsClient) listCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

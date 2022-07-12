@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,16 +24,16 @@ func ExampleSyncMembersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncMembersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncMembersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		"<sync-member-name>",
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		"syncmembercrud-4879",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,32 +49,32 @@ func ExampleSyncMembersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncMembersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncMembersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		"<sync-member-name>",
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		"syncmembercrud-4879",
 		armsql.SyncMember{
 			Properties: &armsql.SyncMemberProperties{
-				DatabaseName:                      to.Ptr("<database-name>"),
+				DatabaseName:                      to.Ptr("syncgroupcrud-7421"),
 				DatabaseType:                      to.Ptr(armsql.SyncMemberDbTypeAzureSQLDatabase),
-				ServerName:                        to.Ptr("<server-name>"),
+				ServerName:                        to.Ptr("syncgroupcrud-3379.database.windows.net"),
 				SyncDirection:                     to.Ptr(armsql.SyncDirectionBidirectional),
-				SyncMemberAzureDatabaseResourceID: to.Ptr("<sync-member-azure-database-resource-id>"),
+				SyncMemberAzureDatabaseResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-65440/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 				UsePrivateLinkConnection:          to.Ptr(true),
-				UserName:                          to.Ptr("<user-name>"),
+				UserName:                          to.Ptr("myUser"),
 			},
 		},
-		&armsql.SyncMembersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -91,21 +89,21 @@ func ExampleSyncMembersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncMembersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncMembersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		"<sync-member-name>",
-		&armsql.SyncMembersClientBeginDeleteOptions{ResumeToken: ""})
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		"syncgroupcrud-4879",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -118,32 +116,32 @@ func ExampleSyncMembersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncMembersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncMembersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		"<sync-member-name>",
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		"syncmembercrud-4879",
 		armsql.SyncMember{
 			Properties: &armsql.SyncMemberProperties{
-				DatabaseName:                      to.Ptr("<database-name>"),
+				DatabaseName:                      to.Ptr("syncgroupcrud-7421"),
 				DatabaseType:                      to.Ptr(armsql.SyncMemberDbTypeAzureSQLDatabase),
-				ServerName:                        to.Ptr("<server-name>"),
+				ServerName:                        to.Ptr("syncgroupcrud-3379.database.windows.net"),
 				SyncDirection:                     to.Ptr(armsql.SyncDirectionBidirectional),
-				SyncMemberAzureDatabaseResourceID: to.Ptr("<sync-member-azure-database-resource-id>"),
+				SyncMemberAzureDatabaseResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-65440/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 				UsePrivateLinkConnection:          to.Ptr(true),
-				UserName:                          to.Ptr("<user-name>"),
+				UserName:                          to.Ptr("myUser"),
 			},
 		},
-		&armsql.SyncMembersClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -158,20 +156,19 @@ func ExampleSyncMembersClient_NewListBySyncGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncMembersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncMembersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySyncGroupPager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
+	pager := client.NewListBySyncGroupPager("syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -187,21 +184,20 @@ func ExampleSyncMembersClient_NewListMemberSchemasPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncMembersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncMembersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMemberSchemasPager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		"<sync-member-name>",
+	pager := client.NewListMemberSchemasPager("syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		"syncgroupcrud-4879",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -217,21 +213,21 @@ func ExampleSyncMembersClient_BeginRefreshMemberSchema() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncMembersClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncMembersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRefreshMemberSchema(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		"<sync-member-name>",
-		&armsql.SyncMembersClientBeginRefreshMemberSchemaOptions{ResumeToken: ""})
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		"syncgroupcrud-4879",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

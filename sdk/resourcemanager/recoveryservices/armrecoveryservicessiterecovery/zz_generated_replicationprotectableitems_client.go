@@ -42,7 +42,7 @@ func NewReplicationProtectableItemsClient(resourceName string, resourceGroupName
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewReplicationProtectableItemsClient(resourceName string, resourceGroupName
 
 // Get - The operation to get the details of a protectable item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // protectableItemName - Protectable item name.
@@ -116,7 +117,7 @@ func (client *ReplicationProtectableItemsClient) getCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -131,12 +132,13 @@ func (client *ReplicationProtectableItemsClient) getHandleResponse(resp *http.Re
 
 // NewListByReplicationProtectionContainersPager - Lists the protectable items in a protection container.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // options - ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions contains the optional parameters
 // for the ReplicationProtectableItemsClient.ListByReplicationProtectionContainers method.
 func (client *ReplicationProtectableItemsClient) NewListByReplicationProtectionContainersPager(fabricName string, protectionContainerName string, options *ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse]{
 		More: func(page ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -202,7 +204,7 @@ func (client *ReplicationProtectableItemsClient) listByReplicationProtectionCont
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

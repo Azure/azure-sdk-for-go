@@ -40,6 +40,20 @@ type AzureCliScript struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDeploymentScript implements the DeploymentScriptClassification interface for type AzureCliScript.
+func (a *AzureCliScript) GetDeploymentScript() *DeploymentScript {
+	return &DeploymentScript{
+		Identity:   a.Identity,
+		Location:   a.Location,
+		Tags:       a.Tags,
+		Kind:       a.Kind,
+		SystemData: a.SystemData,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+	}
+}
+
 // AzureCliScriptProperties - Properties of the Azure CLI script object.
 type AzureCliScriptProperties struct {
 	// REQUIRED; Azure CLI module version to be used.
@@ -119,6 +133,20 @@ type AzurePowerShellScript struct {
 
 	// READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDeploymentScript implements the DeploymentScriptClassification interface for type AzurePowerShellScript.
+func (a *AzurePowerShellScript) GetDeploymentScript() *DeploymentScript {
+	return &DeploymentScript{
+		Identity:   a.Identity,
+		Location:   a.Location,
+		Tags:       a.Tags,
+		Kind:       a.Kind,
+		SystemData: a.SystemData,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+	}
 }
 
 // AzurePowerShellScriptProperties - Properties of the Azure PowerShell script object.
@@ -278,6 +306,9 @@ type DeploymentScript struct {
 	// READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetDeploymentScript implements the DeploymentScriptClassification interface for type DeploymentScript.
+func (d *DeploymentScript) GetDeploymentScript() *DeploymentScript { return d }
 
 // DeploymentScriptListResult - List of deployment scripts.
 type DeploymentScriptListResult struct {

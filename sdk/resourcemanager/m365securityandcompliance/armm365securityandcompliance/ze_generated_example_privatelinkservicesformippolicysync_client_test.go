@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance"
@@ -26,13 +24,13 @@ func ExamplePrivateLinkServicesForMIPPolicySyncClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"rg1",
+		"service1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,31 +46,31 @@ func ExamplePrivateLinkServicesForMIPPolicySyncClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"rg1",
+		"service1",
 		armm365securityandcompliance.PrivateLinkServicesForMIPPolicySyncDescription{
 			Identity: &armm365securityandcompliance.ServicesResourceIdentity{
 				Type: to.Ptr(armm365securityandcompliance.ManagedServiceIdentityTypeSystemAssigned),
 			},
 			Kind:     to.Ptr(armm365securityandcompliance.KindFhirR4),
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus2"),
 			Tags:     map[string]*string{},
 			Properties: &armm365securityandcompliance.ServicesProperties{
 				AccessPolicies: []*armm365securityandcompliance.ServiceAccessPolicyEntry{
 					{
-						ObjectID: to.Ptr("<object-id>"),
+						ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
 					},
 					{
-						ObjectID: to.Ptr("<object-id>"),
+						ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
 					}},
 				AuthenticationConfiguration: &armm365securityandcompliance.ServiceAuthenticationConfigurationInfo{
-					Audience:          to.Ptr("<audience>"),
-					Authority:         to.Ptr("<authority>"),
+					Audience:          to.Ptr("https://azurehealthcareapis.com"),
+					Authority:         to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
 					SmartProxyEnabled: to.Ptr(true),
 				},
 				CorsConfiguration: &armm365securityandcompliance.ServiceCorsConfigurationInfo{
@@ -91,21 +89,21 @@ func ExamplePrivateLinkServicesForMIPPolicySyncClient_BeginCreateOrUpdate() {
 						to.Ptr("*")},
 				},
 				CosmosDbConfiguration: &armm365securityandcompliance.ServiceCosmosDbConfigurationInfo{
-					KeyVaultKeyURI:  to.Ptr("<key-vault-key-uri>"),
+					KeyVaultKeyURI:  to.Ptr("https://my-vault.vault.azure.net/keys/my-key"),
 					OfferThroughput: to.Ptr[int64](1000),
 				},
 				ExportConfiguration: &armm365securityandcompliance.ServiceExportConfigurationInfo{
-					StorageAccountName: to.Ptr("<storage-account-name>"),
+					StorageAccountName: to.Ptr("existingStorageAccount"),
 				},
 				PrivateEndpointConnections: []*armm365securityandcompliance.PrivateEndpointConnection{},
 				PublicNetworkAccess:        to.Ptr(armm365securityandcompliance.PublicNetworkAccessDisabled),
 			},
 		},
-		&armm365securityandcompliance.PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -120,24 +118,24 @@ func ExamplePrivateLinkServicesForMIPPolicySyncClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"rg1",
+		"service1",
 		armm365securityandcompliance.ServicesPatchDescription{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armm365securityandcompliance.PrivateLinkServicesForMIPPolicySyncClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -152,18 +150,18 @@ func ExamplePrivateLinkServicesForMIPPolicySyncClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armm365securityandcompliance.PrivateLinkServicesForMIPPolicySyncClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"service1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -176,7 +174,7 @@ func ExamplePrivateLinkServicesForMIPPolicySyncClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -185,7 +183,6 @@ func ExamplePrivateLinkServicesForMIPPolicySyncClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -201,17 +198,16 @@ func ExamplePrivateLinkServicesForMIPPolicySyncClient_NewListByResourceGroupPage
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rgname",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

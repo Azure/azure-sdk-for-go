@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices"
@@ -26,18 +24,17 @@ func ExampleOuContainerClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdomainservices.NewOuContainerClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewOuContainerClient("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<domain-service-name>",
+	pager := client.NewListPager("OuContainerResourceGroup",
+		"OuContainer.com",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleOuContainerClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdomainservices.NewOuContainerClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewOuContainerClient("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<domain-service-name>",
-		"<ou-container-name>",
+		"OuContainerResourceGroup",
+		"OuContainer.com",
+		"OuContainer1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,24 +73,24 @@ func ExampleOuContainerClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdomainservices.NewOuContainerClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewOuContainerClient("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<domain-service-name>",
-		"<ou-container-name>",
+		"OuContainerResourceGroup",
+		"OuContainer.com",
+		"OuContainer1",
 		armdomainservices.ContainerAccount{
-			AccountName: to.Ptr("<account-name>"),
+			AccountName: to.Ptr("AccountName1"),
 			Password:    to.Ptr("<password>"),
-			Spn:         to.Ptr("<spn>"),
+			Spn:         to.Ptr("Spn1"),
 		},
-		&armdomainservices.OuContainerClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -108,19 +105,19 @@ func ExampleOuContainerClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdomainservices.NewOuContainerClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewOuContainerClient("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<domain-service-name>",
-		"<ou-container-name>",
-		&armdomainservices.OuContainerClientBeginDeleteOptions{ResumeToken: ""})
+		"OuContainerResourceGroup",
+		"OuContainer.com",
+		"OuContainer1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -133,24 +130,24 @@ func ExampleOuContainerClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdomainservices.NewOuContainerClient("<subscription-id>", cred, nil)
+	client, err := armdomainservices.NewOuContainerClient("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<domain-service-name>",
-		"<ou-container-name>",
+		"OuContainerResourceGroup",
+		"OuContainer.com",
+		"OuContainer1",
 		armdomainservices.ContainerAccount{
-			AccountName: to.Ptr("<account-name>"),
+			AccountName: to.Ptr("AccountName1"),
 			Password:    to.Ptr("<password>"),
-			Spn:         to.Ptr("<spn>"),
+			Spn:         to.Ptr("Spn1"),
 		},
-		&armdomainservices.OuContainerClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

@@ -38,7 +38,7 @@ func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,8 +54,9 @@ func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// CheckHostNameAvailability - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+// CheckHostNameAvailability - Check the name availability of a host name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 // resource group.
@@ -99,7 +100,7 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, checkHostNameAvailabilityInput)
 }
 
@@ -112,15 +113,16 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *h
 	return result, nil
 }
 
-// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 // resource group.
 // options - AFDProfilesClientListResourceUsageOptions contains the optional parameters for the AFDProfilesClient.ListResourceUsage
 // method.
 func (client *AFDProfilesClient) NewListResourceUsagePager(resourceGroupName string, profileName string, options *AFDProfilesClientListResourceUsageOptions) *runtime.Pager[AFDProfilesClientListResourceUsageResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AFDProfilesClientListResourceUsageResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AFDProfilesClientListResourceUsageResponse]{
 		More: func(page AFDProfilesClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -169,7 +171,7 @@ func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

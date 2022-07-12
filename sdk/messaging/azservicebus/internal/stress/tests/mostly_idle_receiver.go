@@ -32,6 +32,10 @@ func MostlyIdleReceiver(remainingArgs []string) {
 		2 * time.Hour,
 		3 * time.Hour,
 		24 * time.Hour,
+		36 * time.Hour,
+		2 * 24 * time.Hour,
+		3 * 24 * time.Hour,
+		4 * 24 * time.Hour,
 	}
 
 	wg := sync.WaitGroup{}

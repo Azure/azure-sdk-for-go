@@ -24,18 +24,17 @@ func ExampleComputePoliciesClient_NewListByAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewComputePoliciesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewComputePoliciesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByAccountPager("contosorg",
+		"contosoadla",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,19 +50,19 @@ func ExampleComputePoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewComputePoliciesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewComputePoliciesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<compute-policy-name>",
+		"contosorg",
+		"contosoadla",
+		"test_policy",
 		armdatalakeanalytics.CreateOrUpdateComputePolicyParameters{
 			Properties: &armdatalakeanalytics.CreateOrUpdateComputePolicyProperties{
 				MaxDegreeOfParallelismPerJob: to.Ptr[int32](10),
 				MinPriorityPerJob:            to.Ptr[int32](30),
-				ObjectID:                     to.Ptr("<object-id>"),
+				ObjectID:                     to.Ptr("776b9091-8916-4638-87f7-9c989a38da98"),
 				ObjectType:                   to.Ptr(armdatalakeanalytics.AADObjectTypeUser),
 			},
 		},
@@ -82,14 +81,14 @@ func ExampleComputePoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewComputePoliciesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewComputePoliciesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<compute-policy-name>",
+		"contosorg",
+		"contosoadla",
+		"test_policy",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,14 +104,14 @@ func ExampleComputePoliciesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewComputePoliciesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewComputePoliciesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<compute-policy-name>",
+		"contosorg",
+		"contosoadla",
+		"test_policy",
 		&armdatalakeanalytics.ComputePoliciesClientUpdateOptions{Parameters: &armdatalakeanalytics.UpdateComputePolicyParameters{
 			Properties: &armdatalakeanalytics.UpdateComputePolicyProperties{
 				MaxDegreeOfParallelismPerJob: to.Ptr[int32](11),
@@ -134,14 +133,14 @@ func ExampleComputePoliciesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewComputePoliciesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewComputePoliciesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<compute-policy-name>",
+		"contosorg",
+		"contosoadla",
+		"test_policy",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

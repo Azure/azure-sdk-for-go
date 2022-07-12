@@ -23,17 +23,16 @@ func ExampleRegulatoryComplianceControlsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewRegulatoryComplianceControlsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewRegulatoryComplianceControlsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<regulatory-compliance-standard-name>",
+	pager := client.NewListPager("PCI-DSS-3.2",
 		&armsecurity.RegulatoryComplianceControlsClientListOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,13 +48,13 @@ func ExampleRegulatoryComplianceControlsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewRegulatoryComplianceControlsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewRegulatoryComplianceControlsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<regulatory-compliance-standard-name>",
-		"<regulatory-compliance-control-name>",
+		"PCI-DSS-3.2",
+		"1.1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

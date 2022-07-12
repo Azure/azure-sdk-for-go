@@ -10,7 +10,7 @@ package armavs
 
 const (
 	moduleName    = "armavs"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AddonProvisioningState - The state of the addon provisioning

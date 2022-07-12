@@ -40,7 +40,7 @@ func NewTagResourceClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,12 +58,13 @@ func NewTagResourceClient(subscriptionID string, credential azcore.TokenCredenti
 
 // NewListByServicePager - Lists a collection of resources associated with tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - TagResourceClientListByServiceOptions contains the optional parameters for the TagResourceClient.ListByService
 // method.
 func (client *TagResourceClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TagResourceClientListByServiceOptions) *runtime.Pager[TagResourceClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TagResourceClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TagResourceClientListByServiceResponse]{
 		More: func(page TagResourceClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -121,7 +122,7 @@ func (client *TagResourceClient) listByServiceCreateRequest(ctx context.Context,
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

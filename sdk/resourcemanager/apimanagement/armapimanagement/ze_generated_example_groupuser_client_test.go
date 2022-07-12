@@ -23,13 +23,13 @@ func ExampleGroupUserClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupUserClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupUserClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
+	pager := client.NewListPager("rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f3",
 		&armapimanagement.GroupUserClientListOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleGroupUserClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +53,15 @@ func ExampleGroupUserClient_CheckEntityExists() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupUserClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupUserClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CheckEntityExists(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
-		"<user-id>",
+		"rg1",
+		"apimService1",
+		"59306a29e4bbd510dc24e5f9",
+		"5931a75ae4bbd512a88c680b",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,15 +75,15 @@ func ExampleGroupUserClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupUserClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupUserClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
-		"<user-id>",
+		"rg1",
+		"apimService1",
+		"tempgroup",
+		"59307d350af58404d8a26300",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -100,15 +99,15 @@ func ExampleGroupUserClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupUserClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupUserClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
-		"<user-id>",
+		"rg1",
+		"apimService1",
+		"templategroup",
+		"59307d350af58404d8a26300",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

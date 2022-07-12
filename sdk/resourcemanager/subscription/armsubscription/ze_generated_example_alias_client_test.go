@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
@@ -31,28 +29,28 @@ func ExampleAliasClient_BeginCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<alias-name>",
+		"aliasForNewSub",
 		armsubscription.PutAliasRequest{
 			Properties: &armsubscription.PutAliasRequestProperties{
 				AdditionalProperties: &armsubscription.PutAliasRequestAdditionalProperties{
-					SubscriptionOwnerID:  to.Ptr("<subscription-owner-id>"),
-					SubscriptionTenantID: to.Ptr("<subscription-tenant-id>"),
+					SubscriptionOwnerID:  to.Ptr("f09b39eb-c496-482c-9ab9-afd799572f4c"),
+					SubscriptionTenantID: to.Ptr("66f6e4d6-07dc-4aea-94ea-e12d3026a3c8"),
 					Tags: map[string]*string{
 						"tag1": to.Ptr("Messi"),
 						"tag2": to.Ptr("Ronaldo"),
 						"tag3": to.Ptr("Lebron"),
 					},
 				},
-				BillingScope: to.Ptr("<billing-scope>"),
-				DisplayName:  to.Ptr("<display-name>"),
+				BillingScope: to.Ptr("/billingAccounts/af6231a7-7f8d-4fcc-a993-dd8466108d07:c663dac6-a9a5-405a-8938-cd903e12ab5b_2019_05_31/billingProfiles/QWDQ-QWHI-AUW-SJDO-DJH/invoiceSections/FEUF-EUHE-ISJ-SKDW-DJH"),
+				DisplayName:  to.Ptr("Test Subscription"),
 				Workload:     to.Ptr(armsubscription.WorkloadProduction),
 			},
 		},
-		&armsubscription.AliasClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -72,7 +70,7 @@ func ExampleAliasClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<alias-name>",
+		"aliasForNewSub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -93,7 +91,7 @@ func ExampleAliasClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<alias-name>",
+		"aliasForNewSub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

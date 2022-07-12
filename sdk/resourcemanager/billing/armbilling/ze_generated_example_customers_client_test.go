@@ -27,8 +27,8 @@ func ExampleCustomersClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingProfilePager("<billing-account-name>",
-		"<billing-profile-name>",
+	pager := client.NewListByBillingProfilePager("{billingAccountName}",
+		"{billingProfileName}",
 		&armbilling.CustomersClientListByBillingProfileOptions{Search: nil,
 			Filter: nil,
 		})
@@ -36,7 +36,6 @@ func ExampleCustomersClient_NewListByBillingProfilePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,7 +55,7 @@ func ExampleCustomersClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingAccountPager("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("{billingAccountName}",
 		&armbilling.CustomersClientListByBillingAccountOptions{Search: nil,
 			Filter: nil,
 		})
@@ -64,7 +63,6 @@ func ExampleCustomersClient_NewListByBillingAccountPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -85,8 +83,8 @@ func ExampleCustomersClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-account-name>",
-		"<customer-name>",
+		"{billingAccountName}",
+		"{customerName}",
 		&armbilling.CustomersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

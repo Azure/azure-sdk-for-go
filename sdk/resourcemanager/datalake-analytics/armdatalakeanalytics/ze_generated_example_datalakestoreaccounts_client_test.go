@@ -24,24 +24,23 @@ func ExampleDataLakeStoreAccountsClient_NewListByAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewDataLakeStoreAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewDataLakeStoreAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAccountPager("<resource-group-name>",
-		"<account-name>",
-		&armdatalakeanalytics.DataLakeStoreAccountsClientListByAccountOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListByAccountPager("contosorg",
+		"contosoadla",
+		&armdatalakeanalytics.DataLakeStoreAccountsClientListByAccountOptions{Filter: to.Ptr("test_filter"),
 			Top:     to.Ptr[int32](1),
 			Skip:    to.Ptr[int32](1),
-			Select:  to.Ptr("<select>"),
-			Orderby: to.Ptr("<orderby>"),
+			Select:  to.Ptr("test_select"),
+			Orderby: to.Ptr("test_orderby"),
 			Count:   to.Ptr(false),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,17 +56,17 @@ func ExampleDataLakeStoreAccountsClient_Add() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewDataLakeStoreAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewDataLakeStoreAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Add(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<data-lake-store-account-name>",
+		"contosorg",
+		"contosoadla",
+		"test_adls_account",
 		&armdatalakeanalytics.DataLakeStoreAccountsClientAddOptions{Parameters: &armdatalakeanalytics.AddDataLakeStoreParameters{
 			Properties: &armdatalakeanalytics.AddDataLakeStoreProperties{
-				Suffix: to.Ptr("<suffix>"),
+				Suffix: to.Ptr("test_suffix"),
 			},
 		},
 		})
@@ -83,14 +82,14 @@ func ExampleDataLakeStoreAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewDataLakeStoreAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewDataLakeStoreAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1669ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<data-lake-store-account-name>",
+		"contosorg",
+		"contosoadla",
+		"test_adls_account",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -106,14 +105,14 @@ func ExampleDataLakeStoreAccountsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewDataLakeStoreAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewDataLakeStoreAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<data-lake-store-account-name>",
+		"contosorg",
+		"contosoadla",
+		"test_adls_account",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

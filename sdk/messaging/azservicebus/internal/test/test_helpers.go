@@ -47,6 +47,16 @@ func GetConnectionString(t *testing.T) string {
 	return cs
 }
 
+func GetConnectionStringForPremiumSB(t *testing.T) string {
+	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_PREMIUM")
+
+	if cs == "" {
+		t.Skip()
+	}
+
+	return cs
+}
+
 func GetConnectionStringWithoutManagePerms(t *testing.T) string {
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
 
@@ -59,7 +69,7 @@ func GetConnectionStringWithoutManagePerms(t *testing.T) string {
 
 func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func()) {
 	cs := GetConnectionString(t)
-	em, err := atom.NewEntityManagerWithConnectionString(cs, "")
+	em, err := atom.NewEntityManagerWithConnectionString(cs, "", nil)
 	require.NoError(t, err)
 
 	queueName := RandomString("queue", 5)
@@ -71,10 +81,10 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 	deleteAfter := 5 * time.Minute
 	qd.AutoDeleteOnIdle = utils.DurationToStringPtr(&deleteAfter)
 
-	env, _ := atom.WrapWithQueueEnvelope(qd, em.TokenProvider())
+	env := atom.WrapWithQueueEnvelope(qd, em.TokenProvider())
 
 	var qe *atom.QueueEnvelope
-	resp, err := em.Put(context.Background(), queueName, env, &qe)
+	resp, err := em.Put(context.Background(), queueName, env, &qe, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, http.StatusCreated, resp.StatusCode)
 

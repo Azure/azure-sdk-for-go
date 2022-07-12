@@ -10,6 +10,12 @@ package armazurestackhci
 
 import "time"
 
+// ArcConnectivityProperties - Connectivity related configuration required by arc server.
+type ArcConnectivityProperties struct {
+	// True indicates ARC connectivity is enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // ArcIdentityResponse - ArcIdentity details.
 type ArcIdentityResponse struct {
 	// READ-ONLY; ArcIdentity properties.
@@ -67,6 +73,9 @@ type ArcSettingProperties struct {
 	// Object id of arc AAD service principal.
 	ArcServicePrincipalObjectID *string `json:"arcServicePrincipalObjectId,omitempty"`
 
+	// contains connectivity related configuration for ARC resources
+	ConnectivityProperties interface{} `json:"connectivityProperties,omitempty"`
+
 	// READ-ONLY; Aggregate state of Arc agent across the nodes in this HCI cluster.
 	AggregateState *ArcSettingAggregateState `json:"aggregateState,omitempty" azure:"ro"`
 
@@ -108,6 +117,26 @@ type ArcSettingsClientGetOptions struct {
 // ArcSettingsClientListByClusterOptions contains the optional parameters for the ArcSettingsClient.ListByCluster method.
 type ArcSettingsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ArcSettingsClientUpdateOptions contains the optional parameters for the ArcSettingsClient.Update method.
+type ArcSettingsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArcSettingsPatch - ArcSetting details to update.
+type ArcSettingsPatch struct {
+	// ArcSettings properties.
+	Properties *ArcSettingsPatchProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// ArcSettingsPatchProperties - ArcSettings properties.
+type ArcSettingsPatchProperties struct {
+	// contains connectivity related configuration for ARC resources
+	ConnectivityProperties interface{} `json:"connectivityProperties,omitempty"`
 }
 
 // Cluster details.
@@ -303,6 +332,12 @@ type ClustersClientBeginCreateIdentityOptions struct {
 	ResumeToken string
 }
 
+// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+type ClustersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ClustersClientBeginUploadCertificateOptions contains the optional parameters for the ClustersClient.BeginUploadCertificate
 // method.
 type ClustersClientBeginUploadCertificateOptions struct {
@@ -312,11 +347,6 @@ type ClustersClientBeginUploadCertificateOptions struct {
 
 // ClustersClientCreateOptions contains the optional parameters for the ClustersClient.Create method.
 type ClustersClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientDeleteOptions contains the optional parameters for the ClustersClient.Delete method.
-type ClustersClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 

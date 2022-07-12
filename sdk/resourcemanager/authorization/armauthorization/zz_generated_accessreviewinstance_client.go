@@ -38,7 +38,7 @@ func NewAccessReviewInstanceClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAccessReviewInstanceClient(subscriptionID string, credential azcore.Toke
 
 // AcceptRecommendations - An action to accept recommendations for decision in an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceClientAcceptRecommendationsOptions contains the optional parameters for the AccessReviewInstanceClient.AcceptRecommendations
@@ -93,12 +94,13 @@ func (client *AccessReviewInstanceClient) acceptRecommendationsCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // ApplyDecisions - An action to apply all decisions for an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceClientApplyDecisionsOptions contains the optional parameters for the AccessReviewInstanceClient.ApplyDecisions
@@ -140,12 +142,13 @@ func (client *AccessReviewInstanceClient) applyDecisionsCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // ResetDecisions - An action to reset all decisions for an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceClientResetDecisionsOptions contains the optional parameters for the AccessReviewInstanceClient.ResetDecisions
@@ -187,12 +190,13 @@ func (client *AccessReviewInstanceClient) resetDecisionsCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // SendReminders - An action to send reminders for an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceClientSendRemindersOptions contains the optional parameters for the AccessReviewInstanceClient.SendReminders
@@ -234,12 +238,13 @@ func (client *AccessReviewInstanceClient) sendRemindersCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Stop - An action to stop an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceClientStopOptions contains the optional parameters for the AccessReviewInstanceClient.Stop
@@ -281,6 +286,6 @@ func (client *AccessReviewInstanceClient) stopCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

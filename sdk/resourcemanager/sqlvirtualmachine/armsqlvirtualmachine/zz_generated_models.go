@@ -61,7 +61,7 @@ type AutoBackupSettings struct {
 	BackupSystemDbs *bool `json:"backupSystemDbs,omitempty"`
 
 	// Days of the week for the backups when FullBackupFrequency is set to Weekly.
-	DaysOfWeek []*DaysOfWeek `json:"daysOfWeek,omitempty"`
+	DaysOfWeek []*AutoBackupDaysOfWeek `json:"daysOfWeek,omitempty"`
 
 	// Enable or disable autobackup on SQL virtual machine.
 	Enable *bool `json:"enable,omitempty"`
@@ -634,7 +634,7 @@ type SQLWorkloadTypeUpdateSettings struct {
 
 type Schedule struct {
 	// Day of the week to run assessment.
-	DayOfWeek *DayOfWeek `json:"dayOfWeek,omitempty"`
+	DayOfWeek *AssessmentDayOfWeek `json:"dayOfWeek,omitempty"`
 
 	// Enable or disable assessment schedule on SQL virtual machine.
 	Enable *bool `json:"enable,omitempty"`

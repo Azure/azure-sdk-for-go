@@ -10,35 +10,43 @@ package armdesktopvirtualization
 
 import "time"
 
-// AgentUpdatePatchProperties - The session host configuration for updating agent, monitoring agent, and stack component.
+// AgentUpdatePatchProperties - The preferred settings for updating the agent components (RDAgent, Geneva Monitoring agent,
+// and side-by-side stack) on session hosts.
 type AgentUpdatePatchProperties struct {
-	// Time zone for maintenance as defined in https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0.
-	// Must be set if useLocalTime is true.
+	// The time zone for updating the agent components. Valid time zones can be found here: https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0.
+	// A time zone
+	// must be specified if useSessionHostLocalTime is false.
 	MaintenanceWindowTimeZone *string `json:"maintenanceWindowTimeZone,omitempty"`
 
-	// List of maintenance windows. Maintenance windows are 2 hours long.
+	// The maintenance windows (day and time) for updating the agent components. At least 1 window must be specified. Optionally,
+	// a 2nd window can be specified.
 	MaintenanceWindows []*MaintenanceWindowPatchProperties `json:"maintenanceWindows,omitempty"`
 
-	// The type of maintenance for session host components.
+	// The preferred mechanism for updating the agent components. This is either Scheduled or Default.
 	Type *SessionHostComponentUpdateType `json:"type,omitempty"`
 
-	// Whether to use localTime of the virtual machine.
+	// Boolean indicating whether to update the agent components in the local time zone of each session host in the host pool.
+	// By default, this is false.
 	UseSessionHostLocalTime *bool `json:"useSessionHostLocalTime,omitempty"`
 }
 
-// AgentUpdateProperties - The session host configuration for updating agent, monitoring agent, and stack component.
+// AgentUpdateProperties - The preferred settings for updating the agent components (RDAgent, Geneva Monitoring agent, and
+// side-by-side stack) on session hosts.
 type AgentUpdateProperties struct {
-	// Time zone for maintenance as defined in https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0.
-	// Must be set if useLocalTime is true.
+	// The time zone for updating the agent components. Valid time zones can be found here: https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0.
+	// A time zone
+	// must be specified if useSessionHostLocalTime is false.
 	MaintenanceWindowTimeZone *string `json:"maintenanceWindowTimeZone,omitempty"`
 
-	// List of maintenance windows. Maintenance windows are 2 hours long.
+	// The maintenance windows (day and time) for updating the agent components. At least 1 window must be specified. Optionally,
+	// a 2nd window can be specified.
 	MaintenanceWindows []*MaintenanceWindowProperties `json:"maintenanceWindows,omitempty"`
 
-	// The type of maintenance for session host components.
+	// The preferred mechanism for updating the agent components. This is either Scheduled or Default.
 	Type *SessionHostComponentUpdateType `json:"type,omitempty"`
 
-	// Whether to use localTime of the virtual machine.
+	// Boolean indicating whether to update the agent components in the local time zone of each session host in the host pool.
+	// By default, this is false.
 	UseSessionHostLocalTime *bool `json:"useSessionHostLocalTime,omitempty"`
 }
 
@@ -561,7 +569,8 @@ type HostPoolPatch struct {
 
 // HostPoolPatchProperties - Properties of HostPool.
 type HostPoolPatchProperties struct {
-	// The session host configuration for updating agent, monitoring agent, and stack component.
+	// The preferred settings for updating the agent components (RDAgent, Geneva Monitoring agent, and side-by-side stack) on
+	// session hosts.
 	AgentUpdate *AgentUpdatePatchProperties `json:"agentUpdate,omitempty"`
 
 	// Custom rdp property of HostPool.
@@ -627,7 +636,8 @@ type HostPoolProperties struct {
 	// REQUIRED; The type of preferred application group type, default to Desktop Application Group
 	PreferredAppGroupType *PreferredAppGroupType `json:"preferredAppGroupType,omitempty"`
 
-	// The session host configuration for updating agent, monitoring agent, and stack component.
+	// The preferred settings for updating the agent components (RDAgent, Geneva Monitoring agent, and side-by-side stack) on
+	// session hosts.
 	AgentUpdate *AgentUpdateProperties `json:"agentUpdate,omitempty"`
 
 	// Custom rdp property of HostPool.
@@ -879,19 +889,21 @@ type MSIXPackagesClientUpdateOptions struct {
 
 // MaintenanceWindowPatchProperties - Maintenance window starting hour and day of week.
 type MaintenanceWindowPatchProperties struct {
-	// Day of the week.
+	// The day of the week (Monday-Sunday).
 	DayOfWeek *DayOfWeek `json:"dayOfWeek,omitempty"`
 
-	// The update start hour of the day. (0 - 23)
+	// The starting hour of the maintenance window (0-23). Note that maintenance windows are 2 hours long. This means that updates
+	// can be applied anytime from the specified start hour to 2 hours after.
 	Hour *int32 `json:"hour,omitempty"`
 }
 
 // MaintenanceWindowProperties - Maintenance window starting hour and day of week.
 type MaintenanceWindowProperties struct {
-	// Day of the week.
+	// The day of the week (Monday-Sunday).
 	DayOfWeek *DayOfWeek `json:"dayOfWeek,omitempty"`
 
-	// The update start hour of the day. (0 - 23)
+	// The starting hour of the maintenance window (0-23). Note that maintenance windows are 2 hours long. This means that updates
+	// can be applied anytime from the specified start hour to 2 hours after.
 	Hour *int32 `json:"hour,omitempty"`
 }
 

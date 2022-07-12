@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot"
@@ -26,15 +24,15 @@ func ExampleBotsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthbot.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armhealthbot.NewBotsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<bot-name>",
+		"healthbotClient",
+		"samplebotname",
 		armhealthbot.HealthBot{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Identity: &armhealthbot.Identity{
 				Type: to.Ptr(armhealthbot.ResourceIdentityTypeSystemAssignedUserAssigned),
 				UserAssignedIdentities: map[string]*armhealthbot.UserAssignedIdentity{
@@ -46,11 +44,11 @@ func ExampleBotsClient_BeginCreate() {
 				Name: to.Ptr(armhealthbot.SKUNameF0),
 			},
 		},
-		&armhealthbot.BotsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -65,13 +63,13 @@ func ExampleBotsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthbot.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armhealthbot.NewBotsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<bot-name>",
+		"healthbotClient",
+		"samplebotname",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -87,13 +85,13 @@ func ExampleBotsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthbot.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armhealthbot.NewBotsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<bot-name>",
+		"healthbotClient",
+		"samplebotname",
 		armhealthbot.UpdateParameters{
 			SKU: &armhealthbot.SKU{
 				Name: to.Ptr(armhealthbot.SKUNameF0),
@@ -114,18 +112,18 @@ func ExampleBotsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthbot.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armhealthbot.NewBotsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<bot-name>",
-		&armhealthbot.BotsClientBeginDeleteOptions{ResumeToken: ""})
+		"healthbotClient",
+		"samplebotname",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -138,17 +136,16 @@ func ExampleBotsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthbot.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armhealthbot.NewBotsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("OneResourceGroupName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -164,7 +161,7 @@ func ExampleBotsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthbot.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armhealthbot.NewBotsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -173,7 +170,6 @@ func ExampleBotsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

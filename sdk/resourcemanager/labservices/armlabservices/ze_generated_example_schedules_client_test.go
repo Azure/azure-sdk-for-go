@@ -26,18 +26,17 @@ func ExampleSchedulesClient_NewListByLabPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewSchedulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLabPager("<resource-group-name>",
-		"<lab-name>",
+	pager := client.NewListByLabPager("testrg123",
+		"testlab",
 		&armlabservices.SchedulesClientListByLabOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,14 @@ func ExampleSchedulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewSchedulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<schedule-name>",
+		"testrg123",
+		"testlab",
+		"schedule1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,17 +75,17 @@ func ExampleSchedulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewSchedulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<schedule-name>",
+		"testrg123",
+		"testlab",
+		"schedule1",
 		armlabservices.Schedule{
 			Properties: &armlabservices.ScheduleProperties{
-				Notes: to.Ptr("<notes>"),
+				Notes: to.Ptr("Schedule 1 for students"),
 				RecurrencePattern: &armlabservices.RecurrencePattern{
 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2020-08-14"); return t }()),
 					Frequency:      to.Ptr(armlabservices.RecurrenceFrequencyDaily),
@@ -94,7 +93,7 @@ func ExampleSchedulesClient_CreateOrUpdate() {
 				},
 				StartAt:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T12:00:00Z"); return t }()),
 				StopAt:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T18:00:00Z"); return t }()),
-				TimeZoneID: to.Ptr("<time-zone-id>"),
+				TimeZoneID: to.Ptr("America/Los_Angeles"),
 			},
 		},
 		nil)
@@ -112,14 +111,14 @@ func ExampleSchedulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewSchedulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<schedule-name>",
+		"testrg123",
+		"testlab",
+		"schedule1",
 		armlabservices.ScheduleUpdate{
 			Properties: &armlabservices.ScheduleUpdateProperties{
 				RecurrencePattern: &armlabservices.RecurrencePattern{
@@ -144,19 +143,19 @@ func ExampleSchedulesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewSchedulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<schedule-name>",
-		&armlabservices.SchedulesClientBeginDeleteOptions{ResumeToken: ""})
+		"testrg123",
+		"testlab",
+		"schedule1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

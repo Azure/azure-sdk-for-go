@@ -23,13 +23,13 @@ func ExampleOperationsResultsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewOperationsResultsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewOperationsResultsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location>",
-		"<operation-id>",
+		"westus",
+		"30972f1b-b61d-4fd8-bd34-3dcfa24670f3",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

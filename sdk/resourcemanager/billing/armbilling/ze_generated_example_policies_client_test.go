@@ -29,8 +29,8 @@ func ExamplePoliciesClient_GetByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByBillingProfile(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,8 +51,8 @@ func ExamplePoliciesClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
 		armbilling.Policy{
 			Properties: &armbilling.PolicyProperties{
 				MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyOnlyFreeAllowed),
@@ -80,8 +80,8 @@ func ExamplePoliciesClient_GetByCustomer() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByCustomer(ctx,
-		"<billing-account-name>",
-		"<customer-name>",
+		"{billingAccountName}",
+		"{customerName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,8 +102,8 @@ func ExamplePoliciesClient_UpdateCustomer() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateCustomer(ctx,
-		"<billing-account-name>",
-		"<customer-name>",
+		"{billingAccountName}",
+		"{customerName}",
 		armbilling.CustomerPolicy{
 			Properties: &armbilling.CustomerPolicyProperties{
 				ViewCharges: to.Ptr(armbilling.ViewChargesNotAllowed),

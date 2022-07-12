@@ -10,7 +10,7 @@ package armprivatedns
 
 const (
 	moduleName    = "armprivatedns"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ProvisioningState - The provisioning state of the resource. This is a read-only property and any attempt to set this value

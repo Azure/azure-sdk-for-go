@@ -38,7 +38,7 @@ func NewSQLPoolSecurityAlertPoliciesClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSQLPoolSecurityAlertPoliciesClient(subscriptionID string, credential azc
 
 // CreateOrUpdate - Create or update a Sql pool's security alert policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -108,7 +109,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -123,6 +124,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateHandleResponse(r
 
 // Get - Get a Sql pool's security alert policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -174,7 +176,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) getCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -189,13 +191,14 @@ func (client *SQLPoolSecurityAlertPoliciesClient) getHandleResponse(resp *http.R
 
 // NewListPager - Get a list of Sql pool's security alert policies.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolSecurityAlertPoliciesClientListOptions contains the optional parameters for the SQLPoolSecurityAlertPoliciesClient.List
 // method.
 func (client *SQLPoolSecurityAlertPoliciesClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSecurityAlertPoliciesClientListOptions) *runtime.Pager[SQLPoolSecurityAlertPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLPoolSecurityAlertPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLPoolSecurityAlertPoliciesClientListResponse]{
 		More: func(page SQLPoolSecurityAlertPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -248,7 +251,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) listCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

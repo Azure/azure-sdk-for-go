@@ -24,14 +24,14 @@ func ExampleCheckVirtualNetworkSubnetUsageClient_Execute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewCheckVirtualNetworkSubnetUsageClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewCheckVirtualNetworkSubnetUsageClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Execute(ctx,
-		"<location-name>",
+		"WestUS",
 		armmysqlflexibleservers.VirtualNetworkSubnetUsageParameter{
-			VirtualNetworkResourceID: to.Ptr("<virtual-network-resource-id>"),
+			VirtualNetworkResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/testvnet"),
 		},
 		nil)
 	if err != nil {

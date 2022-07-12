@@ -39,7 +39,7 @@ func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // ChangeState - Change the state of an alert.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // alertID - Unique ID of an alert instance.
 // newState - New state of the alert.
 // options - AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
@@ -94,7 +95,7 @@ func (client *AlertsClient) changeStateCreateRequest(ctx context.Context, alertI
 	reqQP.Set("api-version", "2019-05-05-preview")
 	reqQP.Set("newState", string(newState))
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,9 +112,10 @@ func (client *AlertsClient) changeStateHandleResponse(resp *http.Response) (Aler
 // time range). The results can then be sorted on the basis specific fields, with the default being
 // lastModifiedDateTime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // options - AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.GetAll method.
 func (client *AlertsClient) NewGetAllPager(options *AlertsClientGetAllOptions) *runtime.Pager[AlertsClientGetAllResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AlertsClientGetAllResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AlertsClientGetAllResponse]{
 		More: func(page AlertsClientGetAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -205,7 +207,7 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *Al
 	}
 	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -220,6 +222,7 @@ func (client *AlertsClient) getAllHandleResponse(resp *http.Response) (AlertsCli
 
 // GetByID - Get information related to a specific alert
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // alertID - Unique ID of an alert instance.
 // options - AlertsClientGetByIDOptions contains the optional parameters for the AlertsClient.GetByID method.
 func (client *AlertsClient) GetByID(ctx context.Context, alertID string, options *AlertsClientGetByIDOptions) (AlertsClientGetByIDResponse, error) {
@@ -255,7 +258,7 @@ func (client *AlertsClient) getByIDCreateRequest(ctx context.Context, alertID st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -271,6 +274,7 @@ func (client *AlertsClient) getByIDHandleResponse(resp *http.Response) (AlertsCl
 // GetHistory - Get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
 // changes (New/Acknowledged/Closed).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // alertID - Unique ID of an alert instance.
 // options - AlertsClientGetHistoryOptions contains the optional parameters for the AlertsClient.GetHistory method.
 func (client *AlertsClient) GetHistory(ctx context.Context, alertID string, options *AlertsClientGetHistoryOptions) (AlertsClientGetHistoryResponse, error) {
@@ -306,7 +310,7 @@ func (client *AlertsClient) getHistoryCreateRequest(ctx context.Context, alertID
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -322,6 +326,7 @@ func (client *AlertsClient) getHistoryHandleResponse(resp *http.Response) (Alert
 // GetSummary - Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
 // count of alerts for each severity).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // groupby - This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated fields supported).
 // For example, groupby=severity or groupby=severity,alertstate.
 // options - AlertsClientGetSummaryOptions contains the optional parameters for the AlertsClient.GetSummary method.
@@ -388,7 +393,7 @@ func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby
 	}
 	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -403,6 +408,7 @@ func (client *AlertsClient) getSummaryHandleResponse(resp *http.Response) (Alert
 
 // MetaData - List alerts meta data information based on value of identifier parameter.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // identifier - Identification of the information to be retrieved by API call.
 // options - AlertsClientMetaDataOptions contains the optional parameters for the AlertsClient.MetaData method.
 func (client *AlertsClient) MetaData(ctx context.Context, identifier Identifier, options *AlertsClientMetaDataOptions) (AlertsClientMetaDataResponse, error) {
@@ -431,7 +437,7 @@ func (client *AlertsClient) metaDataCreateRequest(ctx context.Context, identifie
 	reqQP.Set("api-version", "2019-05-05-preview")
 	reqQP.Set("identifier", string(identifier))
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

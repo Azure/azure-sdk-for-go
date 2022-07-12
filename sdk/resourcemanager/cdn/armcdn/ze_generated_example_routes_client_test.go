@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
@@ -26,19 +24,18 @@ func ExampleRoutesClient_NewListByEndpointPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewRoutesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewRoutesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByEndpointPager("<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
+	pager := client.NewListByEndpointPager("RG",
+		"profile1",
+		"endpoint1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleRoutesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewRoutesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewRoutesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<route-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"route1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,15 +75,15 @@ func ExampleRoutesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewRoutesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewRoutesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<route-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"route1",
 		armcdn.Route{
 			Properties: &armcdn.RouteProperties{
 				CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
@@ -96,36 +93,36 @@ func ExampleRoutesClient_BeginCreate() {
 							to.Ptr("application/octet-stream")},
 						IsCompressionEnabled: to.Ptr(true),
 					},
-					QueryParameters:            to.Ptr("<query-parameters>"),
+					QueryParameters:            to.Ptr("querystring=test"),
 					QueryStringCachingBehavior: to.Ptr(armcdn.AfdQueryStringCachingBehaviorIgnoreSpecifiedQueryStrings),
 				},
 				CustomDomains: []*armcdn.ActivatedResourceReference{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
 					}},
 				EnabledState:        to.Ptr(armcdn.EnabledStateEnabled),
 				ForwardingProtocol:  to.Ptr(armcdn.ForwardingProtocolMatchRequest),
 				HTTPSRedirect:       to.Ptr(armcdn.HTTPSRedirectEnabled),
 				LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 				OriginGroup: &armcdn.ResourceReference{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
 				},
 				PatternsToMatch: []*string{
 					to.Ptr("/*")},
 				RuleSets: []*armcdn.ResourceReference{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
 					}},
 				SupportedProtocols: []*armcdn.AFDEndpointProtocols{
 					to.Ptr(armcdn.AFDEndpointProtocolsHTTPS),
 					to.Ptr(armcdn.AFDEndpointProtocolsHTTP)},
 			},
 		},
-		&armcdn.RoutesClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -140,15 +137,15 @@ func ExampleRoutesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewRoutesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewRoutesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<route-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"route1",
 		armcdn.RouteUpdateParameters{
 			Properties: &armcdn.RouteUpdatePropertiesParameters{
 				CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
@@ -162,31 +159,31 @@ func ExampleRoutesClient_BeginUpdate() {
 				},
 				CustomDomains: []*armcdn.ActivatedResourceReference{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1"),
 					}},
 				EnabledState:        to.Ptr(armcdn.EnabledStateEnabled),
 				ForwardingProtocol:  to.Ptr(armcdn.ForwardingProtocolMatchRequest),
 				HTTPSRedirect:       to.Ptr(armcdn.HTTPSRedirectEnabled),
 				LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 				OriginGroup: &armcdn.ResourceReference{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"),
 				},
 				PatternsToMatch: []*string{
 					to.Ptr("/*")},
 				RuleSets: []*armcdn.ResourceReference{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/ruleSets/ruleSet1"),
 					}},
 				SupportedProtocols: []*armcdn.AFDEndpointProtocols{
 					to.Ptr(armcdn.AFDEndpointProtocolsHTTPS),
 					to.Ptr(armcdn.AFDEndpointProtocolsHTTP)},
 			},
 		},
-		&armcdn.RoutesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -201,20 +198,20 @@ func ExampleRoutesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewRoutesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewRoutesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<route-name>",
-		&armcdn.RoutesClientBeginDeleteOptions{ResumeToken: ""})
+		"RG",
+		"profile1",
+		"endpoint1",
+		"route1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

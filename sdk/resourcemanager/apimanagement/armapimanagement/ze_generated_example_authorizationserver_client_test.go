@@ -24,12 +24,12 @@ func ExampleAuthorizationServerClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAuthorizationServerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAuthorizationServerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.AuthorizationServerClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleAuthorizationServerClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleAuthorizationServerClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAuthorizationServerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAuthorizationServerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<authsid>",
+		"rg1",
+		"apimService1",
+		"newauthServer2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,14 +74,14 @@ func ExampleAuthorizationServerClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAuthorizationServerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAuthorizationServerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<authsid>",
+		"rg1",
+		"apimService1",
+		"newauthServer2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,31 +97,31 @@ func ExampleAuthorizationServerClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAuthorizationServerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAuthorizationServerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<authsid>",
+		"rg1",
+		"apimService1",
+		"newauthServer",
 		armapimanagement.AuthorizationServerContract{
 			Properties: &armapimanagement.AuthorizationServerContractProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("test server"),
 				AuthorizationMethods: []*armapimanagement.AuthorizationMethod{
 					to.Ptr(armapimanagement.AuthorizationMethodGET)},
 				BearerTokenSendingMethods: []*armapimanagement.BearerTokenSendingMethod{
 					to.Ptr(armapimanagement.BearerTokenSendingMethodAuthorizationHeader)},
-				DefaultScope:               to.Ptr("<default-scope>"),
-				ResourceOwnerPassword:      to.Ptr("<resource-owner-password>"),
-				ResourceOwnerUsername:      to.Ptr("<resource-owner-username>"),
+				DefaultScope:               to.Ptr("read write"),
+				ResourceOwnerPassword:      to.Ptr("pwd"),
+				ResourceOwnerUsername:      to.Ptr("un"),
 				SupportState:               to.Ptr(true),
-				TokenEndpoint:              to.Ptr("<token-endpoint>"),
-				AuthorizationEndpoint:      to.Ptr("<authorization-endpoint>"),
-				ClientID:                   to.Ptr("<client-id>"),
-				ClientRegistrationEndpoint: to.Ptr("<client-registration-endpoint>"),
-				ClientSecret:               to.Ptr("<client-secret>"),
-				DisplayName:                to.Ptr("<display-name>"),
+				TokenEndpoint:              to.Ptr("https://www.contoso.com/oauth2/token"),
+				AuthorizationEndpoint:      to.Ptr("https://www.contoso.com/oauth2/auth"),
+				ClientID:                   to.Ptr("1"),
+				ClientRegistrationEndpoint: to.Ptr("https://www.contoso.com/apps"),
+				ClientSecret:               to.Ptr("2"),
+				DisplayName:                to.Ptr("test2"),
 				GrantTypes: []*armapimanagement.GrantType{
 					to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 					to.Ptr(armapimanagement.GrantTypeImplicit)},
@@ -143,19 +142,19 @@ func ExampleAuthorizationServerClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAuthorizationServerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAuthorizationServerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<authsid>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"newauthServer",
+		"*",
 		armapimanagement.AuthorizationServerUpdateContract{
 			Properties: &armapimanagement.AuthorizationServerUpdateContractProperties{
-				ClientID:     to.Ptr("<client-id>"),
-				ClientSecret: to.Ptr("<client-secret>"),
+				ClientID:     to.Ptr("update"),
+				ClientSecret: to.Ptr("updated"),
 			},
 		},
 		nil)
@@ -173,15 +172,15 @@ func ExampleAuthorizationServerClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAuthorizationServerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAuthorizationServerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<authsid>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"newauthServer2",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -195,14 +194,14 @@ func ExampleAuthorizationServerClient_ListSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAuthorizationServerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAuthorizationServerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSecrets(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<authsid>",
+		"rg1",
+		"apimService1",
+		"newauthServer2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

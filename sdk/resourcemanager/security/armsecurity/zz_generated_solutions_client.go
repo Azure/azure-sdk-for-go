@@ -38,7 +38,7 @@ func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Gets a specific Security Solution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // securitySolutionName - Name of security solution.
@@ -101,7 +102,7 @@ func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,9 +117,10 @@ func (client *SolutionsClient) getHandleResponse(resp *http.Response) (Solutions
 
 // NewListPager - Gets a list of Security Solutions for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - SolutionsClientListOptions contains the optional parameters for the SolutionsClient.List method.
 func (client *SolutionsClient) NewListPager(options *SolutionsClientListOptions) *runtime.Pager[SolutionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SolutionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SolutionsClientListResponse]{
 		More: func(page SolutionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -159,7 +161,7 @@ func (client *SolutionsClient) listCreateRequest(ctx context.Context, options *S
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

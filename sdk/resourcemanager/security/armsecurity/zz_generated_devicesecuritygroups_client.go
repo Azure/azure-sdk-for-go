@@ -36,7 +36,7 @@ func NewDeviceSecurityGroupsClient(credential azcore.TokenCredential, options *a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewDeviceSecurityGroupsClient(credential azcore.TokenCredential, options *a
 
 // CreateOrUpdate - Use this method to creates or updates the device security group on a specified IoT Hub resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceID - The identifier of the resource.
 // deviceSecurityGroupName - The name of the device security group. Note that the name of the device security group is case
 // insensitive.
@@ -89,7 +90,7 @@ func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, deviceSecurityGroup)
 }
 
@@ -104,6 +105,7 @@ func (client *DeviceSecurityGroupsClient) createOrUpdateHandleResponse(resp *htt
 
 // Delete - User this method to deletes the device security group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceID - The identifier of the resource.
 // deviceSecurityGroupName - The name of the device security group. Note that the name of the device security group is case
 // insensitive.
@@ -139,12 +141,13 @@ func (client *DeviceSecurityGroupsClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Use this method to get the device security group for the specified IoT Hub resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceID - The identifier of the resource.
 // deviceSecurityGroupName - The name of the device security group. Note that the name of the device security group is case
 // insensitive.
@@ -180,7 +183,7 @@ func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -195,11 +198,12 @@ func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Use this method get the list of device security groups for the specified IoT Hub resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceID - The identifier of the resource.
 // options - DeviceSecurityGroupsClientListOptions contains the optional parameters for the DeviceSecurityGroupsClient.List
 // method.
 func (client *DeviceSecurityGroupsClient) NewListPager(resourceID string, options *DeviceSecurityGroupsClientListOptions) *runtime.Pager[DeviceSecurityGroupsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DeviceSecurityGroupsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DeviceSecurityGroupsClientListResponse]{
 		More: func(page DeviceSecurityGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -237,7 +241,7 @@ func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

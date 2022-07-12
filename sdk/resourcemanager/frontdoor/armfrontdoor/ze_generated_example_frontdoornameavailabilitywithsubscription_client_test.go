@@ -24,13 +24,13 @@ func ExampleNameAvailabilityWithSubscriptionClient_Check() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfrontdoor.NewNameAvailabilityWithSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewNameAvailabilityWithSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Check(ctx,
 		armfrontdoor.CheckNameAvailabilityInput{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("sampleName"),
 			Type: to.Ptr(armfrontdoor.ResourceTypeMicrosoftNetworkFrontDoorsFrontendEndpoints),
 		},
 		nil)

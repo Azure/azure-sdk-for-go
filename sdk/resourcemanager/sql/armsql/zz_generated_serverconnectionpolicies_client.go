@@ -38,7 +38,7 @@ func NewServerConnectionPoliciesClient(subscriptionID string, credential azcore.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServerConnectionPoliciesClient(subscriptionID string, credential azcore.
 
 // BeginCreateOrUpdate - Updates a server connection policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -63,20 +64,21 @@ func NewServerConnectionPoliciesClient(subscriptionID string, credential azcore.
 // parameters - The required parameters for updating a server connection policy.
 // options - ServerConnectionPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerConnectionPoliciesClient.BeginCreateOrUpdate
 // method.
-func (client *ServerConnectionPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerConnectionPoliciesClientCreateOrUpdateResponse], error) {
+func (client *ServerConnectionPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerConnectionPoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, connectionPolicyName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerConnectionPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerConnectionPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerConnectionPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerConnectionPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Updates a server connection policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 func (client *ServerConnectionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, connectionPolicyName, parameters, options)
 	if err != nil {
@@ -118,12 +120,13 @@ func (client *ServerConnectionPoliciesClient) createOrUpdateCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Get - Gets a server connection policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -171,7 +174,7 @@ func (client *ServerConnectionPoliciesClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -186,13 +189,14 @@ func (client *ServerConnectionPoliciesClient) getHandleResponse(resp *http.Respo
 
 // NewListByServerPager - Lists connection policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerConnectionPoliciesClientListByServerOptions contains the optional parameters for the ServerConnectionPoliciesClient.ListByServer
 // method.
 func (client *ServerConnectionPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerConnectionPoliciesClientListByServerOptions) *runtime.Pager[ServerConnectionPoliciesClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServerConnectionPoliciesClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServerConnectionPoliciesClientListByServerResponse]{
 		More: func(page ServerConnectionPoliciesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -241,7 +245,7 @@ func (client *ServerConnectionPoliciesClient) listByServerCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewDatabaseColumnsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDatabaseColumnsClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Get database column
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -117,7 +118,7 @@ func (client *DatabaseColumnsClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -132,6 +133,7 @@ func (client *DatabaseColumnsClient) getHandleResponse(resp *http.Response) (Dat
 
 // NewListByDatabasePager - List database columns
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -139,7 +141,7 @@ func (client *DatabaseColumnsClient) getHandleResponse(resp *http.Response) (Dat
 // options - DatabaseColumnsClientListByDatabaseOptions contains the optional parameters for the DatabaseColumnsClient.ListByDatabase
 // method.
 func (client *DatabaseColumnsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[DatabaseColumnsClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatabaseColumnsClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatabaseColumnsClientListByDatabaseResponse]{
 		More: func(page DatabaseColumnsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -215,7 +217,7 @@ func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Con
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,6 +232,7 @@ func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Res
 
 // NewListByTablePager - List database columns
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -239,7 +242,7 @@ func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Res
 // options - DatabaseColumnsClientListByTableOptions contains the optional parameters for the DatabaseColumnsClient.ListByTable
 // method.
 func (client *DatabaseColumnsClient) NewListByTablePager(resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsClientListByTableOptions) *runtime.Pager[DatabaseColumnsClientListByTableResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatabaseColumnsClientListByTableResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatabaseColumnsClientListByTableResponse]{
 		More: func(page DatabaseColumnsClientListByTableResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -303,7 +306,7 @@ func (client *DatabaseColumnsClient) listByTableCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

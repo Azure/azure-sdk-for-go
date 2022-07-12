@@ -38,7 +38,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,9 +56,10 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // NewListOperationsPager - List operations available for the Maps Resource Provider
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // options - ClientListOperationsOptions contains the optional parameters for the Client.ListOperations method.
 func (client *Client) NewListOperationsPager(options *ClientListOperationsOptions) *runtime.Pager[ClientListOperationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListOperationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListOperationsResponse]{
 		More: func(page ClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -95,7 +96,7 @@ func (client *Client) listOperationsCreateRequest(ctx context.Context, options *
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -110,10 +111,11 @@ func (client *Client) listOperationsHandleResponse(resp *http.Response) (ClientL
 
 // NewListSubscriptionOperationsPager - List operations available for the Maps Resource Provider
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // options - ClientListSubscriptionOperationsOptions contains the optional parameters for the Client.ListSubscriptionOperations
 // method.
 func (client *Client) NewListSubscriptionOperationsPager(options *ClientListSubscriptionOperationsOptions) *runtime.Pager[ClientListSubscriptionOperationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListSubscriptionOperationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListSubscriptionOperationsResponse]{
 		More: func(page ClientListSubscriptionOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -154,7 +156,7 @@ func (client *Client) listSubscriptionOperationsCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

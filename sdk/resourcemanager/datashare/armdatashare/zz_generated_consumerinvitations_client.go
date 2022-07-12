@@ -36,7 +36,7 @@ func NewConsumerInvitationsClient(credential azcore.TokenCredential, options *ar
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewConsumerInvitationsClient(credential azcore.TokenCredential, options *ar
 
 // Get - Get an invitation
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // location - Location of the invitation
 // invitationID - An invitation id
 // options - ConsumerInvitationsClientGetOptions contains the optional parameters for the ConsumerInvitationsClient.Get method.
@@ -89,7 +90,7 @@ func (client *ConsumerInvitationsClient) getCreateRequest(ctx context.Context, l
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -104,10 +105,11 @@ func (client *ConsumerInvitationsClient) getHandleResponse(resp *http.Response) 
 
 // NewListInvitationsPager - Lists invitations
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // options - ConsumerInvitationsClientListInvitationsOptions contains the optional parameters for the ConsumerInvitationsClient.ListInvitations
 // method.
 func (client *ConsumerInvitationsClient) NewListInvitationsPager(options *ConsumerInvitationsClientListInvitationsOptions) *runtime.Pager[ConsumerInvitationsClientListInvitationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConsumerInvitationsClientListInvitationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConsumerInvitationsClientListInvitationsResponse]{
 		More: func(page ConsumerInvitationsClientListInvitationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -147,7 +149,7 @@ func (client *ConsumerInvitationsClient) listInvitationsCreateRequest(ctx contex
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -162,6 +164,7 @@ func (client *ConsumerInvitationsClient) listInvitationsHandleResponse(resp *htt
 
 // RejectInvitation - Reject an invitation
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // location - Location of the invitation
 // invitation - An invitation payload
 // options - ConsumerInvitationsClientRejectInvitationOptions contains the optional parameters for the ConsumerInvitationsClient.RejectInvitation
@@ -195,7 +198,7 @@ func (client *ConsumerInvitationsClient) rejectInvitationCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, invitation)
 }
 

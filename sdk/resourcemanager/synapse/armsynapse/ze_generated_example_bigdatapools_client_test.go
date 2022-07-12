@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
@@ -26,14 +24,14 @@ func ExampleBigDataPoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<big-data-pool-name>",
+		"ExampleResourceGroup",
+		"ExampleWorkspace",
+		"ExamplePool",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,14 +47,14 @@ func ExampleBigDataPoolsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<big-data-pool-name>",
+		"ExampleResourceGroup",
+		"ExampleWorkspace",
+		"ExamplePool",
 		armsynapse.BigDataPoolPatchInfo{
 			Tags: map[string]*string{
 				"key": to.Ptr("value"),
@@ -77,16 +75,16 @@ func ExampleBigDataPoolsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<big-data-pool-name>",
+		"ExampleResourceGroup",
+		"ExampleWorkspace",
+		"ExamplePool",
 		armsynapse.BigDataPoolResourceInfo{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US 2"),
 			Tags: map[string]*string{
 				"key": to.Ptr("value"),
 			},
@@ -100,25 +98,23 @@ func ExampleBigDataPoolsClient_BeginCreateOrUpdate() {
 					MaxNodeCount: to.Ptr[int32](50),
 					MinNodeCount: to.Ptr[int32](3),
 				},
-				DefaultSparkLogFolder: to.Ptr("<default-spark-log-folder>"),
+				DefaultSparkLogFolder: to.Ptr("/logs"),
 				LibraryRequirements: &armsynapse.LibraryRequirements{
-					Content:  to.Ptr("<content>"),
-					Filename: to.Ptr("<filename>"),
+					Content:  to.Ptr(""),
+					Filename: to.Ptr("requirements.txt"),
 				},
 				NodeCount:         to.Ptr[int32](4),
 				NodeSize:          to.Ptr(armsynapse.NodeSizeMedium),
 				NodeSizeFamily:    to.Ptr(armsynapse.NodeSizeFamilyMemoryOptimized),
-				SparkEventsFolder: to.Ptr("<spark-events-folder>"),
-				SparkVersion:      to.Ptr("<spark-version>"),
+				SparkEventsFolder: to.Ptr("/events"),
+				SparkVersion:      to.Ptr("2.4"),
 			},
 		},
-		&armsynapse.BigDataPoolsClientBeginCreateOrUpdateOptions{Force: nil,
-			ResumeToken: "",
-		})
+		&armsynapse.BigDataPoolsClientBeginCreateOrUpdateOptions{Force: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -133,19 +129,19 @@ func ExampleBigDataPoolsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<big-data-pool-name>",
-		&armsynapse.BigDataPoolsClientBeginDeleteOptions{ResumeToken: ""})
+		"ExampleResourceGroup",
+		"ExampleWorkspace",
+		"ExamplePool",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -160,18 +156,17 @@ func ExampleBigDataPoolsClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListByWorkspacePager("ExampleResourceGroup",
+		"ExampleWorkspace",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

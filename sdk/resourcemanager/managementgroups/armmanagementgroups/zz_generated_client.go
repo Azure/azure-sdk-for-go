@@ -37,7 +37,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,26 +55,28 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 // BeginCreateOrUpdate - Create or update a management group. If a management group is already created and a subsequent create
 // request is issued with different properties, the management group properties will be updated.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // createManagementGroupRequest - Management group creation parameters.
 // options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-func (client *Client) BeginCreateOrUpdate(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, options *ClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClientCreateOrUpdateResponse], error) {
+func (client *Client) BeginCreateOrUpdate(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, groupID, createManagementGroupRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a management group. If a management group is already created and a subsequent create
 // request is issued with different properties, the management group properties will be updated.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) createOrUpdate(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, groupID, createManagementGroupRequest, options)
 	if err != nil {
@@ -105,32 +107,34 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, groupID s
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createManagementGroupRequest)
 }
 
 // BeginDelete - Delete management group. If a management group contains child resources, the request will fail.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, groupID string, options *ClientBeginDeleteOptions) (*armruntime.Poller[ClientDeleteResponse], error) {
+func (client *Client) BeginDelete(ctx context.Context, groupID string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, groupID, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete management group. If a management group contains child resources, the request will fail.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) deleteOperation(ctx context.Context, groupID string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, groupID, options)
 	if err != nil {
@@ -161,14 +165,15 @@ func (client *Client) deleteCreateRequest(ctx context.Context, groupID string, o
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the details of the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // options - ClientGetOptions contains the optional parameters for the Client.Get method.
 func (client *Client) Get(ctx context.Context, groupID string, options *ClientGetOptions) (ClientGetResponse, error) {
@@ -210,9 +215,9 @@ func (client *Client) getCreateRequest(ctx context.Context, groupID string, opti
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -227,10 +232,11 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // NewGetDescendantsPager - List all entities that descend from a management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // options - ClientGetDescendantsOptions contains the optional parameters for the Client.GetDescendants method.
 func (client *Client) NewGetDescendantsPager(groupID string, options *ClientGetDescendantsOptions) *runtime.Pager[ClientGetDescendantsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientGetDescendantsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientGetDescendantsResponse]{
 		More: func(page ClientGetDescendantsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -277,7 +283,7 @@ func (client *Client) getDescendantsCreateRequest(ctx context.Context, groupID s
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -292,9 +298,10 @@ func (client *Client) getDescendantsHandleResponse(resp *http.Response) (ClientG
 
 // NewListPager - List management groups for the authenticated user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -335,9 +342,9 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -352,6 +359,7 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 
 // Update - Update a management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // patchGroupRequest - Management group patch parameters.
 // options - ClientUpdateOptions contains the optional parameters for the Client.Update method.
@@ -385,9 +393,9 @@ func (client *Client) updateCreateRequest(ctx context.Context, groupID string, p
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, patchGroupRequest)
 }
 

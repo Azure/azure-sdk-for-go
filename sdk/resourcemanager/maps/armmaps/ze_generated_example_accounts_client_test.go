@@ -24,15 +24,15 @@ func ExampleAccountsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myMapsAccount",
 		armmaps.Account{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Tags: map[string]*string{
 				"test": to.Ptr("true"),
 			},
@@ -47,12 +47,12 @@ func ExampleAccountsClient_CreateOrUpdate() {
 				DisableLocalAuth: to.Ptr(false),
 				LinkedResources: []*armmaps.LinkedResource{
 					{
-						ID:         to.Ptr("<id>"),
-						UniqueName: to.Ptr("<unique-name>"),
+						ID:         to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/accounts/mystorageacc"),
+						UniqueName: to.Ptr("myBatchStorageAccount"),
 					},
 					{
-						ID:         to.Ptr("<id>"),
-						UniqueName: to.Ptr("<unique-name>"),
+						ID:         to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/accounts/mystorageacc"),
+						UniqueName: to.Ptr("myBlobDataSource"),
 					}},
 			},
 			SKU: &armmaps.SKU{
@@ -74,13 +74,13 @@ func ExampleAccountsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myMapsAccount",
 		armmaps.AccountUpdateParameters{
 			Identity: &armmaps.ManagedServiceIdentity{
 				Type: to.Ptr(armmaps.ResourceIdentityTypeSystemAssignedUserAssigned),
@@ -92,8 +92,8 @@ func ExampleAccountsClient_Update() {
 			Properties: &armmaps.AccountProperties{
 				LinkedResources: []*armmaps.LinkedResource{
 					{
-						ID:         to.Ptr("<id>"),
-						UniqueName: to.Ptr("<unique-name>"),
+						ID:         to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/accounts/{storageName}"),
+						UniqueName: to.Ptr("myBatchStorageAccount"),
 					}},
 			},
 			SKU: &armmaps.SKU{
@@ -115,13 +115,13 @@ func ExampleAccountsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myMapsAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -135,13 +135,13 @@ func ExampleAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myMapsAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -157,17 +157,16 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -183,7 +182,7 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -192,7 +191,6 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -208,21 +206,21 @@ func ExampleAccountsClient_ListSas() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSas(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myMapsAccount",
 		armmaps.AccountSasParameters{
-			Expiry:           to.Ptr("<expiry>"),
+			Expiry:           to.Ptr("2017-05-24T11:42:03.1567373Z"),
 			MaxRatePerSecond: to.Ptr[int32](500),
-			PrincipalID:      to.Ptr("<principal-id>"),
+			PrincipalID:      to.Ptr("e917f87b-324d-4728-98ed-e31d311a7d65"),
 			Regions: []*string{
 				to.Ptr("eastus")},
 			SigningKey: to.Ptr(armmaps.SigningKeyPrimaryKey),
-			Start:      to.Ptr("<start>"),
+			Start:      to.Ptr("2017-05-24T10:42:03.1567373Z"),
 		},
 		nil)
 	if err != nil {
@@ -239,13 +237,13 @@ func ExampleAccountsClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myMapsAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -261,13 +259,13 @@ func ExampleAccountsClient_RegenerateKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewAccountsClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myMapsAccount",
 		armmaps.KeySpecification{
 			KeyType: to.Ptr(armmaps.KeyTypePrimary),
 		},

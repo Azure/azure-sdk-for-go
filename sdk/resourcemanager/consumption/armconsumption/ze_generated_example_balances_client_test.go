@@ -28,7 +28,7 @@ func ExampleBalancesClient_GetByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByBillingAccount(ctx,
-		"<billing-account-id>",
+		"123456",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,8 +49,8 @@ func ExampleBalancesClient_GetForBillingPeriodByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetForBillingPeriodByBillingAccount(ctx,
-		"<billing-account-id>",
-		"<billing-period-name>",
+		"123456",
+		"201702",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

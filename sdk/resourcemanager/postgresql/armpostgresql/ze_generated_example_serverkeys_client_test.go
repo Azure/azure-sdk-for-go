@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
@@ -26,18 +24,17 @@ func ExampleServerKeysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServerKeysClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServerKeysClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<server-name>",
+	pager := client.NewListPager("testrg",
+		"testserver",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleServerKeysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServerKeysClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServerKeysClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<key-name>",
+		"testrg",
+		"testserver",
+		"someVault_someKey_01234567890123456789012345678901",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,25 +73,25 @@ func ExampleServerKeysClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServerKeysClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServerKeysClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<server-name>",
-		"<key-name>",
-		"<resource-group-name>",
+		"testserver",
+		"someVault_someKey_01234567890123456789012345678901",
+		"testrg",
 		armpostgresql.ServerKey{
 			Properties: &armpostgresql.ServerKeyProperties{
 				ServerKeyType: to.Ptr(armpostgresql.ServerKeyTypeAzureKeyVault),
-				URI:           to.Ptr("<uri>"),
+				URI:           to.Ptr("https://someVault.vault.azure.net/keys/someKey/01234567890123456789012345678901"),
 			},
 		},
-		&armpostgresql.ServerKeysClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -109,19 +106,19 @@ func ExampleServerKeysClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServerKeysClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServerKeysClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<server-name>",
-		"<key-name>",
-		"<resource-group-name>",
-		&armpostgresql.ServerKeysClientBeginDeleteOptions{ResumeToken: ""})
+		"testserver",
+		"someVault_someKey_01234567890123456789012345678901",
+		"testrg",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

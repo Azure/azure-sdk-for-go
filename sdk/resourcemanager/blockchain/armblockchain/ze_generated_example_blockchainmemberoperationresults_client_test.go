@@ -23,13 +23,13 @@ func ExampleMemberOperationResultsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armblockchain.NewMemberOperationResultsClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewMemberOperationResultsClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<operation-id>",
+		"southeastasia",
+		"12f4b309-01e3-4fcf-bc0b-1cc034ca03f8",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

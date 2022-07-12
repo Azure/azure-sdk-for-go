@@ -36,7 +36,7 @@ func NewProblemClassificationsClient(credential azcore.TokenCredential, options 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewProblemClassificationsClient(credential azcore.TokenCredential, options 
 
 // Get - Get problem classification details for a specific Azure service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01
 // serviceName - Name of the Azure service available for support.
 // problemClassificationName - Name of problem classification.
 // options - ProblemClassificationsClientGetOptions contains the optional parameters for the ProblemClassificationsClient.Get
@@ -90,7 +91,7 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,11 +108,12 @@ func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Respons
 // service and problem classifications obtained programmatically. This practice ensures that you
 // always have the most recent set of service and problem classification Ids.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01
 // serviceName - Name of the Azure service for which the problem classifications need to be retrieved.
 // options - ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.List
 // method.
 func (client *ProblemClassificationsClient) NewListPager(serviceName string, options *ProblemClassificationsClientListOptions) *runtime.Pager[ProblemClassificationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProblemClassificationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProblemClassificationsClientListResponse]{
 		More: func(page ProblemClassificationsClientListResponse) bool {
 			return false
 		},
@@ -146,7 +148,7 @@ func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

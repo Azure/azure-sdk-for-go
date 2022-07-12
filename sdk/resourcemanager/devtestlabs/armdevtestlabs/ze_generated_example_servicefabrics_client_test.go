@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
@@ -26,13 +24,13 @@ func ExampleServiceFabricsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewServiceFabricsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewServiceFabricsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"{labName}",
+		"{userName}",
 		&armdevtestlabs.ServiceFabricsClientListOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -42,7 +40,6 @@ func ExampleServiceFabricsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,15 +55,15 @@ func ExampleServiceFabricsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewServiceFabricsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewServiceFabricsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{userName}",
+		"{serviceFabricName}",
 		&armdevtestlabs.ServiceFabricsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -82,30 +79,30 @@ func ExampleServiceFabricsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewServiceFabricsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewServiceFabricsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{userName}",
+		"{serviceFabricName}",
 		armdevtestlabs.ServiceFabric{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("{location}"),
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
 			},
 			Properties: &armdevtestlabs.ServiceFabricProperties{
-				EnvironmentID:           to.Ptr("<environment-id>"),
-				ExternalServiceFabricID: to.Ptr("<external-service-fabric-id>"),
+				EnvironmentID:           to.Ptr("{environmentId}"),
+				ExternalServiceFabricID: to.Ptr("{serviceFabricId}"),
 			},
 		},
-		&armdevtestlabs.ServiceFabricsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -120,20 +117,20 @@ func ExampleServiceFabricsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewServiceFabricsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewServiceFabricsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
-		&armdevtestlabs.ServiceFabricsClientBeginDeleteOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"{labName}",
+		"{userName}",
+		"{serviceFabricName}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -146,15 +143,15 @@ func ExampleServiceFabricsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewServiceFabricsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewServiceFabricsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{userName}",
+		"{serviceFabricName}",
 		armdevtestlabs.ServiceFabricFragment{
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
@@ -175,15 +172,15 @@ func ExampleServiceFabricsClient_ListApplicableSchedules() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewServiceFabricsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewServiceFabricsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListApplicableSchedules(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{userName}",
+		"{serviceFabricName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -199,20 +196,20 @@ func ExampleServiceFabricsClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewServiceFabricsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewServiceFabricsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
-		&armdevtestlabs.ServiceFabricsClientBeginStartOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"{labName}",
+		"{userName}",
+		"{serviceFabricName}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -225,20 +222,20 @@ func ExampleServiceFabricsClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewServiceFabricsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewServiceFabricsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
-		&armdevtestlabs.ServiceFabricsClientBeginStopOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"{labName}",
+		"{userName}",
+		"{serviceFabricName}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

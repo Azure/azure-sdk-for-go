@@ -22,16 +22,39 @@ type A2AAddDisksInput struct {
 	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
+// GetAddDisksProviderSpecificInput implements the AddDisksProviderSpecificInputClassification interface for type A2AAddDisksInput.
+func (a *A2AAddDisksInput) GetAddDisksProviderSpecificInput() *AddDisksProviderSpecificInput {
+	return &AddDisksProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2AApplyRecoveryPointInput - ApplyRecoveryPoint input specific to A2A provider.
 type A2AApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
+// for type A2AApplyRecoveryPointInput.
+func (a *A2AApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
+	return &ApplyRecoveryPointProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2AContainerCreationInput - A2A cloud creation input.
 type A2AContainerCreationInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
+// interface for type A2AContainerCreationInput.
+func (a *A2AContainerCreationInput) GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput {
+	return &ReplicationProviderSpecificContainerCreationInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2AContainerMappingInput - A2A container mapping input.
@@ -47,6 +70,14 @@ type A2AContainerMappingInput struct {
 
 	// A value indicating the type authentication to use for automation Account.
 	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
+}
+
+// GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
+// interface for type A2AContainerMappingInput.
+func (a *A2AContainerMappingInput) GetReplicationProviderSpecificContainerMappingInput() *ReplicationProviderSpecificContainerMappingInput {
+	return &ReplicationProviderSpecificContainerMappingInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2ACreateProtectionIntentInput - A2A create protection intent input.
@@ -121,16 +152,40 @@ type A2ACreateProtectionIntentInput struct {
 	VMManagedDisks []*A2AProtectionIntentManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
+// GetCreateProtectionIntentProviderSpecificDetails implements the CreateProtectionIntentProviderSpecificDetailsClassification
+// interface for type A2ACreateProtectionIntentInput.
+func (a *A2ACreateProtectionIntentInput) GetCreateProtectionIntentProviderSpecificDetails() *CreateProtectionIntentProviderSpecificDetails {
+	return &CreateProtectionIntentProviderSpecificDetails{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2ACrossClusterMigrationApplyRecoveryPointInput - ApplyRecoveryPoint input specific to A2ACrossClusterMigration provider.
 type A2ACrossClusterMigrationApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
+// for type A2ACrossClusterMigrationApplyRecoveryPointInput.
+func (a *A2ACrossClusterMigrationApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
+	return &ApplyRecoveryPointProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2ACrossClusterMigrationContainerCreationInput - A2ACrossClusterMigration cloud creation input.
 type A2ACrossClusterMigrationContainerCreationInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
+// interface for type A2ACrossClusterMigrationContainerCreationInput.
+func (a *A2ACrossClusterMigrationContainerCreationInput) GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput {
+	return &ReplicationProviderSpecificContainerCreationInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2ACrossClusterMigrationEnableProtectionInput - A2A Cross-Cluster Migration enable protection input.
@@ -145,10 +200,25 @@ type A2ACrossClusterMigrationEnableProtectionInput struct {
 	RecoveryContainerID *string `json:"recoveryContainerId,omitempty"`
 }
 
+// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
+// type A2ACrossClusterMigrationEnableProtectionInput.
+func (a *A2ACrossClusterMigrationEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
+	return &EnableProtectionProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2ACrossClusterMigrationPolicyCreationInput - A2A Cross-Cluster Migration Policy creation input.
 type A2ACrossClusterMigrationPolicyCreationInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type A2ACrossClusterMigrationPolicyCreationInput.
+func (a *A2ACrossClusterMigrationPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2ACrossClusterMigrationReplicationDetails - A2A provider specific settings.
@@ -175,6 +245,14 @@ type A2ACrossClusterMigrationReplicationDetails struct {
 
 	// The protection state description for the vm.
 	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+}
+
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// A2ACrossClusterMigrationReplicationDetails.
+func (a *A2ACrossClusterMigrationReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2AEnableProtectionInput - A2A enable protection input.
@@ -237,6 +315,14 @@ type A2AEnableProtectionInput struct {
 	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
+// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
+// type A2AEnableProtectionInput.
+func (a *A2AEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
+	return &EnableProtectionProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2AEventDetails - Model class for event details of a A2A event.
 type A2AEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -261,6 +347,13 @@ type A2AEventDetails struct {
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
 }
 
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type A2AEventDetails.
+func (a *A2AEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2APolicyCreationInput - A2A Policy creation input.
 type A2APolicyCreationInput struct {
 	// REQUIRED; The class type.
@@ -277,6 +370,13 @@ type A2APolicyCreationInput struct {
 
 	// The duration in minutes until which the recovery points need to be stored.
 	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+}
+
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type A2APolicyCreationInput.
+func (a *A2APolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2APolicyDetails - A2A specific policy details.
@@ -298,6 +398,13 @@ type A2APolicyDetails struct {
 
 	// The recovery point threshold in minutes.
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+}
+
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type A2APolicyDetails.
+func (a *A2APolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2AProtectedDiskDetails - A2A protected disk details.
@@ -480,6 +587,14 @@ type A2AProtectionContainerMappingDetails struct {
 	ScheduleName *string `json:"scheduleName,omitempty"`
 }
 
+// GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
+// interface for type A2AProtectionContainerMappingDetails.
+func (a *A2AProtectionContainerMappingDetails) GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails {
+	return &ProtectionContainerMappingProviderSpecificDetails{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2AProtectionIntentDiskInputDetails - Azure VM unmanaged disk input details.
 type A2AProtectionIntentDiskInputDetails struct {
 	// REQUIRED; The disk Uri.
@@ -528,6 +643,14 @@ type A2ARecoveryPointDetails struct {
 	RecoveryPointSyncType *RecoveryPointSyncType `json:"recoveryPointSyncType,omitempty"`
 }
 
+// GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
+// type A2ARecoveryPointDetails.
+func (a *A2ARecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails {
+	return &ProviderSpecificRecoveryPointDetails{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2ARemoveDisksInput - A2A remove disk(s) input.
 type A2ARemoveDisksInput struct {
 	// REQUIRED; The class type.
@@ -538,6 +661,13 @@ type A2ARemoveDisksInput struct {
 
 	// The list of vm managed disk Ids.
 	VMManagedDisksIDs []*string `json:"vmManagedDisksIds,omitempty"`
+}
+
+// GetRemoveDisksProviderSpecificInput implements the RemoveDisksProviderSpecificInputClassification interface for type A2ARemoveDisksInput.
+func (a *A2ARemoveDisksInput) GetRemoveDisksProviderSpecificInput() *RemoveDisksProviderSpecificInput {
+	return &RemoveDisksProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2AReplicationDetails - A2A provider specific settings.
@@ -707,6 +837,14 @@ type A2AReplicationDetails struct {
 	VMEncryptionType *VMEncryptionType `json:"vmEncryptionType,omitempty" azure:"ro"`
 }
 
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// A2AReplicationDetails.
+func (a *A2AReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2AReplicationIntentDetails - A2A provider specific settings.
 type A2AReplicationIntentDetails struct {
 	// REQUIRED; Gets the Instance type.
@@ -779,6 +917,14 @@ type A2AReplicationIntentDetails struct {
 	VMManagedDisks []*A2AProtectionIntentManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
+// GetReplicationProtectionIntentProviderSpecificSettings implements the ReplicationProtectionIntentProviderSpecificSettingsClassification
+// interface for type A2AReplicationIntentDetails.
+func (a *A2AReplicationIntentDetails) GetReplicationProtectionIntentProviderSpecificSettings() *ReplicationProtectionIntentProviderSpecificSettings {
+	return &ReplicationProtectionIntentProviderSpecificSettings{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2AReprotectInput - Azure specific reprotect input.
 type A2AReprotectInput struct {
 	// REQUIRED; The class type.
@@ -801,6 +947,14 @@ type A2AReprotectInput struct {
 
 	// The list of vm disk details.
 	VMDisks []*A2AVMDiskInputDetails `json:"vmDisks,omitempty"`
+}
+
+// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
+// for type A2AReprotectInput.
+func (a *A2AReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
+	return &ReverseReplicationProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2ASwitchProtectionInput - A2A specific switch protection input.
@@ -848,6 +1002,14 @@ type A2ASwitchProtectionInput struct {
 	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
+// GetSwitchProtectionProviderSpecificInput implements the SwitchProtectionProviderSpecificInputClassification interface for
+// type A2ASwitchProtectionInput.
+func (a *A2ASwitchProtectionInput) GetSwitchProtectionProviderSpecificInput() *SwitchProtectionProviderSpecificInput {
+	return &SwitchProtectionProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2ATestFailoverInput - A2A provider specific input for test failover.
 type A2ATestFailoverInput struct {
 	// REQUIRED; The class type.
@@ -861,6 +1023,14 @@ type A2ATestFailoverInput struct {
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 }
 
+// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
+// A2ATestFailoverInput.
+func (a *A2ATestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
+	return &TestFailoverProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // A2AUnplannedFailoverInput - A2A provider specific input for unplanned failover.
 type A2AUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -872,6 +1042,14 @@ type A2AUnplannedFailoverInput struct {
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+}
+
+// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
+// for type A2AUnplannedFailoverInput.
+func (a *A2AUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
+	return &UnplannedFailoverProviderSpecificInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2AUnprotectedDiskDetails - A2A unprotected disk details.
@@ -896,6 +1074,14 @@ type A2AUpdateContainerMappingInput struct {
 
 	// A value indicating the type authentication to use for automation Account.
 	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
+}
+
+// GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
+// interface for type A2AUpdateContainerMappingInput.
+func (a *A2AUpdateContainerMappingInput) GetReplicationProviderSpecificUpdateContainerMappingInput() *ReplicationProviderSpecificUpdateContainerMappingInput {
+	return &ReplicationProviderSpecificUpdateContainerMappingInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2AUpdateReplicationProtectedItemInput - InMage Azure V2 input to update replication protected item.
@@ -929,6 +1115,14 @@ type A2AUpdateReplicationProtectedItemInput struct {
 
 	// The user given name for Test Failover VM.
 	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
+}
+
+// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
+// interface for type A2AUpdateReplicationProtectedItemInput.
+func (a *A2AUpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
+	return &UpdateReplicationProtectedItemProviderInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // A2AVMDiskInputDetails - A2A disk input details.
@@ -1064,6 +1258,11 @@ type AddDisksProviderSpecificInputClassification interface {
 type AddDisksProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetAddDisksProviderSpecificInput implements the AddDisksProviderSpecificInputClassification interface for type AddDisksProviderSpecificInput.
+func (a *AddDisksProviderSpecificInput) GetAddDisksProviderSpecificInput() *AddDisksProviderSpecificInput {
+	return a
 }
 
 // AddRecoveryServicesProviderInput - Input required to add a provider.
@@ -1222,6 +1421,9 @@ type ApplianceSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetApplianceSpecificDetails implements the ApplianceSpecificDetailsClassification interface for type ApplianceSpecificDetails.
+func (a *ApplianceSpecificDetails) GetApplianceSpecificDetails() *ApplianceSpecificDetails { return a }
+
 // ApplyRecoveryPointInput - Input to apply recovery point.
 type ApplyRecoveryPointInput struct {
 	// REQUIRED; The input properties to apply recovery point.
@@ -1253,6 +1455,12 @@ type ApplyRecoveryPointProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
+// for type ApplyRecoveryPointProviderSpecificInput.
+func (a *ApplyRecoveryPointProviderSpecificInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
+	return a
+}
+
 // AsrJobDetails - This class represents job details based on specific job type.
 type AsrJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
@@ -1261,6 +1469,14 @@ type AsrJobDetails struct {
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
 	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
+}
+
+// GetJobDetails implements the JobDetailsClassification interface for type AsrJobDetails.
+func (a *AsrJobDetails) GetJobDetails() *JobDetails {
+	return &JobDetails{
+		InstanceType:          a.InstanceType,
+		AffectedObjectDetails: a.AffectedObjectDetails,
+	}
 }
 
 // AutomationRunbookTaskDetails - This class represents the task details for an automation runbook.
@@ -1296,6 +1512,13 @@ type AutomationRunbookTaskDetails struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type AutomationRunbookTaskDetails.
+func (a *AutomationRunbookTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
+	return &TaskTypeDetails{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // AzureFabricCreationInput - Fabric provider specific settings.
 type AzureFabricCreationInput struct {
 	// REQUIRED; Gets the class type.
@@ -1303,6 +1526,13 @@ type AzureFabricCreationInput struct {
 
 	// The Location.
 	Location *string `json:"location,omitempty"`
+}
+
+// GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type AzureFabricCreationInput.
+func (a *AzureFabricCreationInput) GetFabricSpecificCreationInput() *FabricSpecificCreationInput {
+	return &FabricSpecificCreationInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // AzureFabricSpecificDetails - Azure Fabric Specific Details.
@@ -1320,6 +1550,13 @@ type AzureFabricSpecificDetails struct {
 	Zones []*A2AZoneDetails `json:"zones,omitempty"`
 }
 
+// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type AzureFabricSpecificDetails.
+func (a *AzureFabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
+	return &FabricSpecificDetails{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // AzureToAzureCreateNetworkMappingInput - Create network mappings input properties/behavior specific to Azure to Azure Network
 // mapping.
 type AzureToAzureCreateNetworkMappingInput struct {
@@ -1328,6 +1565,14 @@ type AzureToAzureCreateNetworkMappingInput struct {
 
 	// REQUIRED; The primary azure vnet Id.
 	PrimaryNetworkID *string `json:"primaryNetworkId,omitempty"`
+}
+
+// GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
+// for type AzureToAzureCreateNetworkMappingInput.
+func (a *AzureToAzureCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput {
+	return &FabricSpecificCreateNetworkMappingInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // AzureToAzureNetworkMappingSettings - A2A Network Mapping fabric specific settings.
@@ -1342,6 +1587,14 @@ type AzureToAzureNetworkMappingSettings struct {
 	RecoveryFabricLocation *string `json:"recoveryFabricLocation,omitempty"`
 }
 
+// GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
+// type AzureToAzureNetworkMappingSettings.
+func (a *AzureToAzureNetworkMappingSettings) GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings {
+	return &NetworkMappingFabricSpecificSettings{
+		InstanceType: a.InstanceType,
+	}
+}
+
 // AzureToAzureUpdateNetworkMappingInput - Updates network mappings input.
 type AzureToAzureUpdateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
@@ -1349,6 +1602,14 @@ type AzureToAzureUpdateNetworkMappingInput struct {
 
 	// The primary azure vnet Id.
 	PrimaryNetworkID *string `json:"primaryNetworkId,omitempty"`
+}
+
+// GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
+// for type AzureToAzureUpdateNetworkMappingInput.
+func (a *AzureToAzureUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput {
+	return &FabricSpecificUpdateNetworkMappingInput{
+		InstanceType: a.InstanceType,
+	}
 }
 
 // AzureToAzureVMSyncedConfigDetails - Azure to Azure VM synced configuration details.
@@ -1417,6 +1678,9 @@ type ConfigurationSettings struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type ConfigurationSettings.
+func (c *ConfigurationSettings) GetConfigurationSettings() *ConfigurationSettings { return c }
+
 // ConfigureAlertRequest - Request to configure alerts for the system.
 type ConfigureAlertRequest struct {
 	// The properties of a configure alert request.
@@ -1442,6 +1706,13 @@ type ConsistencyCheckTaskDetails struct {
 
 	// The list of inconsistent Vm details.
 	VMDetails []*InconsistentVMDetails `json:"vmDetails,omitempty"`
+}
+
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ConsistencyCheckTaskDetails.
+func (c *ConsistencyCheckTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
+	return &TaskTypeDetails{
+		InstanceType: c.InstanceType,
+	}
 }
 
 // CreateNetworkMappingInput - Create network mappings input.
@@ -1529,6 +1800,12 @@ type CreateProtectionIntentProviderSpecificDetailsClassification interface {
 type CreateProtectionIntentProviderSpecificDetails struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetCreateProtectionIntentProviderSpecificDetails implements the CreateProtectionIntentProviderSpecificDetailsClassification
+// interface for type CreateProtectionIntentProviderSpecificDetails.
+func (c *CreateProtectionIntentProviderSpecificDetails) GetCreateProtectionIntentProviderSpecificDetails() *CreateProtectionIntentProviderSpecificDetails {
+	return c
 }
 
 // CreateRecoveryPlanInput - Create recovery plan input class.
@@ -1625,6 +1902,12 @@ type DisableProtectionProviderSpecificInputClassification interface {
 type DisableProtectionProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetDisableProtectionProviderSpecificInput implements the DisableProtectionProviderSpecificInputClassification interface
+// for type DisableProtectionProviderSpecificInput.
+func (d *DisableProtectionProviderSpecificInput) GetDisableProtectionProviderSpecificInput() *DisableProtectionProviderSpecificInput {
+	return d
 }
 
 // DiscoverProtectableItemRequest - Request to add a physical machine as a protectable item in a container.
@@ -1778,6 +2061,12 @@ type EnableMigrationProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetEnableMigrationProviderSpecificInput implements the EnableMigrationProviderSpecificInputClassification interface for
+// type EnableMigrationProviderSpecificInput.
+func (e *EnableMigrationProviderSpecificInput) GetEnableMigrationProviderSpecificInput() *EnableMigrationProviderSpecificInput {
+	return e
+}
+
 // EnableProtectionInput - Enable protection input.
 type EnableProtectionInput struct {
 	// Enable protection input properties.
@@ -1812,6 +2101,12 @@ type EnableProtectionProviderSpecificInputClassification interface {
 type EnableProtectionProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
+// type EnableProtectionProviderSpecificInput.
+func (e *EnableProtectionProviderSpecificInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
+	return e
 }
 
 // EncryptionDetails - Encryption details for the fabric.
@@ -1905,6 +2200,11 @@ type EventProviderSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type EventProviderSpecificDetails.
+func (e *EventProviderSpecificDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return e
+}
+
 // EventQueryParameter - Implements the event query parameter.
 type EventQueryParameter struct {
 	// The affected object correlationId for the events to be queried.
@@ -1947,6 +2247,9 @@ type EventSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetEventSpecificDetails implements the EventSpecificDetailsClassification interface for type EventSpecificDetails.
+func (e *EventSpecificDetails) GetEventSpecificDetails() *EventSpecificDetails { return e }
+
 // ExistingProtectionProfile - Existing storage account input.
 type ExistingProtectionProfile struct {
 	// REQUIRED; The protection profile Arm Id. Throw error, if resource does not exists.
@@ -1954,6 +2257,13 @@ type ExistingProtectionProfile struct {
 
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
+}
+
+// GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type ExistingProtectionProfile.
+func (e *ExistingProtectionProfile) GetProtectionProfileCustomDetails() *ProtectionProfileCustomDetails {
+	return &ProtectionProfileCustomDetails{
+		ResourceType: e.ResourceType,
+	}
 }
 
 // ExistingRecoveryAvailabilitySet - Existing recovery availability set input.
@@ -1965,6 +2275,14 @@ type ExistingRecoveryAvailabilitySet struct {
 	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
 }
 
+// GetRecoveryAvailabilitySetCustomDetails implements the RecoveryAvailabilitySetCustomDetailsClassification interface for
+// type ExistingRecoveryAvailabilitySet.
+func (e *ExistingRecoveryAvailabilitySet) GetRecoveryAvailabilitySetCustomDetails() *RecoveryAvailabilitySetCustomDetails {
+	return &RecoveryAvailabilitySetCustomDetails{
+		ResourceType: e.ResourceType,
+	}
+}
+
 // ExistingRecoveryProximityPlacementGroup - Existing recovery proximity placement group input.
 type ExistingRecoveryProximityPlacementGroup struct {
 	// REQUIRED; The class type.
@@ -1974,6 +2292,14 @@ type ExistingRecoveryProximityPlacementGroup struct {
 	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 }
 
+// GetRecoveryProximityPlacementGroupCustomDetails implements the RecoveryProximityPlacementGroupCustomDetailsClassification
+// interface for type ExistingRecoveryProximityPlacementGroup.
+func (e *ExistingRecoveryProximityPlacementGroup) GetRecoveryProximityPlacementGroupCustomDetails() *RecoveryProximityPlacementGroupCustomDetails {
+	return &RecoveryProximityPlacementGroupCustomDetails{
+		ResourceType: e.ResourceType,
+	}
+}
+
 // ExistingRecoveryResourceGroup - Existing recovery resource group input.
 type ExistingRecoveryResourceGroup struct {
 	// REQUIRED; The class type.
@@ -1981,6 +2307,14 @@ type ExistingRecoveryResourceGroup struct {
 
 	// The recovery resource group Id. Valid for V2 scenarios.
 	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+}
+
+// GetRecoveryResourceGroupCustomDetails implements the RecoveryResourceGroupCustomDetailsClassification interface for type
+// ExistingRecoveryResourceGroup.
+func (e *ExistingRecoveryResourceGroup) GetRecoveryResourceGroupCustomDetails() *RecoveryResourceGroupCustomDetails {
+	return &RecoveryResourceGroupCustomDetails{
+		ResourceType: e.ResourceType,
+	}
 }
 
 // ExistingRecoveryVirtualNetwork - Existing recovery virtual network input.
@@ -1995,6 +2329,14 @@ type ExistingRecoveryVirtualNetwork struct {
 	RecoverySubnetName *string `json:"recoverySubnetName,omitempty"`
 }
 
+// GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
+// ExistingRecoveryVirtualNetwork.
+func (e *ExistingRecoveryVirtualNetwork) GetRecoveryVirtualNetworkCustomDetails() *RecoveryVirtualNetworkCustomDetails {
+	return &RecoveryVirtualNetworkCustomDetails{
+		ResourceType: e.ResourceType,
+	}
+}
+
 // ExistingStorageAccount - Existing storage account input.
 type ExistingStorageAccount struct {
 	// REQUIRED; The storage account Arm Id. Throw error, if resource does not exists.
@@ -2002,6 +2344,13 @@ type ExistingStorageAccount struct {
 
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
+}
+
+// GetStorageAccountCustomDetails implements the StorageAccountCustomDetailsClassification interface for type ExistingStorageAccount.
+func (e *ExistingStorageAccount) GetStorageAccountCustomDetails() *StorageAccountCustomDetails {
+	return &StorageAccountCustomDetails{
+		ResourceType: e.ResourceType,
+	}
 }
 
 // ExportJobDetails - This class represents details for export jobs workflow.
@@ -2018,6 +2367,14 @@ type ExportJobDetails struct {
 
 	// The sas token to access blob.
 	SasToken *string `json:"sasToken,omitempty"`
+}
+
+// GetJobDetails implements the JobDetailsClassification interface for type ExportJobDetails.
+func (e *ExportJobDetails) GetJobDetails() *JobDetails {
+	return &JobDetails{
+		InstanceType:          e.InstanceType,
+		AffectedObjectDetails: e.AffectedObjectDetails,
+	}
 }
 
 // ExtendedLocation - Extended location of the resource.
@@ -2131,6 +2488,21 @@ type FabricReplicationGroupTaskDetails struct {
 	SkippedReasonString *string `json:"skippedReasonString,omitempty"`
 }
 
+// GetJobTaskDetails implements the JobTaskDetailsClassification interface for type FabricReplicationGroupTaskDetails.
+func (f *FabricReplicationGroupTaskDetails) GetJobTaskDetails() *JobTaskDetails {
+	return &JobTaskDetails{
+		JobTask:      f.JobTask,
+		InstanceType: f.InstanceType,
+	}
+}
+
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type FabricReplicationGroupTaskDetails.
+func (f *FabricReplicationGroupTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
+	return &TaskTypeDetails{
+		InstanceType: f.InstanceType,
+	}
+}
+
 // FabricSpecificCreateNetworkMappingInputClassification provides polymorphic access to related types.
 // Call the interface's GetFabricSpecificCreateNetworkMappingInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2147,6 +2519,12 @@ type FabricSpecificCreateNetworkMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
+// for type FabricSpecificCreateNetworkMappingInput.
+func (f *FabricSpecificCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput {
+	return f
+}
+
 // FabricSpecificCreationInputClassification provides polymorphic access to related types.
 // Call the interface's GetFabricSpecificCreationInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2160,6 +2538,11 @@ type FabricSpecificCreationInputClassification interface {
 type FabricSpecificCreationInput struct {
 	// REQUIRED; Gets the class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type FabricSpecificCreationInput.
+func (f *FabricSpecificCreationInput) GetFabricSpecificCreationInput() *FabricSpecificCreationInput {
+	return f
 }
 
 // FabricSpecificDetailsClassification provides polymorphic access to related types.
@@ -2178,6 +2561,9 @@ type FabricSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type FabricSpecificDetails.
+func (f *FabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificDetails { return f }
+
 // FabricSpecificUpdateNetworkMappingInputClassification provides polymorphic access to related types.
 // Call the interface's GetFabricSpecificUpdateNetworkMappingInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2194,6 +2580,12 @@ type FabricSpecificUpdateNetworkMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
+// for type FabricSpecificUpdateNetworkMappingInput.
+func (f *FabricSpecificUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput {
+	return f
+}
+
 // FailoverJobDetails - This class represents the details for a failover job.
 type FailoverJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
@@ -2205,6 +2597,14 @@ type FailoverJobDetails struct {
 
 	// The test VM details.
 	ProtectedItemDetails []*FailoverReplicationProtectedItemDetails `json:"protectedItemDetails,omitempty"`
+}
+
+// GetJobDetails implements the JobDetailsClassification interface for type FailoverJobDetails.
+func (f *FailoverJobDetails) GetJobDetails() *JobDetails {
+	return &JobDetails{
+		InstanceType:          f.InstanceType,
+		AffectedObjectDetails: f.AffectedObjectDetails,
+	}
 }
 
 // FailoverProcessServerRequest - Request to failover a process server.
@@ -2278,6 +2678,9 @@ type GroupTaskDetails struct {
 	// The child tasks.
 	ChildTasks []*ASRTask `json:"childTasks,omitempty"`
 }
+
+// GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type GroupTaskDetails.
+func (g *GroupTaskDetails) GetGroupTaskDetails() *GroupTaskDetails { return g }
 
 // HealthError - Health Error.
 type HealthError struct {
@@ -2386,6 +2789,13 @@ type HyperVReplica2012EventDetails struct {
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
 }
 
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplica2012EventDetails.
+func (h *HyperVReplica2012EventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplica2012R2EventDetails - Model class for event details of a HyperVReplica blue E2E event.
 type HyperVReplica2012R2EventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -2404,6 +2814,13 @@ type HyperVReplica2012R2EventDetails struct {
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
 }
 
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplica2012R2EventDetails.
+func (h *HyperVReplica2012R2EventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaAzureApplyRecoveryPointInput - ApplyRecoveryPoint input specific to HyperVReplicaAzure provider.
 type HyperVReplicaAzureApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
@@ -2414,6 +2831,14 @@ type HyperVReplicaAzureApplyRecoveryPointInput struct {
 
 	// The secondary kek certificate pfx.
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+}
+
+// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
+// for type HyperVReplicaAzureApplyRecoveryPointInput.
+func (h *HyperVReplicaAzureApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
+	return &ApplyRecoveryPointProviderSpecificInput{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVReplicaAzureDiskInputDetails - Disk input details.
@@ -2522,6 +2947,14 @@ type HyperVReplicaAzureEnableProtectionInput struct {
 	VhdID *string `json:"vhdId,omitempty"`
 }
 
+// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
+// type HyperVReplicaAzureEnableProtectionInput.
+func (h *HyperVReplicaAzureEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
+	return &EnableProtectionProviderSpecificInput{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaAzureEventDetails - Model class for event details of a HyperVReplica E2A event.
 type HyperVReplicaAzureEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -2537,6 +2970,13 @@ type HyperVReplicaAzureEventDetails struct {
 	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
 }
 
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplicaAzureEventDetails.
+func (h *HyperVReplicaAzureEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaAzureFailbackProviderInput - HyperVReplicaAzureFailback specific planned failover input.
 type HyperVReplicaAzureFailbackProviderInput struct {
 	// REQUIRED; The class type.
@@ -2550,6 +2990,14 @@ type HyperVReplicaAzureFailbackProviderInput struct {
 
 	// ALR options to create alternate recovery.
 	RecoveryVMCreationOption *string `json:"recoveryVmCreationOption,omitempty"`
+}
+
+// GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
+// interface for type HyperVReplicaAzureFailbackProviderInput.
+func (h *HyperVReplicaAzureFailbackProviderInput) GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput {
+	return &PlannedFailoverProviderSpecificFailoverInput{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVReplicaAzureManagedDiskDetails - Hyper-V Managed disk details.
@@ -2583,6 +3031,14 @@ type HyperVReplicaAzurePlannedFailoverProviderInput struct {
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
 }
 
+// GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
+// interface for type HyperVReplicaAzurePlannedFailoverProviderInput.
+func (h *HyperVReplicaAzurePlannedFailoverProviderInput) GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput {
+	return &PlannedFailoverProviderSpecificFailoverInput{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaAzurePolicyDetails - Hyper-V Replica Azure specific protection profile details.
 type HyperVReplicaAzurePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -2607,6 +3063,13 @@ type HyperVReplicaAzurePolicyDetails struct {
 	ReplicationInterval *int32 `json:"replicationInterval,omitempty"`
 }
 
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaAzurePolicyDetails.
+func (h *HyperVReplicaAzurePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaAzurePolicyInput - Hyper-V Replica Azure specific input for creating a protection profile.
 type HyperVReplicaAzurePolicyInput struct {
 	// REQUIRED; The class type.
@@ -2626,6 +3089,13 @@ type HyperVReplicaAzurePolicyInput struct {
 
 	// The list of storage accounts to which the VMs in the primary cloud can replicate to.
 	StorageAccounts []*string `json:"storageAccounts,omitempty"`
+}
+
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type HyperVReplicaAzurePolicyInput.
+func (h *HyperVReplicaAzurePolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVReplicaAzureReplicationDetails - Hyper V Replica Azure provider specific settings.
@@ -2735,6 +3205,14 @@ type HyperVReplicaAzureReplicationDetails struct {
 	LastRecoveryPointReceived *time.Time `json:"lastRecoveryPointReceived,omitempty" azure:"ro"`
 }
 
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// HyperVReplicaAzureReplicationDetails.
+func (h *HyperVReplicaAzureReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaAzureReprotectInput - Azure specific reprotect input.
 type HyperVReplicaAzureReprotectInput struct {
 	// REQUIRED; The class type.
@@ -2759,6 +3237,14 @@ type HyperVReplicaAzureReprotectInput struct {
 	VMName *string `json:"vmName,omitempty"`
 }
 
+// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
+// for type HyperVReplicaAzureReprotectInput.
+func (h *HyperVReplicaAzureReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
+	return &ReverseReplicationProviderSpecificInput{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaAzureTestFailoverInput - HvrA provider specific input for test failover.
 type HyperVReplicaAzureTestFailoverInput struct {
 	// REQUIRED; The class type.
@@ -2775,6 +3261,14 @@ type HyperVReplicaAzureTestFailoverInput struct {
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
 }
 
+// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
+// HyperVReplicaAzureTestFailoverInput.
+func (h *HyperVReplicaAzureTestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
+	return &TestFailoverProviderSpecificInput{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaAzureUnplannedFailoverInput - HvrA provider specific input for unplanned failover.
 type HyperVReplicaAzureUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -2789,6 +3283,14 @@ type HyperVReplicaAzureUnplannedFailoverInput struct {
 
 	// Secondary kek certificate pfx.
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+}
+
+// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
+// for type HyperVReplicaAzureUnplannedFailoverInput.
+func (h *HyperVReplicaAzureUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
+	return &UnplannedFailoverProviderSpecificInput{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVReplicaAzureUpdateReplicationProtectedItemInput - HyperV replica Azure input to update replication protected item.
@@ -2830,6 +3332,14 @@ type HyperVReplicaAzureUpdateReplicationProtectedItemInput struct {
 	VMDisks []*UpdateDiskInput `json:"vmDisks,omitempty"`
 }
 
+// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
+// interface for type HyperVReplicaAzureUpdateReplicationProtectedItemInput.
+func (h *HyperVReplicaAzureUpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
+	return &UpdateReplicationProtectedItemProviderInput{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaBaseEventDetails - Abstract model class for event details of a HyperVReplica E2E event.
 type HyperVReplicaBaseEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -2846,6 +3356,13 @@ type HyperVReplicaBaseEventDetails struct {
 
 	// The remote fabric name.
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
+}
+
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplicaBaseEventDetails.
+func (h *HyperVReplicaBaseEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVReplicaBasePolicyDetails - Base class for HyperVReplica policy details.
@@ -2884,6 +3401,13 @@ type HyperVReplicaBasePolicyDetails struct {
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
 }
 
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaBasePolicyDetails.
+func (h *HyperVReplicaBasePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaBaseReplicationDetails - Hyper V replica provider specific settings base class.
 type HyperVReplicaBaseReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
@@ -2909,6 +3433,14 @@ type HyperVReplicaBaseReplicationDetails struct {
 
 	// The protection state description for the vm.
 	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+}
+
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// HyperVReplicaBaseReplicationDetails.
+func (h *HyperVReplicaBaseReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVReplicaBluePolicyDetails - Hyper-V Replica Blue specific protection profile details.
@@ -2950,6 +3482,13 @@ type HyperVReplicaBluePolicyDetails struct {
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
 }
 
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaBluePolicyDetails.
+func (h *HyperVReplicaBluePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaBluePolicyInput - HyperV Replica Blue policy input.
 type HyperVReplicaBluePolicyInput struct {
 	// REQUIRED; The class type.
@@ -2989,6 +3528,30 @@ type HyperVReplicaBluePolicyInput struct {
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
 }
 
+// GetHyperVReplicaPolicyInput implements the HyperVReplicaPolicyInputClassification interface for type HyperVReplicaBluePolicyInput.
+func (h *HyperVReplicaBluePolicyInput) GetHyperVReplicaPolicyInput() *HyperVReplicaPolicyInput {
+	return &HyperVReplicaPolicyInput{
+		RecoveryPoints: h.RecoveryPoints,
+		ApplicationConsistentSnapshotFrequencyInHours: h.ApplicationConsistentSnapshotFrequencyInHours,
+		Compression:                  h.Compression,
+		InitialReplicationMethod:     h.InitialReplicationMethod,
+		OnlineReplicationStartTime:   h.OnlineReplicationStartTime,
+		OfflineReplicationImportPath: h.OfflineReplicationImportPath,
+		OfflineReplicationExportPath: h.OfflineReplicationExportPath,
+		ReplicationPort:              h.ReplicationPort,
+		AllowedAuthenticationType:    h.AllowedAuthenticationType,
+		ReplicaDeletion:              h.ReplicaDeletion,
+		InstanceType:                 h.InstanceType,
+	}
+}
+
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type HyperVReplicaBluePolicyInput.
+func (h *HyperVReplicaBluePolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaBlueReplicationDetails - HyperV replica 2012 R2 (Blue) replication details.
 type HyperVReplicaBlueReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
@@ -3014,6 +3577,14 @@ type HyperVReplicaBlueReplicationDetails struct {
 
 	// The protection state description for the vm.
 	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+}
+
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// HyperVReplicaBlueReplicationDetails.
+func (h *HyperVReplicaBlueReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVReplicaPolicyDetails - Hyper-V Replica Blue specific protection profile details.
@@ -3050,6 +3621,13 @@ type HyperVReplicaPolicyDetails struct {
 
 	// A value indicating the recovery HTTPS port.
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
+}
+
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaPolicyDetails.
+func (h *HyperVReplicaPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVReplicaPolicyInputClassification provides polymorphic access to related types.
@@ -3098,6 +3676,16 @@ type HyperVReplicaPolicyInput struct {
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
 }
 
+// GetHyperVReplicaPolicyInput implements the HyperVReplicaPolicyInputClassification interface for type HyperVReplicaPolicyInput.
+func (h *HyperVReplicaPolicyInput) GetHyperVReplicaPolicyInput() *HyperVReplicaPolicyInput { return h }
+
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type HyperVReplicaPolicyInput.
+func (h *HyperVReplicaPolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVReplicaReplicationDetails - HyperV replica 2012 replication details.
 type HyperVReplicaReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
@@ -3125,6 +3713,14 @@ type HyperVReplicaReplicationDetails struct {
 	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
 }
 
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// HyperVReplicaReplicationDetails.
+func (h *HyperVReplicaReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: h.InstanceType,
+	}
+}
+
 // HyperVSiteDetails - HyperVSite fabric specific details.
 type HyperVSiteDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -3132,6 +3728,13 @@ type HyperVSiteDetails struct {
 
 	// The list of Hyper-V hosts associated with the fabric.
 	HyperVHosts []*HyperVHostDetails `json:"hyperVHosts,omitempty"`
+}
+
+// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type HyperVSiteDetails.
+func (h *HyperVSiteDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
+	return &FabricSpecificDetails{
+		InstanceType: h.InstanceType,
+	}
 }
 
 // HyperVVirtualMachineDetailsClassification provides polymorphic access to related types.
@@ -3173,6 +3776,18 @@ type HyperVVirtualMachineDetails struct {
 
 	// The source id of the object.
 	SourceItemID *string `json:"sourceItemId,omitempty"`
+}
+
+// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type HyperVVirtualMachineDetails.
+func (h *HyperVVirtualMachineDetails) GetConfigurationSettings() *ConfigurationSettings {
+	return &ConfigurationSettings{
+		InstanceType: h.InstanceType,
+	}
+}
+
+// GetHyperVVirtualMachineDetails implements the HyperVVirtualMachineDetailsClassification interface for type HyperVVirtualMachineDetails.
+func (h *HyperVVirtualMachineDetails) GetHyperVVirtualMachineDetails() *HyperVVirtualMachineDetails {
+	return h
 }
 
 type IPConfigDetails struct {
@@ -3270,6 +3885,14 @@ type InMageAgentDetails struct {
 type InMageAzureV2ApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
+// for type InMageAzureV2ApplyRecoveryPointInput.
+func (i *InMageAzureV2ApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
+	return &ApplyRecoveryPointProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageAzureV2DiskInputDetails - Disk input details.
@@ -3372,6 +3995,14 @@ type InMageAzureV2EnableProtectionInput struct {
 	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
 }
 
+// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
+// type InMageAzureV2EnableProtectionInput.
+func (i *InMageAzureV2EnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
+	return &EnableProtectionProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageAzureV2EventDetails - Model class for event details of a VMwareAzureV2 event.
 type InMageAzureV2EventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -3397,6 +4028,13 @@ type InMageAzureV2EventDetails struct {
 
 	// InMage Event Summary.
 	Summary *string `json:"summary,omitempty"`
+}
+
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageAzureV2EventDetails.
+func (i *InMageAzureV2EventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageAzureV2ManagedDiskDetails - InMageAzureV2 Managed disk details.
@@ -3438,6 +4076,13 @@ type InMageAzureV2PolicyDetails struct {
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
 }
 
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageAzureV2PolicyDetails.
+func (i *InMageAzureV2PolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageAzureV2PolicyInput - VMWare Azure specific policy Input.
 type InMageAzureV2PolicyInput struct {
 	// REQUIRED; The class type.
@@ -3457,6 +4102,13 @@ type InMageAzureV2PolicyInput struct {
 
 	// The recovery point threshold in minutes.
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+}
+
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageAzureV2PolicyInput.
+func (i *InMageAzureV2PolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageAzureV2ProtectedDiskDetails - InMageAzureV2 protected disk details.
@@ -3538,6 +4190,14 @@ type InMageAzureV2RecoveryPointDetails struct {
 
 	// A value indicating whether the recovery point is multi VM consistent.
 	IsMultiVMSyncPoint *string `json:"isMultiVmSyncPoint,omitempty"`
+}
+
+// GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
+// type InMageAzureV2RecoveryPointDetails.
+func (i *InMageAzureV2RecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails {
+	return &ProviderSpecificRecoveryPointDetails{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageAzureV2ReplicationDetails - InMageAzureV2 provider specific settings.
@@ -3750,6 +4410,14 @@ type InMageAzureV2ReplicationDetails struct {
 	LastRecoveryPointReceived *time.Time `json:"lastRecoveryPointReceived,omitempty" azure:"ro"`
 }
 
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// InMageAzureV2ReplicationDetails.
+func (i *InMageAzureV2ReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageAzureV2ReprotectInput - InMageAzureV2 specific provider input.
 type InMageAzureV2ReprotectInput struct {
 	// REQUIRED; The class type.
@@ -3775,6 +4443,14 @@ type InMageAzureV2ReprotectInput struct {
 
 	// The storage account id.
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
+}
+
+// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
+// for type InMageAzureV2ReprotectInput.
+func (i *InMageAzureV2ReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
+	return &ReverseReplicationProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageAzureV2SwitchProviderBlockingErrorDetails - InMageAzureV2 switch provider blocking error details.
@@ -3828,6 +4504,13 @@ type InMageAzureV2SwitchProviderInput struct {
 	TargetVaultID *string `json:"targetVaultID,omitempty"`
 }
 
+// GetSwitchProviderSpecificInput implements the SwitchProviderSpecificInputClassification interface for type InMageAzureV2SwitchProviderInput.
+func (i *InMageAzureV2SwitchProviderInput) GetSwitchProviderSpecificInput() *SwitchProviderSpecificInput {
+	return &SwitchProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageAzureV2TestFailoverInput - InMageAzureV2 provider specific input for test failover.
 type InMageAzureV2TestFailoverInput struct {
 	// REQUIRED; The class type.
@@ -3838,6 +4521,14 @@ type InMageAzureV2TestFailoverInput struct {
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 }
 
+// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
+// InMageAzureV2TestFailoverInput.
+func (i *InMageAzureV2TestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
+	return &TestFailoverProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageAzureV2UnplannedFailoverInput - InMageAzureV2 provider specific input for unplanned failover.
 type InMageAzureV2UnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -3846,6 +4537,14 @@ type InMageAzureV2UnplannedFailoverInput struct {
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+}
+
+// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
+// for type InMageAzureV2UnplannedFailoverInput.
+func (i *InMageAzureV2UnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
+	return &UnplannedFailoverProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageAzureV2UpdateReplicationProtectedItemInput - InMage Azure V2 input to update replication protected item.
@@ -3884,6 +4583,14 @@ type InMageAzureV2UpdateReplicationProtectedItemInput struct {
 	VMDisks []*UpdateDiskInput `json:"vmDisks,omitempty"`
 }
 
+// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
+// interface for type InMageAzureV2UpdateReplicationProtectedItemInput.
+func (i *InMageAzureV2UpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
+	return &UpdateReplicationProtectedItemProviderInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageBasePolicyDetails - Base class for the policies of providers using InMage replication.
 type InMageBasePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -3902,6 +4609,13 @@ type InMageBasePolicyDetails struct {
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
 }
 
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageBasePolicyDetails.
+func (i *InMageBasePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageDisableProtectionProviderSpecificInput - InMage disable protection provider specific input.
 type InMageDisableProtectionProviderSpecificInput struct {
 	// REQUIRED; The class type.
@@ -3909,6 +4623,14 @@ type InMageDisableProtectionProviderSpecificInput struct {
 
 	// A value indicating whether the replica VM should be destroyed or retained. Values from Delete and Retain.
 	ReplicaVMDeletionStatus *string `json:"replicaVmDeletionStatus,omitempty"`
+}
+
+// GetDisableProtectionProviderSpecificInput implements the DisableProtectionProviderSpecificInputClassification interface
+// for type InMageDisableProtectionProviderSpecificInput.
+func (i *InMageDisableProtectionProviderSpecificInput) GetDisableProtectionProviderSpecificInput() *DisableProtectionProviderSpecificInput {
+	return &DisableProtectionProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageDiskDetails - VMware/Physical specific Disk Details.
@@ -3984,6 +4706,14 @@ type InMageEnableProtectionInput struct {
 	VMFriendlyName *string `json:"vmFriendlyName,omitempty"`
 }
 
+// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
+// type InMageEnableProtectionInput.
+func (i *InMageEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
+	return &EnableProtectionProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageFabricSwitchProviderBlockingErrorDetails - InMageFabric switch provider blocking error details.
 type InMageFabricSwitchProviderBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
@@ -4023,6 +4753,13 @@ type InMagePolicyDetails struct {
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
 }
 
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMagePolicyDetails.
+func (i *InMagePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMagePolicyInput - VMWare Azure specific protection profile Input.
 type InMagePolicyInput struct {
 	// REQUIRED; The class type.
@@ -4039,6 +4776,13 @@ type InMagePolicyInput struct {
 
 	// The recovery point threshold in minutes.
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+}
+
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMagePolicyInput.
+func (i *InMagePolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageProtectedDiskDetails - InMage protected disk details.
@@ -4176,6 +4920,13 @@ type InMageRcmApplianceSpecificDetails struct {
 	Appliances []*InMageRcmApplianceDetails `json:"appliances,omitempty" azure:"ro"`
 }
 
+// GetApplianceSpecificDetails implements the ApplianceSpecificDetailsClassification interface for type InMageRcmApplianceSpecificDetails.
+func (i *InMageRcmApplianceSpecificDetails) GetApplianceSpecificDetails() *ApplianceSpecificDetails {
+	return &ApplianceSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmApplyRecoveryPointInput - ApplyRecoveryPoint input specific to InMageRcm provider.
 type InMageRcmApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
@@ -4183,6 +4934,14 @@ type InMageRcmApplyRecoveryPointInput struct {
 
 	// REQUIRED; The recovery point Id.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+}
+
+// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
+// for type InMageRcmApplyRecoveryPointInput.
+func (i *InMageRcmApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
+	return &ApplyRecoveryPointProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmDiscoveredProtectedVMDetails - InMageRcm discovered protected VM details.
@@ -4311,6 +5070,14 @@ type InMageRcmEnableProtectionInput struct {
 	TestSubnetName *string `json:"testSubnetName,omitempty"`
 }
 
+// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
+// type InMageRcmEnableProtectionInput.
+func (i *InMageRcmEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
+	return &EnableProtectionProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmEventDetails - Event details for InMageRcm provider.
 type InMageRcmEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -4341,6 +5108,13 @@ type InMageRcmEventDetails struct {
 	VMName *string `json:"vmName,omitempty" azure:"ro"`
 }
 
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageRcmEventDetails.
+func (i *InMageRcmEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmFabricCreationInput - InMageRcm fabric provider specific settings.
 type InMageRcmFabricCreationInput struct {
 	// REQUIRED; Gets the class type.
@@ -4354,6 +5128,13 @@ type InMageRcmFabricCreationInput struct {
 
 	// REQUIRED; The ARM Id of the VMware site.
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
+}
+
+// GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type InMageRcmFabricCreationInput.
+func (i *InMageRcmFabricCreationInput) GetFabricSpecificCreationInput() *FabricSpecificCreationInput {
+	return &FabricSpecificCreationInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmFabricSpecificDetails - InMageRcm fabric specific details.
@@ -4408,6 +5189,13 @@ type InMageRcmFabricSpecificDetails struct {
 
 	// READ-ONLY; The ARM Id of the VMware site.
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty" azure:"ro"`
+}
+
+// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type InMageRcmFabricSpecificDetails.
+func (i *InMageRcmFabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
+	return &FabricSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmFabricSwitchProviderBlockingErrorDetails - InMageRcmFabric switch provider blocking error details.
@@ -4491,6 +5279,13 @@ type InMageRcmFailbackEventDetails struct {
 	VMName *string `json:"vmName,omitempty" azure:"ro"`
 }
 
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageRcmFailbackEventDetails.
+func (i *InMageRcmFailbackEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmFailbackMobilityAgentDetails - InMageRcmFailback mobility agent details.
 type InMageRcmFailbackMobilityAgentDetails struct {
 	// READ-ONLY; The agent version expiry date.
@@ -4545,6 +5340,14 @@ type InMageRcmFailbackPlannedFailoverProviderInput struct {
 	RecoveryPointType *InMageRcmFailbackRecoveryPointType `json:"recoveryPointType,omitempty"`
 }
 
+// GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
+// interface for type InMageRcmFailbackPlannedFailoverProviderInput.
+func (i *InMageRcmFailbackPlannedFailoverProviderInput) GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput {
+	return &PlannedFailoverProviderSpecificFailoverInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmFailbackPolicyCreationInput - InMageRcmFailback policy creation input.
 type InMageRcmFailbackPolicyCreationInput struct {
 	// REQUIRED; The class type.
@@ -4557,6 +5360,13 @@ type InMageRcmFailbackPolicyCreationInput struct {
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
 }
 
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageRcmFailbackPolicyCreationInput.
+func (i *InMageRcmFailbackPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmFailbackPolicyDetails - InMageRcm failback specific policy details.
 type InMageRcmFailbackPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -4567,6 +5377,13 @@ type InMageRcmFailbackPolicyDetails struct {
 
 	// The crash consistent snapshot frequency in minutes.
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+}
+
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageRcmFailbackPolicyDetails.
+func (i *InMageRcmFailbackPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmFailbackProtectedDiskDetails - InMageRcmFailback protected disk details.
@@ -4700,6 +5517,14 @@ type InMageRcmFailbackReplicationDetails struct {
 	TargetvCenterID *string `json:"targetvCenterId,omitempty" azure:"ro"`
 }
 
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// InMageRcmFailbackReplicationDetails.
+func (i *InMageRcmFailbackReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmFailbackReprotectInput - InMageRcmFailback specific provider input.
 type InMageRcmFailbackReprotectInput struct {
 	// REQUIRED; The class type.
@@ -4713,6 +5538,14 @@ type InMageRcmFailbackReprotectInput struct {
 
 	// The run as account Id.
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+}
+
+// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
+// for type InMageRcmFailbackReprotectInput.
+func (i *InMageRcmFailbackReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
+	return &ReverseReplicationProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmFailbackSyncDetails - InMageRcmFailback disk level sync details.
@@ -4880,6 +5713,13 @@ type InMageRcmPolicyCreationInput struct {
 	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
 }
 
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageRcmPolicyCreationInput.
+func (i *InMageRcmPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmPolicyDetails - InMageRcm specific policy details.
 type InMageRcmPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -4896,6 +5736,13 @@ type InMageRcmPolicyDetails struct {
 
 	// The duration in minutes until which the recovery points need to be stored.
 	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
+}
+
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageRcmPolicyDetails.
+func (i *InMageRcmPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmProtectedDiskDetails - InMageRcm protected disk details.
@@ -4952,6 +5799,14 @@ type InMageRcmProtectionContainerMappingDetails struct {
 	EnableAgentAutoUpgrade *string `json:"enableAgentAutoUpgrade,omitempty" azure:"ro"`
 }
 
+// GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
+// interface for type InMageRcmProtectionContainerMappingDetails.
+func (i *InMageRcmProtectionContainerMappingDetails) GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails {
+	return &ProtectionContainerMappingProviderSpecificDetails{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmRecoveryPointDetails - InMageRcm provider specific recovery point details.
 type InMageRcmRecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
@@ -4959,6 +5814,14 @@ type InMageRcmRecoveryPointDetails struct {
 
 	// READ-ONLY; A value indicating whether the recovery point is multi VM consistent.
 	IsMultiVMSyncPoint *string `json:"isMultiVmSyncPoint,omitempty" azure:"ro"`
+}
+
+// GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
+// type InMageRcmRecoveryPointDetails.
+func (i *InMageRcmRecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails {
+	return &ProviderSpecificRecoveryPointDetails{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmReplicationDetails - InMageRcm provider specific details.
@@ -5124,6 +5987,14 @@ type InMageRcmReplicationDetails struct {
 	TargetGeneration *string `json:"targetGeneration,omitempty" azure:"ro"`
 }
 
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// InMageRcmReplicationDetails.
+func (i *InMageRcmReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmReprotectInput - InMageRcm specific provider input.
 type InMageRcmReprotectInput struct {
 	// REQUIRED; The target datastore name.
@@ -5140,6 +6011,14 @@ type InMageRcmReprotectInput struct {
 
 	// The Policy Id.
 	PolicyID *string `json:"policyId,omitempty"`
+}
+
+// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
+// for type InMageRcmReprotectInput.
+func (i *InMageRcmReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
+	return &ReverseReplicationProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmSyncDetails - InMageRcm disk level sync details.
@@ -5182,6 +6061,14 @@ type InMageRcmTestFailoverInput struct {
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 }
 
+// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
+// InMageRcmTestFailoverInput.
+func (i *InMageRcmTestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
+	return &TestFailoverProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmUnplannedFailoverInput - InMageRcm provider specific input for unplanned failover.
 type InMageRcmUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -5195,6 +6082,14 @@ type InMageRcmUnplannedFailoverInput struct {
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 }
 
+// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
+// for type InMageRcmUnplannedFailoverInput.
+func (i *InMageRcmUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
+	return &UnplannedFailoverProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmUpdateApplianceForReplicationProtectedItemInput - InMageRcm provider specific input to update appliance for replication
 // protected item.
 type InMageRcmUpdateApplianceForReplicationProtectedItemInput struct {
@@ -5205,6 +6100,14 @@ type InMageRcmUpdateApplianceForReplicationProtectedItemInput struct {
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
 }
 
+// GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput implements the UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification
+// interface for type InMageRcmUpdateApplianceForReplicationProtectedItemInput.
+func (i *InMageRcmUpdateApplianceForReplicationProtectedItemInput) GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput() *UpdateApplianceForReplicationProtectedItemProviderSpecificInput {
+	return &UpdateApplianceForReplicationProtectedItemProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageRcmUpdateContainerMappingInput - InMageRcm update protection container mapping.
 type InMageRcmUpdateContainerMappingInput struct {
 	// REQUIRED; A value indicating whether agent auto upgrade has to be enabled.
@@ -5212,6 +6115,14 @@ type InMageRcmUpdateContainerMappingInput struct {
 
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
+// interface for type InMageRcmUpdateContainerMappingInput.
+func (i *InMageRcmUpdateContainerMappingInput) GetReplicationProviderSpecificUpdateContainerMappingInput() *ReplicationProviderSpecificUpdateContainerMappingInput {
+	return &ReplicationProviderSpecificUpdateContainerMappingInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageRcmUpdateReplicationProtectedItemInput - InMageRcm provider specific input to update replication protected item.
@@ -5251,6 +6162,14 @@ type InMageRcmUpdateReplicationProtectedItemInput struct {
 
 	// The list of NIC details.
 	VMNics []*InMageRcmNicInput `json:"vmNics,omitempty"`
+}
+
+// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
+// interface for type InMageRcmUpdateReplicationProtectedItemInput.
+func (i *InMageRcmUpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
+	return &UpdateReplicationProtectedItemProviderInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageReplicationDetails - InMage provider specific settings.
@@ -5382,6 +6301,14 @@ type InMageReplicationDetails struct {
 	ValidationErrors []*HealthError `json:"validationErrors,omitempty"`
 }
 
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// InMageReplicationDetails.
+func (i *InMageReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return &ReplicationProviderSpecificSettings{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageReprotectInput - InMageAzureV2 specific provider input.
 type InMageReprotectInput struct {
 	// REQUIRED; The class type.
@@ -5412,6 +6339,14 @@ type InMageReprotectInput struct {
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
 }
 
+// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
+// for type InMageReprotectInput.
+func (i *InMageReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
+	return &ReverseReplicationProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageTestFailoverInput - Provider specific input for InMage test failover.
 type InMageTestFailoverInput struct {
 	// REQUIRED; The class type.
@@ -5427,6 +6362,14 @@ type InMageTestFailoverInput struct {
 	RecoveryPointType *RecoveryPointType `json:"recoveryPointType,omitempty"`
 }
 
+// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
+// InMageTestFailoverInput.
+func (i *InMageTestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
+	return &TestFailoverProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
+}
+
 // InMageUnplannedFailoverInput - Provider specific input for InMage unplanned failover.
 type InMageUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -5440,6 +6383,14 @@ type InMageUnplannedFailoverInput struct {
 	// by RecoveryPointId will be used. In the other two cases, recovery point id will
 	// be ignored.
 	RecoveryPointType *RecoveryPointType `json:"recoveryPointType,omitempty"`
+}
+
+// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
+// for type InMageUnplannedFailoverInput.
+func (i *InMageUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
+	return &UnplannedFailoverProviderSpecificInput{
+		InstanceType: i.InstanceType,
+	}
 }
 
 // InMageVolumeExclusionOptions - Guest disk signature based disk exclusion option when doing enable protection of virtual
@@ -5488,6 +6439,14 @@ type InlineWorkflowTaskDetails struct {
 
 	// The list of child workflow ids.
 	WorkflowIDs []*string `json:"workflowIds,omitempty"`
+}
+
+// GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type InlineWorkflowTaskDetails.
+func (i *InlineWorkflowTaskDetails) GetGroupTaskDetails() *GroupTaskDetails {
+	return &GroupTaskDetails{
+		InstanceType: i.InstanceType,
+		ChildTasks:   i.ChildTasks,
+	}
 }
 
 // InnerHealthError - Implements InnerHealthError class. HealthError object has a list of InnerHealthErrors as child errors.
@@ -5590,6 +6549,9 @@ type JobDetails struct {
 	// object details.
 	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
 }
+
+// GetJobDetails implements the JobDetailsClassification interface for type JobDetails.
+func (j *JobDetails) GetJobDetails() *JobDetails { return j }
 
 // JobEntity - This class contains the minimal job details required to navigate to the desired drill down.
 type JobEntity struct {
@@ -5721,6 +6683,13 @@ type JobStatusEventDetails struct {
 	JobStatus *string `json:"jobStatus,omitempty"`
 }
 
+// GetEventSpecificDetails implements the EventSpecificDetailsClassification interface for type JobStatusEventDetails.
+func (j *JobStatusEventDetails) GetEventSpecificDetails() *EventSpecificDetails {
+	return &EventSpecificDetails{
+		InstanceType: j.InstanceType,
+	}
+}
+
 // JobTaskDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetJobTaskDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5739,6 +6708,16 @@ type JobTaskDetails struct {
 
 	// The job entity.
 	JobTask *JobEntity `json:"jobTask,omitempty"`
+}
+
+// GetJobTaskDetails implements the JobTaskDetailsClassification interface for type JobTaskDetails.
+func (j *JobTaskDetails) GetJobTaskDetails() *JobTaskDetails { return j }
+
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type JobTaskDetails.
+func (j *JobTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
+	return &TaskTypeDetails{
+		InstanceType: j.InstanceType,
+	}
 }
 
 // KeyEncryptionKeyInfo - Key Encryption Key (KEK) information.
@@ -5805,6 +6784,13 @@ type ManualActionTaskDetails struct {
 
 	// The observation.
 	Observation *string `json:"observation,omitempty"`
+}
+
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ManualActionTaskDetails.
+func (m *ManualActionTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
+	return &TaskTypeDetails{
+		InstanceType: m.InstanceType,
+	}
 }
 
 // MarsAgentDetails - Mars agent details.
@@ -5921,6 +6907,11 @@ type MigrateProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetMigrateProviderSpecificInput implements the MigrateProviderSpecificInputClassification interface for type MigrateProviderSpecificInput.
+func (m *MigrateProviderSpecificInput) GetMigrateProviderSpecificInput() *MigrateProviderSpecificInput {
+	return m
+}
+
 // MigrationItem - Migration item.
 type MigrationItem struct {
 	// Resource Location
@@ -6021,6 +7012,12 @@ type MigrationProviderSpecificSettingsClassification interface {
 type MigrationProviderSpecificSettings struct {
 	// REQUIRED; Gets the instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetMigrationProviderSpecificSettings implements the MigrationProviderSpecificSettingsClassification interface for type
+// MigrationProviderSpecificSettings.
+func (m *MigrationProviderSpecificSettings) GetMigrationProviderSpecificSettings() *MigrationProviderSpecificSettings {
+	return m
 }
 
 // MigrationRecoveryPoint - Recovery point for a migration item.
@@ -6157,6 +7154,12 @@ type NetworkMappingFabricSpecificSettings struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
+// type NetworkMappingFabricSpecificSettings.
+func (n *NetworkMappingFabricSpecificSettings) GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings {
+	return n
+}
+
 // NetworkMappingProperties - Network Mapping Properties.
 type NetworkMappingProperties struct {
 	// The fabric specific settings.
@@ -6223,6 +7226,13 @@ type NewProtectionProfile struct {
 	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
 }
 
+// GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type NewProtectionProfile.
+func (n *NewProtectionProfile) GetProtectionProfileCustomDetails() *ProtectionProfileCustomDetails {
+	return &ProtectionProfileCustomDetails{
+		ResourceType: n.ResourceType,
+	}
+}
+
 // NewRecoveryVirtualNetwork - Recovery virtual network input to create new virtual network from given source network.
 type NewRecoveryVirtualNetwork struct {
 	// REQUIRED; The class type.
@@ -6234,6 +7244,14 @@ type NewRecoveryVirtualNetwork struct {
 	// The name of the resource group to be used to create the recovery virtual network. If absent, target network would be created
 	// in the same resource group as target VM.
 	RecoveryVirtualNetworkResourceGroupName *string `json:"recoveryVirtualNetworkResourceGroupName,omitempty"`
+}
+
+// GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
+// NewRecoveryVirtualNetwork.
+func (n *NewRecoveryVirtualNetwork) GetRecoveryVirtualNetworkCustomDetails() *RecoveryVirtualNetworkCustomDetails {
+	return &RecoveryVirtualNetworkCustomDetails{
+		ResourceType: n.ResourceType,
+	}
 }
 
 // OSDetails - Disk Details.
@@ -6351,6 +7369,12 @@ type PlannedFailoverProviderSpecificFailoverInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
+// interface for type PlannedFailoverProviderSpecificFailoverInput.
+func (p *PlannedFailoverProviderSpecificFailoverInput) GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput {
+	return p
+}
+
 // Policy - Protection profile details.
 type Policy struct {
 	// Resource Location
@@ -6404,6 +7428,11 @@ type PolicyProviderSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type PolicyProviderSpecificDetails.
+func (p *PolicyProviderSpecificDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return p
+}
+
 // PolicyProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetPolicyProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -6419,6 +7448,11 @@ type PolicyProviderSpecificInputClassification interface {
 type PolicyProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type PolicyProviderSpecificInput.
+func (p *PolicyProviderSpecificInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return p
 }
 
 // ProcessServer - Details of the Process Server.
@@ -6818,6 +7852,12 @@ type ProtectionContainerMappingProviderSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
+// interface for type ProtectionContainerMappingProviderSpecificDetails.
+func (p *ProtectionContainerMappingProviderSpecificDetails) GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails {
+	return p
+}
+
 // ProtectionContainerProperties - Protection profile custom data details.
 type ProtectionContainerProperties struct {
 	// Fabric friendly name.
@@ -6857,6 +7897,11 @@ type ProtectionProfileCustomDetails struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
+// GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type ProtectionProfileCustomDetails.
+func (p *ProtectionProfileCustomDetails) GetProtectionProfileCustomDetails() *ProtectionProfileCustomDetails {
+	return p
+}
+
 // ProviderError - This class contains the error details per object.
 type ProviderError struct {
 	// The Error code.
@@ -6888,6 +7933,12 @@ type ProviderSpecificRecoveryPointDetailsClassification interface {
 type ProviderSpecificRecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
+// type ProviderSpecificRecoveryPointDetails.
+func (p *ProviderSpecificRecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails {
+	return p
 }
 
 // PushInstallerDetails - Push installer details.
@@ -6968,6 +8019,12 @@ type RecoveryAvailabilitySetCustomDetails struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
+// GetRecoveryAvailabilitySetCustomDetails implements the RecoveryAvailabilitySetCustomDetailsClassification interface for
+// type RecoveryAvailabilitySetCustomDetails.
+func (r *RecoveryAvailabilitySetCustomDetails) GetRecoveryAvailabilitySetCustomDetails() *RecoveryAvailabilitySetCustomDetails {
+	return r
+}
+
 // RecoveryPlan - Recovery plan details.
 type RecoveryPlan struct {
 	// Resource Location
@@ -6998,6 +8055,14 @@ type RecoveryPlanA2ADetails struct {
 	RecoveryZone *string `json:"recoveryZone,omitempty"`
 }
 
+// GetRecoveryPlanProviderSpecificDetails implements the RecoveryPlanProviderSpecificDetailsClassification interface for type
+// RecoveryPlanA2ADetails.
+func (r *RecoveryPlanA2ADetails) GetRecoveryPlanProviderSpecificDetails() *RecoveryPlanProviderSpecificDetails {
+	return &RecoveryPlanProviderSpecificDetails{
+		InstanceType: r.InstanceType,
+	}
+}
+
 // RecoveryPlanA2AFailoverInput - Recovery plan A2A failover input.
 type RecoveryPlanA2AFailoverInput struct {
 	// REQUIRED; The class type.
@@ -7011,6 +8076,14 @@ type RecoveryPlanA2AFailoverInput struct {
 
 	// A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
 	MultiVMSyncPointOption *MultiVMSyncPointOption `json:"multiVmSyncPointOption,omitempty"`
+}
+
+// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
+// for type RecoveryPlanA2AFailoverInput.
+func (r *RecoveryPlanA2AFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
+	return &RecoveryPlanProviderSpecificFailoverInput{
+		InstanceType: r.InstanceType,
+	}
 }
 
 // RecoveryPlanA2AInput - Recovery plan A2A input.
@@ -7029,6 +8102,14 @@ type RecoveryPlanA2AInput struct {
 
 	// The recovery zone.
 	RecoveryZone *string `json:"recoveryZone,omitempty"`
+}
+
+// GetRecoveryPlanProviderSpecificInput implements the RecoveryPlanProviderSpecificInputClassification interface for type
+// RecoveryPlanA2AInput.
+func (r *RecoveryPlanA2AInput) GetRecoveryPlanProviderSpecificInput() *RecoveryPlanProviderSpecificInput {
+	return &RecoveryPlanProviderSpecificInput{
+		InstanceType: r.InstanceType,
+	}
 }
 
 // RecoveryPlanAction - Recovery plan action details.
@@ -7061,6 +8142,11 @@ type RecoveryPlanActionDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanActionDetails.
+func (r *RecoveryPlanActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails {
+	return r
+}
+
 // RecoveryPlanAutomationRunbookActionDetails - Recovery plan Automation runbook action details.
 type RecoveryPlanAutomationRunbookActionDetails struct {
 	// REQUIRED; The fabric location.
@@ -7074,6 +8160,13 @@ type RecoveryPlanAutomationRunbookActionDetails struct {
 
 	// The runbook timeout.
 	Timeout *string `json:"timeout,omitempty"`
+}
+
+// GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanAutomationRunbookActionDetails.
+func (r *RecoveryPlanAutomationRunbookActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails {
+	return &RecoveryPlanActionDetails{
+		InstanceType: r.InstanceType,
+	}
 }
 
 // RecoveryPlanCollection - Recovery plan collection details.
@@ -7128,6 +8221,19 @@ type RecoveryPlanGroupTaskDetails struct {
 	RpGroupType *string `json:"rpGroupType,omitempty"`
 }
 
+// GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type RecoveryPlanGroupTaskDetails.
+func (r *RecoveryPlanGroupTaskDetails) GetGroupTaskDetails() *GroupTaskDetails {
+	return &GroupTaskDetails{
+		InstanceType: r.InstanceType,
+		ChildTasks:   r.ChildTasks,
+	}
+}
+
+// GetRecoveryPlanGroupTaskDetails implements the RecoveryPlanGroupTaskDetailsClassification interface for type RecoveryPlanGroupTaskDetails.
+func (r *RecoveryPlanGroupTaskDetails) GetRecoveryPlanGroupTaskDetails() *RecoveryPlanGroupTaskDetails {
+	return r
+}
+
 // RecoveryPlanHyperVReplicaAzureFailbackInput - Recovery plan HVR Azure failback input.
 type RecoveryPlanHyperVReplicaAzureFailbackInput struct {
 	// REQUIRED; The data sync option.
@@ -7138,6 +8244,14 @@ type RecoveryPlanHyperVReplicaAzureFailbackInput struct {
 
 	// REQUIRED; The ALR option.
 	RecoveryVMCreationOption *AlternateLocationRecoveryOption `json:"recoveryVmCreationOption,omitempty"`
+}
+
+// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
+// for type RecoveryPlanHyperVReplicaAzureFailbackInput.
+func (r *RecoveryPlanHyperVReplicaAzureFailbackInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
+	return &RecoveryPlanProviderSpecificFailoverInput{
+		InstanceType: r.InstanceType,
+	}
 }
 
 // RecoveryPlanHyperVReplicaAzureFailoverInput - Recovery plan HVR Azure failover input.
@@ -7155,6 +8269,14 @@ type RecoveryPlanHyperVReplicaAzureFailoverInput struct {
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
 }
 
+// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
+// for type RecoveryPlanHyperVReplicaAzureFailoverInput.
+func (r *RecoveryPlanHyperVReplicaAzureFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
+	return &RecoveryPlanProviderSpecificFailoverInput{
+		InstanceType: r.InstanceType,
+	}
+}
+
 // RecoveryPlanInMageAzureV2FailoverInput - Recovery plan InMageAzureV2 failover input.
 type RecoveryPlanInMageAzureV2FailoverInput struct {
 	// REQUIRED; The class type.
@@ -7167,6 +8289,14 @@ type RecoveryPlanInMageAzureV2FailoverInput struct {
 	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
 }
 
+// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
+// for type RecoveryPlanInMageAzureV2FailoverInput.
+func (r *RecoveryPlanInMageAzureV2FailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
+	return &RecoveryPlanProviderSpecificFailoverInput{
+		InstanceType: r.InstanceType,
+	}
+}
+
 // RecoveryPlanInMageFailoverInput - Recovery plan InMage failover input.
 type RecoveryPlanInMageFailoverInput struct {
 	// REQUIRED; The class type.
@@ -7174,6 +8304,14 @@ type RecoveryPlanInMageFailoverInput struct {
 
 	// REQUIRED; The recovery point type.
 	RecoveryPointType *RpInMageRecoveryPointType `json:"recoveryPointType,omitempty"`
+}
+
+// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
+// for type RecoveryPlanInMageFailoverInput.
+func (r *RecoveryPlanInMageFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
+	return &RecoveryPlanProviderSpecificFailoverInput{
+		InstanceType: r.InstanceType,
+	}
 }
 
 // RecoveryPlanInMageRcmFailbackFailoverInput - Recovery plan InMageRcmFailback failover input.
@@ -7188,6 +8326,14 @@ type RecoveryPlanInMageRcmFailbackFailoverInput struct {
 	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
 }
 
+// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
+// for type RecoveryPlanInMageRcmFailbackFailoverInput.
+func (r *RecoveryPlanInMageRcmFailbackFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
+	return &RecoveryPlanProviderSpecificFailoverInput{
+		InstanceType: r.InstanceType,
+	}
+}
+
 // RecoveryPlanInMageRcmFailoverInput - Recovery plan InMageRcm failover input.
 type RecoveryPlanInMageRcmFailoverInput struct {
 	// REQUIRED; The class type.
@@ -7200,6 +8346,14 @@ type RecoveryPlanInMageRcmFailoverInput struct {
 	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
 }
 
+// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
+// for type RecoveryPlanInMageRcmFailoverInput.
+func (r *RecoveryPlanInMageRcmFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
+	return &RecoveryPlanProviderSpecificFailoverInput{
+		InstanceType: r.InstanceType,
+	}
+}
+
 // RecoveryPlanManualActionDetails - Recovery plan manual action details.
 type RecoveryPlanManualActionDetails struct {
 	// REQUIRED; Gets the type of action details (see RecoveryPlanActionDetailsTypes enum for possible values).
@@ -7207,6 +8361,13 @@ type RecoveryPlanManualActionDetails struct {
 
 	// The manual action description.
 	Description *string `json:"description,omitempty"`
+}
+
+// GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanManualActionDetails.
+func (r *RecoveryPlanManualActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails {
+	return &RecoveryPlanActionDetails{
+		InstanceType: r.InstanceType,
+	}
 }
 
 // RecoveryPlanPlannedFailoverInput - Recovery plan planned failover input.
@@ -7299,6 +8460,12 @@ type RecoveryPlanProviderSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetRecoveryPlanProviderSpecificDetails implements the RecoveryPlanProviderSpecificDetailsClassification interface for type
+// RecoveryPlanProviderSpecificDetails.
+func (r *RecoveryPlanProviderSpecificDetails) GetRecoveryPlanProviderSpecificDetails() *RecoveryPlanProviderSpecificDetails {
+	return r
+}
+
 // RecoveryPlanProviderSpecificFailoverInputClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryPlanProviderSpecificFailoverInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -7316,6 +8483,12 @@ type RecoveryPlanProviderSpecificFailoverInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
+// for type RecoveryPlanProviderSpecificFailoverInput.
+func (r *RecoveryPlanProviderSpecificFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
+	return r
+}
+
 // RecoveryPlanProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryPlanProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -7331,6 +8504,12 @@ type RecoveryPlanProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetRecoveryPlanProviderSpecificInput implements the RecoveryPlanProviderSpecificInputClassification interface for type
+// RecoveryPlanProviderSpecificInput.
+func (r *RecoveryPlanProviderSpecificInput) GetRecoveryPlanProviderSpecificInput() *RecoveryPlanProviderSpecificInput {
+	return r
+}
+
 // RecoveryPlanScriptActionDetails - Recovery plan script action details.
 type RecoveryPlanScriptActionDetails struct {
 	// REQUIRED; The fabric location.
@@ -7344,6 +8523,13 @@ type RecoveryPlanScriptActionDetails struct {
 
 	// The script timeout.
 	Timeout *string `json:"timeout,omitempty"`
+}
+
+// GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanScriptActionDetails.
+func (r *RecoveryPlanScriptActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails {
+	return &RecoveryPlanActionDetails{
+		InstanceType: r.InstanceType,
+	}
 }
 
 // RecoveryPlanShutdownGroupTaskDetails - This class represents the recovery plan shutdown group task details.
@@ -7362,6 +8548,25 @@ type RecoveryPlanShutdownGroupTaskDetails struct {
 
 	// The group type.
 	RpGroupType *string `json:"rpGroupType,omitempty"`
+}
+
+// GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type RecoveryPlanShutdownGroupTaskDetails.
+func (r *RecoveryPlanShutdownGroupTaskDetails) GetGroupTaskDetails() *GroupTaskDetails {
+	return &GroupTaskDetails{
+		InstanceType: r.InstanceType,
+		ChildTasks:   r.ChildTasks,
+	}
+}
+
+// GetRecoveryPlanGroupTaskDetails implements the RecoveryPlanGroupTaskDetailsClassification interface for type RecoveryPlanShutdownGroupTaskDetails.
+func (r *RecoveryPlanShutdownGroupTaskDetails) GetRecoveryPlanGroupTaskDetails() *RecoveryPlanGroupTaskDetails {
+	return &RecoveryPlanGroupTaskDetails{
+		Name:         r.Name,
+		GroupID:      r.GroupID,
+		RpGroupType:  r.RpGroupType,
+		InstanceType: r.InstanceType,
+		ChildTasks:   r.ChildTasks,
+	}
 }
 
 // RecoveryPlanTestFailoverCleanupInput - Recovery plan test failover cleanup input.
@@ -7480,6 +8685,12 @@ type RecoveryProximityPlacementGroupCustomDetails struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
+// GetRecoveryProximityPlacementGroupCustomDetails implements the RecoveryProximityPlacementGroupCustomDetailsClassification
+// interface for type RecoveryProximityPlacementGroupCustomDetails.
+func (r *RecoveryProximityPlacementGroupCustomDetails) GetRecoveryProximityPlacementGroupCustomDetails() *RecoveryProximityPlacementGroupCustomDetails {
+	return r
+}
+
 // RecoveryResourceGroupCustomDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryResourceGroupCustomDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -7493,6 +8704,12 @@ type RecoveryResourceGroupCustomDetailsClassification interface {
 type RecoveryResourceGroupCustomDetails struct {
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
+}
+
+// GetRecoveryResourceGroupCustomDetails implements the RecoveryResourceGroupCustomDetailsClassification interface for type
+// RecoveryResourceGroupCustomDetails.
+func (r *RecoveryResourceGroupCustomDetails) GetRecoveryResourceGroupCustomDetails() *RecoveryResourceGroupCustomDetails {
+	return r
 }
 
 // RecoveryServicesProvider - Provider details.
@@ -7600,6 +8817,12 @@ type RecoveryVirtualNetworkCustomDetails struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
+// GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
+// RecoveryVirtualNetworkCustomDetails.
+func (r *RecoveryVirtualNetworkCustomDetails) GetRecoveryVirtualNetworkCustomDetails() *RecoveryVirtualNetworkCustomDetails {
+	return r
+}
+
 // RemoveDisksInput - Input for remove disk(s) operation.
 type RemoveDisksInput struct {
 	// Remove disk input properties.
@@ -7627,6 +8850,11 @@ type RemoveDisksProviderSpecificInputClassification interface {
 type RemoveDisksProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetRemoveDisksProviderSpecificInput implements the RemoveDisksProviderSpecificInputClassification interface for type RemoveDisksProviderSpecificInput.
+func (r *RemoveDisksProviderSpecificInput) GetRemoveDisksProviderSpecificInput() *RemoveDisksProviderSpecificInput {
+	return r
 }
 
 // RemoveProtectionContainerMappingInput - Container unpairing input.
@@ -7853,6 +9081,13 @@ type ReplicationFabricsClientListOptions struct {
 type ReplicationGroupDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type ReplicationGroupDetails.
+func (r *ReplicationGroupDetails) GetConfigurationSettings() *ConfigurationSettings {
+	return &ConfigurationSettings{
+		InstanceType: r.InstanceType,
+	}
 }
 
 // ReplicationJobsClientBeginCancelOptions contains the optional parameters for the ReplicationJobsClient.BeginCancel method.
@@ -8515,6 +9750,12 @@ type ReplicationProtectionIntentProviderSpecificSettings struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetReplicationProtectionIntentProviderSpecificSettings implements the ReplicationProtectionIntentProviderSpecificSettingsClassification
+// interface for type ReplicationProtectionIntentProviderSpecificSettings.
+func (r *ReplicationProtectionIntentProviderSpecificSettings) GetReplicationProtectionIntentProviderSpecificSettings() *ReplicationProtectionIntentProviderSpecificSettings {
+	return r
+}
+
 // ReplicationProtectionIntentsClientCreateOptions contains the optional parameters for the ReplicationProtectionIntentsClient.Create
 // method.
 type ReplicationProtectionIntentsClientCreateOptions struct {
@@ -8558,6 +9799,12 @@ type ReplicationProviderSpecificContainerCreationInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
+// interface for type ReplicationProviderSpecificContainerCreationInput.
+func (r *ReplicationProviderSpecificContainerCreationInput) GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput {
+	return r
+}
+
 // ReplicationProviderSpecificContainerMappingInputClassification provides polymorphic access to related types.
 // Call the interface's GetReplicationProviderSpecificContainerMappingInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -8571,6 +9818,12 @@ type ReplicationProviderSpecificContainerMappingInputClassification interface {
 type ReplicationProviderSpecificContainerMappingInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
+// interface for type ReplicationProviderSpecificContainerMappingInput.
+func (r *ReplicationProviderSpecificContainerMappingInput) GetReplicationProviderSpecificContainerMappingInput() *ReplicationProviderSpecificContainerMappingInput {
+	return r
 }
 
 // ReplicationProviderSpecificSettingsClassification provides polymorphic access to related types.
@@ -8590,6 +9843,12 @@ type ReplicationProviderSpecificSettings struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
+// ReplicationProviderSpecificSettings.
+func (r *ReplicationProviderSpecificSettings) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
+	return r
+}
+
 // ReplicationProviderSpecificUpdateContainerMappingInputClassification provides polymorphic access to related types.
 // Call the interface's GetReplicationProviderSpecificUpdateContainerMappingInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -8603,6 +9862,12 @@ type ReplicationProviderSpecificUpdateContainerMappingInputClassification interf
 type ReplicationProviderSpecificUpdateContainerMappingInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
+// interface for type ReplicationProviderSpecificUpdateContainerMappingInput.
+func (r *ReplicationProviderSpecificUpdateContainerMappingInput) GetReplicationProviderSpecificUpdateContainerMappingInput() *ReplicationProviderSpecificUpdateContainerMappingInput {
+	return r
 }
 
 // ReplicationRecoveryPlansClientBeginCreateOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginCreate
@@ -8974,6 +10239,11 @@ type ResyncProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetResyncProviderSpecificInput implements the ResyncProviderSpecificInputClassification interface for type ResyncProviderSpecificInput.
+func (r *ResyncProviderSpecificInput) GetResyncProviderSpecificInput() *ResyncProviderSpecificInput {
+	return r
+}
+
 // RetentionVolume - The retention details of the MT.
 type RetentionVolume struct {
 	// The volume capacity.
@@ -9018,6 +10288,12 @@ type ReverseReplicationProviderSpecificInputClassification interface {
 type ReverseReplicationProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
+// for type ReverseReplicationProviderSpecificInput.
+func (r *ReverseReplicationProviderSpecificInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
+	return r
 }
 
 // RoleAssignment - Azure role assignment details.
@@ -9065,6 +10341,13 @@ type ScriptActionTaskDetails struct {
 	Path *string `json:"path,omitempty"`
 }
 
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ScriptActionTaskDetails.
+func (s *ScriptActionTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
+	return &TaskTypeDetails{
+		InstanceType: s.InstanceType,
+	}
+}
+
 // ServiceError - ASR error model.
 type ServiceError struct {
 	// Activity Id.
@@ -9096,6 +10379,11 @@ type StorageAccountCustomDetailsClassification interface {
 type StorageAccountCustomDetails struct {
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
+}
+
+// GetStorageAccountCustomDetails implements the StorageAccountCustomDetailsClassification interface for type StorageAccountCustomDetails.
+func (s *StorageAccountCustomDetails) GetStorageAccountCustomDetails() *StorageAccountCustomDetails {
+	return s
 }
 
 // StorageClassification - Storage object definition.
@@ -9268,6 +10556,14 @@ type SwitchProtectionJobDetails struct {
 	NewReplicationProtectedItemID *string `json:"newReplicationProtectedItemId,omitempty"`
 }
 
+// GetJobDetails implements the JobDetailsClassification interface for type SwitchProtectionJobDetails.
+func (s *SwitchProtectionJobDetails) GetJobDetails() *JobDetails {
+	return &JobDetails{
+		InstanceType:          s.InstanceType,
+		AffectedObjectDetails: s.AffectedObjectDetails,
+	}
+}
+
 // SwitchProtectionProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetSwitchProtectionProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -9281,6 +10577,12 @@ type SwitchProtectionProviderSpecificInputClassification interface {
 type SwitchProtectionProviderSpecificInput struct {
 	// REQUIRED; Gets the Instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetSwitchProtectionProviderSpecificInput implements the SwitchProtectionProviderSpecificInputClassification interface for
+// type SwitchProtectionProviderSpecificInput.
+func (s *SwitchProtectionProviderSpecificInput) GetSwitchProtectionProviderSpecificInput() *SwitchProtectionProviderSpecificInput {
+	return s
 }
 
 // SwitchProviderInput - Input definition for switch provider.
@@ -9311,6 +10613,11 @@ type SwitchProviderSpecificInputClassification interface {
 type SwitchProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetSwitchProviderSpecificInput implements the SwitchProviderSpecificInputClassification interface for type SwitchProviderSpecificInput.
+func (s *SwitchProviderSpecificInput) GetSwitchProviderSpecificInput() *SwitchProviderSpecificInput {
+	return s
 }
 
 // TargetComputeSize - Represents applicable recovery vm sizes.
@@ -9392,6 +10699,9 @@ type TaskTypeDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type TaskTypeDetails.
+func (t *TaskTypeDetails) GetTaskTypeDetails() *TaskTypeDetails { return t }
+
 // TestFailoverCleanupInput - Input definition for test failover cleanup.
 type TestFailoverCleanupInput struct {
 	// REQUIRED; Test failover cleanup input properties.
@@ -9453,6 +10763,14 @@ type TestFailoverJobDetails struct {
 	TestFailoverStatus *string `json:"testFailoverStatus,omitempty"`
 }
 
+// GetJobDetails implements the JobDetailsClassification interface for type TestFailoverJobDetails.
+func (t *TestFailoverJobDetails) GetJobDetails() *JobDetails {
+	return &JobDetails{
+		InstanceType:          t.InstanceType,
+		AffectedObjectDetails: t.AffectedObjectDetails,
+	}
+}
+
 // TestFailoverProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetTestFailoverProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -9467,6 +10785,12 @@ type TestFailoverProviderSpecificInputClassification interface {
 type TestFailoverProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
+// TestFailoverProviderSpecificInput.
+func (t *TestFailoverProviderSpecificInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
+	return t
 }
 
 // TestMigrateCleanupInput - Input for test migrate cleanup.
@@ -9508,6 +10832,11 @@ type TestMigrateProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetTestMigrateProviderSpecificInput implements the TestMigrateProviderSpecificInputClassification interface for type TestMigrateProviderSpecificInput.
+func (t *TestMigrateProviderSpecificInput) GetTestMigrateProviderSpecificInput() *TestMigrateProviderSpecificInput {
+	return t
+}
+
 // UnplannedFailoverInput - Input definition for unplanned failover.
 type UnplannedFailoverInput struct {
 	// REQUIRED; Unplanned failover input properties.
@@ -9542,6 +10871,12 @@ type UnplannedFailoverProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
+// for type UnplannedFailoverProviderSpecificInput.
+func (u *UnplannedFailoverProviderSpecificInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
+	return u
+}
+
 // UpdateApplianceForReplicationProtectedItemInput - Update appliance for replication protected item input.
 type UpdateApplianceForReplicationProtectedItemInput struct {
 	// REQUIRED; Update appliance replication protected item properties.
@@ -9570,6 +10905,12 @@ type UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassificati
 type UpdateApplianceForReplicationProtectedItemProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput implements the UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification
+// interface for type UpdateApplianceForReplicationProtectedItemProviderSpecificInput.
+func (u *UpdateApplianceForReplicationProtectedItemProviderSpecificInput) GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput() *UpdateApplianceForReplicationProtectedItemProviderSpecificInput {
+	return u
 }
 
 // UpdateDiskInput - Disk input for update.
@@ -9606,6 +10947,12 @@ type UpdateMigrationItemProviderSpecificInputClassification interface {
 type UpdateMigrationItemProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetUpdateMigrationItemProviderSpecificInput implements the UpdateMigrationItemProviderSpecificInputClassification interface
+// for type UpdateMigrationItemProviderSpecificInput.
+func (u *UpdateMigrationItemProviderSpecificInput) GetUpdateMigrationItemProviderSpecificInput() *UpdateMigrationItemProviderSpecificInput {
+	return u
 }
 
 // UpdateMobilityServiceRequest - Request to update the mobility service on a protected item.
@@ -9728,6 +11075,12 @@ type UpdateReplicationProtectedItemProviderInputClassification interface {
 type UpdateReplicationProtectedItemProviderInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
+// interface for type UpdateReplicationProtectedItemProviderInput.
+func (u *UpdateReplicationProtectedItemProviderInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
+	return u
 }
 
 // UpdateVCenterRequest - Input required to update vCenter.
@@ -9937,10 +11290,25 @@ type VMNicUpdatesTaskDetails struct {
 	VMID *string `json:"vmId,omitempty"`
 }
 
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type VMNicUpdatesTaskDetails.
+func (v *VMNicUpdatesTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
+	return &TaskTypeDetails{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VMwareCbtContainerCreationInput - VMwareCbt container creation input.
 type VMwareCbtContainerCreationInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
+// interface for type VMwareCbtContainerCreationInput.
+func (v *VMwareCbtContainerCreationInput) GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput {
+	return &ReplicationProviderSpecificContainerCreationInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VMwareCbtContainerMappingInput - VMwareCbt container mapping input.
@@ -9965,6 +11333,14 @@ type VMwareCbtContainerMappingInput struct {
 
 	// The secret name of the storage account.
 	StorageAccountSasSecretName *string `json:"storageAccountSasSecretName,omitempty"`
+}
+
+// GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
+// interface for type VMwareCbtContainerMappingInput.
+func (v *VMwareCbtContainerMappingInput) GetReplicationProviderSpecificContainerMappingInput() *ReplicationProviderSpecificContainerMappingInput {
+	return &ReplicationProviderSpecificContainerMappingInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VMwareCbtDiskInput - VMwareCbt disk input.
@@ -10060,6 +11436,14 @@ type VMwareCbtEnableMigrationInput struct {
 	TestSubnetName *string `json:"testSubnetName,omitempty"`
 }
 
+// GetEnableMigrationProviderSpecificInput implements the EnableMigrationProviderSpecificInputClassification interface for
+// type VMwareCbtEnableMigrationInput.
+func (v *VMwareCbtEnableMigrationInput) GetEnableMigrationProviderSpecificInput() *EnableMigrationProviderSpecificInput {
+	return &EnableMigrationProviderSpecificInput{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VMwareCbtEventDetails - Event details for VMwareCbt provider.
 type VMwareCbtEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -10069,6 +11453,13 @@ type VMwareCbtEventDetails struct {
 	MigrationItemName *string `json:"migrationItemName,omitempty" azure:"ro"`
 }
 
+// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type VMwareCbtEventDetails.
+func (v *VMwareCbtEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
+	return &EventProviderSpecificDetails{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VMwareCbtMigrateInput - VMwareCbt specific migrate input.
 type VMwareCbtMigrateInput struct {
 	// REQUIRED; The class type.
@@ -10076,6 +11467,13 @@ type VMwareCbtMigrateInput struct {
 
 	// REQUIRED; A value indicating whether VM is to be shutdown.
 	PerformShutdown *string `json:"performShutdown,omitempty"`
+}
+
+// GetMigrateProviderSpecificInput implements the MigrateProviderSpecificInputClassification interface for type VMwareCbtMigrateInput.
+func (v *VMwareCbtMigrateInput) GetMigrateProviderSpecificInput() *MigrateProviderSpecificInput {
+	return &MigrateProviderSpecificInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VMwareCbtMigrationDetails - VMwareCbt provider specific settings.
@@ -10186,6 +11584,14 @@ type VMwareCbtMigrationDetails struct {
 	VmwareMachineID *string `json:"vmwareMachineId,omitempty" azure:"ro"`
 }
 
+// GetMigrationProviderSpecificSettings implements the MigrationProviderSpecificSettingsClassification interface for type
+// VMwareCbtMigrationDetails.
+func (v *VMwareCbtMigrationDetails) GetMigrationProviderSpecificSettings() *MigrationProviderSpecificSettings {
+	return &MigrationProviderSpecificSettings{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VMwareCbtNicDetails - VMwareCbt NIC details.
 type VMwareCbtNicDetails struct {
 	// A value indicating whether this is the primary NIC.
@@ -10273,6 +11679,13 @@ type VMwareCbtPolicyCreationInput struct {
 	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
 }
 
+// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type VMwareCbtPolicyCreationInput.
+func (v *VMwareCbtPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
+	return &PolicyProviderSpecificInput{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VMwareCbtProtectedDiskDetails - VMwareCbt protected disk details.
 type VMwareCbtProtectedDiskDetails struct {
 	// The disk type.
@@ -10336,6 +11749,14 @@ type VMwareCbtProtectionContainerMappingDetails struct {
 	TargetLocation *string `json:"targetLocation,omitempty" azure:"ro"`
 }
 
+// GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
+// interface for type VMwareCbtProtectionContainerMappingDetails.
+func (v *VMwareCbtProtectionContainerMappingDetails) GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails {
+	return &ProtectionContainerMappingProviderSpecificDetails{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VMwareCbtResyncInput - VMwareCbt specific resync input.
 type VMwareCbtResyncInput struct {
 	// REQUIRED; The class type.
@@ -10343,6 +11764,13 @@ type VMwareCbtResyncInput struct {
 
 	// REQUIRED; A value indicating whether CBT is to be reset.
 	SkipCbtReset *string `json:"skipCbtReset,omitempty"`
+}
+
+// GetResyncProviderSpecificInput implements the ResyncProviderSpecificInputClassification interface for type VMwareCbtResyncInput.
+func (v *VMwareCbtResyncInput) GetResyncProviderSpecificInput() *ResyncProviderSpecificInput {
+	return &ResyncProviderSpecificInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VMwareCbtTestMigrateInput - VMwareCbt specific test migrate input.
@@ -10358,6 +11786,13 @@ type VMwareCbtTestMigrateInput struct {
 
 	// The list of NIC details.
 	VMNics []*VMwareCbtNicInput `json:"vmNics,omitempty"`
+}
+
+// GetTestMigrateProviderSpecificInput implements the TestMigrateProviderSpecificInputClassification interface for type VMwareCbtTestMigrateInput.
+func (v *VMwareCbtTestMigrateInput) GetTestMigrateProviderSpecificInput() *TestMigrateProviderSpecificInput {
+	return &TestMigrateProviderSpecificInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VMwareCbtUpdateDiskInput - VMwareCbt disk input for update.
@@ -10427,6 +11862,14 @@ type VMwareCbtUpdateMigrationItemInput struct {
 
 	// The list of NIC details.
 	VMNics []*VMwareCbtNicInput `json:"vmNics,omitempty"`
+}
+
+// GetUpdateMigrationItemProviderSpecificInput implements the UpdateMigrationItemProviderSpecificInputClassification interface
+// for type VMwareCbtUpdateMigrationItemInput.
+func (v *VMwareCbtUpdateMigrationItemInput) GetUpdateMigrationItemProviderSpecificInput() *UpdateMigrationItemProviderSpecificInput {
+	return &UpdateMigrationItemProviderSpecificInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VMwareDetails - Store the fabric details specific to the VMware fabric.
@@ -10534,6 +11977,13 @@ type VMwareDetails struct {
 	WebLoadStatus *string `json:"webLoadStatus,omitempty"`
 }
 
+// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VMwareDetails.
+func (v *VMwareDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
+	return &FabricSpecificDetails{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VMwareV2FabricCreationInput - VMwareV2 fabric provider specific settings.
 type VMwareV2FabricCreationInput struct {
 	// REQUIRED; Gets the class type.
@@ -10547,6 +11997,13 @@ type VMwareV2FabricCreationInput struct {
 
 	// The ARM Id of the VMware site.
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
+}
+
+// GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type VMwareV2FabricCreationInput.
+func (v *VMwareV2FabricCreationInput) GetFabricSpecificCreationInput() *FabricSpecificCreationInput {
+	return &FabricSpecificCreationInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VMwareV2FabricSpecificDetails - VMwareV2 fabric specific details.
@@ -10574,6 +12031,13 @@ type VMwareV2FabricSpecificDetails struct {
 
 	// READ-ONLY; The ARM Id of the VMware site.
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty" azure:"ro"`
+}
+
+// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VMwareV2FabricSpecificDetails.
+func (v *VMwareV2FabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
+	return &FabricSpecificDetails{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VMwareVirtualMachineDetails - VMware provider specific settings.
@@ -10610,6 +12074,13 @@ type VMwareVirtualMachineDetails struct {
 
 	// The validation errors.
 	ValidationErrors []*HealthError `json:"validationErrors,omitempty"`
+}
+
+// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type VMwareVirtualMachineDetails.
+func (v *VMwareVirtualMachineDetails) GetConfigurationSettings() *ConfigurationSettings {
+	return &ConfigurationSettings{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VaultHealthDetails - Vault health details definition.
@@ -10723,10 +12194,32 @@ type VirtualMachineTaskDetails struct {
 	SkippedReasonString *string `json:"skippedReasonString,omitempty"`
 }
 
+// GetJobTaskDetails implements the JobTaskDetailsClassification interface for type VirtualMachineTaskDetails.
+func (v *VirtualMachineTaskDetails) GetJobTaskDetails() *JobTaskDetails {
+	return &JobTaskDetails{
+		JobTask:      v.JobTask,
+		InstanceType: v.InstanceType,
+	}
+}
+
+// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type VirtualMachineTaskDetails.
+func (v *VirtualMachineTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
+	return &TaskTypeDetails{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VmmDetails - VMM fabric specific details.
 type VmmDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VmmDetails.
+func (v *VmmDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
+	return &FabricSpecificDetails{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VmmToAzureCreateNetworkMappingInput - Create network mappings input properties/behavior specific to Vmm to Azure Network
@@ -10736,10 +12229,26 @@ type VmmToAzureCreateNetworkMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
+// for type VmmToAzureCreateNetworkMappingInput.
+func (v *VmmToAzureCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput {
+	return &FabricSpecificCreateNetworkMappingInput{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VmmToAzureNetworkMappingSettings - E2A Network Mapping fabric specific settings.
 type VmmToAzureNetworkMappingSettings struct {
 	// REQUIRED; Gets the Instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
+// type VmmToAzureNetworkMappingSettings.
+func (v *VmmToAzureNetworkMappingSettings) GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings {
+	return &NetworkMappingFabricSpecificSettings{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VmmToAzureUpdateNetworkMappingInput - Update network mappings input properties/behavior specific to vmm to azure.
@@ -10748,10 +12257,26 @@ type VmmToAzureUpdateNetworkMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
+// for type VmmToAzureUpdateNetworkMappingInput.
+func (v *VmmToAzureUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput {
+	return &FabricSpecificUpdateNetworkMappingInput{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VmmToVmmCreateNetworkMappingInput - Create network mappings input properties/behavior specific to vmm to vmm Network mapping.
 type VmmToVmmCreateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
+// for type VmmToVmmCreateNetworkMappingInput.
+func (v *VmmToVmmCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput {
+	return &FabricSpecificCreateNetworkMappingInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VmmToVmmNetworkMappingSettings - E2E Network Mapping fabric specific settings.
@@ -10760,10 +12285,26 @@ type VmmToVmmNetworkMappingSettings struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
+// type VmmToVmmNetworkMappingSettings.
+func (v *VmmToVmmNetworkMappingSettings) GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings {
+	return &NetworkMappingFabricSpecificSettings{
+		InstanceType: v.InstanceType,
+	}
+}
+
 // VmmToVmmUpdateNetworkMappingInput - Update network mappings input properties/behavior specific to vmm to vmm.
 type VmmToVmmUpdateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
+// for type VmmToVmmUpdateNetworkMappingInput.
+func (v *VmmToVmmUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput {
+	return &FabricSpecificUpdateNetworkMappingInput{
+		InstanceType: v.InstanceType,
+	}
 }
 
 // VmmVirtualMachineDetails - VMM fabric provider specific VM settings.
@@ -10797,6 +12338,28 @@ type VmmVirtualMachineDetails struct {
 	SourceItemID *string `json:"sourceItemId,omitempty"`
 }
 
+// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type VmmVirtualMachineDetails.
+func (v *VmmVirtualMachineDetails) GetConfigurationSettings() *ConfigurationSettings {
+	return &ConfigurationSettings{
+		InstanceType: v.InstanceType,
+	}
+}
+
+// GetHyperVVirtualMachineDetails implements the HyperVVirtualMachineDetailsClassification interface for type VmmVirtualMachineDetails.
+func (v *VmmVirtualMachineDetails) GetHyperVVirtualMachineDetails() *HyperVVirtualMachineDetails {
+	return &HyperVVirtualMachineDetails{
+		SourceItemID:           v.SourceItemID,
+		Generation:             v.Generation,
+		OSDetails:              v.OSDetails,
+		DiskDetails:            v.DiskDetails,
+		HasPhysicalDisk:        v.HasPhysicalDisk,
+		HasFibreChannelAdapter: v.HasFibreChannelAdapter,
+		HasSharedVhd:           v.HasSharedVhd,
+		HyperVHostID:           v.HyperVHostID,
+		InstanceType:           v.InstanceType,
+	}
+}
+
 // VmwareCbtPolicyDetails - VMware Cbt specific policy details.
 type VmwareCbtPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -10810,4 +12373,11 @@ type VmwareCbtPolicyDetails struct {
 
 	// The duration in minutes until which the recovery points need to be stored.
 	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
+}
+
+// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type VmwareCbtPolicyDetails.
+func (v *VmwareCbtPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
+	return &PolicyProviderSpecificDetails{
+		InstanceType: v.InstanceType,
+	}
 }

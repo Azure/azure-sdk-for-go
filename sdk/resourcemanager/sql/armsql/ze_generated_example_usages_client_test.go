@@ -24,18 +24,17 @@ func ExampleUsagesClient_NewListByInstancePoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewUsagesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewUsagesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInstancePoolPager("<resource-group-name>",
-		"<instance-pool-name>",
+	pager := client.NewListByInstancePoolPager("group1",
+		"testIP",
 		&armsql.UsagesClientListByInstancePoolOptions{ExpandChildren: to.Ptr(true)})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

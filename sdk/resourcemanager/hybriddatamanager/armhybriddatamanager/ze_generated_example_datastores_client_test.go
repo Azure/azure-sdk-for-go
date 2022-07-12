@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager"
@@ -26,18 +24,17 @@ func ExampleDataStoresClient_NewListByDataManagerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewDataStoresClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewDataStoresClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataManagerPager("<resource-group-name>",
-		"<data-manager-name>",
+	pager := client.NewListByDataManagerPager("ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		&armhybriddatamanager.DataStoresClientListByDataManagerOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleDataStoresClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewDataStoresClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewDataStoresClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<data-store-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+		"TestStorSimpleSource1",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,42 +73,42 @@ func ExampleDataStoresClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewDataStoresClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewDataStoresClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<data-store-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+		"TestAzureStorage1",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		armhybriddatamanager.DataStore{
 			Properties: &armhybriddatamanager.DataStoreProperties{
 				CustomerSecrets: []*armhybriddatamanager.CustomerSecret{
 					{
 						Algorithm:     to.Ptr(armhybriddatamanager.SupportedAlgorithmRSA15),
-						KeyIdentifier: to.Ptr("<key-identifier>"),
-						KeyValue:      to.Ptr("<key-value>"),
+						KeyIdentifier: to.Ptr("StorageAccountAccessKey"),
+						KeyValue:      to.Ptr("Of4H9eF03G8QuxvkZQEbFWv3YdN3U//WugzuqReQekbXXQyg+QSicVKrwSOOKVi1zWMYGbKg7d5/ES2gdz+O5ZEw89bvE4mJD/wQmkIsqhPnbN0gyVK6nZePXVUU1A+UzjLfvhSA6KyUQfzNAZ5/TLt6fo1JyQrKTtkvnkLFyfv1AqBZ+dw8JK3RZi/rEN8HD3R3qsBwUYfyEuGLGiujy2CGrr/1uPiUVMR6QuFWRsjm39eMSHa4maLg4tQ0IY/jIy8rMlx3KjF3CcCbPzAqEq5vXy37wkjZbus771te1gLSrzcpVKIMg4DrmgaoJ02jAu+izBjNgLXAFPSUneQ8yw==:ezMkh4PMhCnjJtYkpTaP0SdblP5VAeRe4glW2PgIzICHw3T8ZyGDoaTrCv4/m5wtcEhWdtxhta+j1MQWlK5MIA+hvf8QjIDIjQv696ov5y+pcFe/upd2ekGOei7FCwB2u7I8WnkAtIKTUkf6eDQBZXm26DjfG1Dlc+Mjjq+AerukEa6WpOyqrD7Qub26Pgmj4AsuBx19X1EAmTZacubkoiNagXM8V+IDanHOhLMvfgQ7rw8oZhWfofxi4m+eJqjOXXaqSyorNK8UEcqP6P9pDP8AN8ulXEx6rZy2B5Oi0vSV+wlRLbUuQslga4ItOGxctW/ZX8uWozt+5A3k4URt6A=="),
 					},
 					{
 						Algorithm:     to.Ptr(armhybriddatamanager.SupportedAlgorithmRSA15),
-						KeyIdentifier: to.Ptr("<key-identifier>"),
-						KeyValue:      to.Ptr("<key-value>"),
+						KeyIdentifier: to.Ptr("StorageAccountAccessKeyForQueue"),
+						KeyValue:      to.Ptr("Of4H9eF03G8QuxvkZQEbFWv3YdN3U//WugzuqReQekbXXQyg+QSicVKrwSOOKVi1zWMYGbKg7d5/ES2gdz+O5ZEw89bvE4mJD/wQmkIsqhPnbN0gyVK6nZePXVUU1A+UzjLfvhSA6KyUQfzNAZ5/TLt6fo1JyQrKTtkvnkLFyfv1AqBZ+dw8JK3RZi/rEN8HD3R3qsBwUYfyEuGLGiujy2CGrr/1uPiUVMR6QuFWRsjm39eMSHa4maLg4tQ0IY/jIy8rMlx3KjF3CcCbPzAqEq5vXy37wkjZbus771te1gLSrzcpVKIMg4DrmgaoJ02jAu+izBjNgLXAFPSUneQ8yw==:ezMkh4PMhCnjJtYkpTaP0SdblP5VAeRe4glW2PgIzICHw3T8ZyGDoaTrCv4/m5wtcEhWdtxhta+j1MQWlK5MIA+hvf8QjIDIjQv696ov5y+pcFe/upd2ekGOei7FCwB2u7I8WnkAtIKTUkf6eDQBZXm26DjfG1Dlc+Mjjq+AerukEa6WpOyqrD7Qub26Pgmj4AsuBx19X1EAmTZacubkoiNagXM8V+IDanHOhLMvfgQ7rw8oZhWfofxi4m+eJqjOXXaqSyorNK8UEcqP6P9pDP8AN8ulXEx6rZy2B5Oi0vSV+wlRLbUuQslga4ItOGxctW/ZX8uWozt+5A3k4URt6A=="),
 					}},
-				DataStoreTypeID: to.Ptr("<data-store-type-id>"),
+				DataStoreTypeID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStoreTypes/AzureStorageAccount"),
 				ExtendedProperties: map[string]interface{}{
 					"extendedSaKey":              nil,
 					"extendedSaName":             "/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.Storage/storageAccounts/dmsdatasink",
 					"storageAccountNameForQueue": "/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.Storage/storageAccounts/dmsdatasink",
 				},
-				RepositoryID: to.Ptr("<repository-id>"),
+				RepositoryID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.Storage/storageAccounts/dmsdatasink"),
 				State:        to.Ptr(armhybriddatamanager.StateEnabled),
 			},
 		},
-		&armhybriddatamanager.DataStoresClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -126,19 +123,19 @@ func ExampleDataStoresClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewDataStoresClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewDataStoresClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<data-store-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
-		&armhybriddatamanager.DataStoresClientBeginDeleteOptions{ResumeToken: ""})
+		"TestAzureStorage1",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

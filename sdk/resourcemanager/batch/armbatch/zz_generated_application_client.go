@@ -39,7 +39,7 @@ func NewApplicationClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewApplicationClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Create - Adds an application to the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
@@ -102,7 +103,7 @@ func (client *ApplicationClient) createCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -120,6 +121,7 @@ func (client *ApplicationClient) createHandleResponse(resp *http.Response) (Appl
 
 // Delete - Deletes an application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
@@ -165,12 +167,13 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
@@ -216,7 +219,7 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,11 +234,12 @@ func (client *ApplicationClient) getHandleResponse(resp *http.Response) (Applica
 
 // NewListPager - Lists all of the applications in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - ApplicationClientListOptions contains the optional parameters for the ApplicationClient.List method.
 func (client *ApplicationClient) NewListPager(resourceGroupName string, accountName string, options *ApplicationClientListOptions) *runtime.Pager[ApplicationClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationClientListResponse]{
 		More: func(page ApplicationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -287,7 +291,7 @@ func (client *ApplicationClient) listCreateRequest(ctx context.Context, resource
 	}
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -302,6 +306,7 @@ func (client *ApplicationClient) listHandleResponse(resp *http.Response) (Applic
 
 // Update - Updates settings for the specified application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
@@ -348,7 +353,7 @@ func (client *ApplicationClient) updateCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

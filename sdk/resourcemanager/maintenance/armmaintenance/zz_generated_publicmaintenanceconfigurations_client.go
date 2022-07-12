@@ -39,7 +39,7 @@ func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential 
 
 // Get - Get Public Maintenance Configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceName - Maintenance Configuration Name
 // options - PublicMaintenanceConfigurationsClientGetOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.Get
 // method.
@@ -93,7 +94,7 @@ func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,10 +109,11 @@ func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *htt
 
 // NewListPager - Get Public Maintenance Configuration records
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // options - PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.List
 // method.
 func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PublicMaintenanceConfigurationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PublicMaintenanceConfigurationsClientListResponse]{
 		More: func(page PublicMaintenanceConfigurationsClientListResponse) bool {
 			return false
 		},
@@ -146,7 +148,7 @@ func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

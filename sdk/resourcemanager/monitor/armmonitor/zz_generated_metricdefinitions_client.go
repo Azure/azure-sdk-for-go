@@ -34,7 +34,7 @@ func NewMetricDefinitionsClient(credential azcore.TokenCredential, options *arm.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,10 +51,11 @@ func NewMetricDefinitionsClient(credential azcore.TokenCredential, options *arm.
 
 // NewListPager - Lists the metric definitions for the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-01-01
 // resourceURI - The identifier of the resource.
 // options - MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.List method.
 func (client *MetricDefinitionsClient) NewListPager(resourceURI string, options *MetricDefinitionsClientListOptions) *runtime.Pager[MetricDefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MetricDefinitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MetricDefinitionsClientListResponse]{
 		More: func(page MetricDefinitionsClientListResponse) bool {
 			return false
 		},
@@ -89,7 +90,7 @@ func (client *MetricDefinitionsClient) listCreateRequest(ctx context.Context, re
 		reqQP.Set("metricnamespace", *options.Metricnamespace)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

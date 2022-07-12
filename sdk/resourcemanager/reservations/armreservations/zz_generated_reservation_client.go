@@ -37,7 +37,7 @@ func NewReservationClient(credential azcore.TokenCredential, options *arm.Client
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,24 +54,26 @@ func NewReservationClient(credential azcore.TokenCredential, options *arm.Client
 
 // BeginAvailableScopes - Get Available Scopes for Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // reservationOrderID - Order Id of the reservation
 // reservationID - Id of the Reservation Item
 // options - ReservationClientBeginAvailableScopesOptions contains the optional parameters for the ReservationClient.BeginAvailableScopes
 // method.
-func (client *ReservationClient) BeginAvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (*armruntime.Poller[ReservationClientAvailableScopesResponse], error) {
+func (client *ReservationClient) BeginAvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (*runtime.Poller[ReservationClientAvailableScopesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.availableScopes(ctx, reservationOrderID, reservationID, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReservationClientAvailableScopesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReservationClientAvailableScopesResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReservationClientAvailableScopesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReservationClientAvailableScopesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // AvailableScopes - Get Available Scopes for Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *ReservationClient) availableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (*http.Response, error) {
 	req, err := client.availableScopesCreateRequest(ctx, reservationOrderID, reservationID, body, options)
 	if err != nil {
@@ -105,12 +107,13 @@ func (client *ReservationClient) availableScopesCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // Get - Get specific Reservation details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // reservationID - Id of the Reservation Item
 // reservationOrderID - Order Id of the reservation
 // options - ReservationClientGetOptions contains the optional parameters for the ReservationClient.Get method.
@@ -150,7 +153,7 @@ func (client *ReservationClient) getCreateRequest(ctx context.Context, reservati
 		reqQP.Set("expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -165,10 +168,11 @@ func (client *ReservationClient) getHandleResponse(resp *http.Response) (Reserva
 
 // NewListPager - List Reservations within a single ReservationOrder.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // reservationOrderID - Order Id of the reservation
 // options - ReservationClientListOptions contains the optional parameters for the ReservationClient.List method.
 func (client *ReservationClient) NewListPager(reservationOrderID string, options *ReservationClientListOptions) *runtime.Pager[ReservationClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationClientListResponse]{
 		More: func(page ReservationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -209,7 +213,7 @@ func (client *ReservationClient) listCreateRequest(ctx context.Context, reservat
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -225,9 +229,10 @@ func (client *ReservationClient) listHandleResponse(resp *http.Response) (Reserv
 // NewListAllPager - List the reservations and the roll up counts of reservations group by provisioning states that the user
 // has access to in the current tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // options - ReservationClientListAllOptions contains the optional parameters for the ReservationClient.ListAll method.
 func (client *ReservationClient) NewListAllPager(options *ReservationClientListAllOptions) *runtime.Pager[ReservationClientListAllResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationClientListAllResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationClientListAllResponse]{
 		More: func(page ReservationClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -282,7 +287,7 @@ func (client *ReservationClient) listAllCreateRequest(ctx context.Context, optio
 		reqQP.Set("take", strconv.FormatFloat(float64(*options.Take), 'f', -1, 32))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -297,12 +302,13 @@ func (client *ReservationClient) listAllHandleResponse(resp *http.Response) (Res
 
 // NewListRevisionsPager - List of all the revisions for the Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // reservationID - Id of the Reservation Item
 // reservationOrderID - Order Id of the reservation
 // options - ReservationClientListRevisionsOptions contains the optional parameters for the ReservationClient.ListRevisions
 // method.
 func (client *ReservationClient) NewListRevisionsPager(reservationID string, reservationOrderID string, options *ReservationClientListRevisionsOptions) *runtime.Pager[ReservationClientListRevisionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationClientListRevisionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationClientListRevisionsResponse]{
 		More: func(page ReservationClientListRevisionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -347,7 +353,7 @@ func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -363,25 +369,27 @@ func (client *ReservationClient) listRevisionsHandleResponse(resp *http.Response
 // BeginMerge - Merge the specified Reservations into a new Reservation. The two Reservations being merged must have same
 // properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // reservationOrderID - Order Id of the reservation
 // body - Information needed for commercial request for a reservation
 // options - ReservationClientBeginMergeOptions contains the optional parameters for the ReservationClient.BeginMerge method.
-func (client *ReservationClient) BeginMerge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (*armruntime.Poller[ReservationClientMergeResponse], error) {
+func (client *ReservationClient) BeginMerge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (*runtime.Poller[ReservationClientMergeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.merge(ctx, reservationOrderID, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ReservationClientMergeResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReservationClientMergeResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReservationClientMergeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReservationClientMergeResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Merge - Merge the specified Reservations into a new Reservation. The two Reservations being merged must have same properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *ReservationClient) merge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (*http.Response, error) {
 	req, err := client.mergeCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
@@ -411,31 +419,33 @@ func (client *ReservationClient) mergeCreateRequest(ctx context.Context, reserva
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginSplit - Split a Reservation into two Reservations with specified quantity distribution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // reservationOrderID - Order Id of the reservation
 // body - Information needed to Split a reservation item
 // options - ReservationClientBeginSplitOptions contains the optional parameters for the ReservationClient.BeginSplit method.
-func (client *ReservationClient) BeginSplit(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (*armruntime.Poller[ReservationClientSplitResponse], error) {
+func (client *ReservationClient) BeginSplit(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (*runtime.Poller[ReservationClientSplitResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.split(ctx, reservationOrderID, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ReservationClientSplitResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReservationClientSplitResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReservationClientSplitResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReservationClientSplitResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Split - Split a Reservation into two Reservations with specified quantity distribution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *ReservationClient) split(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (*http.Response, error) {
 	req, err := client.splitCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
@@ -465,30 +475,32 @@ func (client *ReservationClient) splitCreateRequest(ctx context.Context, reserva
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginUpdate - Updates the applied scopes of the Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // reservationOrderID - Order Id of the reservation
 // reservationID - Id of the Reservation Item
 // parameters - Information needed to patch a reservation item
 // options - ReservationClientBeginUpdateOptions contains the optional parameters for the ReservationClient.BeginUpdate method.
-func (client *ReservationClient) BeginUpdate(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (*armruntime.Poller[ReservationClientUpdateResponse], error) {
+func (client *ReservationClient) BeginUpdate(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (*runtime.Poller[ReservationClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, reservationOrderID, reservationID, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReservationClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReservationClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReservationClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReservationClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the applied scopes of the Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *ReservationClient) update(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, reservationOrderID, reservationID, parameters, options)
 	if err != nil {
@@ -522,6 +534,6 @@ func (client *ReservationClient) updateCreateRequest(ctx context.Context, reserv
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

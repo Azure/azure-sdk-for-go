@@ -24,18 +24,17 @@ func ExampleIntegrationAccountAssembliesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountAssembliesClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountAssembliesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<integration-account-name>",
+	pager := client.NewListPager("testResourceGroup",
+		"testIntegrationAccount",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExampleIntegrationAccountAssembliesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountAssembliesClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountAssembliesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<assembly-artifact-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testAssembly",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,20 +73,20 @@ func ExampleIntegrationAccountAssembliesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountAssembliesClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountAssembliesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<assembly-artifact-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testAssembly",
 		armlogic.AssemblyDefinition{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armlogic.AssemblyProperties{
 				Metadata:     map[string]interface{}{},
 				Content:      "Base64 encoded Assembly Content",
-				AssemblyName: to.Ptr("<assembly-name>"),
+				AssemblyName: to.Ptr("System.IdentityModel.Tokens.Jwt"),
 			},
 		},
 		nil)
@@ -105,14 +104,14 @@ func ExampleIntegrationAccountAssembliesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountAssembliesClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountAssembliesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<assembly-artifact-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testAssembly",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

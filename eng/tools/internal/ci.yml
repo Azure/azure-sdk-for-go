@@ -22,6 +22,6 @@ pr:
       - eng/tools/internal
 
 stages:
-  - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  - template: /eng/pipelines/templates/jobs/archetype-sdk-eng-client.yml
     parameters:
       ServiceDirectory: '../eng/tools/internal'

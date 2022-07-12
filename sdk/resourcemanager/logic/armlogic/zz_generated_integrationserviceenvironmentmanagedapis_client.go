@@ -38,7 +38,7 @@ func NewIntegrationServiceEnvironmentManagedApisClient(subscriptionID string, cr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewIntegrationServiceEnvironmentManagedApisClient(subscriptionID string, cr
 
 // BeginDelete - Deletes the integration service environment managed Api.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // apiName - The api name.
 // options - IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.BeginDelete
 // method.
-func (client *IntegrationServiceEnvironmentManagedApisClient) BeginDelete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions) (*armruntime.Poller[IntegrationServiceEnvironmentManagedApisClientDeleteResponse], error) {
+func (client *IntegrationServiceEnvironmentManagedApisClient) BeginDelete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions) (*runtime.Poller[IntegrationServiceEnvironmentManagedApisClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationServiceEnvironmentManagedApisClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationServiceEnvironmentManagedApisClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationServiceEnvironmentManagedApisClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationServiceEnvironmentManagedApisClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the integration service environment managed Api.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 func (client *IntegrationServiceEnvironmentManagedApisClient) deleteOperation(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, options)
 	if err != nil {
@@ -116,12 +118,13 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) deleteCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the integration service environment managed Api.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group name.
 // integrationServiceEnvironmentName - The integration service environment name.
 // apiName - The api name.
@@ -168,7 +171,7 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) getCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -183,12 +186,13 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) getHandleResponse(
 
 // NewListPager - Gets the integration service environment managed Apis.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // options - IntegrationServiceEnvironmentManagedApisClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.List
 // method.
 func (client *IntegrationServiceEnvironmentManagedApisClient) NewListPager(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentManagedApisClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedApisClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentManagedApisClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationServiceEnvironmentManagedApisClientListResponse]{
 		More: func(page IntegrationServiceEnvironmentManagedApisClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -237,7 +241,7 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) listCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,26 +256,28 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) listHandleResponse
 
 // BeginPut - Puts the integration service environment managed Api.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group name.
 // integrationServiceEnvironmentName - The integration service environment name.
 // apiName - The api name.
 // integrationServiceEnvironmentManagedAPI - The integration service environment managed api.
 // options - IntegrationServiceEnvironmentManagedApisClientBeginPutOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.BeginPut
 // method.
-func (client *IntegrationServiceEnvironmentManagedApisClient) BeginPut(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisClientBeginPutOptions) (*armruntime.Poller[IntegrationServiceEnvironmentManagedApisClientPutResponse], error) {
+func (client *IntegrationServiceEnvironmentManagedApisClient) BeginPut(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisClientBeginPutOptions) (*runtime.Poller[IntegrationServiceEnvironmentManagedApisClientPutResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.put(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, integrationServiceEnvironmentManagedAPI, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationServiceEnvironmentManagedApisClientPutResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationServiceEnvironmentManagedApisClientPutResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationServiceEnvironmentManagedApisClientPutResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationServiceEnvironmentManagedApisClientPutResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Put - Puts the integration service environment managed Api.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 func (client *IntegrationServiceEnvironmentManagedApisClient) put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisClientBeginPutOptions) (*http.Response, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, integrationServiceEnvironmentManagedAPI, options)
 	if err != nil {
@@ -313,6 +319,6 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) putCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, integrationServiceEnvironmentManagedAPI)
 }

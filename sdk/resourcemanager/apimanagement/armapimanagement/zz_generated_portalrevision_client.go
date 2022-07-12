@@ -40,7 +40,7 @@ func NewPortalRevisionClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,28 +59,30 @@ func NewPortalRevisionClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Creates a new developer portal's revision by running the portal's publishing. The isCurrent property
 // indicates if the revision is publicly accessible.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // portalRevisionID - Portal revision identifier. Must be unique in the current API Management service instance.
 // options - PortalRevisionClientBeginCreateOrUpdateOptions contains the optional parameters for the PortalRevisionClient.BeginCreateOrUpdate
 // method.
-func (client *PortalRevisionClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, parameters PortalRevisionContract, options *PortalRevisionClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PortalRevisionClientCreateOrUpdateResponse], error) {
+func (client *PortalRevisionClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, parameters PortalRevisionContract, options *PortalRevisionClientBeginCreateOrUpdateOptions) (*runtime.Poller[PortalRevisionClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, portalRevisionID, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PortalRevisionClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PortalRevisionClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PortalRevisionClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PortalRevisionClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new developer portal's revision by running the portal's publishing. The isCurrent property indicates
 // if the revision is publicly accessible.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *PortalRevisionClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, parameters PortalRevisionContract, options *PortalRevisionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, portalRevisionID, parameters, options)
 	if err != nil {
@@ -122,12 +124,13 @@ func (client *PortalRevisionClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Get - Gets the developer portal's revision specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // portalRevisionID - Portal revision identifier. Must be unique in the current API Management service instance.
@@ -173,7 +176,7 @@ func (client *PortalRevisionClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -190,6 +193,7 @@ func (client *PortalRevisionClient) getHandleResponse(resp *http.Response) (Port
 }
 
 // GetEntityTag - Gets the developer portal revision specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // portalRevisionID - Portal revision identifier. Must be unique in the current API Management service instance.
@@ -203,6 +207,9 @@ func (client *PortalRevisionClient) GetEntityTag(ctx context.Context, resourceGr
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PortalRevisionClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PortalRevisionClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -233,7 +240,7 @@ func (client *PortalRevisionClient) getEntityTagCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -243,20 +250,19 @@ func (client *PortalRevisionClient) getEntityTagHandleResponse(resp *http.Respon
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByServicePager - Lists developer portal's revisions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - PortalRevisionClientListByServiceOptions contains the optional parameters for the PortalRevisionClient.ListByService
 // method.
 func (client *PortalRevisionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *PortalRevisionClientListByServiceOptions) *runtime.Pager[PortalRevisionClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PortalRevisionClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PortalRevisionClientListByServiceResponse]{
 		More: func(page PortalRevisionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -314,7 +320,7 @@ func (client *PortalRevisionClient) listByServiceCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -329,6 +335,7 @@ func (client *PortalRevisionClient) listByServiceHandleResponse(resp *http.Respo
 
 // BeginUpdate - Updates the description of specified portal revision or makes it current.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // portalRevisionID - Portal revision identifier. Must be unique in the current API Management service instance.
@@ -336,22 +343,23 @@ func (client *PortalRevisionClient) listByServiceHandleResponse(resp *http.Respo
 // it should be * for unconditional update.
 // options - PortalRevisionClientBeginUpdateOptions contains the optional parameters for the PortalRevisionClient.BeginUpdate
 // method.
-func (client *PortalRevisionClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, ifMatch string, parameters PortalRevisionContract, options *PortalRevisionClientBeginUpdateOptions) (*armruntime.Poller[PortalRevisionClientUpdateResponse], error) {
+func (client *PortalRevisionClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, ifMatch string, parameters PortalRevisionContract, options *PortalRevisionClientBeginUpdateOptions) (*runtime.Poller[PortalRevisionClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, serviceName, portalRevisionID, ifMatch, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PortalRevisionClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PortalRevisionClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PortalRevisionClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PortalRevisionClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the description of specified portal revision or makes it current.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *PortalRevisionClient) update(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, ifMatch string, parameters PortalRevisionContract, options *PortalRevisionClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, portalRevisionID, ifMatch, parameters, options)
 	if err != nil {
@@ -393,7 +401,7 @@ func (client *PortalRevisionClient) updateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

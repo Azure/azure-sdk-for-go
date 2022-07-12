@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks"
@@ -26,21 +24,20 @@ func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("<subscription-id>",
+	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("a0020869-4d28-422a-89f4-c2413130d73c",
 		"<resource-group-name>",
 		"<azure-resource-name>",
 		"<private-endpoint-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourcePager("<resource-group-name>",
-		"<azure-resource-name>",
+	pager := client.NewListByResourcePager("resourceGroup",
+		"azureResourceName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,10 +53,10 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>",
-		"<private-endpoint-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName",
+		"myPrivateEndpointName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -79,10 +76,10 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>",
-		"<private-endpoint-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName",
+		"myPrivateEndpointName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -90,11 +87,11 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 		armpowerbiprivatelinks.PrivateEndpointConnection{
 			Properties: &armpowerbiprivatelinks.PrivateEndpointConnectionProperties{
 				PrivateEndpoint: &armpowerbiprivatelinks.PrivateEndpoint{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/a0020869-4d28-422a-89f4-c2413130d73c/resourceGroups/resourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpointName"),
 				},
 				PrivateLinkServiceConnectionState: &armpowerbiprivatelinks.ConnectionState{
-					Description:     to.Ptr("<description>"),
-					ActionsRequired: to.Ptr("<actions-required>"),
+					Description:     to.Ptr(""),
+					ActionsRequired: to.Ptr("None"),
 					Status:          to.Ptr(armpowerbiprivatelinks.PersistedConnectionStatus("Approved ")),
 				},
 			},
@@ -114,19 +111,19 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>",
-		"<private-endpoint-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName",
+		"myPrivateEndpointName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		&armpowerbiprivatelinks.PrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

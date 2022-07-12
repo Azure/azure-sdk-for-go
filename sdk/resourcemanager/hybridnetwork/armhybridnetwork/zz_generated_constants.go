@@ -10,7 +10,7 @@ package armhybridnetwork
 
 const (
 	moduleName    = "armhybridnetwork"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

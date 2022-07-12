@@ -38,7 +38,7 @@ func NewServerDNSAliasesClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewServerDNSAliasesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginAcquire - Acquires server DNS alias from another server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server that the alias is pointing to.
 // dnsAliasName - The name of the server dns alias.
 // options - ServerDNSAliasesClientBeginAcquireOptions contains the optional parameters for the ServerDNSAliasesClient.BeginAcquire
 // method.
-func (client *ServerDNSAliasesClient) BeginAcquire(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesClientBeginAcquireOptions) (*armruntime.Poller[ServerDNSAliasesClientAcquireResponse], error) {
+func (client *ServerDNSAliasesClient) BeginAcquire(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesClientBeginAcquireOptions) (*runtime.Poller[ServerDNSAliasesClientAcquireResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.acquire(ctx, resourceGroupName, serverName, dnsAliasName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerDNSAliasesClientAcquireResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerDNSAliasesClientAcquireResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerDNSAliasesClientAcquireResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerDNSAliasesClientAcquireResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Acquire - Acquires server DNS alias from another server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ServerDNSAliasesClient) acquire(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesClientBeginAcquireOptions) (*http.Response, error) {
 	req, err := client.acquireCreateRequest(ctx, resourceGroupName, serverName, dnsAliasName, parameters, options)
 	if err != nil {
@@ -117,32 +119,34 @@ func (client *ServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginCreateOrUpdate - Creates a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server that the alias is pointing to.
 // dnsAliasName - The name of the server dns alias.
 // options - ServerDNSAliasesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerDNSAliasesClient.BeginCreateOrUpdate
 // method.
-func (client *ServerDNSAliasesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerDNSAliasesClientCreateOrUpdateResponse], error) {
+func (client *ServerDNSAliasesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerDNSAliasesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, dnsAliasName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerDNSAliasesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerDNSAliasesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerDNSAliasesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerDNSAliasesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ServerDNSAliasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, dnsAliasName, options)
 	if err != nil {
@@ -184,32 +188,34 @@ func (client *ServerDNSAliasesClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDelete - Deletes the server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server that the alias is pointing to.
 // dnsAliasName - The name of the server dns alias.
 // options - ServerDNSAliasesClientBeginDeleteOptions contains the optional parameters for the ServerDNSAliasesClient.BeginDelete
 // method.
-func (client *ServerDNSAliasesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginDeleteOptions) (*armruntime.Poller[ServerDNSAliasesClientDeleteResponse], error) {
+func (client *ServerDNSAliasesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginDeleteOptions) (*runtime.Poller[ServerDNSAliasesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, dnsAliasName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerDNSAliasesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerDNSAliasesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerDNSAliasesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerDNSAliasesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ServerDNSAliasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, dnsAliasName, options)
 	if err != nil {
@@ -256,6 +262,7 @@ func (client *ServerDNSAliasesClient) deleteCreateRequest(ctx context.Context, r
 
 // Get - Gets a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server that the alias is pointing to.
@@ -302,7 +309,7 @@ func (client *ServerDNSAliasesClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -317,13 +324,14 @@ func (client *ServerDNSAliasesClient) getHandleResponse(resp *http.Response) (Se
 
 // NewListByServerPager - Gets a list of server DNS aliases for a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server that the alias is pointing to.
 // options - ServerDNSAliasesClientListByServerOptions contains the optional parameters for the ServerDNSAliasesClient.ListByServer
 // method.
 func (client *ServerDNSAliasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerDNSAliasesClientListByServerOptions) *runtime.Pager[ServerDNSAliasesClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServerDNSAliasesClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServerDNSAliasesClientListByServerResponse]{
 		More: func(page ServerDNSAliasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -372,7 +380,7 @@ func (client *ServerDNSAliasesClient) listByServerCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -10,12 +10,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:22:29 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue?restype=container
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue?restype=container
     method: PUT
   response:
     body: ""
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:22:29 GMT
+      - Fri, 13 May 2022 00:21:36 GMT
       Etag:
-      - '"0x8DA18914907311A"'
+      - '"0x8DA34768B5E38CA"'
       Last-Modified:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c0fbd1f6-d01e-003b-557a-4acadc000000
+      - 831749b7-301e-0046-6c5f-663fbd000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -50,14 +50,14 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:22:29 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue/gotestblobblobsetmetadataifmodifiedsincetrue
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue/gotestblobblobsetmetadataifmodifiedsincetrue
     method: PUT
   response:
     body: ""
@@ -67,23 +67,21 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Thu, 07 Apr 2022 12:22:29 GMT
+      - Fri, 13 May 2022 00:21:36 GMT
       Etag:
-      - '"0x8DA18914938AB11"'
+      - '"0x8DA34768B69ADE0"'
       Last-Modified:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - c0fbd35b-d01e-003b-187a-4acadc000000
+      - 831749c9-301e-0046-7a5f-663fbd000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
-      X-Ms-Version-Id:
-      - "2022-04-07T12:22:30.4121617Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -96,16 +94,16 @@ interactions:
       Authorization:
       - sanitized
       If-Modified-Since:
-      - Thu, 07 Apr 2022 12:22:19 GMT
+      - Fri, 13 May 2022 00:21:26 GMT
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:22:29 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       X-Ms-Meta-Foo:
       - bar
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue/gotestblobblobsetmetadataifmodifiedsincetrue?comp=metadata
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue/gotestblobblobsetmetadataifmodifiedsincetrue?comp=metadata
     method: PUT
   response:
     body: ""
@@ -113,21 +111,19 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:36 GMT
       Etag:
-      - '"0x8DA189149769589"'
+      - '"0x8DA34768B6D2FC6"'
       Last-Modified:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c0fbd486-d01e-003b-247a-4acadc000000
+      - 831749e8-301e-0046-165f-663fbd000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
-      X-Ms-Version-Id:
-      - "2022-04-07T12:22:30.8189337Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -140,12 +136,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue/gotestblobblobsetmetadataifmodifiedsincetrue
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue/gotestblobblobsetmetadataifmodifiedsincetrue
     method: HEAD
   response:
     body: ""
@@ -159,11 +155,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:36 GMT
       Etag:
-      - '"0x8DA189149769589"'
+      - '"0x8DA34768B6D2FC6"'
       Last-Modified:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -173,9 +169,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 07 Apr 2022 12:22:30 GMT
-      X-Ms-Is-Current-Version:
-      - "true"
+      - Fri, 13 May 2022 00:21:37 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
@@ -183,13 +177,11 @@ interactions:
       X-Ms-Meta-Foo:
       - bar
       X-Ms-Request-Id:
-      - c0fbd516-d01e-003b-267a-4acadc000000
+      - 831749f5-301e-0046-215f-663fbd000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
-      X-Ms-Version-Id:
-      - "2022-04-07T12:22:30.8189337Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -202,12 +194,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:37 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue?restype=container
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobsetmetadataifmodifiedsincetrue?restype=container
     method: DELETE
   response:
     body: ""
@@ -215,11 +207,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:22:30 GMT
+      - Fri, 13 May 2022 00:21:36 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c0fbd65c-d01e-003b-557a-4acadc000000
+      - 831749fd-301e-0046-285f-663fbd000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

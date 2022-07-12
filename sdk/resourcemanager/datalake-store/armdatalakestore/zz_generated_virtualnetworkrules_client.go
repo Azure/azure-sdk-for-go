@@ -39,7 +39,7 @@ func NewVirtualNetworkRulesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewVirtualNetworkRulesClient(subscriptionID string, credential azcore.Token
 // CreateOrUpdate - Creates or updates the specified virtual network rule. During update, the virtual network rule with the
 // specified name will be replaced with this new virtual network rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // virtualNetworkRuleName - The name of the virtual network rule to create or update.
@@ -105,7 +106,7 @@ func (client *VirtualNetworkRulesClient) createOrUpdateCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -120,6 +121,7 @@ func (client *VirtualNetworkRulesClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Deletes the specified virtual network rule from the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // virtualNetworkRuleName - The name of the virtual network rule to delete.
@@ -171,6 +173,7 @@ func (client *VirtualNetworkRulesClient) deleteCreateRequest(ctx context.Context
 
 // Get - Gets the specified Data Lake Store virtual network rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // virtualNetworkRuleName - The name of the virtual network rule to retrieve.
@@ -216,7 +219,7 @@ func (client *VirtualNetworkRulesClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,12 +234,13 @@ func (client *VirtualNetworkRulesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByAccountPager - Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // options - VirtualNetworkRulesClientListByAccountOptions contains the optional parameters for the VirtualNetworkRulesClient.ListByAccount
 // method.
 func (client *VirtualNetworkRulesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *VirtualNetworkRulesClientListByAccountOptions) *runtime.Pager[VirtualNetworkRulesClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkRulesClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkRulesClientListByAccountResponse]{
 		More: func(page VirtualNetworkRulesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -285,7 +289,7 @@ func (client *VirtualNetworkRulesClient) listByAccountCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -300,6 +304,7 @@ func (client *VirtualNetworkRulesClient) listByAccountHandleResponse(resp *http.
 
 // Update - Updates the specified virtual network rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // virtualNetworkRuleName - The name of the virtual network rule to update.
@@ -346,7 +351,7 @@ func (client *VirtualNetworkRulesClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}

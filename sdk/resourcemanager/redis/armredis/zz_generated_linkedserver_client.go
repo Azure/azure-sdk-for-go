@@ -39,7 +39,7 @@ func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreate - Adds a linked server to the Redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the Redis cache.
 // linkedServerName - The name of the linked server that is being added to the Redis cache.
 // parameters - Parameters supplied to the Create Linked server operation.
 // options - LinkedServerClientBeginCreateOptions contains the optional parameters for the LinkedServerClient.BeginCreate
 // method.
-func (client *LinkedServerClient) BeginCreate(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*armruntime.Poller[LinkedServerClientCreateResponse], error) {
+func (client *LinkedServerClient) BeginCreate(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*runtime.Poller[LinkedServerClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, name, linkedServerName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LinkedServerClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LinkedServerClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LinkedServerClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkedServerClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Adds a linked server to the Redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *LinkedServerClient) create(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, name, linkedServerName, parameters, options)
 	if err != nil {
@@ -118,12 +120,13 @@ func (client *LinkedServerClient) createCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Delete - Deletes the linked server from a redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the redis cache.
 // linkedServerName - The name of the linked server that is being added to the Redis cache.
@@ -169,12 +172,13 @@ func (client *LinkedServerClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the redis cache.
 // linkedServerName - The name of the linked server.
@@ -220,7 +224,7 @@ func (client *LinkedServerClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -235,11 +239,12 @@ func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (Linked
 
 // NewListPager - Gets the list of linked servers associated with this redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the redis cache.
 // options - LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.List method.
 func (client *LinkedServerClient) NewListPager(resourceGroupName string, name string, options *LinkedServerClientListOptions) *runtime.Pager[LinkedServerClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LinkedServerClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LinkedServerClientListResponse]{
 		More: func(page LinkedServerClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -288,7 +293,7 @@ func (client *LinkedServerClient) listCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

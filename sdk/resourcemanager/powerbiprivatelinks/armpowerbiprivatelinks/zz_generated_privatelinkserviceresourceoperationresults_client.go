@@ -40,7 +40,7 @@ func NewPrivateLinkServiceResourceOperationResultsClient(subscriptionID string, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,24 +59,26 @@ func NewPrivateLinkServiceResourceOperationResultsClient(subscriptionID string, 
 
 // BeginGet - Gets operation result of Private Link Service Resources for Power BI.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-01
 // options - PrivateLinkServiceResourceOperationResultsClientBeginGetOptions contains the optional parameters for the PrivateLinkServiceResourceOperationResultsClient.BeginGet
 // method.
-func (client *PrivateLinkServiceResourceOperationResultsClient) BeginGet(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsClientBeginGetOptions) (*armruntime.Poller[PrivateLinkServiceResourceOperationResultsClientGetResponse], error) {
+func (client *PrivateLinkServiceResourceOperationResultsClient) BeginGet(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsClientBeginGetOptions) (*runtime.Poller[PrivateLinkServiceResourceOperationResultsClientGetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.get(ctx, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServiceResourceOperationResultsClientGetResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServiceResourceOperationResultsClientGetResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServiceResourceOperationResultsClientGetResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServiceResourceOperationResultsClientGetResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Get - Gets operation result of Private Link Service Resources for Power BI.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-01
 func (client *PrivateLinkServiceResourceOperationResultsClient) get(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsClientBeginGetOptions) (*http.Response, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
@@ -110,6 +112,6 @@ func (client *PrivateLinkServiceResourceOperationResultsClient) getCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -28,8 +28,8 @@ func ExampleDiagnosticSettingsCategoryClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-uri>",
-		"<name>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
+		"WorkflowRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,7 +50,7 @@ func ExampleDiagnosticSettingsCategoryClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-uri>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

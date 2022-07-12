@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -27,8 +28,7 @@ type RetryOptions = exported.RetryOptions
 
 // ClientOptions allows you to set optional configuration for `Client`.
 type ClientOptions struct {
-	// RetryOptions controls how often operations are retried from this client.
-	RetryOptions *RetryOptions
+	azcore.ClientOptions
 }
 
 // NewClientFromConnectionString creates a Client authenticating using a connection string.
@@ -38,7 +38,13 @@ type ClientOptions struct {
 // Or it can be a connection string with a SharedAccessSignature:
 //   Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
-	em, err := atom.NewEntityManagerWithConnectionString(connectionString, internal.Version)
+	var clientOptions *azcore.ClientOptions
+
+	if options != nil {
+		clientOptions = &options.ClientOptions
+	}
+
+	em, err := atom.NewEntityManagerWithConnectionString(connectionString, internal.Version, clientOptions)
 
 	if err != nil {
 		return nil, err
@@ -49,13 +55,13 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 // NewClient creates a Client authenticating using a TokenCredential.
 func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	var retryOptions exported.RetryOptions
+	var clientOptions *azcore.ClientOptions
 
-	if options != nil && options.RetryOptions != nil {
-		retryOptions = *options.RetryOptions
+	if options != nil {
+		clientOptions = &options.ClientOptions
 	}
 
-	em, err := atom.NewEntityManager(fullyQualifiedNamespace, tokenCredential, internal.Version, retryOptions)
+	em, err := atom.NewEntityManager(fullyQualifiedNamespace, tokenCredential, internal.Version, clientOptions)
 
 	if err != nil {
 		return nil, err
@@ -213,4 +219,23 @@ func (ep *entityPager[TFeed, T, TOutput]) Fetcher(ctx context.Context) ([]TOutpu
 	}
 
 	return finalItems, nil
+}
+
+// mapATOMError checks if the error is a legitimate 404 or a "fake" 404 (where the service succeeded but gave us back an
+// empty feed instead). This "fake" behavior comes about because the API here is not truly a CRUD API (it's extremely close)
+// so we have to do some small workarounds.
+// NOTE: we had a debate about whether to return a nil instance or try to fabricate an HTTP 404 response instead (even if
+// one didn't come back) and went with 'nil' to avoid having a fake HTTP response, which would have been confusing.
+func mapATOMError[T any](err error) (*T, error) {
+	if errors.Is(err, atom.ErrFeedEmpty) {
+		return nil, nil
+	}
+
+	var respError *azcore.ResponseError
+
+	if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	return nil, err
 }

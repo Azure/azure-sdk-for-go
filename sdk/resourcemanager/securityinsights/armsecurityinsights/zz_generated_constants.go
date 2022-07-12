@@ -10,10 +10,10 @@ package armsecurityinsights
 
 const (
 	moduleName    = "armsecurityinsights"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
-// ActionType - The type of the automation rule action
+// ActionType - The type of the automation rule action.
 type ActionType string
 
 const (
@@ -194,6 +194,82 @@ func PossibleAttackTacticValues() []AttackTactic {
 	}
 }
 
+type AutomationRulePropertyArrayChangedConditionSupportedArrayType string
+
+const (
+	// AutomationRulePropertyArrayChangedConditionSupportedArrayTypeAlerts - Evaluate the condition on the alerts
+	AutomationRulePropertyArrayChangedConditionSupportedArrayTypeAlerts AutomationRulePropertyArrayChangedConditionSupportedArrayType = "Alerts"
+	// AutomationRulePropertyArrayChangedConditionSupportedArrayTypeComments - Evaluate the condition on the comments
+	AutomationRulePropertyArrayChangedConditionSupportedArrayTypeComments AutomationRulePropertyArrayChangedConditionSupportedArrayType = "Comments"
+	// AutomationRulePropertyArrayChangedConditionSupportedArrayTypeLabels - Evaluate the condition on the labels
+	AutomationRulePropertyArrayChangedConditionSupportedArrayTypeLabels AutomationRulePropertyArrayChangedConditionSupportedArrayType = "Labels"
+	// AutomationRulePropertyArrayChangedConditionSupportedArrayTypeTactics - Evaluate the condition on the tactics
+	AutomationRulePropertyArrayChangedConditionSupportedArrayTypeTactics AutomationRulePropertyArrayChangedConditionSupportedArrayType = "Tactics"
+)
+
+// PossibleAutomationRulePropertyArrayChangedConditionSupportedArrayTypeValues returns the possible values for the AutomationRulePropertyArrayChangedConditionSupportedArrayType const type.
+func PossibleAutomationRulePropertyArrayChangedConditionSupportedArrayTypeValues() []AutomationRulePropertyArrayChangedConditionSupportedArrayType {
+	return []AutomationRulePropertyArrayChangedConditionSupportedArrayType{
+		AutomationRulePropertyArrayChangedConditionSupportedArrayTypeAlerts,
+		AutomationRulePropertyArrayChangedConditionSupportedArrayTypeComments,
+		AutomationRulePropertyArrayChangedConditionSupportedArrayTypeLabels,
+		AutomationRulePropertyArrayChangedConditionSupportedArrayTypeTactics,
+	}
+}
+
+type AutomationRulePropertyArrayChangedConditionSupportedChangeType string
+
+const (
+	// AutomationRulePropertyArrayChangedConditionSupportedChangeTypeAdded - Evaluate the condition on items added to the array
+	AutomationRulePropertyArrayChangedConditionSupportedChangeTypeAdded AutomationRulePropertyArrayChangedConditionSupportedChangeType = "Added"
+)
+
+// PossibleAutomationRulePropertyArrayChangedConditionSupportedChangeTypeValues returns the possible values for the AutomationRulePropertyArrayChangedConditionSupportedChangeType const type.
+func PossibleAutomationRulePropertyArrayChangedConditionSupportedChangeTypeValues() []AutomationRulePropertyArrayChangedConditionSupportedChangeType {
+	return []AutomationRulePropertyArrayChangedConditionSupportedChangeType{
+		AutomationRulePropertyArrayChangedConditionSupportedChangeTypeAdded,
+	}
+}
+
+type AutomationRulePropertyChangedConditionSupportedChangedType string
+
+const (
+	// AutomationRulePropertyChangedConditionSupportedChangedTypeChangedFrom - Evaluate the condition on the previous value of
+	// the property
+	AutomationRulePropertyChangedConditionSupportedChangedTypeChangedFrom AutomationRulePropertyChangedConditionSupportedChangedType = "ChangedFrom"
+	// AutomationRulePropertyChangedConditionSupportedChangedTypeChangedTo - Evaluate the condition on the updated value of the
+	// property
+	AutomationRulePropertyChangedConditionSupportedChangedTypeChangedTo AutomationRulePropertyChangedConditionSupportedChangedType = "ChangedTo"
+)
+
+// PossibleAutomationRulePropertyChangedConditionSupportedChangedTypeValues returns the possible values for the AutomationRulePropertyChangedConditionSupportedChangedType const type.
+func PossibleAutomationRulePropertyChangedConditionSupportedChangedTypeValues() []AutomationRulePropertyChangedConditionSupportedChangedType {
+	return []AutomationRulePropertyChangedConditionSupportedChangedType{
+		AutomationRulePropertyChangedConditionSupportedChangedTypeChangedFrom,
+		AutomationRulePropertyChangedConditionSupportedChangedTypeChangedTo,
+	}
+}
+
+type AutomationRulePropertyChangedConditionSupportedPropertyType string
+
+const (
+	// AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentOwner - Evaluate the condition on the incident owner
+	AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentOwner AutomationRulePropertyChangedConditionSupportedPropertyType = "IncidentOwner"
+	// AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentSeverity - Evaluate the condition on the incident severity
+	AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentSeverity AutomationRulePropertyChangedConditionSupportedPropertyType = "IncidentSeverity"
+	// AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentStatus - Evaluate the condition on the incident status
+	AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentStatus AutomationRulePropertyChangedConditionSupportedPropertyType = "IncidentStatus"
+)
+
+// PossibleAutomationRulePropertyChangedConditionSupportedPropertyTypeValues returns the possible values for the AutomationRulePropertyChangedConditionSupportedPropertyType const type.
+func PossibleAutomationRulePropertyChangedConditionSupportedPropertyTypeValues() []AutomationRulePropertyChangedConditionSupportedPropertyType {
+	return []AutomationRulePropertyChangedConditionSupportedPropertyType{
+		AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentOwner,
+		AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentSeverity,
+		AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentStatus,
+	}
+}
+
 type AutomationRulePropertyConditionSupportedOperator string
 
 const (
@@ -236,7 +312,7 @@ func PossibleAutomationRulePropertyConditionSupportedOperatorValues() []Automati
 	}
 }
 
-// AutomationRulePropertyConditionSupportedProperty - The property to evaluate in an automation rule property condition
+// AutomationRulePropertyConditionSupportedProperty - The property to evaluate in an automation rule property condition.
 type AutomationRulePropertyConditionSupportedProperty string
 
 const (
@@ -415,12 +491,18 @@ type ConditionType string
 const (
 	// ConditionTypeProperty - Evaluate an object property value
 	ConditionTypeProperty ConditionType = "Property"
+	// ConditionTypePropertyArrayChanged - Evaluate an object array property changed value
+	ConditionTypePropertyArrayChanged ConditionType = "PropertyArrayChanged"
+	// ConditionTypePropertyChanged - Evaluate an object property changed value
+	ConditionTypePropertyChanged ConditionType = "PropertyChanged"
 )
 
 // PossibleConditionTypeValues returns the possible values for the ConditionType const type.
 func PossibleConditionTypeValues() []ConditionType {
 	return []ConditionType{
 		ConditionTypeProperty,
+		ConditionTypePropertyArrayChanged,
+		ConditionTypePropertyChanged,
 	}
 }
 
@@ -1007,6 +1089,8 @@ type EntityTimelineKind string
 const (
 	// EntityTimelineKindActivity - activity
 	EntityTimelineKindActivity EntityTimelineKind = "Activity"
+	// EntityTimelineKindAnomaly - anomaly
+	EntityTimelineKindAnomaly EntityTimelineKind = "Anomaly"
 	// EntityTimelineKindBookmark - bookmarks
 	EntityTimelineKindBookmark EntityTimelineKind = "Bookmark"
 	// EntityTimelineKindSecurityAlert - security alerts
@@ -1017,6 +1101,7 @@ const (
 func PossibleEntityTimelineKindValues() []EntityTimelineKind {
 	return []EntityTimelineKind{
 		EntityTimelineKindActivity,
+		EntityTimelineKindAnomaly,
 		EntityTimelineKindBookmark,
 		EntityTimelineKindSecurityAlert,
 	}
@@ -1168,17 +1253,17 @@ func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 	}
 }
 
-// GetInsightsErrorKind - the query kind
-type GetInsightsErrorKind string
+// GetInsightsError - the query kind
+type GetInsightsError string
 
 const (
-	GetInsightsErrorKindInsight GetInsightsErrorKind = "Insight"
+	GetInsightsErrorInsight GetInsightsError = "Insight"
 )
 
-// PossibleGetInsightsErrorKindValues returns the possible values for the GetInsightsErrorKind const type.
-func PossibleGetInsightsErrorKindValues() []GetInsightsErrorKind {
-	return []GetInsightsErrorKind{
-		GetInsightsErrorKindInsight,
+// PossibleGetInsightsErrorValues returns the possible values for the GetInsightsError const type.
+func PossibleGetInsightsErrorValues() []GetInsightsError {
+	return []GetInsightsError{
+		GetInsightsErrorInsight,
 	}
 }
 
@@ -1718,19 +1803,17 @@ func PossibleRepoTypeValues() []RepoType {
 	}
 }
 
-// SKUKind - The kind of the tier
-type SKUKind string
+// SecurityMLAnalyticsSettingsKind - The kind of security ML analytics settings
+type SecurityMLAnalyticsSettingsKind string
 
 const (
-	SKUKindCapacityReservation SKUKind = "CapacityReservation"
-	SKUKindPerGB               SKUKind = "PerGB"
+	SecurityMLAnalyticsSettingsKindAnomaly SecurityMLAnalyticsSettingsKind = "Anomaly"
 )
 
-// PossibleSKUKindValues returns the possible values for the SKUKind const type.
-func PossibleSKUKindValues() []SKUKind {
-	return []SKUKind{
-		SKUKindCapacityReservation,
-		SKUKindPerGB,
+// PossibleSecurityMLAnalyticsSettingsKindValues returns the possible values for the SecurityMLAnalyticsSettingsKind const type.
+func PossibleSecurityMLAnalyticsSettingsKindValues() []SecurityMLAnalyticsSettingsKind {
+	return []SecurityMLAnalyticsSettingsKind{
+		SecurityMLAnalyticsSettingsKindAnomaly,
 	}
 }
 
@@ -1769,6 +1852,24 @@ func PossibleSettingTypeValues() []SettingType {
 		SettingTypeCopyableLabel,
 		SettingTypeInfoMessage,
 		SettingTypeInstructionStepsGroup,
+	}
+}
+
+// SettingsStatus - The anomaly SecurityMLAnalyticsSettings status
+type SettingsStatus string
+
+const (
+	// SettingsStatusFlighting - Anomaly settings status in Flighting mode
+	SettingsStatusFlighting SettingsStatus = "Flighting"
+	// SettingsStatusProduction - Anomaly settings status in Production mode
+	SettingsStatusProduction SettingsStatus = "Production"
+)
+
+// PossibleSettingsStatusValues returns the possible values for the SettingsStatus const type.
+func PossibleSettingsStatusValues() []SettingsStatus {
+	return []SettingsStatus{
+		SettingsStatusFlighting,
+		SettingsStatusProduction,
 	}
 }
 
@@ -1919,12 +2020,15 @@ type TriggersWhen string
 const (
 	// TriggersWhenCreated - Trigger on created objects
 	TriggersWhenCreated TriggersWhen = "Created"
+	// TriggersWhenUpdated - Trigger on updated objects
+	TriggersWhenUpdated TriggersWhen = "Updated"
 )
 
 // PossibleTriggersWhenValues returns the possible values for the TriggersWhen const type.
 func PossibleTriggersWhenValues() []TriggersWhen {
 	return []TriggersWhen{
 		TriggersWhenCreated,
+		TriggersWhenUpdated,
 	}
 }
 

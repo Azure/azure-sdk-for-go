@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync"
@@ -26,28 +24,28 @@ func ExampleCloudEndpointsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
 		armstoragesync.CloudEndpointCreateParameters{
 			Properties: &armstoragesync.CloudEndpointCreateParametersProperties{
-				AzureFileShareName:       to.Ptr("<azure-file-share-name>"),
-				FriendlyName:             to.Ptr("<friendly-name>"),
-				StorageAccountResourceID: to.Ptr("<storage-account-resource-id>"),
-				StorageAccountTenantID:   to.Ptr("<storage-account-tenant-id>"),
+				AzureFileShareName:       to.Ptr("cvcloud-afscv-0719-058-a94a1354-a1fd-4e9a-9a50-919fad8c4ba4"),
+				FriendlyName:             to.Ptr("ankushbsubscriptionmgmtmab"),
+				StorageAccountResourceID: to.Ptr("/subscriptions/744f4d70-6d17-4921-8970-a765d14f763f/resourceGroups/tminienv59svc/providers/Microsoft.Storage/storageAccounts/tminienv59storage"),
+				StorageAccountTenantID:   to.Ptr("\"72f988bf-86f1-41af-91ab-2d7cd011db47\""),
 			},
 		},
-		&armstoragesync.CloudEndpointsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -62,15 +60,15 @@ func ExampleCloudEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -86,20 +84,20 @@ func ExampleCloudEndpointsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
-		&armstoragesync.CloudEndpointsClientBeginDeleteOptions{ResumeToken: ""})
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -112,19 +110,18 @@ func ExampleCloudEndpointsClient_NewListBySyncGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySyncGroupPager("<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
+	pager := client.NewListBySyncGroupPager("SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -140,23 +137,23 @@ func ExampleCloudEndpointsClient_BeginPreBackup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPreBackup(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
 		armstoragesync.BackupRequest{
-			AzureFileShare: to.Ptr("<azure-file-share>"),
+			AzureFileShare: to.Ptr("https://sampleserver.file.core.test-cint.azure-test.net/sampleFileShare"),
 		},
-		&armstoragesync.CloudEndpointsClientBeginPreBackupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -169,23 +166,23 @@ func ExampleCloudEndpointsClient_BeginPostBackup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPostBackup(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
 		armstoragesync.BackupRequest{
-			AzureFileShare: to.Ptr("<azure-file-share>"),
+			AzureFileShare: to.Ptr("https://sampleserver.file.core.test-cint.azure-test.net/sampleFileShare"),
 		},
-		&armstoragesync.CloudEndpointsClientBeginPostBackupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -200,40 +197,40 @@ func ExampleCloudEndpointsClient_BeginPreRestore() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPreRestore(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
 		armstoragesync.PreRestoreRequest{
-			AzureFileShareURI: to.Ptr("<azure-file-share-uri>"),
+			AzureFileShareURI: to.Ptr("https://hfsazbackupdevintncus2.file.core.test-cint.azure-test.net/sampleFileShare"),
 			RestoreFileSpec: []*armstoragesync.RestoreFileSpec{
 				{
-					Path:  to.Ptr("<path>"),
+					Path:  to.Ptr("text1.txt"),
 					Isdir: to.Ptr(false),
 				},
 				{
-					Path:  to.Ptr("<path>"),
+					Path:  to.Ptr("MyDir"),
 					Isdir: to.Ptr(true),
 				},
 				{
-					Path:  to.Ptr("<path>"),
+					Path:  to.Ptr("MyDir/SubDir"),
 					Isdir: to.Ptr(false),
 				},
 				{
-					Path:  to.Ptr("<path>"),
+					Path:  to.Ptr("MyDir/SubDir/File1.pdf"),
 					Isdir: to.Ptr(false),
 				}},
 		},
-		&armstoragesync.CloudEndpointsClientBeginPreRestoreOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -246,15 +243,15 @@ func ExampleCloudEndpointsClient_Restoreheartbeat() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Restoreheartbeat(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -268,42 +265,42 @@ func ExampleCloudEndpointsClient_BeginPostRestore() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPostRestore(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
 		armstoragesync.PostRestoreRequest{
-			AzureFileShareURI: to.Ptr("<azure-file-share-uri>"),
+			AzureFileShareURI: to.Ptr("https://hfsazbackupdevintncus2.file.core.test-cint.azure-test.net/sampleFileShare"),
 			RestoreFileSpec: []*armstoragesync.RestoreFileSpec{
 				{
-					Path:  to.Ptr("<path>"),
+					Path:  to.Ptr("text1.txt"),
 					Isdir: to.Ptr(false),
 				},
 				{
-					Path:  to.Ptr("<path>"),
+					Path:  to.Ptr("MyDir"),
 					Isdir: to.Ptr(true),
 				},
 				{
-					Path:  to.Ptr("<path>"),
+					Path:  to.Ptr("MyDir/SubDir"),
 					Isdir: to.Ptr(false),
 				},
 				{
-					Path:  to.Ptr("<path>"),
+					Path:  to.Ptr("MyDir/SubDir/File1.pdf"),
 					Isdir: to.Ptr(false),
 				}},
-			SourceAzureFileShareURI: to.Ptr("<source-azure-file-share-uri>"),
-			Status:                  to.Ptr("<status>"),
+			SourceAzureFileShareURI: to.Ptr("https://hfsazbackupdevintncus2.file.core.test-cint.azure-test.net/sampleFileShare"),
+			Status:                  to.Ptr("Succeeded"),
 		},
-		&armstoragesync.CloudEndpointsClientBeginPostRestoreOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -316,24 +313,24 @@ func ExampleCloudEndpointsClient_BeginTriggerChangeDetection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewCloudEndpointsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTriggerChangeDetection(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
-		"<cloud-endpoint-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
+		"SampleCloudEndpoint_1",
 		armstoragesync.TriggerChangeDetectionParameters{
 			ChangeDetectionMode: to.Ptr(armstoragesync.ChangeDetectionModeRecursive),
-			DirectoryPath:       to.Ptr("<directory-path>"),
+			DirectoryPath:       to.Ptr("NewDirectory"),
 		},
-		&armstoragesync.CloudEndpointsClientBeginTriggerChangeDetectionOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

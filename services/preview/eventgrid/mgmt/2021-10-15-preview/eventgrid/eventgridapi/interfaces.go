@@ -102,7 +102,8 @@ type DomainTopicEventSubscriptionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string) (result eventgrid.EventSubscription, err error)
 	GetDeliveryAttributes(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string) (result eventgrid.DeliveryAttributeListResult, err error)
 	GetFullURL(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string) (result eventgrid.EventSubscriptionFullURL, err error)
-	List(ctx context.Context, resourceGroupName string, domainName string, topicName string) (result eventgrid.EventSubscriptionsListResult, err error)
+	List(ctx context.Context, resourceGroupName string, domainName string, topicName string, filter string, top *int32) (result eventgrid.EventSubscriptionsListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, domainName string, topicName string, filter string, top *int32) (result eventgrid.EventSubscriptionsListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters eventgrid.EventSubscriptionUpdateParameters) (result eventgrid.DomainTopicEventSubscriptionsUpdateFuture, err error)
 }
 
@@ -115,7 +116,8 @@ type TopicEventSubscriptionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string) (result eventgrid.EventSubscription, err error)
 	GetDeliveryAttributes(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string) (result eventgrid.DeliveryAttributeListResult, err error)
 	GetFullURL(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string) (result eventgrid.EventSubscriptionFullURL, err error)
-	List(ctx context.Context, resourceGroupName string, topicName string) (result eventgrid.EventSubscriptionsListResult, err error)
+	List(ctx context.Context, resourceGroupName string, topicName string, filter string, top *int32) (result eventgrid.EventSubscriptionsListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, topicName string, filter string, top *int32) (result eventgrid.EventSubscriptionsListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters eventgrid.EventSubscriptionUpdateParameters) (result eventgrid.TopicEventSubscriptionsUpdateFuture, err error)
 }
 
@@ -128,7 +130,8 @@ type DomainEventSubscriptionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string) (result eventgrid.EventSubscription, err error)
 	GetDeliveryAttributes(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string) (result eventgrid.DeliveryAttributeListResult, err error)
 	GetFullURL(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string) (result eventgrid.EventSubscriptionFullURL, err error)
-	List(ctx context.Context, resourceGroupName string, domainName string) (result eventgrid.EventSubscriptionsListResult, err error)
+	List(ctx context.Context, resourceGroupName string, domainName string, filter string, top *int32) (result eventgrid.EventSubscriptionsListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, domainName string, filter string, top *int32) (result eventgrid.EventSubscriptionsListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, eventSubscriptionUpdateParameters eventgrid.EventSubscriptionUpdateParameters) (result eventgrid.DomainEventSubscriptionsUpdateFuture, err error)
 }
 

@@ -34,7 +34,7 @@ func NewReservationRecommendationsClient(credential azcore.TokenCredential, opti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,7 +51,8 @@ func NewReservationRecommendationsClient(credential azcore.TokenCredential, opti
 
 // NewListPager - List of recommendations for purchasing reserved instances.
 // If the operation fails it returns an *azcore.ResponseError type.
-// scope - The scope associated with reservation recommendations operations. This includes '/subscriptions/{subscriptionId}/'
+// Generated from API version 2021-10-01
+// resourceScope - The scope associated with reservation recommendations operations. This includes '/subscriptions/{subscriptionId}/'
 // for subscription scope,
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
 // for BillingAccount scope, and
@@ -59,8 +60,8 @@ func NewReservationRecommendationsClient(credential azcore.TokenCredential, opti
 // scope
 // options - ReservationRecommendationsClientListOptions contains the optional parameters for the ReservationRecommendationsClient.List
 // method.
-func (client *ReservationRecommendationsClient) NewListPager(scope string, options *ReservationRecommendationsClientListOptions) *runtime.Pager[ReservationRecommendationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationRecommendationsClientListResponse]{
+func (client *ReservationRecommendationsClient) NewListPager(resourceScope string, options *ReservationRecommendationsClientListOptions) *runtime.Pager[ReservationRecommendationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationRecommendationsClientListResponse]{
 		More: func(page ReservationRecommendationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -68,7 +69,7 @@ func (client *ReservationRecommendationsClient) NewListPager(scope string, optio
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, scope, options)
+				req, err = client.listCreateRequest(ctx, resourceScope, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -88,9 +89,9 @@ func (client *ReservationRecommendationsClient) NewListPager(scope string, optio
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Context, scope string, options *ReservationRecommendationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Consumption/reservationRecommendations"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Context, resourceScope string, options *ReservationRecommendationsClientListOptions) (*policy.Request, error) {
+	urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationRecommendations"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -101,7 +102,7 @@ func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

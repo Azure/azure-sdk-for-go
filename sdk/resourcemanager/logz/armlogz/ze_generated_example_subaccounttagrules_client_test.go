@@ -23,19 +23,18 @@ func ExampleSubAccountTagRulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountTagRulesClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountTagRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,15 +50,15 @@ func ExampleSubAccountTagRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountTagRulesClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountTagRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
-		"<rule-set-name>",
+		"myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
+		"default",
 		&armlogz.SubAccountTagRulesClientCreateOrUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,15 +74,15 @@ func ExampleSubAccountTagRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountTagRulesClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountTagRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
-		"<rule-set-name>",
+		"myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,15 +98,15 @@ func ExampleSubAccountTagRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountTagRulesClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountTagRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
-		"<rule-set-name>",
+		"myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker"
@@ -30,13 +28,12 @@ func ExampleLinkerClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-uri>",
+	pager := client.NewListPager("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,8 +54,8 @@ func ExampleLinkerClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-uri>",
-		"<linker-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
+		"linkName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,29 +76,29 @@ func ExampleLinkerClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-uri>",
-		"<linker-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
+		"linkName",
 		armservicelinker.LinkerResource{
 			Properties: &armservicelinker.LinkerProperties{
 				AuthInfo: &armservicelinker.SecretAuthInfo{
 					AuthType: to.Ptr(armservicelinker.AuthTypeSecret),
-					Name:     to.Ptr("<name>"),
+					Name:     to.Ptr("name"),
 					SecretInfo: &armservicelinker.ValueSecretInfo{
 						SecretType: to.Ptr(armservicelinker.SecretTypeRawValue),
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("secret"),
 					},
 				},
 				TargetService: &armservicelinker.AzureResource{
-					Type: to.Ptr(armservicelinker.TypeAzureResource),
-					ID:   to.Ptr("<id>"),
+					Type: to.Ptr(armservicelinker.TargetServiceTypeAzureResource),
+					ID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DBforPostgreSQL/servers/test-pg/databases/test-db"),
 				},
 			},
 		},
-		&armservicelinker.LinkerClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -121,13 +118,13 @@ func ExampleLinkerClient_BeginDelete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-uri>",
-		"<linker-name>",
-		&armservicelinker.LinkerClientBeginDeleteOptions{ResumeToken: ""})
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
+		"linkName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -145,27 +142,27 @@ func ExampleLinkerClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-uri>",
-		"<linker-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
+		"linkName",
 		armservicelinker.LinkerPatch{
 			Properties: &armservicelinker.LinkerProperties{
 				AuthInfo: &armservicelinker.ServicePrincipalSecretAuthInfo{
 					AuthType:    to.Ptr(armservicelinker.AuthTypeServicePrincipalSecret),
-					ClientID:    to.Ptr("<client-id>"),
-					PrincipalID: to.Ptr("<principal-id>"),
-					Secret:      to.Ptr("<secret>"),
+					ClientID:    to.Ptr("name"),
+					PrincipalID: to.Ptr("id"),
+					Secret:      to.Ptr("secret"),
 				},
 				TargetService: &armservicelinker.AzureResource{
-					Type: to.Ptr(armservicelinker.TypeAzureResource),
-					ID:   to.Ptr("<id>"),
+					Type: to.Ptr(armservicelinker.TargetServiceTypeAzureResource),
+					ID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"),
 				},
 			},
 		},
-		&armservicelinker.LinkerClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -185,13 +182,13 @@ func ExampleLinkerClient_BeginValidate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginValidate(ctx,
-		"<resource-uri>",
-		"<linker-name>",
-		&armservicelinker.LinkerClientBeginValidateOptions{ResumeToken: ""})
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
+		"linkName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -211,8 +208,8 @@ func ExampleLinkerClient_ListConfigurations() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListConfigurations(ctx,
-		"<resource-uri>",
-		"<linker-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
+		"linkName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

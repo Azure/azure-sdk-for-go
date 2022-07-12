@@ -39,7 +39,7 @@ func NewInboundEndpointsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewInboundEndpointsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Creates or updates an inbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsResolverName - The name of the DNS resolver.
 // inboundEndpointName - The name of the inbound endpoint for the DNS resolver.
 // parameters - Parameters supplied to the CreateOrUpdate operation.
 // options - InboundEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the InboundEndpointsClient.BeginCreateOrUpdate
 // method.
-func (client *InboundEndpointsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, parameters InboundEndpoint, options *InboundEndpointsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[InboundEndpointsClientCreateOrUpdateResponse], error) {
+func (client *InboundEndpointsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, parameters InboundEndpoint, options *InboundEndpointsClientBeginCreateOrUpdateOptions) (*runtime.Poller[InboundEndpointsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsResolverName, inboundEndpointName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InboundEndpointsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InboundEndpointsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InboundEndpointsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InboundEndpointsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an inbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 func (client *InboundEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, parameters InboundEndpoint, options *InboundEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dnsResolverName, inboundEndpointName, parameters, options)
 	if err != nil {
@@ -119,36 +121,38 @@ func (client *InboundEndpointsClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP.Set("api-version", "2020-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsResolverName - The name of the DNS resolver.
 // inboundEndpointName - The name of the inbound endpoint for the DNS resolver.
 // options - InboundEndpointsClientBeginDeleteOptions contains the optional parameters for the InboundEndpointsClient.BeginDelete
 // method.
-func (client *InboundEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, options *InboundEndpointsClientBeginDeleteOptions) (*armruntime.Poller[InboundEndpointsClientDeleteResponse], error) {
+func (client *InboundEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, options *InboundEndpointsClientBeginDeleteOptions) (*runtime.Poller[InboundEndpointsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dnsResolverName, inboundEndpointName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InboundEndpointsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InboundEndpointsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InboundEndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InboundEndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 func (client *InboundEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, options *InboundEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dnsResolverName, inboundEndpointName, options)
 	if err != nil {
@@ -191,14 +195,15 @@ func (client *InboundEndpointsClient) deleteCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2020-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets properties of an inbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsResolverName - The name of the DNS resolver.
 // inboundEndpointName - The name of the inbound endpoint for the DNS resolver.
@@ -244,7 +249,7 @@ func (client *InboundEndpointsClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -259,11 +264,12 @@ func (client *InboundEndpointsClient) getHandleResponse(resp *http.Response) (In
 
 // NewListPager - Lists inbound endpoints for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsResolverName - The name of the DNS resolver.
 // options - InboundEndpointsClientListOptions contains the optional parameters for the InboundEndpointsClient.List method.
 func (client *InboundEndpointsClient) NewListPager(resourceGroupName string, dnsResolverName string, options *InboundEndpointsClientListOptions) *runtime.Pager[InboundEndpointsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InboundEndpointsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InboundEndpointsClientListResponse]{
 		More: func(page InboundEndpointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -315,7 +321,7 @@ func (client *InboundEndpointsClient) listCreateRequest(ctx context.Context, res
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -330,26 +336,28 @@ func (client *InboundEndpointsClient) listHandleResponse(resp *http.Response) (I
 
 // BeginUpdate - Updates an inbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsResolverName - The name of the DNS resolver.
 // inboundEndpointName - The name of the inbound endpoint for the DNS resolver.
 // parameters - Parameters supplied to the Update operation.
 // options - InboundEndpointsClientBeginUpdateOptions contains the optional parameters for the InboundEndpointsClient.BeginUpdate
 // method.
-func (client *InboundEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, parameters InboundEndpointPatch, options *InboundEndpointsClientBeginUpdateOptions) (*armruntime.Poller[InboundEndpointsClientUpdateResponse], error) {
+func (client *InboundEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, parameters InboundEndpointPatch, options *InboundEndpointsClientBeginUpdateOptions) (*runtime.Poller[InboundEndpointsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, dnsResolverName, inboundEndpointName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InboundEndpointsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InboundEndpointsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InboundEndpointsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InboundEndpointsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an inbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 func (client *InboundEndpointsClient) update(ctx context.Context, resourceGroupName string, dnsResolverName string, inboundEndpointName string, parameters InboundEndpointPatch, options *InboundEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsResolverName, inboundEndpointName, parameters, options)
 	if err != nil {
@@ -392,8 +400,8 @@ func (client *InboundEndpointsClient) updateCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2020-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

@@ -38,7 +38,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateInResourceGroup - Create/Overwrite Azure Advisor configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // configurationName - Advisor configuration name. Value must be 'default'
 // resourceGroup - The name of the Azure resource group.
 // configContract - The Azure Advisor configuration data structure.
@@ -98,7 +99,7 @@ func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configContract)
 }
 
@@ -114,6 +115,7 @@ func (client *ConfigurationsClient) createInResourceGroupHandleResponse(resp *ht
 // CreateInSubscription - Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource
 // groups.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // configurationName - Advisor configuration name. Value must be 'default'
 // configContract - The Azure Advisor configuration data structure.
 // options - ConfigurationsClientCreateInSubscriptionOptions contains the optional parameters for the ConfigurationsClient.CreateInSubscription
@@ -151,7 +153,7 @@ func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configContract)
 }
 
@@ -166,11 +168,12 @@ func (client *ConfigurationsClient) createInSubscriptionHandleResponse(resp *htt
 
 // NewListByResourceGroupPager - Retrieve Azure Advisor configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceGroup - The name of the Azure resource group.
 // options - ConfigurationsClientListByResourceGroupOptions contains the optional parameters for the ConfigurationsClient.ListByResourceGroup
 // method.
 func (client *ConfigurationsClient) NewListByResourceGroupPager(resourceGroup string, options *ConfigurationsClientListByResourceGroupOptions) *runtime.Pager[ConfigurationsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListByResourceGroupResponse]{
 		More: func(page ConfigurationsClientListByResourceGroupResponse) bool {
 			return false
 		},
@@ -209,7 +212,7 @@ func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -225,10 +228,11 @@ func (client *ConfigurationsClient) listByResourceGroupHandleResponse(resp *http
 // NewListBySubscriptionPager - Retrieve Azure Advisor configurations and also retrieve configurations of contained resource
 // groups.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - ConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationsClient.ListBySubscription
 // method.
 func (client *ConfigurationsClient) NewListBySubscriptionPager(options *ConfigurationsClientListBySubscriptionOptions) *runtime.Pager[ConfigurationsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListBySubscriptionResponse]{
 		More: func(page ConfigurationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -269,7 +273,7 @@ func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -40,7 +40,7 @@ func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.Tok
 
 // CreateOrUpdate - Creates or updates the OpenID Connect Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // opid - Identifier of the OpenID Connect Provider.
@@ -106,9 +107,9 @@ func (client *OpenIDConnectProviderClient) createOrUpdateCreateRequest(ctx conte
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -126,6 +127,7 @@ func (client *OpenIDConnectProviderClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - Deletes specific OpenID Connect Provider of the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // opid - Identifier of the OpenID Connect Provider.
@@ -174,13 +176,14 @@ func (client *OpenIDConnectProviderClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets specific OpenID Connect Provider without secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // opid - Identifier of the OpenID Connect Provider.
@@ -227,7 +230,7 @@ func (client *OpenIDConnectProviderClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -244,6 +247,7 @@ func (client *OpenIDConnectProviderClient) getHandleResponse(resp *http.Response
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // opid - Identifier of the OpenID Connect Provider.
@@ -257,6 +261,9 @@ func (client *OpenIDConnectProviderClient) GetEntityTag(ctx context.Context, res
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return OpenIDConnectProviderClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return OpenIDConnectProviderClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -287,7 +294,7 @@ func (client *OpenIDConnectProviderClient) getEntityTagCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -297,20 +304,19 @@ func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByServicePager - Lists of all the OpenId Connect Providers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - OpenIDConnectProviderClientListByServiceOptions contains the optional parameters for the OpenIDConnectProviderClient.ListByService
 // method.
 func (client *OpenIDConnectProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) *runtime.Pager[OpenIDConnectProviderClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OpenIDConnectProviderClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OpenIDConnectProviderClientListByServiceResponse]{
 		More: func(page OpenIDConnectProviderClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -368,7 +374,7 @@ func (client *OpenIDConnectProviderClient) listByServiceCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -383,6 +389,7 @@ func (client *OpenIDConnectProviderClient) listByServiceHandleResponse(resp *htt
 
 // ListSecrets - Gets the client secret details of the OpenID Connect Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // opid - Identifier of the OpenID Connect Provider.
@@ -429,7 +436,7 @@ func (client *OpenIDConnectProviderClient) listSecretsCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -447,6 +454,7 @@ func (client *OpenIDConnectProviderClient) listSecretsHandleResponse(resp *http.
 
 // Update - Updates the specific OpenID Connect Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // opid - Identifier of the OpenID Connect Provider.
@@ -496,8 +504,8 @@ func (client *OpenIDConnectProviderClient) updateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

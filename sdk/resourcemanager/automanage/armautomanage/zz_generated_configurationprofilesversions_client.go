@@ -38,7 +38,7 @@ func NewConfigurationProfilesVersionsClient(subscriptionID string, credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewConfigurationProfilesVersionsClient(subscriptionID string, credential az
 
 // CreateOrUpdate - Creates a configuration profile version
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // configurationProfileName - Name of the configuration profile.
 // versionName - The configuration profile version name.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -103,7 +104,7 @@ func (client *ConfigurationProfilesVersionsClient) createOrUpdateCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *ConfigurationProfilesVersionsClient) createOrUpdateHandleResponse(
 
 // Delete - Delete a configuration profile version
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // configurationProfileName - Name of the configuration profile
 // versionName - The configuration profile version name.
@@ -164,12 +166,13 @@ func (client *ConfigurationProfilesVersionsClient) deleteCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get information about a configuration profile version
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // configurationProfileName - The configuration profile name.
 // versionName - The configuration profile version name.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -216,7 +219,7 @@ func (client *ConfigurationProfilesVersionsClient) getCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,12 +234,13 @@ func (client *ConfigurationProfilesVersionsClient) getHandleResponse(resp *http.
 
 // NewListChildResourcesPager - Retrieve a list of configuration profile version for a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // configurationProfileName - Name of the configuration profile.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfilesVersionsClientListChildResourcesOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.ListChildResources
 // method.
 func (client *ConfigurationProfilesVersionsClient) NewListChildResourcesPager(configurationProfileName string, resourceGroupName string, options *ConfigurationProfilesVersionsClientListChildResourcesOptions) *runtime.Pager[ConfigurationProfilesVersionsClientListChildResourcesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfilesVersionsClientListChildResourcesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfilesVersionsClientListChildResourcesResponse]{
 		More: func(page ConfigurationProfilesVersionsClientListChildResourcesResponse) bool {
 			return false
 		},
@@ -279,7 +283,7 @@ func (client *ConfigurationProfilesVersionsClient) listChildResourcesCreateReque
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -294,6 +298,7 @@ func (client *ConfigurationProfilesVersionsClient) listChildResourcesHandleRespo
 
 // Update - Updates a configuration profile version
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // configurationProfileName - Name of the configuration profile.
 // versionName - The configuration profile version name.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -341,7 +346,7 @@ func (client *ConfigurationProfilesVersionsClient) updateCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -38,7 +38,7 @@ func NewKeyValuesClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewKeyValuesClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Creates a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // configStoreName - The name of the configuration store.
 // keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
@@ -100,9 +101,9 @@ func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.KeyValueParameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.KeyValueParameters)
 	}
@@ -120,24 +121,26 @@ func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // BeginDelete - Deletes a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // configStoreName - The name of the configuration store.
 // keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
 // options - KeyValuesClientBeginDeleteOptions contains the optional parameters for the KeyValuesClient.BeginDelete method.
-func (client *KeyValuesClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*armruntime.Poller[KeyValuesClientDeleteResponse], error) {
+func (client *KeyValuesClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*runtime.Poller[KeyValuesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, configStoreName, keyValueName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[KeyValuesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KeyValuesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[KeyValuesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KeyValuesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, configStoreName, keyValueName, options)
 	if err != nil {
@@ -177,14 +180,15 @@ func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the properties of the specified key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // configStoreName - The name of the configuration store.
 // keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
@@ -228,9 +232,9 @@ func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -245,12 +249,13 @@ func (client *KeyValuesClient) getHandleResponse(resp *http.Response) (KeyValues
 
 // NewListByConfigurationStorePager - Lists the key-values for a given configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // configStoreName - The name of the configuration store.
 // options - KeyValuesClientListByConfigurationStoreOptions contains the optional parameters for the KeyValuesClient.ListByConfigurationStore
 // method.
 func (client *KeyValuesClient) NewListByConfigurationStorePager(resourceGroupName string, configStoreName string, options *KeyValuesClientListByConfigurationStoreOptions) *runtime.Pager[KeyValuesClientListByConfigurationStoreResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyValuesClientListByConfigurationStoreResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KeyValuesClientListByConfigurationStoreResponse]{
 		More: func(page KeyValuesClientListByConfigurationStoreResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -297,12 +302,12 @@ func (client *KeyValuesClient) listByConfigurationStoreCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

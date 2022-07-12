@@ -39,7 +39,7 @@ func NewIntegrationAccountSchemasClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewIntegrationAccountSchemasClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Creates or updates an integration account schema.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // schemaName - The integration account schema name.
@@ -104,7 +105,7 @@ func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schema)
 }
 
@@ -119,6 +120,7 @@ func (client *IntegrationAccountSchemasClient) createOrUpdateHandleResponse(resp
 
 // Delete - Deletes an integration account schema.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // schemaName - The integration account schema name.
@@ -165,12 +167,13 @@ func (client *IntegrationAccountSchemasClient) deleteCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an integration account schema.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // schemaName - The integration account schema name.
@@ -217,7 +220,7 @@ func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,12 +235,13 @@ func (client *IntegrationAccountSchemasClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Gets a list of integration account schemas.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountSchemasClientListOptions contains the optional parameters for the IntegrationAccountSchemasClient.List
 // method.
 func (client *IntegrationAccountSchemasClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasClientListOptions) *runtime.Pager[IntegrationAccountSchemasClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountSchemasClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountSchemasClientListResponse]{
 		More: func(page IntegrationAccountSchemasClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -292,7 +296,7 @@ func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Con
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -307,6 +311,7 @@ func (client *IntegrationAccountSchemasClient) listHandleResponse(resp *http.Res
 
 // ListContentCallbackURL - Get the content callback url.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // schemaName - The integration account schema name.
@@ -353,7 +358,7 @@ func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateReque
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, listContentCallbackURL)
 }
 

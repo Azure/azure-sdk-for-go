@@ -38,7 +38,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CheckServiceProviderAvailability - Checks if the peering service provider is present within 1000 miles of customer's location
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // checkServiceProviderAvailabilityInput - The CheckServiceProviderAvailabilityInput indicating customer location and service
 // provider.
 // options - ManagementClientCheckServiceProviderAvailabilityOptions contains the optional parameters for the ManagementClient.CheckServiceProviderAvailability
@@ -89,7 +90,7 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, checkServiceProviderAvailabilityInput)
 }
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager"
@@ -26,66 +24,65 @@ func ExampleRolloutsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
+		"myResourceGroup",
+		"myRollout",
 		&armdeploymentmanager.RolloutsClientBeginCreateOrUpdateOptions{RolloutRequest: &armdeploymentmanager.RolloutRequest{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("centralus"),
 			Tags:     map[string]*string{},
 			Identity: &armdeploymentmanager.Identity{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("userAssigned"),
 				IdentityIDs: []*string{
 					to.Ptr("/subscriptions/caac1590-e859-444f-a9e0-62091c0f5929/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userassignedidentities/myuseridentity")},
 			},
 			Properties: &armdeploymentmanager.RolloutRequestProperties{
-				ArtifactSourceID: to.Ptr("<artifact-source-id>"),
-				BuildVersion:     to.Ptr("<build-version>"),
+				ArtifactSourceID: to.Ptr("/subscriptions/caac1590-e859-444f-a9e0-62091c0f5929/resourceGroups/myResourceGroup/Microsoft.DeploymentManager/artifactSources/myArtifactSource"),
+				BuildVersion:     to.Ptr("1.0.0.1"),
 				StepGroups: []*armdeploymentmanager.StepGroup{
 					{
-						Name:               to.Ptr("<name>"),
-						DeploymentTargetID: to.Ptr("<deployment-target-id>"),
+						Name:               to.Ptr("FirstRegion"),
+						DeploymentTargetID: to.Ptr("Microsoft.DeploymentManager/serviceTopologies/myTopology/services/myService/serviceUnits/myServiceUnit1'"),
 						PostDeploymentSteps: []*armdeploymentmanager.PrePostStep{
 							{
-								StepID: to.Ptr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/postDeployStep1"),
 							}},
 						PreDeploymentSteps: []*armdeploymentmanager.PrePostStep{
 							{
-								StepID: to.Ptr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/preDeployStep1"),
 							},
 							{
-								StepID: to.Ptr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/preDeployStep2"),
 							}},
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("SecondRegion"),
 						DependsOnStepGroups: []*string{
 							to.Ptr("FirstRegion")},
-						DeploymentTargetID: to.Ptr("<deployment-target-id>"),
+						DeploymentTargetID: to.Ptr("Microsoft.DeploymentManager/serviceTopologies/myTopology/services/myService/serviceUnits/myServiceUnit2'"),
 						PostDeploymentSteps: []*armdeploymentmanager.PrePostStep{
 							{
-								StepID: to.Ptr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/postDeployStep5"),
 							}},
 						PreDeploymentSteps: []*armdeploymentmanager.PrePostStep{
 							{
-								StepID: to.Ptr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/preDeployStep3"),
 							},
 							{
-								StepID: to.Ptr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/preDeployStep4"),
 							}},
 					}},
-				TargetServiceTopologyID: to.Ptr("<target-service-topology-id>"),
+				TargetServiceTopologyID: to.Ptr("/subscriptions/caac1590-e859-444f-a9e0-62091c0f5929/resourceGroups/myResourceGroup/Microsoft.DeploymentManager/serviceTopologies/myTopology"),
 			},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -98,13 +95,13 @@ func ExampleRolloutsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
+		"myResourceGroup",
+		"myRollout",
 		&armdeploymentmanager.RolloutsClientGetOptions{RetryAttempt: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -120,13 +117,13 @@ func ExampleRolloutsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
+		"myResourceGroup",
+		"myRollout",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -140,13 +137,13 @@ func ExampleRolloutsClient_Cancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Cancel(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
+		"myResourceGroup",
+		"myRollout",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -162,13 +159,13 @@ func ExampleRolloutsClient_Restart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Restart(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
+		"myResourceGroup",
+		"myRollout",
 		&armdeploymentmanager.RolloutsClientRestartOptions{SkipSucceeded: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -184,12 +181,12 @@ func ExampleRolloutsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
+		"myResourceGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -12,7 +12,7 @@ package iothub
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub"
+	original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2022-02-05/iothub"
 )
 
 const (
@@ -124,7 +124,7 @@ type CertificateResponse = original.CertificateResponse
 type DefinitionDescription = original.DefinitionDescription
 type DpsCertificateClient = original.DpsCertificateClient
 type ErrorDetails = original.ErrorDetails
-type ErrorMesssage = original.ErrorMesssage
+type ErrorMessage = original.ErrorMessage
 type GroupIDInformation = original.GroupIDInformation
 type GroupIDInformationProperties = original.GroupIDInformationProperties
 type IPFilterRule = original.IPFilterRule

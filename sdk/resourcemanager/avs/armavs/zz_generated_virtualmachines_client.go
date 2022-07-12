@@ -38,7 +38,7 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Get a virtual machine by id in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // clusterName - Name of the cluster in the private cloud
@@ -106,7 +107,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -121,12 +122,13 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 
 // NewListPager - List of virtual machines in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // clusterName - Name of the cluster in the private cloud
 // options - VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.List method.
 func (client *VirtualMachinesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachinesClientListResponse]{
 		More: func(page VirtualMachinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -179,7 +181,7 @@ func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -194,6 +196,7 @@ func (client *VirtualMachinesClient) listHandleResponse(resp *http.Response) (Vi
 
 // BeginRestrictMovement - Enable or disable DRS-driven VM movement restriction
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // clusterName - Name of the cluster in the private cloud
@@ -201,20 +204,21 @@ func (client *VirtualMachinesClient) listHandleResponse(resp *http.Response) (Vi
 // restrictMovement - Whether VM DRS-driven movement is restricted (Enabled) or not (Disabled)
 // options - VirtualMachinesClientBeginRestrictMovementOptions contains the optional parameters for the VirtualMachinesClient.BeginRestrictMovement
 // method.
-func (client *VirtualMachinesClient) BeginRestrictMovement(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, virtualMachineID string, restrictMovement VirtualMachineRestrictMovement, options *VirtualMachinesClientBeginRestrictMovementOptions) (*armruntime.Poller[VirtualMachinesClientRestrictMovementResponse], error) {
+func (client *VirtualMachinesClient) BeginRestrictMovement(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, virtualMachineID string, restrictMovement VirtualMachineRestrictMovement, options *VirtualMachinesClientBeginRestrictMovementOptions) (*runtime.Poller[VirtualMachinesClientRestrictMovementResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restrictMovement(ctx, resourceGroupName, privateCloudName, clusterName, virtualMachineID, restrictMovement, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientRestrictMovementResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientRestrictMovementResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientRestrictMovementResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientRestrictMovementResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RestrictMovement - Enable or disable DRS-driven VM movement restriction
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *VirtualMachinesClient) restrictMovement(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, virtualMachineID string, restrictMovement VirtualMachineRestrictMovement, options *VirtualMachinesClientBeginRestrictMovementOptions) (*http.Response, error) {
 	req, err := client.restrictMovementCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, virtualMachineID, restrictMovement, options)
 	if err != nil {
@@ -260,6 +264,6 @@ func (client *VirtualMachinesClient) restrictMovementCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, restrictMovement)
 }

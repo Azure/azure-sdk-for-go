@@ -42,7 +42,7 @@ func NewTargetComputeSizesClient(resourceName string, resourceGroupName string, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,13 +62,14 @@ func NewTargetComputeSizesClient(resourceName string, resourceGroupName string, 
 
 // NewListByReplicationProtectedItemsPager - Lists the available target compute sizes for a replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - protection container name.
 // replicatedProtectedItemName - Replication protected item name.
 // options - TargetComputeSizesClientListByReplicationProtectedItemsOptions contains the optional parameters for the TargetComputeSizesClient.ListByReplicationProtectedItems
 // method.
 func (client *TargetComputeSizesClient) NewListByReplicationProtectedItemsPager(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *TargetComputeSizesClientListByReplicationProtectedItemsOptions) *runtime.Pager[TargetComputeSizesClientListByReplicationProtectedItemsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TargetComputeSizesClientListByReplicationProtectedItemsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TargetComputeSizesClientListByReplicationProtectedItemsResponse]{
 		More: func(page TargetComputeSizesClientListByReplicationProtectedItemsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -129,7 +130,7 @@ func (client *TargetComputeSizesClient) listByReplicationProtectedItemsCreateReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

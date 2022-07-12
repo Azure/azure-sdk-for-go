@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -39,7 +40,7 @@ func NewDomainEventSubscriptionsClient(subscriptionID string, credential azcore.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +58,7 @@ func NewDomainEventSubscriptionsClient(subscriptionID string, credential azcore.
 
 // BeginCreateOrUpdate - Asynchronously creates a new event subscription or updates an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain topic.
 // eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
@@ -64,20 +66,21 @@ func NewDomainEventSubscriptionsClient(subscriptionID string, credential azcore.
 // eventSubscriptionInfo - Event subscription properties containing the destination and filter information.
 // options - DomainEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainEventSubscriptionsClient.BeginCreateOrUpdate
 // method.
-func (client *DomainEventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *DomainEventSubscriptionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DomainEventSubscriptionsClientCreateOrUpdateResponse], error) {
+func (client *DomainEventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *DomainEventSubscriptionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DomainEventSubscriptionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DomainEventSubscriptionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DomainEventSubscriptionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DomainEventSubscriptionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainEventSubscriptionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Asynchronously creates a new event subscription or updates an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *DomainEventSubscriptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *DomainEventSubscriptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo, options)
 	if err != nil {
@@ -117,34 +120,36 @@ func (client *DomainEventSubscriptionsClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionInfo)
 }
 
 // BeginDelete - Delete an existing event subscription for a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain.
 // eventSubscriptionName - Name of the event subscription to be deleted. Event subscription names must be between 3 and 100
 // characters in length and use alphanumeric letters only.
 // options - DomainEventSubscriptionsClientBeginDeleteOptions contains the optional parameters for the DomainEventSubscriptionsClient.BeginDelete
 // method.
-func (client *DomainEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, options *DomainEventSubscriptionsClientBeginDeleteOptions) (*armruntime.Poller[DomainEventSubscriptionsClientDeleteResponse], error) {
+func (client *DomainEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, options *DomainEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[DomainEventSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, domainName, eventSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DomainEventSubscriptionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DomainEventSubscriptionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DomainEventSubscriptionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainEventSubscriptionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete an existing event subscription for a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *DomainEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, options *DomainEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, domainName, eventSubscriptionName, options)
 	if err != nil {
@@ -184,13 +189,14 @@ func (client *DomainEventSubscriptionsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get properties of an event subscription of a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the partner topic.
 // eventSubscriptionName - Name of the event subscription to be found. Event subscription names must be between 3 and 100
@@ -236,9 +242,9 @@ func (client *DomainEventSubscriptionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -253,6 +259,7 @@ func (client *DomainEventSubscriptionsClient) getHandleResponse(resp *http.Respo
 
 // GetDeliveryAttributes - Get all delivery attributes for an event subscription for domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain topic.
 // eventSubscriptionName - Name of the event subscription.
@@ -297,9 +304,9 @@ func (client *DomainEventSubscriptionsClient) getDeliveryAttributesCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -314,6 +321,7 @@ func (client *DomainEventSubscriptionsClient) getDeliveryAttributesHandleRespons
 
 // GetFullURL - Get the full endpoint URL for an event subscription for domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain topic.
 // eventSubscriptionName - Name of the event subscription.
@@ -358,9 +366,9 @@ func (client *DomainEventSubscriptionsClient) getFullURLCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -375,17 +383,24 @@ func (client *DomainEventSubscriptionsClient) getFullURLHandleResponse(resp *htt
 
 // NewListPager - List all event subscriptions that have been created for a specific topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain.
 // options - DomainEventSubscriptionsClientListOptions contains the optional parameters for the DomainEventSubscriptionsClient.List
 // method.
 func (client *DomainEventSubscriptionsClient) NewListPager(resourceGroupName string, domainName string, options *DomainEventSubscriptionsClientListOptions) *runtime.Pager[DomainEventSubscriptionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DomainEventSubscriptionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DomainEventSubscriptionsClientListResponse]{
 		More: func(page DomainEventSubscriptionsClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DomainEventSubscriptionsClientListResponse) (DomainEventSubscriptionsClientListResponse, error) {
-			req, err := client.listCreateRequest(ctx, resourceGroupName, domainName, options)
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, domainName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
 			if err != nil {
 				return DomainEventSubscriptionsClientListResponse{}, err
 			}
@@ -421,9 +436,15 @@ func (client *DomainEventSubscriptionsClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -438,26 +459,28 @@ func (client *DomainEventSubscriptionsClient) listHandleResponse(resp *http.Resp
 
 // BeginUpdate - Update an existing event subscription for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain.
 // eventSubscriptionName - Name of the event subscription to be updated.
 // eventSubscriptionUpdateParameters - Updated event subscription information.
 // options - DomainEventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the DomainEventSubscriptionsClient.BeginUpdate
 // method.
-func (client *DomainEventSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *DomainEventSubscriptionsClientBeginUpdateOptions) (*armruntime.Poller[DomainEventSubscriptionsClientUpdateResponse], error) {
+func (client *DomainEventSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *DomainEventSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[DomainEventSubscriptionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DomainEventSubscriptionsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DomainEventSubscriptionsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DomainEventSubscriptionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainEventSubscriptionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update an existing event subscription for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *DomainEventSubscriptionsClient) update(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *DomainEventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
 	if err != nil {
@@ -497,8 +520,8 @@ func (client *DomainEventSubscriptionsClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters)
 }

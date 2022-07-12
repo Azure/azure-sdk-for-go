@@ -1,4 +1,4 @@
-FROM golang as build
+FROM mcr.microsoft.com/oss/go/microsoft/golang:1.18 as build
 # you'll need to run this build from the root of the repo
 ENV GOOS=linux 
 ENV GOARCH=amd64 
@@ -7,8 +7,7 @@ ADD . /src
 WORKDIR /src/internal/stress
 RUN go build -o stress .
 
-FROM alpine
-RUN mkdir -p /app
-COPY --from=build /src/internal/stress/stress /app/stress
+FROM mcr.microsoft.com/cbl-mariner/base/core:1.0
 WORKDIR /app
+COPY --from=build /src/internal/stress/stress /app/stress
 ENTRYPOINT ["./stress"]

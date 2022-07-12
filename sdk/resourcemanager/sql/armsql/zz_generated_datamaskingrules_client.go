@@ -38,7 +38,7 @@ func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Creates or updates a database data masking rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -110,7 +111,7 @@ func (client *DataMaskingRulesClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -125,6 +126,7 @@ func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Re
 
 // NewListByDatabasePager - Gets a list of database data masking rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -132,7 +134,7 @@ func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Re
 // options - DataMaskingRulesClientListByDatabaseOptions contains the optional parameters for the DataMaskingRulesClient.ListByDatabase
 // method.
 func (client *DataMaskingRulesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DataMaskingRulesClientListByDatabaseOptions) *runtime.Pager[DataMaskingRulesClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataMaskingRulesClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataMaskingRulesClientListByDatabaseResponse]{
 		More: func(page DataMaskingRulesClientListByDatabaseResponse) bool {
 			return false
 		},
@@ -180,7 +182,7 @@ func (client *DataMaskingRulesClient) listByDatabaseCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

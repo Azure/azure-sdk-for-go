@@ -14,24 +14,24 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-01-01-preview/examples/Rules/RuleListBySubscription.json
 func ExampleRulesClient_NewListBySubscriptionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewRulesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewRulesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionsPager("<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
+	pager := client.NewListBySubscriptionsPager("ArunMonocle",
+		"sdk-Namespace-1319",
+		"sdk-Topics-2081",
+		"sdk-Subscriptions-8691",
 		&armservicebus.RulesClientListBySubscriptionsOptions{Skip: nil,
 			Top: nil,
 		})
@@ -39,7 +39,6 @@ func ExampleRulesClient_NewListBySubscriptionsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,23 +47,23 @@ func ExampleRulesClient_NewListBySubscriptionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleCreate_CorrelationFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-01-01-preview/examples/Rules/RuleCreate_CorrelationFilter.json
 func ExampleRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewRulesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewRulesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
-		"<rule-name>",
+		"resourceGroupName",
+		"sdk-Namespace-1319",
+		"sdk-Topics-2081",
+		"sdk-Subscriptions-8691",
+		"sdk-Rules-6571",
 		armservicebus.Rule{
 			Properties: &armservicebus.Ruleproperties{
 				CorrelationFilter: &armservicebus.CorrelationFilter{
@@ -83,46 +82,46 @@ func ExampleRulesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-01-01-preview/examples/Rules/RuleDelete.json
 func ExampleRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewRulesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewRulesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
-		"<rule-name>",
+		"ArunMonocle",
+		"sdk-Namespace-1319",
+		"sdk-Topics-2081",
+		"sdk-Subscriptions-8691",
+		"sdk-Rules-6571",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-01-01-preview/examples/Rules/RuleGet.json
 func ExampleRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewRulesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewRulesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
-		"<rule-name>",
+		"ArunMonocle",
+		"sdk-Namespace-1319",
+		"sdk-Topics-2081",
+		"sdk-Subscriptions-8691",
+		"sdk-Rules-6571",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

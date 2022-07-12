@@ -38,7 +38,7 @@ func NewTransparentDataEncryptionsClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTransparentDataEncryptionsClient(subscriptionID string, credential azcor
 
 // CreateOrUpdate - Updates a logical database's transparent data encryption configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -109,7 +110,7 @@ func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -124,6 +125,7 @@ func (client *TransparentDataEncryptionsClient) createOrUpdateHandleResponse(res
 
 // Get - Gets a logical database's transparent data encryption.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -176,7 +178,7 @@ func (client *TransparentDataEncryptionsClient) getCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -191,6 +193,7 @@ func (client *TransparentDataEncryptionsClient) getHandleResponse(resp *http.Res
 
 // NewListByDatabasePager - Gets a list of the logical database's transparent data encryption.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -198,7 +201,7 @@ func (client *TransparentDataEncryptionsClient) getHandleResponse(resp *http.Res
 // options - TransparentDataEncryptionsClientListByDatabaseOptions contains the optional parameters for the TransparentDataEncryptionsClient.ListByDatabase
 // method.
 func (client *TransparentDataEncryptionsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *TransparentDataEncryptionsClientListByDatabaseOptions) *runtime.Pager[TransparentDataEncryptionsClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TransparentDataEncryptionsClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TransparentDataEncryptionsClientListByDatabaseResponse]{
 		More: func(page TransparentDataEncryptionsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -251,7 +254,7 @@ func (client *TransparentDataEncryptionsClient) listByDatabaseCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -24,18 +24,17 @@ func ExampleTrustedIDProvidersClient_NewListByAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewTrustedIDProvidersClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewTrustedIDProvidersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByAccountPager("contosorg",
+		"contosoadla",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +50,17 @@ func ExampleTrustedIDProvidersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewTrustedIDProvidersClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewTrustedIDProvidersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<trusted-idprovider-name>",
+		"contosorg",
+		"contosoadla",
+		"test_trusted_id_provider_name",
 		armdatalakestore.CreateOrUpdateTrustedIDProviderParameters{
 			Properties: &armdatalakestore.CreateOrUpdateTrustedIDProviderProperties{
-				IDProvider: to.Ptr("<idprovider>"),
+				IDProvider: to.Ptr("https://sts.windows.net/ea9ec534-a3e3-4e45-ad36-3afc5bb291c1"),
 			},
 		},
 		nil)
@@ -79,14 +78,14 @@ func ExampleTrustedIDProvidersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewTrustedIDProvidersClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewTrustedIDProvidersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<trusted-idprovider-name>",
+		"contosorg",
+		"contosoadla",
+		"test_trusted_id_provider_name",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,17 +101,17 @@ func ExampleTrustedIDProvidersClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewTrustedIDProvidersClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewTrustedIDProvidersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<trusted-idprovider-name>",
+		"contosorg",
+		"contosoadla",
+		"test_trusted_id_provider_name",
 		&armdatalakestore.TrustedIDProvidersClientUpdateOptions{Parameters: &armdatalakestore.UpdateTrustedIDProviderParameters{
 			Properties: &armdatalakestore.UpdateTrustedIDProviderProperties{
-				IDProvider: to.Ptr("<idprovider>"),
+				IDProvider: to.Ptr("https://sts.windows.net/ea9ec534-a3e3-4e45-ad36-3afc5bb291c1"),
 			},
 		},
 		})
@@ -130,14 +129,14 @@ func ExampleTrustedIDProvidersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewTrustedIDProvidersClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewTrustedIDProvidersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<trusted-idprovider-name>",
+		"contosorg",
+		"contosoadla",
+		"test_trusted_id_provider_name",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

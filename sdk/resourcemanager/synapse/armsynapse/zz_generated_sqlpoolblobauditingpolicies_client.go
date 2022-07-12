@@ -38,7 +38,7 @@ func NewSQLPoolBlobAuditingPoliciesClient(subscriptionID string, credential azco
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSQLPoolBlobAuditingPoliciesClient(subscriptionID string, credential azco
 
 // CreateOrUpdate - Creates or updates a SQL pool's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -104,7 +105,7 @@ func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateHandleResponse(re
 
 // Get - Get a SQL pool's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -166,7 +168,7 @@ func (client *SQLPoolBlobAuditingPoliciesClient) getCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -181,13 +183,14 @@ func (client *SQLPoolBlobAuditingPoliciesClient) getHandleResponse(resp *http.Re
 
 // NewListBySQLPoolPager - Lists auditing settings of a Sql pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions contains the optional parameters for the SQLPoolBlobAuditingPoliciesClient.ListBySQLPool
 // method.
 func (client *SQLPoolBlobAuditingPoliciesClient) NewListBySQLPoolPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions) *runtime.Pager[SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse]{
 		More: func(page SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -240,7 +243,7 @@ func (client *SQLPoolBlobAuditingPoliciesClient) listBySQLPoolCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

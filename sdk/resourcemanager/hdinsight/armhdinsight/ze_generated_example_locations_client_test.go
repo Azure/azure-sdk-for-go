@@ -24,12 +24,12 @@ func ExampleLocationsClient_GetCapabilities() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewLocationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetCapabilities(ctx,
-		"<location>",
+		"West US",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,12 +45,12 @@ func ExampleLocationsClient_ListUsages() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewLocationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListUsages(ctx,
-		"<location>",
+		"West US",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -66,12 +66,12 @@ func ExampleLocationsClient_ListBillingSpecs() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewLocationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListBillingSpecs(ctx,
-		"<location>",
+		"East US 2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -87,13 +87,13 @@ func ExampleLocationsClient_GetAzureAsyncOperationStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewLocationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAzureAsyncOperationStatus(ctx,
-		"<location>",
-		"<operation-id>",
+		"East US 2",
+		"8a0348f4-8a85-4ec2-abe0-03b26104a9a0-0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -109,15 +109,15 @@ func ExampleLocationsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewLocationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<location>",
+		"westus",
 		armhdinsight.NameAvailabilityCheckRequestParameters{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("test123"),
+			Type: to.Ptr("clusters"),
 		},
 		nil)
 	if err != nil {
@@ -134,14 +134,14 @@ func ExampleLocationsClient_ValidateClusterCreateRequest() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewLocationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateClusterCreateRequest(ctx,
-		"<location>",
+		"southcentralus",
 		armhdinsight.ClusterCreateRequestValidationParameters{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("southcentralus"),
 			Properties: &armhdinsight.ClusterCreateProperties{
 				ClusterDefinition: &armhdinsight.ClusterDefinition{
 					ComponentVersion: map[string]*string{
@@ -154,75 +154,75 @@ func ExampleLocationsClient_ValidateClusterCreateRequest() {
 							"restAuthCredential.username":  "admin",
 						},
 					},
-					Kind: to.Ptr("<kind>"),
+					Kind: to.Ptr("spark"),
 				},
-				ClusterVersion: to.Ptr("<cluster-version>"),
+				ClusterVersion: to.Ptr("4.0"),
 				ComputeProfile: &armhdinsight.ComputeProfile{
 					Roles: []*armhdinsight.Role{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("headnode"),
 							HardwareProfile: &armhdinsight.HardwareProfile{
-								VMSize: to.Ptr("<vmsize>"),
+								VMSize: to.Ptr("Standard_E8_V3"),
 							},
 							MinInstanceCount: to.Ptr[int32](1),
 							OSProfile: &armhdinsight.OsProfile{
 								LinuxOperatingSystemProfile: &armhdinsight.LinuxOperatingSystemProfile{
-									Password: to.Ptr("<password>"),
-									Username: to.Ptr("<username>"),
+									Password: to.Ptr("********"),
+									Username: to.Ptr("sshuser"),
 								},
 							},
 							ScriptActions:       []*armhdinsight.ScriptAction{},
 							TargetInstanceCount: to.Ptr[int32](2),
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("workernode"),
 							HardwareProfile: &armhdinsight.HardwareProfile{
-								VMSize: to.Ptr("<vmsize>"),
+								VMSize: to.Ptr("Standard_E8_V3"),
 							},
 							OSProfile: &armhdinsight.OsProfile{
 								LinuxOperatingSystemProfile: &armhdinsight.LinuxOperatingSystemProfile{
-									Password: to.Ptr("<password>"),
-									Username: to.Ptr("<username>"),
+									Password: to.Ptr("********"),
+									Username: to.Ptr("sshuser"),
 								},
 							},
 							ScriptActions:       []*armhdinsight.ScriptAction{},
 							TargetInstanceCount: to.Ptr[int32](4),
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("zookeepernode"),
 							HardwareProfile: &armhdinsight.HardwareProfile{
-								VMSize: to.Ptr("<vmsize>"),
+								VMSize: to.Ptr("Standard_D13_V2"),
 							},
 							MinInstanceCount: to.Ptr[int32](1),
 							OSProfile: &armhdinsight.OsProfile{
 								LinuxOperatingSystemProfile: &armhdinsight.LinuxOperatingSystemProfile{
-									Password: to.Ptr("<password>"),
-									Username: to.Ptr("<username>"),
+									Password: to.Ptr("**********"),
+									Username: to.Ptr("sshuser"),
 								},
 							},
 							ScriptActions:       []*armhdinsight.ScriptAction{},
 							TargetInstanceCount: to.Ptr[int32](3),
 						}},
 				},
-				MinSupportedTLSVersion: to.Ptr("<min-supported-tlsversion>"),
+				MinSupportedTLSVersion: to.Ptr("1.2"),
 				OSType:                 to.Ptr(armhdinsight.OSTypeLinux),
 				StorageProfile: &armhdinsight.StorageProfile{
 					Storageaccounts: []*armhdinsight.StorageAccount{
 						{
-							Name:       to.Ptr("<name>"),
-							Container:  to.Ptr("<container>"),
+							Name:       to.Ptr("storagename.blob.core.windows.net"),
+							Container:  to.Ptr("contianername"),
 							IsDefault:  to.Ptr(true),
-							Key:        to.Ptr("<key>"),
-							ResourceID: to.Ptr("<resource-id>"),
+							Key:        to.Ptr("*******"),
+							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storagename"),
 						}},
 				},
 				Tier: to.Ptr(armhdinsight.TierStandard),
 			},
 			Tags:               map[string]*string{},
-			Name:               to.Ptr("<name>"),
-			Type:               to.Ptr("<type>"),
+			Name:               to.Ptr("testclustername"),
+			Type:               to.Ptr("Microsoft.HDInsight/clusters"),
 			FetchAaddsResource: to.Ptr(false),
-			TenantID:           to.Ptr("<tenant-id>"),
+			TenantID:           to.Ptr("00000000-0000-0000-0000-000000000000"),
 		},
 		nil)
 	if err != nil {

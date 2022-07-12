@@ -24,18 +24,17 @@ func ExampleFirewallRulesClient_NewListByAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewFirewallRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByAccountPager("contosorg",
+		"contosoadla",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,18 +50,18 @@ func ExampleFirewallRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewFirewallRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<firewall-rule-name>",
+		"contosorg",
+		"contosoadla",
+		"test_rule",
 		armdatalakeanalytics.CreateOrUpdateFirewallRuleParameters{
 			Properties: &armdatalakeanalytics.CreateOrUpdateFirewallRuleProperties{
-				EndIPAddress:   to.Ptr("<end-ipaddress>"),
-				StartIPAddress: to.Ptr("<start-ipaddress>"),
+				EndIPAddress:   to.Ptr("2.2.2.2"),
+				StartIPAddress: to.Ptr("1.1.1.1"),
 			},
 		},
 		nil)
@@ -80,14 +79,14 @@ func ExampleFirewallRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewFirewallRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<firewall-rule-name>",
+		"contosorg",
+		"contosoadla",
+		"test_rule",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -103,18 +102,18 @@ func ExampleFirewallRulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewFirewallRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<firewall-rule-name>",
+		"contosorg",
+		"contosoadla",
+		"test_rule",
 		&armdatalakeanalytics.FirewallRulesClientUpdateOptions{Parameters: &armdatalakeanalytics.UpdateFirewallRuleParameters{
 			Properties: &armdatalakeanalytics.UpdateFirewallRuleProperties{
-				EndIPAddress:   to.Ptr("<end-ipaddress>"),
-				StartIPAddress: to.Ptr("<start-ipaddress>"),
+				EndIPAddress:   to.Ptr("2.2.2.2"),
+				StartIPAddress: to.Ptr("1.1.1.1"),
 			},
 		},
 		})
@@ -132,14 +131,14 @@ func ExampleFirewallRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewFirewallRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<firewall-rule-name>",
+		"contosorg",
+		"contosoadla",
+		"test_rule",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

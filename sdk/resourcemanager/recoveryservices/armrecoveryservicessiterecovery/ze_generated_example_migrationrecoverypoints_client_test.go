@@ -23,21 +23,20 @@ func ExampleMigrationRecoveryPointsClient_NewListByReplicationMigrationItemsPage
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewMigrationRecoveryPointsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewMigrationRecoveryPointsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReplicationMigrationItemsPager("<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
+	pager := client.NewListByReplicationMigrationItemsPager("vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,17 +52,17 @@ func ExampleMigrationRecoveryPointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewMigrationRecoveryPointsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewMigrationRecoveryPointsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
-		"<migration-recovery-point-name>",
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
+		"b22134ea-620c-474b-9fa5-3c1cb47708e3",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

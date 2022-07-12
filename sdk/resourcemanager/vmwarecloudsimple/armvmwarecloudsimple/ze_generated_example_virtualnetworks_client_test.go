@@ -23,19 +23,18 @@ func ExampleVirtualNetworksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualNetworksClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualNetworksClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<region-id>",
-		"<pc-name>",
-		"<resource-pool-name>",
+	pager := client.NewListPager("westus2",
+		"myPrivateCloud",
+		"/subscriptions/{subscription-id}/providers/Microsoft.VMwareCloudSimple/locations/westus2/privateClouds/myPrivateCloud/resourcePools/resgroup-26",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExampleVirtualNetworksClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualNetworksClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualNetworksClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<region-id>",
-		"<pc-name>",
-		"<virtual-network-name>",
+		"westus2",
+		"myPrivateCloud",
+		"dvportgroup-19",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -40,7 +40,7 @@ func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Synchronously creates or updates a new channel with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the partners subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // channelName - Name of the channel.
@@ -102,9 +103,9 @@ func (client *ChannelsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, channelInfo)
 }
 
@@ -119,24 +120,26 @@ func (client *ChannelsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // BeginDelete - Delete an existing channel.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the partners subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // channelName - Name of the channel.
 // options - ChannelsClientBeginDeleteOptions contains the optional parameters for the ChannelsClient.BeginDelete method.
-func (client *ChannelsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, options *ChannelsClientBeginDeleteOptions) (*armruntime.Poller[ChannelsClientDeleteResponse], error) {
+func (client *ChannelsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, options *ChannelsClientBeginDeleteOptions) (*runtime.Poller[ChannelsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerNamespaceName, channelName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ChannelsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ChannelsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ChannelsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ChannelsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete an existing channel.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *ChannelsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, options *ChannelsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, partnerNamespaceName, channelName, options)
 	if err != nil {
@@ -176,13 +179,14 @@ func (client *ChannelsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get properties of a channel.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the partners subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // channelName - Name of the channel.
@@ -226,9 +230,9 @@ func (client *ChannelsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -243,6 +247,7 @@ func (client *ChannelsClient) getHandleResponse(resp *http.Response) (ChannelsCl
 
 // GetFullURL - Get the full endpoint URL of a partner destination channel.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the partners subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // channelName - Name of the Channel.
@@ -286,9 +291,9 @@ func (client *ChannelsClient) getFullURLCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -303,12 +308,13 @@ func (client *ChannelsClient) getFullURLHandleResponse(resp *http.Response) (Cha
 
 // NewListByPartnerNamespacePager - List all the channels in a partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the partners subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // options - ChannelsClientListByPartnerNamespaceOptions contains the optional parameters for the ChannelsClient.ListByPartnerNamespace
 // method.
 func (client *ChannelsClient) NewListByPartnerNamespacePager(resourceGroupName string, partnerNamespaceName string, options *ChannelsClientListByPartnerNamespaceOptions) *runtime.Pager[ChannelsClientListByPartnerNamespaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ChannelsClientListByPartnerNamespaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ChannelsClientListByPartnerNamespaceResponse]{
 		More: func(page ChannelsClientListByPartnerNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -355,7 +361,7 @@ func (client *ChannelsClient) listByPartnerNamespaceCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -363,7 +369,7 @@ func (client *ChannelsClient) listByPartnerNamespaceCreateRequest(ctx context.Co
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -378,6 +384,7 @@ func (client *ChannelsClient) listByPartnerNamespaceHandleResponse(resp *http.Re
 
 // Update - Synchronously updates a channel with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the partners subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // channelName - Name of the channel.
@@ -422,7 +429,7 @@ func (client *ChannelsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, channelUpdateParameters)
 }

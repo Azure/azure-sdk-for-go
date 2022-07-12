@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtestservice/armloadtestservice"
@@ -26,7 +24,7 @@ func ExampleLoadTestsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleLoadTestsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleLoadTestsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("dummyrg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleLoadTestsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<load-test-name>",
+		"dummyrg",
+		"myLoadTest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,34 +95,40 @@ func ExampleLoadTestsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<load-test-name>",
+		"dummyrg",
+		"myLoadTest",
 		armloadtestservice.LoadTestResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Tags: map[string]*string{
 				"Team": to.Ptr("Dev Exp"),
 			},
+			Identity: &armloadtestservice.ManagedServiceIdentity{
+				Type: to.Ptr(armloadtestservice.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+				UserAssignedIdentities: map[string]*armloadtestservice.UserAssignedIdentity{
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+				},
+			},
 			Properties: &armloadtestservice.LoadTestProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("This is new load test resource"),
 				Encryption: &armloadtestservice.EncryptionProperties{
 					Identity: &armloadtestservice.EncryptionPropertiesIdentity{
 						Type:       to.Ptr(armloadtestservice.TypeUserAssigned),
-						ResourceID: to.Ptr("<resource-id>"),
+						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"),
 					},
-					KeyURL: to.Ptr("<key-url>"),
+					KeyURL: to.Ptr("https://dummy.vault.azure.net/keys/dummykey1"),
 				},
 			},
 		},
-		&armloadtestservice.LoadTestsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -141,21 +143,27 @@ func ExampleLoadTestsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<load-test-name>",
+		"dummyrg",
+		"myLoadTest",
 		armloadtestservice.LoadTestResourcePatchRequestBody{
+			Identity: &armloadtestservice.ManagedServiceIdentity{
+				Type: to.Ptr(armloadtestservice.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+				UserAssignedIdentities: map[string]*armloadtestservice.UserAssignedIdentity{
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+				},
+			},
 			Properties: &armloadtestservice.LoadTestResourcePatchRequestBodyProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("This is new load test resource"),
 				Encryption: &armloadtestservice.EncryptionProperties{
 					Identity: &armloadtestservice.EncryptionPropertiesIdentity{
 						Type: to.Ptr(armloadtestservice.TypeSystemAssigned),
 					},
-					KeyURL: to.Ptr("<key-url>"),
+					KeyURL: to.Ptr("https://dummy.vault.azure.net/keys/dummykey1"),
 				},
 			},
 			Tags: map[string]interface{}{
@@ -163,11 +171,11 @@ func ExampleLoadTestsClient_BeginUpdate() {
 				"Team":     "Dev Exp",
 			},
 		},
-		&armloadtestservice.LoadTestsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -182,18 +190,18 @@ func ExampleLoadTestsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
+	client, err := armloadtestservice.NewLoadTestsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<load-test-name>",
-		&armloadtestservice.LoadTestsClientBeginDeleteOptions{ResumeToken: ""})
+		"dummyrg",
+		"myLoadTest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

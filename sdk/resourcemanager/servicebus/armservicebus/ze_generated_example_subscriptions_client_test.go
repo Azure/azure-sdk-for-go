@@ -14,23 +14,23 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Subscriptions/SBSubscriptionListByTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-01-01-preview/examples/Subscriptions/SBSubscriptionListByTopic.json
 func ExampleSubscriptionsClient_NewListByTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewSubscriptionsClient("5{Subscriptionid}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTopicPager("<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
+	pager := client.NewListByTopicPager("ResourceGroup",
+		"sdk-Namespace-1349",
+		"sdk-Topics-8740",
 		&armservicebus.SubscriptionsClientListByTopicOptions{Skip: nil,
 			Top: nil,
 		})
@@ -38,7 +38,6 @@ func ExampleSubscriptionsClient_NewListByTopicPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -47,22 +46,22 @@ func ExampleSubscriptionsClient_NewListByTopicPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Subscriptions/SBSubscriptionCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-01-01-preview/examples/Subscriptions/SBSubscriptionCreate.json
 func ExampleSubscriptionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewSubscriptionsClient("Subscriptionid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
+		"ResourceGroup",
+		"sdk-Namespace-1349",
+		"sdk-Topics-8740",
+		"sdk-Subscriptions-2178",
 		armservicebus.SBSubscription{
 			Properties: &armservicebus.SBSubscriptionProperties{
 				EnableBatchedOperations: to.Ptr(true),
@@ -76,44 +75,44 @@ func ExampleSubscriptionsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Subscriptions/SBSubscriptionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-01-01-preview/examples/Subscriptions/SBSubscriptionDelete.json
 func ExampleSubscriptionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewSubscriptionsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
+		"ResourceGroup",
+		"sdk-Namespace-5882",
+		"sdk-Topics-1804",
+		"sdk-Subscriptions-3670",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Subscriptions/SBSubscriptionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-01-01-preview/examples/Subscriptions/SBSubscriptionGet.json
 func ExampleSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewSubscriptionsClient("Subscriptionid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
+		"ResourceGroup",
+		"sdk-Namespace-1349",
+		"sdk-Topics-8740",
+		"sdk-Subscriptions-2178",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

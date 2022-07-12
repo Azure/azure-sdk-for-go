@@ -17,14 +17,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
 func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -42,24 +41,23 @@ func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
 func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetResourcesInResourceGroupPager("<resource-group-name>",
+	pager := client.NewGetResourcesInResourceGroupPager("SampleResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -68,22 +66,22 @@ func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/PutResourceGuard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/PutResourceGuard.json
 func ExampleResourceGuardsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Put(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
 		armdataprotection.ResourceGuardResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("WestUS"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("val1"),
 			},
@@ -96,20 +94,20 @@ func ExampleResourceGuardsClient_Put() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetResourceGuard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetResourceGuard.json
 func ExampleResourceGuardsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -118,40 +116,40 @@ func ExampleResourceGuardsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/DeleteResourceGuard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/DeleteResourceGuard.json
 func ExampleResourceGuardsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/PatchResourceGuard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
 func ExampleResourceGuardsClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Patch(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
 		armdataprotection.PatchResourceRequestInput{
 			Tags: map[string]*string{
 				"newKey": to.Ptr("newVal"),
@@ -165,25 +163,24 @@ func ExampleResourceGuardsClient_Patch() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
 func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDisableSoftDeleteRequestsObjectsPager("<resource-group-name>",
-		"<resource-guards-name>",
+	pager := client.NewGetDisableSoftDeleteRequestsObjectsPager("SampleResourceGroup",
+		"swaggerExample",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -192,25 +189,24 @@ func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
 func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDeleteResourceGuardProxyRequestsObjectsPager("<resource-group-name>",
-		"<resource-guards-name>",
+	pager := client.NewGetDeleteResourceGuardProxyRequestsObjectsPager("SampleResourceGroup",
+		"swaggerExample",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -219,25 +215,24 @@ func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPa
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
 func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetBackupSecurityPINRequestsObjectsPager("<resource-group-name>",
-		"<resource-guards-name>",
+	pager := client.NewGetBackupSecurityPINRequestsObjectsPager("SampleResourceGroup",
+		"swaggerExample",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -246,25 +241,24 @@ func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
 func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDeleteProtectedItemRequestsObjectsPager("<resource-group-name>",
-		"<resource-guards-name>",
+	pager := client.NewGetDeleteProtectedItemRequestsObjectsPager("SampleResourceGroup",
+		"swaggerExample",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -273,25 +267,24 @@ func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager()
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
 func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetUpdateProtectionPolicyRequestsObjectsPager("<resource-group-name>",
-		"<resource-guards-name>",
+	pager := client.NewGetUpdateProtectionPolicyRequestsObjectsPager("SampleResourceGroup",
+		"swaggerExample",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -300,25 +293,24 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPage
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
 func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetUpdateProtectedItemRequestsObjectsPager("<resource-group-name>",
-		"<resource-guards-name>",
+	pager := client.NewGetUpdateProtectedItemRequestsObjectsPager("SampleResourceGroup",
+		"swaggerExample",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -327,21 +319,21 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager()
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
 func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDefaultDisableSoftDeleteRequestsObject(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
-		"<request-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -350,21 +342,21 @@ func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
 func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDefaultDeleteResourceGuardProxyRequestsObject(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
-		"<request-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -373,21 +365,21 @@ func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObjec
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
 func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDefaultBackupSecurityPINRequestsObject(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
-		"<request-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -396,21 +388,21 @@ func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
 func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDefaultDeleteProtectedItemRequestsObject(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
-		"<request-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -419,21 +411,21 @@ func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
 func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDefaultUpdateProtectionPolicyRequestsObject(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
-		"<request-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -442,21 +434,21 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject(
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
 func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDefaultUpdateProtectedItemRequestsObject(ctx,
-		"<resource-group-name>",
-		"<resource-guards-name>",
-		"<request-name>",
+		"SampleResourceGroup",
+		"swaggerExample",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

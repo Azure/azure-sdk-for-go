@@ -24,14 +24,14 @@ func ExampleSQLServersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
-		"<sql-server-name>",
+		"testrg",
+		"testsqlregistration",
+		"testsqlserver",
 		&armazuredata.SQLServersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,21 +47,21 @@ func ExampleSQLServersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
-		"<sql-server-name>",
+		"testrg",
+		"testsqlregistration",
+		"testsqlserver",
 		armazuredata.SQLServer{
 			Properties: &armazuredata.SQLServerProperties{
 				Cores:          to.Ptr[int32](8),
-				Edition:        to.Ptr("<edition>"),
-				PropertyBag:    to.Ptr("<property-bag>"),
-				RegistrationID: to.Ptr("<registration-id>"),
-				Version:        to.Ptr("<version>"),
+				Edition:        to.Ptr("Latin"),
+				PropertyBag:    to.Ptr(""),
+				RegistrationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.AzureData/SqlServerRegistrations/testsqlregistration"),
+				Version:        to.Ptr("2008"),
 			},
 		},
 		nil)
@@ -79,14 +79,14 @@ func ExampleSQLServersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
-		"<sql-server-name>",
+		"testrg",
+		"testsqlregistration",
+		"testsqlserver",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -100,18 +100,17 @@ func ExampleSQLServersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
-		"<sql-server-registration-name>",
+	pager := client.NewListByResourceGroupPager("testrg",
+		"testsqlregistration",
 		&armazuredata.SQLServersClientListByResourceGroupOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

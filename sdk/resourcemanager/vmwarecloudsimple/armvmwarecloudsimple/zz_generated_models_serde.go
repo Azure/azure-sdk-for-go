@@ -10,59 +10,10 @@ package armvmwarecloudsimple
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// MarshalJSON implements the json.Marshaller interface for type AvailableOperationDisplayPropertyServiceSpecificationMetricsList.
-func (a AvailableOperationDisplayPropertyServiceSpecificationMetricsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metricSpecifications", a.MetricSpecifications)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AvailableOperationsListResponse.
-func (a AvailableOperationsListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CSRPErrorBody.
-func (c CSRPErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CustomizationIPSettings.
-func (c CustomizationIPSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "gateway", c.Gateway)
-	populate(objectMap, "ip", c.IP)
-	populate(objectMap, "subnetMask", c.SubnetMask)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CustomizationPoliciesListResponse.
-func (c CustomizationPoliciesListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CustomizationSpecification.
-func (c CustomizationSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "nicSettings", c.NicSettings)
-	return json.Marshal(objectMap)
-}
 
 // MarshalJSON implements the json.Marshaller interface for type DedicatedCloudNode.
 func (d DedicatedCloudNode) MarshalJSON() ([]byte, error) {
@@ -74,14 +25,6 @@ func (d DedicatedCloudNode) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sku", d.SKU)
 	populate(objectMap, "tags", d.Tags)
 	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DedicatedCloudNodeListResponse.
-func (d DedicatedCloudNodeListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -109,56 +52,56 @@ func (d DedicatedCloudNodeProperties) MarshalJSON() ([]byte, error) {
 func (d *DedicatedCloudNodeProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "availabilityZoneId":
-			err = unpopulate(val, &d.AvailabilityZoneID)
+			err = unpopulate(val, "AvailabilityZoneID", &d.AvailabilityZoneID)
 			delete(rawMsg, key)
 		case "availabilityZoneName":
-			err = unpopulate(val, &d.AvailabilityZoneName)
+			err = unpopulate(val, "AvailabilityZoneName", &d.AvailabilityZoneName)
 			delete(rawMsg, key)
 		case "cloudRackName":
-			err = unpopulate(val, &d.CloudRackName)
+			err = unpopulate(val, "CloudRackName", &d.CloudRackName)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, &d.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &d.Created)
 			delete(rawMsg, key)
 		case "nodesCount":
-			err = unpopulate(val, &d.NodesCount)
+			err = unpopulate(val, "NodesCount", &d.NodesCount)
 			delete(rawMsg, key)
 		case "placementGroupId":
-			err = unpopulate(val, &d.PlacementGroupID)
+			err = unpopulate(val, "PlacementGroupID", &d.PlacementGroupID)
 			delete(rawMsg, key)
 		case "placementGroupName":
-			err = unpopulate(val, &d.PlacementGroupName)
+			err = unpopulate(val, "PlacementGroupName", &d.PlacementGroupName)
 			delete(rawMsg, key)
 		case "privateCloudId":
-			err = unpopulate(val, &d.PrivateCloudID)
+			err = unpopulate(val, "PrivateCloudID", &d.PrivateCloudID)
 			delete(rawMsg, key)
 		case "privateCloudName":
-			err = unpopulate(val, &d.PrivateCloudName)
+			err = unpopulate(val, "PrivateCloudName", &d.PrivateCloudName)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &d.ProvisioningState)
 			delete(rawMsg, key)
 		case "purchaseId":
-			err = unpopulate(val, &d.PurchaseID)
+			err = unpopulate(val, "PurchaseID", &d.PurchaseID)
 			delete(rawMsg, key)
 		case "skuDescription":
-			err = unpopulate(val, &d.SKUDescription)
+			err = unpopulate(val, "SKUDescription", &d.SKUDescription)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &d.Status)
+			err = unpopulate(val, "Status", &d.Status)
 			delete(rawMsg, key)
 		case "vmwareClusterName":
-			err = unpopulate(val, &d.VmwareClusterName)
+			err = unpopulate(val, "VmwareClusterName", &d.VmwareClusterName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
@@ -173,14 +116,6 @@ func (d DedicatedCloudService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "tags", d.Tags)
 	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DedicatedCloudServiceListResponse.
-func (d DedicatedCloudServiceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -208,48 +143,36 @@ func (g GuestOSNICCustomization) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResource.
-func (o OperationResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", o.Error)
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "name", o.Name)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	populate(objectMap, "status", o.Status)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type OperationResource.
 func (o *OperationResource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, &o.EndTime)
+			err = unpopulateTimeRFC3339(val, "EndTime", &o.EndTime)
 			delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, &o.Error)
+			err = unpopulate(val, "Error", &o.Error)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &o.ID)
+			err = unpopulate(val, "ID", &o.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &o.Name)
+			err = unpopulate(val, "Name", &o.Name)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &o.StartTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &o.Status)
+			err = unpopulate(val, "Status", &o.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
 		}
 	}
 	return nil
@@ -262,155 +185,93 @@ func (p PatchPayload) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateCloudList.
-func (p PrivateCloudList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateCloudProperties.
-func (p PrivateCloudProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "availabilityZoneId", p.AvailabilityZoneID)
-	populate(objectMap, "availabilityZoneName", p.AvailabilityZoneName)
-	populate(objectMap, "clustersNumber", p.ClustersNumber)
-	populate(objectMap, "createdBy", p.CreatedBy)
-	populateTimeRFC3339(objectMap, "createdOn", p.CreatedOn)
-	populate(objectMap, "dnsServers", p.DNSServers)
-	populate(objectMap, "expires", p.Expires)
-	populate(objectMap, "nsxType", p.NsxType)
-	populate(objectMap, "placementGroupId", p.PlacementGroupID)
-	populate(objectMap, "placementGroupName", p.PlacementGroupName)
-	populate(objectMap, "privateCloudId", p.PrivateCloudID)
-	populate(objectMap, "resourcePools", p.ResourcePools)
-	populate(objectMap, "state", p.State)
-	populate(objectMap, "totalCpuCores", p.TotalCPUCores)
-	populate(objectMap, "totalNodes", p.TotalNodes)
-	populate(objectMap, "totalRam", p.TotalRAM)
-	populate(objectMap, "totalStorage", p.TotalStorage)
-	populate(objectMap, "type", p.Type)
-	populate(objectMap, "vSphereVersion", p.VSphereVersion)
-	populate(objectMap, "vcenterFqdn", p.VcenterFqdn)
-	populate(objectMap, "vcenterRefid", p.VcenterRefid)
-	populate(objectMap, "virtualMachineTemplates", p.VirtualMachineTemplates)
-	populate(objectMap, "virtualNetworks", p.VirtualNetworks)
-	populate(objectMap, "vrOpsEnabled", p.VrOpsEnabled)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type PrivateCloudProperties.
 func (p *PrivateCloudProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "availabilityZoneId":
-			err = unpopulate(val, &p.AvailabilityZoneID)
+			err = unpopulate(val, "AvailabilityZoneID", &p.AvailabilityZoneID)
 			delete(rawMsg, key)
 		case "availabilityZoneName":
-			err = unpopulate(val, &p.AvailabilityZoneName)
+			err = unpopulate(val, "AvailabilityZoneName", &p.AvailabilityZoneName)
 			delete(rawMsg, key)
 		case "clustersNumber":
-			err = unpopulate(val, &p.ClustersNumber)
+			err = unpopulate(val, "ClustersNumber", &p.ClustersNumber)
 			delete(rawMsg, key)
 		case "createdBy":
-			err = unpopulate(val, &p.CreatedBy)
+			err = unpopulate(val, "CreatedBy", &p.CreatedBy)
 			delete(rawMsg, key)
 		case "createdOn":
-			err = unpopulateTimeRFC3339(val, &p.CreatedOn)
+			err = unpopulateTimeRFC3339(val, "CreatedOn", &p.CreatedOn)
 			delete(rawMsg, key)
 		case "dnsServers":
-			err = unpopulate(val, &p.DNSServers)
+			err = unpopulate(val, "DNSServers", &p.DNSServers)
 			delete(rawMsg, key)
 		case "expires":
-			err = unpopulate(val, &p.Expires)
+			err = unpopulate(val, "Expires", &p.Expires)
 			delete(rawMsg, key)
 		case "nsxType":
-			err = unpopulate(val, &p.NsxType)
+			err = unpopulate(val, "NsxType", &p.NsxType)
 			delete(rawMsg, key)
 		case "placementGroupId":
-			err = unpopulate(val, &p.PlacementGroupID)
+			err = unpopulate(val, "PlacementGroupID", &p.PlacementGroupID)
 			delete(rawMsg, key)
 		case "placementGroupName":
-			err = unpopulate(val, &p.PlacementGroupName)
+			err = unpopulate(val, "PlacementGroupName", &p.PlacementGroupName)
 			delete(rawMsg, key)
 		case "privateCloudId":
-			err = unpopulate(val, &p.PrivateCloudID)
+			err = unpopulate(val, "PrivateCloudID", &p.PrivateCloudID)
 			delete(rawMsg, key)
 		case "resourcePools":
-			err = unpopulate(val, &p.ResourcePools)
+			err = unpopulate(val, "ResourcePools", &p.ResourcePools)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &p.State)
+			err = unpopulate(val, "State", &p.State)
 			delete(rawMsg, key)
 		case "totalCpuCores":
-			err = unpopulate(val, &p.TotalCPUCores)
+			err = unpopulate(val, "TotalCPUCores", &p.TotalCPUCores)
 			delete(rawMsg, key)
 		case "totalNodes":
-			err = unpopulate(val, &p.TotalNodes)
+			err = unpopulate(val, "TotalNodes", &p.TotalNodes)
 			delete(rawMsg, key)
 		case "totalRam":
-			err = unpopulate(val, &p.TotalRAM)
+			err = unpopulate(val, "TotalRAM", &p.TotalRAM)
 			delete(rawMsg, key)
 		case "totalStorage":
-			err = unpopulate(val, &p.TotalStorage)
+			err = unpopulate(val, "TotalStorage", &p.TotalStorage)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &p.Type)
+			err = unpopulate(val, "Type", &p.Type)
 			delete(rawMsg, key)
 		case "vSphereVersion":
-			err = unpopulate(val, &p.VSphereVersion)
+			err = unpopulate(val, "VSphereVersion", &p.VSphereVersion)
 			delete(rawMsg, key)
 		case "vcenterFqdn":
-			err = unpopulate(val, &p.VcenterFqdn)
+			err = unpopulate(val, "VcenterFqdn", &p.VcenterFqdn)
 			delete(rawMsg, key)
 		case "vcenterRefid":
-			err = unpopulate(val, &p.VcenterRefid)
+			err = unpopulate(val, "VcenterRefid", &p.VcenterRefid)
 			delete(rawMsg, key)
 		case "virtualMachineTemplates":
-			err = unpopulate(val, &p.VirtualMachineTemplates)
+			err = unpopulate(val, "VirtualMachineTemplates", &p.VirtualMachineTemplates)
 			delete(rawMsg, key)
 		case "virtualNetworks":
-			err = unpopulate(val, &p.VirtualNetworks)
+			err = unpopulate(val, "VirtualNetworks", &p.VirtualNetworks)
 			delete(rawMsg, key)
 		case "vrOpsEnabled":
-			err = unpopulate(val, &p.VrOpsEnabled)
+			err = unpopulate(val, "VrOpsEnabled", &p.VrOpsEnabled)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourcePoolsListResponse.
-func (r ResourcePoolsListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SKUAvailabilityListResponse.
-func (s SKUAvailabilityListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UsageListResponse.
-func (u UsageListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", u.NextLink)
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachine.
@@ -422,14 +283,6 @@ func (v VirtualMachine) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", v.Properties)
 	populate(objectMap, "tags", v.Tags)
 	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineListResponse.
-func (v VirtualMachineListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -461,42 +314,6 @@ func (v VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineTemplateListResponse.
-func (v VirtualMachineTemplateListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineTemplateProperties.
-func (v VirtualMachineTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "amountOfRam", v.AmountOfRAM)
-	populate(objectMap, "controllers", v.Controllers)
-	populate(objectMap, "description", v.Description)
-	populate(objectMap, "disks", v.Disks)
-	populate(objectMap, "exposeToGuestVM", v.ExposeToGuestVM)
-	populate(objectMap, "guestOS", v.GuestOS)
-	populate(objectMap, "guestOSType", v.GuestOSType)
-	populate(objectMap, "nics", v.Nics)
-	populate(objectMap, "numberOfCores", v.NumberOfCores)
-	populate(objectMap, "path", v.Path)
-	populate(objectMap, "privateCloudId", v.PrivateCloudID)
-	populate(objectMap, "vSphereNetworks", v.VSphereNetworks)
-	populate(objectMap, "vSphereTags", v.VSphereTags)
-	populate(objectMap, "vmwaretools", v.Vmwaretools)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkListResponse.
-func (v VirtualNetworkListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type VirtualNic.
 func (v VirtualNic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -521,9 +338,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

@@ -39,7 +39,7 @@ func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Creates or updates a WCF relay. This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
@@ -102,9 +103,9 @@ func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *WCFRelaysClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // CreateOrUpdateAuthorizationRule - Creates or updates an authorization rule for a WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
@@ -169,9 +171,9 @@ func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -186,6 +188,7 @@ func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleHandleResponse(res
 
 // Delete - Deletes a WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
@@ -229,14 +232,15 @@ func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DeleteAuthorizationRule - Deletes a WCF relay authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
@@ -286,14 +290,15 @@ func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns the description for the specified WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
@@ -337,9 +342,9 @@ func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -354,6 +359,7 @@ func (client *WCFRelaysClient) getHandleResponse(resp *http.Response) (WCFRelays
 
 // GetAuthorizationRule - Get authorizationRule for a WCF relay by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
@@ -403,9 +409,9 @@ func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -420,13 +426,14 @@ func (client *WCFRelaysClient) getAuthorizationRuleHandleResponse(resp *http.Res
 
 // NewListAuthorizationRulesPager - Authorization rules for a WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
 // options - WCFRelaysClientListAuthorizationRulesOptions contains the optional parameters for the WCFRelaysClient.ListAuthorizationRules
 // method.
 func (client *WCFRelaysClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientListAuthorizationRulesOptions) *runtime.Pager[WCFRelaysClientListAuthorizationRulesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WCFRelaysClientListAuthorizationRulesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WCFRelaysClientListAuthorizationRulesResponse]{
 		More: func(page WCFRelaysClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -477,9 +484,9 @@ func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -494,12 +501,13 @@ func (client *WCFRelaysClient) listAuthorizationRulesHandleResponse(resp *http.R
 
 // NewListByNamespacePager - Lists the WCF relays within the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - WCFRelaysClientListByNamespaceOptions contains the optional parameters for the WCFRelaysClient.ListByNamespace
 // method.
 func (client *WCFRelaysClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *WCFRelaysClientListByNamespaceOptions) *runtime.Pager[WCFRelaysClientListByNamespaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WCFRelaysClientListByNamespaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WCFRelaysClientListByNamespaceResponse]{
 		More: func(page WCFRelaysClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -546,9 +554,9 @@ func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -563,6 +571,7 @@ func (client *WCFRelaysClient) listByNamespaceHandleResponse(resp *http.Response
 
 // ListKeys - Primary and secondary connection strings to the WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
@@ -611,9 +620,9 @@ func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -628,6 +637,7 @@ func (client *WCFRelaysClient) listKeysHandleResponse(resp *http.Response) (WCFR
 
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
@@ -678,9 +688,9 @@ func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

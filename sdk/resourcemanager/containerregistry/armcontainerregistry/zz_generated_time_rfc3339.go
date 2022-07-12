@@ -10,6 +10,7 @@ package armcontainerregistry
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"regexp"
@@ -72,13 +73,13 @@ func populateTimeRFC3339(m map[string]interface{}, k string, t *time.Time) {
 	m[k] = (*timeRFC3339)(t)
 }
 
-func unpopulateTimeRFC3339(data json.RawMessage, t **time.Time) error {
+func unpopulateTimeRFC3339(data json.RawMessage, fn string, t **time.Time) error {
 	if data == nil || strings.EqualFold(string(data), "null") {
 		return nil
 	}
 	var aux timeRFC3339
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return err
+		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	*t = (*time.Time)(&aux)
 	return nil

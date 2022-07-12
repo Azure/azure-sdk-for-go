@@ -1,21 +1,78 @@
 # Release History
 
-## 0.4.1 (Unreleased)
+## 1.0.2-beta.1 (Unreleased)
 
 ### Features Added
-
-- Exported log.Event constants for azservicebus. This will maek them easier to
-  discover and they are also documented. The text of log messages themselves 
-  are not guaranteed to be stable. (#TBD)
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.0.2-beta.0 (2022-07-07)
+
+### Features Added
+
+- Full access to send and receive all AMQP message properties. (#18413) 
+  - Send AMQP messages using the new `AMQPAnnotatedMessage` type and `Sender.SendAMQPAnnotatedMessage()`.
+  - AMQP messages can be added to MessageBatch's as well using `MessageBatch.AddAMQPAnnotatedMessage()`.
+  - AMQP messages can be scheduled using `Sender.ScheduleAMQPAnnotatedMessages`.
+  - Access the full set of AMQP message properties when receiving using the `ReceivedMessage.RawAMQPMessage` property. 
+
+### Bugs Fixed
+
+- Settlement of a message could hang if the link had been detached/closed. (#18532)
+
+## 1.0.1 (2022-06-07)
+
+### Features Added
+
+- Adding in (QueueProperties|TopicProperties).MaxMessageSizeInKilobytes property, which can be used to increase the max message
+  size for Service Bus Premium namespaces. (#18310)
+
+### Bugs Fixed
+
+- Handle a missing CountDetails node in the returned responses for Get<Entity>RuntimeProperties which could cause a panic. (#18213)
+- Adding the `associated-link-name` property to management operations (RenewLock, settlement and others), which 
+  can help extend link lifetime (#18291)
+- Namespace closing didn't reset the internal client, which could lead to connection recovery thrashing. (#18323)
+
+## 1.0.0 (2022-05-16)
+
+### Features Added
+
+- First stable release of the azservicebus package.
+
+## 0.4.1 (2022-05-12)
+
+### Features Added
+
+- Exported log.Event constants for azservicebus. This will make them easier to
+  discover and they are also documented. NOTE: The log messages themselves 
+  are not guaranteed to be stable. (#17596)
+- `admin.Client` can now manage authorization rules and subscription filters and 
+  actions. (#17616)
+- Exported an official `*azservicebus.Error` type that gets returned if the failure is
+  actionable. This can indicate if the connection was lost and could not be
+  recovered with the configured retries or if a message lock was lost, which would cause
+  message settlement to fail. 
+
+  See the `ExampleReceiver_ReceiveMessages` in example_receiver_test.go for an example 
+  on how to use it. (#17786)
+
+### Breaking Changes
+
+- `admin.Client` can now be configured using `azcore.Options`. (#17796)
+- `ReceivedMessage.TransactionPartitionKey` has been removed as this library doesn't support transactions.
+- `ReceivedMessage.Body()` is now a field. `Body` will be nil in the cases where it would have returned an error (where the underlying AMQP message had a payload in .Value, .Sequence or had multiple byte slices in .Data). (#17888)
+
+### Bugs Fixed
+
 - Fixing issue where the AcceptNextSessionForQueue and AcceptNextSessionForSubscription 
   couldn't be cancelled, forcing the user to wait for the service to timeout. (#17598)
-
-### Other Changes
+- Fixing bug where there was a chance that internally cached messages would not be returned when
+  the receiver was draining. (#17893)
 
 ## 0.4.0 (2022-04-06)
 
@@ -174,7 +231,7 @@
 - AdminClient has been moved into the `admin` subpackage.
 - ReceivedMessage.Body is now a function that returns a ([]byte, error), rather than being a field.
   This protects against a potential data-loss scenario where a message is received with a payload 
-  encoded in the sequence or value sections of an AMQP message, which cannot be prpoerly represented
+  encoded in the sequence or value sections of an AMQP message, which cannot be properly represented
   in the .Body. This will now return an error.
 - Functions that have options or might have options in the future have an additional *options parameter.
   As usual, passing 'nil' ignores the options, and will cause the function to use defaults.

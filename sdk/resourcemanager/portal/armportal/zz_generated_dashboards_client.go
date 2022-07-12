@@ -38,7 +38,7 @@ func NewDashboardsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDashboardsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CreateOrUpdate - Creates or updates a Dashboard.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // resourceGroupName - The name of the resource group.
 // dashboardName - The name of the dashboard.
 // dashboard - The parameters required to create or update a dashboard.
@@ -98,7 +99,7 @@ func (client *DashboardsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dashboard)
 }
 
@@ -113,6 +114,7 @@ func (client *DashboardsClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes the Dashboard.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // resourceGroupName - The name of the resource group.
 // dashboardName - The name of the dashboard.
 // options - DashboardsClientDeleteOptions contains the optional parameters for the DashboardsClient.Delete method.
@@ -153,12 +155,13 @@ func (client *DashboardsClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the Dashboard.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // resourceGroupName - The name of the resource group.
 // dashboardName - The name of the dashboard.
 // options - DashboardsClientGetOptions contains the optional parameters for the DashboardsClient.Get method.
@@ -199,7 +202,7 @@ func (client *DashboardsClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -214,11 +217,12 @@ func (client *DashboardsClient) getHandleResponse(resp *http.Response) (Dashboar
 
 // NewListByResourceGroupPager - Gets all the Dashboards within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // resourceGroupName - The name of the resource group.
 // options - DashboardsClientListByResourceGroupOptions contains the optional parameters for the DashboardsClient.ListByResourceGroup
 // method.
 func (client *DashboardsClient) NewListByResourceGroupPager(resourceGroupName string, options *DashboardsClientListByResourceGroupOptions) *runtime.Pager[DashboardsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DashboardsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DashboardsClientListByResourceGroupResponse]{
 		More: func(page DashboardsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -263,7 +267,7 @@ func (client *DashboardsClient) listByResourceGroupCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -278,10 +282,11 @@ func (client *DashboardsClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // NewListBySubscriptionPager - Gets all the dashboards within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // options - DashboardsClientListBySubscriptionOptions contains the optional parameters for the DashboardsClient.ListBySubscription
 // method.
 func (client *DashboardsClient) NewListBySubscriptionPager(options *DashboardsClientListBySubscriptionOptions) *runtime.Pager[DashboardsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DashboardsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DashboardsClientListBySubscriptionResponse]{
 		More: func(page DashboardsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -322,7 +327,7 @@ func (client *DashboardsClient) listBySubscriptionCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -337,6 +342,7 @@ func (client *DashboardsClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // Update - Updates an existing Dashboard.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // resourceGroupName - The name of the resource group.
 // dashboardName - The name of the dashboard.
 // dashboard - The updatable fields of a Dashboard.
@@ -378,7 +384,7 @@ func (client *DashboardsClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dashboard)
 }
 

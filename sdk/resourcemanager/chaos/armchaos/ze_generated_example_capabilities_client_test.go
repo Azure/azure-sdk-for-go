@@ -23,21 +23,20 @@ func ExampleCapabilitiesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchaos.NewCapabilitiesClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewCapabilitiesClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<parent-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource-name>",
-		"<target-name>",
+	pager := client.NewListPager("exampleRG",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"exampleVM",
+		"Microsoft-VirtualMachine",
 		&armchaos.CapabilitiesClientListOptions{ContinuationToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,17 +52,17 @@ func ExampleCapabilitiesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchaos.NewCapabilitiesClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewCapabilitiesClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<parent-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource-name>",
-		"<target-name>",
-		"<capability-name>",
+		"exampleRG",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"exampleVM",
+		"Microsoft-VirtualMachine",
+		"Shutdown-1.0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,17 +78,17 @@ func ExampleCapabilitiesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchaos.NewCapabilitiesClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewCapabilitiesClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<parent-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource-name>",
-		"<target-name>",
-		"<capability-name>",
+		"exampleRG",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"exampleVM",
+		"Microsoft-VirtualMachine",
+		"Shutdown-1.0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -103,17 +102,17 @@ func ExampleCapabilitiesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchaos.NewCapabilitiesClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewCapabilitiesClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<parent-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource-name>",
-		"<target-name>",
-		"<capability-name>",
+		"exampleRG",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"exampleVM",
+		"Microsoft-VirtualMachine",
+		"Shutdown-1.0",
 		armchaos.Capability{
 			Properties: &armchaos.CapabilityProperties{},
 		},

@@ -38,7 +38,7 @@ func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore
 
 // Cancel - Cancels the asynchronous operation on the managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -104,6 +105,7 @@ func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.C
 
 // Get - Gets a management operation on a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -147,7 +149,7 @@ func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -162,13 +164,14 @@ func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Resp
 
 // NewListByManagedInstancePager - Gets a list of operations performed on the managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceOperationsClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstanceOperationsClient.ListByManagedInstance
 // method.
 func (client *ManagedInstanceOperationsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstanceOperationsClientListByManagedInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceOperationsClientListByManagedInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceOperationsClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstanceOperationsClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -217,7 +220,7 @@ func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

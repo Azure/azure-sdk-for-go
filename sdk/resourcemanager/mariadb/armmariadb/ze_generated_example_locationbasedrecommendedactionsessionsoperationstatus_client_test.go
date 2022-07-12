@@ -23,13 +23,13 @@ func ExampleLocationBasedRecommendedActionSessionsOperationStatusClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmariadb.NewLocationBasedRecommendedActionSessionsOperationStatusClient("<subscription-id>", cred, nil)
+	client, err := armmariadb.NewLocationBasedRecommendedActionSessionsOperationStatusClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<operation-id>",
+		"WestUS",
+		"aaaabbbb-cccc-dddd-0000-111122223333",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

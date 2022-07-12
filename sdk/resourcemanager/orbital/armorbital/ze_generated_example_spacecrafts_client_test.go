@@ -19,23 +19,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftsBySubscriptionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftsBySubscriptionList.json
 func ExampleSpacecraftsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewSpacecraftsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := client.NewListBySubscriptionPager(&armorbital.SpacecraftsClientListBySubscriptionOptions{Skiptoken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -44,24 +43,23 @@ func ExampleSpacecraftsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftsByResourceGroupList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftsByResourceGroupList.json
 func ExampleSpacecraftsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewSpacecraftsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		nil)
+	pager := client.NewListPager("rg1",
+		&armorbital.SpacecraftsClientListOptions{Skiptoken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -70,20 +68,20 @@ func ExampleSpacecraftsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftGet.json
 func ExampleSpacecraftsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewSpacecraftsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<spacecraft-name>",
+		"rg1",
+		"AQUA",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -92,47 +90,49 @@ func ExampleSpacecraftsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftCreate.json
 func ExampleSpacecraftsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewSpacecraftsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<spacecraft-name>",
+		"rg1",
+		"AQUA",
 		armorbital.Spacecraft{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armorbital.SpacecraftsProperties{
 				Links: []*armorbital.SpacecraftLink{
 					{
+						Name:               to.Ptr("S_RHCP_UL"),
 						BandwidthMHz:       to.Ptr[float32](0.036),
 						CenterFrequencyMHz: to.Ptr[float32](2106.4063),
 						Direction:          to.Ptr(armorbital.DirectionUplink),
 						Polarization:       to.Ptr(armorbital.PolarizationRHCP),
 					},
 					{
+						Name:               to.Ptr("X_RHCP_DL"),
 						BandwidthMHz:       to.Ptr[float32](150),
 						CenterFrequencyMHz: to.Ptr[float32](8125),
 						Direction:          to.Ptr(armorbital.DirectionDownlink),
 						Polarization:       to.Ptr(armorbital.PolarizationRHCP),
 					}},
-				NoradID:   to.Ptr("<norad-id>"),
-				TitleLine: to.Ptr("<title-line>"),
-				TleLine1:  to.Ptr("<tle-line1>"),
-				TleLine2:  to.Ptr("<tle-line2>"),
+				NoradID:   to.Ptr("27424"),
+				TitleLine: to.Ptr("(AQUA)"),
+				TleLine1:  to.Ptr("1 27424U 02022A   20195.59202355  .00000039  00000-0  18634-4 0  9991"),
+				TleLine2:  to.Ptr("2 27424  98.2098 135.8486 0000176  28.4050 144.5909 14.57108832967671"),
 			},
 		},
-		&armorbital.SpacecraftsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -140,44 +140,44 @@ func ExampleSpacecraftsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftDelete.json
 func ExampleSpacecraftsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewSpacecraftsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<spacecraft-name>",
-		&armorbital.SpacecraftsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"AQUA",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftUpdateTags.json
-func ExampleSpacecraftsClient_UpdateTags() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftUpdateTags.json
+func ExampleSpacecraftsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewSpacecraftsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<spacecraft-name>",
+	poller, err := client.BeginUpdateTags(ctx,
+		"rg1",
+		"AQUA",
 		armorbital.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -188,40 +188,52 @@ func ExampleSpacecraftsClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// TODO: use response item
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/AvailableContactsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/AvailableContactsList.json
 func ExampleSpacecraftsClient_BeginListAvailableContacts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewSpacecraftsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginListAvailableContacts(ctx,
-		"<resource-group-name>",
-		"<spacecraft-name>",
+		"rgName",
+		"AQUA",
 		armorbital.ContactParameters{
-			ContactProfile: &armorbital.ResourceReference{
-				ID: to.Ptr("<id>"),
+			ContactProfile: &armorbital.ContactParametersContactProfile{
+				ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/Microsoft.Orbital/contactProfiles/AQUA_DIRECTPLAYBACK_WITH_UPLINK"),
 			},
 			EndTime:           to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-17T23:49:40.00Z"); return t }()),
-			GroundStationName: to.Ptr("<ground-station-name>"),
+			GroundStationName: to.Ptr("westus_gs1"),
 			StartTime:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-16T05:40:21.00Z"); return t }()),
 		},
-		&armorbital.SpacecraftsClientBeginListAvailableContactsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
-	// TODO: use response item
-	_ = res
+	for res.More() {
+		nextResult, err := res.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }

@@ -14,13 +14,6 @@ import (
 	"reflect"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type ManagementAssociationPropertiesList.
-func (m ManagementAssociationPropertiesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ManagementConfigurationProperties.
 func (m ManagementConfigurationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -29,20 +22,6 @@ func (m ManagementConfigurationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parentResourceType", m.ParentResourceType)
 	populate(objectMap, "provisioningState", m.ProvisioningState)
 	populate(objectMap, "template", &m.Template)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagementConfigurationPropertiesList.
-func (m ManagementConfigurationPropertiesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -73,13 +52,6 @@ func (s SolutionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "referencedResources", s.ReferencedResources)
 	populate(objectMap, "workspaceResourceId", s.WorkspaceResourceID)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SolutionPropertiesList.
-func (s SolutionPropertiesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
 

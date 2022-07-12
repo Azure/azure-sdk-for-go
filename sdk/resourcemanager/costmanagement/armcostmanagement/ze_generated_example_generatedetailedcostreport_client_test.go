@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
@@ -31,16 +29,16 @@ func ExampleGenerateDetailedCostReportClient_BeginCreateOperation() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOperation(ctx,
-		"<scope>",
+		"providers/Microsoft.Billing/billingAccounts/12345",
 		armcostmanagement.GenerateDetailedCostReportDefinition{
-			BillingPeriod: to.Ptr("<billing-period>"),
+			BillingPeriod: to.Ptr("202008"),
 			Metric:        to.Ptr(armcostmanagement.GenerateDetailedCostReportMetricTypeActualCost),
 		},
-		&armcostmanagement.GenerateDetailedCostReportClientBeginCreateOperationOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

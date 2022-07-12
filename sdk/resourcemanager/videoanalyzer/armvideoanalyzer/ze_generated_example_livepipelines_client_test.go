@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/videoanalyzer/armvideoanalyzer"
@@ -26,12 +24,12 @@ func ExampleLivePipelinesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewLivePipelinesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewLivePipelinesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("testrg",
+		"testaccount2",
 		&armvideoanalyzer.LivePipelinesClientListOptions{Filter: nil,
 			Top: to.Ptr[int32](2),
 		})
@@ -39,7 +37,6 @@ func ExampleLivePipelinesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,14 +52,14 @@ func ExampleLivePipelinesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewLivePipelinesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewLivePipelinesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-pipeline-name>",
+		"testrg",
+		"testaccount2",
+		"livePipeline1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,24 +75,24 @@ func ExampleLivePipelinesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewLivePipelinesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewLivePipelinesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-pipeline-name>",
+		"testrg",
+		"testaccount2",
+		"livePipeline1",
 		armvideoanalyzer.LivePipeline{
 			Properties: &armvideoanalyzer.LivePipelineProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Live Pipeline 1 Description"),
 				BitrateKbps: to.Ptr[int32](500),
 				Parameters: []*armvideoanalyzer.ParameterDefinition{
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("rtspUrlParameter"),
+						Value: to.Ptr("rtsp://contoso.com/stream"),
 					}},
-				TopologyName: to.Ptr("<topology-name>"),
+				TopologyName: to.Ptr("pipelinetopology1"),
 			},
 		},
 		nil)
@@ -113,14 +110,14 @@ func ExampleLivePipelinesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewLivePipelinesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewLivePipelinesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-pipeline-name>",
+		"testrg",
+		"testaccount2",
+		"livePipeline1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,17 +131,17 @@ func ExampleLivePipelinesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewLivePipelinesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewLivePipelinesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-pipeline-name>",
+		"testrg",
+		"testaccount2",
+		"livePipeline1",
 		armvideoanalyzer.LivePipelineUpdate{
 			Properties: &armvideoanalyzer.LivePipelinePropertiesUpdate{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Live Pipeline 1 Description"),
 			},
 		},
 		nil)
@@ -162,19 +159,19 @@ func ExampleLivePipelinesClient_BeginActivate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewLivePipelinesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewLivePipelinesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginActivate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-pipeline-name>",
-		&armvideoanalyzer.LivePipelinesClientBeginActivateOptions{ResumeToken: ""})
+		"testrg",
+		"testaccount2",
+		"livePipeline1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -187,19 +184,19 @@ func ExampleLivePipelinesClient_BeginDeactivate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewLivePipelinesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewLivePipelinesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeactivate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-pipeline-name>",
-		&armvideoanalyzer.LivePipelinesClientBeginDeactivateOptions{ResumeToken: ""})
+		"testrg",
+		"testaccount2",
+		"livePipeline1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

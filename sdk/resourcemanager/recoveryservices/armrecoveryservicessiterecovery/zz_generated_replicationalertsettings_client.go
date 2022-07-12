@@ -42,7 +42,7 @@ func NewReplicationAlertSettingsClient(resourceName string, resourceGroupName st
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewReplicationAlertSettingsClient(resourceName string, resourceGroupName st
 
 // Create - Create or update an email notification(alert) configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // alertSettingName - The name of the email notification(alert) configuration.
 // request - The input to configure the email notification(alert).
 // options - ReplicationAlertSettingsClientCreateOptions contains the optional parameters for the ReplicationAlertSettingsClient.Create
@@ -107,7 +108,7 @@ func (client *ReplicationAlertSettingsClient) createCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
@@ -122,6 +123,7 @@ func (client *ReplicationAlertSettingsClient) createHandleResponse(resp *http.Re
 
 // Get - Gets the details of the specified email notification(alert) configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // alertSettingName - The name of the email notification configuration.
 // options - ReplicationAlertSettingsClientGetOptions contains the optional parameters for the ReplicationAlertSettingsClient.Get
 // method.
@@ -166,7 +168,7 @@ func (client *ReplicationAlertSettingsClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -181,10 +183,11 @@ func (client *ReplicationAlertSettingsClient) getHandleResponse(resp *http.Respo
 
 // NewListPager - Gets the list of email notification(alert) configurations for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationAlertSettingsClientListOptions contains the optional parameters for the ReplicationAlertSettingsClient.List
 // method.
 func (client *ReplicationAlertSettingsClient) NewListPager(options *ReplicationAlertSettingsClientListOptions) *runtime.Pager[ReplicationAlertSettingsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationAlertSettingsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationAlertSettingsClientListResponse]{
 		More: func(page ReplicationAlertSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -233,7 +236,7 @@ func (client *ReplicationAlertSettingsClient) listCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

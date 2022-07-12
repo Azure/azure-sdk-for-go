@@ -24,13 +24,13 @@ func ExampleCustomAssessmentAutomationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomAssessmentAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomAssessmentAutomationsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<custom-assessment-automation-name>",
+		"TestResourceGroup",
+		"MyCustomAssessmentAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,19 +46,19 @@ func ExampleCustomAssessmentAutomationsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomAssessmentAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomAssessmentAutomationsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<custom-assessment-automation-name>",
+		"TestResourceGroup",
+		"MyCustomAssessmentAutomation",
 		armsecurity.CustomAssessmentAutomationRequest{
 			Properties: &armsecurity.CustomAssessmentAutomationRequestProperties{
-				Description:            to.Ptr("<description>"),
-				CompressedQuery:        to.Ptr("<compressed-query>"),
-				DisplayName:            to.Ptr("<display-name>"),
-				RemediationDescription: to.Ptr("<remediation-description>"),
+				Description:            to.Ptr("Data should be encrypted"),
+				CompressedQuery:        to.Ptr("DQAKAEkAYQBtAF8ARwByAG8AdQBwAA0ACgB8ACAAZQB4AHQAZQBuAGQAIABIAGUAYQBsAHQAaABTAHQAYQB0AHUAcwAgAD0AIABpAGYAZgAoAHQAbwBzAHQAcgBpAG4AZwAoAFIAZQBjAG8AcgBkAC4AVQBzAGUAcgBOAGEAbQBlACkAIABjAG8AbgB0AGEAaQBuAHMAIAAnAHUAcwBlAHIAJwAsACAAJwBVAE4ASABFAEEATABUAEgAWQAnACwAIAAnAEgARQBBAEwAVABIAFkAJwApAA0ACgA="),
+				DisplayName:            to.Ptr("Password Policy"),
+				RemediationDescription: to.Ptr("Encrypt store by..."),
 				Severity:               to.Ptr(armsecurity.SeverityEnumMedium),
 				SupportedCloud:         to.Ptr(armsecurity.SupportedCloudEnumAWS),
 			},
@@ -78,13 +78,13 @@ func ExampleCustomAssessmentAutomationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomAssessmentAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomAssessmentAutomationsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<custom-assessment-automation-name>",
+		"TestResourceGroup",
+		"MyCustomAssessmentAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,17 +98,16 @@ func ExampleCustomAssessmentAutomationsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomAssessmentAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomAssessmentAutomationsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("TestResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -124,7 +123,7 @@ func ExampleCustomAssessmentAutomationsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomAssessmentAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomAssessmentAutomationsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -133,7 +132,6 @@ func ExampleCustomAssessmentAutomationsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

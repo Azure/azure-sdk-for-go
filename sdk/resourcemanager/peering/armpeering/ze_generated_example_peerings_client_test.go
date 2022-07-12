@@ -24,13 +24,13 @@ func ExamplePeeringsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<peering-name>",
+		"rgName",
+		"peeringName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,16 +46,16 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<peering-name>",
+		"rgName",
+		"peeringName",
 		armpeering.Peering{
 			Kind:     to.Ptr(armpeering.KindDirect),
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armpeering.Properties{
 				Direct: &armpeering.PropertiesDirect{
 					Connections: []*armpeering.DirectConnection{
@@ -64,31 +64,31 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 							BgpSession: &armpeering.BgpSession{
 								MaxPrefixesAdvertisedV4: to.Ptr[int32](1000),
 								MaxPrefixesAdvertisedV6: to.Ptr[int32](100),
-								MD5AuthenticationKey:    to.Ptr("<md5authentication-key>"),
-								SessionPrefixV4:         to.Ptr("<session-prefix-v4>"),
-								SessionPrefixV6:         to.Ptr("<session-prefix-v6>"),
+								MD5AuthenticationKey:    to.Ptr("test-md5-auth-key"),
+								SessionPrefixV4:         to.Ptr("192.168.0.0/31"),
+								SessionPrefixV6:         to.Ptr("fd00::0/127"),
 							},
-							ConnectionIdentifier:   to.Ptr("<connection-identifier>"),
+							ConnectionIdentifier:   to.Ptr("5F4CB5C7-6B43-4444-9338-9ABC72606C16"),
 							PeeringDBFacilityID:    to.Ptr[int32](99999),
 							SessionAddressProvider: to.Ptr(armpeering.SessionAddressProviderPeer),
 							UseForPeeringService:   to.Ptr(false),
 						},
 						{
 							BandwidthInMbps:        to.Ptr[int32](10000),
-							ConnectionIdentifier:   to.Ptr("<connection-identifier>"),
+							ConnectionIdentifier:   to.Ptr("8AB00818-D533-4504-A25A-03A17F61201C"),
 							PeeringDBFacilityID:    to.Ptr[int32](99999),
 							SessionAddressProvider: to.Ptr(armpeering.SessionAddressProviderMicrosoft),
 							UseForPeeringService:   to.Ptr(true),
 						}},
 					DirectPeeringType: to.Ptr(armpeering.DirectPeeringTypeEdge),
 					PeerAsn: &armpeering.SubResource{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1"),
 					},
 				},
-				PeeringLocation: to.Ptr("<peering-location>"),
+				PeeringLocation: to.Ptr("peeringLocation0"),
 			},
 			SKU: &armpeering.SKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("Basic_Direct_Free"),
 			},
 		},
 		nil)
@@ -106,13 +106,13 @@ func ExamplePeeringsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<peering-name>",
+		"rgName",
+		"peeringName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -126,13 +126,13 @@ func ExamplePeeringsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<peering-name>",
+		"rgName",
+		"peeringName",
 		armpeering.ResourceTags{
 			Tags: map[string]*string{
 				"tag0": to.Ptr("value0"),
@@ -154,17 +154,16 @@ func ExamplePeeringsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rgName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -180,7 +179,7 @@ func ExamplePeeringsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -189,7 +188,6 @@ func ExamplePeeringsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -38,7 +38,7 @@ func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential a
 
 // Create - Creates or updates an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceURI - The identifier of the resource.
 // associationName - The name of the association. The name is case insensitive.
 // options - DataCollectionRuleAssociationsClientCreateOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Create
@@ -90,7 +91,7 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -108,6 +109,7 @@ func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *h
 
 // Delete - Deletes an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceURI - The identifier of the resource.
 // associationName - The name of the association. The name is case insensitive.
 // options - DataCollectionRuleAssociationsClientDeleteOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Delete
@@ -142,12 +144,13 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns the specified association.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceURI - The identifier of the resource.
 // associationName - The name of the association. The name is case insensitive.
 // options - DataCollectionRuleAssociationsClientGetOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Get
@@ -182,7 +185,7 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -197,12 +200,13 @@ func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http
 
 // NewListByDataCollectionEndpointPager - Lists associations for the specified data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
 // options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
 // the DataCollectionRuleAssociationsClient.ListByDataCollectionEndpoint method.
 func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpointPager(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -251,7 +255,7 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -266,11 +270,12 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 
 // NewListByResourcePager - Lists associations for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceURI - The identifier of the resource.
 // options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByResource
 // method.
 func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByResourceResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -308,7 +313,7 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -323,12 +328,13 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse
 
 // NewListByRulePager - Lists associations for the specified data collection rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 // options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByRule
 // method.
 func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByRuleResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByRuleResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByRuleResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -377,7 +383,7 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

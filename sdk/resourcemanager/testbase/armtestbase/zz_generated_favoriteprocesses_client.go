@@ -38,7 +38,7 @@ func NewFavoriteProcessesClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewFavoriteProcessesClient(subscriptionID string, credential azcore.TokenCr
 
 // Create - Create or replace a favorite process for a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -110,7 +111,7 @@ func (client *FavoriteProcessesClient) createCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -125,6 +126,7 @@ func (client *FavoriteProcessesClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes a favorite process for a specific package.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -178,12 +180,13 @@ func (client *FavoriteProcessesClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a favorite process for a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -236,7 +239,7 @@ func (client *FavoriteProcessesClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -251,12 +254,13 @@ func (client *FavoriteProcessesClient) getHandleResponse(resp *http.Response) (F
 
 // NewListPager - Lists the favorite processes for a specific package.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
 // options - FavoriteProcessesClientListOptions contains the optional parameters for the FavoriteProcessesClient.List method.
 func (client *FavoriteProcessesClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesClientListOptions) *runtime.Pager[FavoriteProcessesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FavoriteProcessesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FavoriteProcessesClientListResponse]{
 		More: func(page FavoriteProcessesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -309,7 +313,7 @@ func (client *FavoriteProcessesClient) listCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

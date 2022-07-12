@@ -214,18 +214,18 @@ type providersOperations struct {
 }
 
 // Get - Gets the specified resource provider.
-func (client *providersOperations) Get(ctx context.Context, resourceProviderNamespace string) (*ProviderResponse, error) {
+func (client *providersOperations) Get(ctx context.Context, resourceProviderNamespace string) (providerResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceProviderNamespace)
 	if err != nil {
-		return nil, err
+		return providerResponse{}, err
 	}
 	resp, err := client.p.Do(req)
 	if err != nil {
-		return nil, err
+		return providerResponse{}, err
 	}
 	result, err := client.getHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return providerResponse{}, err
 	}
 	return result, nil
 }
@@ -246,31 +246,31 @@ func (client *providersOperations) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *providersOperations) getHandleResponse(resp *http.Response) (*ProviderResponse, error) {
+func (client *providersOperations) getHandleResponse(resp *http.Response) (providerResponse, error) {
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, exported.NewResponseError(resp)
+		return providerResponse{}, exported.NewResponseError(resp)
 	}
-	result := ProviderResponse{RawResponse: resp}
+	result := providerResponse{RawResponse: resp}
 	err := runtime.UnmarshalAsJSON(resp, &result.Provider)
 	if err != nil {
-		return nil, err
+		return providerResponse{}, err
 	}
-	return &result, err
+	return result, err
 }
 
 // Register - Registers a subscription with a resource provider.
-func (client *providersOperations) Register(ctx context.Context, resourceProviderNamespace string) (*ProviderResponse, error) {
+func (client *providersOperations) Register(ctx context.Context, resourceProviderNamespace string) (providerResponse, error) {
 	req, err := client.registerCreateRequest(ctx, resourceProviderNamespace)
 	if err != nil {
-		return nil, err
+		return providerResponse{}, err
 	}
 	resp, err := client.p.Do(req)
 	if err != nil {
-		return nil, err
+		return providerResponse{}, err
 	}
 	result, err := client.registerHandleResponse(resp)
 	if err != nil {
-		return nil, err
+		return providerResponse{}, err
 	}
 	return result, nil
 }
@@ -291,29 +291,29 @@ func (client *providersOperations) registerCreateRequest(ctx context.Context, re
 }
 
 // registerHandleResponse handles the Register response.
-func (client *providersOperations) registerHandleResponse(resp *http.Response) (*ProviderResponse, error) {
+func (client *providersOperations) registerHandleResponse(resp *http.Response) (providerResponse, error) {
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, exported.NewResponseError(resp)
+		return providerResponse{}, exported.NewResponseError(resp)
 	}
-	result := ProviderResponse{RawResponse: resp}
+	result := providerResponse{RawResponse: resp}
 	err := runtime.UnmarshalAsJSON(resp, &result.Provider)
 	if err != nil {
-		return nil, err
+		return providerResponse{}, err
 	}
-	return &result, err
+	return result, err
 }
 
 // ProviderResponse is the response envelope for operations that return a Provider type.
-type ProviderResponse struct {
+type providerResponse struct {
 	// Resource provider information.
-	Provider *Provider
+	Provider *provider
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // Provider - Resource provider information.
-type Provider struct {
+type provider struct {
 	// The provider ID.
 	ID *string `json:"id,omitempty"`
 

@@ -24,13 +24,13 @@ func ExampleServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewServicesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
+		"rgName",
+		"peeringServiceName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,20 +46,20 @@ func ExampleServicesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewServicesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
+		"rgName",
+		"peeringServiceName",
 		armpeering.Service{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armpeering.ServiceProperties{
-				PeeringServiceLocation:         to.Ptr("<peering-service-location>"),
-				PeeringServiceProvider:         to.Ptr("<peering-service-provider>"),
-				ProviderBackupPeeringLocation:  to.Ptr("<provider-backup-peering-location>"),
-				ProviderPrimaryPeeringLocation: to.Ptr("<provider-primary-peering-location>"),
+				PeeringServiceLocation:         to.Ptr("state1"),
+				PeeringServiceProvider:         to.Ptr("serviceProvider1"),
+				ProviderBackupPeeringLocation:  to.Ptr("peeringLocation2"),
+				ProviderPrimaryPeeringLocation: to.Ptr("peeringLocation1"),
 			},
 		},
 		nil)
@@ -77,13 +77,13 @@ func ExampleServicesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewServicesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
+		"rgName",
+		"peeringServiceName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,13 +97,13 @@ func ExampleServicesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewServicesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
+		"rgName",
+		"peeringServiceName",
 		armpeering.ResourceTags{
 			Tags: map[string]*string{
 				"tag0": to.Ptr("value0"),
@@ -125,17 +125,16 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewServicesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rgName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -151,7 +150,7 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewServicesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -160,7 +159,6 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -176,7 +174,7 @@ func ExampleServicesClient_InitializeConnectionMonitor() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewServicesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

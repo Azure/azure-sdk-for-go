@@ -24,18 +24,18 @@ func ExampleSourceControlSyncJobClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSourceControlSyncJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlSyncJobClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<source-control-name>",
-		"<source-control-sync-job-id>",
+		"rg",
+		"myAutomationAccount33",
+		"MySourceControl",
+		"ce6fe3e3-9db3-4096-a6b4-82bfb4c10a9a",
 		armautomation.SourceControlSyncJobCreateParameters{
 			Properties: &armautomation.SourceControlSyncJobCreateProperties{
-				CommitID: to.Ptr("<commit-id>"),
+				CommitID: to.Ptr("9de0980bfb45026a3d97a1b0522d98a9f604226e"),
 			},
 		},
 		nil)
@@ -51,15 +51,15 @@ func ExampleSourceControlSyncJobClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSourceControlSyncJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlSyncJobClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<source-control-name>",
-		"<source-control-sync-job-id>",
+		"rg",
+		"myAutomationAccount33",
+		"MySourceControl",
+		"ce6fe3e3-9db3-4096-a6b4-82bfb4c10a9a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,19 +75,18 @@ func ExampleSourceControlSyncJobClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSourceControlSyncJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlSyncJobClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
-		"<source-control-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount33",
+		"MySourceControl",
 		&armautomation.SourceControlSyncJobClientListByAutomationAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -39,7 +39,7 @@ func NewContainerGroupsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewContainerGroupsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Create or update container groups with specified configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // containerGroupName - The name of the container group.
 // containerGroup - The properties of the container group to be created or updated.
 // options - ContainerGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *ContainerGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ContainerGroupsClientCreateOrUpdateResponse], error) {
+func (client *ContainerGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ContainerGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, containerGroupName, containerGroup, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ContainerGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainerGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ContainerGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainerGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update container groups with specified configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *ContainerGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, containerGroupName, containerGroup, options)
 	if err != nil {
@@ -113,32 +115,34 @@ func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, containerGroup)
 }
 
 // BeginDelete - Delete the specified container group in the specified subscription and resource group. The operation does
 // not delete other resources provided by the user, such as volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // containerGroupName - The name of the container group.
 // options - ContainerGroupsClientBeginDeleteOptions contains the optional parameters for the ContainerGroupsClient.BeginDelete
 // method.
-func (client *ContainerGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginDeleteOptions) (*armruntime.Poller[ContainerGroupsClientDeleteResponse], error) {
+func (client *ContainerGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginDeleteOptions) (*runtime.Poller[ContainerGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, containerGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ContainerGroupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainerGroupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ContainerGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainerGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete the specified container group in the specified subscription and resource group. The operation does not
 // delete other resources provided by the user, such as volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *ContainerGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
@@ -176,7 +180,7 @@ func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -184,6 +188,7 @@ func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, re
 // returns the properties of each container group including containers, image registry
 // credentials, restart policy, IP address type, OS type, state, and volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // containerGroupName - The name of the container group.
 // options - ContainerGroupsClientGetOptions contains the optional parameters for the ContainerGroupsClient.Get method.
@@ -224,7 +229,7 @@ func (client *ContainerGroupsClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -240,6 +245,7 @@ func (client *ContainerGroupsClient) getHandleResponse(resp *http.Response) (Con
 // GetOutboundNetworkDependenciesEndpoints - Gets all the network dependencies for this container group to allow complete
 // control of network setting and configuration. For container groups, this will always be an empty list.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // containerGroupName - The name of the container group.
 // options - ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the
@@ -281,7 +287,7 @@ func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsCrea
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -298,9 +304,10 @@ func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsHand
 // container group including containers, image registry credentials, restart policy, IP address
 // type, OS type, state, and volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // options - ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.List method.
 func (client *ContainerGroupsClient) NewListPager(options *ContainerGroupsClientListOptions) *runtime.Pager[ContainerGroupsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ContainerGroupsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ContainerGroupsClientListResponse]{
 		More: func(page ContainerGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -341,7 +348,7 @@ func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, opti
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -358,11 +365,12 @@ func (client *ContainerGroupsClient) listHandleResponse(resp *http.Response) (Co
 // returns properties of each container group including containers, image registry credentials, restart
 // policy, IP address type, OS type, state, and volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // options - ContainerGroupsClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupsClient.ListByResourceGroup
 // method.
 func (client *ContainerGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ContainerGroupsClientListByResourceGroupOptions) *runtime.Pager[ContainerGroupsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ContainerGroupsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ContainerGroupsClientListByResourceGroupResponse]{
 		More: func(page ContainerGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -407,7 +415,7 @@ func (client *ContainerGroupsClient) listByResourceGroupCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -423,24 +431,26 @@ func (client *ContainerGroupsClient) listByResourceGroupHandleResponse(resp *htt
 // BeginRestart - Restarts all containers in a container group in place. If container image has updates, new image will be
 // downloaded.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // containerGroupName - The name of the container group.
 // options - ContainerGroupsClientBeginRestartOptions contains the optional parameters for the ContainerGroupsClient.BeginRestart
 // method.
-func (client *ContainerGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*armruntime.Poller[ContainerGroupsClientRestartResponse], error) {
+func (client *ContainerGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*runtime.Poller[ContainerGroupsClientRestartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restart(ctx, resourceGroupName, containerGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ContainerGroupsClientRestartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainerGroupsClientRestartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ContainerGroupsClientRestartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainerGroupsClientRestartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Restart - Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
@@ -478,30 +488,32 @@ func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStart - Starts all containers in a container group. Compute resources will be allocated and billing will start.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // containerGroupName - The name of the container group.
 // options - ContainerGroupsClientBeginStartOptions contains the optional parameters for the ContainerGroupsClient.BeginStart
 // method.
-func (client *ContainerGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*armruntime.Poller[ContainerGroupsClientStartResponse], error) {
+func (client *ContainerGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*runtime.Poller[ContainerGroupsClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, containerGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ContainerGroupsClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainerGroupsClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ContainerGroupsClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainerGroupsClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Starts all containers in a container group. Compute resources will be allocated and billing will start.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
@@ -539,12 +551,13 @@ func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Stop - Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // containerGroupName - The name of the container group.
 // options - ContainerGroupsClientStopOptions contains the optional parameters for the ContainerGroupsClient.Stop method.
@@ -585,12 +598,13 @@ func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Updates container group tags with specified values.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // containerGroupName - The name of the container group.
 // resource - The container group resource with just the tags to be updated.
@@ -632,7 +646,7 @@ func (client *ContainerGroupsClient) updateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
 }
 

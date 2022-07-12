@@ -24,7 +24,7 @@ func ExampleRecommendationsClient_Generate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armadvisor.NewRecommendationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewRecommendationsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -42,12 +42,12 @@ func ExampleRecommendationsClient_GetGenerateStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armadvisor.NewRecommendationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewRecommendationsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetGenerateStatus(ctx,
-		"<operation-id>",
+		"operationGUID",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -61,7 +61,7 @@ func ExampleRecommendationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armadvisor.NewRecommendationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewRecommendationsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -73,7 +73,6 @@ func ExampleRecommendationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -94,8 +93,8 @@ func ExampleRecommendationsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-uri>",
-		"<recommendation-id>",
+		"resourceUri",
+		"recommendationId",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

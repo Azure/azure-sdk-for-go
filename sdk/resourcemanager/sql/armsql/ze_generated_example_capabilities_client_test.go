@@ -23,12 +23,12 @@ func ExampleCapabilitiesClient_ListByLocation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewCapabilitiesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewCapabilitiesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByLocation(ctx,
-		"<location-name>",
+		"eastus",
 		&armsql.CapabilitiesClientListByLocationOptions{Include: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

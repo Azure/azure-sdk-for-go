@@ -36,7 +36,7 @@ func NewPublishedArtifactsClient(credential azcore.TokenCredential, options *arm
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewPublishedArtifactsClient(credential azcore.TokenCredential, options *arm
 
 // Get - Get an artifact for a published blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
@@ -97,7 +98,7 @@ func (client *PublishedArtifactsClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -112,13 +113,14 @@ func (client *PublishedArtifactsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - List artifacts for a version of a published blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
 // versionID - Version of the published blueprint definition.
 // options - PublishedArtifactsClientListOptions contains the optional parameters for the PublishedArtifactsClient.List method.
 func (client *PublishedArtifactsClient) NewListPager(resourceScope string, blueprintName string, versionID string, options *PublishedArtifactsClientListOptions) *runtime.Pager[PublishedArtifactsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PublishedArtifactsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PublishedArtifactsClientListResponse]{
 		More: func(page PublishedArtifactsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -164,7 +166,7 @@ func (client *PublishedArtifactsClient) listCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

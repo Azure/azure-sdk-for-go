@@ -9,73 +9,114 @@
 
 package aad
 
-import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2017-04-01/aad"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2020-03-01/aad"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type Category = original.Category
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
 
 const (
-	AuditLogs  Category = original.AuditLogs
-	SignInLogs Category = original.SignInLogs
+	PrivateEndpointConnectionProvisioningStateFailed       PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateProvisioning PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateProvisioning
+	PrivateEndpointConnectionProvisioningStateSucceeded    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
-type CategoryType = original.CategoryType
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Logs CategoryType = original.Logs
+	PrivateEndpointServiceConnectionStatusApproved     PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusDisconnected
+	PrivateEndpointServiceConnectionStatusPending      PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
+type ARMProxyResource = original.ARMProxyResource
+type AzureEntityResource = original.AzureEntityResource
+type AzureResourceBase = original.AzureResourceBase
 type BaseClient = original.BaseClient
-type DiagnosticSettings = original.DiagnosticSettings
-type DiagnosticSettingsCategory = original.DiagnosticSettingsCategory
-type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
-type DiagnosticSettingsCategoryResource = original.DiagnosticSettingsCategoryResource
-type DiagnosticSettingsCategoryResourceCollection = original.DiagnosticSettingsCategoryResourceCollection
-type DiagnosticSettingsClient = original.DiagnosticSettingsClient
-type DiagnosticSettingsResource = original.DiagnosticSettingsResource
-type DiagnosticSettingsResourceCollection = original.DiagnosticSettingsResourceCollection
-type Display = original.Display
 type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
-type LogSettings = original.LogSettings
-type OperationsClient = original.OperationsClient
-type OperationsDiscovery = original.OperationsDiscovery
-type OperationsDiscoveryCollection = original.OperationsDiscoveryCollection
-type ProxyOnlyResource = original.ProxyOnlyResource
-type RetentionPolicy = original.RetentionPolicy
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateFuture = original.PrivateEndpointConnectionsCreateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkForAzureAdClient = original.PrivateLinkForAzureAdClient
+type PrivateLinkForAzureAdCreateFuture = original.PrivateLinkForAzureAdCreateFuture
+type PrivateLinkPolicy = original.PrivateLinkPolicy
+type PrivateLinkPolicyListResult = original.PrivateLinkPolicyListResult
+type PrivateLinkPolicyListResultIterator = original.PrivateLinkPolicyListResultIterator
+type PrivateLinkPolicyListResultPage = original.PrivateLinkPolicyListResultPage
+type PrivateLinkPolicyUpdateParameter = original.PrivateLinkPolicyUpdateParameter
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListResultIterator
+type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultPage
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProxyResource = original.ProxyResource
+type Resource = original.Resource
+type TagsResource = original.TagsResource
+type TrackedResource = original.TrackedResource
 
-func New() BaseClient {
-	return original.New()
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewDiagnosticSettingsCategoryClient() DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClient()
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI)
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
 }
-func NewDiagnosticSettingsClient() DiagnosticSettingsClient {
-	return original.NewDiagnosticSettingsClient()
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
 }
-func NewDiagnosticSettingsClientWithBaseURI(baseURI string) DiagnosticSettingsClient {
-	return original.NewDiagnosticSettingsClientWithBaseURI(baseURI)
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient() OperationsClient {
-	return original.NewOperationsClient()
+func NewPrivateLinkForAzureAdClient(subscriptionID string) PrivateLinkForAzureAdClient {
+	return original.NewPrivateLinkForAzureAdClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI)
+func NewPrivateLinkForAzureAdClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkForAzureAdClient {
+	return original.NewPrivateLinkForAzureAdClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func NewPrivateLinkPolicyListResultIterator(page PrivateLinkPolicyListResultPage) PrivateLinkPolicyListResultIterator {
+	return original.NewPrivateLinkPolicyListResultIterator(page)
 }
-func PossibleCategoryTypeValues() []CategoryType {
-	return original.PossibleCategoryTypeValues()
+func NewPrivateLinkPolicyListResultPage(cur PrivateLinkPolicyListResult, getNextPage func(context.Context, PrivateLinkPolicyListResult) (PrivateLinkPolicyListResult, error)) PrivateLinkPolicyListResultPage {
+	return original.NewPrivateLinkPolicyListResultPage(cur, getNextPage)
 }
-func PossibleCategoryValues() []Category {
-	return original.PossibleCategoryValues()
+func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
+	return original.NewPrivateLinkResourceListResultIterator(page)
+}
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(cur, getNextPage)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

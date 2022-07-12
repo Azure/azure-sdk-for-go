@@ -12,28 +12,26 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopicEventSubscriptions_Get.json
 func ExamplePartnerTopicEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<partner-topic-name>",
-		"<event-subscription-name>",
+		"examplerg",
+		"examplePartnerTopic1",
+		"examplesubscription1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -42,41 +40,41 @@ func ExamplePartnerTopicEventSubscriptionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopicEventSubscriptions_CreateOrUpdate.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<partner-topic-name>",
-		"<event-subscription-name>",
+		"examplerg",
+		"examplePartnerTopic1",
+		"exampleEventSubscriptionName1",
 		armeventgrid.EventSubscription{
 			Properties: &armeventgrid.EventSubscriptionProperties{
 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
 					Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-						EndpointURL: to.Ptr("<endpoint-url>"),
+						EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
 					},
 				},
 				Filter: &armeventgrid.EventSubscriptionFilter{
 					IsSubjectCaseSensitive: to.Ptr(false),
-					SubjectBeginsWith:      to.Ptr("<subject-begins-with>"),
-					SubjectEndsWith:        to.Ptr("<subject-ends-with>"),
+					SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
+					SubjectEndsWith:        to.Ptr("ExampleSuffix"),
 				},
 			},
 		},
-		&armeventgrid.PartnerTopicEventSubscriptionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -84,85 +82,85 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopicEventSubscriptions_Delete.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<partner-topic-name>",
-		"<event-subscription-name>",
-		&armeventgrid.PartnerTopicEventSubscriptionsClientBeginDeleteOptions{ResumeToken: ""})
+		"examplerg",
+		"examplePartnerTopic1",
+		"examplesubscription1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopicEventSubscriptions_Update.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<partner-topic-name>",
-		"<event-subscription-name>",
+		"examplerg",
+		"examplePartnerTopic1",
+		"exampleEventSubscriptionName1",
 		armeventgrid.EventSubscriptionUpdateParameters{
 			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
 				Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-					EndpointURL: to.Ptr("<endpoint-url>"),
+					EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
 				},
 			},
 			Filter: &armeventgrid.EventSubscriptionFilter{
 				IsSubjectCaseSensitive: to.Ptr(true),
-				SubjectBeginsWith:      to.Ptr("<subject-begins-with>"),
-				SubjectEndsWith:        to.Ptr("<subject-ends-with>"),
+				SubjectBeginsWith:      to.Ptr("existingPrefix"),
+				SubjectEndsWith:        to.Ptr("newSuffix"),
 			},
 			Labels: []*string{
 				to.Ptr("label1"),
 				to.Ptr("label2")},
 		},
-		&armeventgrid.PartnerTopicEventSubscriptionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
 func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPartnerTopicPager("<resource-group-name>",
-		"<partner-topic-name>",
+	pager := client.NewListByPartnerTopicPager("examplerg",
+		"examplePartnerTopic1",
 		&armeventgrid.PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions{Filter: nil,
 			Top: nil,
 		})
@@ -170,7 +168,6 @@ func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -179,21 +176,21 @@ func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
 func ExamplePartnerTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPartnerTopicEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDeliveryAttributes(ctx,
-		"<resource-group-name>",
-		"<partner-topic-name>",
-		"<event-subscription-name>",
+		"examplerg",
+		"examplePartnerTopic1",
+		"examplesubscription1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

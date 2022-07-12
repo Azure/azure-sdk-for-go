@@ -23,7 +23,7 @@ func ExamplePeriodsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbilling.NewPeriodsClient("<subscription-id>", cred, nil)
+	client, err := armbilling.NewPeriodsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +35,6 @@ func ExamplePeriodsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,12 +50,12 @@ func ExamplePeriodsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbilling.NewPeriodsClient("<subscription-id>", cred, nil)
+	client, err := armbilling.NewPeriodsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-period-name>",
+		"201702-1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

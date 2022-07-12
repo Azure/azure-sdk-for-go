@@ -12,28 +12,26 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/HubRouteTablePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/HubRouteTablePut.json
 func ExampleHubRouteTablesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewHubRouteTablesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewHubRouteTablesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<virtual-hub-name>",
-		"<route-table-name>",
+		"rg1",
+		"virtualHub1",
+		"hubRouteTable1",
 		armnetwork.HubRouteTable{
 			Properties: &armnetwork.HubRouteTableProperties{
 				Labels: []*string{
@@ -41,22 +39,22 @@ func ExampleHubRouteTablesClient_BeginCreateOrUpdate() {
 					to.Ptr("label2")},
 				Routes: []*armnetwork.HubRoute{
 					{
-						Name:            to.Ptr("<name>"),
-						DestinationType: to.Ptr("<destination-type>"),
+						Name:            to.Ptr("route1"),
+						DestinationType: to.Ptr("CIDR"),
 						Destinations: []*string{
 							to.Ptr("10.0.0.0/8"),
 							to.Ptr("20.0.0.0/8"),
 							to.Ptr("30.0.0.0/8")},
-						NextHop:     to.Ptr("<next-hop>"),
-						NextHopType: to.Ptr("<next-hop-type>"),
+						NextHop:     to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azureFirewall1"),
+						NextHopType: to.Ptr("ResourceId"),
 					}},
 			},
 		},
-		&armnetwork.HubRouteTablesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -64,21 +62,21 @@ func ExampleHubRouteTablesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/HubRouteTableGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/HubRouteTableGet.json
 func ExampleHubRouteTablesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewHubRouteTablesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewHubRouteTablesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<virtual-hub-name>",
-		"<route-table-name>",
+		"rg1",
+		"virtualHub1",
+		"hubRouteTable1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -87,50 +85,49 @@ func ExampleHubRouteTablesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/HubRouteTableDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/HubRouteTableDelete.json
 func ExampleHubRouteTablesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewHubRouteTablesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewHubRouteTablesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<virtual-hub-name>",
-		"<route-table-name>",
-		&armnetwork.HubRouteTablesClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"virtualHub1",
+		"hubRouteTable1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/HubRouteTableList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/HubRouteTableList.json
 func ExampleHubRouteTablesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewHubRouteTablesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewHubRouteTablesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<virtual-hub-name>",
+	pager := client.NewListPager("rg1",
+		"virtualHub1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

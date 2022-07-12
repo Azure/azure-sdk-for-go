@@ -38,7 +38,7 @@ func NewRecoverableDatabasesClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRecoverableDatabasesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Gets a recoverable database, which is a resource representing a database's geo backup
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -103,7 +104,7 @@ func (client *RecoverableDatabasesClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,13 +119,14 @@ func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response)
 
 // NewListByServerPager - Gets a list of recoverable databases
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - RecoverableDatabasesClientListByServerOptions contains the optional parameters for the RecoverableDatabasesClient.ListByServer
 // method.
 func (client *RecoverableDatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) *runtime.Pager[RecoverableDatabasesClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RecoverableDatabasesClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RecoverableDatabasesClientListByServerResponse]{
 		More: func(page RecoverableDatabasesClientListByServerResponse) bool {
 			return false
 		},
@@ -167,7 +169,7 @@ func (client *RecoverableDatabasesClient) listByServerCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

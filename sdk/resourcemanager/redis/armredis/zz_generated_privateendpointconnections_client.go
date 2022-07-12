@@ -39,7 +39,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // Delete - Deletes the specified private endpoint connection associated with the redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -103,12 +104,13 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified private endpoint connection associated with the redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -155,7 +157,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -170,12 +172,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - List all the private endpoint connections associated with the redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
 // method.
 func (client *PrivateEndpointConnectionsClient) NewListPager(resourceGroupName string, cacheName string, options *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsClientListResponse]{
 		More: func(page PrivateEndpointConnectionsClientListResponse) bool {
 			return false
 		},
@@ -218,7 +221,7 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -233,26 +236,28 @@ func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Re
 
 // BeginPut - Update the state of specified private endpoint connection associated with the redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // properties - The private endpoint connection properties.
 // options - PrivateEndpointConnectionsClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginPut
 // method.
-func (client *PrivateEndpointConnectionsClient) BeginPut(ctx context.Context, resourceGroupName string, cacheName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginPutOptions) (*armruntime.Poller[PrivateEndpointConnectionsClientPutResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginPut(ctx context.Context, resourceGroupName string, cacheName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginPutOptions) (*runtime.Poller[PrivateEndpointConnectionsClientPutResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.put(ctx, resourceGroupName, cacheName, privateEndpointConnectionName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateEndpointConnectionsClientPutResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateEndpointConnectionsClientPutResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientPutResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientPutResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Put - Update the state of specified private endpoint connection associated with the redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *PrivateEndpointConnectionsClient) put(ctx context.Context, resourceGroupName string, cacheName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginPutOptions) (*http.Response, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroupName, cacheName, privateEndpointConnectionName, properties, options)
 	if err != nil {
@@ -294,6 +299,6 @@ func (client *PrivateEndpointConnectionsClient) putCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }

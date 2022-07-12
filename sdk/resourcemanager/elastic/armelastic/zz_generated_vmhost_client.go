@@ -46,7 +46,7 @@ func NewVMHostClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -64,11 +64,12 @@ func NewVMHostClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - List the vm resources currently being monitored by the Elastic monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // monitorName - Monitor resource name
 // options - VMHostClientListOptions contains the optional parameters for the VMHostClient.List method.
 func (client *VMHostClient) NewListPager(resourceGroupName string, monitorName string, options *VMHostClientListOptions) *runtime.Pager[VMHostClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VMHostClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VMHostClientListResponse]{
 		More: func(page VMHostClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -117,7 +118,7 @@ func (client *VMHostClient) listCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

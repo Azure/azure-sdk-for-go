@@ -39,7 +39,7 @@ func NewManagementConfigurationsClient(subscriptionID string, credential azcore.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewManagementConfigurationsClient(subscriptionID string, credential azcore.
 
 // CreateOrUpdate - Creates or updates the ManagementConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // managementConfigurationName - User Management Configuration Name.
 // parameters - The parameters required to create OMS Solution.
@@ -99,7 +100,7 @@ func (client *ManagementConfigurationsClient) createOrUpdateCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -114,6 +115,7 @@ func (client *ManagementConfigurationsClient) createOrUpdateHandleResponse(resp 
 
 // Delete - Deletes the ManagementConfiguration in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // managementConfigurationName - User Management Configuration Name.
 // options - ManagementConfigurationsClientDeleteOptions contains the optional parameters for the ManagementConfigurationsClient.Delete
@@ -155,12 +157,13 @@ func (client *ManagementConfigurationsClient) deleteCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves the user ManagementConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // managementConfigurationName - User Management Configuration Name.
 // options - ManagementConfigurationsClientGetOptions contains the optional parameters for the ManagementConfigurationsClient.Get
@@ -202,7 +205,7 @@ func (client *ManagementConfigurationsClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -217,6 +220,7 @@ func (client *ManagementConfigurationsClient) getHandleResponse(resp *http.Respo
 
 // ListBySubscription - Retrieves the ManagementConfigurations list.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // options - ManagementConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ManagementConfigurationsClient.ListBySubscription
 // method.
 func (client *ManagementConfigurationsClient) ListBySubscription(ctx context.Context, options *ManagementConfigurationsClientListBySubscriptionOptions) (ManagementConfigurationsClientListBySubscriptionResponse, error) {
@@ -248,7 +252,7 @@ func (client *ManagementConfigurationsClient) listBySubscriptionCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

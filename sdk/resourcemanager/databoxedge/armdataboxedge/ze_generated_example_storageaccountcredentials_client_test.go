@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
@@ -26,18 +24,17 @@ func ExampleStorageAccountCredentialsClient_NewListByDataBoxEdgeDevicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewStorageAccountCredentialsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewStorageAccountCredentialsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataBoxEdgeDevicePager("<device-name>",
-		"<resource-group-name>",
+	pager := client.NewListByDataBoxEdgeDevicePager("testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleStorageAccountCredentialsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewStorageAccountCredentialsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewStorageAccountCredentialsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"sac1",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,32 +73,32 @@ func ExampleStorageAccountCredentialsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewStorageAccountCredentialsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewStorageAccountCredentialsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"sac1",
+		"GroupForEdgeAutomation",
 		armdataboxedge.StorageAccountCredential{
 			Properties: &armdataboxedge.StorageAccountCredentialProperties{
 				AccountKey: &armdataboxedge.AsymmetricEncryptedSecret{
 					EncryptionAlgorithm:      to.Ptr(armdataboxedge.EncryptionAlgorithmAES256),
-					EncryptionCertThumbprint: to.Ptr("<encryption-cert-thumbprint>"),
-					Value:                    to.Ptr("<value>"),
+					EncryptionCertThumbprint: to.Ptr("2A9D8D6BE51574B5461230AEF02F162C5F01AD31"),
+					Value:                    to.Ptr("lAeZEYi6rNP1/EyNaVUYmTSZEYyaIaWmwUsGwek0+xiZj54GM9Ue9/UA2ed/ClC03wuSit2XzM/cLRU5eYiFBwks23rGwiQOr3sruEL2a74EjPD050xYjA6M1I2hu/w2yjVHhn5j+DbXS4Xzi+rHHNZK3DgfDO3PkbECjPck+PbpSBjy9+6Mrjcld5DIZhUAeMlMHrFlg+WKRKB14o/og56u5/xX6WKlrMLEQ+y6E18dUwvWs2elTNoVO8PBE8SM/CfooX4AMNvaNdSObNBPdP+F6Lzc556nFNWXrBLRt0vC7s9qTiVRO4x/qCNaK/B4y7IqXMllwQFf4Np9UQ2ECA=="),
 				},
 				AccountType: to.Ptr(armdataboxedge.AccountTypeBlobStorage),
-				Alias:       to.Ptr("<alias>"),
+				Alias:       to.Ptr("sac1"),
 				SSLStatus:   to.Ptr(armdataboxedge.SSLStatusDisabled),
-				UserName:    to.Ptr("<user-name>"),
+				UserName:    to.Ptr("cisbvt"),
 			},
 		},
-		&armdataboxedge.StorageAccountCredentialsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -116,19 +113,19 @@ func ExampleStorageAccountCredentialsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewStorageAccountCredentialsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewStorageAccountCredentialsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
-		&armdataboxedge.StorageAccountCredentialsClientBeginDeleteOptions{ResumeToken: ""})
+		"testedgedevice",
+		"sac1",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

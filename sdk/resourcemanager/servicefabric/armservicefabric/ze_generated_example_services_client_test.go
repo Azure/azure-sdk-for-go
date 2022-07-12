@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
@@ -26,15 +24,15 @@ func ExampleServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
-		"<service-name>",
+		"resRg",
+		"myCluster",
+		"myApp",
+		"myService",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,46 +48,46 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
-		"<service-name>",
+		"resRg",
+		"myCluster",
+		"myApp",
+		"myService",
 		armservicefabric.ServiceResource{
 			Tags: map[string]*string{},
 			Properties: &armservicefabric.StatelessServiceProperties{
 				CorrelationScheme: []*armservicefabric.ServiceCorrelationDescription{
 					{
 						Scheme:      to.Ptr(armservicefabric.ServiceCorrelationSchemeAffinity),
-						ServiceName: to.Ptr("<service-name>"),
+						ServiceName: to.Ptr("fabric:/app1/app1~svc1"),
 					}},
 				DefaultMoveCost:      to.Ptr(armservicefabric.MoveCostMedium),
-				PlacementConstraints: to.Ptr("<placement-constraints>"),
+				PlacementConstraints: to.Ptr("NodeType==frontend"),
 				ServiceLoadMetrics: []*armservicefabric.ServiceLoadMetricDescription{
 					{
-						Name:   to.Ptr("<name>"),
+						Name:   to.Ptr("metric1"),
 						Weight: to.Ptr(armservicefabric.ServiceLoadMetricWeightLow),
 					}},
 				ServicePlacementPolicies: []armservicefabric.ServicePlacementPolicyDescriptionClassification{},
 				PartitionDescription: &armservicefabric.SingletonPartitionSchemeDescription{
 					PartitionScheme: to.Ptr(armservicefabric.PartitionSchemeSingleton),
 				},
-				ServiceDNSName:               to.Ptr("<service-dnsname>"),
+				ServiceDNSName:               to.Ptr("my.service.dns"),
 				ServiceKind:                  to.Ptr(armservicefabric.ServiceKindStateless),
 				ServicePackageActivationMode: to.Ptr(armservicefabric.ArmServicePackageActivationModeSharedProcess),
-				ServiceTypeName:              to.Ptr("<service-type-name>"),
+				ServiceTypeName:              to.Ptr("myServiceType"),
 				InstanceCount:                to.Ptr[int32](5),
 			},
 		},
-		&armservicefabric.ServicesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -102,31 +100,31 @@ func ExampleServicesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
-		"<service-name>",
+		"resRg",
+		"myCluster",
+		"myApp",
+		"myService",
 		armservicefabric.ServiceResourceUpdate{
 			Tags: map[string]*string{},
 			Properties: &armservicefabric.StatelessServiceUpdateProperties{
 				ServiceLoadMetrics: []*armservicefabric.ServiceLoadMetricDescription{
 					{
-						Name:   to.Ptr("<name>"),
+						Name:   to.Ptr("metric1"),
 						Weight: to.Ptr(armservicefabric.ServiceLoadMetricWeightLow),
 					}},
 				ServiceKind: to.Ptr(armservicefabric.ServiceKindStateless),
 			},
 		},
-		&armservicefabric.ServicesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -139,20 +137,20 @@ func ExampleServicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
-		"<service-name>",
-		&armservicefabric.ServicesClientBeginDeleteOptions{ResumeToken: ""})
+		"resRg",
+		"myCluster",
+		"myApp",
+		"myService",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -165,14 +163,14 @@ func ExampleServicesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewServicesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
+		"resRg",
+		"myCluster",
+		"myApp",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

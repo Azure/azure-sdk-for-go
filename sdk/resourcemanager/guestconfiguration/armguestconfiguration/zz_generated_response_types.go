@@ -18,6 +18,16 @@ type AssignmentReportsClientListResponse struct {
 	AssignmentReportList
 }
 
+// AssignmentReportsVMSSClientGetResponse contains the response from method AssignmentReportsVMSSClient.Get.
+type AssignmentReportsVMSSClientGetResponse struct {
+	AssignmentReport
+}
+
+// AssignmentReportsVMSSClientListResponse contains the response from method AssignmentReportsVMSSClient.List.
+type AssignmentReportsVMSSClientListResponse struct {
+	AssignmentReportList
+}
+
 // AssignmentsClientCreateOrUpdateResponse contains the response from method AssignmentsClient.CreateOrUpdate.
 type AssignmentsClientCreateOrUpdateResponse struct {
 	Assignment
@@ -45,6 +55,21 @@ type AssignmentsClientRGListResponse struct {
 
 // AssignmentsClientSubscriptionListResponse contains the response from method AssignmentsClient.SubscriptionList.
 type AssignmentsClientSubscriptionListResponse struct {
+	AssignmentList
+}
+
+// AssignmentsVMSSClientDeleteResponse contains the response from method AssignmentsVMSSClient.Delete.
+type AssignmentsVMSSClientDeleteResponse struct {
+	Assignment
+}
+
+// AssignmentsVMSSClientGetResponse contains the response from method AssignmentsVMSSClient.Get.
+type AssignmentsVMSSClientGetResponse struct {
+	Assignment
+}
+
+// AssignmentsVMSSClientListResponse contains the response from method AssignmentsVMSSClient.List.
+type AssignmentsVMSSClientListResponse struct {
 	AssignmentList
 }
 

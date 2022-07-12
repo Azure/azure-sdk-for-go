@@ -38,7 +38,7 @@ func NewProviderShareSubscriptionsClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewProviderShareSubscriptionsClient(subscriptionID string, credential azcor
 
 // Adjust - Adjust a share subscription's expiration date in a provider share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
@@ -108,7 +109,7 @@ func (client *ProviderShareSubscriptionsClient) adjustCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, providerShareSubscription)
 }
 
@@ -123,6 +124,7 @@ func (client *ProviderShareSubscriptionsClient) adjustHandleResponse(resp *http.
 
 // GetByShare - Get share subscription in a provider share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
@@ -174,7 +176,7 @@ func (client *ProviderShareSubscriptionsClient) getByShareCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -189,13 +191,14 @@ func (client *ProviderShareSubscriptionsClient) getByShareHandleResponse(resp *h
 
 // NewListBySharePager - List share subscriptions in a provider share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - ProviderShareSubscriptionsClientListByShareOptions contains the optional parameters for the ProviderShareSubscriptionsClient.ListByShare
 // method.
 func (client *ProviderShareSubscriptionsClient) NewListBySharePager(resourceGroupName string, accountName string, shareName string, options *ProviderShareSubscriptionsClientListByShareOptions) *runtime.Pager[ProviderShareSubscriptionsClientListByShareResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProviderShareSubscriptionsClientListByShareResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProviderShareSubscriptionsClientListByShareResponse]{
 		More: func(page ProviderShareSubscriptionsClientListByShareResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -251,7 +254,7 @@ func (client *ProviderShareSubscriptionsClient) listByShareCreateRequest(ctx con
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -266,6 +269,7 @@ func (client *ProviderShareSubscriptionsClient) listByShareHandleResponse(resp *
 
 // Reinstate - Reinstate share subscription in a provider share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
@@ -318,7 +322,7 @@ func (client *ProviderShareSubscriptionsClient) reinstateCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, providerShareSubscription)
 }
 
@@ -333,28 +337,30 @@ func (client *ProviderShareSubscriptionsClient) reinstateHandleResponse(resp *ht
 
 // BeginRevoke - Revoke share subscription in a provider share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // providerShareSubscriptionID - To locate shareSubscription
 // options - ProviderShareSubscriptionsClientBeginRevokeOptions contains the optional parameters for the ProviderShareSubscriptionsClient.BeginRevoke
 // method.
-func (client *ProviderShareSubscriptionsClient) BeginRevoke(ctx context.Context, resourceGroupName string, accountName string, shareName string, providerShareSubscriptionID string, options *ProviderShareSubscriptionsClientBeginRevokeOptions) (*armruntime.Poller[ProviderShareSubscriptionsClientRevokeResponse], error) {
+func (client *ProviderShareSubscriptionsClient) BeginRevoke(ctx context.Context, resourceGroupName string, accountName string, shareName string, providerShareSubscriptionID string, options *ProviderShareSubscriptionsClientBeginRevokeOptions) (*runtime.Poller[ProviderShareSubscriptionsClientRevokeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.revoke(ctx, resourceGroupName, accountName, shareName, providerShareSubscriptionID, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ProviderShareSubscriptionsClientRevokeResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ProviderShareSubscriptionsClientRevokeResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ProviderShareSubscriptionsClientRevokeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ProviderShareSubscriptionsClientRevokeResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Revoke - Revoke share subscription in a provider share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *ProviderShareSubscriptionsClient) revoke(ctx context.Context, resourceGroupName string, accountName string, shareName string, providerShareSubscriptionID string, options *ProviderShareSubscriptionsClientBeginRevokeOptions) (*http.Response, error) {
 	req, err := client.revokeCreateRequest(ctx, resourceGroupName, accountName, shareName, providerShareSubscriptionID, options)
 	if err != nil {
@@ -400,6 +406,6 @@ func (client *ProviderShareSubscriptionsClient) revokeCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

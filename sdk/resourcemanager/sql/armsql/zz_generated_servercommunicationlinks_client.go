@@ -38,7 +38,7 @@ func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.
 
 // BeginCreateOrUpdate - Creates a server communication link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -63,20 +64,21 @@ func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.
 // parameters - The required parameters for creating a server communication link.
 // options - ServerCommunicationLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerCommunicationLinksClient.BeginCreateOrUpdate
 // method.
-func (client *ServerCommunicationLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerCommunicationLinksClientCreateOrUpdateResponse], error) {
+func (client *ServerCommunicationLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerCommunicationLinksClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, communicationLinkName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerCommunicationLinksClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerCommunicationLinksClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerCommunicationLinksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerCommunicationLinksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a server communication link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 func (client *ServerCommunicationLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, communicationLinkName, parameters, options)
 	if err != nil {
@@ -118,12 +120,13 @@ func (client *ServerCommunicationLinksClient) createOrUpdateCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Delete - Deletes a server communication link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -176,6 +179,7 @@ func (client *ServerCommunicationLinksClient) deleteCreateRequest(ctx context.Co
 
 // Get - Returns a server communication link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -223,7 +227,7 @@ func (client *ServerCommunicationLinksClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,13 +242,14 @@ func (client *ServerCommunicationLinksClient) getHandleResponse(resp *http.Respo
 
 // NewListByServerPager - Gets a list of server communication links.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerCommunicationLinksClientListByServerOptions contains the optional parameters for the ServerCommunicationLinksClient.ListByServer
 // method.
 func (client *ServerCommunicationLinksClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) *runtime.Pager[ServerCommunicationLinksClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServerCommunicationLinksClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServerCommunicationLinksClientListByServerResponse]{
 		More: func(page ServerCommunicationLinksClientListByServerResponse) bool {
 			return false
 		},
@@ -287,7 +292,7 @@ func (client *ServerCommunicationLinksClient) listByServerCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

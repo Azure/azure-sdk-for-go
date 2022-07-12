@@ -24,13 +24,13 @@ func ExampleQueueServicesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewQueueServicesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewQueueServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res9290",
+		"sto1590",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,13 +46,13 @@ func ExampleQueueServicesClient_SetServiceProperties() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewQueueServicesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewQueueServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.SetServiceProperties(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res4410",
+		"sto8607",
 		armstorage.QueueServiceProperties{
 			QueueServiceProperties: &armstorage.QueueServicePropertiesProperties{
 				Cors: &armstorage.CorsRules{
@@ -120,13 +120,13 @@ func ExampleQueueServicesClient_GetServiceProperties() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewQueueServicesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewQueueServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetServiceProperties(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res4410",
+		"sto8607",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

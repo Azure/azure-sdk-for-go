@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -28,15 +31,17 @@ type DefaultAzureCredentialOptions struct {
 // DefaultAzureCredential is a default credential chain for applications that will deploy to Azure.
 // It combines credentials suitable for deployment with credentials suitable for local development.
 // It attempts to authenticate with each of these credential types, in the following order, stopping when one provides a token:
-// - EnvironmentCredential
-// - ManagedIdentityCredential
-// - AzureCLICredential
+//  EnvironmentCredential
+//  ManagedIdentityCredential
+//  AzureCLICredential
 // Consult the documentation for these credential types for more information on how they authenticate.
+// Once a credential has successfully authenticated, DefaultAzureCredential will use that credential for
+// every subsequent authentication.
 type DefaultAzureCredential struct {
 	chain *ChainedTokenCredential
 }
 
-// NewDefaultAzureCredential creates a DefaultAzureCredential.
+// NewDefaultAzureCredential creates a DefaultAzureCredential. Pass nil for options to accept defaults.
 func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*DefaultAzureCredential, error) {
 	var creds []azcore.TokenCredential
 	var errorMessages []string
@@ -87,10 +92,8 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	return &DefaultAzureCredential{chain: chain}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-// ctx: Context used to control the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
-func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
+func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return c.chain.GetToken(ctx, opts)
 }
 
@@ -119,11 +122,11 @@ type defaultCredentialErrorReporter struct {
 	err      error
 }
 
-func (d *defaultCredentialErrorReporter) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
-	if _, ok := d.err.(credentialUnavailableError); ok {
-		return nil, d.err
+func (d *defaultCredentialErrorReporter) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if _, ok := d.err.(*credentialUnavailableError); ok {
+		return azcore.AccessToken{}, d.err
 	}
-	return nil, newCredentialUnavailableError(d.credType, d.err.Error())
+	return azcore.AccessToken{}, newCredentialUnavailableError(d.credType, d.err.Error())
 }
 
 var _ azcore.TokenCredential = (*defaultCredentialErrorReporter)(nil)

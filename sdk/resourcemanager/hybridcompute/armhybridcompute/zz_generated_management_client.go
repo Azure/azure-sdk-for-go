@@ -38,7 +38,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginUpgradeExtensions - The operation to Upgrade Machine Extensions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // machineName - The name of the hybrid machine.
 // extensionUpgradeParameters - Parameters supplied to the Upgrade Extensions operation.
 // options - ManagementClientBeginUpgradeExtensionsOptions contains the optional parameters for the ManagementClient.BeginUpgradeExtensions
 // method.
-func (client *ManagementClient) BeginUpgradeExtensions(ctx context.Context, resourceGroupName string, machineName string, extensionUpgradeParameters MachineExtensionUpgrade, options *ManagementClientBeginUpgradeExtensionsOptions) (*armruntime.Poller[ManagementClientUpgradeExtensionsResponse], error) {
+func (client *ManagementClient) BeginUpgradeExtensions(ctx context.Context, resourceGroupName string, machineName string, extensionUpgradeParameters MachineExtensionUpgrade, options *ManagementClientBeginUpgradeExtensionsOptions) (*runtime.Poller[ManagementClientUpgradeExtensionsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.upgradeExtensions(ctx, resourceGroupName, machineName, extensionUpgradeParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientUpgradeExtensionsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientUpgradeExtensionsResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientUpgradeExtensionsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientUpgradeExtensionsResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // UpgradeExtensions - The operation to Upgrade Machine Extensions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 func (client *ManagementClient) upgradeExtensions(ctx context.Context, resourceGroupName string, machineName string, extensionUpgradeParameters MachineExtensionUpgrade, options *ManagementClientBeginUpgradeExtensionsOptions) (*http.Response, error) {
 	req, err := client.upgradeExtensionsCreateRequest(ctx, resourceGroupName, machineName, extensionUpgradeParameters, options)
 	if err != nil {
@@ -110,8 +112,8 @@ func (client *ManagementClient) upgradeExtensionsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-10-preview")
+	reqQP.Set("api-version", "2022-03-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, extensionUpgradeParameters)
 }

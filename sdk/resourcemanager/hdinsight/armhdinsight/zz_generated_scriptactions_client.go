@@ -39,7 +39,7 @@ func NewScriptActionsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewScriptActionsClient(subscriptionID string, credential azcore.TokenCreden
 
 // Delete - Deletes a specified persisted script action of the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // scriptName - The name of the script.
@@ -102,12 +103,13 @@ func (client *ScriptActionsClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetExecutionAsyncOperationStatus - Gets the async operation status of execution operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // operationID - The long running operation id.
@@ -154,7 +156,7 @@ func (client *ScriptActionsClient) getExecutionAsyncOperationStatusCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -169,6 +171,7 @@ func (client *ScriptActionsClient) getExecutionAsyncOperationStatusHandleRespons
 
 // GetExecutionDetail - Gets the script execution detail for the given script execution ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // scriptExecutionID - The script execution Id
@@ -215,7 +218,7 @@ func (client *ScriptActionsClient) getExecutionDetailCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,12 +233,13 @@ func (client *ScriptActionsClient) getExecutionDetailHandleResponse(resp *http.R
 
 // NewListByClusterPager - Lists all the persisted script actions for the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // options - ScriptActionsClientListByClusterOptions contains the optional parameters for the ScriptActionsClient.ListByCluster
 // method.
 func (client *ScriptActionsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ScriptActionsClientListByClusterOptions) *runtime.Pager[ScriptActionsClientListByClusterResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ScriptActionsClientListByClusterResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ScriptActionsClientListByClusterResponse]{
 		More: func(page ScriptActionsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +288,7 @@ func (client *ScriptActionsClient) listByClusterCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

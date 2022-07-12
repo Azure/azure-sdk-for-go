@@ -24,7 +24,7 @@ func ExampleAutoProvisioningSettingsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutoProvisioningSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutoProvisioningSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleAutoProvisioningSettingsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,12 +48,12 @@ func ExampleAutoProvisioningSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutoProvisioningSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutoProvisioningSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<setting-name>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,16 +69,16 @@ func ExampleAutoProvisioningSettingsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutoProvisioningSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutoProvisioningSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<setting-name>",
+		"default",
 		armsecurity.AutoProvisioningSetting{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
-			ID:   to.Ptr("<id>"),
+			Name: to.Ptr("default"),
+			Type: to.Ptr("Microsoft.Security/autoProvisioningSettings"),
+			ID:   to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/autoProvisioningSettings/default"),
 			Properties: &armsecurity.AutoProvisioningSettingProperties{
 				AutoProvision: to.Ptr(armsecurity.AutoProvisionOn),
 			},

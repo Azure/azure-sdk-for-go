@@ -17,20 +17,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/CheckNameAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/CheckNameAvailable.json
 func ExampleOperationsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappconfiguration.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armappconfiguration.NewOperationsClient("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armappconfiguration.CheckNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("contoso"),
 			Type: to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
 		},
 		nil)
@@ -41,21 +41,21 @@ func ExampleOperationsClient_CheckNameAvailability() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/RegionalCheckNameAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/RegionalCheckNameAvailable.json
 func ExampleOperationsClient_RegionalCheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappconfiguration.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armappconfiguration.NewOperationsClient("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegionalCheckNameAvailability(ctx,
-		"<location>",
+		"westus",
 		armappconfiguration.CheckNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("contoso"),
 			Type: to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
 		},
 		nil)

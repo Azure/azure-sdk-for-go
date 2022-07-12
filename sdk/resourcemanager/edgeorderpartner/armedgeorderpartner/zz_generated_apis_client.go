@@ -38,7 +38,7 @@ func NewAPISClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,10 +56,11 @@ func NewAPISClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // NewListOperationsPartnerPager - This method gets all the operations that are exposed for customer.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-01-preview
 // options - APISClientListOperationsPartnerOptions contains the optional parameters for the APISClient.ListOperationsPartner
 // method.
 func (client *APISClient) NewListOperationsPartnerPager(options *APISClientListOperationsPartnerOptions) *runtime.Pager[APISClientListOperationsPartnerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[APISClientListOperationsPartnerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[APISClientListOperationsPartnerResponse]{
 		More: func(page APISClientListOperationsPartnerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -96,7 +97,7 @@ func (client *APISClient) listOperationsPartnerCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,26 +112,28 @@ func (client *APISClient) listOperationsPartnerHandleResponse(resp *http.Respons
 
 // BeginManageInventoryMetadata - API for updating inventory metadata and inventory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-01-preview
 // familyIdentifier - Unique identifier for the product family
 // location - The location of the resource
 // serialNumber - The serial number of the device
 // manageInventoryMetadataRequest - Updates inventory metadata and inventory configuration
 // options - APISClientBeginManageInventoryMetadataOptions contains the optional parameters for the APISClient.BeginManageInventoryMetadata
 // method.
-func (client *APISClient) BeginManageInventoryMetadata(ctx context.Context, familyIdentifier string, location string, serialNumber string, manageInventoryMetadataRequest ManageInventoryMetadataRequest, options *APISClientBeginManageInventoryMetadataOptions) (*armruntime.Poller[APISClientManageInventoryMetadataResponse], error) {
+func (client *APISClient) BeginManageInventoryMetadata(ctx context.Context, familyIdentifier string, location string, serialNumber string, manageInventoryMetadataRequest ManageInventoryMetadataRequest, options *APISClientBeginManageInventoryMetadataOptions) (*runtime.Poller[APISClientManageInventoryMetadataResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.manageInventoryMetadata(ctx, familyIdentifier, location, serialNumber, manageInventoryMetadataRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[APISClientManageInventoryMetadataResponse](resp, client.pl, nil)
+		return runtime.NewPoller[APISClientManageInventoryMetadataResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[APISClientManageInventoryMetadataResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[APISClientManageInventoryMetadataResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ManageInventoryMetadata - API for updating inventory metadata and inventory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-01-preview
 func (client *APISClient) manageInventoryMetadata(ctx context.Context, familyIdentifier string, location string, serialNumber string, manageInventoryMetadataRequest ManageInventoryMetadataRequest, options *APISClientBeginManageInventoryMetadataOptions) (*http.Response, error) {
 	req, err := client.manageInventoryMetadataCreateRequest(ctx, familyIdentifier, location, serialNumber, manageInventoryMetadataRequest, options)
 	if err != nil {
@@ -172,12 +175,13 @@ func (client *APISClient) manageInventoryMetadataCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, manageInventoryMetadataRequest)
 }
 
 // ManageLink - API for linking management resource with inventory
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-01-preview
 // familyIdentifier - Unique identifier for the product family
 // location - The location of the resource
 // serialNumber - The serial number of the device
@@ -224,16 +228,17 @@ func (client *APISClient) manageLinkCreateRequest(ctx context.Context, familyIde
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, manageLinkRequest)
 }
 
 // NewSearchInventoriesPager - API for Search inventories
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-01-preview
 // searchInventoriesRequest - Searches inventories with the given filters and returns in the form of a list
 // options - APISClientSearchInventoriesOptions contains the optional parameters for the APISClient.SearchInventories method.
 func (client *APISClient) NewSearchInventoriesPager(searchInventoriesRequest SearchInventoriesRequest, options *APISClientSearchInventoriesOptions) *runtime.Pager[APISClientSearchInventoriesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[APISClientSearchInventoriesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[APISClientSearchInventoriesResponse]{
 		More: func(page APISClientSearchInventoriesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -274,7 +279,7 @@ func (client *APISClient) searchInventoriesCreateRequest(ctx context.Context, se
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, searchInventoriesRequest)
 }
 

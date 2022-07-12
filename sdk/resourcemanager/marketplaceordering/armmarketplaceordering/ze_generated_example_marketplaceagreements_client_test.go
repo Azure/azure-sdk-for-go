@@ -26,15 +26,15 @@ func ExampleMarketplaceAgreementsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
 		armmarketplaceordering.OfferTypeVirtualmachine,
-		"<publisher-id>",
-		"<offer-id>",
-		"<plan-id>",
+		"pubid",
+		"offid",
+		"planid",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,26 +50,26 @@ func ExampleMarketplaceAgreementsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
 		armmarketplaceordering.OfferTypeVirtualmachine,
-		"<publisher-id>",
-		"<offer-id>",
-		"<plan-id>",
+		"pubid",
+		"offid",
+		"planid",
 		armmarketplaceordering.AgreementTerms{
 			Properties: &armmarketplaceordering.AgreementProperties{
 				Accepted:             to.Ptr(false),
-				LicenseTextLink:      to.Ptr("<license-text-link>"),
-				MarketplaceTermsLink: to.Ptr("<marketplace-terms-link>"),
-				Plan:                 to.Ptr("<plan>"),
-				PrivacyPolicyLink:    to.Ptr("<privacy-policy-link>"),
-				Product:              to.Ptr("<product>"),
-				Publisher:            to.Ptr("<publisher>"),
+				LicenseTextLink:      to.Ptr("test.licenseLink"),
+				MarketplaceTermsLink: to.Ptr("test.marketplaceTermsLink"),
+				Plan:                 to.Ptr("planid"),
+				PrivacyPolicyLink:    to.Ptr("test.privacyPolicyLink"),
+				Product:              to.Ptr("offid"),
+				Publisher:            to.Ptr("pubid"),
 				RetrieveDatetime:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.12132Z"); return t }()),
-				Signature:            to.Ptr("<signature>"),
+				Signature:            to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 			},
 		},
 		nil)
@@ -87,14 +87,14 @@ func ExampleMarketplaceAgreementsClient_Sign() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Sign(ctx,
-		"<publisher-id>",
-		"<offer-id>",
-		"<plan-id>",
+		"pubid",
+		"offid",
+		"planid",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -110,14 +110,14 @@ func ExampleMarketplaceAgreementsClient_Cancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Cancel(ctx,
-		"<publisher-id>",
-		"<offer-id>",
-		"<plan-id>",
+		"pubid",
+		"offid",
+		"planid",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -133,14 +133,14 @@ func ExampleMarketplaceAgreementsClient_GetAgreement() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAgreement(ctx,
-		"<publisher-id>",
-		"<offer-id>",
-		"<plan-id>",
+		"pubid",
+		"offid",
+		"planid",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -156,7 +156,7 @@ func ExampleMarketplaceAgreementsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

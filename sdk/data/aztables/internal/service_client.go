@@ -45,6 +45,7 @@ func NewServiceClient(endpoint string, version Enum0, options *azcore.ClientOpti
 // GetProperties - Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
 // Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // restype - Required query string to set the service properties.
 // comp - Required query string to set the service properties.
 // options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
@@ -105,6 +106,7 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // GetStatistics - Retrieves statistics related to replication for the Table service. It is only available on the secondary
 // location endpoint when read-access geo-redundant replication is enabled for the account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // restype - Required query string to get service stats.
 // comp - Required query string to get service stats.
 // options - ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
@@ -172,6 +174,7 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // SetProperties - Sets properties for an account's Table service endpoint, including properties for Analytics and CORS (Cross-Origin
 // Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // restype - Required query string to set the service properties.
 // comp - Required query string to set the service properties.
 // tableServiceProperties - The Table Service properties.

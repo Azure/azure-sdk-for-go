@@ -33,7 +33,7 @@ func NewListTenantConfigurationViolationsClient(credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,10 +50,11 @@ func NewListTenantConfigurationViolationsClient(credential azcore.TokenCredentia
 
 // NewListPager - Gets list of items that violate tenant's configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // options - ListTenantConfigurationViolationsClientListOptions contains the optional parameters for the ListTenantConfigurationViolationsClient.List
 // method.
 func (client *ListTenantConfigurationViolationsClient) NewListPager(options *ListTenantConfigurationViolationsClientListOptions) *runtime.Pager[ListTenantConfigurationViolationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListTenantConfigurationViolationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListTenantConfigurationViolationsClientListResponse]{
 		More: func(page ListTenantConfigurationViolationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -90,7 +91,7 @@ func (client *ListTenantConfigurationViolationsClient) listCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

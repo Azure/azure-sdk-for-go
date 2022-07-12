@@ -38,7 +38,7 @@ func NewMonitorClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,12 +57,13 @@ func NewMonitorClient(subscriptionID string, credential azcore.TokenCredential, 
 // NewListVMHostUpdatePager - Sending request to update the collection when Logz.io agent has been installed on a VM for a
 // given monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorClientListVMHostUpdateOptions contains the optional parameters for the MonitorClient.ListVMHostUpdate
 // method.
 func (client *MonitorClient) NewListVMHostUpdatePager(resourceGroupName string, monitorName string, options *MonitorClientListVMHostUpdateOptions) *runtime.Pager[MonitorClientListVMHostUpdateResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MonitorClientListVMHostUpdateResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MonitorClientListVMHostUpdateResponse]{
 		More: func(page MonitorClientListVMHostUpdateResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -111,7 +112,7 @@ func (client *MonitorClient) listVMHostUpdateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -129,11 +130,12 @@ func (client *MonitorClient) listVMHostUpdateHandleResponse(resp *http.Response)
 
 // NewListVMHostsPager - List the compute resources currently being monitored by the Logz main account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorClientListVMHostsOptions contains the optional parameters for the MonitorClient.ListVMHosts method.
 func (client *MonitorClient) NewListVMHostsPager(resourceGroupName string, monitorName string, options *MonitorClientListVMHostsOptions) *runtime.Pager[MonitorClientListVMHostsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MonitorClientListVMHostsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MonitorClientListVMHostsResponse]{
 		More: func(page MonitorClientListVMHostsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -182,7 +184,7 @@ func (client *MonitorClient) listVMHostsCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -197,6 +199,7 @@ func (client *MonitorClient) listVMHostsHandleResponse(resp *http.Response) (Mon
 
 // VMHostPayload - Returns the payload that needs to be passed in the request body for installing Logz.io agent on a VM.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorClientVMHostPayloadOptions contains the optional parameters for the MonitorClient.VMHostPayload method.
@@ -237,7 +240,7 @@ func (client *MonitorClient) vmHostPayloadCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

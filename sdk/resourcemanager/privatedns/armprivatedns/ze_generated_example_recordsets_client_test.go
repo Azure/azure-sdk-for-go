@@ -24,20 +24,20 @@ func ExampleRecordSetsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewRecordSetsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
+		"resourceGroup1",
+		"privatezone1.com",
 		armprivatedns.RecordTypeA,
-		"<relative-record-set-name>",
+		"recordA",
 		armprivatedns.RecordSet{
 			Properties: &armprivatedns.RecordSetProperties{
 				ARecords: []*armprivatedns.ARecord{
 					{
-						IPv4Address: to.Ptr("<ipv4address>"),
+						IPv4Address: to.Ptr("1.2.3.4"),
 					}},
 				Metadata: map[string]*string{
 					"key1": to.Ptr("value1"),
@@ -62,15 +62,15 @@ func ExampleRecordSetsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewRecordSetsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
+		"resourceGroup1",
+		"privatezone1.com",
 		armprivatedns.RecordTypeA,
-		"<relative-record-set-name>",
+		"recordA",
 		armprivatedns.RecordSet{
 			Properties: &armprivatedns.RecordSetProperties{
 				Metadata: map[string]*string{
@@ -93,15 +93,15 @@ func ExampleRecordSetsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewRecordSetsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
+		"resourceGroup1",
+		"privatezone1.com",
 		armprivatedns.RecordTypeA,
-		"<relative-record-set-name>",
+		"recordA",
 		&armprivatedns.RecordSetsClientDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -115,15 +115,15 @@ func ExampleRecordSetsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewRecordSetsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
+		"resourceGroup1",
+		"privatezone1.com",
 		armprivatedns.RecordTypeA,
-		"<relative-record-set-name>",
+		"recordA",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -139,12 +139,12 @@ func ExampleRecordSetsClient_NewListByTypePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewRecordSetsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTypePager("<resource-group-name>",
-		"<private-zone-name>",
+	pager := client.NewListByTypePager("resourceGroup1",
+		"privatezone1.com",
 		armprivatedns.RecordTypeA,
 		&armprivatedns.RecordSetsClientListByTypeOptions{Top: nil,
 			Recordsetnamesuffix: nil,
@@ -153,7 +153,6 @@ func ExampleRecordSetsClient_NewListByTypePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -169,12 +168,12 @@ func ExampleRecordSetsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewRecordSetsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<private-zone-name>",
+	pager := client.NewListPager("resourceGroup1",
+		"privatezone1.com",
 		&armprivatedns.RecordSetsClientListOptions{Top: nil,
 			Recordsetnamesuffix: nil,
 		})
@@ -182,7 +181,6 @@ func ExampleRecordSetsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -30,13 +30,12 @@ func ExampleBudgetsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("subscriptions/00000000-0000-0000-0000-000000000000",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,8 +56,8 @@ func ExampleBudgetsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<budget-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000",
+		"TestBudget",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,10 +78,10 @@ func ExampleBudgetsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<scope>",
-		"<budget-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000",
+		"TestBudget",
 		armconsumption.Budget{
-			ETag: to.Ptr("<etag>"),
+			ETag: to.Ptr("\"1d34d016a593709\""),
 			Properties: &armconsumption.BudgetProperties{
 				Amount:   to.Ptr[float64](100.65),
 				Category: to.Ptr(armconsumption.CategoryTypeCost),
@@ -90,7 +89,7 @@ func ExampleBudgetsClient_CreateOrUpdate() {
 					And: []*armconsumption.BudgetFilterProperties{
 						{
 							Dimensions: &armconsumption.BudgetComparisonExpression{
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("ResourceId"),
 								Operator: to.Ptr(armconsumption.BudgetOperatorTypeIn),
 								Values: []*string{
 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Compute/virtualMachines/MSVM2"),
@@ -99,7 +98,7 @@ func ExampleBudgetsClient_CreateOrUpdate() {
 						},
 						{
 							Tags: &armconsumption.BudgetComparisonExpression{
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("category"),
 								Operator: to.Ptr(armconsumption.BudgetOperatorTypeIn),
 								Values: []*string{
 									to.Ptr("Dev"),
@@ -108,7 +107,7 @@ func ExampleBudgetsClient_CreateOrUpdate() {
 						},
 						{
 							Tags: &armconsumption.BudgetComparisonExpression{
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("department"),
 								Operator: to.Ptr(armconsumption.BudgetOperatorTypeIn),
 								Values: []*string{
 									to.Ptr("engineering"),
@@ -160,8 +159,8 @@ func ExampleBudgetsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<scope>",
-		"<budget-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000",
+		"TestBudget",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

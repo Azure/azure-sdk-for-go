@@ -42,7 +42,7 @@ func NewReplicationAppliancesClient(resourceName string, resourceGroupName strin
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,10 +62,11 @@ func NewReplicationAppliancesClient(resourceName string, resourceGroupName strin
 
 // NewListPager - Gets the list of Azure Site Recovery appliances for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.List
 // method.
 func (client *ReplicationAppliancesClient) NewListPager(options *ReplicationAppliancesClientListOptions) *runtime.Pager[ReplicationAppliancesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationAppliancesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationAppliancesClientListResponse]{
 		More: func(page ReplicationAppliancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -117,7 +118,7 @@ func (client *ReplicationAppliancesClient) listCreateRequest(ctx context.Context
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

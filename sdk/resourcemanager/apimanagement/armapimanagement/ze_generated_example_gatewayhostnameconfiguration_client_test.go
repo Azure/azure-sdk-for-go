@@ -24,13 +24,13 @@ func ExampleGatewayHostnameConfigurationClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"gw1",
 		&armapimanagement.GatewayHostnameConfigurationClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -39,7 +39,6 @@ func ExampleGatewayHostnameConfigurationClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,15 +54,15 @@ func ExampleGatewayHostnameConfigurationClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<hc-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,15 +76,15 @@ func ExampleGatewayHostnameConfigurationClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<hc-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,19 +100,19 @@ func ExampleGatewayHostnameConfigurationClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<hc-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"default",
 		armapimanagement.GatewayHostnameConfigurationContract{
 			Properties: &armapimanagement.GatewayHostnameConfigurationContractProperties{
-				CertificateID:              to.Ptr("<certificate-id>"),
-				Hostname:                   to.Ptr("<hostname>"),
+				CertificateID:              to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+				Hostname:                   to.Ptr("*"),
 				HTTP2Enabled:               to.Ptr(true),
 				NegotiateClientCertificate: to.Ptr(false),
 				Tls10Enabled:               to.Ptr(false),
@@ -135,16 +134,16 @@ func ExampleGatewayHostnameConfigurationClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayHostnameConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<hc-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"default",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

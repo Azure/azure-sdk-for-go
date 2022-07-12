@@ -38,7 +38,7 @@ func NewManagedDatabaseTablesClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagedDatabaseTablesClient(subscriptionID string, credential azcore.Tok
 
 // Get - Get managed database table
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -113,7 +114,7 @@ func (client *ManagedDatabaseTablesClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -128,6 +129,7 @@ func (client *ManagedDatabaseTablesClient) getHandleResponse(resp *http.Response
 
 // NewListBySchemaPager - List managed database tables
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -136,7 +138,7 @@ func (client *ManagedDatabaseTablesClient) getHandleResponse(resp *http.Response
 // options - ManagedDatabaseTablesClientListBySchemaOptions contains the optional parameters for the ManagedDatabaseTablesClient.ListBySchema
 // method.
 func (client *ManagedDatabaseTablesClient) NewListBySchemaPager(resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, options *ManagedDatabaseTablesClientListBySchemaOptions) *runtime.Pager[ManagedDatabaseTablesClientListBySchemaResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseTablesClientListBySchemaResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseTablesClientListBySchemaResponse]{
 		More: func(page ManagedDatabaseTablesClientListBySchemaResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -196,7 +198,7 @@ func (client *ManagedDatabaseTablesClient) listBySchemaCreateRequest(ctx context
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

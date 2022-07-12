@@ -38,7 +38,7 @@ func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Creates or updates an Azure Pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // pipelineName - The name of the Azure Pipeline resource in ARM.
 // createOperationParameters - The request payload to create the Azure Pipeline.
 // options - PipelinesClientBeginCreateOrUpdateOptions contains the optional parameters for the PipelinesClient.BeginCreateOrUpdate
 // method.
-func (client *PipelinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, pipelineName string, createOperationParameters Pipeline, options *PipelinesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PipelinesClientCreateOrUpdateResponse], error) {
+func (client *PipelinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, pipelineName string, createOperationParameters Pipeline, options *PipelinesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PipelinesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, pipelineName, createOperationParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PipelinesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PipelinesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PipelinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PipelinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an Azure Pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-01-preview
 func (client *PipelinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, pipelineName string, createOperationParameters Pipeline, options *PipelinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, pipelineName, createOperationParameters, options)
 	if err != nil {
@@ -112,12 +114,13 @@ func (client *PipelinesClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createOperationParameters)
 }
 
 // Delete - Deletes an Azure Pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // pipelineName - The name of the Azure Pipeline resource.
 // options - PipelinesClientDeleteOptions contains the optional parameters for the PipelinesClient.Delete method.
@@ -158,12 +161,13 @@ func (client *PipelinesClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing Azure Pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // pipelineName - The name of the Azure Pipeline resource in ARM.
 // options - PipelinesClientGetOptions contains the optional parameters for the PipelinesClient.Get method.
@@ -204,7 +208,7 @@ func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -219,11 +223,12 @@ func (client *PipelinesClient) getHandleResponse(resp *http.Response) (Pipelines
 
 // NewListByResourceGroupPager - Lists all Azure Pipelines under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // options - PipelinesClientListByResourceGroupOptions contains the optional parameters for the PipelinesClient.ListByResourceGroup
 // method.
 func (client *PipelinesClient) NewListByResourceGroupPager(resourceGroupName string, options *PipelinesClientListByResourceGroupOptions) *runtime.Pager[PipelinesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PipelinesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PipelinesClientListByResourceGroupResponse]{
 		More: func(page PipelinesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -268,7 +273,7 @@ func (client *PipelinesClient) listByResourceGroupCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -283,10 +288,11 @@ func (client *PipelinesClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // NewListBySubscriptionPager - Lists all Azure Pipelines under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-01-preview
 // options - PipelinesClientListBySubscriptionOptions contains the optional parameters for the PipelinesClient.ListBySubscription
 // method.
 func (client *PipelinesClient) NewListBySubscriptionPager(options *PipelinesClientListBySubscriptionOptions) *runtime.Pager[PipelinesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PipelinesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PipelinesClientListBySubscriptionResponse]{
 		More: func(page PipelinesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -327,7 +333,7 @@ func (client *PipelinesClient) listBySubscriptionCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -342,6 +348,7 @@ func (client *PipelinesClient) listBySubscriptionHandleResponse(resp *http.Respo
 
 // Update - Updates the properties of an Azure Pipeline. Currently, only tags can be updated.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // pipelineName - The name of the Azure Pipeline resource.
 // updateOperationParameters - The request payload containing the properties to update in the Azure Pipeline.
@@ -383,7 +390,7 @@ func (client *PipelinesClient) updateCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateOperationParameters)
 }
 

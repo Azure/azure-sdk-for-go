@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
@@ -26,13 +24,13 @@ func ExampleClustersClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.ClusterCreateParametersExtended{
 			Properties: &armhdinsight.ClusterCreateProperties{
 				ClusterDefinition: &armhdinsight.ClusterDefinition{
@@ -46,13 +44,13 @@ func ExampleClustersClient_BeginCreate() {
 							"restAuthCredential.username":  "admin",
 						},
 					},
-					Kind: to.Ptr("<kind>"),
+					Kind: to.Ptr("hadoop"),
 				},
-				ClusterVersion: to.Ptr("<cluster-version>"),
+				ClusterVersion: to.Ptr("3.6"),
 				ComputeProfile: &armhdinsight.ComputeProfile{
 					Roles: []*armhdinsight.Role{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("workernode"),
 							AutoscaleConfiguration: &armhdinsight.Autoscale{
 								Recurrence: &armhdinsight.AutoscaleRecurrence{
 									Schedule: []*armhdinsight.AutoscaleSchedule{
@@ -66,7 +64,7 @@ func ExampleClustersClient_BeginCreate() {
 											TimeAndCapacity: &armhdinsight.AutoscaleTimeAndCapacity{
 												MaxInstanceCount: to.Ptr[int32](3),
 												MinInstanceCount: to.Ptr[int32](3),
-												Time:             to.Ptr("<time>"),
+												Time:             to.Ptr("09:00"),
 											},
 										},
 										{
@@ -79,7 +77,7 @@ func ExampleClustersClient_BeginCreate() {
 											TimeAndCapacity: &armhdinsight.AutoscaleTimeAndCapacity{
 												MaxInstanceCount: to.Ptr[int32](6),
 												MinInstanceCount: to.Ptr[int32](6),
-												Time:             to.Ptr("<time>"),
+												Time:             to.Ptr("18:00"),
 											},
 										},
 										{
@@ -89,7 +87,7 @@ func ExampleClustersClient_BeginCreate() {
 											TimeAndCapacity: &armhdinsight.AutoscaleTimeAndCapacity{
 												MaxInstanceCount: to.Ptr[int32](2),
 												MinInstanceCount: to.Ptr[int32](2),
-												Time:             to.Ptr("<time>"),
+												Time:             to.Ptr("09:00"),
 											},
 										},
 										{
@@ -99,19 +97,19 @@ func ExampleClustersClient_BeginCreate() {
 											TimeAndCapacity: &armhdinsight.AutoscaleTimeAndCapacity{
 												MaxInstanceCount: to.Ptr[int32](4),
 												MinInstanceCount: to.Ptr[int32](4),
-												Time:             to.Ptr("<time>"),
+												Time:             to.Ptr("18:00"),
 											},
 										}},
-									TimeZone: to.Ptr("<time-zone>"),
+									TimeZone: to.Ptr("China Standard Time"),
 								},
 							},
 							HardwareProfile: &armhdinsight.HardwareProfile{
-								VMSize: to.Ptr("<vmsize>"),
+								VMSize: to.Ptr("Standard_D4_V2"),
 							},
 							OSProfile: &armhdinsight.OsProfile{
 								LinuxOperatingSystemProfile: &armhdinsight.LinuxOperatingSystemProfile{
-									Password: to.Ptr("<password>"),
-									Username: to.Ptr("<username>"),
+									Password: to.Ptr("**********"),
+									Username: to.Ptr("sshuser"),
 								},
 							},
 							ScriptActions:       []*armhdinsight.ScriptAction{},
@@ -122,20 +120,20 @@ func ExampleClustersClient_BeginCreate() {
 				StorageProfile: &armhdinsight.StorageProfile{
 					Storageaccounts: []*armhdinsight.StorageAccount{
 						{
-							Name:      to.Ptr("<name>"),
-							Container: to.Ptr("<container>"),
+							Name:      to.Ptr("mystorage.blob.core.windows.net"),
+							Container: to.Ptr("hdinsight-autoscale-tes-2019-06-18t05-49-16-591z"),
 							IsDefault: to.Ptr(true),
-							Key:       to.Ptr("<key>"),
+							Key:       to.Ptr("storagekey"),
 						}},
 				},
 				Tier: to.Ptr(armhdinsight.TierStandard),
 			},
 		},
-		&armhdinsight.ClustersClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -150,13 +148,13 @@ func ExampleClustersClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.ClusterPatchParameters{
 			Tags: map[string]*string{
 				"key1": to.Ptr("val1"),
@@ -178,18 +176,18 @@ func ExampleClustersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		&armhdinsight.ClustersClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"cluster1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -202,13 +200,13 @@ func ExampleClustersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -224,17 +222,16 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -250,22 +247,22 @@ func ExampleClustersClient_BeginResize() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResize(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.RoleNameWorkernode,
 		armhdinsight.ClusterResizeParameters{
 			TargetInstanceCount: to.Ptr[int32](10),
 		},
-		&armhdinsight.ClustersClientBeginResizeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -278,20 +275,20 @@ func ExampleClustersClient_BeginUpdateAutoScaleConfiguration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateAutoScaleConfiguration(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.RoleNameWorkernode,
 		armhdinsight.AutoscaleConfigurationUpdateParameter{},
-		&armhdinsight.ClustersClientBeginUpdateAutoScaleConfigurationOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -304,7 +301,7 @@ func ExampleClustersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -313,7 +310,6 @@ func ExampleClustersClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -329,23 +325,23 @@ func ExampleClustersClient_BeginRotateDiskEncryptionKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRotateDiskEncryptionKey(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.ClusterDiskEncryptionParameters{
-			KeyName:    to.Ptr("<key-name>"),
-			KeyVersion: to.Ptr("<key-version>"),
-			VaultURI:   to.Ptr("<vault-uri>"),
+			KeyName:    to.Ptr("newkeyname"),
+			KeyVersion: to.Ptr("newkeyversion"),
+			VaultURI:   to.Ptr("https://newkeyvault.vault.azure.net/"),
 		},
-		&armhdinsight.ClustersClientBeginRotateDiskEncryptionKeyOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -358,13 +354,13 @@ func ExampleClustersClient_GetGatewaySettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetGatewaySettings(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -380,23 +376,23 @@ func ExampleClustersClient_BeginUpdateGatewaySettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateGatewaySettings(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.UpdateGatewaySettingsParameters{
 			IsCredentialEnabled: to.Ptr(true),
-			Password:            to.Ptr("<password>"),
-			UserName:            to.Ptr("<user-name>"),
+			Password:            to.Ptr("**********"),
+			UserName:            to.Ptr("hadoop"),
 		},
-		&armhdinsight.ClustersClientBeginUpdateGatewaySettingsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -409,14 +405,14 @@ func ExampleClustersClient_GetAzureAsyncOperationStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAzureAsyncOperationStatus(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<operation-id>",
+		"rg1",
+		"cluster1",
+		"CF938302-6B4D-44A0-A6D2-C0D67E847AEC",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -432,23 +428,23 @@ func ExampleClustersClient_BeginUpdateIdentityCertificate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateIdentityCertificate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.UpdateClusterIdentityCertificateParameters{
-			ApplicationID:       to.Ptr("<application-id>"),
-			Certificate:         to.Ptr("<certificate>"),
-			CertificatePassword: to.Ptr("<certificate-password>"),
+			ApplicationID:       to.Ptr("applicationId"),
+			Certificate:         to.Ptr("base64encodedcertificate"),
+			CertificatePassword: to.Ptr("**********"),
 		},
-		&armhdinsight.ClustersClientBeginUpdateIdentityCertificateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -461,30 +457,30 @@ func ExampleClustersClient_BeginExecuteScriptActions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewClustersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginExecuteScriptActions(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		armhdinsight.ExecuteScriptActionParameters{
 			PersistOnSuccess: to.Ptr(false),
 			ScriptActions: []*armhdinsight.RuntimeScriptAction{
 				{
-					Name:       to.Ptr("<name>"),
-					Parameters: to.Ptr("<parameters>"),
+					Name:       to.Ptr("Test"),
+					Parameters: to.Ptr(""),
 					Roles: []*string{
 						to.Ptr("headnode"),
 						to.Ptr("workernode")},
-					URI: to.Ptr("<uri>"),
+					URI: to.Ptr("http://testurl.com/install.ssh"),
 				}},
 		},
-		&armhdinsight.ClustersClientBeginExecuteScriptActionsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

@@ -39,7 +39,7 @@ func NewFavoritesClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewFavoritesClient(subscriptionID string, credential azcore.TokenCredential
 
 // Add - Adds a new favorites to an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // favoriteID - The Id of a specific favorite defined in the Application Insights component
@@ -104,7 +105,7 @@ func (client *FavoritesClient) addCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, favoriteProperties)
 }
 
@@ -119,6 +120,7 @@ func (client *FavoritesClient) addHandleResponse(resp *http.Response) (Favorites
 
 // Delete - Remove a favorite that is associated to an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // favoriteID - The Id of a specific favorite defined in the Application Insights component
@@ -169,6 +171,7 @@ func (client *FavoritesClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Get a single favorite by its FavoriteId, defined within an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // favoriteID - The Id of a specific favorite defined in the Application Insights component
@@ -214,7 +217,7 @@ func (client *FavoritesClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -229,6 +232,7 @@ func (client *FavoritesClient) getHandleResponse(resp *http.Response) (Favorites
 
 // List - Gets a list of favorites defined within an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - FavoritesClientListOptions contains the optional parameters for the FavoritesClient.List method.
@@ -281,7 +285,7 @@ func (client *FavoritesClient) listCreateRequest(ctx context.Context, resourceGr
 		reqQP.Set("tags", strings.Join(options.Tags, ","))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -296,6 +300,7 @@ func (client *FavoritesClient) listHandleResponse(resp *http.Response) (Favorite
 
 // Update - Updates a favorite that has already been added to an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // favoriteID - The Id of a specific favorite defined in the Application Insights component
@@ -342,7 +347,7 @@ func (client *FavoritesClient) updateCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, favoriteProperties)
 }
 

@@ -23,19 +23,18 @@ func ExampleIntegrationServiceEnvironmentManagedAPIOperationsClient_NewListPager
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentManagedAPIOperationsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentManagedAPIOperationsClient("80d4fe69-c95b-4dd2-a938-9250f1c8ab03", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group>",
-		"<integration-service-environment-name>",
-		"<api-name>",
+	pager := client.NewListPager("testResourceGroup",
+		"testIntegrationServiceEnvironment",
+		"servicebus",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -23,8 +26,9 @@ import (
 )
 
 const (
-	azureAuthorityHost = "AZURE_AUTHORITY_HOST"
-	azureClientID      = "AZURE_CLIENT_ID"
+	azureAuthorityHost         = "AZURE_AUTHORITY_HOST"
+	azureClientID              = "AZURE_CLIENT_ID"
+	azureRegionalAuthorityName = "AZURE_REGIONAL_AUTHORITY_NAME"
 
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"

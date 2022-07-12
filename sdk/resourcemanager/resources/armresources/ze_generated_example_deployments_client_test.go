@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -31,15 +29,15 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdateAtScope(ctx,
-		"<scope>",
-		"<deployment-name>",
+		"providers/Microsoft.Management/managementGroups/my-management-group-id",
+		"my-deployment",
 		armresources.Deployment{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armresources.DeploymentProperties{
 				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
 				Parameters: map[string]interface{}{},
 				TemplateLink: &armresources.TemplateLink{
-					URI: to.Ptr("<uri>"),
+					URI: to.Ptr("https://example.com/exampleTemplate.json"),
 				},
 			},
 			Tags: map[string]*string{
@@ -47,11 +45,11 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 				"tagKey2": to.Ptr("tag-value-2"),
 			},
 		},
-		&armresources.DeploymentsClientBeginCreateOrUpdateAtScopeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -71,14 +69,14 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdateAtTenantScope(ctx,
-		"<deployment-name>",
+		"tenant-dep01",
 		armresources.ScopedDeployment{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armresources.DeploymentProperties{
 				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
 				Parameters: map[string]interface{}{},
 				TemplateLink: &armresources.TemplateLink{
-					URI: to.Ptr("<uri>"),
+					URI: to.Ptr("https://example.com/exampleTemplate.json"),
 				},
 			},
 			Tags: map[string]*string{
@@ -86,11 +84,11 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 				"tagKey2": to.Ptr("tag-value-2"),
 			},
 		},
-		&armresources.DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -110,20 +108,20 @@ func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginWhatIfAtTenantScope(ctx,
-		"<deployment-name>",
+		"exampleDeploymentName",
 		armresources.ScopedDeploymentWhatIf{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armresources.DeploymentWhatIfProperties{
 				Mode:         to.Ptr(armresources.DeploymentModeIncremental),
 				Parameters:   map[string]interface{}{},
 				TemplateLink: &armresources.TemplateLink{},
 			},
 		},
-		&armresources.DeploymentsClientBeginWhatIfAtTenantScopeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -143,23 +141,23 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdateAtManagementGroupScope(ctx,
-		"<group-id>",
-		"<deployment-name>",
+		"my-management-group-id",
+		"my-deployment",
 		armresources.ScopedDeployment{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armresources.DeploymentProperties{
 				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
 				Parameters: map[string]interface{}{},
 				TemplateLink: &armresources.TemplateLink{
-					URI: to.Ptr("<uri>"),
+					URI: to.Ptr("https://example.com/exampleTemplate.json"),
 				},
 			},
 		},
-		&armresources.DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -179,21 +177,21 @@ func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginWhatIfAtManagementGroupScope(ctx,
-		"<group-id>",
-		"<deployment-name>",
+		"myManagementGruop",
+		"exampleDeploymentName",
 		armresources.ScopedDeploymentWhatIf{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armresources.DeploymentWhatIfProperties{
 				Mode:         to.Ptr(armresources.DeploymentModeIncremental),
 				Parameters:   map[string]interface{}{},
 				TemplateLink: &armresources.TemplateLink{},
 			},
 		},
-		&armresources.DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -208,27 +206,27 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresources.NewDeploymentsClient("<subscription-id>", cred, nil)
+	client, err := armresources.NewDeploymentsClient("00000000-0000-0000-0000-000000000001", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdateAtSubscriptionScope(ctx,
-		"<deployment-name>",
+		"my-deployment",
 		armresources.Deployment{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armresources.DeploymentProperties{
 				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
 				Parameters: map[string]interface{}{},
 				TemplateLink: &armresources.TemplateLink{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 				},
 			},
 		},
-		&armresources.DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -243,25 +241,25 @@ func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresources.NewDeploymentsClient("<subscription-id>", cred, nil)
+	client, err := armresources.NewDeploymentsClient("00000000-0000-0000-0000-000000000001", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginWhatIfAtSubscriptionScope(ctx,
-		"<deployment-name>",
+		"my-deployment",
 		armresources.DeploymentWhatIf{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armresources.DeploymentWhatIfProperties{
 				Mode:         to.Ptr(armresources.DeploymentModeIncremental),
 				Parameters:   map[string]interface{}{},
 				TemplateLink: &armresources.TemplateLink{},
 			},
 		},
-		&armresources.DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -276,28 +274,28 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresources.NewDeploymentsClient("<subscription-id>", cred, nil)
+	client, err := armresources.NewDeploymentsClient("00000000-0000-0000-0000-000000000001", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<deployment-name>",
+		"my-resource-group",
+		"my-deployment",
 		armresources.Deployment{
 			Properties: &armresources.DeploymentProperties{
 				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
 				Parameters: map[string]interface{}{},
 				TemplateLink: &armresources.TemplateLink{
-					QueryString: to.Ptr("<query-string>"),
-					URI:         to.Ptr("<uri>"),
+					QueryString: to.Ptr("sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=xxxxxxxx0xxxxxxxxxxxxx%2bxxxxxxxxxxxxxxxxxxxx%3d"),
+					URI:         to.Ptr("https://example.com/exampleTemplate.json"),
 				},
 			},
 		},
-		&armresources.DeploymentsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -312,13 +310,13 @@ func ExampleDeploymentsClient_BeginWhatIf() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresources.NewDeploymentsClient("<subscription-id>", cred, nil)
+	client, err := armresources.NewDeploymentsClient("00000000-0000-0000-0000-000000000001", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginWhatIf(ctx,
-		"<resource-group-name>",
-		"<deployment-name>",
+		"my-resource-group",
+		"my-deployment",
 		armresources.DeploymentWhatIf{
 			Properties: &armresources.DeploymentWhatIfProperties{
 				Mode:         to.Ptr(armresources.DeploymentModeIncremental),
@@ -326,11 +324,11 @@ func ExampleDeploymentsClient_BeginWhatIf() {
 				TemplateLink: &armresources.TemplateLink{},
 			},
 		},
-		&armresources.DeploymentsClientBeginWhatIfOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

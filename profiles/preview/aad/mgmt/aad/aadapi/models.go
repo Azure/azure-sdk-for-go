@@ -9,8 +9,8 @@
 
 package aadapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2017-04-01/aad/aadapi"
+import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2020-03-01/aad/aadapi"
 
-type DiagnosticSettingsCategoryClientAPI = original.DiagnosticSettingsCategoryClientAPI
-type DiagnosticSettingsClientAPI = original.DiagnosticSettingsClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkForAzureAdClientAPI = original.PrivateLinkForAzureAdClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI

@@ -13,7 +13,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateLinkResources_ListByHostPool.json
@@ -23,18 +23,17 @@ func ExamplePrivateLinkResourcesClient_NewListByHostPoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateLinkResourcesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByHostPoolPager("<resource-group-name>",
-		"<host-pool-name>",
+	pager := client.NewListByHostPoolPager("resourceGroup1",
+		"hostPool1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,18 +49,17 @@ func ExamplePrivateLinkResourcesClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateLinkResourcesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListByWorkspacePager("resourceGroup1",
+		"workspace1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -44,6 +44,15 @@ type AzureDataExplorerConnectionProperties struct {
 	ProvisioningState *TimeSeriesDatabaseConnectionState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetTimeSeriesDatabaseConnectionProperties implements the TimeSeriesDatabaseConnectionPropertiesClassification interface
+// for type AzureDataExplorerConnectionProperties.
+func (a *AzureDataExplorerConnectionProperties) GetTimeSeriesDatabaseConnectionProperties() *TimeSeriesDatabaseConnectionProperties {
+	return &TimeSeriesDatabaseConnectionProperties{
+		ConnectionType:    a.ConnectionType,
+		ProvisioningState: a.ProvisioningState,
+	}
+}
+
 // CheckNameRequest - The result returned from a database check name availability request.
 type CheckNameRequest struct {
 	// REQUIRED; Resource name.
@@ -259,6 +268,11 @@ type EndpointResourceProperties struct {
 	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type EndpointResourceProperties.
+func (e *EndpointResourceProperties) GetEndpointResourceProperties() *EndpointResourceProperties {
+	return e
+}
+
 // ErrorDefinition - Error definition.
 type ErrorDefinition struct {
 	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
@@ -309,6 +323,18 @@ type EventGrid struct {
 	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type EventGrid.
+func (e *EventGrid) GetEndpointResourceProperties() *EndpointResourceProperties {
+	return &EndpointResourceProperties{
+		EndpointType:       e.EndpointType,
+		ProvisioningState:  e.ProvisioningState,
+		CreatedTime:        e.CreatedTime,
+		AuthenticationType: e.AuthenticationType,
+		DeadLetterSecret:   e.DeadLetterSecret,
+		DeadLetterURI:      e.DeadLetterURI,
+	}
+}
+
 // EventHub - Properties related to EventHub.
 type EventHub struct {
 	// REQUIRED; The type of Digital Twins endpoint
@@ -342,6 +368,18 @@ type EventHub struct {
 
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type EventHub.
+func (e *EventHub) GetEndpointResourceProperties() *EndpointResourceProperties {
+	return &EndpointResourceProperties{
+		EndpointType:       e.EndpointType,
+		ProvisioningState:  e.ProvisioningState,
+		CreatedTime:        e.CreatedTime,
+		AuthenticationType: e.AuthenticationType,
+		DeadLetterSecret:   e.DeadLetterSecret,
+		DeadLetterURI:      e.DeadLetterURI,
+	}
 }
 
 // ExternalResource - Definition of a resource.
@@ -619,6 +657,18 @@ type ServiceBus struct {
 	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type ServiceBus.
+func (s *ServiceBus) GetEndpointResourceProperties() *EndpointResourceProperties {
+	return &EndpointResourceProperties{
+		EndpointType:       s.EndpointType,
+		ProvisioningState:  s.ProvisioningState,
+		CreatedTime:        s.CreatedTime,
+		AuthenticationType: s.AuthenticationType,
+		DeadLetterSecret:   s.DeadLetterSecret,
+		DeadLetterURI:      s.DeadLetterURI,
+	}
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -683,6 +733,12 @@ type TimeSeriesDatabaseConnectionProperties struct {
 
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *TimeSeriesDatabaseConnectionState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetTimeSeriesDatabaseConnectionProperties implements the TimeSeriesDatabaseConnectionPropertiesClassification interface
+// for type TimeSeriesDatabaseConnectionProperties.
+func (t *TimeSeriesDatabaseConnectionProperties) GetTimeSeriesDatabaseConnectionProperties() *TimeSeriesDatabaseConnectionProperties {
+	return t
 }
 
 // TimeSeriesDatabaseConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the TimeSeriesDatabaseConnectionsClient.BeginCreateOrUpdate

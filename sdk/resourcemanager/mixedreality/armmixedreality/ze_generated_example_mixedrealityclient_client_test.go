@@ -24,15 +24,15 @@ func ExampleClient_CheckNameAvailabilityLocal() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailabilityLocal(ctx,
-		"<location>",
+		"eastus2euap",
 		armmixedreality.CheckNameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("MyAccount"),
+			Type: to.Ptr("Microsoft.MixedReality/spatialAnchorsAccounts"),
 		},
 		nil)
 	if err != nil {

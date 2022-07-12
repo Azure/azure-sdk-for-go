@@ -39,7 +39,7 @@ func NewSmartGroupsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSmartGroupsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // ChangeState - Change the state of a Smart Group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // smartGroupID - Smart group unique id.
 // newState - New state of the alert.
 // options - SmartGroupsClientChangeStateOptions contains the optional parameters for the SmartGroupsClient.ChangeState method.
@@ -94,7 +95,7 @@ func (client *SmartGroupsClient) changeStateCreateRequest(ctx context.Context, s
 	reqQP.Set("api-version", "2019-05-05-preview")
 	reqQP.Set("newState", string(newState))
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -112,9 +113,10 @@ func (client *SmartGroupsClient) changeStateHandleResponse(resp *http.Response) 
 
 // NewGetAllPager - List all the Smart Groups within a specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // options - SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.GetAll method.
 func (client *SmartGroupsClient) NewGetAllPager(options *SmartGroupsClientGetAllOptions) *runtime.Pager[SmartGroupsClientGetAllResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SmartGroupsClientGetAllResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SmartGroupsClientGetAllResponse]{
 		More: func(page SmartGroupsClientGetAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -188,7 +190,7 @@ func (client *SmartGroupsClient) getAllCreateRequest(ctx context.Context, option
 	}
 	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -203,6 +205,7 @@ func (client *SmartGroupsClient) getAllHandleResponse(resp *http.Response) (Smar
 
 // GetByID - Get information related to a specific Smart Group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // smartGroupID - Smart group unique id.
 // options - SmartGroupsClientGetByIDOptions contains the optional parameters for the SmartGroupsClient.GetByID method.
 func (client *SmartGroupsClient) GetByID(ctx context.Context, smartGroupID string, options *SmartGroupsClientGetByIDOptions) (SmartGroupsClientGetByIDResponse, error) {
@@ -238,7 +241,7 @@ func (client *SmartGroupsClient) getByIDCreateRequest(ctx context.Context, smart
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -256,6 +259,7 @@ func (client *SmartGroupsClient) getByIDHandleResponse(resp *http.Response) (Sma
 
 // GetHistory - Get the history a smart group, which captures any Smart Group state changes (New/Acknowledged/Closed) .
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-05-preview
 // smartGroupID - Smart group unique id.
 // options - SmartGroupsClientGetHistoryOptions contains the optional parameters for the SmartGroupsClient.GetHistory method.
 func (client *SmartGroupsClient) GetHistory(ctx context.Context, smartGroupID string, options *SmartGroupsClientGetHistoryOptions) (SmartGroupsClientGetHistoryResponse, error) {
@@ -291,7 +295,7 @@ func (client *SmartGroupsClient) getHistoryCreateRequest(ctx context.Context, sm
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

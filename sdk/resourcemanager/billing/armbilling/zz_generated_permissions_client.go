@@ -36,7 +36,7 @@ func NewPermissionsClient(credential azcore.TokenCredential, options *arm.Client
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,11 +53,12 @@ func NewPermissionsClient(credential azcore.TokenCredential, options *arm.Client
 
 // NewListByBillingAccountPager - Lists the billing permissions the caller has on a billing account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - PermissionsClientListByBillingAccountOptions contains the optional parameters for the PermissionsClient.ListByBillingAccount
 // method.
 func (client *PermissionsClient) NewListByBillingAccountPager(billingAccountName string, options *PermissionsClientListByBillingAccountOptions) *runtime.Pager[PermissionsClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PermissionsClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByBillingAccountResponse]{
 		More: func(page PermissionsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -98,7 +99,7 @@ func (client *PermissionsClient) listByBillingAccountCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -113,12 +114,13 @@ func (client *PermissionsClient) listByBillingAccountHandleResponse(resp *http.R
 
 // NewListByBillingProfilePager - Lists the billing permissions the caller has on a billing profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - PermissionsClientListByBillingProfileOptions contains the optional parameters for the PermissionsClient.ListByBillingProfile
 // method.
 func (client *PermissionsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *PermissionsClientListByBillingProfileOptions) *runtime.Pager[PermissionsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PermissionsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByBillingProfileResponse]{
 		More: func(page PermissionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -163,7 +165,7 @@ func (client *PermissionsClient) listByBillingProfileCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -178,12 +180,13 @@ func (client *PermissionsClient) listByBillingProfileHandleResponse(resp *http.R
 
 // NewListByCustomerPager - Lists the billing permissions the caller has for a customer.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // customerName - The ID that uniquely identifies a customer.
 // options - PermissionsClientListByCustomerOptions contains the optional parameters for the PermissionsClient.ListByCustomer
 // method.
 func (client *PermissionsClient) NewListByCustomerPager(billingAccountName string, customerName string, options *PermissionsClientListByCustomerOptions) *runtime.Pager[PermissionsClientListByCustomerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PermissionsClientListByCustomerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByCustomerResponse]{
 		More: func(page PermissionsClientListByCustomerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -228,7 +231,7 @@ func (client *PermissionsClient) listByCustomerCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -243,13 +246,14 @@ func (client *PermissionsClient) listByCustomerHandleResponse(resp *http.Respons
 
 // NewListByInvoiceSectionsPager - Lists the billing permissions the caller has on an invoice section.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // options - PermissionsClientListByInvoiceSectionsOptions contains the optional parameters for the PermissionsClient.ListByInvoiceSections
 // method.
 func (client *PermissionsClient) NewListByInvoiceSectionsPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *PermissionsClientListByInvoiceSectionsOptions) *runtime.Pager[PermissionsClientListByInvoiceSectionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PermissionsClientListByInvoiceSectionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByInvoiceSectionsResponse]{
 		More: func(page PermissionsClientListByInvoiceSectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -298,7 +302,7 @@ func (client *PermissionsClient) listByInvoiceSectionsCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

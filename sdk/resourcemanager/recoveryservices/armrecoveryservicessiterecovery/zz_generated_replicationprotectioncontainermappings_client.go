@@ -42,7 +42,7 @@ func NewReplicationProtectionContainerMappingsClient(resourceName string, resour
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,26 +62,28 @@ func NewReplicationProtectionContainerMappingsClient(resourceName string, resour
 
 // BeginCreate - The operation to create a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection container mapping name.
 // creationInput - Mapping creation input.
 // options - ReplicationProtectionContainerMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginCreate
 // method.
-func (client *ReplicationProtectionContainerMappingsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*armruntime.Poller[ReplicationProtectionContainerMappingsClientCreateResponse], error) {
+func (client *ReplicationProtectionContainerMappingsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, fabricName, protectionContainerName, mappingName, creationInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationProtectionContainerMappingsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - The operation to create a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, protectionContainerName, mappingName, creationInput, options)
 	if err != nil {
@@ -131,32 +133,34 @@ func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, creationInput)
 }
 
 // BeginDelete - The operation to delete or remove a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection container mapping name.
 // removalInput - Removal input.
 // options - ReplicationProtectionContainerMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginDelete
 // method.
-func (client *ReplicationProtectionContainerMappingsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*armruntime.Poller[ReplicationProtectionContainerMappingsClientDeleteResponse], error) {
+func (client *ReplicationProtectionContainerMappingsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, mappingName, removalInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationProtectionContainerMappingsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - The operation to delete or remove a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, protectionContainerName, mappingName, removalInput, options)
 	if err != nil {
@@ -211,6 +215,7 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(
 
 // Get - Gets the details of a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection Container mapping name.
@@ -265,7 +270,7 @@ func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -280,10 +285,11 @@ func (client *ReplicationProtectionContainerMappingsClient) getHandleResponse(re
 
 // NewListPager - Lists the protection container mappings in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.List
 // method.
 func (client *ReplicationProtectionContainerMappingsClient) NewListPager(options *ReplicationProtectionContainerMappingsClientListOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectionContainerMappingsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationProtectionContainerMappingsClientListResponse]{
 		More: func(page ReplicationProtectionContainerMappingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -332,7 +338,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -347,12 +353,13 @@ func (client *ReplicationProtectionContainerMappingsClient) listHandleResponse(r
 
 // NewListByReplicationProtectionContainersPager - Lists the protection container mappings for a protection container.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // options - ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions contains the optional
 // parameters for the ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers method.
 func (client *ReplicationProtectionContainerMappingsClient) NewListByReplicationProtectionContainersPager(fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse]{
 		More: func(page ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -409,7 +416,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -424,25 +431,27 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 
 // BeginPurge - The operation to purge(force delete) a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection container mapping name.
 // options - ReplicationProtectionContainerMappingsClientBeginPurgeOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginPurge
 // method.
-func (client *ReplicationProtectionContainerMappingsClient) BeginPurge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*armruntime.Poller[ReplicationProtectionContainerMappingsClientPurgeResponse], error) {
+func (client *ReplicationProtectionContainerMappingsClient) BeginPurge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientPurgeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.purge(ctx, fabricName, protectionContainerName, mappingName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationProtectionContainerMappingsClientPurgeResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientPurgeResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientPurgeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientPurgeResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Purge - The operation to purge(force delete) a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*http.Response, error) {
 	req, err := client.purgeCreateRequest(ctx, fabricName, protectionContainerName, mappingName, options)
 	if err != nil {
@@ -497,26 +506,28 @@ func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(c
 
 // BeginUpdate - The operation to update protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection container mapping name.
 // updateInput - Mapping update input.
 // options - ReplicationProtectionContainerMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginUpdate
 // method.
-func (client *ReplicationProtectionContainerMappingsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*armruntime.Poller[ReplicationProtectionContainerMappingsClientUpdateResponse], error) {
+func (client *ReplicationProtectionContainerMappingsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, fabricName, protectionContainerName, mappingName, updateInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationProtectionContainerMappingsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - The operation to update protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, fabricName, protectionContainerName, mappingName, updateInput, options)
 	if err != nil {
@@ -566,6 +577,6 @@ func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateInput)
 }

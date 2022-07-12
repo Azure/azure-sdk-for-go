@@ -33,7 +33,7 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,9 +50,10 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // NewGetPager - Lists all of the available API operations for Connected Cluster resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // options - OperationsClientGetOptions contains the optional parameters for the OperationsClient.Get method.
 func (client *OperationsClient) NewGetPager(options *OperationsClientGetOptions) *runtime.Pager[OperationsClientGetResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OperationsClientGetResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OperationsClientGetResponse]{
 		More: func(page OperationsClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -89,7 +90,7 @@ func (client *OperationsClient) getCreateRequest(ctx context.Context, options *O
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

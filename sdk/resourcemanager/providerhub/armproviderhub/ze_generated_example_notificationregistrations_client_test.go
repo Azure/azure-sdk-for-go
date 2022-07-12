@@ -24,13 +24,13 @@ func ExampleNotificationRegistrationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewNotificationRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewNotificationRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<provider-namespace>",
-		"<notification-registration-name>",
+		"Microsoft.Contoso",
+		"fooNotificationRegistration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,13 +46,13 @@ func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewNotificationRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewNotificationRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<provider-namespace>",
-		"<notification-registration-name>",
+		"Microsoft.Contoso",
+		"fooNotificationRegistration",
 		armproviderhub.NotificationRegistration{
 			Properties: &armproviderhub.NotificationRegistrationProperties{
 				IncludedEvents: []*string{
@@ -64,12 +64,12 @@ func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 						Locations: []*string{
 							to.Ptr(""),
 							to.Ptr("East US")},
-						NotificationDestination: to.Ptr("<notification-destination>"),
+						NotificationDestination: to.Ptr("/subscriptions/ac6bcfb5-3dc1-491f-95a6-646b89bf3e88/resourceGroups/mgmtexp-eastus/providers/Microsoft.EventHub/namespaces/unitedstates-mgmtexpint/eventhubs/armlinkednotifications"),
 					},
 					{
 						Locations: []*string{
 							to.Ptr("North Europe")},
-						NotificationDestination: to.Ptr("<notification-destination>"),
+						NotificationDestination: to.Ptr("/subscriptions/ac6bcfb5-3dc1-491f-95a6-646b89bf3e88/resourceGroups/mgmtexp-northeurope/providers/Microsoft.EventHub/namespaces/europe-mgmtexpint/eventhubs/armlinkednotifications"),
 					}},
 				NotificationMode: to.Ptr(armproviderhub.NotificationModeEventHub),
 			},
@@ -89,13 +89,13 @@ func ExampleNotificationRegistrationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewNotificationRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewNotificationRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<provider-namespace>",
-		"<notification-registration-name>",
+		"Microsoft.Contoso",
+		"fooNotificationRegistration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -109,17 +109,16 @@ func ExampleNotificationRegistrationsClient_NewListByProviderRegistrationPager()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewNotificationRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewNotificationRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProviderRegistrationPager("<provider-namespace>",
+	pager := client.NewListByProviderRegistrationPager("Microsoft.Contoso",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

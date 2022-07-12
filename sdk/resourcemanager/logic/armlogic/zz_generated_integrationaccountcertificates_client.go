@@ -39,7 +39,7 @@ func NewIntegrationAccountCertificatesClient(subscriptionID string, credential a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewIntegrationAccountCertificatesClient(subscriptionID string, credential a
 
 // CreateOrUpdate - Creates or updates an integration account certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // certificateName - The integration account certificate name.
@@ -104,7 +105,7 @@ func (client *IntegrationAccountCertificatesClient) createOrUpdateCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificate)
 }
 
@@ -119,6 +120,7 @@ func (client *IntegrationAccountCertificatesClient) createOrUpdateHandleResponse
 
 // Delete - Deletes an integration account certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // certificateName - The integration account certificate name.
@@ -165,12 +167,13 @@ func (client *IntegrationAccountCertificatesClient) deleteCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an integration account certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // certificateName - The integration account certificate name.
@@ -217,7 +220,7 @@ func (client *IntegrationAccountCertificatesClient) getCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,12 +235,13 @@ func (client *IntegrationAccountCertificatesClient) getHandleResponse(resp *http
 
 // NewListPager - Gets a list of integration account certificates.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountCertificatesClientListOptions contains the optional parameters for the IntegrationAccountCertificatesClient.List
 // method.
 func (client *IntegrationAccountCertificatesClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesClientListOptions) *runtime.Pager[IntegrationAccountCertificatesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountCertificatesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountCertificatesClientListResponse]{
 		More: func(page IntegrationAccountCertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -289,7 +293,7 @@ func (client *IntegrationAccountCertificatesClient) listCreateRequest(ctx contex
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

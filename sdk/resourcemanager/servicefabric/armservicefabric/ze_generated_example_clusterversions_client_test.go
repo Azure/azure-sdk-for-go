@@ -23,13 +23,13 @@ func ExampleClusterVersionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClusterVersionsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClusterVersionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location>",
-		"<cluster-version>",
+		"eastus",
+		"6.1.480.9494",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExampleClusterVersionsClient_GetByEnvironment() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClusterVersionsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClusterVersionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByEnvironment(ctx,
-		"<location>",
+		"eastus",
 		armservicefabric.ClusterVersionsEnvironmentWindows,
-		"<cluster-version>",
+		"6.1.480.9494",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,12 +68,12 @@ func ExampleClusterVersionsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClusterVersionsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClusterVersionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<location>",
+		"eastus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -89,12 +89,12 @@ func ExampleClusterVersionsClient_ListByEnvironment() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClusterVersionsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClusterVersionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByEnvironment(ctx,
-		"<location>",
+		"eastus",
 		armservicefabric.ClusterVersionsEnvironmentWindows,
 		nil)
 	if err != nil {

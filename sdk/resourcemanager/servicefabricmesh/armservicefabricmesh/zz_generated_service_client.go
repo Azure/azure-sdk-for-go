@@ -38,7 +38,7 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 // Get - Gets the information about the service resource with the given name. The information include the description and
 // other properties of the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // serviceResourceName - The identity of the service.
@@ -96,7 +97,7 @@ func (client *ServiceClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -112,11 +113,12 @@ func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClie
 // NewListPager - Gets the information about all services of an application resource. The information include the description
 // and other properties of the Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // options - ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
 func (client *ServiceClient) NewListPager(resourceGroupName string, applicationResourceName string, options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServiceClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServiceClientListResponse]{
 		More: func(page ServiceClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -162,7 +164,7 @@ func (client *ServiceClient) listCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

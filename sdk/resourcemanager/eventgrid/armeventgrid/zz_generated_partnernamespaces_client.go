@@ -40,7 +40,7 @@ func NewPartnerNamespacesClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,25 +58,27 @@ func NewPartnerNamespacesClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - Asynchronously creates a new partner namespace with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // partnerNamespaceInfo - PartnerNamespace information.
 // options - PartnerNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerNamespacesClient.BeginCreateOrUpdate
 // method.
-func (client *PartnerNamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceInfo PartnerNamespace, options *PartnerNamespacesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PartnerNamespacesClientCreateOrUpdateResponse], error) {
+func (client *PartnerNamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceInfo PartnerNamespace, options *PartnerNamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PartnerNamespacesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, partnerNamespaceName, partnerNamespaceInfo, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PartnerNamespacesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PartnerNamespacesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PartnerNamespacesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PartnerNamespacesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Asynchronously creates a new partner namespace with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *PartnerNamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceInfo PartnerNamespace, options *PartnerNamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, partnerNamespaceName, partnerNamespaceInfo, options)
 	if err != nil {
@@ -112,32 +114,34 @@ func (client *PartnerNamespacesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, partnerNamespaceInfo)
 }
 
 // BeginDelete - Delete existing partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // options - PartnerNamespacesClientBeginDeleteOptions contains the optional parameters for the PartnerNamespacesClient.BeginDelete
 // method.
-func (client *PartnerNamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesClientBeginDeleteOptions) (*armruntime.Poller[PartnerNamespacesClientDeleteResponse], error) {
+func (client *PartnerNamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesClientBeginDeleteOptions) (*runtime.Poller[PartnerNamespacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerNamespaceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PartnerNamespacesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PartnerNamespacesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PartnerNamespacesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PartnerNamespacesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete existing partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *PartnerNamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, partnerNamespaceName, options)
 	if err != nil {
@@ -173,13 +177,14 @@ func (client *PartnerNamespacesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get properties of a partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // options - PartnerNamespacesClientGetOptions contains the optional parameters for the PartnerNamespacesClient.Get method.
@@ -218,9 +223,9 @@ func (client *PartnerNamespacesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -235,11 +240,12 @@ func (client *PartnerNamespacesClient) getHandleResponse(resp *http.Response) (P
 
 // NewListByResourceGroupPager - List all the partner namespaces under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - PartnerNamespacesClientListByResourceGroupOptions contains the optional parameters for the PartnerNamespacesClient.ListByResourceGroup
 // method.
 func (client *PartnerNamespacesClient) NewListByResourceGroupPager(resourceGroupName string, options *PartnerNamespacesClientListByResourceGroupOptions) *runtime.Pager[PartnerNamespacesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PartnerNamespacesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PartnerNamespacesClientListByResourceGroupResponse]{
 		More: func(page PartnerNamespacesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -282,7 +288,7 @@ func (client *PartnerNamespacesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -290,7 +296,7 @@ func (client *PartnerNamespacesClient) listByResourceGroupCreateRequest(ctx cont
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -305,10 +311,11 @@ func (client *PartnerNamespacesClient) listByResourceGroupHandleResponse(resp *h
 
 // NewListBySubscriptionPager - List all the partner namespaces under an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // options - PartnerNamespacesClientListBySubscriptionOptions contains the optional parameters for the PartnerNamespacesClient.ListBySubscription
 // method.
 func (client *PartnerNamespacesClient) NewListBySubscriptionPager(options *PartnerNamespacesClientListBySubscriptionOptions) *runtime.Pager[PartnerNamespacesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PartnerNamespacesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PartnerNamespacesClientListBySubscriptionResponse]{
 		More: func(page PartnerNamespacesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -347,7 +354,7 @@ func (client *PartnerNamespacesClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -355,7 +362,7 @@ func (client *PartnerNamespacesClient) listBySubscriptionCreateRequest(ctx conte
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -370,6 +377,7 @@ func (client *PartnerNamespacesClient) listBySubscriptionHandleResponse(resp *ht
 
 // ListSharedAccessKeys - List the two keys used to publish to a partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // options - PartnerNamespacesClientListSharedAccessKeysOptions contains the optional parameters for the PartnerNamespacesClient.ListSharedAccessKeys
@@ -409,9 +417,9 @@ func (client *PartnerNamespacesClient) listSharedAccessKeysCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -426,6 +434,7 @@ func (client *PartnerNamespacesClient) listSharedAccessKeysHandleResponse(resp *
 
 // RegenerateKey - Regenerate a shared access key for a partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // regenerateKeyRequest - Request body to regenerate key.
@@ -466,9 +475,9 @@ func (client *PartnerNamespacesClient) regenerateKeyCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerateKeyRequest)
 }
 
@@ -483,25 +492,27 @@ func (client *PartnerNamespacesClient) regenerateKeyHandleResponse(resp *http.Re
 
 // BeginUpdate - Asynchronously updates a partner namespace with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerNamespaceName - Name of the partner namespace.
 // partnerNamespaceUpdateParameters - Partner namespace update information.
 // options - PartnerNamespacesClientBeginUpdateOptions contains the optional parameters for the PartnerNamespacesClient.BeginUpdate
 // method.
-func (client *PartnerNamespacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceUpdateParameters PartnerNamespaceUpdateParameters, options *PartnerNamespacesClientBeginUpdateOptions) (*armruntime.Poller[PartnerNamespacesClientUpdateResponse], error) {
+func (client *PartnerNamespacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceUpdateParameters PartnerNamespaceUpdateParameters, options *PartnerNamespacesClientBeginUpdateOptions) (*runtime.Poller[PartnerNamespacesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, partnerNamespaceName, partnerNamespaceUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PartnerNamespacesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PartnerNamespacesClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PartnerNamespacesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PartnerNamespacesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Asynchronously updates a partner namespace with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *PartnerNamespacesClient) update(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceUpdateParameters PartnerNamespaceUpdateParameters, options *PartnerNamespacesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, partnerNamespaceName, partnerNamespaceUpdateParameters, options)
 	if err != nil {
@@ -537,8 +548,8 @@ func (client *PartnerNamespacesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, partnerNamespaceUpdateParameters)
 }

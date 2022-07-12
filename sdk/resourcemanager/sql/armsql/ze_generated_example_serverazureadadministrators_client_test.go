@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,13 +24,13 @@ func ExampleServerAzureADAdministratorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAzureADAdministratorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAzureADAdministratorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"sqlcrudtest-4799",
+		"sqlcrudtest-6440",
 		armsql.AdministratorNameActiveDirectory,
 		nil)
 	if err != nil {
@@ -49,27 +47,27 @@ func ExampleServerAzureADAdministratorsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAzureADAdministratorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAzureADAdministratorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"sqlcrudtest-4799",
+		"sqlcrudtest-6440",
 		armsql.AdministratorNameActiveDirectory,
 		armsql.ServerAzureADAdministrator{
 			Properties: &armsql.AdministratorProperties{
 				AdministratorType: to.Ptr(armsql.AdministratorTypeActiveDirectory),
-				Login:             to.Ptr("<login>"),
-				Sid:               to.Ptr("<sid>"),
-				TenantID:          to.Ptr("<tenant-id>"),
+				Login:             to.Ptr("bob@contoso.com"),
+				Sid:               to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
+				TenantID:          to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
 			},
 		},
-		&armsql.ServerAzureADAdministratorsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -84,19 +82,19 @@ func ExampleServerAzureADAdministratorsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAzureADAdministratorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAzureADAdministratorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"sqlcrudtest-4799",
+		"sqlcrudtest-6440",
 		armsql.AdministratorNameActiveDirectory,
-		&armsql.ServerAzureADAdministratorsClientBeginDeleteOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -109,18 +107,17 @@ func ExampleServerAzureADAdministratorsClient_NewListByServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAzureADAdministratorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAzureADAdministratorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("<resource-group-name>",
-		"<server-name>",
+	pager := client.NewListByServerPager("sqlcrudtest-4799",
+		"sqlcrudtest-6440",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

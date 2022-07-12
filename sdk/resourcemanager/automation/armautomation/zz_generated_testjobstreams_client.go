@@ -39,7 +39,7 @@ func NewTestJobStreamsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewTestJobStreamsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Retrieve a test job stream of the test job identified by runbook name and stream id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-30
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // runbookName - The runbook name.
@@ -107,7 +108,7 @@ func (client *TestJobStreamsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -122,13 +123,14 @@ func (client *TestJobStreamsClient) getHandleResponse(resp *http.Response) (Test
 
 // NewListByTestJobPager - Retrieve a list of test job streams identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-30
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // runbookName - The runbook name.
 // options - TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.ListByTestJob
 // method.
 func (client *TestJobStreamsClient) NewListByTestJobPager(resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsClientListByTestJobOptions) *runtime.Pager[TestJobStreamsClientListByTestJobResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TestJobStreamsClientListByTestJobResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TestJobStreamsClientListByTestJobResponse]{
 		More: func(page TestJobStreamsClientListByTestJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -184,7 +186,7 @@ func (client *TestJobStreamsClient) listByTestJobCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2018-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

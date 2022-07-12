@@ -24,17 +24,16 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("azuresdkfornetautoresttrafficmanager3640",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,7 +49,7 @@ func ExampleProfilesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -59,7 +58,6 @@ func ExampleProfilesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleProfilesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager1323",
+		"azuresdkfornetautoresttrafficmanager3880",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,23 +95,23 @@ func ExampleProfilesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager1421",
+		"azsmnet6386",
 		armtrafficmanager.Profile{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("global"),
 			Properties: &armtrafficmanager.ProfileProperties{
 				DNSConfig: &armtrafficmanager.DNSConfig{
-					RelativeName: to.Ptr("<relative-name>"),
+					RelativeName: to.Ptr("azsmnet6386"),
 					TTL:          to.Ptr[int64](35),
 				},
 				MaxReturn: to.Ptr[int64](2),
 				MonitorConfig: &armtrafficmanager.MonitorConfig{
-					Path:     to.Ptr("<path>"),
+					Path:     to.Ptr("/testpath.aspx"),
 					Port:     to.Ptr[int64](80),
 					Protocol: to.Ptr(armtrafficmanager.MonitorProtocolHTTP),
 				},
@@ -137,13 +135,13 @@ func ExampleProfilesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager1323",
+		"azuresdkfornetautoresttrafficmanager3880",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -159,25 +157,25 @@ func ExampleProfilesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewProfilesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager2583",
+		"azuresdkfornetautoresttrafficmanager6192",
 		armtrafficmanager.Profile{
 			Properties: &armtrafficmanager.ProfileProperties{
 				MonitorConfig: &armtrafficmanager.MonitorConfig{
-					Path: to.Ptr("<path>"),
+					Path: to.Ptr("/testpath.aspx"),
 					CustomHeaders: []*armtrafficmanager.MonitorConfigCustomHeadersItem{
 						{
-							Name:  to.Ptr("<name>"),
-							Value: to.Ptr("<value>"),
+							Name:  to.Ptr("header-1"),
+							Value: to.Ptr("value-1"),
 						},
 						{
-							Name:  to.Ptr("<name>"),
-							Value: to.Ptr("<value>"),
+							Name:  to.Ptr("header-2"),
+							Value: to.Ptr("value-2"),
 						}},
 					IntervalInSeconds:         to.Ptr[int64](30),
 					Port:                      to.Ptr[int64](80),

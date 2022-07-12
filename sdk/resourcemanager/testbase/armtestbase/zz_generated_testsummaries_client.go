@@ -38,7 +38,7 @@ func NewTestSummariesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTestSummariesClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Gets a Test Summary with specific name from all the Test Summaries of all the packages under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // testSummaryName - The name of the Test Summary.
@@ -101,7 +102,7 @@ func (client *TestSummariesClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,11 +117,12 @@ func (client *TestSummariesClient) getHandleResponse(resp *http.Response) (TestS
 
 // NewListPager - Lists the Test Summaries of all the packages under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - TestSummariesClientListOptions contains the optional parameters for the TestSummariesClient.List method.
 func (client *TestSummariesClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) *runtime.Pager[TestSummariesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TestSummariesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TestSummariesClientListResponse]{
 		More: func(page TestSummariesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -169,7 +171,7 @@ func (client *TestSummariesClient) listCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

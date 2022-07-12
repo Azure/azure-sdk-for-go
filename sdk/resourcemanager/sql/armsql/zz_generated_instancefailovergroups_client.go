@@ -38,7 +38,7 @@ func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - Creates or updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
@@ -63,20 +64,21 @@ func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.To
 // parameters - The failover group parameters.
 // options - InstanceFailoverGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the InstanceFailoverGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *InstanceFailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[InstanceFailoverGroupsClientCreateOrUpdateResponse], error) {
+func (client *InstanceFailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[InstanceFailoverGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, locationName, failoverGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InstanceFailoverGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InstanceFailoverGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InstanceFailoverGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *InstanceFailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, parameters, options)
 	if err != nil {
@@ -118,32 +120,34 @@ func (client *InstanceFailoverGroupsClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
 // failoverGroupName - The name of the failover group.
 // options - InstanceFailoverGroupsClientBeginDeleteOptions contains the optional parameters for the InstanceFailoverGroupsClient.BeginDelete
 // method.
-func (client *InstanceFailoverGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*armruntime.Poller[InstanceFailoverGroupsClientDeleteResponse], error) {
+func (client *InstanceFailoverGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*runtime.Poller[InstanceFailoverGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, locationName, failoverGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InstanceFailoverGroupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InstanceFailoverGroupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InstanceFailoverGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *InstanceFailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
@@ -190,26 +194,28 @@ func (client *InstanceFailoverGroupsClient) deleteCreateRequest(ctx context.Cont
 
 // BeginFailover - Fails over from the current primary managed instance to this managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
 // failoverGroupName - The name of the failover group.
 // options - InstanceFailoverGroupsClientBeginFailoverOptions contains the optional parameters for the InstanceFailoverGroupsClient.BeginFailover
 // method.
-func (client *InstanceFailoverGroupsClient) BeginFailover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*armruntime.Poller[InstanceFailoverGroupsClientFailoverResponse], error) {
+func (client *InstanceFailoverGroupsClient) BeginFailover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*runtime.Poller[InstanceFailoverGroupsClientFailoverResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.failover(ctx, resourceGroupName, locationName, failoverGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InstanceFailoverGroupsClientFailoverResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InstanceFailoverGroupsClientFailoverResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InstanceFailoverGroupsClientFailoverResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Failover - Fails over from the current primary managed instance to this managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *InstanceFailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
@@ -251,34 +257,36 @@ func (client *InstanceFailoverGroupsClient) failoverCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginForceFailoverAllowDataLoss - Fails over from the current primary managed instance to this managed instance. This operation
 // might result in data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
 // failoverGroupName - The name of the failover group.
 // options - InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions contains the optional parameters for the InstanceFailoverGroupsClient.BeginForceFailoverAllowDataLoss
 // method.
-func (client *InstanceFailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*armruntime.Poller[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse], error) {
+func (client *InstanceFailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*runtime.Poller[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.forceFailoverAllowDataLoss(ctx, resourceGroupName, locationName, failoverGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ForceFailoverAllowDataLoss - Fails over from the current primary managed instance to this managed instance. This operation
 // might result in data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
 	req, err := client.forceFailoverAllowDataLossCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
@@ -320,12 +328,13 @@ func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
@@ -373,7 +382,7 @@ func (client *InstanceFailoverGroupsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -388,13 +397,14 @@ func (client *InstanceFailoverGroupsClient) getHandleResponse(resp *http.Respons
 
 // NewListByLocationPager - Lists the failover groups in a location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
 // options - InstanceFailoverGroupsClientListByLocationOptions contains the optional parameters for the InstanceFailoverGroupsClient.ListByLocation
 // method.
 func (client *InstanceFailoverGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *InstanceFailoverGroupsClientListByLocationOptions) *runtime.Pager[InstanceFailoverGroupsClientListByLocationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InstanceFailoverGroupsClientListByLocationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InstanceFailoverGroupsClientListByLocationResponse]{
 		More: func(page InstanceFailoverGroupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -443,7 +453,7 @@ func (client *InstanceFailoverGroupsClient) listByLocationCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

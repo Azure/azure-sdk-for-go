@@ -38,7 +38,7 @@ func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - Creates a new managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationDefinitionName - The name of the managed application definition.
 // parameters - Parameters supplied to the create or update an managed application definition.
 // options - ApplicationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdate
 // method.
-func (client *ApplicationDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ApplicationDefinitionsClientCreateOrUpdateResponse], error) {
+func (client *ApplicationDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ApplicationDefinitionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ApplicationDefinitionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationDefinitionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ApplicationDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *ApplicationDefinitionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
 	if err != nil {
@@ -112,31 +114,33 @@ func (client *ApplicationDefinitionsClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginCreateOrUpdateByID - Creates a new managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationDefinitionName - The name of the managed application definition.
 // parameters - Parameters supplied to the create or update a managed application definition.
 // options - ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdateByID
 // method.
-func (client *ApplicationDefinitionsClient) BeginCreateOrUpdateByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions) (*armruntime.Poller[ApplicationDefinitionsClientCreateOrUpdateByIDResponse], error) {
+func (client *ApplicationDefinitionsClient) BeginCreateOrUpdateByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions) (*runtime.Poller[ApplicationDefinitionsClientCreateOrUpdateByIDResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateByID(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ApplicationDefinitionsClientCreateOrUpdateByIDResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationDefinitionsClientCreateOrUpdateByIDResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ApplicationDefinitionsClientCreateOrUpdateByIDResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationDefinitionsClientCreateOrUpdateByIDResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdateByID - Creates a new managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *ApplicationDefinitionsClient) createOrUpdateByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateByIDCreateRequest(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
 	if err != nil {
@@ -174,30 +178,32 @@ func (client *ApplicationDefinitionsClient) createOrUpdateByIDCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationDefinitionName - The name of the managed application definition to delete.
 // options - ApplicationDefinitionsClientBeginDeleteOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDelete
 // method.
-func (client *ApplicationDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteOptions) (*armruntime.Poller[ApplicationDefinitionsClientDeleteResponse], error) {
+func (client *ApplicationDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteOptions) (*runtime.Poller[ApplicationDefinitionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, applicationDefinitionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ApplicationDefinitionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationDefinitionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ApplicationDefinitionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationDefinitionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *ApplicationDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationDefinitionName, options)
 	if err != nil {
@@ -235,30 +241,32 @@ func (client *ApplicationDefinitionsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDeleteByID - Deletes the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationDefinitionName - The name of the managed application definition.
 // options - ApplicationDefinitionsClientBeginDeleteByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDeleteByID
 // method.
-func (client *ApplicationDefinitionsClient) BeginDeleteByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteByIDOptions) (*armruntime.Poller[ApplicationDefinitionsClientDeleteByIDResponse], error) {
+func (client *ApplicationDefinitionsClient) BeginDeleteByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteByIDOptions) (*runtime.Poller[ApplicationDefinitionsClientDeleteByIDResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteByID(ctx, resourceGroupName, applicationDefinitionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ApplicationDefinitionsClientDeleteByIDResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationDefinitionsClientDeleteByIDResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ApplicationDefinitionsClientDeleteByIDResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationDefinitionsClientDeleteByIDResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteByID - Deletes the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *ApplicationDefinitionsClient) deleteByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientBeginDeleteByIDOptions) (*http.Response, error) {
 	req, err := client.deleteByIDCreateRequest(ctx, resourceGroupName, applicationDefinitionName, options)
 	if err != nil {
@@ -296,12 +304,13 @@ func (client *ApplicationDefinitionsClient) deleteByIDCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationDefinitionName - The name of the managed application definition.
 // options - ApplicationDefinitionsClientGetOptions contains the optional parameters for the ApplicationDefinitionsClient.Get
@@ -343,7 +352,7 @@ func (client *ApplicationDefinitionsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -358,6 +367,7 @@ func (client *ApplicationDefinitionsClient) getHandleResponse(resp *http.Respons
 
 // GetByID - Gets the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationDefinitionName - The name of the managed application definition.
 // options - ApplicationDefinitionsClientGetByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.GetByID
@@ -399,7 +409,7 @@ func (client *ApplicationDefinitionsClient) getByIDCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -414,11 +424,12 @@ func (client *ApplicationDefinitionsClient) getByIDHandleResponse(resp *http.Res
 
 // NewListByResourceGroupPager - Lists the managed application definitions in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ApplicationDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ApplicationDefinitionsClient.ListByResourceGroup
 // method.
 func (client *ApplicationDefinitionsClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ApplicationDefinitionsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationDefinitionsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationDefinitionsClientListByResourceGroupResponse]{
 		More: func(page ApplicationDefinitionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -463,7 +474,7 @@ func (client *ApplicationDefinitionsClient) listByResourceGroupCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

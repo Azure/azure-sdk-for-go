@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
@@ -26,32 +24,31 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewDNSResolversClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewDNSResolversClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<dns-resolver-name>",
+		"sampleResourceGroup",
+		"sampleDnsResolver",
 		armdnsresolver.DNSResolver{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus2"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
 			Properties: &armdnsresolver.Properties{
 				VirtualNetwork: &armdnsresolver.SubResource{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
 				},
 			},
 		},
 		&armdnsresolver.DNSResolversClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -66,25 +63,23 @@ func ExampleDNSResolversClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewDNSResolversClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewDNSResolversClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<dns-resolver-name>",
+		"sampleResourceGroup",
+		"sampleDnsResolver",
 		armdnsresolver.Patch{
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
 		},
-		&armdnsresolver.DNSResolversClientBeginUpdateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armdnsresolver.DNSResolversClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -99,20 +94,18 @@ func ExampleDNSResolversClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewDNSResolversClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewDNSResolversClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<dns-resolver-name>",
-		&armdnsresolver.DNSResolversClientBeginDeleteOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		"sampleResourceGroup",
+		"sampleDnsResolver",
+		&armdnsresolver.DNSResolversClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -125,13 +118,13 @@ func ExampleDNSResolversClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewDNSResolversClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewDNSResolversClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<dns-resolver-name>",
+		"sampleResourceGroup",
+		"sampleDnsResolver",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -147,17 +140,16 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewDNSResolversClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewDNSResolversClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("sampleResourceGroup",
 		&armdnsresolver.DNSResolversClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -173,7 +165,7 @@ func ExampleDNSResolversClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewDNSResolversClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewDNSResolversClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -182,7 +174,6 @@ func ExampleDNSResolversClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -198,18 +189,17 @@ func ExampleDNSResolversClient_NewListByVirtualNetworkPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewDNSResolversClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewDNSResolversClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVirtualNetworkPager("<resource-group-name>",
-		"<virtual-network-name>",
+	pager := client.NewListByVirtualNetworkPager("sampleResourceGroup",
+		"sampleVirtualNetwork",
 		&armdnsresolver.DNSResolversClientListByVirtualNetworkOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

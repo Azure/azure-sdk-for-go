@@ -26,13 +26,13 @@ func ExampleJobExecutionsClient_NewListByAgentPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobExecutionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAgentPager("<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
+	pager := client.NewListByAgentPager("group1",
+		"server1",
+		"agent1",
 		&armsql.JobExecutionsClientListByAgentOptions{CreateTimeMin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:00:00Z"); return t }()),
 			CreateTimeMax: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:05:00Z"); return t }()),
 			EndTimeMin:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:20:00Z"); return t }()),
@@ -45,7 +45,6 @@ func ExampleJobExecutionsClient_NewListByAgentPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -61,16 +60,16 @@ func ExampleJobExecutionsClient_Cancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobExecutionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Cancel(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
-		"<job-execution-id>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
+		"5A86BF65-43AC-F258-2524-9E92992F97CA",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -84,20 +83,20 @@ func ExampleJobExecutionsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobExecutionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
-		&armsql.JobExecutionsClientBeginCreateOptions{ResumeToken: ""})
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -112,14 +111,14 @@ func ExampleJobExecutionsClient_NewListByJobPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobExecutionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByJobPager("<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
+	pager := client.NewListByJobPager("group1",
+		"server1",
+		"agent1",
+		"job1",
 		&armsql.JobExecutionsClientListByJobOptions{CreateTimeMin: nil,
 			CreateTimeMax: nil,
 			EndTimeMin:    nil,
@@ -132,7 +131,6 @@ func ExampleJobExecutionsClient_NewListByJobPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -148,16 +146,16 @@ func ExampleJobExecutionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobExecutionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
-		"<job-execution-id>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
+		"5A86BF65-43AC-F258-2524-9E92992F97CA",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -173,21 +171,21 @@ func ExampleJobExecutionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobExecutionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
-		"<job-execution-id>",
-		&armsql.JobExecutionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
+		"5A86BF65-43AC-F258-2524-9E92992F97CA",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

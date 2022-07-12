@@ -38,7 +38,7 @@ func NewNetworkFunctionVendorSKUsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewNetworkFunctionVendorSKUsClient(subscriptionID string, credential azcore
 
 // NewListBySKUPager - Lists information about network function vendor sku details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the network function vendor.
 // vendorSKUName - The name of the network function sku.
 // options - NetworkFunctionVendorSKUsClientListBySKUOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.ListBySKU
 // method.
 func (client *NetworkFunctionVendorSKUsClient) NewListBySKUPager(vendorName string, vendorSKUName string, options *NetworkFunctionVendorSKUsClientListBySKUOptions) *runtime.Pager[NetworkFunctionVendorSKUsClientListBySKUResponse] {
-	return runtime.NewPager(runtime.PageProcessor[NetworkFunctionVendorSKUsClientListBySKUResponse]{
+	return runtime.NewPager(runtime.PagingHandler[NetworkFunctionVendorSKUsClientListBySKUResponse]{
 		More: func(page NetworkFunctionVendorSKUsClientListBySKUResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -110,7 +111,7 @@ func (client *NetworkFunctionVendorSKUsClient) listBySKUCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -125,11 +126,12 @@ func (client *NetworkFunctionVendorSKUsClient) listBySKUHandleResponse(resp *htt
 
 // NewListByVendorPager - Lists all network function vendor sku details in a vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the network function vendor.
 // options - NetworkFunctionVendorSKUsClientListByVendorOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.ListByVendor
 // method.
 func (client *NetworkFunctionVendorSKUsClient) NewListByVendorPager(vendorName string, options *NetworkFunctionVendorSKUsClientListByVendorOptions) *runtime.Pager[NetworkFunctionVendorSKUsClientListByVendorResponse] {
-	return runtime.NewPager(runtime.PageProcessor[NetworkFunctionVendorSKUsClientListByVendorResponse]{
+	return runtime.NewPager(runtime.PagingHandler[NetworkFunctionVendorSKUsClientListByVendorResponse]{
 		More: func(page NetworkFunctionVendorSKUsClientListByVendorResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -174,7 +176,7 @@ func (client *NetworkFunctionVendorSKUsClient) listByVendorCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

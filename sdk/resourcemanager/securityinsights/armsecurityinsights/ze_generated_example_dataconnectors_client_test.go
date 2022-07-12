@@ -14,28 +14,27 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/GetDataConnectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/dataConnectors/GetDataConnectors.json
 func ExampleDataConnectorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListPager("myRg",
+		"myWorkspace",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -44,21 +43,21 @@ func ExampleDataConnectorsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/GetAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/dataConnectors/GetAPIPolling.json
 func ExampleDataConnectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-connector-id>",
+		"myRg",
+		"myWorkspace",
+		"316ec55e-7138-4d63-ab18-90c8a60fd1c8",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,21 +66,21 @@ func ExampleDataConnectorsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/CreateAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/dataConnectors/CreateAPIPolling.json
 func ExampleDataConnectorsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-connector-id>",
+		"myRg",
+		"myWorkspace",
+		"316ec55e-7138-4d63-ab18-90c8a60fd1c8",
 		&armsecurityinsights.CodelessAPIPollingDataConnector{
 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindAPIPolling),
 			Properties: &armsecurityinsights.APIPollingParameters{
@@ -97,20 +96,20 @@ func ExampleDataConnectorsClient_CreateOrUpdate() {
 						}},
 					DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
 						{
-							Name:                  to.Ptr("<name>"),
-							LastDataReceivedQuery: to.Ptr("<last-data-received-query>"),
+							Name:                  to.Ptr("{{graphQueriesTableName}}"),
+							LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
 						}},
-					DescriptionMarkdown: to.Ptr("<description-markdown>"),
+					DescriptionMarkdown: to.Ptr("The GitHub audit log connector provides the capability to ingest GitHub logs into Azure Sentinel. By connecting GitHub audit logs into Azure Sentinel, you can view this data in workbooks, use it to create custom alerts, and improve your investigation process."),
 					GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
 						{
-							BaseQuery:  to.Ptr("<base-query>"),
-							Legend:     to.Ptr("<legend>"),
-							MetricName: to.Ptr("<metric-name>"),
+							BaseQuery:  to.Ptr("{{graphQueriesTableName}}"),
+							Legend:     to.Ptr("GitHub audit log events"),
+							MetricName: to.Ptr("Total events received"),
 						}},
-					GraphQueriesTableName: to.Ptr("<graph-queries-table-name>"),
+					GraphQueriesTableName: to.Ptr("GitHubAuditLogPolling_CL"),
 					InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
 						{
-							Description: to.Ptr("<description>"),
+							Description: to.Ptr("Enable GitHub audit Logs. \n Follow [this](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to create or find your personal key"),
 							Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
 								{
 									Type: to.Ptr(armsecurityinsights.SettingType("APIKey")),
@@ -126,19 +125,19 @@ func ExampleDataConnectorsClient_CreateOrUpdate() {
 										},
 									},
 								}},
-							Title: to.Ptr("<title>"),
+							Title: to.Ptr("Connect GitHub Enterprise Audit Log to Azure Sentinel"),
 						}},
 					Permissions: &armsecurityinsights.Permissions{
 						Customs: []*armsecurityinsights.PermissionsCustomsItem{
 							{
-								Name:        to.Ptr("<name>"),
-								Description: to.Ptr("<description>"),
+								Name:        to.Ptr("GitHub API personal token Key"),
+								Description: to.Ptr("You need access to GitHub personal token, the key should have 'admin:org' scope"),
 							}},
 						ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
 							{
-								PermissionsDisplayText: to.Ptr("<permissions-display-text>"),
+								PermissionsDisplayText: to.Ptr("read and write permissions are required."),
 								Provider:               to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
-								ProviderDisplayName:    to.Ptr("<provider-display-name>"),
+								ProviderDisplayName:    to.Ptr("Workspace"),
 								RequiredPermissions: &armsecurityinsights.RequiredPermissions{
 									Delete: to.Ptr(true),
 									Read:   to.Ptr(true),
@@ -147,39 +146,39 @@ func ExampleDataConnectorsClient_CreateOrUpdate() {
 								Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
 							}},
 					},
-					Publisher: to.Ptr("<publisher>"),
+					Publisher: to.Ptr("GitHub"),
 					SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
 						{
-							Description: to.Ptr("<description>"),
-							Query:       to.Ptr("<query>"),
+							Description: to.Ptr("All logs"),
+							Query:       to.Ptr("{{graphQueriesTableName}}\n | take 10 <change>"),
 						}},
-					Title: to.Ptr("<title>"),
+					Title: to.Ptr("GitHub Enterprise Audit Log"),
 				},
 				PollingConfig: &armsecurityinsights.CodelessConnectorPollingConfigProperties{
 					Auth: &armsecurityinsights.CodelessConnectorPollingAuthProperties{
-						APIKeyIdentifier: to.Ptr("<apikey-identifier>"),
-						APIKeyName:       to.Ptr("<apikey-name>"),
-						AuthType:         to.Ptr("<auth-type>"),
+						APIKeyIdentifier: to.Ptr("token"),
+						APIKeyName:       to.Ptr("Authorization"),
+						AuthType:         to.Ptr("APIKey"),
 					},
 					Paging: &armsecurityinsights.CodelessConnectorPollingPagingProperties{
-						PageSizeParaName: to.Ptr("<page-size-para-name>"),
-						PagingType:       to.Ptr("<paging-type>"),
+						PageSizeParaName: to.Ptr("per_page"),
+						PagingType:       to.Ptr("LinkHeader"),
 					},
 					Response: &armsecurityinsights.CodelessConnectorPollingResponseProperties{
 						EventsJSONPaths: []*string{
 							to.Ptr("$")},
 					},
 					Request: &armsecurityinsights.CodelessConnectorPollingRequestProperties{
-						APIEndpoint: to.Ptr("<apiendpoint>"),
+						APIEndpoint: to.Ptr("https://api.github.com/organizations/{{placeHolder1}}/audit-log"),
 						Headers: map[string]interface{}{
 							"Accept":     "application/json",
 							"User-Agent": "Scuba",
 						},
-						HTTPMethod: to.Ptr("<httpmethod>"),
+						HTTPMethod: to.Ptr("Get"),
 						QueryParameters: map[string]interface{}{
 							"phrase": "created:{_QueryWindowStartTime}..{_QueryWindowEndTime}",
 						},
-						QueryTimeFormat:  to.Ptr("<query-time-format>"),
+						QueryTimeFormat:  to.Ptr("yyyy-MM-ddTHH:mm:ssZ"),
 						QueryWindowInMin: to.Ptr[int32](15),
 						RateLimitQPS:     to.Ptr[int32](50),
 						RetryCount:       to.Ptr[int32](2),
@@ -196,44 +195,44 @@ func ExampleDataConnectorsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/DeleteAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/dataConnectors/DeleteAPIPolling.json
 func ExampleDataConnectorsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-connector-id>",
+		"myRg",
+		"myWorkspace",
+		"316ec55e-7138-4d63-ab18-90c8a60fd1c8",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/ConnectAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/dataConnectors/ConnectAPIPolling.json
 func ExampleDataConnectorsClient_Connect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Connect(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-connector-id>",
+		"myRg",
+		"myWorkspace",
+		"316ec55e-7138-4d63-ab18-90c8a60fd1c8",
 		armsecurityinsights.DataConnectorConnectBody{
-			APIKey: to.Ptr("<apikey>"),
+			APIKey: to.Ptr("123456789"),
 			Kind:   to.Ptr(armsecurityinsights.ConnectAuthKindAPIKey),
 			RequestConfigUserInputValues: []interface{}{
 				map[string]interface{}{
@@ -249,21 +248,21 @@ func ExampleDataConnectorsClient_Connect() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
 func ExampleDataConnectorsClient_Disconnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewDataConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewDataConnectorsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Disconnect(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-connector-id>",
+		"myRg",
+		"myWorkspace",
+		"316ec55e-7138-4d63-ab18-90c8a60fd1c8",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

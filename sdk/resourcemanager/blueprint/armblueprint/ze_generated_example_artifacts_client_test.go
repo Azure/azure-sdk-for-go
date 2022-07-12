@@ -29,9 +29,9 @@ func ExampleArtifactsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<artifact-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"storageTemplate",
 		&armblueprint.TemplateArtifact{
 			Kind: to.Ptr(armblueprint.ArtifactKindTemplate),
 			Properties: &armblueprint.TemplateArtifactProperties{
@@ -40,7 +40,7 @@ func ExampleArtifactsClient_CreateOrUpdate() {
 						Value: "[parameters('storageAccountType')]",
 					},
 				},
-				ResourceGroup: to.Ptr("<resource-group>"),
+				ResourceGroup: to.Ptr("storageRG"),
 				Template: map[string]interface{}{
 					"contentVersion": "1.0.0.0",
 					"outputs": map[string]interface{}{
@@ -101,9 +101,9 @@ func ExampleArtifactsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<artifact-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"storageTemplate",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,9 +124,9 @@ func ExampleArtifactsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<artifact-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"storageTemplate",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -146,14 +146,13 @@ func ExampleArtifactsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-scope>",
-		"<blueprint-name>",
+	pager := client.NewListPager("providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

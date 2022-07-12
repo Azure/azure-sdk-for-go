@@ -23,18 +23,17 @@ func ExamplePrivateEndpointConnectionsPrivateLinkHubClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateEndpointConnectionsPrivateLinkHubClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewPrivateEndpointConnectionsPrivateLinkHubClient("48b08652-d7a1-4d52-b13f-5a2471dce57b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<private-link-hub-name>",
+	pager := client.NewListPager("gh-res-grp",
+		"pe0",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExamplePrivateEndpointConnectionsPrivateLinkHubClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateEndpointConnectionsPrivateLinkHubClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewPrivateEndpointConnectionsPrivateLinkHubClient("48b08652-d7a1-4d52-b13f-5a2471dce57b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<private-link-hub-name>",
-		"<private-endpoint-connection-name>",
+		"gh-res-grp",
+		"pe0",
+		"pe0-f3ed30f5-338c-4855-a542-24a403694ad2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -26,18 +26,17 @@ func ExampleEdgeModulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewEdgeModulesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewEdgeModulesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("testrg",
+		"testaccount2",
 		&armvideoanalyzer.EdgeModulesClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,14 @@ func ExampleEdgeModulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewEdgeModulesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewEdgeModulesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<edge-module-name>",
+		"testrg",
+		"testaccount2",
+		"edgeModule1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,14 +75,14 @@ func ExampleEdgeModulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewEdgeModulesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewEdgeModulesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<edge-module-name>",
+		"testrg",
+		"testaccount2",
+		"edgeModule1",
 		armvideoanalyzer.EdgeModuleEntity{},
 		nil)
 	if err != nil {
@@ -100,14 +99,14 @@ func ExampleEdgeModulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewEdgeModulesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewEdgeModulesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<edge-module-name>",
+		"testrg",
+		"testaccount2",
+		"edgeModule1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -121,14 +120,14 @@ func ExampleEdgeModulesClient_ListProvisioningToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewEdgeModulesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewEdgeModulesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListProvisioningToken(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<edge-module-name>",
+		"testrg",
+		"testaccount2",
+		"edgeModule1",
 		armvideoanalyzer.ListProvisioningTokenInput{
 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-23T11:04:49.0526841-08:00"); return t }()),
 		},

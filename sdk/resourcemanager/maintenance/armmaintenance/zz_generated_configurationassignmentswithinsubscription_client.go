@@ -39,7 +39,7 @@ func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,10 +57,11 @@ func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, 
 
 // NewListPager - Get configuration assignment within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // options - ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.List
 // method.
 func (client *ConfigurationAssignmentsWithinSubscriptionClient) NewListPager(options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) *runtime.Pager[ConfigurationAssignmentsWithinSubscriptionClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationAssignmentsWithinSubscriptionClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsWithinSubscriptionClientListResponse]{
 		More: func(page ConfigurationAssignmentsWithinSubscriptionClientListResponse) bool {
 			return false
 		},
@@ -95,7 +96,7 @@ func (client *ConfigurationAssignmentsWithinSubscriptionClient) listCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

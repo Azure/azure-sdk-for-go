@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
@@ -26,30 +24,30 @@ func ExampleFunctionsClient_CreateOrReplace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewFunctionsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrReplace(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<function-name>",
+		"sjrg1637",
+		"sj8653",
+		"function8197",
 		armstreamanalytics.Function{
 			Properties: &armstreamanalytics.ScalarFunctionProperties{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("Scalar"),
 				Properties: &armstreamanalytics.FunctionConfiguration{
 					Binding: &armstreamanalytics.JavaScriptFunctionBinding{
-						Type: to.Ptr("<type>"),
+						Type: to.Ptr("Microsoft.StreamAnalytics/JavascriptUdf"),
 						Properties: &armstreamanalytics.JavaScriptFunctionBindingProperties{
-							Script: to.Ptr("<script>"),
+							Script: to.Ptr("function (x, y) { return x + y; }"),
 						},
 					},
 					Inputs: []*armstreamanalytics.FunctionInput{
 						{
-							DataType: to.Ptr("<data-type>"),
+							DataType: to.Ptr("Any"),
 						}},
 					Output: &armstreamanalytics.FunctionOutput{
-						DataType: to.Ptr("<data-type>"),
+						DataType: to.Ptr("Any"),
 					},
 				},
 			},
@@ -71,22 +69,22 @@ func ExampleFunctionsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewFunctionsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<function-name>",
+		"sjrg1637",
+		"sj8653",
+		"function8197",
 		armstreamanalytics.Function{
 			Properties: &armstreamanalytics.ScalarFunctionProperties{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("Scalar"),
 				Properties: &armstreamanalytics.FunctionConfiguration{
 					Binding: &armstreamanalytics.JavaScriptFunctionBinding{
-						Type: to.Ptr("<type>"),
+						Type: to.Ptr("Microsoft.StreamAnalytics/JavascriptUdf"),
 						Properties: &armstreamanalytics.JavaScriptFunctionBindingProperties{
-							Script: to.Ptr("<script>"),
+							Script: to.Ptr("function (a, b) { return a * b; }"),
 						},
 					},
 				},
@@ -107,14 +105,14 @@ func ExampleFunctionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewFunctionsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<function-name>",
+		"sjrg1637",
+		"sj8653",
+		"function8197",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -128,14 +126,14 @@ func ExampleFunctionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewFunctionsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<function-name>",
+		"sjrg1637",
+		"sj8653",
+		"function8197",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -151,18 +149,17 @@ func ExampleFunctionsClient_NewListByStreamingJobPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewFunctionsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByStreamingJobPager("<resource-group-name>",
-		"<job-name>",
+	pager := client.NewListByStreamingJobPager("sjrg1637",
+		"sj8653",
 		&armstreamanalytics.FunctionsClientListByStreamingJobOptions{Select: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -178,21 +175,19 @@ func ExampleFunctionsClient_BeginTest() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewFunctionsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTest(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<function-name>",
-		&armstreamanalytics.FunctionsClientBeginTestOptions{Function: nil,
-			ResumeToken: "",
-		})
+		"sjrg1637",
+		"sj8653",
+		"function8197",
+		&armstreamanalytics.FunctionsClientBeginTestOptions{Function: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -207,19 +202,19 @@ func ExampleFunctionsClient_RetrieveDefaultDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewFunctionsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RetrieveDefaultDefinition(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<function-name>",
+		"sjrg7",
+		"sj9093",
+		"function588",
 		&armstreamanalytics.FunctionsClientRetrieveDefaultDefinitionOptions{FunctionRetrieveDefaultDefinitionParameters: &armstreamanalytics.AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters{
-			BindingType: to.Ptr("<binding-type>"),
+			BindingType: to.Ptr("Microsoft.MachineLearning/WebService"),
 			BindingRetrievalProperties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingRetrievalProperties{
-				ExecuteEndpoint: to.Ptr("<execute-endpoint>"),
-				UdfType:         to.Ptr("<udf-type>"),
+				ExecuteEndpoint: to.Ptr("someAzureMLExecuteEndpointUrl"),
+				UdfType:         to.Ptr("Scalar"),
 			},
 		},
 		})

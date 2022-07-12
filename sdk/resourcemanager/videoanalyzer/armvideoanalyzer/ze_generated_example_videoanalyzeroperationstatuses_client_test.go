@@ -23,13 +23,13 @@ func ExampleOperationStatusesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewOperationStatusesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewOperationStatusesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<operation-id>",
+		"westus",
+		"D612C429-2526-49D5-961B-885AE11406FD",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

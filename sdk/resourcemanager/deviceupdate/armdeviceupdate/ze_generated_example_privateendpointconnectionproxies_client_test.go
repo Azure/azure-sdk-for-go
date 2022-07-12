@@ -12,32 +12,29 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_ListByAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_ListByAccount.json
 func ExamplePrivateEndpointConnectionProxiesClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("<subscription-id>", cred, nil)
+	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByAccountPager("test-rg",
+		"contoso",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -46,38 +43,38 @@ func ExamplePrivateEndpointConnectionProxiesClient_NewListByAccountPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Validate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Validate.json
 func ExamplePrivateEndpointConnectionProxiesClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("<subscription-id>", cred, nil)
+	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Validate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<private-endpoint-connection-proxy-id>",
+		"test-rg",
+		"contoso",
+		"peexample01",
 		armdeviceupdate.PrivateEndpointConnectionProxy{
 			RemotePrivateEndpoint: &armdeviceupdate.RemotePrivateEndpoint{
-				ID:                      to.Ptr("<id>"),
-				ImmutableResourceID:     to.Ptr("<immutable-resource-id>"),
-				ImmutableSubscriptionID: to.Ptr("<immutable-subscription-id>"),
-				Location:                to.Ptr("<location>"),
+				ID:                      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}"),
+				ImmutableResourceID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}"),
+				ImmutableSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+				Location:                to.Ptr("westus2"),
 				ManualPrivateLinkServiceConnections: []*armdeviceupdate.PrivateLinkServiceConnection{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("{privateEndpointConnectionProxyId}"),
 						GroupIDs: []*string{
 							to.Ptr("DeviceUpdate")},
-						RequestMessage: to.Ptr("<request-message>"),
+						RequestMessage: to.Ptr("Please approve my connection, thanks."),
 					}},
 				PrivateLinkServiceProxies: []*armdeviceupdate.PrivateLinkServiceProxy{
 					{
 						GroupConnectivityInformation: []*armdeviceupdate.GroupConnectivityInformation{},
-						ID:                           to.Ptr("<id>"),
+						ID:                           to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}"),
 					}},
 			},
 		},
@@ -87,27 +84,27 @@ func ExamplePrivateEndpointConnectionProxiesClient_Validate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_PrivateEndpointUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_PrivateEndpointUpdate.json
 func ExamplePrivateEndpointConnectionProxiesClient_UpdatePrivateEndpointProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("<subscription-id>", cred, nil)
+	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdatePrivateEndpointProperties(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<private-endpoint-connection-proxy-id>",
+		"test-rg",
+		"contoso",
+		"peexample01",
 		armdeviceupdate.PrivateEndpointUpdate{
-			ID:                      to.Ptr("<id>"),
-			ImmutableResourceID:     to.Ptr("<immutable-resource-id>"),
-			ImmutableSubscriptionID: to.Ptr("<immutable-subscription-id>"),
-			Location:                to.Ptr("<location>"),
-			VnetTrafficTag:          to.Ptr("<vnet-traffic-tag>"),
+			ID:                      to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}"),
+			ImmutableResourceID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}"),
+			ImmutableSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+			Location:                to.Ptr("westus2"),
+			VnetTrafficTag:          to.Ptr("12345678"),
 		},
 		nil)
 	if err != nil {
@@ -115,21 +112,21 @@ func ExamplePrivateEndpointConnectionProxiesClient_UpdatePrivateEndpointProperti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Get.json
 func ExamplePrivateEndpointConnectionProxiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("<subscription-id>", cred, nil)
+	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<private-endpoint-connection-proxy-id>",
+		"test-rg",
+		"contoso",
+		"peexample01",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -138,71 +135,71 @@ func ExamplePrivateEndpointConnectionProxiesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
 func ExamplePrivateEndpointConnectionProxiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("<subscription-id>", cred, nil)
+	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<private-endpoint-connection-proxy-id>",
+		"test-rg",
+		"contoso",
+		"peexample01",
 		armdeviceupdate.PrivateEndpointConnectionProxy{
 			RemotePrivateEndpoint: &armdeviceupdate.RemotePrivateEndpoint{
-				ID:                      to.Ptr("<id>"),
-				ImmutableResourceID:     to.Ptr("<immutable-resource-id>"),
-				ImmutableSubscriptionID: to.Ptr("<immutable-subscription-id>"),
-				Location:                to.Ptr("<location>"),
+				ID:                      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}"),
+				ImmutableResourceID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}"),
+				ImmutableSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+				Location:                to.Ptr("westus2"),
 				ManualPrivateLinkServiceConnections: []*armdeviceupdate.PrivateLinkServiceConnection{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("{privateEndpointConnectionProxyId}"),
 						GroupIDs: []*string{
 							to.Ptr("DeviceUpdate")},
-						RequestMessage: to.Ptr("<request-message>"),
+						RequestMessage: to.Ptr("Please approve my connection, thanks."),
 					}},
 				PrivateLinkServiceProxies: []*armdeviceupdate.PrivateLinkServiceProxy{
 					{
 						GroupConnectivityInformation: []*armdeviceupdate.GroupConnectivityInformation{},
-						ID:                           to.Ptr("<id>"),
+						ID:                           to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}"),
 					}},
 			},
 		},
-		&armdeviceupdate.PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Delete.json
 func ExamplePrivateEndpointConnectionProxiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("<subscription-id>", cred, nil)
+	client, err := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<private-endpoint-connection-proxy-id>",
-		&armdeviceupdate.PrivateEndpointConnectionProxiesClientBeginDeleteOptions{ResumeToken: ""})
+		"test-rg",
+		"contoso",
+		"peexample01",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

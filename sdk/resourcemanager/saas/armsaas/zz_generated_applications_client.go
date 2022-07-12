@@ -38,7 +38,7 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,10 +56,11 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListPager - Gets all SaaS resources by subscription id and resource group name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // options - ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.List method.
 func (client *ApplicationsClient) NewListPager(resourceGroupName string, options *ApplicationsClientListOptions) *runtime.Pager[ApplicationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationsClientListResponse]{
 		More: func(page ApplicationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -104,7 +105,7 @@ func (client *ApplicationsClient) listCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

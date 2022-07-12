@@ -38,7 +38,7 @@ func NewDistributedAvailabilityGroupsClient(subscriptionID string, credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDistributedAvailabilityGroupsClient(subscriptionID string, credential az
 
 // BeginCreateOrUpdate - Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -63,20 +64,21 @@ func NewDistributedAvailabilityGroupsClient(subscriptionID string, credential az
 // parameters - The distributed availability group info.
 // options - DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *DistributedAvailabilityGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DistributedAvailabilityGroupsClientCreateOrUpdateResponse], error) {
+func (client *DistributedAvailabilityGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DistributedAvailabilityGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DistributedAvailabilityGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DistributedAvailabilityGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DistributedAvailabilityGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *DistributedAvailabilityGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
 	if err != nil {
@@ -118,32 +120,34 @@ func (client *DistributedAvailabilityGroupsClient) createOrUpdateCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // distributedAvailabilityGroupName - The distributed availability group name.
 // options - DistributedAvailabilityGroupsClientBeginDeleteOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginDelete
 // method.
-func (client *DistributedAvailabilityGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, options *DistributedAvailabilityGroupsClientBeginDeleteOptions) (*armruntime.Poller[DistributedAvailabilityGroupsClientDeleteResponse], error) {
+func (client *DistributedAvailabilityGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, options *DistributedAvailabilityGroupsClientBeginDeleteOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DistributedAvailabilityGroupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DistributedAvailabilityGroupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DistributedAvailabilityGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DistributedAvailabilityGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *DistributedAvailabilityGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, options *DistributedAvailabilityGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, options)
 	if err != nil {
@@ -190,6 +194,7 @@ func (client *DistributedAvailabilityGroupsClient) deleteCreateRequest(ctx conte
 
 // Get - Gets a distributed availability group info.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -237,7 +242,7 @@ func (client *DistributedAvailabilityGroupsClient) getCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,13 +257,14 @@ func (client *DistributedAvailabilityGroupsClient) getHandleResponse(resp *http.
 
 // NewListByInstancePager - Gets a list of a distributed availability groups in instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - DistributedAvailabilityGroupsClientListByInstanceOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.ListByInstance
 // method.
 func (client *DistributedAvailabilityGroupsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *DistributedAvailabilityGroupsClientListByInstanceOptions) *runtime.Pager[DistributedAvailabilityGroupsClientListByInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DistributedAvailabilityGroupsClientListByInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DistributedAvailabilityGroupsClientListByInstanceResponse]{
 		More: func(page DistributedAvailabilityGroupsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -307,7 +313,7 @@ func (client *DistributedAvailabilityGroupsClient) listByInstanceCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -322,6 +328,7 @@ func (client *DistributedAvailabilityGroupsClient) listByInstanceHandleResponse(
 
 // BeginUpdate - Updates a distributed availability group replication mode.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -329,20 +336,21 @@ func (client *DistributedAvailabilityGroupsClient) listByInstanceHandleResponse(
 // parameters - The distributed availability group info.
 // options - DistributedAvailabilityGroupsClientBeginUpdateOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginUpdate
 // method.
-func (client *DistributedAvailabilityGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*armruntime.Poller[DistributedAvailabilityGroupsClientUpdateResponse], error) {
+func (client *DistributedAvailabilityGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DistributedAvailabilityGroupsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DistributedAvailabilityGroupsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DistributedAvailabilityGroupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DistributedAvailabilityGroupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a distributed availability group replication mode.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *DistributedAvailabilityGroupsClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, options)
 	if err != nil {
@@ -384,6 +392,6 @@ func (client *DistributedAvailabilityGroupsClient) updateCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

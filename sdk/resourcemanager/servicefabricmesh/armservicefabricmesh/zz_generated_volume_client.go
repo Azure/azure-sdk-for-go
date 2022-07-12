@@ -38,7 +38,7 @@ func NewVolumeClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewVolumeClient(subscriptionID string, credential azcore.TokenCredential, o
 // Create - Creates a volume resource with the specified name, description and properties. If a volume resource with the same
 // name exists, then it is updated with the specified description and properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // volumeResourceName - The identity of the volume.
 // volumeResourceDescription - Description for creating a Volume resource.
@@ -95,7 +96,7 @@ func (client *VolumeClient) createCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, volumeResourceDescription)
 }
 
@@ -110,6 +111,7 @@ func (client *VolumeClient) createHandleResponse(resp *http.Response) (VolumeCli
 
 // Delete - Deletes the volume resource identified by the name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // volumeResourceName - The identity of the volume.
 // options - VolumeClientDeleteOptions contains the optional parameters for the VolumeClient.Delete method.
@@ -147,13 +149,14 @@ func (client *VolumeClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the information about the volume resource with the given name. The information include the description and other
 // properties of the volume.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // volumeResourceName - The identity of the volume.
 // options - VolumeClientGetOptions contains the optional parameters for the VolumeClient.Get method.
@@ -191,7 +194,7 @@ func (client *VolumeClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -207,11 +210,12 @@ func (client *VolumeClient) getHandleResponse(resp *http.Response) (VolumeClient
 // NewListByResourceGroupPager - Gets the information about all volume resources in a given resource group. The information
 // include the description and other properties of the Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // options - VolumeClientListByResourceGroupOptions contains the optional parameters for the VolumeClient.ListByResourceGroup
 // method.
 func (client *VolumeClient) NewListByResourceGroupPager(resourceGroupName string, options *VolumeClientListByResourceGroupOptions) *runtime.Pager[VolumeClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VolumeClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VolumeClientListByResourceGroupResponse]{
 		More: func(page VolumeClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -256,7 +260,7 @@ func (client *VolumeClient) listByResourceGroupCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -272,10 +276,11 @@ func (client *VolumeClient) listByResourceGroupHandleResponse(resp *http.Respons
 // NewListBySubscriptionPager - Gets the information about all volume resources in a given resource group. The information
 // include the description and other properties of the volume.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // options - VolumeClientListBySubscriptionOptions contains the optional parameters for the VolumeClient.ListBySubscription
 // method.
 func (client *VolumeClient) NewListBySubscriptionPager(options *VolumeClientListBySubscriptionOptions) *runtime.Pager[VolumeClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VolumeClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VolumeClientListBySubscriptionResponse]{
 		More: func(page VolumeClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -316,7 +321,7 @@ func (client *VolumeClient) listBySubscriptionCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

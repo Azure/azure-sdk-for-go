@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
@@ -26,20 +24,19 @@ func ExampleReplicationProtectionContainerMappingsClient_NewListByReplicationPro
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReplicationProtectionContainersPager("<fabric-name>",
-		"<protection-container-name>",
+	pager := client.NewListByReplicationProtectionContainersPager("cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,16 +52,16 @@ func ExampleReplicationProtectionContainerMappingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<mapping-name>",
+		"cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+		"cloud1protectionprofile1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,30 +77,30 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<mapping-name>",
+		"cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+		"cloud1protectionprofile1",
 		armrecoveryservicessiterecovery.CreateProtectionContainerMappingInput{
 			Properties: &armrecoveryservicessiterecovery.CreateProtectionContainerMappingInputProperties{
-				PolicyID: to.Ptr("<policy-id>"),
+				PolicyID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
 				ProviderSpecificInput: &armrecoveryservicessiterecovery.ReplicationProviderSpecificContainerMappingInput{
-					InstanceType: to.Ptr("<instance-type>"),
+					InstanceType: to.Ptr("ReplicationProviderSpecificContainerMappingInput"),
 				},
-				TargetProtectionContainerID: to.Ptr("<target-protection-container-id>"),
+				TargetProtectionContainerID: to.Ptr("Microsoft Azure"),
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationProtectionContainerMappingsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -118,21 +115,21 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginPurge() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPurge(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<mapping-name>",
-		&armrecoveryservicessiterecovery.ReplicationProtectionContainerMappingsClientBeginPurgeOptions{ResumeToken: ""})
+		"cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+		"cloud1protectionprofile1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -145,30 +142,30 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<mapping-name>",
+		"cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+		"cloud1protectionprofile1",
 		armrecoveryservicessiterecovery.UpdateProtectionContainerMappingInput{
 			Properties: &armrecoveryservicessiterecovery.UpdateProtectionContainerMappingInputProperties{
 				ProviderSpecificInput: &armrecoveryservicessiterecovery.A2AUpdateContainerMappingInput{
-					InstanceType:           to.Ptr("<instance-type>"),
+					InstanceType:           to.Ptr("A2A"),
 					AgentAutoUpdateStatus:  to.Ptr(armrecoveryservicessiterecovery.AgentAutoUpdateStatusEnabled),
-					AutomationAccountArmID: to.Ptr("<automation-account-arm-id>"),
+					AutomationAccountArmID: to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/automationrg1/providers/Microsoft.Automation/automationAccounts/automationaccount1"),
 				},
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationProtectionContainerMappingsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -183,26 +180,26 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<mapping-name>",
+		"cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+		"cloud1protectionprofile1",
 		armrecoveryservicessiterecovery.RemoveProtectionContainerMappingInput{
 			Properties: &armrecoveryservicessiterecovery.RemoveProtectionContainerMappingInputProperties{
 				ProviderSpecificInput: &armrecoveryservicessiterecovery.ReplicationProviderContainerUnmappingInput{},
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationProtectionContainerMappingsClientBeginDeleteOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -215,9 +212,9 @@ func ExampleReplicationProtectionContainerMappingsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -226,7 +223,6 @@ func ExampleReplicationProtectionContainerMappingsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

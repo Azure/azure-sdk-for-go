@@ -39,7 +39,7 @@ func NewSuppressionsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewSuppressionsClient(subscriptionID string, credential azcore.TokenCredent
 // to as a suppression. Use this API to create or update the snoozed or dismissed status of
 // a recommendation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 // recommendationID - The recommendation ID.
 // name - The name of the suppression.
@@ -101,7 +102,7 @@ func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, suppressionContract)
 }
 
@@ -117,6 +118,7 @@ func (client *SuppressionsClient) createHandleResponse(resp *http.Response) (Sup
 // Delete - Enables the activation of a snoozed or dismissed recommendation. The snoozed or dismissed attribute of a recommendation
 // is referred to as a suppression.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 // recommendationID - The recommendation ID.
 // name - The name of the suppression.
@@ -158,12 +160,13 @@ func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Obtains the details of a suppression.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 // recommendationID - The recommendation ID.
 // name - The name of the suppression.
@@ -205,7 +208,7 @@ func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -221,9 +224,10 @@ func (client *SuppressionsClient) getHandleResponse(resp *http.Response) (Suppre
 // NewListPager - Retrieves the list of snoozed or dismissed suppressions for a subscription. The snoozed or dismissed attribute
 // of a recommendation is referred to as a suppression.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - SuppressionsClientListOptions contains the optional parameters for the SuppressionsClient.List method.
 func (client *SuppressionsClient) NewListPager(options *SuppressionsClientListOptions) *runtime.Pager[SuppressionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SuppressionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SuppressionsClientListResponse]{
 		More: func(page SuppressionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -270,7 +274,7 @@ func (client *SuppressionsClient) listCreateRequest(ctx context.Context, options
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

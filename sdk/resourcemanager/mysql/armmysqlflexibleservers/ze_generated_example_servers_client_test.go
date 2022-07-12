@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
@@ -26,22 +24,22 @@ func ExampleServersClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"testrg",
+		"mysqltestserver",
 		armmysqlflexibleservers.Server{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("southeastasia"),
 			Tags: map[string]*string{
 				"num": to.Ptr("1"),
 			},
 			Properties: &armmysqlflexibleservers.ServerProperties{
-				AdministratorLogin:         to.Ptr("<administrator-login>"),
-				AdministratorLoginPassword: to.Ptr("<administrator-login-password>"),
-				AvailabilityZone:           to.Ptr("<availability-zone>"),
+				AdministratorLogin:         to.Ptr("cloudsa"),
+				AdministratorLoginPassword: to.Ptr("your_password"),
+				AvailabilityZone:           to.Ptr("1"),
 				Backup: &armmysqlflexibleservers.Backup{
 					BackupRetentionDays: to.Ptr[int32](7),
 					GeoRedundantBackup:  to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -49,7 +47,7 @@ func ExampleServersClient_BeginCreate() {
 				CreateMode: to.Ptr(armmysqlflexibleservers.CreateModeDefault),
 				HighAvailability: &armmysqlflexibleservers.HighAvailability{
 					Mode:                    to.Ptr(armmysqlflexibleservers.HighAvailabilityModeZoneRedundant),
-					StandbyAvailabilityZone: to.Ptr("<standby-availability-zone>"),
+					StandbyAvailabilityZone: to.Ptr("3"),
 				},
 				Storage: &armmysqlflexibleservers.Storage{
 					AutoGrow:      to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -59,15 +57,15 @@ func ExampleServersClient_BeginCreate() {
 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 			},
 			SKU: &armmysqlflexibleservers.SKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("Standard_D2ds_v4"),
 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
 			},
 		},
-		&armmysqlflexibleservers.ServersClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -82,13 +80,13 @@ func ExampleServersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"testrg",
+		"mysqltestserver",
 		armmysqlflexibleservers.ServerForUpdate{
 			Properties: &armmysqlflexibleservers.ServerPropertiesForUpdate{
 				Storage: &armmysqlflexibleservers.Storage{
@@ -98,11 +96,11 @@ func ExampleServersClient_BeginUpdate() {
 				},
 			},
 		},
-		&armmysqlflexibleservers.ServersClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,18 +115,18 @@ func ExampleServersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armmysqlflexibleservers.ServersClientBeginDeleteOptions{ResumeToken: ""})
+		"TestGroup",
+		"testserver",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -141,13 +139,13 @@ func ExampleServersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"testrg",
+		"mysqltestserver",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -163,17 +161,16 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("TestGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -189,7 +186,7 @@ func ExampleServersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -198,7 +195,6 @@ func ExampleServersClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -214,18 +210,18 @@ func ExampleServersClient_BeginFailover() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginFailover(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armmysqlflexibleservers.ServersClientBeginFailoverOptions{ResumeToken: ""})
+		"TestGroup",
+		"testserver",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -238,22 +234,22 @@ func ExampleServersClient_BeginRestart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"TestGroup",
+		"testserver",
 		armmysqlflexibleservers.ServerRestartParameter{
 			MaxFailoverSeconds:  to.Ptr[int32](60),
 			RestartWithFailover: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
 		},
-		&armmysqlflexibleservers.ServersClientBeginRestartOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -266,18 +262,18 @@ func ExampleServersClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armmysqlflexibleservers.ServersClientBeginStartOptions{ResumeToken: ""})
+		"TestGroup",
+		"testserver",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -290,18 +286,18 @@ func ExampleServersClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armmysqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armmysqlflexibleservers.ServersClientBeginStopOptions{ResumeToken: ""})
+		"TestGroup",
+		"testserver",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

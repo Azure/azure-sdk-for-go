@@ -39,7 +39,7 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginPurgeContent - Removes a content from Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // frontDoorName - Name of the Front Door which is globally unique.
 // contentFilePaths - The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png' which removes
@@ -64,22 +65,23 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 // files in the directory.
 // options - EndpointsClientBeginPurgeContentOptions contains the optional parameters for the EndpointsClient.BeginPurgeContent
 // method.
-func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*armruntime.Poller[EndpointsClientPurgeContentResponse], error) {
+func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*runtime.Poller[EndpointsClientPurgeContentResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.purgeContent(ctx, resourceGroupName, frontDoorName, contentFilePaths, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[EndpointsClientPurgeContentResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[EndpointsClientPurgeContentResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointsClientPurgeContentResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointsClientPurgeContentResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // PurgeContent - Removes a content from Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, frontDoorName, contentFilePaths, options)
 	if err != nil {
@@ -117,6 +119,6 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, contentFilePaths)
 }

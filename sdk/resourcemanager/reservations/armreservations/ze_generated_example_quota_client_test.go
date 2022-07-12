@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
@@ -31,10 +29,10 @@ func ExampleQuotaClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<subscription-id>",
-		"<provider-id>",
-		"<location>",
-		"<resource-name>",
+		"00000000-0000-0000-0000-000000000000",
+		"Microsoft.Compute",
+		"eastus",
+		"standardNDSFamily",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -55,24 +53,24 @@ func ExampleQuotaClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<subscription-id>",
-		"<provider-id>",
-		"<location>",
-		"<resource-name>",
+		"D7EC67B3-7657-4966-BFFC-41EFD36BAAB3",
+		"Microsoft.Compute",
+		"eastus",
+		"standardFSv2Family",
 		armreservations.CurrentQuotaLimitBase{
 			Properties: &armreservations.QuotaProperties{
 				Name: &armreservations.ResourceName{
-					Value: to.Ptr("<value>"),
+					Value: to.Ptr("standardFSv2Family"),
 				},
 				Limit: to.Ptr[int32](200),
-				Unit:  to.Ptr("<unit>"),
+				Unit:  to.Ptr("Count"),
 			},
 		},
-		&armreservations.QuotaClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -92,24 +90,24 @@ func ExampleQuotaClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<subscription-id>",
-		"<provider-id>",
-		"<location>",
-		"<resource-name>",
+		"D7EC67B3-7657-4966-BFFC-41EFD36BAAB3",
+		"Microsoft.Compute",
+		"eastus",
+		"standardFSv2Family",
 		armreservations.CurrentQuotaLimitBase{
 			Properties: &armreservations.QuotaProperties{
 				Name: &armreservations.ResourceName{
-					Value: to.Ptr("<value>"),
+					Value: to.Ptr("standardFSv2Family"),
 				},
 				Limit: to.Ptr[int32](200),
-				Unit:  to.Ptr("<unit>"),
+				Unit:  to.Ptr("Count"),
 			},
 		},
-		&armreservations.QuotaClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -128,15 +126,14 @@ func ExampleQuotaClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<subscription-id>",
-		"<provider-id>",
-		"<location>",
+	pager := client.NewListPager("00000000-0000-0000-0000-000000000000",
+		"Microsoft.Compute",
+		"eastus",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -39,7 +39,7 @@ func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCred
 // Generate - Initiates the recommendation generation or computation process for a subscription. This operation is asynchronous.
 // The generated recommendations are stored in a cache in the Advisor service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - RecommendationsClientGenerateOptions contains the optional parameters for the RecommendationsClient.Generate
 // method.
 func (client *RecommendationsClient) Generate(ctx context.Context, options *RecommendationsClientGenerateOptions) (RecommendationsClientGenerateResponse, error) {
@@ -89,7 +90,7 @@ func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,6 +108,7 @@ func (client *RecommendationsClient) generateHandleResponse(resp *http.Response)
 
 // Get - Obtains details of a cached recommendation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 // recommendationID - The recommendation ID.
 // options - RecommendationsClientGetOptions contains the optional parameters for the RecommendationsClient.Get method.
@@ -143,7 +145,7 @@ func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -160,6 +162,7 @@ func (client *RecommendationsClient) getHandleResponse(resp *http.Response) (Rec
 // calling the generation recommendation. The URI of this API is returned in the Location field of the
 // response header.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // operationID - The operation ID, which can be found from the Location field in the generate recommendation response header.
 // options - RecommendationsClientGetGenerateStatusOptions contains the optional parameters for the RecommendationsClient.GetGenerateStatus
 // method.
@@ -193,16 +196,17 @@ func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListPager - Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking
 // generateRecommendations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
 func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RecommendationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListResponse]{
 		More: func(page RecommendationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -252,7 +256,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

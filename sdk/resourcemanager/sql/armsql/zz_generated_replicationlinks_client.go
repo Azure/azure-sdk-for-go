@@ -38,7 +38,7 @@ func NewReplicationLinksClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewReplicationLinksClient(subscriptionID string, credential azcore.TokenCre
 
 // Delete - Deletes the replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -111,6 +112,7 @@ func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, r
 
 // BeginFailover - Fails over from the current primary server to this server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -118,20 +120,21 @@ func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, r
 // linkID - The name of the replication link.
 // options - ReplicationLinksClientBeginFailoverOptions contains the optional parameters for the ReplicationLinksClient.BeginFailover
 // method.
-func (client *ReplicationLinksClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverOptions) (*armruntime.Poller[ReplicationLinksClientFailoverResponse], error) {
+func (client *ReplicationLinksClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverOptions) (*runtime.Poller[ReplicationLinksClientFailoverResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.failover(ctx, resourceGroupName, serverName, databaseName, linkID, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationLinksClientFailoverResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationLinksClientFailoverResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationLinksClientFailoverResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationLinksClientFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Failover - Fails over from the current primary server to this server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *ReplicationLinksClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, options)
 	if err != nil {
@@ -177,12 +180,13 @@ func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginFailoverAllowDataLoss - Fails over from the current primary server to this server allowing data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -190,20 +194,21 @@ func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context,
 // linkID - The name of the replication link.
 // options - ReplicationLinksClientBeginFailoverAllowDataLossOptions contains the optional parameters for the ReplicationLinksClient.BeginFailoverAllowDataLoss
 // method.
-func (client *ReplicationLinksClient) BeginFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverAllowDataLossOptions) (*armruntime.Poller[ReplicationLinksClientFailoverAllowDataLossResponse], error) {
+func (client *ReplicationLinksClient) BeginFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverAllowDataLossOptions) (*runtime.Poller[ReplicationLinksClientFailoverAllowDataLossResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.failoverAllowDataLoss(ctx, resourceGroupName, serverName, databaseName, linkID, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationLinksClientFailoverAllowDataLossResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationLinksClientFailoverAllowDataLossResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationLinksClientFailoverAllowDataLossResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationLinksClientFailoverAllowDataLossResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // FailoverAllowDataLoss - Fails over from the current primary server to this server allowing data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *ReplicationLinksClient) failoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverAllowDataLossOptions) (*http.Response, error) {
 	req, err := client.failoverAllowDataLossCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, options)
 	if err != nil {
@@ -249,12 +254,13 @@ func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -306,7 +312,7 @@ func (client *ReplicationLinksClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -321,6 +327,7 @@ func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (Re
 
 // NewListByDatabasePager - Gets a list of replication links on database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -328,7 +335,7 @@ func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (Re
 // options - ReplicationLinksClientListByDatabaseOptions contains the optional parameters for the ReplicationLinksClient.ListByDatabase
 // method.
 func (client *ReplicationLinksClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksClientListByDatabaseOptions) *runtime.Pager[ReplicationLinksClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationLinksClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationLinksClientListByDatabaseResponse]{
 		More: func(page ReplicationLinksClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -381,7 +388,7 @@ func (client *ReplicationLinksClient) listByDatabaseCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -396,13 +403,14 @@ func (client *ReplicationLinksClient) listByDatabaseHandleResponse(resp *http.Re
 
 // NewListByServerPager - Gets a list of replication links.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ReplicationLinksClientListByServerOptions contains the optional parameters for the ReplicationLinksClient.ListByServer
 // method.
 func (client *ReplicationLinksClient) NewListByServerPager(resourceGroupName string, serverName string, options *ReplicationLinksClientListByServerOptions) *runtime.Pager[ReplicationLinksClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationLinksClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationLinksClientListByServerResponse]{
 		More: func(page ReplicationLinksClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -451,7 +459,7 @@ func (client *ReplicationLinksClient) listByServerCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -39,7 +39,7 @@ func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Returns operation results.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // location - Azure location (region) name.
 // operationID - The Guid of the operation ID
 // options - OperationsResultsClientGetOptions contains the optional parameters for the OperationsResultsClient.Get method.
@@ -97,7 +98,7 @@ func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, loc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

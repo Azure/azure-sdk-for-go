@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns"
@@ -26,27 +24,26 @@ func ExamplePrivateZonesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewPrivateZonesClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewPrivateZonesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
+		"resourceGroup1",
+		"privatezone1.com",
 		armprivatedns.PrivateZone{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Global"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
 		},
 		&armprivatedns.PrivateZonesClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -61,25 +58,23 @@ func ExamplePrivateZonesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewPrivateZonesClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewPrivateZonesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
+		"resourceGroup1",
+		"privatezone1.com",
 		armprivatedns.PrivateZone{
 			Tags: map[string]*string{
 				"key2": to.Ptr("value2"),
 			},
 		},
-		&armprivatedns.PrivateZonesClientBeginUpdateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armprivatedns.PrivateZonesClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -94,20 +89,18 @@ func ExamplePrivateZonesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewPrivateZonesClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewPrivateZonesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
-		&armprivatedns.PrivateZonesClientBeginDeleteOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		"resourceGroup1",
+		"privatezone1.com",
+		&armprivatedns.PrivateZonesClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -120,13 +113,13 @@ func ExamplePrivateZonesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewPrivateZonesClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewPrivateZonesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
+		"resourceGroup1",
+		"privatezone1.com",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -142,7 +135,7 @@ func ExamplePrivateZonesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewPrivateZonesClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewPrivateZonesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -151,7 +144,6 @@ func ExamplePrivateZonesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -167,17 +159,16 @@ func ExamplePrivateZonesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewPrivateZonesClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewPrivateZonesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("resourceGroup1",
 		&armprivatedns.PrivateZonesClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

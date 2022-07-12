@@ -24,18 +24,17 @@ func ExampleIdentityProviderClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewIdentityProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewIdentityProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,13 +50,13 @@ func ExampleIdentityProviderClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewIdentityProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewIdentityProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.IdentityProviderTypeAADB2C,
 		nil)
 	if err != nil {
@@ -72,13 +71,13 @@ func ExampleIdentityProviderClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewIdentityProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewIdentityProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.IdentityProviderTypeAADB2C,
 		nil)
 	if err != nil {
@@ -95,18 +94,18 @@ func ExampleIdentityProviderClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewIdentityProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewIdentityProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.IdentityProviderTypeFacebook,
 		armapimanagement.IdentityProviderCreateContract{
 			Properties: &armapimanagement.IdentityProviderCreateContractProperties{
-				ClientID:     to.Ptr("<client-id>"),
-				ClientSecret: to.Ptr("<client-secret>"),
+				ClientID:     to.Ptr("facebookid"),
+				ClientSecret: to.Ptr("facebookapplicationsecret"),
 			},
 		},
 		&armapimanagement.IdentityProviderClientCreateOrUpdateOptions{IfMatch: nil})
@@ -124,19 +123,19 @@ func ExampleIdentityProviderClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewIdentityProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewIdentityProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.IdentityProviderTypeFacebook,
-		"<if-match>",
+		"*",
 		armapimanagement.IdentityProviderUpdateParameters{
 			Properties: &armapimanagement.IdentityProviderUpdateProperties{
-				ClientID:     to.Ptr("<client-id>"),
-				ClientSecret: to.Ptr("<client-secret>"),
+				ClientID:     to.Ptr("updatedfacebookid"),
+				ClientSecret: to.Ptr("updatedfacebooksecret"),
 			},
 		},
 		nil)
@@ -154,15 +153,15 @@ func ExampleIdentityProviderClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewIdentityProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewIdentityProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.IdentityProviderTypeAAD,
-		"<if-match>",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -176,13 +175,13 @@ func ExampleIdentityProviderClient_ListSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewIdentityProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewIdentityProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSecrets(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.IdentityProviderTypeAADB2C,
 		nil)
 	if err != nil {

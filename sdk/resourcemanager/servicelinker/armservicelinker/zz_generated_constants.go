@@ -10,7 +10,7 @@ package armservicelinker
 
 const (
 	moduleName    = "armservicelinker"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -46,6 +46,20 @@ func PossibleAuthTypeValues() []AuthType {
 		AuthTypeServicePrincipalSecret,
 		AuthTypeSystemAssignedIdentity,
 		AuthTypeUserAssignedIdentity,
+	}
+}
+
+// AzureResourceType - The azure resource type.
+type AzureResourceType string
+
+const (
+	AzureResourceTypeKeyVault AzureResourceType = "KeyVault"
+)
+
+// PossibleAzureResourceTypeValues returns the possible values for the AzureResourceType const type.
+func PossibleAzureResourceTypeValues() []AzureResourceType {
+	return []AzureResourceType{
+		AzureResourceTypeKeyVault,
 	}
 }
 
@@ -138,23 +152,21 @@ func PossibleSecretTypeValues() []SecretType {
 	}
 }
 
-// Type - The target service type.
-type Type string
+// TargetServiceType - The target service type.
+type TargetServiceType string
 
 const (
-	TypeAzureResource            Type = "AzureResource"
-	TypeConfluentBootstrapServer Type = "ConfluentBootstrapServer"
-	TypeConfluentSchemaRegistry  Type = "ConfluentSchemaRegistry"
-	TypeKeyVault                 Type = "KeyVault"
+	TargetServiceTypeAzureResource            TargetServiceType = "AzureResource"
+	TargetServiceTypeConfluentBootstrapServer TargetServiceType = "ConfluentBootstrapServer"
+	TargetServiceTypeConfluentSchemaRegistry  TargetServiceType = "ConfluentSchemaRegistry"
 )
 
-// PossibleTypeValues returns the possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{
-		TypeAzureResource,
-		TypeConfluentBootstrapServer,
-		TypeConfluentSchemaRegistry,
-		TypeKeyVault,
+// PossibleTargetServiceTypeValues returns the possible values for the TargetServiceType const type.
+func PossibleTargetServiceTypeValues() []TargetServiceType {
+	return []TargetServiceType{
+		TargetServiceTypeAzureResource,
+		TargetServiceTypeConfluentBootstrapServer,
+		TargetServiceTypeConfluentSchemaRegistry,
 	}
 }
 
@@ -178,7 +190,7 @@ func PossibleVNetSolutionTypeValues() []VNetSolutionType {
 type ValidationResultStatus string
 
 const (
-	ValidationResultStatusFailed  ValidationResultStatus = "failed"
+	ValidationResultStatusFailure ValidationResultStatus = "failure"
 	ValidationResultStatusSuccess ValidationResultStatus = "success"
 	ValidationResultStatusWarning ValidationResultStatus = "warning"
 )
@@ -186,7 +198,7 @@ const (
 // PossibleValidationResultStatusValues returns the possible values for the ValidationResultStatus const type.
 func PossibleValidationResultStatusValues() []ValidationResultStatus {
 	return []ValidationResultStatus{
-		ValidationResultStatusFailed,
+		ValidationResultStatusFailure,
 		ValidationResultStatusSuccess,
 		ValidationResultStatusWarning,
 	}

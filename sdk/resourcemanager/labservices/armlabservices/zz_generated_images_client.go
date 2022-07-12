@@ -38,7 +38,7 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // CreateOrUpdate - Updates an image resource via PUT. Creating new resources via PUT will not function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
 // and in UI.
@@ -103,7 +104,7 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -118,6 +119,7 @@ func (client *ImagesClient) createOrUpdateHandleResponse(resp *http.Response) (I
 
 // Get - Gets an image resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
 // and in UI.
@@ -164,7 +166,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -179,12 +181,13 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 
 // NewListByLabPlanPager - Gets all images from galleries attached to a lab plan.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
 // and in UI.
 // options - ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.ListByLabPlan method.
 func (client *ImagesClient) NewListByLabPlanPager(resourceGroupName string, labPlanName string, options *ImagesClientListByLabPlanOptions) *runtime.Pager[ImagesClientListByLabPlanResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ImagesClientListByLabPlanResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ImagesClientListByLabPlanResponse]{
 		More: func(page ImagesClientListByLabPlanResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -236,7 +239,7 @@ func (client *ImagesClient) listByLabPlanCreateRequest(ctx context.Context, reso
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -251,6 +254,7 @@ func (client *ImagesClient) listByLabPlanHandleResponse(resp *http.Response) (Im
 
 // Update - Updates an image resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
 // and in UI.
@@ -298,7 +302,7 @@ func (client *ImagesClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

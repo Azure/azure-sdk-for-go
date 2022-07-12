@@ -24,21 +24,20 @@ func ExampleJobStepsClient_NewListByVersionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobStepsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobStepsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVersionPager("<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
+	pager := client.NewListByVersionPager("group1",
+		"server1",
+		"agent1",
+		"job1",
 		1,
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,17 +53,17 @@ func ExampleJobStepsClient_GetByVersion() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobStepsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobStepsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByVersion(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
 		1,
-		"<step-name>",
+		"step1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,20 +79,19 @@ func ExampleJobStepsClient_NewListByJobPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobStepsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobStepsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByJobPager("<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
+	pager := client.NewListByJobPager("group1",
+		"server1",
+		"agent1",
+		"job1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -109,16 +107,16 @@ func ExampleJobStepsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobStepsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobStepsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
-		"<step-name>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
+		"step1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,24 +132,24 @@ func ExampleJobStepsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobStepsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobStepsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
-		"<step-name>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
+		"step1",
 		armsql.JobStep{
 			Properties: &armsql.JobStepProperties{
 				Action: &armsql.JobStepAction{
 					Type:   to.Ptr(armsql.JobStepActionTypeTSQL),
 					Source: to.Ptr(armsql.JobStepActionSourceInline),
-					Value:  to.Ptr("<value>"),
+					Value:  to.Ptr("select 2"),
 				},
-				Credential: to.Ptr("<credential>"),
+				Credential: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1"),
 				ExecutionOptions: &armsql.JobStepExecutionOptions{
 					InitialRetryIntervalSeconds:    to.Ptr[int32](11),
 					MaximumRetryIntervalSeconds:    to.Ptr[int32](222),
@@ -161,16 +159,16 @@ func ExampleJobStepsClient_CreateOrUpdate() {
 				},
 				Output: &armsql.JobStepOutput{
 					Type:              to.Ptr(armsql.JobStepOutputTypeSQLDatabase),
-					Credential:        to.Ptr("<credential>"),
-					DatabaseName:      to.Ptr("<database-name>"),
-					ResourceGroupName: to.Ptr("<resource-group-name>"),
-					SchemaName:        to.Ptr("<schema-name>"),
-					ServerName:        to.Ptr("<server-name>"),
-					SubscriptionID:    to.Ptr("<subscription-id>"),
-					TableName:         to.Ptr("<table-name>"),
+					Credential:        to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0"),
+					DatabaseName:      to.Ptr("database3"),
+					ResourceGroupName: to.Ptr("group3"),
+					SchemaName:        to.Ptr("myschema1234"),
+					ServerName:        to.Ptr("server3"),
+					SubscriptionID:    to.Ptr("3501b905-a848-4b5d-96e8-b253f62d735a"),
+					TableName:         to.Ptr("mytable5678"),
 				},
 				StepID:      to.Ptr[int32](1),
-				TargetGroup: to.Ptr("<target-group>"),
+				TargetGroup: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1"),
 			},
 		},
 		nil)
@@ -188,16 +186,16 @@ func ExampleJobStepsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobStepsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobStepsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
-		"<step-name>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
+		"step1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

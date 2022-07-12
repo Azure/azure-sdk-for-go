@@ -24,13 +24,13 @@ func ExampleArtifactsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewArtifactsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewArtifactsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<lab-name>",
-		"<artifact-source-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"{labName}",
+		"{artifactSourceName}",
 		&armdevtestlabs.ArtifactsClientListOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -40,7 +40,6 @@ func ExampleArtifactsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,15 +55,15 @@ func ExampleArtifactsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewArtifactsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewArtifactsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<artifact-source-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{artifactSourceName}",
+		"{artifactName}",
 		&armdevtestlabs.ArtifactsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,19 +79,19 @@ func ExampleArtifactsClient_GenerateArmTemplate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewArtifactsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewArtifactsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GenerateArmTemplate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<artifact-source-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{artifactSourceName}",
+		"{artifactName}",
 		armdevtestlabs.GenerateArmTemplateRequest{
 			FileUploadOptions:  to.Ptr(armdevtestlabs.FileUploadOptionsNone),
-			Location:           to.Ptr("<location>"),
-			VirtualMachineName: to.Ptr("<virtual-machine-name>"),
+			Location:           to.Ptr("{location}"),
+			VirtualMachineName: to.Ptr("{vmName}"),
 		},
 		nil)
 	if err != nil {

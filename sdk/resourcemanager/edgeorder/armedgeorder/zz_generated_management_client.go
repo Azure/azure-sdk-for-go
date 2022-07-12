@@ -38,7 +38,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CancelOrderItem - Cancel order item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // orderItemName - The name of the order item
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // cancellationReason - Reason for cancellation.
@@ -98,32 +99,34 @@ func (client *ManagementClient) cancelOrderItemCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, cancellationReason)
 }
 
 // BeginCreateAddress - Creates a new address with the specified parameters. Existing address can be updated with this API
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
 // 24 characters in length and use any alphanumeric and underscore only
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // addressResource - Address details from request body.
 // options - ManagementClientBeginCreateAddressOptions contains the optional parameters for the ManagementClient.BeginCreateAddress
 // method.
-func (client *ManagementClient) BeginCreateAddress(ctx context.Context, addressName string, resourceGroupName string, addressResource AddressResource, options *ManagementClientBeginCreateAddressOptions) (*armruntime.Poller[ManagementClientCreateAddressResponse], error) {
+func (client *ManagementClient) BeginCreateAddress(ctx context.Context, addressName string, resourceGroupName string, addressResource AddressResource, options *ManagementClientBeginCreateAddressOptions) (*runtime.Poller[ManagementClientCreateAddressResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createAddress(ctx, addressName, resourceGroupName, addressResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientCreateAddressResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientCreateAddressResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientCreateAddressResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientCreateAddressResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateAddress - Creates a new address with the specified parameters. Existing address can be updated with this API
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *ManagementClient) createAddress(ctx context.Context, addressName string, resourceGroupName string, addressResource AddressResource, options *ManagementClientBeginCreateAddressOptions) (*http.Response, error) {
 	req, err := client.createAddressCreateRequest(ctx, addressName, resourceGroupName, addressResource, options)
 	if err != nil {
@@ -161,33 +164,35 @@ func (client *ManagementClient) createAddressCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, addressResource)
 }
 
 // BeginCreateOrderItem - Creates an order item. Existing order item cannot be updated with this api and should instead be
 // updated with the Update order item API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // orderItemName - The name of the order item
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // orderItemResource - Order item details from request body.
 // options - ManagementClientBeginCreateOrderItemOptions contains the optional parameters for the ManagementClient.BeginCreateOrderItem
 // method.
-func (client *ManagementClient) BeginCreateOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, orderItemResource OrderItemResource, options *ManagementClientBeginCreateOrderItemOptions) (*armruntime.Poller[ManagementClientCreateOrderItemResponse], error) {
+func (client *ManagementClient) BeginCreateOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, orderItemResource OrderItemResource, options *ManagementClientBeginCreateOrderItemOptions) (*runtime.Poller[ManagementClientCreateOrderItemResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrderItem(ctx, orderItemName, resourceGroupName, orderItemResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientCreateOrderItemResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientCreateOrderItemResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientCreateOrderItemResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientCreateOrderItemResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrderItem - Creates an order item. Existing order item cannot be updated with this api and should instead be updated
 // with the Update order item API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *ManagementClient) createOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, orderItemResource OrderItemResource, options *ManagementClientBeginCreateOrderItemOptions) (*http.Response, error) {
 	req, err := client.createOrderItemCreateRequest(ctx, orderItemName, resourceGroupName, orderItemResource, options)
 	if err != nil {
@@ -225,31 +230,33 @@ func (client *ManagementClient) createOrderItemCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, orderItemResource)
 }
 
 // BeginDeleteAddressByName - Deletes an address.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
 // 24 characters in length and use any alphanumeric and underscore only
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientBeginDeleteAddressByNameOptions contains the optional parameters for the ManagementClient.BeginDeleteAddressByName
 // method.
-func (client *ManagementClient) BeginDeleteAddressByName(ctx context.Context, addressName string, resourceGroupName string, options *ManagementClientBeginDeleteAddressByNameOptions) (*armruntime.Poller[ManagementClientDeleteAddressByNameResponse], error) {
+func (client *ManagementClient) BeginDeleteAddressByName(ctx context.Context, addressName string, resourceGroupName string, options *ManagementClientBeginDeleteAddressByNameOptions) (*runtime.Poller[ManagementClientDeleteAddressByNameResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteAddressByName(ctx, addressName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientDeleteAddressByNameResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientDeleteAddressByNameResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientDeleteAddressByNameResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientDeleteAddressByNameResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteAddressByName - Deletes an address.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *ManagementClient) deleteAddressByName(ctx context.Context, addressName string, resourceGroupName string, options *ManagementClientBeginDeleteAddressByNameOptions) (*http.Response, error) {
 	req, err := client.deleteAddressByNameCreateRequest(ctx, addressName, resourceGroupName, options)
 	if err != nil {
@@ -287,30 +294,32 @@ func (client *ManagementClient) deleteAddressByNameCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDeleteOrderItemByName - Deletes an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // orderItemName - The name of the order item
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientBeginDeleteOrderItemByNameOptions contains the optional parameters for the ManagementClient.BeginDeleteOrderItemByName
 // method.
-func (client *ManagementClient) BeginDeleteOrderItemByName(ctx context.Context, orderItemName string, resourceGroupName string, options *ManagementClientBeginDeleteOrderItemByNameOptions) (*armruntime.Poller[ManagementClientDeleteOrderItemByNameResponse], error) {
+func (client *ManagementClient) BeginDeleteOrderItemByName(ctx context.Context, orderItemName string, resourceGroupName string, options *ManagementClientBeginDeleteOrderItemByNameOptions) (*runtime.Poller[ManagementClientDeleteOrderItemByNameResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOrderItemByName(ctx, orderItemName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientDeleteOrderItemByNameResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientDeleteOrderItemByNameResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientDeleteOrderItemByNameResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientDeleteOrderItemByNameResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteOrderItemByName - Deletes an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *ManagementClient) deleteOrderItemByName(ctx context.Context, orderItemName string, resourceGroupName string, options *ManagementClientBeginDeleteOrderItemByNameOptions) (*http.Response, error) {
 	req, err := client.deleteOrderItemByNameCreateRequest(ctx, orderItemName, resourceGroupName, options)
 	if err != nil {
@@ -348,12 +357,13 @@ func (client *ManagementClient) deleteOrderItemByNameCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetAddressByName - Gets information about the specified address.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
 // 24 characters in length and use any alphanumeric and underscore only
 // resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -396,7 +406,7 @@ func (client *ManagementClient) getAddressByNameCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -411,6 +421,7 @@ func (client *ManagementClient) getAddressByNameHandleResponse(resp *http.Respon
 
 // GetOrderByName - Gets an order.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // orderName - The name of the order
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // location - The name of Azure region.
@@ -457,7 +468,7 @@ func (client *ManagementClient) getOrderByNameCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -472,6 +483,7 @@ func (client *ManagementClient) getOrderByNameHandleResponse(resp *http.Response
 
 // GetOrderItemByName - Gets an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // orderItemName - The name of the order item
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientGetOrderItemByNameOptions contains the optional parameters for the ManagementClient.GetOrderItemByName
@@ -516,7 +528,7 @@ func (client *ManagementClient) getOrderItemByNameCreateRequest(ctx context.Cont
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -531,11 +543,12 @@ func (client *ManagementClient) getOrderItemByNameHandleResponse(resp *http.Resp
 
 // NewListAddressesAtResourceGroupLevelPager - Lists all the addresses available under the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientListAddressesAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListAddressesAtResourceGroupLevel
 // method.
 func (client *ManagementClient) NewListAddressesAtResourceGroupLevelPager(resourceGroupName string, options *ManagementClientListAddressesAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListAddressesAtResourceGroupLevelResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListAddressesAtResourceGroupLevelResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListAddressesAtResourceGroupLevelResponse]{
 		More: func(page ManagementClientListAddressesAtResourceGroupLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -586,7 +599,7 @@ func (client *ManagementClient) listAddressesAtResourceGroupLevelCreateRequest(c
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -601,10 +614,11 @@ func (client *ManagementClient) listAddressesAtResourceGroupLevelHandleResponse(
 
 // NewListAddressesAtSubscriptionLevelPager - Lists all the addresses available under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - ManagementClientListAddressesAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListAddressesAtSubscriptionLevel
 // method.
 func (client *ManagementClient) NewListAddressesAtSubscriptionLevelPager(options *ManagementClientListAddressesAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListAddressesAtSubscriptionLevelResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListAddressesAtSubscriptionLevelResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListAddressesAtSubscriptionLevelResponse]{
 		More: func(page ManagementClientListAddressesAtSubscriptionLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -651,7 +665,7 @@ func (client *ManagementClient) listAddressesAtSubscriptionLevelCreateRequest(ct
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -667,11 +681,12 @@ func (client *ManagementClient) listAddressesAtSubscriptionLevelHandleResponse(r
 // NewListConfigurationsPager - This method provides the list of configurations for the given product family, product line
 // and product under subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // configurationsRequest - Filters for showing the configurations.
 // options - ManagementClientListConfigurationsOptions contains the optional parameters for the ManagementClient.ListConfigurations
 // method.
 func (client *ManagementClient) NewListConfigurationsPager(configurationsRequest ConfigurationsRequest, options *ManagementClientListConfigurationsOptions) *runtime.Pager[ManagementClientListConfigurationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListConfigurationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListConfigurationsResponse]{
 		More: func(page ManagementClientListConfigurationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -715,7 +730,7 @@ func (client *ManagementClient) listConfigurationsCreateRequest(ctx context.Cont
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configurationsRequest)
 }
 
@@ -730,10 +745,11 @@ func (client *ManagementClient) listConfigurationsHandleResponse(resp *http.Resp
 
 // NewListOperationsPager - This method gets all the operations that are exposed for customer.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - ManagementClientListOperationsOptions contains the optional parameters for the ManagementClient.ListOperations
 // method.
 func (client *ManagementClient) NewListOperationsPager(options *ManagementClientListOperationsOptions) *runtime.Pager[ManagementClientListOperationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOperationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListOperationsResponse]{
 		More: func(page ManagementClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -770,7 +786,7 @@ func (client *ManagementClient) listOperationsCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -785,11 +801,12 @@ func (client *ManagementClient) listOperationsHandleResponse(resp *http.Response
 
 // NewListOrderAtResourceGroupLevelPager - Lists order at resource group level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientListOrderAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListOrderAtResourceGroupLevel
 // method.
 func (client *ManagementClient) NewListOrderAtResourceGroupLevelPager(resourceGroupName string, options *ManagementClientListOrderAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListOrderAtResourceGroupLevelResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOrderAtResourceGroupLevelResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListOrderAtResourceGroupLevelResponse]{
 		More: func(page ManagementClientListOrderAtResourceGroupLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -837,7 +854,7 @@ func (client *ManagementClient) listOrderAtResourceGroupLevelCreateRequest(ctx c
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -852,10 +869,11 @@ func (client *ManagementClient) listOrderAtResourceGroupLevelHandleResponse(resp
 
 // NewListOrderAtSubscriptionLevelPager - Lists order at subscription level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - ManagementClientListOrderAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListOrderAtSubscriptionLevel
 // method.
 func (client *ManagementClient) NewListOrderAtSubscriptionLevelPager(options *ManagementClientListOrderAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListOrderAtSubscriptionLevelResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOrderAtSubscriptionLevelResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListOrderAtSubscriptionLevelResponse]{
 		More: func(page ManagementClientListOrderAtSubscriptionLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -899,7 +917,7 @@ func (client *ManagementClient) listOrderAtSubscriptionLevelCreateRequest(ctx co
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -914,11 +932,12 @@ func (client *ManagementClient) listOrderAtSubscriptionLevelHandleResponse(resp 
 
 // NewListOrderItemsAtResourceGroupLevelPager - Lists order item at resource group level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagementClientListOrderItemsAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListOrderItemsAtResourceGroupLevel
 // method.
 func (client *ManagementClient) NewListOrderItemsAtResourceGroupLevelPager(resourceGroupName string, options *ManagementClientListOrderItemsAtResourceGroupLevelOptions) *runtime.Pager[ManagementClientListOrderItemsAtResourceGroupLevelResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOrderItemsAtResourceGroupLevelResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListOrderItemsAtResourceGroupLevelResponse]{
 		More: func(page ManagementClientListOrderItemsAtResourceGroupLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -972,7 +991,7 @@ func (client *ManagementClient) listOrderItemsAtResourceGroupLevelCreateRequest(
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -987,10 +1006,11 @@ func (client *ManagementClient) listOrderItemsAtResourceGroupLevelHandleResponse
 
 // NewListOrderItemsAtSubscriptionLevelPager - Lists order item at subscription level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - ManagementClientListOrderItemsAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListOrderItemsAtSubscriptionLevel
 // method.
 func (client *ManagementClient) NewListOrderItemsAtSubscriptionLevelPager(options *ManagementClientListOrderItemsAtSubscriptionLevelOptions) *runtime.Pager[ManagementClientListOrderItemsAtSubscriptionLevelResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListOrderItemsAtSubscriptionLevelResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListOrderItemsAtSubscriptionLevelResponse]{
 		More: func(page ManagementClientListOrderItemsAtSubscriptionLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1040,7 +1060,7 @@ func (client *ManagementClient) listOrderItemsAtSubscriptionLevelCreateRequest(c
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1055,11 +1075,12 @@ func (client *ManagementClient) listOrderItemsAtSubscriptionLevelHandleResponse(
 
 // NewListProductFamiliesPager - This method provides the list of product families for the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // productFamiliesRequest - Filters for showing the product families.
 // options - ManagementClientListProductFamiliesOptions contains the optional parameters for the ManagementClient.ListProductFamilies
 // method.
 func (client *ManagementClient) NewListProductFamiliesPager(productFamiliesRequest ProductFamiliesRequest, options *ManagementClientListProductFamiliesOptions) *runtime.Pager[ManagementClientListProductFamiliesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListProductFamiliesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListProductFamiliesResponse]{
 		More: func(page ManagementClientListProductFamiliesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1106,7 +1127,7 @@ func (client *ManagementClient) listProductFamiliesCreateRequest(ctx context.Con
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, productFamiliesRequest)
 }
 
@@ -1121,10 +1142,11 @@ func (client *ManagementClient) listProductFamiliesHandleResponse(resp *http.Res
 
 // NewListProductFamiliesMetadataPager - This method provides the list of product families metadata for the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - ManagementClientListProductFamiliesMetadataOptions contains the optional parameters for the ManagementClient.ListProductFamiliesMetadata
 // method.
 func (client *ManagementClient) NewListProductFamiliesMetadataPager(options *ManagementClientListProductFamiliesMetadataOptions) *runtime.Pager[ManagementClientListProductFamiliesMetadataResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientListProductFamiliesMetadataResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientListProductFamiliesMetadataResponse]{
 		More: func(page ManagementClientListProductFamiliesMetadataResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1168,7 +1190,7 @@ func (client *ManagementClient) listProductFamiliesMetadataCreateRequest(ctx con
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1183,25 +1205,27 @@ func (client *ManagementClient) listProductFamiliesMetadataHandleResponse(resp *
 
 // BeginReturnOrderItem - Return order item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // orderItemName - The name of the order item
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // returnOrderItemDetails - Return order item CurrentStatus.
 // options - ManagementClientBeginReturnOrderItemOptions contains the optional parameters for the ManagementClient.BeginReturnOrderItem
 // method.
-func (client *ManagementClient) BeginReturnOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, returnOrderItemDetails ReturnOrderItemDetails, options *ManagementClientBeginReturnOrderItemOptions) (*armruntime.Poller[ManagementClientReturnOrderItemResponse], error) {
+func (client *ManagementClient) BeginReturnOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, returnOrderItemDetails ReturnOrderItemDetails, options *ManagementClientBeginReturnOrderItemOptions) (*runtime.Poller[ManagementClientReturnOrderItemResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.returnOrderItem(ctx, orderItemName, resourceGroupName, returnOrderItemDetails, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientReturnOrderItemResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientReturnOrderItemResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientReturnOrderItemResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientReturnOrderItemResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ReturnOrderItem - Return order item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *ManagementClient) returnOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, returnOrderItemDetails ReturnOrderItemDetails, options *ManagementClientBeginReturnOrderItemOptions) (*http.Response, error) {
 	req, err := client.returnOrderItemCreateRequest(ctx, orderItemName, resourceGroupName, returnOrderItemDetails, options)
 	if err != nil {
@@ -1239,32 +1263,34 @@ func (client *ManagementClient) returnOrderItemCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, returnOrderItemDetails)
 }
 
 // BeginUpdateAddress - Updates the properties of an existing address.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
 // 24 characters in length and use any alphanumeric and underscore only
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // addressUpdateParameter - Address update parameters from request body.
 // options - ManagementClientBeginUpdateAddressOptions contains the optional parameters for the ManagementClient.BeginUpdateAddress
 // method.
-func (client *ManagementClient) BeginUpdateAddress(ctx context.Context, addressName string, resourceGroupName string, addressUpdateParameter AddressUpdateParameter, options *ManagementClientBeginUpdateAddressOptions) (*armruntime.Poller[ManagementClientUpdateAddressResponse], error) {
+func (client *ManagementClient) BeginUpdateAddress(ctx context.Context, addressName string, resourceGroupName string, addressUpdateParameter AddressUpdateParameter, options *ManagementClientBeginUpdateAddressOptions) (*runtime.Poller[ManagementClientUpdateAddressResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateAddress(ctx, addressName, resourceGroupName, addressUpdateParameter, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientUpdateAddressResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientUpdateAddressResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientUpdateAddressResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientUpdateAddressResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // UpdateAddress - Updates the properties of an existing address.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *ManagementClient) updateAddress(ctx context.Context, addressName string, resourceGroupName string, addressUpdateParameter AddressUpdateParameter, options *ManagementClientBeginUpdateAddressOptions) (*http.Response, error) {
 	req, err := client.updateAddressCreateRequest(ctx, addressName, resourceGroupName, addressUpdateParameter, options)
 	if err != nil {
@@ -1303,33 +1329,35 @@ func (client *ManagementClient) updateAddressCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, addressUpdateParameter)
 }
 
 // BeginUpdateOrderItem - Updates the properties of an existing order item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // orderItemName - The name of the order item
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // orderItemUpdateParameter - order item update parameters from request body.
 // options - ManagementClientBeginUpdateOrderItemOptions contains the optional parameters for the ManagementClient.BeginUpdateOrderItem
 // method.
-func (client *ManagementClient) BeginUpdateOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, orderItemUpdateParameter OrderItemUpdateParameter, options *ManagementClientBeginUpdateOrderItemOptions) (*armruntime.Poller[ManagementClientUpdateOrderItemResponse], error) {
+func (client *ManagementClient) BeginUpdateOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, orderItemUpdateParameter OrderItemUpdateParameter, options *ManagementClientBeginUpdateOrderItemOptions) (*runtime.Poller[ManagementClientUpdateOrderItemResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateOrderItem(ctx, orderItemName, resourceGroupName, orderItemUpdateParameter, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientUpdateOrderItemResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientUpdateOrderItemResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientUpdateOrderItemResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientUpdateOrderItemResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // UpdateOrderItem - Updates the properties of an existing order item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *ManagementClient) updateOrderItem(ctx context.Context, orderItemName string, resourceGroupName string, orderItemUpdateParameter OrderItemUpdateParameter, options *ManagementClientBeginUpdateOrderItemOptions) (*http.Response, error) {
 	req, err := client.updateOrderItemCreateRequest(ctx, orderItemName, resourceGroupName, orderItemUpdateParameter, options)
 	if err != nil {
@@ -1368,8 +1396,8 @@ func (client *ManagementClient) updateOrderItemCreateRequest(ctx context.Context
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, orderItemUpdateParameter)
 }

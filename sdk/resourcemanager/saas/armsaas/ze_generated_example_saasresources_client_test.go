@@ -32,7 +32,6 @@ func ExampleResourcesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,7 +52,7 @@ func ExampleResourcesClient_ListAccessToken() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListAccessToken(ctx,
-		"<resource-id>",
+		"c825645b-e31b-9cf4-1cee-2aba9e58bc7c",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

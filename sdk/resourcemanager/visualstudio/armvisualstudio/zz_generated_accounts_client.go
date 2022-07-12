@@ -38,7 +38,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 // CheckNameAvailability - Checks if the specified Visual Studio Team Services account name is available. Resource name can
 // be either an account name or an account name and PUID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // body - Parameters describing the name to check availability for.
 // options - AccountsClientCheckNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckNameAvailability
 // method.
@@ -89,7 +90,7 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -104,6 +105,7 @@ func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // CreateOrUpdate - Creates or updates a Visual Studio Team Services account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // resourceName - Name of the resource.
 // body - The request data.
@@ -145,7 +147,7 @@ func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -160,6 +162,7 @@ func (client *AccountsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a Visual Studio Team Services account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // resourceName - Name of the resource.
 // options - AccountsClientDeleteOptions contains the optional parameters for the AccountsClient.Delete method.
@@ -205,6 +208,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets the Visual Studio Team Services account resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // resourceName - Name of the resource.
 // options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
@@ -245,7 +249,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -261,6 +265,7 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 // ListByResourceGroup - Gets all Visual Studio Team Services account resources under the resource group linked to the specified
 // Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
@@ -297,7 +302,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -312,6 +317,7 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // Update - Updates tags for Visual Studio Team Services account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // resourceName - Name of the resource.
 // body - The request data.
@@ -353,7 +359,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

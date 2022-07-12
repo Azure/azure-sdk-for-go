@@ -38,7 +38,7 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 // NewListPager - Provides a pageable list of workload item of a specific container according to the query filter and the
 // pagination parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // fabricName - Fabric name associated with the container.
@@ -64,7 +65,7 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 // options - BackupWorkloadItemsClientListOptions contains the optional parameters for the BackupWorkloadItemsClient.List
 // method.
 func (client *BackupWorkloadItemsClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, options *BackupWorkloadItemsClientListOptions) *runtime.Pager[BackupWorkloadItemsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BackupWorkloadItemsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BackupWorkloadItemsClientListResponse]{
 		More: func(page BackupWorkloadItemsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -119,7 +120,7 @@ func (client *BackupWorkloadItemsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -127,7 +128,7 @@ func (client *BackupWorkloadItemsClient) listCreateRequest(ctx context.Context, 
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

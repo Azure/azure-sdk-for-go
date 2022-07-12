@@ -40,7 +40,7 @@ func NewLocationsClient(subscriptionID string, iotDefenderLocation string, crede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewLocationsClient(subscriptionID string, iotDefenderLocation string, crede
 
 // Get - Get a Defender for IoT location associated with the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 func (client *LocationsClient) Get(ctx context.Context, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
@@ -93,7 +94,7 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, options *Lo
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,9 +109,10 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 
 // NewListPager - Lists Defender for IoT locations associated with the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
 func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LocationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -151,7 +153,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, options *L
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

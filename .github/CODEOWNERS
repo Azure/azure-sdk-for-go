@@ -6,7 +6,7 @@
 ################
 
 # Git Hub integration and bot rules
-/.github/                @AlexGhiondea @jsquire @jhendrixMSFT @rickwinter
+/.github/                    @jsquire @jhendrixMSFT @rickwinter @ronniegeraghty
 
 #############
 # SDK (track2)
@@ -29,7 +29,7 @@
 /sdk/internal/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %App Configuration
-/sdk/appconfig/               @antkmsft @jhendrixMSFT
+/sdk/data/azappconfig/        @antkmsft @jhendrixMSFT
 
 # PRLabel: %Cosmos
 /sdk/data/azcosmos/           @ealsur @kirankumarkolli

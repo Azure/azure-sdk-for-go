@@ -23,13 +23,13 @@ func ExampleMonitorClient_VMHostPayload() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewMonitorClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.VMHostPayload(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
+		"myResourceGroup",
+		"myMonitor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,18 +45,17 @@ func ExampleMonitorClient_NewListVMHostsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewMonitorClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVMHostsPager("<resource-group-name>",
-		"<monitor-name>",
+	pager := client.NewListVMHostsPager("myResourceGroup",
+		"myMonitor",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

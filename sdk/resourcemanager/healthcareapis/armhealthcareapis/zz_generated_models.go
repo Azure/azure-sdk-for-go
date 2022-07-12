@@ -247,6 +247,18 @@ type FhirServiceExportConfiguration struct {
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
 }
 
+// FhirServiceImportConfiguration - Import operation configuration information
+type FhirServiceImportConfiguration struct {
+	// If the import operation is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// If the FHIR service is in InitialImportMode.
+	InitialImportMode *bool `json:"initialImportMode,omitempty"`
+
+	// The name of the default integration storage account.
+	IntegrationDataStore *string `json:"integrationDataStore,omitempty"`
+}
+
 // FhirServicePatchResource - FhirService patch properties
 type FhirServicePatchResource struct {
 	// Setting indicating whether the service has a managed identity associated with it.
@@ -272,6 +284,9 @@ type FhirServiceProperties struct {
 
 	// Fhir Service export configuration.
 	ExportConfiguration *FhirServiceExportConfiguration `json:"exportConfiguration,omitempty"`
+
+	// Fhir Service import configuration.
+	ImportConfiguration *FhirServiceImportConfiguration `json:"importConfiguration,omitempty"`
 
 	// Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
@@ -928,6 +943,18 @@ type ServiceExportConfigurationInfo struct {
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
 }
 
+// ServiceImportConfigurationInfo - Import operation configuration information
+type ServiceImportConfigurationInfo struct {
+	// If the import operation is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// If the FHIR service is in InitialImportMode.
+	InitialImportMode *bool `json:"initialImportMode,omitempty"`
+
+	// The name of the default integration storage account.
+	IntegrationDataStore *string `json:"integrationDataStore,omitempty"`
+}
+
 // ServiceManagedIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ServiceManagedIdentity struct {
 	// Setting indicating whether the service has a managed identity associated with it.
@@ -1096,6 +1123,9 @@ type ServicesProperties struct {
 
 	// The settings for the export operation of the service instance.
 	ExportConfiguration *ServiceExportConfigurationInfo `json:"exportConfiguration,omitempty"`
+
+	// The settings for the import operation of the service instance.
+	ImportConfiguration *ServiceImportConfigurationInfo `json:"importConfiguration,omitempty"`
 
 	// The list of private endpoint connections that are set up for this resource.
 	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`

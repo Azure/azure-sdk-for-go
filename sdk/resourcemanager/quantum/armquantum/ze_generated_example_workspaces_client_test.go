@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum"
@@ -26,13 +24,13 @@ func ExampleWorkspacesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armquantum.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armquantum.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"quantumResourcegroup",
+		"quantumworkspace1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,37 +46,37 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armquantum.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armquantum.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"quantumResourcegroup",
+		"quantumworkspace1",
 		armquantum.Workspace{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armquantum.WorkspaceResourceProperties{
 				Providers: []*armquantum.Provider{
 					{
-						ProviderID:  to.Ptr("<provider-id>"),
-						ProviderSKU: to.Ptr("<provider-sku>"),
+						ProviderID:  to.Ptr("Honeywell"),
+						ProviderSKU: to.Ptr("Basic"),
 					},
 					{
-						ProviderID:  to.Ptr("<provider-id>"),
-						ProviderSKU: to.Ptr("<provider-sku>"),
+						ProviderID:  to.Ptr("IonQ"),
+						ProviderSKU: to.Ptr("Basic"),
 					},
 					{
-						ProviderID:  to.Ptr("<provider-id>"),
-						ProviderSKU: to.Ptr("<provider-sku>"),
+						ProviderID:  to.Ptr("OneQBit"),
+						ProviderSKU: to.Ptr("Basic"),
 					}},
-				StorageAccount: to.Ptr("<storage-account>"),
+				StorageAccount: to.Ptr("/subscriptions/1C4B2828-7D49-494F-933D-061373BE28C2/resourceGroups/quantumResourcegroup/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
 			},
 		},
-		&armquantum.WorkspacesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -93,13 +91,13 @@ func ExampleWorkspacesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armquantum.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armquantum.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"quantumResourcegroup",
+		"quantumworkspace1",
 		armquantum.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -121,18 +119,18 @@ func ExampleWorkspacesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armquantum.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armquantum.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		&armquantum.WorkspacesClientBeginDeleteOptions{ResumeToken: ""})
+		"quantumResourcegroup",
+		"quantumworkspace1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -145,7 +143,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armquantum.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armquantum.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -154,7 +152,6 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -170,17 +167,16 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armquantum.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armquantum.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("quantumResourcegroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

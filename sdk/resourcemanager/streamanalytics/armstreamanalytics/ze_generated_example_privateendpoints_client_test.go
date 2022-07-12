@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
@@ -26,14 +24,14 @@ func ExamplePrivateEndpointsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewPrivateEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewPrivateEndpointsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<private-endpoint-name>",
+		"sjrg",
+		"testcluster",
+		"testpe",
 		armstreamanalytics.PrivateEndpoint{
 			Properties: &armstreamanalytics.PrivateEndpointProperties{
 				ManualPrivateLinkServiceConnections: []*armstreamanalytics.PrivateLinkServiceConnection{
@@ -41,7 +39,7 @@ func ExamplePrivateEndpointsClient_CreateOrUpdate() {
 						Properties: &armstreamanalytics.PrivateLinkServiceConnectionProperties{
 							GroupIDs: []*string{
 								to.Ptr("groupIdFromResource")},
-							PrivateLinkServiceID: to.Ptr("<private-link-service-id>"),
+							PrivateLinkServiceID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls"),
 						},
 					}},
 			},
@@ -63,14 +61,14 @@ func ExamplePrivateEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewPrivateEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewPrivateEndpointsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<private-endpoint-name>",
+		"sjrg",
+		"testcluster",
+		"testpe",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -86,19 +84,19 @@ func ExamplePrivateEndpointsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewPrivateEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewPrivateEndpointsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<private-endpoint-name>",
-		&armstreamanalytics.PrivateEndpointsClientBeginDeleteOptions{ResumeToken: ""})
+		"sjrg",
+		"testcluster",
+		"testpe",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -111,18 +109,17 @@ func ExamplePrivateEndpointsClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewPrivateEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewPrivateEndpointsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("<resource-group-name>",
-		"<cluster-name>",
+	pager := client.NewListByClusterPager("sjrg",
+		"testcluster",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

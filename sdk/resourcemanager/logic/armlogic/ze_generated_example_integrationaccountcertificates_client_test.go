@@ -24,18 +24,17 @@ func ExampleIntegrationAccountCertificatesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<integration-account-name>",
+	pager := client.NewListPager("testResourceGroup",
+		"testIntegrationAccount",
 		&armlogic.IntegrationAccountCertificatesClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExampleIntegrationAccountCertificatesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<certificate-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testCertificate",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,25 +73,25 @@ func ExampleIntegrationAccountCertificatesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<certificate-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testCertificate",
 		armlogic.IntegrationAccountCertificate{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("brazilsouth"),
 			Properties: &armlogic.IntegrationAccountCertificateProperties{
 				Key: &armlogic.KeyVaultKeyReference{
-					KeyName: to.Ptr("<key-name>"),
+					KeyName: to.Ptr("<keyName>"),
 					KeyVault: &armlogic.KeyVaultKeyReferenceKeyVault{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testResourceGroup/providers/microsoft.keyvault/vaults/<keyVaultName>"),
 					},
-					KeyVersion: to.Ptr("<key-version>"),
+					KeyVersion: to.Ptr("87d9764197604449b9b8eb7bd8710868"),
 				},
-				PublicCertificate: to.Ptr("<public-certificate>"),
+				PublicCertificate: to.Ptr("<publicCertificateValue>"),
 			},
 		},
 		nil)
@@ -110,14 +109,14 @@ func ExampleIntegrationAccountCertificatesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<certificate-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testCertificate",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

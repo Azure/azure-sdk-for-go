@@ -24,18 +24,18 @@ func ExampleConfigurationAssignmentsClient_GetParent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationAssignmentsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetParent(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-parent-type>",
-		"<resource-parent-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<configuration-assignment-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"virtualMachines",
+		"smdvm1",
+		"workervmPolicy",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,21 +51,21 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdateParent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationAssignmentsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateParent(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-parent-type>",
-		"<resource-parent-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<configuration-assignment-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"virtualMachines",
+		"smdvm1",
+		"workervmPolicy",
 		armmaintenance.ConfigurationAssignment{
 			Properties: &armmaintenance.ConfigurationAssignmentProperties{
-				MaintenanceConfigurationID: to.Ptr("<maintenance-configuration-id>"),
+				MaintenanceConfigurationID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/policy1"),
 			},
 		},
 		nil)
@@ -83,18 +83,18 @@ func ExampleConfigurationAssignmentsClient_DeleteParent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationAssignmentsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteParent(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-parent-type>",
-		"<resource-parent-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<configuration-assignment-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"virtualMachines",
+		"smdvm1",
+		"workervmConfiguration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -110,16 +110,16 @@ func ExampleConfigurationAssignmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationAssignmentsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<configuration-assignment-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"workervmConfiguration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -135,19 +135,19 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationAssignmentsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<configuration-assignment-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"workervmConfiguration",
 		armmaintenance.ConfigurationAssignment{
 			Properties: &armmaintenance.ConfigurationAssignmentProperties{
-				MaintenanceConfigurationID: to.Ptr("<maintenance-configuration-id>"),
+				MaintenanceConfigurationID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 			},
 		},
 		nil)
@@ -165,16 +165,16 @@ func ExampleConfigurationAssignmentsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationAssignmentsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<configuration-assignment-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"workervmConfiguration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -190,22 +190,21 @@ func ExampleConfigurationAssignmentsClient_NewListParentPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationAssignmentsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListParentPager("<resource-group-name>",
-		"<provider-name>",
-		"<resource-parent-type>",
-		"<resource-parent-name>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListParentPager("examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"virtualMachines",
+		"smdtestvm1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -221,20 +220,19 @@ func ExampleConfigurationAssignmentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationAssignmentsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListPager("examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -18,8 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-var defaultTelemetry = "azsdk-go-" + shared.Module + "/" + shared.Version + " " + platformInfo
-
 func TestPolicyTelemetryDefault(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -33,7 +31,7 @@ func TestPolicyTelemetryDefault(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != "azsdk-go-test/v1.2.3 "+defaultTelemetry {
+	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != "azsdk-go-test/v1.2.3 "+platformInfo {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -53,7 +51,7 @@ func TestPolicyTelemetryPreserveExisting(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != fmt.Sprintf("%s %s", "azsdk-go-test/v1.2.3 "+defaultTelemetry, otherValue) {
+	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != fmt.Sprintf("%s %s", "azsdk-go-test/v1.2.3 "+platformInfo, otherValue) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -72,7 +70,7 @@ func TestPolicyTelemetryWithAppID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != fmt.Sprintf("%s %s", appID, "azsdk-go-test/v1.2.3 "+defaultTelemetry) {
+	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != fmt.Sprintf("%s %s", appID, "azsdk-go-test/v1.2.3 "+platformInfo) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -92,7 +90,7 @@ func TestPolicyTelemetryWithAppIDSanitized(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	const newAppID = "This/will/get/the/spaces"
-	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != fmt.Sprintf("%s %s", newAppID, "azsdk-go-test/v1.2.3 "+defaultTelemetry) {
+	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != fmt.Sprintf("%s %s", newAppID, "azsdk-go-test/v1.2.3 "+platformInfo) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -113,7 +111,7 @@ func TestPolicyTelemetryPreserveExistingWithAppID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != fmt.Sprintf("%s %s %s", appID, "azsdk-go-test/v1.2.3 "+defaultTelemetry, otherValue) {
+	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != fmt.Sprintf("%s %s %s", appID, "azsdk-go-test/v1.2.3 "+platformInfo, otherValue) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }

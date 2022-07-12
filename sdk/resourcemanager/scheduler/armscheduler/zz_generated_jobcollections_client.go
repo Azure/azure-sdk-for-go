@@ -38,7 +38,7 @@ func NewJobCollectionsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewJobCollectionsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Provisions a new job collection or updates an existing job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobCollection - The job collection definition.
@@ -98,7 +99,7 @@ func (client *JobCollectionsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, runtime.MarshalAsJSON(req, jobCollection)
 }
 
@@ -113,24 +114,26 @@ func (client *JobCollectionsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // BeginDelete - Deletes a job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // options - JobCollectionsClientBeginDeleteOptions contains the optional parameters for the JobCollectionsClient.BeginDelete
 // method.
-func (client *JobCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDeleteOptions) (*armruntime.Poller[JobCollectionsClientDeleteResponse], error) {
+func (client *JobCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDeleteOptions) (*runtime.Poller[JobCollectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, jobCollectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobCollectionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobCollectionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobCollectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobCollectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 func (client *JobCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, jobCollectionName, options)
 	if err != nil {
@@ -173,24 +176,26 @@ func (client *JobCollectionsClient) deleteCreateRequest(ctx context.Context, res
 
 // BeginDisable - Disables all of the jobs in the job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // options - JobCollectionsClientBeginDisableOptions contains the optional parameters for the JobCollectionsClient.BeginDisable
 // method.
-func (client *JobCollectionsClient) BeginDisable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDisableOptions) (*armruntime.Poller[JobCollectionsClientDisableResponse], error) {
+func (client *JobCollectionsClient) BeginDisable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDisableOptions) (*runtime.Poller[JobCollectionsClientDisableResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.disable(ctx, resourceGroupName, jobCollectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobCollectionsClientDisableResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobCollectionsClientDisableResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobCollectionsClientDisableResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobCollectionsClientDisableResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Disable - Disables all of the jobs in the job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 func (client *JobCollectionsClient) disable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginDisableOptions) (*http.Response, error) {
 	req, err := client.disableCreateRequest(ctx, resourceGroupName, jobCollectionName, options)
 	if err != nil {
@@ -233,24 +238,26 @@ func (client *JobCollectionsClient) disableCreateRequest(ctx context.Context, re
 
 // BeginEnable - Enables all of the jobs in the job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // options - JobCollectionsClientBeginEnableOptions contains the optional parameters for the JobCollectionsClient.BeginEnable
 // method.
-func (client *JobCollectionsClient) BeginEnable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginEnableOptions) (*armruntime.Poller[JobCollectionsClientEnableResponse], error) {
+func (client *JobCollectionsClient) BeginEnable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginEnableOptions) (*runtime.Poller[JobCollectionsClientEnableResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.enable(ctx, resourceGroupName, jobCollectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobCollectionsClientEnableResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobCollectionsClientEnableResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobCollectionsClientEnableResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobCollectionsClientEnableResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Enable - Enables all of the jobs in the job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 func (client *JobCollectionsClient) enable(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobCollectionsClientBeginEnableOptions) (*http.Response, error) {
 	req, err := client.enableCreateRequest(ctx, resourceGroupName, jobCollectionName, options)
 	if err != nil {
@@ -293,6 +300,7 @@ func (client *JobCollectionsClient) enableCreateRequest(ctx context.Context, res
 
 // Get - Gets a job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // options - JobCollectionsClientGetOptions contains the optional parameters for the JobCollectionsClient.Get method.
@@ -333,7 +341,7 @@ func (client *JobCollectionsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -348,11 +356,12 @@ func (client *JobCollectionsClient) getHandleResponse(resp *http.Response) (JobC
 
 // NewListByResourceGroupPager - Gets all job collections under specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // options - JobCollectionsClientListByResourceGroupOptions contains the optional parameters for the JobCollectionsClient.ListByResourceGroup
 // method.
 func (client *JobCollectionsClient) NewListByResourceGroupPager(resourceGroupName string, options *JobCollectionsClientListByResourceGroupOptions) *runtime.Pager[JobCollectionsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobCollectionsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobCollectionsClientListByResourceGroupResponse]{
 		More: func(page JobCollectionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -397,7 +406,7 @@ func (client *JobCollectionsClient) listByResourceGroupCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -412,10 +421,11 @@ func (client *JobCollectionsClient) listByResourceGroupHandleResponse(resp *http
 
 // NewListBySubscriptionPager - Gets all job collections under specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // options - JobCollectionsClientListBySubscriptionOptions contains the optional parameters for the JobCollectionsClient.ListBySubscription
 // method.
 func (client *JobCollectionsClient) NewListBySubscriptionPager(options *JobCollectionsClientListBySubscriptionOptions) *runtime.Pager[JobCollectionsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobCollectionsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobCollectionsClientListBySubscriptionResponse]{
 		More: func(page JobCollectionsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -456,7 +466,7 @@ func (client *JobCollectionsClient) listBySubscriptionCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -471,6 +481,7 @@ func (client *JobCollectionsClient) listBySubscriptionHandleResponse(resp *http.
 
 // Patch - Patches an existing job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobCollection - The job collection definition.
@@ -512,7 +523,7 @@ func (client *JobCollectionsClient) patchCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, runtime.MarshalAsJSON(req, jobCollection)
 }
 

@@ -437,18 +437,27 @@ func (client DomainEventSubscriptionsClient) GetFullURLResponder(resp *http.Resp
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription.
 // domainName - name of the domain.
-func (client DomainEventSubscriptionsClient) List(ctx context.Context, resourceGroupName string, domainName string) (result EventSubscriptionsListResult, err error) {
+// filter - the query used to filter the search results using OData syntax. Filtering is permitted on the
+// 'name' property only and with limited number of OData operations. These operations are: the 'contains'
+// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+// No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+// 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+// 'westus'.
+// top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
+// 100. If not specified, the default number of results to be returned is 20 items per page.
+func (client DomainEventSubscriptionsClient) List(ctx context.Context, resourceGroupName string, domainName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainEventSubscriptionsClient.List")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.eslr.Response.Response != nil {
+				sc = result.eslr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, resourceGroupName, domainName)
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, resourceGroupName, domainName, filter, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainEventSubscriptionsClient", "List", nil, "Failure preparing request")
 		return
@@ -456,14 +465,18 @@ func (client DomainEventSubscriptionsClient) List(ctx context.Context, resourceG
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.eslr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainEventSubscriptionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.eslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainEventSubscriptionsClient", "List", resp, "Failure responding to request")
+		return
+	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 		return
 	}
 
@@ -471,7 +484,7 @@ func (client DomainEventSubscriptionsClient) List(ctx context.Context, resourceG
 }
 
 // ListPreparer prepares the List request.
-func (client DomainEventSubscriptionsClient) ListPreparer(ctx context.Context, resourceGroupName string, domainName string) (*http.Request, error) {
+func (client DomainEventSubscriptionsClient) ListPreparer(ctx context.Context, resourceGroupName string, domainName string, filter string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -481,6 +494,12 @@ func (client DomainEventSubscriptionsClient) ListPreparer(ctx context.Context, r
 	const APIVersion = "2021-10-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -506,6 +525,43 @@ func (client DomainEventSubscriptionsClient) ListResponder(resp *http.Response) 
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client DomainEventSubscriptionsClient) listNextResults(ctx context.Context, lastResults EventSubscriptionsListResult) (result EventSubscriptionsListResult, err error) {
+	req, err := lastResults.eventSubscriptionsListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "eventgrid.DomainEventSubscriptionsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "eventgrid.DomainEventSubscriptionsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.DomainEventSubscriptionsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DomainEventSubscriptionsClient) ListComplete(ctx context.Context, resourceGroupName string, domainName string, filter string, top *int32) (result EventSubscriptionsListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainEventSubscriptionsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List(ctx, resourceGroupName, domainName, filter, top)
 	return
 }
 

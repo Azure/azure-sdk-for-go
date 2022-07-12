@@ -28,13 +28,13 @@ func ExampleBaselinesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-uri>",
+	pager := client.NewListPager("subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1",
 		&armmonitor.BaselinesClientListOptions{Metricnames: nil,
 			Metricnamespace: nil,
-			Timespan:        to.Ptr("<timespan>"),
-			Interval:        to.Ptr("<interval>"),
-			Aggregation:     to.Ptr("<aggregation>"),
-			Sensitivities:   to.Ptr("<sensitivities>"),
+			Timespan:        to.Ptr("2019-03-12T11:00:00.000Z/2019-03-12T12:00:00.000Z"),
+			Interval:        to.Ptr("PT1H"),
+			Aggregation:     to.Ptr("average"),
+			Sensitivities:   to.Ptr("Low,Medium"),
 			Filter:          nil,
 			ResultType:      nil,
 		})
@@ -42,7 +42,6 @@ func ExampleBaselinesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

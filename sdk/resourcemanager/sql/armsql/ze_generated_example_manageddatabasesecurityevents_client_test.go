@@ -24,23 +24,22 @@ func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabaseSecurityEventsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseSecurityEventsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
-		&armsql.ManagedDatabaseSecurityEventsClientListByDatabaseOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListByDatabasePager("testrg",
+		"testcl",
+		"database1",
+		&armsql.ManagedDatabaseSecurityEventsClientListByDatabaseOptions{Filter: to.Ptr("ShowServerRecords eq true"),
 			Skip:      to.Ptr[int32](0),
 			Top:       to.Ptr[int32](1),
-			Skiptoken: to.Ptr("<skiptoken>"),
+			Skiptoken: to.Ptr("eyJCbG9iTmFtZURhdGVUaW1lIjoiXC9EYXRlKDE1MTIyODg4MTIwMTArMDIwMClcLyIsIkJsb2JOYW1lUm9sbG92ZXJJbmRleCI6IjAiLCJFbmREYXRlIjoiXC9EYXRlKDE1MTI0NjYyMDA1MjkpXC8iLCJJc1NraXBUb2tlblNldCI6ZmFsc2UsIklzVjJCbG9iVGltZUZvcm1hdCI6dHJ1ZSwiU2hvd1NlcnZlclJlY29yZHMiOmZhbHNlLCJTa2lwVmFsdWUiOjAsIlRha2VWYWx1ZSI6MTB9"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

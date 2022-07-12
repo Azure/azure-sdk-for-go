@@ -36,7 +36,7 @@ func NewRoleAssignmentsClient(credential azcore.TokenCredential, options *arm.Cl
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewRoleAssignmentsClient(credential azcore.TokenCredential, options *arm.Cl
 // DeleteByBillingAccount - Deletes a role assignment for the caller on a billing account. The operation is supported for
 // billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
 // options - RoleAssignmentsClientDeleteByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByBillingAccount
@@ -91,7 +92,7 @@ func (client *RoleAssignmentsClient) deleteByBillingAccountCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,6 +108,7 @@ func (client *RoleAssignmentsClient) deleteByBillingAccountHandleResponse(resp *
 // DeleteByBillingProfile - Deletes a role assignment for the caller on a billing profile. The operation is supported for
 // billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
@@ -149,7 +151,7 @@ func (client *RoleAssignmentsClient) deleteByBillingProfileCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -165,6 +167,7 @@ func (client *RoleAssignmentsClient) deleteByBillingProfileHandleResponse(resp *
 // DeleteByInvoiceSection - Deletes a role assignment for the caller on an invoice section. The operation is supported for
 // billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
@@ -212,7 +215,7 @@ func (client *RoleAssignmentsClient) deleteByInvoiceSectionCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -228,6 +231,7 @@ func (client *RoleAssignmentsClient) deleteByInvoiceSectionHandleResponse(resp *
 // GetByBillingAccount - Gets a role assignment for the caller on a billing account. The operation is supported for billing
 // accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
 // options - RoleAssignmentsClientGetByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.GetByBillingAccount
@@ -265,7 +269,7 @@ func (client *RoleAssignmentsClient) getByBillingAccountCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -281,6 +285,7 @@ func (client *RoleAssignmentsClient) getByBillingAccountHandleResponse(resp *htt
 // GetByBillingProfile - Gets a role assignment for the caller on a billing profile. The operation is supported for billing
 // accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
@@ -323,7 +328,7 @@ func (client *RoleAssignmentsClient) getByBillingProfileCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -339,6 +344,7 @@ func (client *RoleAssignmentsClient) getByBillingProfileHandleResponse(resp *htt
 // GetByInvoiceSection - Gets a role assignment for the caller on an invoice section. The operation is supported for billing
 // accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
@@ -386,7 +392,7 @@ func (client *RoleAssignmentsClient) getByInvoiceSectionCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -402,11 +408,12 @@ func (client *RoleAssignmentsClient) getByInvoiceSectionHandleResponse(resp *htt
 // NewListByBillingAccountPager - Lists the role assignments for the caller on a billing account. The operation is supported
 // for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - RoleAssignmentsClientListByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.ListByBillingAccount
 // method.
 func (client *RoleAssignmentsClient) NewListByBillingAccountPager(billingAccountName string, options *RoleAssignmentsClientListByBillingAccountOptions) *runtime.Pager[RoleAssignmentsClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RoleAssignmentsClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListByBillingAccountResponse]{
 		More: func(page RoleAssignmentsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -447,7 +454,7 @@ func (client *RoleAssignmentsClient) listByBillingAccountCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -463,12 +470,13 @@ func (client *RoleAssignmentsClient) listByBillingAccountHandleResponse(resp *ht
 // NewListByBillingProfilePager - Lists the role assignments for the caller on a billing profile. The operation is supported
 // for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - RoleAssignmentsClientListByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.ListByBillingProfile
 // method.
 func (client *RoleAssignmentsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *RoleAssignmentsClientListByBillingProfileOptions) *runtime.Pager[RoleAssignmentsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RoleAssignmentsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListByBillingProfileResponse]{
 		More: func(page RoleAssignmentsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -513,7 +521,7 @@ func (client *RoleAssignmentsClient) listByBillingProfileCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -529,13 +537,14 @@ func (client *RoleAssignmentsClient) listByBillingProfileHandleResponse(resp *ht
 // NewListByInvoiceSectionPager - Lists the role assignments for the caller on an invoice section. The operation is supported
 // for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // options - RoleAssignmentsClientListByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.ListByInvoiceSection
 // method.
 func (client *RoleAssignmentsClient) NewListByInvoiceSectionPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *RoleAssignmentsClientListByInvoiceSectionOptions) *runtime.Pager[RoleAssignmentsClientListByInvoiceSectionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RoleAssignmentsClientListByInvoiceSectionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListByInvoiceSectionResponse]{
 		More: func(page RoleAssignmentsClientListByInvoiceSectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -584,7 +593,7 @@ func (client *RoleAssignmentsClient) listByInvoiceSectionCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

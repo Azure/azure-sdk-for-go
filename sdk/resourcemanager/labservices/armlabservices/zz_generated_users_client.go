@@ -38,7 +38,7 @@ func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,28 +56,30 @@ func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // BeginCreateOrUpdate - Operation to create or update a lab user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // userName - The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
 // body - The request body.
 // options - UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate
 // method.
-func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body User, options *UsersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[UsersClientCreateOrUpdateResponse], error) {
+func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body User, options *UsersClientBeginCreateOrUpdateOptions) (*runtime.Poller[UsersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[UsersClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaOriginalURI,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[UsersClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[UsersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[UsersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Operation to create or update a lab user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *UsersClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body User, options *UsersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, userName, body, options)
 	if err != nil {
@@ -119,32 +121,34 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Operation to delete a user resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // userName - The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
 // options - UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
-func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, options *UsersClientBeginDeleteOptions) (*armruntime.Poller[UsersClientDeleteResponse], error) {
+func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, options *UsersClientBeginDeleteOptions) (*runtime.Poller[UsersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[UsersClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[UsersClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[UsersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[UsersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Operation to delete a user resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *UsersClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, userName string, options *UsersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, userName, options)
 	if err != nil {
@@ -186,12 +190,13 @@ func (client *UsersClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns the properties of a lab user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // userName - The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -237,7 +242,7 @@ func (client *UsersClient) getCreateRequest(ctx context.Context, resourceGroupNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,27 +257,29 @@ func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGe
 
 // BeginInvite - Operation to invite a user to a lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // userName - The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
 // body - The request body.
 // options - UsersClientBeginInviteOptions contains the optional parameters for the UsersClient.BeginInvite method.
-func (client *UsersClient) BeginInvite(ctx context.Context, resourceGroupName string, labName string, userName string, body InviteBody, options *UsersClientBeginInviteOptions) (*armruntime.Poller[UsersClientInviteResponse], error) {
+func (client *UsersClient) BeginInvite(ctx context.Context, resourceGroupName string, labName string, userName string, body InviteBody, options *UsersClientBeginInviteOptions) (*runtime.Poller[UsersClientInviteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.invite(ctx, resourceGroupName, labName, userName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[UsersClientInviteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[UsersClientInviteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[UsersClientInviteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[UsersClientInviteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Invite - Operation to invite a user to a lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *UsersClient) invite(ctx context.Context, resourceGroupName string, labName string, userName string, body InviteBody, options *UsersClientBeginInviteOptions) (*http.Response, error) {
 	req, err := client.inviteCreateRequest(ctx, resourceGroupName, labName, userName, body, options)
 	if err != nil {
@@ -314,17 +321,18 @@ func (client *UsersClient) inviteCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // NewListByLabPager - Returns a list of all users for a lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // options - UsersClientListByLabOptions contains the optional parameters for the UsersClient.ListByLab method.
 func (client *UsersClient) NewListByLabPager(resourceGroupName string, labName string, options *UsersClientListByLabOptions) *runtime.Pager[UsersClientListByLabResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UsersClientListByLabResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UsersClientListByLabResponse]{
 		More: func(page UsersClientListByLabResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -376,7 +384,7 @@ func (client *UsersClient) listByLabCreateRequest(ctx context.Context, resourceG
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -391,27 +399,29 @@ func (client *UsersClient) listByLabHandleResponse(resp *http.Response) (UsersCl
 
 // BeginUpdate - Operation to update a lab user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // userName - The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
 // body - The request body.
 // options - UsersClientBeginUpdateOptions contains the optional parameters for the UsersClient.BeginUpdate method.
-func (client *UsersClient) BeginUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body UserUpdate, options *UsersClientBeginUpdateOptions) (*armruntime.Poller[UsersClientUpdateResponse], error) {
+func (client *UsersClient) BeginUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, body UserUpdate, options *UsersClientBeginUpdateOptions) (*runtime.Poller[UsersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, labName, userName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[UsersClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[UsersClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[UsersClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[UsersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Operation to update a lab user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *UsersClient) update(ctx context.Context, resourceGroupName string, labName string, userName string, body UserUpdate, options *UsersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, userName, body, options)
 	if err != nil {
@@ -453,6 +463,6 @@ func (client *UsersClient) updateCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

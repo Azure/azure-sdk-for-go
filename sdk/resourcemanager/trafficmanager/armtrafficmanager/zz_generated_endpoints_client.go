@@ -39,7 +39,7 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Create or update a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-08-01
 // resourceGroupName - The name of the resource group containing the Traffic Manager endpoint to be created or updated.
 // profileName - The name of the Traffic Manager profile.
 // endpointType - The type of the Traffic Manager endpoint to be created or updated.
@@ -109,7 +110,7 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -124,6 +125,7 @@ func (client *EndpointsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Deletes a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-08-01
 // resourceGroupName - The name of the resource group containing the Traffic Manager endpoint to be deleted.
 // profileName - The name of the Traffic Manager profile.
 // endpointType - The type of the Traffic Manager endpoint to be deleted.
@@ -174,7 +176,7 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -189,6 +191,7 @@ func (client *EndpointsClient) deleteHandleResponse(resp *http.Response) (Endpoi
 
 // Get - Gets a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-08-01
 // resourceGroupName - The name of the resource group containing the Traffic Manager endpoint.
 // profileName - The name of the Traffic Manager profile.
 // endpointType - The type of the Traffic Manager endpoint.
@@ -239,7 +242,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -254,6 +257,7 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 
 // Update - Update a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-08-01
 // resourceGroupName - The name of the resource group containing the Traffic Manager endpoint to be updated.
 // profileName - The name of the Traffic Manager profile.
 // endpointType - The type of the Traffic Manager endpoint to be updated.
@@ -305,7 +309,7 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

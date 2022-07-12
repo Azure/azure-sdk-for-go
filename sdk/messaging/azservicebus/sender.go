@@ -9,8 +9,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/Azure/go-amqp"
 )
 
 type (
@@ -33,6 +33,7 @@ type MessageBatchOptions struct {
 // NewMessageBatch can be used to create a batch that contain multiple
 // messages. Sending a batch of messages is more efficient than sending the
 // messages one at a time.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptions) (*MessageBatch, error) {
 	var batch *MessageBatch
 
@@ -48,7 +49,7 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 	}, s.retryOptions)
 
 	if err != nil {
-		return nil, err
+		return nil, internal.TransformError(err)
 	}
 
 	return batch, nil
@@ -60,10 +61,22 @@ type SendMessageOptions struct {
 }
 
 // SendMessage sends a Message to a queue or topic.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (s *Sender) SendMessage(ctx context.Context, message *Message, options *SendMessageOptions) error {
-	return s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		return lwid.Sender.Send(ctx, message.toAMQPMessage())
-	}, RetryOptions(s.retryOptions))
+	return s.sendMessage(ctx, message)
+}
+
+// SendAMQPAnnotatedMessageOptions contains optional parameters for the SendAMQPAnnotatedMessage function.
+type SendAMQPAnnotatedMessageOptions struct {
+	// For future expansion
+}
+
+// SendAMQPAnnotatedMessage sends an AMQPMessage to a queue or topic.
+// Using an AMQPMessage allows for advanced use cases, like payload encoding, as well as better
+// interoperability with pure AMQP clients.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+func (s *Sender) SendAMQPAnnotatedMessage(ctx context.Context, message *AMQPAnnotatedMessage, options *SendAMQPAnnotatedMessageOptions) error {
+	return s.sendMessage(ctx, message)
 }
 
 // SendMessageBatchOptions contains optional parameters for the SendMessageBatch function.
@@ -73,10 +86,13 @@ type SendMessageBatchOptions struct {
 
 // SendMessageBatch sends a MessageBatch to a queue or topic.
 // Message batches can be created using `Sender.NewMessageBatch`.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, options *SendMessageBatchOptions) error {
-	return s.links.Retry(ctx, EventSender, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := s.links.Retry(ctx, EventSender, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return lwid.Sender.Send(ctx, batch.toAMQPMessage())
 	}, RetryOptions(s.retryOptions))
+
+	return internal.TransformError(err)
 }
 
 // ScheduleMessagesOptions contains optional parameters for the ScheduleMessages function.
@@ -87,14 +103,44 @@ type ScheduleMessagesOptions struct {
 // ScheduleMessages schedules a slice of Messages to appear on Service Bus Queue/Subscription at a later time.
 // Returns the sequence numbers of the messages that were scheduled.  Messages that haven't been
 // delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, scheduledEnqueueTime time.Time, options *ScheduleMessagesOptions) ([]int64, error) {
+	return scheduleMessages(ctx, s.links, s.retryOptions, messages, scheduledEnqueueTime)
+}
+
+// ScheduleAMQPAnnotatedMessagesOptions contains optional parameters for the ScheduleAMQPAnnotatedMessages function.
+type ScheduleAMQPAnnotatedMessagesOptions struct {
+	// For future expansion
+}
+
+// ScheduleAMQPAnnotatedMessages schedules a slice of Messages to appear on Service Bus Queue/Subscription at a later time.
+// Returns the sequence numbers of the messages that were scheduled.  Messages that haven't been
+// delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+func (s *Sender) ScheduleAMQPAnnotatedMessages(ctx context.Context, messages []*AMQPAnnotatedMessage, scheduledEnqueueTime time.Time, options *ScheduleAMQPAnnotatedMessagesOptions) ([]int64, error) {
+	return scheduleMessages(ctx, s.links, s.retryOptions, messages, scheduledEnqueueTime)
+}
+
+func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, links internal.AMQPLinks, retryOptions RetryOptions, messages []T, scheduledEnqueueTime time.Time) ([]int64, error) {
 	var amqpMessages []*amqp.Message
 
 	for _, m := range messages {
 		amqpMessages = append(amqpMessages, m.toAMQPMessage())
 	}
 
-	return s.scheduleAMQPMessages(ctx, amqpMessages, scheduledEnqueueTime)
+	var sequenceNumbers []int64
+
+	err := links.Retry(ctx, EventSender, "ScheduleMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		sn, err := internal.ScheduleMessages(ctx, lwv.RPC, lwv.Sender.LinkName(), scheduledEnqueueTime, amqpMessages)
+
+		if err != nil {
+			return err
+		}
+		sequenceNumbers = sn
+		return nil
+	}, retryOptions)
+
+	return sequenceNumbers, internal.TransformError(err)
 }
 
 // MessageBatch changes
@@ -105,10 +151,13 @@ type CancelScheduledMessagesOptions struct {
 }
 
 // CancelScheduledMessages cancels multiple messages that were scheduled.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumbers []int64, options *CancelScheduledMessagesOptions) error {
-	return s.links.Retry(ctx, EventSender, "CancelScheduledMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		return internal.CancelScheduledMessages(ctx, lwv.RPC, sequenceNumbers)
+	err := s.links.Retry(ctx, EventSender, "CancelScheduledMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		return internal.CancelScheduledMessages(ctx, lwv.RPC, lwv.Sender.LinkName(), sequenceNumbers)
 	}, s.retryOptions)
+
+	return internal.TransformError(err)
 }
 
 // Close permanently closes the Sender.
@@ -117,27 +166,22 @@ func (s *Sender) Close(ctx context.Context) error {
 	return s.links.Close(ctx, true)
 }
 
-func (s *Sender) scheduleAMQPMessages(ctx context.Context, messages []*amqp.Message, scheduledEnqueueTime time.Time) ([]int64, error) {
-	var sequenceNumbers []int64
+func (s *Sender) sendMessage(ctx context.Context, message amqpCompatibleMessage) error {
+	err := s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		return lwid.Sender.Send(ctx, message.toAMQPMessage())
+	}, RetryOptions(s.retryOptions))
 
-	err := s.links.Retry(ctx, EventSender, "ScheduleMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		sn, err := internal.ScheduleMessages(ctx, lwv.RPC, scheduledEnqueueTime, messages)
-
-		if err != nil {
-			return err
-		}
-		sequenceNumbers = sn
-		return nil
-	}, s.retryOptions)
-
-	return sequenceNumbers, err
+	return internal.TransformError(err)
 }
 
 func (sender *Sender) createSenderLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
 	amqpSender, err := session.NewSender(
-		amqp.LinkSenderSettle(amqp.ModeMixed),
-		amqp.LinkReceiverSettle(amqp.ModeFirst),
-		amqp.LinkTargetAddress(sender.queueOrTopic))
+		ctx,
+		sender.queueOrTopic,
+		&amqp.SenderOptions{
+			SettlementMode:              amqp.ModeMixed.Ptr(),
+			RequestedReceiverSettleMode: amqp.ModeFirst.Ptr(),
+		})
 
 	if err != nil {
 		return nil, nil, err
@@ -166,4 +210,11 @@ func newSender(args newSenderArgs) (*Sender, error) {
 
 	sender.links = args.ns.NewAMQPLinks(args.queueOrTopic, sender.createSenderLink, internal.GetRecoveryKind)
 	return sender, nil
+}
+
+// amqpCompatibleMessage is implemented by all the messages that can be
+// converted to amqp.Message
+// Implemented by AMQPMessage, MessageBatch and Message.
+type amqpCompatibleMessage interface {
+	toAMQPMessage() *amqp.Message
 }

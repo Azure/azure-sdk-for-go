@@ -28,6 +28,16 @@ type AzureStackEdgeFormat struct {
 	Status *Status `json:"status,omitempty" azure:"ro"`
 }
 
+// GetDevicePropertiesFormat implements the DevicePropertiesFormatClassification interface for type AzureStackEdgeFormat.
+func (a *AzureStackEdgeFormat) GetDevicePropertiesFormat() *DevicePropertiesFormat {
+	return &DevicePropertiesFormat{
+		Status:            a.Status,
+		ProvisioningState: a.ProvisioningState,
+		DeviceType:        a.DeviceType,
+		NetworkFunctions:  a.NetworkFunctions,
+	}
+}
+
 // CustomProfile - Specifies the custom settings for the virtual machine.
 type CustomProfile struct {
 	// Path for metadata configuration.
@@ -105,6 +115,9 @@ type DevicePropertiesFormat struct {
 	// READ-ONLY; The current device status.
 	Status *Status `json:"status,omitempty" azure:"ro"`
 }
+
+// GetDevicePropertiesFormat implements the DevicePropertiesFormatClassification interface for type DevicePropertiesFormat.
+func (d *DevicePropertiesFormat) GetDevicePropertiesFormat() *DevicePropertiesFormat { return d }
 
 // DeviceRegistrationKey - The device registration key.
 type DeviceRegistrationKey struct {

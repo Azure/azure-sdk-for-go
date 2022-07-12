@@ -24,18 +24,17 @@ func ExampleAccessPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewAccessPoliciesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("testrg",
+		"testaccount2",
 		&armvideoanalyzer.AccessPoliciesClientListOptions{Top: to.Ptr[int32](2)})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExampleAccessPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewAccessPoliciesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<access-policy-name>",
+		"testrg",
+		"testaccount2",
+		"accessPolicyName1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,46 +73,46 @@ func ExampleAccessPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewAccessPoliciesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<access-policy-name>",
+		"testrg",
+		"testaccount2",
+		"accessPolicyName1",
 		armvideoanalyzer.AccessPolicyEntity{
 			Properties: &armvideoanalyzer.AccessPolicyProperties{
 				Authentication: &armvideoanalyzer.JwtAuthentication{
-					Type: to.Ptr("<type>"),
+					Type: to.Ptr("#Microsoft.VideoAnalyzer.JwtAuthentication"),
 					Audiences: []*string{
 						to.Ptr("audience1")},
 					Claims: []*armvideoanalyzer.TokenClaim{
 						{
-							Name:  to.Ptr("<name>"),
-							Value: to.Ptr("<value>"),
+							Name:  to.Ptr("claimname1"),
+							Value: to.Ptr("claimvalue1"),
 						},
 						{
-							Name:  to.Ptr("<name>"),
-							Value: to.Ptr("<value>"),
+							Name:  to.Ptr("claimname2"),
+							Value: to.Ptr("claimvalue2"),
 						}},
 					Issuers: []*string{
 						to.Ptr("issuer1"),
 						to.Ptr("issuer2")},
 					Keys: []armvideoanalyzer.TokenKeyClassification{
 						&armvideoanalyzer.RsaTokenKey{
-							Type: to.Ptr("<type>"),
-							Kid:  to.Ptr("<kid>"),
+							Type: to.Ptr("#Microsoft.VideoAnalyzer.RsaTokenKey"),
+							Kid:  to.Ptr("123"),
 							Alg:  to.Ptr(armvideoanalyzer.AccessPolicyRsaAlgoRS256),
-							E:    to.Ptr("<e>"),
-							N:    to.Ptr("<n>"),
+							E:    to.Ptr("ZLFzZTY0IQ=="),
+							N:    to.Ptr("YmFzZTY0IQ=="),
 						},
 						&armvideoanalyzer.EccTokenKey{
-							Type: to.Ptr("<type>"),
-							Kid:  to.Ptr("<kid>"),
+							Type: to.Ptr("#Microsoft.VideoAnalyzer.EccTokenKey"),
+							Kid:  to.Ptr("124"),
 							Alg:  to.Ptr(armvideoanalyzer.AccessPolicyEccAlgoES256),
-							X:    to.Ptr("<x>"),
-							Y:    to.Ptr("<y>"),
+							X:    to.Ptr("XX=="),
+							Y:    to.Ptr("YY=="),
 						}},
 				},
 			},
@@ -133,14 +132,14 @@ func ExampleAccessPoliciesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewAccessPoliciesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<access-policy-name>",
+		"testrg",
+		"testaccount2",
+		"accessPolicyName1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -154,46 +153,46 @@ func ExampleAccessPoliciesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewAccessPoliciesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<access-policy-name>",
+		"testrg",
+		"testaccount2",
+		"accessPolicyName1",
 		armvideoanalyzer.AccessPolicyEntity{
 			Properties: &armvideoanalyzer.AccessPolicyProperties{
 				Authentication: &armvideoanalyzer.JwtAuthentication{
-					Type: to.Ptr("<type>"),
+					Type: to.Ptr("#Microsoft.VideoAnalyzer.JwtAuthentication"),
 					Audiences: []*string{
 						to.Ptr("audience1")},
 					Claims: []*armvideoanalyzer.TokenClaim{
 						{
-							Name:  to.Ptr("<name>"),
-							Value: to.Ptr("<value>"),
+							Name:  to.Ptr("claimname1"),
+							Value: to.Ptr("claimvalue1"),
 						},
 						{
-							Name:  to.Ptr("<name>"),
-							Value: to.Ptr("<value>"),
+							Name:  to.Ptr("claimname2"),
+							Value: to.Ptr("claimvalue2"),
 						}},
 					Issuers: []*string{
 						to.Ptr("issuer1"),
 						to.Ptr("issuer2")},
 					Keys: []armvideoanalyzer.TokenKeyClassification{
 						&armvideoanalyzer.RsaTokenKey{
-							Type: to.Ptr("<type>"),
-							Kid:  to.Ptr("<kid>"),
+							Type: to.Ptr("#Microsoft.VideoAnalyzer.RsaTokenKey"),
+							Kid:  to.Ptr("123"),
 							Alg:  to.Ptr(armvideoanalyzer.AccessPolicyRsaAlgoRS256),
-							E:    to.Ptr("<e>"),
-							N:    to.Ptr("<n>"),
+							E:    to.Ptr("ZLFzZTY0IQ=="),
+							N:    to.Ptr("YmFzZTY0IQ=="),
 						},
 						&armvideoanalyzer.EccTokenKey{
-							Type: to.Ptr("<type>"),
-							Kid:  to.Ptr("<kid>"),
+							Type: to.Ptr("#Microsoft.VideoAnalyzer.EccTokenKey"),
+							Kid:  to.Ptr("124"),
 							Alg:  to.Ptr(armvideoanalyzer.AccessPolicyEccAlgoES256),
-							X:    to.Ptr("<x>"),
-							Y:    to.Ptr("<y>"),
+							X:    to.Ptr("XX=="),
+							Y:    to.Ptr("YY=="),
 						}},
 				},
 			},

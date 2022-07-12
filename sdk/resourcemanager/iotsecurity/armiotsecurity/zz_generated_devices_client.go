@@ -40,7 +40,7 @@ func NewDevicesClient(subscriptionID string, iotDefenderLocation string, credent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewDevicesClient(subscriptionID string, iotDefenderLocation string, credent
 
 // Get - Get device
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // deviceGroupName - Device group name
 // deviceID - Device Id
 // options - DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
@@ -103,7 +104,7 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceGroupNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,10 +119,11 @@ func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesClie
 
 // NewListPager - List devices
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // deviceGroupName - Device group name
 // options - DevicesClientListOptions contains the optional parameters for the DevicesClient.List method.
 func (client *DevicesClient) NewListPager(deviceGroupName string, options *DevicesClientListOptions) *runtime.Pager[DevicesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DevicesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DevicesClientListResponse]{
 		More: func(page DevicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -173,7 +175,7 @@ func (client *DevicesClient) listCreateRequest(ctx context.Context, deviceGroupN
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

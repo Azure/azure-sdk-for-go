@@ -38,7 +38,7 @@ func NewRegulatoryComplianceStandardsClient(subscriptionID string, credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRegulatoryComplianceStandardsClient(subscriptionID string, credential az
 
 // Get - Supported regulatory compliance details state for selected standard
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
 // regulatoryComplianceStandardName - Name of the regulatory compliance standard object
 // options - RegulatoryComplianceStandardsClientGetOptions contains the optional parameters for the RegulatoryComplianceStandardsClient.Get
 // method.
@@ -92,7 +93,7 @@ func (client *RegulatoryComplianceStandardsClient) getCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,10 +108,11 @@ func (client *RegulatoryComplianceStandardsClient) getHandleResponse(resp *http.
 
 // NewListPager - Supported regulatory compliance standards details and state
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
 // options - RegulatoryComplianceStandardsClientListOptions contains the optional parameters for the RegulatoryComplianceStandardsClient.List
 // method.
 func (client *RegulatoryComplianceStandardsClient) NewListPager(options *RegulatoryComplianceStandardsClientListOptions) *runtime.Pager[RegulatoryComplianceStandardsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegulatoryComplianceStandardsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegulatoryComplianceStandardsClientListResponse]{
 		More: func(page RegulatoryComplianceStandardsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -154,7 +156,7 @@ func (client *RegulatoryComplianceStandardsClient) listCreateRequest(ctx context
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

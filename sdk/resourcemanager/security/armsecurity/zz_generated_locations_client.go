@@ -38,7 +38,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Details of a specific location
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 func (client *LocationsClient) Get(ctx context.Context, ascLocation string, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
@@ -91,7 +92,7 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, ascLocation
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,9 +109,10 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 // is only one responsible location. The location in the response should be used to read or
 // write other resources in ASC according to their ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
 func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LocationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -151,7 +153,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, options *L
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -24,15 +24,15 @@ func ExampleSerialPortsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewSerialPortsClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource>",
+		"myResourceGroup",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"myVM",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,16 +48,16 @@ func ExampleSerialPortsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewSerialPortsClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource>",
-		"<serial-port>",
+		"myResourceGroup",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"myVM",
+		"0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,16 +73,16 @@ func ExampleSerialPortsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewSerialPortsClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource>",
-		"<serial-port>",
+		"myResourceGroup",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"myVM",
+		"0",
 		armserialconsole.SerialPort{
 			Properties: &armserialconsole.SerialPortProperties{
 				State: to.Ptr(armserialconsole.SerialPortStateEnabled),
@@ -101,16 +101,16 @@ func ExampleSerialPortsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewSerialPortsClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource>",
-		"<serial-port>",
+		"myResourceGroup",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"myVM",
+		"0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,7 +124,7 @@ func ExampleSerialPortsClient_ListBySubscriptions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewSerialPortsClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -144,16 +144,16 @@ func ExampleSerialPortsClient_Connect() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewSerialPortsClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Connect(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-type>",
-		"<parent-resource>",
-		"<serial-port>",
+		"myResourceGroup",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"myscaleset/virtualMachines/2",
+		"0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 )
@@ -25,7 +23,7 @@ func ExampleDeletedServicesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewDeletedServicesClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDeletedServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -34,7 +32,6 @@ func ExampleDeletedServicesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,13 +47,13 @@ func ExampleDeletedServicesClient_GetByName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewDeletedServicesClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDeletedServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByName(ctx,
-		"<service-name>",
-		"<location>",
+		"apimService3",
+		"westus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,18 +69,18 @@ func ExampleDeletedServicesClient_BeginPurge() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewDeletedServicesClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDeletedServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPurge(ctx,
-		"<service-name>",
-		"<location>",
-		&armapimanagement.DeletedServicesClientBeginPurgeOptions{ResumeToken: ""})
+		"apimService3",
+		"westus",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

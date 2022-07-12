@@ -22,7 +22,8 @@ const (
 )
 
 func TestGetEnv(t *testing.T) {
-	os.Setenv("test", "test")
+	err := os.Setenv("test", "test")
+	require.NoError(t, err)
 	require.Equal(t, GetEnv("test", ""), "test")
 	require.Equal(t, GetEnv("testfail", "fail"), "fail")
 }

@@ -40,7 +40,7 @@ type LinkerClientUpdateResponse struct {
 
 // LinkerClientValidateResponse contains the response from method LinkerClient.Validate.
 type LinkerClientValidateResponse struct {
-	ValidateResult
+	ValidateOperationResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.

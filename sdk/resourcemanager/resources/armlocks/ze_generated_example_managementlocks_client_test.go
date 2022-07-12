@@ -24,13 +24,13 @@ func ExampleManagementLocksClient_CreateOrUpdateAtResourceGroupLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtResourceGroupLevel(ctx,
-		"<resource-group-name>",
-		"<lock-name>",
+		"resourcegroupname",
+		"testlock",
 		armlocks.ManagementLockObject{
 			Properties: &armlocks.ManagementLockProperties{
 				Level: to.Ptr(armlocks.LockLevelReadOnly),
@@ -51,13 +51,13 @@ func ExampleManagementLocksClient_DeleteAtResourceGroupLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAtResourceGroupLevel(ctx,
-		"<resource-group-name>",
-		"<lock-name>",
+		"resourcegroupname",
+		"testlock",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -71,13 +71,13 @@ func ExampleManagementLocksClient_GetAtResourceGroupLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtResourceGroupLevel(ctx,
-		"<resource-group-name>",
-		"<lock-name>",
+		"resourcegroupname",
+		"testlock",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,8 +98,8 @@ func ExampleManagementLocksClient_CreateOrUpdateByScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateByScope(ctx,
-		"<scope>",
-		"<lock-name>",
+		"subscriptions/subscriptionId",
+		"testlock",
 		armlocks.ManagementLockObject{
 			Properties: &armlocks.ManagementLockProperties{
 				Level: to.Ptr(armlocks.LockLevelReadOnly),
@@ -125,8 +125,8 @@ func ExampleManagementLocksClient_DeleteByScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteByScope(ctx,
-		"<scope>",
-		"<lock-name>",
+		"subscriptions/subscriptionId",
+		"testlock",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -145,8 +145,8 @@ func ExampleManagementLocksClient_GetByScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByScope(ctx,
-		"<scope>",
-		"<lock-name>",
+		"subscriptions/subscriptionId",
+		"testlock",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -162,17 +162,17 @@ func ExampleManagementLocksClient_CreateOrUpdateAtResourceLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtResourceLevel(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-path>",
-		"<resource-type>",
-		"<resource-name>",
-		"<lock-name>",
+		"resourcegroupname",
+		"Microsoft.Storage",
+		"parentResourcePath",
+		"storageAccounts",
+		"teststorageaccount",
+		"testlock",
 		armlocks.ManagementLockObject{
 			Properties: &armlocks.ManagementLockProperties{
 				Level: to.Ptr(armlocks.LockLevelReadOnly),
@@ -193,17 +193,17 @@ func ExampleManagementLocksClient_DeleteAtResourceLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAtResourceLevel(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-path>",
-		"<resource-type>",
-		"<resource-name>",
-		"<lock-name>",
+		"resourcegroupname",
+		"Microsoft.Storage",
+		"parentResourcePath",
+		"storageAccounts",
+		"teststorageaccount",
+		"testlock",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -217,17 +217,17 @@ func ExampleManagementLocksClient_GetAtResourceLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtResourceLevel(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-path>",
-		"<resource-type>",
-		"<resource-name>",
-		"<lock-name>",
+		"resourcegroupname",
+		"Microsoft.Storage",
+		"parentResourcePath",
+		"storageAccounts",
+		"teststorageaccount",
+		"testlock",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -243,12 +243,12 @@ func ExampleManagementLocksClient_CreateOrUpdateAtSubscriptionLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtSubscriptionLevel(ctx,
-		"<lock-name>",
+		"testlock",
 		armlocks.ManagementLockObject{
 			Properties: &armlocks.ManagementLockProperties{
 				Level: to.Ptr(armlocks.LockLevelReadOnly),
@@ -269,12 +269,12 @@ func ExampleManagementLocksClient_DeleteAtSubscriptionLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAtSubscriptionLevel(ctx,
-		"<lock-name>",
+		"testlock",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -288,12 +288,12 @@ func ExampleManagementLocksClient_GetAtSubscriptionLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtSubscriptionLevel(ctx,
-		"<lock-name>",
+		"testlock",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -309,17 +309,16 @@ func ExampleManagementLocksClient_NewListAtResourceGroupLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAtResourceGroupLevelPager("<resource-group-name>",
+	pager := client.NewListAtResourceGroupLevelPager("resourcegroupname",
 		&armlocks.ManagementLocksClientListAtResourceGroupLevelOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -335,21 +334,20 @@ func ExampleManagementLocksClient_NewListAtResourceLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAtResourceLevelPager("<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-path>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListAtResourceLevelPager("resourcegroupname",
+		"Microsoft.Storage",
+		"parentResourcePath",
+		"storageAccounts",
+		"teststorageaccount",
 		&armlocks.ManagementLocksClientListAtResourceLevelOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -365,7 +363,7 @@ func ExampleManagementLocksClient_NewListAtSubscriptionLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
+	client, err := armlocks.NewManagementLocksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -374,7 +372,6 @@ func ExampleManagementLocksClient_NewListAtSubscriptionLevelPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -394,13 +391,12 @@ func ExampleManagementLocksClient_NewListByScopePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByScopePager("<scope>",
+	pager := client.NewListByScopePager("subscriptions/subscriptionId",
 		&armlocks.ManagementLocksClientListByScopeOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

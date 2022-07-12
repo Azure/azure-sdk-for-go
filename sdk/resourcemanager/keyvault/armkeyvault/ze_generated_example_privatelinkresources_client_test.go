@@ -23,13 +23,13 @@ func ExamplePrivateLinkResourcesClient_ListByVault() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByVault(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
+		"sample-group",
+		"sample-vault",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

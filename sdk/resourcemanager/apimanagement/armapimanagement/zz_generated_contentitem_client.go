@@ -39,7 +39,7 @@ func NewContentItemClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewContentItemClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Creates a new developer portal's content item specified by the provided content type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // contentTypeID - Content type identifier.
@@ -109,9 +110,9 @@ func (client *ContentItemClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -129,6 +130,7 @@ func (client *ContentItemClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Removes the specified developer portal's content item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // contentTypeID - Content type identifier.
@@ -181,13 +183,14 @@ func (client *ContentItemClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns the developer portal's content item specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // contentTypeID - Content type identifier.
@@ -238,7 +241,7 @@ func (client *ContentItemClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -255,6 +258,7 @@ func (client *ContentItemClient) getHandleResponse(resp *http.Response) (Content
 }
 
 // GetEntityTag - Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // contentTypeID - Content type identifier.
@@ -269,6 +273,9 @@ func (client *ContentItemClient) GetEntityTag(ctx context.Context, resourceGroup
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ContentItemClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ContentItemClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -303,7 +310,7 @@ func (client *ContentItemClient) getEntityTagCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -313,21 +320,20 @@ func (client *ContentItemClient) getEntityTagHandleResponse(resp *http.Response)
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByServicePager - Lists developer portal's content items specified by the provided content type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // contentTypeID - Content type identifier.
 // options - ContentItemClientListByServiceOptions contains the optional parameters for the ContentItemClient.ListByService
 // method.
 func (client *ContentItemClient) NewListByServicePager(resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemClientListByServiceOptions) *runtime.Pager[ContentItemClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ContentItemClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ContentItemClientListByServiceResponse]{
 		More: func(page ContentItemClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -380,7 +386,7 @@ func (client *ContentItemClient) listByServiceCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

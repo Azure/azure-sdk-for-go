@@ -23,13 +23,13 @@ func ExampleHeatMapClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewHeatMapClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewHeatMapClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager1323",
+		"azuresdkfornetautoresttrafficmanager3880",
 		&armtrafficmanager.HeatMapClientGetOptions{TopLeft: []float64{},
 			BotRight: []float64{},
 		})

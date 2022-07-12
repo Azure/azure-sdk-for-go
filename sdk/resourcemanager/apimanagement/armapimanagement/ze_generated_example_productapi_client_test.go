@@ -23,13 +23,13 @@ func ExampleProductAPIClient_NewListByProductPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProductPager("<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
+	pager := client.NewListByProductPager("rg1",
+		"apimService1",
+		"5768181ea40f7eb6c49f6ac7",
 		&armapimanagement.ProductAPIClientListByProductOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleProductAPIClient_NewListByProductPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +53,15 @@ func ExampleProductAPIClient_CheckEntityExists() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CheckEntityExists(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"5931a75ae4bbd512a88c680b",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,15 +75,15 @@ func ExampleProductAPIClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"testproduct",
+		"echo-api",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -100,15 +99,15 @@ func ExampleProductAPIClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"testproduct",
+		"echo-api",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

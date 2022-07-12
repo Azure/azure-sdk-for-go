@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz"
 )
@@ -25,18 +23,17 @@ func ExampleSubAccountClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<monitor-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myMonitor",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,21 +49,19 @@ func ExampleSubAccountClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
-		&armlogz.SubAccountClientBeginCreateOptions{Body: nil,
-			ResumeToken: "",
-		})
+		"myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
+		&armlogz.SubAccountClientBeginCreateOptions{Body: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -81,14 +76,14 @@ func ExampleSubAccountClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
+		"myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,19 +99,19 @@ func ExampleSubAccountClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
-		&armlogz.SubAccountClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myMonitor",
+		"someName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -129,14 +124,14 @@ func ExampleSubAccountClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
+		"myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
 		&armlogz.SubAccountClientUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -152,19 +147,18 @@ func ExampleSubAccountClient_NewListMonitoredResourcesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMonitoredResourcesPager("<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
+	pager := client.NewListMonitoredResourcesPager("myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -180,14 +174,14 @@ func ExampleSubAccountClient_VMHostPayload() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.VMHostPayload(ctx,
-		"<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
+		"myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -203,19 +197,18 @@ func ExampleSubAccountClient_NewListVMHostsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogz.NewSubAccountClient("<subscription-id>", cred, nil)
+	client, err := armlogz.NewSubAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVMHostsPager("<resource-group-name>",
-		"<monitor-name>",
-		"<sub-account-name>",
+	pager := client.NewListVMHostsPager("myResourceGroup",
+		"myMonitor",
+		"SubAccount1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

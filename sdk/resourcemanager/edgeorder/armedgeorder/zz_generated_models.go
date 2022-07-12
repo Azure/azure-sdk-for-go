@@ -632,6 +632,9 @@ type MeterDetails struct {
 	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
 }
 
+// GetMeterDetails implements the MeterDetailsClassification interface for type MeterDetails.
+func (m *MeterDetails) GetMeterDetails() *MeterDetails { return m }
+
 // NotificationPreference - Notification preference for a job stage.
 type NotificationPreference struct {
 	// REQUIRED; Notification is required or not.
@@ -865,6 +868,15 @@ type Pav2MeterDetails struct {
 	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
 }
 
+// GetMeterDetails implements the MeterDetailsClassification interface for type Pav2MeterDetails.
+func (p *Pav2MeterDetails) GetMeterDetails() *MeterDetails {
+	return &MeterDetails{
+		BillingType:  p.BillingType,
+		Multiplier:   p.Multiplier,
+		ChargingType: p.ChargingType,
+	}
+}
+
 // Preferences related to the order
 type Preferences struct {
 	// Preferences related to the Encryption.
@@ -1066,6 +1078,15 @@ type PurchaseMeterDetails struct {
 
 	// READ-ONLY; Term Id
 	TermID *string `json:"termId,omitempty" azure:"ro"`
+}
+
+// GetMeterDetails implements the MeterDetailsClassification interface for type PurchaseMeterDetails.
+func (p *PurchaseMeterDetails) GetMeterDetails() *MeterDetails {
+	return &MeterDetails{
+		BillingType:  p.BillingType,
+		Multiplier:   p.Multiplier,
+		ChargingType: p.ChargingType,
+	}
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources

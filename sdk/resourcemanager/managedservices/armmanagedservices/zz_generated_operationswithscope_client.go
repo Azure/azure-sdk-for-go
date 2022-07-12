@@ -34,7 +34,7 @@ func NewOperationsWithScopeClient(credential azcore.TokenCredential, options *ar
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,6 +51,7 @@ func NewOperationsWithScopeClient(credential azcore.TokenCredential, options *ar
 
 // List - Gets a list of the operations with the scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // options - OperationsWithScopeClientListOptions contains the optional parameters for the OperationsWithScopeClient.List
 // method.
@@ -80,7 +81,7 @@ func (client *OperationsWithScopeClient) listCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

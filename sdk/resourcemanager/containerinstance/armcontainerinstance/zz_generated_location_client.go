@@ -39,7 +39,7 @@ func NewLocationClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,11 +57,12 @@ func NewLocationClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListCachedImagesPager - Get the list of cached images on specific OS type for a subscription in a region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // location - The identifier for the physical azure location.
 // options - LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.ListCachedImages
 // method.
 func (client *LocationClient) NewListCachedImagesPager(location string, options *LocationClientListCachedImagesOptions) *runtime.Pager[LocationClientListCachedImagesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LocationClientListCachedImagesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LocationClientListCachedImagesResponse]{
 		More: func(page LocationClientListCachedImagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -106,7 +107,7 @@ func (client *LocationClient) listCachedImagesCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -121,11 +122,12 @@ func (client *LocationClient) listCachedImagesHandleResponse(resp *http.Response
 
 // NewListCapabilitiesPager - Get the list of CPU/memory/GPU capabilities of a region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // location - The identifier for the physical azure location.
 // options - LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.ListCapabilities
 // method.
 func (client *LocationClient) NewListCapabilitiesPager(location string, options *LocationClientListCapabilitiesOptions) *runtime.Pager[LocationClientListCapabilitiesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LocationClientListCapabilitiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LocationClientListCapabilitiesResponse]{
 		More: func(page LocationClientListCapabilitiesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -170,7 +172,7 @@ func (client *LocationClient) listCapabilitiesCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -185,10 +187,11 @@ func (client *LocationClient) listCapabilitiesHandleResponse(resp *http.Response
 
 // NewListUsagePager - Get the usage for a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // location - The identifier for the physical azure location.
 // options - LocationClientListUsageOptions contains the optional parameters for the LocationClient.ListUsage method.
 func (client *LocationClient) NewListUsagePager(location string, options *LocationClientListUsageOptions) *runtime.Pager[LocationClientListUsageResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LocationClientListUsageResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LocationClientListUsageResponse]{
 		More: func(page LocationClientListUsageResponse) bool {
 			return false
 		},
@@ -227,7 +230,7 @@ func (client *LocationClient) listUsageCreateRequest(ctx context.Context, locati
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

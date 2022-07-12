@@ -38,7 +38,7 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // firewallRuleName - The name of the server group firewall rule.
 // parameters - The required parameters for creating or updating a firewall rule.
 // options - FirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrUpdate
 // method.
-func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, firewallRuleName string, parameters FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[FirewallRulesClientCreateOrUpdateResponse], error) {
+func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, firewallRuleName string, parameters FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*runtime.Poller[FirewallRulesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverGroupName, firewallRuleName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[FirewallRulesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[FirewallRulesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[FirewallRulesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FirewallRulesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, firewallRuleName string, parameters FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverGroupName, firewallRuleName, parameters, options)
 	if err != nil {
@@ -117,31 +119,33 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a server group firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // firewallRuleName - The name of the server group firewall rule.
 // options - FirewallRulesClientBeginDeleteOptions contains the optional parameters for the FirewallRulesClient.BeginDelete
 // method.
-func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverGroupName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*armruntime.Poller[FirewallRulesClientDeleteResponse], error) {
+func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverGroupName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*runtime.Poller[FirewallRulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverGroupName, firewallRuleName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[FirewallRulesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[FirewallRulesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[FirewallRulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FirewallRulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a server group firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverGroupName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverGroupName, firewallRuleName, options)
 	if err != nil {
@@ -183,12 +187,13 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about a server group firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // firewallRuleName - The name of the server group firewall rule.
@@ -234,7 +239,7 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,12 +254,13 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 
 // NewListByServerGroupPager - List all the firewall rules in a given server group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // options - FirewallRulesClientListByServerGroupOptions contains the optional parameters for the FirewallRulesClient.ListByServerGroup
 // method.
 func (client *FirewallRulesClient) NewListByServerGroupPager(resourceGroupName string, serverGroupName string, options *FirewallRulesClientListByServerGroupOptions) *runtime.Pager[FirewallRulesClientListByServerGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FirewallRulesClientListByServerGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FirewallRulesClientListByServerGroupResponse]{
 		More: func(page FirewallRulesClientListByServerGroupResponse) bool {
 			return false
 		},
@@ -297,7 +303,7 @@ func (client *FirewallRulesClient) listByServerGroupCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

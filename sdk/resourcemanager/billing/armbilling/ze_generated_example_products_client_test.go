@@ -28,14 +28,13 @@ func ExampleProductsClient_NewListByCustomerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByCustomerPager("<billing-account-name>",
-		"<customer-name>",
+	pager := client.NewListByCustomerPager("{billingAccountName}",
+		"{customerName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,13 +54,12 @@ func ExampleProductsClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingAccountPager("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("{billingAccountName}",
 		&armbilling.ProductsClientListByBillingAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -81,14 +79,13 @@ func ExampleProductsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingProfilePager("<billing-account-name>",
-		"<billing-profile-name>",
+	pager := client.NewListByBillingProfilePager("{billingAccountName}",
+		"{billingProfileName}",
 		&armbilling.ProductsClientListByBillingProfileOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -108,15 +105,14 @@ func ExampleProductsClient_NewListByInvoiceSectionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInvoiceSectionPager("<billing-account-name>",
-		"<billing-profile-name>",
-		"<invoice-section-name>",
+	pager := client.NewListByInvoiceSectionPager("{billingAccountName}",
+		"{billingProfileName}",
+		"{invoiceSectionName}",
 		&armbilling.ProductsClientListByInvoiceSectionOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -137,8 +133,8 @@ func ExampleProductsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-account-name>",
-		"<product-name>",
+		"{billingAccountName}",
+		"{productName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -159,8 +155,8 @@ func ExampleProductsClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<billing-account-name>",
-		"<product-name>",
+		"{billingAccountName}",
+		"{productName}",
 		armbilling.Product{
 			Properties: &armbilling.ProductProperties{
 				AutoRenew: to.Ptr(armbilling.AutoRenewOff),
@@ -186,10 +182,10 @@ func ExampleProductsClient_Move() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Move(ctx,
-		"<billing-account-name>",
-		"<product-name>",
+		"{billingAccountName}",
+		"{productName}",
 		armbilling.TransferProductRequestProperties{
-			DestinationInvoiceSectionID: to.Ptr("<destination-invoice-section-id>"),
+			DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
 		},
 		nil)
 	if err != nil {
@@ -211,10 +207,10 @@ func ExampleProductsClient_ValidateMove() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateMove(ctx,
-		"<billing-account-name>",
-		"<product-name>",
+		"{billingAccountName}",
+		"{productName}",
 		armbilling.TransferProductRequestProperties{
-			DestinationInvoiceSectionID: to.Ptr("<destination-invoice-section-id>"),
+			DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
 		},
 		nil)
 	if err != nil {

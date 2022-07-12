@@ -42,7 +42,7 @@ func NewReplicationLogicalNetworksClient(resourceName string, resourceGroupName 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewReplicationLogicalNetworksClient(resourceName string, resourceGroupName 
 
 // Get - Gets the details of a logical network.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Server Id.
 // logicalNetworkName - Logical network name.
 // options - ReplicationLogicalNetworksClientGetOptions contains the optional parameters for the ReplicationLogicalNetworksClient.Get
@@ -111,7 +112,7 @@ func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -126,11 +127,12 @@ func (client *ReplicationLogicalNetworksClient) getHandleResponse(resp *http.Res
 
 // NewListByReplicationFabricsPager - Lists all the logical networks of the Azure Site Recovery fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Server Id.
 // options - ReplicationLogicalNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationLogicalNetworksClient.ListByReplicationFabrics
 // method.
 func (client *ReplicationLogicalNetworksClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationLogicalNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationLogicalNetworksClientListByReplicationFabricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationLogicalNetworksClientListByReplicationFabricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationLogicalNetworksClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationLogicalNetworksClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -183,7 +185,7 @@ func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

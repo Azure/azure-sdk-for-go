@@ -38,7 +38,7 @@ func NewContactsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewContactsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Create - Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // securityContactName - Name of the security contact object
 // securityContact - Security contact object
 // options - ContactsClientCreateOptions contains the optional parameters for the ContactsClient.Create method.
@@ -92,7 +93,7 @@ func (client *ContactsClient) createCreateRequest(ctx context.Context, securityC
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, securityContact)
 }
 
@@ -107,6 +108,7 @@ func (client *ContactsClient) createHandleResponse(resp *http.Response) (Contact
 
 // Delete - Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // securityContactName - Name of the security contact object
 // options - ContactsClientDeleteOptions contains the optional parameters for the ContactsClient.Delete method.
 func (client *ContactsClient) Delete(ctx context.Context, securityContactName string, options *ContactsClientDeleteOptions) (ContactsClientDeleteResponse, error) {
@@ -142,12 +144,13 @@ func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityC
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // securityContactName - Name of the security contact object
 // options - ContactsClientGetOptions contains the optional parameters for the ContactsClient.Get method.
 func (client *ContactsClient) Get(ctx context.Context, securityContactName string, options *ContactsClientGetOptions) (ContactsClientGetResponse, error) {
@@ -183,7 +186,7 @@ func (client *ContactsClient) getCreateRequest(ctx context.Context, securityCont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -198,9 +201,10 @@ func (client *ContactsClient) getHandleResponse(resp *http.Response) (ContactsCl
 
 // NewListPager - Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // options - ContactsClientListOptions contains the optional parameters for the ContactsClient.List method.
 func (client *ContactsClient) NewListPager(options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ContactsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ContactsClientListResponse]{
 		More: func(page ContactsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -241,7 +245,7 @@ func (client *ContactsClient) listCreateRequest(ctx context.Context, options *Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -256,6 +260,7 @@ func (client *ContactsClient) listHandleResponse(resp *http.Response) (ContactsC
 
 // Update - Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // securityContactName - Name of the security contact object
 // securityContact - Security contact object
 // options - ContactsClientUpdateOptions contains the optional parameters for the ContactsClient.Update method.
@@ -292,7 +297,7 @@ func (client *ContactsClient) updateCreateRequest(ctx context.Context, securityC
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, securityContact)
 }
 

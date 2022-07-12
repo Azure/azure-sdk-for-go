@@ -36,7 +36,7 @@ func NewAgreementsClient(credential azcore.TokenCredential, options *arm.ClientO
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewAgreementsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // Get - Gets an agreement by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // agreementName - The ID that uniquely identifies an agreement.
 // options - AgreementsClientGetOptions contains the optional parameters for the AgreementsClient.Get method.
@@ -92,7 +93,7 @@ func (client *AgreementsClient) getCreateRequest(ctx context.Context, billingAcc
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,11 +108,12 @@ func (client *AgreementsClient) getHandleResponse(resp *http.Response) (Agreemen
 
 // NewListByBillingAccountPager - Lists the agreements for a billing account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - AgreementsClientListByBillingAccountOptions contains the optional parameters for the AgreementsClient.ListByBillingAccount
 // method.
 func (client *AgreementsClient) NewListByBillingAccountPager(billingAccountName string, options *AgreementsClientListByBillingAccountOptions) *runtime.Pager[AgreementsClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AgreementsClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AgreementsClientListByBillingAccountResponse]{
 		More: func(page AgreementsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -155,7 +157,7 @@ func (client *AgreementsClient) listByBillingAccountCreateRequest(ctx context.Co
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

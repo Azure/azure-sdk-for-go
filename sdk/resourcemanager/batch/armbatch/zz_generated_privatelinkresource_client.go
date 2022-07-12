@@ -39,7 +39,7 @@ func NewPrivateLinkResourceClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPrivateLinkResourceClient(subscriptionID string, credential azcore.Token
 
 // Get - Gets information about the specified private link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // privateLinkResourceName - The private link resource name. This must be unique within the account.
@@ -102,7 +103,7 @@ func (client *PrivateLinkResourceClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *PrivateLinkResourceClient) getHandleResponse(resp *http.Response) 
 
 // NewListByBatchAccountPager - Lists all of the private link resources in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.ListByBatchAccount
 // method.
 func (client *PrivateLinkResourceClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *PrivateLinkResourceClientListByBatchAccountOptions) *runtime.Pager[PrivateLinkResourceClientListByBatchAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourceClientListByBatchAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourceClientListByBatchAccountResponse]{
 		More: func(page PrivateLinkResourceClientListByBatchAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -174,7 +176,7 @@ func (client *PrivateLinkResourceClient) listByBatchAccountCreateRequest(ctx con
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

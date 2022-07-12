@@ -26,6 +26,13 @@ type APIKeyAuthentication struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// GetRestRequestAuthentication implements the RestRequestAuthenticationClassification interface for type APIKeyAuthentication.
+func (a *APIKeyAuthentication) GetRestRequestAuthentication() *RestRequestAuthentication {
+	return &RestRequestAuthentication{
+		Type: a.Type,
+	}
+}
+
 // ArtifactSource - The resource that defines the source location where the artifacts are located.
 type ArtifactSource struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -116,6 +123,9 @@ type Authentication struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// GetAuthentication implements the AuthenticationClassification interface for type Authentication.
+func (a *Authentication) GetAuthentication() *Authentication { return a }
+
 // CloudError - The error information object.
 type CloudError struct {
 	// The properties that define the error.
@@ -165,6 +175,11 @@ type HealthCheckStepAttributes struct {
 	WaitDuration *string `json:"waitDuration,omitempty"`
 }
 
+// GetHealthCheckStepAttributes implements the HealthCheckStepAttributesClassification interface for type HealthCheckStepAttributes.
+func (h *HealthCheckStepAttributes) GetHealthCheckStepAttributes() *HealthCheckStepAttributes {
+	return h
+}
+
 // HealthCheckStepProperties - Defines the properties of a health check step.
 type HealthCheckStepProperties struct {
 	// REQUIRED; The health check step attributes
@@ -172,6 +187,13 @@ type HealthCheckStepProperties struct {
 
 	// REQUIRED; The type of step.
 	StepType *StepType `json:"stepType,omitempty"`
+}
+
+// GetStepProperties implements the StepPropertiesClassification interface for type HealthCheckStepProperties.
+func (h *HealthCheckStepProperties) GetStepProperties() *StepProperties {
+	return &StepProperties{
+		StepType: h.StepType,
+	}
 }
 
 // Identity for the resource.
@@ -309,6 +331,16 @@ type RestHealthCheckStepAttributes struct {
 	WaitDuration *string `json:"waitDuration,omitempty"`
 }
 
+// GetHealthCheckStepAttributes implements the HealthCheckStepAttributesClassification interface for type RestHealthCheckStepAttributes.
+func (r *RestHealthCheckStepAttributes) GetHealthCheckStepAttributes() *HealthCheckStepAttributes {
+	return &HealthCheckStepAttributes{
+		Type:                 r.Type,
+		WaitDuration:         r.WaitDuration,
+		MaxElasticDuration:   r.MaxElasticDuration,
+		HealthyStateDuration: r.HealthyStateDuration,
+	}
+}
+
 // RestParameters - The parameters for the REST health check.
 type RestParameters struct {
 	// REQUIRED; The list of checks that form the health check step.
@@ -340,6 +372,11 @@ type RestRequestAuthenticationClassification interface {
 type RestRequestAuthentication struct {
 	// REQUIRED; The authentication type.
 	Type *RestAuthType `json:"type,omitempty"`
+}
+
+// GetRestRequestAuthentication implements the RestRequestAuthenticationClassification interface for type RestRequestAuthentication.
+func (r *RestRequestAuthentication) GetRestRequestAuthentication() *RestRequestAuthentication {
+	return r
 }
 
 // RestResponse - The properties that make up the expected REST response
@@ -391,6 +428,13 @@ type Rollout struct {
 type RolloutIdentityAuthentication struct {
 	// REQUIRED; The authentication type.
 	Type *RestAuthType `json:"type,omitempty"`
+}
+
+// GetRestRequestAuthentication implements the RestRequestAuthenticationClassification interface for type RolloutIdentityAuthentication.
+func (r *RolloutIdentityAuthentication) GetRestRequestAuthentication() *RestRequestAuthentication {
+	return &RestRequestAuthentication{
+		Type: r.Type,
+	}
 }
 
 // RolloutOperationInfo - Detailed runtime information of the rollout.
@@ -559,6 +603,13 @@ type SasAuthentication struct {
 
 	// The SAS properties
 	Properties *SasProperties `json:"properties,omitempty"`
+}
+
+// GetAuthentication implements the AuthenticationClassification interface for type SasAuthentication.
+func (s *SasAuthentication) GetAuthentication() *Authentication {
+	return &Authentication{
+		Type: s.Type,
+	}
 }
 
 // SasProperties - The properties that define SAS authentication.
@@ -851,6 +902,9 @@ type StepProperties struct {
 	StepType *StepType `json:"stepType,omitempty"`
 }
 
+// GetStepProperties implements the StepPropertiesClassification interface for type StepProperties.
+func (s *StepProperties) GetStepProperties() *StepProperties { return s }
+
 // StepResource - The resource representation of a rollout step.
 type StepResource struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -925,4 +979,11 @@ type WaitStepProperties struct {
 
 	// REQUIRED; The type of step.
 	StepType *StepType `json:"stepType,omitempty"`
+}
+
+// GetStepProperties implements the StepPropertiesClassification interface for type WaitStepProperties.
+func (w *WaitStepProperties) GetStepProperties() *StepProperties {
+	return &StepProperties{
+		StepType: w.StepType,
+	}
 }

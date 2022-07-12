@@ -24,14 +24,14 @@ func ExampleManagementClient_CheckDomainAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewManagementClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckDomainAvailability(ctx,
 		armcognitiveservices.CheckDomainAvailabilityParameter{
-			Type:          to.Ptr("<type>"),
-			SubdomainName: to.Ptr("<subdomain-name>"),
+			Type:          to.Ptr("Microsoft.CognitiveServices/accounts"),
+			SubdomainName: to.Ptr("contosodemoapp1"),
 		},
 		nil)
 	if err != nil {

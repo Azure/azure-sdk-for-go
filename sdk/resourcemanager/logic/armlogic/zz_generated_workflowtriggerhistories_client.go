@@ -39,7 +39,7 @@ func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.
 
 // Get - Gets a workflow trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
@@ -108,7 +109,7 @@ func (client *WorkflowTriggerHistoriesClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -123,13 +124,14 @@ func (client *WorkflowTriggerHistoriesClient) getHandleResponse(resp *http.Respo
 
 // NewListPager - Gets a list of workflow trigger histories.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
 // options - WorkflowTriggerHistoriesClientListOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.List
 // method.
 func (client *WorkflowTriggerHistoriesClient) NewListPager(resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggerHistoriesClientListOptions) *runtime.Pager[WorkflowTriggerHistoriesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowTriggerHistoriesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowTriggerHistoriesClientListResponse]{
 		More: func(page WorkflowTriggerHistoriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -188,7 +190,7 @@ func (client *WorkflowTriggerHistoriesClient) listCreateRequest(ctx context.Cont
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -203,6 +205,7 @@ func (client *WorkflowTriggerHistoriesClient) listHandleResponse(resp *http.Resp
 
 // Resubmit - Resubmits a workflow run based on the trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
@@ -254,6 +257,6 @@ func (client *WorkflowTriggerHistoriesClient) resubmitCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -36,7 +36,7 @@ func NewArtifactsClient(credential azcore.TokenCredential, options *arm.ClientOp
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewArtifactsClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // CreateOrUpdate - Create or update blueprint artifact.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
@@ -94,7 +95,7 @@ func (client *ArtifactsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, artifact)
 }
 
@@ -109,6 +110,7 @@ func (client *ArtifactsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Delete a blueprint artifact.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
@@ -148,7 +150,7 @@ func (client *ArtifactsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -163,6 +165,7 @@ func (client *ArtifactsClient) deleteHandleResponse(resp *http.Response) (Artifa
 
 // Get - Get a blueprint artifact.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
@@ -202,7 +205,7 @@ func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceSco
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -217,12 +220,13 @@ func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (Artifacts
 
 // NewListPager - List artifacts for a given blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
 // options - ArtifactsClientListOptions contains the optional parameters for the ArtifactsClient.List method.
 func (client *ArtifactsClient) NewListPager(resourceScope string, blueprintName string, options *ArtifactsClientListOptions) *runtime.Pager[ArtifactsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ArtifactsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ArtifactsClientListResponse]{
 		More: func(page ArtifactsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -264,7 +268,7 @@ func (client *ArtifactsClient) listCreateRequest(ctx context.Context, resourceSc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

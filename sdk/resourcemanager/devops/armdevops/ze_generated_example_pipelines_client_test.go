@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops"
@@ -26,20 +24,20 @@ func ExamplePipelinesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevops.NewPipelinesClient("<subscription-id>", cred, nil)
+	client, err := armdevops.NewPipelinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<pipeline-name>",
+		"myAspNetWebAppPipeline-rg",
+		"myAspNetWebAppPipeline",
 		armdevops.Pipeline{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("South India"),
 			Tags:     map[string]*string{},
 			Properties: &armdevops.PipelineProperties{
 				BootstrapConfiguration: &armdevops.BootstrapConfiguration{
 					Template: &armdevops.PipelineTemplate{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("ms.vss-continuous-delivery-pipeline-templates.aspnet-windowswebapp"),
 						Parameters: map[string]*string{
 							"appInsightLocation": to.Ptr("South India"),
 							"appServicePlan":     to.Ptr("S1 Standard"),
@@ -52,18 +50,18 @@ func ExamplePipelinesClient_BeginCreateOrUpdate() {
 					},
 				},
 				Organization: &armdevops.OrganizationReference{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("myAspNetWebAppPipeline-org"),
 				},
 				Project: &armdevops.ProjectReference{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("myAspNetWebAppPipeline-project"),
 				},
 			},
 		},
-		&armdevops.PipelinesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -78,13 +76,13 @@ func ExamplePipelinesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevops.NewPipelinesClient("<subscription-id>", cred, nil)
+	client, err := armdevops.NewPipelinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<pipeline-name>",
+		"myAspNetWebAppPipeline-rg",
+		"myAspNetWebAppPipeline",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -100,13 +98,13 @@ func ExamplePipelinesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevops.NewPipelinesClient("<subscription-id>", cred, nil)
+	client, err := armdevops.NewPipelinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<pipeline-name>",
+		"myAspNetWebAppPipeline-rg",
+		"myAspNetWebAppPipeline",
 		armdevops.PipelineUpdateParameters{
 			Tags: map[string]*string{
 				"tagKey": to.Ptr("tagvalue"),
@@ -127,13 +125,13 @@ func ExamplePipelinesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevops.NewPipelinesClient("<subscription-id>", cred, nil)
+	client, err := armdevops.NewPipelinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<pipeline-name>",
+		"myAspNetWebAppPipeline-rg",
+		"myAspNetWebAppPipeline",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -147,17 +145,16 @@ func ExamplePipelinesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevops.NewPipelinesClient("<subscription-id>", cred, nil)
+	client, err := armdevops.NewPipelinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myAspNetWebAppPipeline-rg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -173,7 +170,7 @@ func ExamplePipelinesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevops.NewPipelinesClient("<subscription-id>", cred, nil)
+	client, err := armdevops.NewPipelinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -182,7 +179,6 @@ func ExamplePipelinesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

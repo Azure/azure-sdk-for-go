@@ -34,7 +34,7 @@ func NewEntitiesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,9 +51,10 @@ func NewEntitiesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 
 // NewListPager - List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // options - EntitiesClientListOptions contains the optional parameters for the EntitiesClient.List method.
 func (client *EntitiesClient) NewListPager(options *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EntitiesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EntitiesClientListResponse]{
 		More: func(page EntitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -115,9 +116,9 @@ func (client *EntitiesClient) listCreateRequest(ctx context.Context, options *En
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

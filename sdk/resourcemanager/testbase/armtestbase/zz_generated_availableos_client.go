@@ -38,7 +38,7 @@ func NewAvailableOSClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAvailableOSClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Get - Gets an available OS to run a package under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // availableOSResourceName - The resource name of an Available OS.
@@ -101,7 +102,7 @@ func (client *AvailableOSClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,12 +117,13 @@ func (client *AvailableOSClient) getHandleResponse(resp *http.Response) (Availab
 
 // NewListPager - Lists all the available OSs to run a package under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // osUpdateType - The type of the OS Update.
 // options - AvailableOSClientListOptions contains the optional parameters for the AvailableOSClient.List method.
 func (client *AvailableOSClient) NewListPager(resourceGroupName string, testBaseAccountName string, osUpdateType OsUpdateType, options *AvailableOSClientListOptions) *runtime.Pager[AvailableOSClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailableOSClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailableOSClientListResponse]{
 		More: func(page AvailableOSClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -171,7 +173,7 @@ func (client *AvailableOSClient) listCreateRequest(ctx context.Context, resource
 	reqQP.Set("osUpdateType", string(osUpdateType))
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

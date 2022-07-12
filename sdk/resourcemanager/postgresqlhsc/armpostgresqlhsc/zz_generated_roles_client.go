@@ -38,7 +38,7 @@ func NewRolesClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewRolesClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // BeginCreate - Creates a new role or updates an existing role.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // roleName - The name of the server group role name.
 // parameters - The required parameters for creating or updating a role.
 // options - RolesClientBeginCreateOptions contains the optional parameters for the RolesClient.BeginCreate method.
-func (client *RolesClient) BeginCreate(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions) (*armruntime.Poller[RolesClientCreateResponse], error) {
+func (client *RolesClient) BeginCreate(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions) (*runtime.Poller[RolesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, serverGroupName, roleName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RolesClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RolesClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RolesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RolesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new role or updates an existing role.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 func (client *RolesClient) create(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serverGroupName, roleName, parameters, options)
 	if err != nil {
@@ -116,30 +118,32 @@ func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a server group role.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // roleName - The name of the server group role name.
 // options - RolesClientBeginDeleteOptions contains the optional parameters for the RolesClient.BeginDelete method.
-func (client *RolesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesClientBeginDeleteOptions) (*armruntime.Poller[RolesClientDeleteResponse], error) {
+func (client *RolesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesClientBeginDeleteOptions) (*runtime.Poller[RolesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverGroupName, roleName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RolesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RolesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RolesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RolesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a server group role.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 func (client *RolesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverGroupName, roleName, options)
 	if err != nil {
@@ -181,17 +185,18 @@ func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListByServerGroupPager - List all the roles in a given server group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // options - RolesClientListByServerGroupOptions contains the optional parameters for the RolesClient.ListByServerGroup method.
 func (client *RolesClient) NewListByServerGroupPager(resourceGroupName string, serverGroupName string, options *RolesClientListByServerGroupOptions) *runtime.Pager[RolesClientListByServerGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RolesClientListByServerGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RolesClientListByServerGroupResponse]{
 		More: func(page RolesClientListByServerGroupResponse) bool {
 			return false
 		},
@@ -234,7 +239,7 @@ func (client *RolesClient) listByServerGroupCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

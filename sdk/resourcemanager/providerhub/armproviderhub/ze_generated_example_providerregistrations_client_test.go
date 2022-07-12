@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub"
@@ -26,12 +24,12 @@ func ExampleProviderRegistrationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,37 +45,37 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		armproviderhub.ProviderRegistration{
 			Properties: &armproviderhub.ProviderRegistrationProperties{
 				Capabilities: []*armproviderhub.ResourceProviderCapabilities{
 					{
 						Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-						QuotaID: to.Ptr("<quota-id>"),
+						QuotaID: to.Ptr("CSP_2015-05-01"),
 					},
 					{
 						Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
-						QuotaID: to.Ptr("<quota-id>"),
+						QuotaID: to.Ptr("CSP_MG_2017-12-01"),
 					}},
 				Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-					IncidentContactEmail:   to.Ptr("<incident-contact-email>"),
-					IncidentRoutingService: to.Ptr("<incident-routing-service>"),
-					IncidentRoutingTeam:    to.Ptr("<incident-routing-team>"),
+					IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
+					IncidentRoutingService: to.Ptr("Contoso Resource Provider"),
+					IncidentRoutingTeam:    to.Ptr("Contoso Triage"),
 				},
 				ProviderType:    to.Ptr(armproviderhub.ResourceProviderTypeInternal),
-				ProviderVersion: to.Ptr("<provider-version>"),
+				ProviderVersion: to.Ptr("2.0"),
 			},
 		},
-		&armproviderhub.ProviderRegistrationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -92,12 +90,12 @@ func ExampleProviderRegistrationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -111,7 +109,7 @@ func ExampleProviderRegistrationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -120,7 +118,6 @@ func ExampleProviderRegistrationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -136,12 +133,12 @@ func ExampleProviderRegistrationsClient_GenerateOperations() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewProviderRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewProviderRegistrationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GenerateOperations(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -36,7 +36,7 @@ func NewDiagnosticSettingsClient(credential azcore.TokenCredential, options *arm
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewDiagnosticSettingsClient(credential azcore.TokenCredential, options *arm
 
 // CreateOrUpdate - Creates or updates diagnostic settings for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-05-01-preview
 // resourceURI - The identifier of the resource.
 // name - The name of the diagnostic setting.
 // parameters - Parameters supplied to the operation.
@@ -88,7 +89,7 @@ func (client *DiagnosticSettingsClient) createOrUpdateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -103,6 +104,7 @@ func (client *DiagnosticSettingsClient) createOrUpdateHandleResponse(resp *http.
 
 // Delete - Deletes existing diagnostic settings for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-05-01-preview
 // resourceURI - The identifier of the resource.
 // name - The name of the diagnostic setting.
 // options - DiagnosticSettingsClientDeleteOptions contains the optional parameters for the DiagnosticSettingsClient.Delete
@@ -137,12 +139,13 @@ func (client *DiagnosticSettingsClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the active diagnostic settings for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-05-01-preview
 // resourceURI - The identifier of the resource.
 // name - The name of the diagnostic setting.
 // options - DiagnosticSettingsClientGetOptions contains the optional parameters for the DiagnosticSettingsClient.Get method.
@@ -176,7 +179,7 @@ func (client *DiagnosticSettingsClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -191,6 +194,7 @@ func (client *DiagnosticSettingsClient) getHandleResponse(resp *http.Response) (
 
 // List - Gets the active diagnostic settings list for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-05-01-preview
 // resourceURI - The identifier of the resource.
 // options - DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.List method.
 func (client *DiagnosticSettingsClient) List(ctx context.Context, resourceURI string, options *DiagnosticSettingsClientListOptions) (DiagnosticSettingsClientListResponse, error) {
@@ -219,7 +223,7 @@ func (client *DiagnosticSettingsClient) listCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

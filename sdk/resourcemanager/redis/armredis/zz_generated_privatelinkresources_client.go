@@ -39,7 +39,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,12 +57,13 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // NewListByRedisCachePager - Gets the private link resources that need to be created for a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // options - PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByRedisCache
 // method.
 func (client *PrivateLinkResourcesClient) NewListByRedisCachePager(resourceGroupName string, cacheName string, options *PrivateLinkResourcesClientListByRedisCacheOptions) *runtime.Pager[PrivateLinkResourcesClientListByRedisCacheResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByRedisCacheResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientListByRedisCacheResponse]{
 		More: func(page PrivateLinkResourcesClientListByRedisCacheResponse) bool {
 			return false
 		},
@@ -105,7 +106,7 @@ func (client *PrivateLinkResourcesClient) listByRedisCacheCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

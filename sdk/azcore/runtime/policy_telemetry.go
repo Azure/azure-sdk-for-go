@@ -45,9 +45,6 @@ func NewTelemetryPolicy(mod, ver string, o *policy.TelemetryOptions) policy.Poli
 	}
 	b.WriteString(formatTelemetry(mod, ver))
 	b.WriteRune(' ')
-	// inject azcore info
-	b.WriteString(formatTelemetry(shared.Module, shared.Version))
-	b.WriteRune(' ')
 	b.WriteString(platformInfo)
 	tp.telemetryValue = b.String()
 	return &tp

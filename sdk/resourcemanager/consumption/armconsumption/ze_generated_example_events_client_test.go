@@ -27,16 +27,15 @@ func ExampleEventsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingProfilePager("<billing-account-id>",
-		"<billing-profile-id>",
-		"<start-date>",
-		"<end-date>",
+	pager := client.NewListByBillingProfilePager("1234:5678",
+		"4268",
+		"2019-09-01",
+		"2019-10-31",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,13 +55,12 @@ func ExampleEventsClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingAccountPager("<billing-account-id>",
+	pager := client.NewListByBillingAccountPager("1234:5678",
 		&armconsumption.EventsClientListByBillingAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated"
@@ -26,13 +24,13 @@ func ExampleCapacitiesClient_GetDetails() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDetails(ctx,
-		"<resource-group-name>",
-		"<dedicated-capacity-name>",
+		"TestRG",
+		"azsdktest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,15 +46,15 @@ func ExampleCapacitiesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<dedicated-capacity-name>",
+		"TestRG",
+		"azsdktest",
 		armpowerbidedicated.DedicatedCapacity{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"testKey": to.Ptr("testValue"),
 			},
@@ -68,15 +66,15 @@ func ExampleCapacitiesClient_BeginCreate() {
 				},
 			},
 			SKU: &armpowerbidedicated.CapacitySKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("A1"),
 				Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
 			},
 		},
-		&armpowerbidedicated.CapacitiesClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -91,18 +89,18 @@ func ExampleCapacitiesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<dedicated-capacity-name>",
-		&armpowerbidedicated.CapacitiesClientBeginDeleteOptions{ResumeToken: ""})
+		"TestRG",
+		"azsdktest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -115,13 +113,13 @@ func ExampleCapacitiesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<dedicated-capacity-name>",
+		"TestRG",
+		"azsdktest",
 		armpowerbidedicated.DedicatedCapacityUpdateParameters{
 			Properties: &armpowerbidedicated.DedicatedCapacityMutableProperties{
 				Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
@@ -131,18 +129,18 @@ func ExampleCapacitiesClient_BeginUpdate() {
 				},
 			},
 			SKU: &armpowerbidedicated.CapacitySKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("A1"),
 				Tier: to.Ptr(armpowerbidedicated.CapacitySKUTierPBIEAzure),
 			},
 			Tags: map[string]*string{
 				"testKey": to.Ptr("testValue"),
 			},
 		},
-		&armpowerbidedicated.CapacitiesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -157,18 +155,18 @@ func ExampleCapacitiesClient_BeginSuspend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSuspend(ctx,
-		"<resource-group-name>",
-		"<dedicated-capacity-name>",
-		&armpowerbidedicated.CapacitiesClientBeginSuspendOptions{ResumeToken: ""})
+		"TestRG",
+		"azsdktest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -181,18 +179,18 @@ func ExampleCapacitiesClient_BeginResume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResume(ctx,
-		"<resource-group-name>",
-		"<dedicated-capacity-name>",
-		&armpowerbidedicated.CapacitiesClientBeginResumeOptions{ResumeToken: ""})
+		"TestRG",
+		"azsdktest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -205,17 +203,16 @@ func ExampleCapacitiesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("TestRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -231,7 +228,7 @@ func ExampleCapacitiesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -240,7 +237,6 @@ func ExampleCapacitiesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -256,15 +252,15 @@ func ExampleCapacitiesClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewCapacitiesClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<location>",
+		"West US",
 		armpowerbidedicated.CheckCapacityNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("azsdktest"),
+			Type: to.Ptr("Microsoft.PowerBIDedicated/capacities"),
 		},
 		nil)
 	if err != nil {

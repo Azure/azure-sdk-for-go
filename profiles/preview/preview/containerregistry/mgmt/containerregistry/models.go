@@ -12,7 +12,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-12-01-preview/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2022-02-01-preview/containerregistry"
 )
 
 const (
@@ -54,6 +54,13 @@ type AuditLogStatus = original.AuditLogStatus
 const (
 	AuditLogStatusDisabled AuditLogStatus = original.AuditLogStatusDisabled
 	AuditLogStatusEnabled  AuditLogStatus = original.AuditLogStatusEnabled
+)
+
+type AzureADAuthenticationAsArmPolicyStatus = original.AzureADAuthenticationAsArmPolicyStatus
+
+const (
+	AzureADAuthenticationAsArmPolicyStatusDisabled AzureADAuthenticationAsArmPolicyStatus = original.AzureADAuthenticationAsArmPolicyStatusDisabled
+	AzureADAuthenticationAsArmPolicyStatusEnabled  AzureADAuthenticationAsArmPolicyStatus = original.AzureADAuthenticationAsArmPolicyStatusEnabled
 )
 
 type BaseImageDependencyType = original.BaseImageDependencyType
@@ -457,6 +464,7 @@ type AgentProperties = original.AgentProperties
 type Argument = original.Argument
 type AuthInfo = original.AuthInfo
 type AuthInfoUpdateParameters = original.AuthInfoUpdateParameters
+type AzureADAuthenticationAsArmPolicy = original.AzureADAuthenticationAsArmPolicy
 type BaseClient = original.BaseClient
 type BaseImageDependency = original.BaseImageDependency
 type BaseImageTrigger = original.BaseImageTrigger
@@ -543,6 +551,7 @@ type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type OperationsClient = original.OperationsClient
 type OverrideTaskStepProperties = original.OverrideTaskStepProperties
+type PackageType = original.PackageType
 type ParentProperties = original.ParentProperties
 type PipelineRun = original.PipelineRun
 type PipelineRunListResult = original.PipelineRunListResult
@@ -642,6 +651,7 @@ type ScopeMapsUpdateFuture = original.ScopeMapsUpdateFuture
 type SecretObject = original.SecretObject
 type SetValue = original.SetValue
 type Sku = original.Sku
+type SoftDeletePolicy = original.SoftDeletePolicy
 type Source = original.Source
 type SourceProperties = original.SourceProperties
 type SourceRegistryCredentials = original.SourceRegistryCredentials
@@ -652,6 +662,7 @@ type SourceUpdateParameters = original.SourceUpdateParameters
 type SourceUploadDefinition = original.SourceUploadDefinition
 type Status = original.Status
 type StatusDetailProperties = original.StatusDetailProperties
+type StorageAccountProperties = original.StorageAccountProperties
 type SyncProperties = original.SyncProperties
 type SyncUpdateProperties = original.SyncUpdateProperties
 type SystemData = original.SystemData
@@ -704,7 +715,6 @@ type TriggerProperties = original.TriggerProperties
 type TriggerUpdateParameters = original.TriggerUpdateParameters
 type TrustPolicy = original.TrustPolicy
 type UserIdentityProperties = original.UserIdentityProperties
-type VirtualNetworkRule = original.VirtualNetworkRule
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
 type WebhookListResult = original.WebhookListResult
@@ -931,6 +941,9 @@ func PossibleArchitectureValues() []Architecture {
 }
 func PossibleAuditLogStatusValues() []AuditLogStatus {
 	return original.PossibleAuditLogStatusValues()
+}
+func PossibleAzureADAuthenticationAsArmPolicyStatusValues() []AzureADAuthenticationAsArmPolicyStatus {
+	return original.PossibleAzureADAuthenticationAsArmPolicyStatusValues()
 }
 func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
 	return original.PossibleBaseImageDependencyTypeValues()

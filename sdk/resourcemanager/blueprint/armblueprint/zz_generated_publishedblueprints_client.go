@@ -36,7 +36,7 @@ func NewPublishedBlueprintsClient(credential azcore.TokenCredential, options *ar
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewPublishedBlueprintsClient(credential azcore.TokenCredential, options *ar
 // Create - Publish a new version of the blueprint definition with the latest artifacts. Published blueprint definitions are
 // immutable.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
@@ -94,7 +95,7 @@ func (client *PublishedBlueprintsClient) createCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.PublishedBlueprint != nil {
 		return req, runtime.MarshalAsJSON(req, *options.PublishedBlueprint)
 	}
@@ -112,6 +113,7 @@ func (client *PublishedBlueprintsClient) createHandleResponse(resp *http.Respons
 
 // Delete - Delete a published version of a blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
@@ -152,7 +154,7 @@ func (client *PublishedBlueprintsClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -167,6 +169,7 @@ func (client *PublishedBlueprintsClient) deleteHandleResponse(resp *http.Respons
 
 // Get - Get a published version of a blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
@@ -206,7 +209,7 @@ func (client *PublishedBlueprintsClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -221,13 +224,14 @@ func (client *PublishedBlueprintsClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - List published versions of given blueprint definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // blueprintName - Name of the blueprint definition.
 // options - PublishedBlueprintsClientListOptions contains the optional parameters for the PublishedBlueprintsClient.List
 // method.
 func (client *PublishedBlueprintsClient) NewListPager(resourceScope string, blueprintName string, options *PublishedBlueprintsClientListOptions) *runtime.Pager[PublishedBlueprintsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PublishedBlueprintsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PublishedBlueprintsClientListResponse]{
 		More: func(page PublishedBlueprintsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -269,7 +273,7 @@ func (client *PublishedBlueprintsClient) listCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

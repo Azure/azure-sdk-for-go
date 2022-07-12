@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -26,14 +24,14 @@ func ExampleResourceGroupsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresources.NewResourceGroupsClient("<subscription-id>", cred, nil)
+	client, err := armresources.NewResourceGroupsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
+		"my-resource-group",
 		armresources.ResourceGroup{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 		},
 		nil)
 	if err != nil {
@@ -50,19 +48,17 @@ func ExampleResourceGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresources.NewResourceGroupsClient("<subscription-id>", cred, nil)
+	client, err := armresources.NewResourceGroupsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		&armresources.ResourceGroupsClientBeginDeleteOptions{ForceDeletionTypes: to.Ptr("<force-deletion-types>"),
-			ResumeToken: "",
-		})
+		"my-resource-group",
+		&armresources.ResourceGroupsClientBeginDeleteOptions{ForceDeletionTypes: to.Ptr("Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -75,22 +71,22 @@ func ExampleResourceGroupsClient_BeginExportTemplate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresources.NewResourceGroupsClient("<subscription-id>", cred, nil)
+	client, err := armresources.NewResourceGroupsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginExportTemplate(ctx,
-		"<resource-group-name>",
+		"my-resource-group",
 		armresources.ExportTemplateRequest{
-			Options: to.Ptr("<options>"),
+			Options: to.Ptr("IncludeParameterDefaultValue,IncludeComments"),
 			Resources: []*string{
 				to.Ptr("*")},
 		},
-		&armresources.ResourceGroupsClientBeginExportTemplateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

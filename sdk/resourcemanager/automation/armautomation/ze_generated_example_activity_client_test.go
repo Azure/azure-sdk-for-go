@@ -23,15 +23,15 @@ func ExampleActivityClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewActivityClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewActivityClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<module-name>",
-		"<activity-name>",
+		"rg",
+		"myAutomationAccount33",
+		"OmsCompositeResources",
+		"Add-AzureRmAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,19 +47,18 @@ func ExampleActivityClient_NewListByModulePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewActivityClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewActivityClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByModulePager("<resource-group-name>",
-		"<automation-account-name>",
-		"<module-name>",
+	pager := client.NewListByModulePager("rg",
+		"myAutomationAccount33",
+		"OmsCompositeResources",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

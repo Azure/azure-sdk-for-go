@@ -36,7 +36,7 @@ func NewRecommendationMetadataClient(credential azcore.TokenCredential, options 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewRecommendationMetadataClient(credential azcore.TokenCredential, options 
 
 // Get - Gets the metadata entity.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // name - Name of metadata entity.
 // options - RecommendationMetadataClientGetOptions contains the optional parameters for the RecommendationMetadataClient.Get
 // method.
@@ -85,7 +86,7 @@ func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -100,10 +101,11 @@ func (client *RecommendationMetadataClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Gets the list of metadata entities.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - RecommendationMetadataClientListOptions contains the optional parameters for the RecommendationMetadataClient.List
 // method.
 func (client *RecommendationMetadataClient) NewListPager(options *RecommendationMetadataClientListOptions) *runtime.Pager[RecommendationMetadataClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RecommendationMetadataClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RecommendationMetadataClientListResponse]{
 		More: func(page RecommendationMetadataClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -140,7 +142,7 @@ func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

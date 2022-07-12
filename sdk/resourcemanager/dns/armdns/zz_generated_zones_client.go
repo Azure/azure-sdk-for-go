@@ -39,7 +39,7 @@ func NewZonesClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewZonesClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // CreateOrUpdate - Creates or updates a DNS zone. Does not modify DNS records within the zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // resourceGroupName - The name of the resource group.
 // zoneName - The name of the DNS zone (without a terminating dot).
 // parameters - Parameters supplied to the CreateOrUpdate operation.
@@ -99,12 +100,12 @@ func (client *ZonesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,23 +120,25 @@ func (client *ZonesClient) createOrUpdateHandleResponse(resp *http.Response) (Zo
 
 // BeginDelete - Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // resourceGroupName - The name of the resource group.
 // zoneName - The name of the DNS zone (without a terminating dot).
 // options - ZonesClientBeginDeleteOptions contains the optional parameters for the ZonesClient.BeginDelete method.
-func (client *ZonesClient) BeginDelete(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientBeginDeleteOptions) (*armruntime.Poller[ZonesClientDeleteResponse], error) {
+func (client *ZonesClient) BeginDelete(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientBeginDeleteOptions) (*runtime.Poller[ZonesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, zoneName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ZonesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ZonesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ZonesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ZonesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 func (client *ZonesClient) deleteOperation(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, zoneName, options)
 	if err != nil {
@@ -174,14 +177,15 @@ func (client *ZonesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // resourceGroupName - The name of the resource group.
 // zoneName - The name of the DNS zone (without a terminating dot).
 // options - ZonesClientGetOptions contains the optional parameters for the ZonesClient.Get method.
@@ -222,7 +226,7 @@ func (client *ZonesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -237,9 +241,10 @@ func (client *ZonesClient) getHandleResponse(resp *http.Response) (ZonesClientGe
 
 // NewListPager - Lists the DNS zones in all resource groups in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // options - ZonesClientListOptions contains the optional parameters for the ZonesClient.List method.
 func (client *ZonesClient) NewListPager(options *ZonesClientListOptions) *runtime.Pager[ZonesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ZonesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ZonesClientListResponse]{
 		More: func(page ZonesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -283,7 +288,7 @@ func (client *ZonesClient) listCreateRequest(ctx context.Context, options *Zones
 	}
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -298,11 +303,12 @@ func (client *ZonesClient) listHandleResponse(resp *http.Response) (ZonesClientL
 
 // NewListByResourceGroupPager - Lists the DNS zones within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // resourceGroupName - The name of the resource group.
 // options - ZonesClientListByResourceGroupOptions contains the optional parameters for the ZonesClient.ListByResourceGroup
 // method.
 func (client *ZonesClient) NewListByResourceGroupPager(resourceGroupName string, options *ZonesClientListByResourceGroupOptions) *runtime.Pager[ZonesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ZonesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ZonesClientListByResourceGroupResponse]{
 		More: func(page ZonesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -350,7 +356,7 @@ func (client *ZonesClient) listByResourceGroupCreateRequest(ctx context.Context,
 	}
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -365,6 +371,7 @@ func (client *ZonesClient) listByResourceGroupHandleResponse(resp *http.Response
 
 // Update - Updates a DNS zone. Does not modify DNS records within the zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // resourceGroupName - The name of the resource group.
 // zoneName - The name of the DNS zone (without a terminating dot).
 // parameters - Parameters supplied to the Update operation.
@@ -407,9 +414,9 @@ func (client *ZonesClient) updateCreateRequest(ctx context.Context, resourceGrou
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

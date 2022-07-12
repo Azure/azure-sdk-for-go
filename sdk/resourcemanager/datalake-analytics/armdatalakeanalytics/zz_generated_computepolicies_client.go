@@ -39,7 +39,7 @@ func NewComputePoliciesClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewComputePoliciesClient(subscriptionID string, credential azcore.TokenCred
 // CreateOrUpdate - Creates or updates the specified compute policy. During update, the compute policy with the specified
 // name will be replaced with this new compute policy. An account supports, at most, 50 policies
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // computePolicyName - The name of the compute policy to create or update.
@@ -106,7 +107,7 @@ func (client *ComputePoliciesClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -121,6 +122,7 @@ func (client *ComputePoliciesClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Deletes the specified compute policy from the specified Data Lake Analytics account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // computePolicyName - The name of the compute policy to delete.
@@ -166,12 +168,13 @@ func (client *ComputePoliciesClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified Data Lake Analytics compute policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // computePolicyName - The name of the compute policy to retrieve.
@@ -217,7 +220,7 @@ func (client *ComputePoliciesClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -233,12 +236,13 @@ func (client *ComputePoliciesClient) getHandleResponse(resp *http.Response) (Com
 // NewListByAccountPager - Lists the Data Lake Analytics compute policies within the specified Data Lake Analytics account.
 // An account supports, at most, 50 policies
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // options - ComputePoliciesClientListByAccountOptions contains the optional parameters for the ComputePoliciesClient.ListByAccount
 // method.
 func (client *ComputePoliciesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *ComputePoliciesClientListByAccountOptions) *runtime.Pager[ComputePoliciesClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ComputePoliciesClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ComputePoliciesClientListByAccountResponse]{
 		More: func(page ComputePoliciesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -287,7 +291,7 @@ func (client *ComputePoliciesClient) listByAccountCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -302,6 +306,7 @@ func (client *ComputePoliciesClient) listByAccountHandleResponse(resp *http.Resp
 
 // Update - Updates the specified compute policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // computePolicyName - The name of the compute policy to update.
@@ -347,7 +352,7 @@ func (client *ComputePoliciesClient) updateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}

@@ -38,7 +38,7 @@ func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential
 
 // Abort - Abort the given workflow.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // workflowID - workflow Id
@@ -101,7 +102,7 @@ func (client *WorkflowsClient) abortCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -119,6 +120,7 @@ func (client *WorkflowsClient) abortHandleResponse(resp *http.Response) (Workflo
 
 // Get - Get Workflows resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // workflowID - workflow Id
@@ -164,7 +166,7 @@ func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -185,12 +187,13 @@ func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (Workflows
 
 // NewListByStorageSyncServicePager - Get a Workflow List
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - WorkflowsClientListByStorageSyncServiceOptions contains the optional parameters for the WorkflowsClient.ListByStorageSyncService
 // method.
 func (client *WorkflowsClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *WorkflowsClientListByStorageSyncServiceOptions) *runtime.Pager[WorkflowsClientListByStorageSyncServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowsClientListByStorageSyncServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowsClientListByStorageSyncServiceResponse]{
 		More: func(page WorkflowsClientListByStorageSyncServiceResponse) bool {
 			return false
 		},
@@ -233,7 +236,7 @@ func (client *WorkflowsClient) listByStorageSyncServiceCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -39,7 +39,7 @@ func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Creates or updates the Solution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // solutionName - User Solution Name.
 // parameters - The parameters required to create OMS Solution.
 // options - SolutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SolutionsClient.BeginCreateOrUpdate
 // method.
-func (client *SolutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters Solution, options *SolutionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SolutionsClientCreateOrUpdateResponse], error) {
+func (client *SolutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters Solution, options *SolutionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SolutionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, solutionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SolutionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SolutionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SolutionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SolutionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates the Solution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 func (client *SolutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters Solution, options *SolutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, solutionName, parameters, options)
 	if err != nil {
@@ -113,29 +115,31 @@ func (client *SolutionsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the solution in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // solutionName - User Solution Name.
 // options - SolutionsClientBeginDeleteOptions contains the optional parameters for the SolutionsClient.BeginDelete method.
-func (client *SolutionsClient) BeginDelete(ctx context.Context, resourceGroupName string, solutionName string, options *SolutionsClientBeginDeleteOptions) (*armruntime.Poller[SolutionsClientDeleteResponse], error) {
+func (client *SolutionsClient) BeginDelete(ctx context.Context, resourceGroupName string, solutionName string, options *SolutionsClientBeginDeleteOptions) (*runtime.Poller[SolutionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, solutionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SolutionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SolutionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SolutionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SolutionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the solution in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 func (client *SolutionsClient) deleteOperation(ctx context.Context, resourceGroupName string, solutionName string, options *SolutionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, solutionName, options)
 	if err != nil {
@@ -173,12 +177,13 @@ func (client *SolutionsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves the user solution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // solutionName - User Solution Name.
 // options - SolutionsClientGetOptions contains the optional parameters for the SolutionsClient.Get method.
@@ -219,7 +224,7 @@ func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,6 +239,7 @@ func (client *SolutionsClient) getHandleResponse(resp *http.Response) (Solutions
 
 // ListByResourceGroup - Retrieves the solution list. It will retrieve both first party and third party solutions
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // options - SolutionsClientListByResourceGroupOptions contains the optional parameters for the SolutionsClient.ListByResourceGroup
 // method.
@@ -270,7 +276,7 @@ func (client *SolutionsClient) listByResourceGroupCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -285,6 +291,7 @@ func (client *SolutionsClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // ListBySubscription - Retrieves the solution list. It will retrieve both first party and third party solutions
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // options - SolutionsClientListBySubscriptionOptions contains the optional parameters for the SolutionsClient.ListBySubscription
 // method.
 func (client *SolutionsClient) ListBySubscription(ctx context.Context, options *SolutionsClientListBySubscriptionOptions) (SolutionsClientListBySubscriptionResponse, error) {
@@ -316,7 +323,7 @@ func (client *SolutionsClient) listBySubscriptionCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -331,24 +338,26 @@ func (client *SolutionsClient) listBySubscriptionHandleResponse(resp *http.Respo
 
 // BeginUpdate - Patch a Solution. Only updating tags supported.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // solutionName - User Solution Name.
 // parameters - The parameters required to patch a Solution.
 // options - SolutionsClientBeginUpdateOptions contains the optional parameters for the SolutionsClient.BeginUpdate method.
-func (client *SolutionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters SolutionPatch, options *SolutionsClientBeginUpdateOptions) (*armruntime.Poller[SolutionsClientUpdateResponse], error) {
+func (client *SolutionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters SolutionPatch, options *SolutionsClientBeginUpdateOptions) (*runtime.Poller[SolutionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, solutionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SolutionsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SolutionsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SolutionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SolutionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch a Solution. Only updating tags supported.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 func (client *SolutionsClient) update(ctx context.Context, resourceGroupName string, solutionName string, parameters SolutionPatch, options *SolutionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, solutionName, parameters, options)
 	if err != nil {
@@ -386,6 +395,6 @@ func (client *SolutionsClient) updateCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

@@ -39,7 +39,7 @@ func NewCommunicationsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewCommunicationsClient(subscriptionID string, credential azcore.TokenCrede
 // CheckNameAvailability - Check the availability of a resource name. This API should be used to check the uniqueness of the
 // name for adding a new communication to the support ticket.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01
 // supportTicketName - Support ticket name.
 // checkNameAvailabilityInput - Input to check.
 // options - CommunicationsClientCheckNameAvailabilityOptions contains the optional parameters for the CommunicationsClient.CheckNameAvailability
@@ -95,7 +96,7 @@ func (client *CommunicationsClient) checkNameAvailabilityCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, checkNameAvailabilityInput)
 }
 
@@ -110,27 +111,29 @@ func (client *CommunicationsClient) checkNameAvailabilityHandleResponse(resp *ht
 
 // BeginCreate - Adds a new customer communication to an Azure support ticket.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01
 // supportTicketName - Support ticket name.
 // communicationName - Communication name.
 // createCommunicationParameters - Communication object.
 // options - CommunicationsClientBeginCreateOptions contains the optional parameters for the CommunicationsClient.BeginCreate
 // method.
-func (client *CommunicationsClient) BeginCreate(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsClientBeginCreateOptions) (*armruntime.Poller[CommunicationsClientCreateResponse], error) {
+func (client *CommunicationsClient) BeginCreate(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsClientBeginCreateOptions) (*runtime.Poller[CommunicationsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, supportTicketName, communicationName, createCommunicationParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CommunicationsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommunicationsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[CommunicationsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommunicationsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Adds a new customer communication to an Azure support ticket.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01
 func (client *CommunicationsClient) create(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, supportTicketName, communicationName, createCommunicationParameters, options)
 	if err != nil {
@@ -168,12 +171,13 @@ func (client *CommunicationsClient) createCreateRequest(ctx context.Context, sup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createCommunicationParameters)
 }
 
 // Get - Returns communication details for a support ticket.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01
 // supportTicketName - Support ticket name.
 // communicationName - Communication name.
 // options - CommunicationsClientGetOptions contains the optional parameters for the CommunicationsClient.Get method.
@@ -214,7 +218,7 @@ func (client *CommunicationsClient) getCreateRequest(ctx context.Context, suppor
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,10 +238,11 @@ func (client *CommunicationsClient) getHandleResponse(resp *http.Response) (Comm
 // Support ticket data is available for 18 months after ticket creation. If a ticket was created more than 18 months ago,
 // a request for data might cause an error.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01
 // supportTicketName - Support ticket name.
 // options - CommunicationsClientListOptions contains the optional parameters for the CommunicationsClient.List method.
 func (client *CommunicationsClient) NewListPager(supportTicketName string, options *CommunicationsClientListOptions) *runtime.Pager[CommunicationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CommunicationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CommunicationsClientListResponse]{
 		More: func(page CommunicationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -288,7 +293,7 @@ func (client *CommunicationsClient) listCreateRequest(ctx context.Context, suppo
 	}
 	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

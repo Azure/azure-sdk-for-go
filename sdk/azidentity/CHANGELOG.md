@@ -1,6 +1,36 @@
 # Release History
 
-## 0.15.0 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.2.0-beta.1 (2022-06-07)
+
+### Features Added
+* `EnvironmentCredential` reads certificate passwords from `AZURE_CLIENT_CERTIFICATE_PASSWORD`
+  ([#17099](https://github.com/Azure/azure-sdk-for-go/pull/17099))
+
+## 1.1.0 (2022-06-07)
+
+### Features Added
+* `ClientCertificateCredential` and `ClientSecretCredential` support ESTS-R. First-party
+  applications can set environment variable `AZURE_REGIONAL_AUTHORITY_NAME` with a
+  region name.
+  ([#15605](https://github.com/Azure/azure-sdk-for-go/issues/15605))
+
+## 1.0.1 (2022-06-07)
+
+### Other Changes
+* Upgrade `microsoft-authentication-library-for-go` requirement to v0.5.1
+  ([#18176](https://github.com/Azure/azure-sdk-for-go/issues/18176))
+
+## 1.0.0 (2022-05-12)
 
 ### Features Added
 * `DefaultAzureCredential` reads environment variable `AZURE_CLIENT_ID` for the
@@ -10,6 +40,8 @@
 ### Breaking Changes
 * Removed `AuthorizationCodeCredential`. Use `InteractiveBrowserCredential` instead
   to authenticate a user with the authorization code flow.
+* Instances of `AuthenticationFailedError` are now returned by pointer.
+* `GetToken()` returns `azcore.AccessToken` by value
 
 ### Bugs Fixed
 * `AzureCLICredential` panics after receiving an unexpected error type
@@ -17,6 +49,7 @@
 
 ### Other Changes
 * `GetToken()` returns an error when the caller specifies no scope
+* Updated to the latest versions of `golang.org/x/crypto`, `azcore` and `internal`
 
 ## 0.14.0 (2022-04-05)
 

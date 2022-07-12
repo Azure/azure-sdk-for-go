@@ -39,7 +39,7 @@ func NewTenantSettingsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewTenantSettingsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Get tenant settings.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // settingsType - The identifier of the settings.
@@ -102,7 +103,7 @@ func (client *TenantSettingsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -120,12 +121,13 @@ func (client *TenantSettingsClient) getHandleResponse(resp *http.Response) (Tena
 
 // NewListByServicePager - Public settings.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - TenantSettingsClientListByServiceOptions contains the optional parameters for the TenantSettingsClient.ListByService
 // method.
 func (client *TenantSettingsClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) *runtime.Pager[TenantSettingsClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TenantSettingsClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TenantSettingsClientListByServiceResponse]{
 		More: func(page TenantSettingsClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -177,7 +179,7 @@ func (client *TenantSettingsClient) listByServiceCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

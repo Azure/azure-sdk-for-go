@@ -39,7 +39,7 @@ func NewWorkflowTriggersClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewWorkflowTriggersClient(subscriptionID string, credential azcore.TokenCre
 
 // Get - Gets a workflow trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
@@ -102,7 +103,7 @@ func (client *WorkflowTriggersClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,6 +118,7 @@ func (client *WorkflowTriggersClient) getHandleResponse(resp *http.Response) (Wo
 
 // GetSchemaJSON - Get the trigger schema as JSON.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
@@ -163,7 +165,7 @@ func (client *WorkflowTriggersClient) getSchemaJSONCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -178,11 +180,12 @@ func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *http.Res
 
 // NewListPager - Gets a list of workflow triggers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // options - WorkflowTriggersClientListOptions contains the optional parameters for the WorkflowTriggersClient.List method.
 func (client *WorkflowTriggersClient) NewListPager(resourceGroupName string, workflowName string, options *WorkflowTriggersClientListOptions) *runtime.Pager[WorkflowTriggersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowTriggersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowTriggersClientListResponse]{
 		More: func(page WorkflowTriggersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -237,7 +240,7 @@ func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, res
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,6 +255,7 @@ func (client *WorkflowTriggersClient) listHandleResponse(resp *http.Response) (W
 
 // ListCallbackURL - Get the callback URL for a workflow trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
@@ -298,7 +302,7 @@ func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -313,6 +317,7 @@ func (client *WorkflowTriggersClient) listCallbackURLHandleResponse(resp *http.R
 
 // Reset - Resets a workflow trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
@@ -358,12 +363,13 @@ func (client *WorkflowTriggersClient) resetCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Run - Runs a workflow trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
@@ -409,12 +415,13 @@ func (client *WorkflowTriggersClient) runCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // SetState - Sets the state of a workflow trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // triggerName - The workflow trigger name.
@@ -462,6 +469,6 @@ func (client *WorkflowTriggersClient) setStateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, setState)
 }

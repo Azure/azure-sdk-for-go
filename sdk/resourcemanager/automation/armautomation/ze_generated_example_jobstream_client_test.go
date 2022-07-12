@@ -23,15 +23,15 @@ func ExampleJobStreamClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobStreamClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobStreamClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
-		"<job-stream-id>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"foo",
+		"851b2101-686f-40e2-8a4b-5b8df08afbd1_00636535684910693884_00000000000000000001",
 		&armautomation.JobStreamClientGetOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,13 +47,13 @@ func ExampleJobStreamClient_NewListByJobPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobStreamClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobStreamClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByJobPager("<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
+	pager := client.NewListByJobPager("mygroup",
+		"ContoseAutomationAccount",
+		"foo",
 		&armautomation.JobStreamClientListByJobOptions{Filter: nil,
 			ClientRequestID: nil,
 		})
@@ -61,7 +61,6 @@ func ExampleJobStreamClient_NewListByJobPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -38,7 +38,7 @@ func NewCollectionClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewCollectionClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewListMetricDefinitionsPager - Retrieves metric definitions for the given collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
@@ -63,7 +64,7 @@ func NewCollectionClient(subscriptionID string, credential azcore.TokenCredentia
 // options - CollectionClientListMetricDefinitionsOptions contains the optional parameters for the CollectionClient.ListMetricDefinitions
 // method.
 func (client *CollectionClient) NewListMetricDefinitionsPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *CollectionClientListMetricDefinitionsOptions) *runtime.Pager[CollectionClientListMetricDefinitionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CollectionClientListMetricDefinitionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CollectionClientListMetricDefinitionsResponse]{
 		More: func(page CollectionClientListMetricDefinitionsResponse) bool {
 			return false
 		},
@@ -114,7 +115,7 @@ func (client *CollectionClient) listMetricDefinitionsCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -129,6 +130,7 @@ func (client *CollectionClient) listMetricDefinitionsHandleResponse(resp *http.R
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
@@ -138,7 +140,7 @@ func (client *CollectionClient) listMetricDefinitionsHandleResponse(resp *http.R
 // and timeGrain. The supported operator is eq.
 // options - CollectionClientListMetricsOptions contains the optional parameters for the CollectionClient.ListMetrics method.
 func (client *CollectionClient) NewListMetricsPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string, options *CollectionClientListMetricsOptions) *runtime.Pager[CollectionClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CollectionClientListMetricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CollectionClientListMetricsResponse]{
 		More: func(page CollectionClientListMetricsResponse) bool {
 			return false
 		},
@@ -190,7 +192,7 @@ func (client *CollectionClient) listMetricsCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2022-02-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -205,13 +207,14 @@ func (client *CollectionClient) listMetricsHandleResponse(resp *http.Response) (
 
 // NewListUsagesPager - Retrieves the usages (most recent storage data) for the given collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
 // collectionRid - Cosmos DB collection rid.
 // options - CollectionClientListUsagesOptions contains the optional parameters for the CollectionClient.ListUsages method.
 func (client *CollectionClient) NewListUsagesPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *CollectionClientListUsagesOptions) *runtime.Pager[CollectionClientListUsagesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CollectionClientListUsagesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CollectionClientListUsagesResponse]{
 		More: func(page CollectionClientListUsagesResponse) bool {
 			return false
 		},
@@ -265,7 +268,7 @@ func (client *CollectionClient) listUsagesCreateRequest(ctx context.Context, res
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

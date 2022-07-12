@@ -38,7 +38,7 @@ func NewAccessReviewHistoryDefinitionInstancesClient(subscriptionID string, cred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,11 +56,12 @@ func NewAccessReviewHistoryDefinitionInstancesClient(subscriptionID string, cred
 
 // NewListPager - Get access review history definition instances by definition Id
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // historyDefinitionID - The id of the access review history definition.
 // options - AccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionInstancesClient.List
 // method.
 func (client *AccessReviewHistoryDefinitionInstancesClient) NewListPager(historyDefinitionID string, options *AccessReviewHistoryDefinitionInstancesClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionInstancesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessReviewHistoryDefinitionInstancesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewHistoryDefinitionInstancesClientListResponse]{
 		More: func(page AccessReviewHistoryDefinitionInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -105,7 +106,7 @@ func (client *AccessReviewHistoryDefinitionInstancesClient) listCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

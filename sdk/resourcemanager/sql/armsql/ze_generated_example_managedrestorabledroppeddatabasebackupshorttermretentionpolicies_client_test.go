@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,14 +24,14 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<restorable-dropped-database-id>",
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb,131403269876900000",
 		armsql.ManagedShortTermRetentionPolicyNameDefault,
 		nil)
 	if err != nil {
@@ -50,25 +48,25 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<restorable-dropped-database-id>",
+		"resourceGroup",
+		"testsvr",
+		"testdb,131403269876900000",
 		armsql.ManagedShortTermRetentionPolicyNameDefault,
 		armsql.ManagedBackupShortTermRetentionPolicy{
 			Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
 				RetentionDays: to.Ptr[int32](14),
 			},
 		},
-		&armsql.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -83,25 +81,25 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<restorable-dropped-database-id>",
+		"resourceGroup",
+		"testsvr",
+		"testdb,131403269876900000",
 		armsql.ManagedShortTermRetentionPolicyNameDefault,
 		armsql.ManagedBackupShortTermRetentionPolicy{
 			Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
 				RetentionDays: to.Ptr[int32](14),
 			},
 		},
-		&armsql.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -116,19 +114,18 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRestorableDroppedDatabasePager("<resource-group-name>",
-		"<managed-instance-name>",
-		"<restorable-dropped-database-id>",
+	pager := client.NewListByRestorableDroppedDatabasePager("Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb,131403269876900000",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

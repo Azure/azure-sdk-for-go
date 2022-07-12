@@ -10,86 +10,56 @@ package armmanagementpartner
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
+	"fmt"
 )
-
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerProperties.
-func (p PartnerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdTime", p.CreatedTime)
-	populate(objectMap, "objectId", p.ObjectID)
-	populate(objectMap, "partnerId", p.PartnerID)
-	populate(objectMap, "partnerName", p.PartnerName)
-	populate(objectMap, "state", p.State)
-	populate(objectMap, "tenantId", p.TenantID)
-	populateTimeRFC3339(objectMap, "updatedTime", p.UpdatedTime)
-	populate(objectMap, "version", p.Version)
-	return json.Marshal(objectMap)
-}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type PartnerProperties.
 func (p *PartnerProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &p.CreatedTime)
+			err = unpopulateTimeRFC3339(val, "CreatedTime", &p.CreatedTime)
 			delete(rawMsg, key)
 		case "objectId":
-			err = unpopulate(val, &p.ObjectID)
+			err = unpopulate(val, "ObjectID", &p.ObjectID)
 			delete(rawMsg, key)
 		case "partnerId":
-			err = unpopulate(val, &p.PartnerID)
+			err = unpopulate(val, "PartnerID", &p.PartnerID)
 			delete(rawMsg, key)
 		case "partnerName":
-			err = unpopulate(val, &p.PartnerName)
+			err = unpopulate(val, "PartnerName", &p.PartnerName)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &p.State)
+			err = unpopulate(val, "State", &p.State)
 			delete(rawMsg, key)
 		case "tenantId":
-			err = unpopulate(val, &p.TenantID)
+			err = unpopulate(val, "TenantID", &p.TenantID)
 			delete(rawMsg, key)
 		case "updatedTime":
-			err = unpopulateTimeRFC3339(val, &p.UpdatedTime)
+			err = unpopulateTimeRFC3339(val, "UpdatedTime", &p.UpdatedTime)
 			delete(rawMsg, key)
 		case "version":
-			err = unpopulate(val, &p.Version)
+			err = unpopulate(val, "Version", &p.Version)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
 		}
 	}
 	return nil
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

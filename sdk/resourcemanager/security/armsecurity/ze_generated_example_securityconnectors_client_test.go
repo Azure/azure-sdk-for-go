@@ -24,7 +24,7 @@ func ExampleConnectorsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewConnectorsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleConnectorsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,17 +48,16 @@ func ExampleConnectorsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewConnectorsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("exampleResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleConnectorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewConnectorsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<security-connector-name>",
+		"exampleResourceGroup",
+		"exampleSecurityConnectorName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,25 +95,25 @@ func ExampleConnectorsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewConnectorsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<security-connector-name>",
+		"exampleResourceGroup",
+		"exampleSecurityConnectorName",
 		armsecurity.Connector{
-			Location: to.Ptr("<location>"),
-			Etag:     to.Ptr("<etag>"),
+			Location: to.Ptr("Central US"),
+			Etag:     to.Ptr("etag value (must be supplied for update)"),
 			Tags:     map[string]*string{},
 			Properties: &armsecurity.ConnectorProperties{
 				CloudName:           to.Ptr(armsecurity.CloudNameAWS),
-				HierarchyIdentifier: to.Ptr("<hierarchy-identifier>"),
+				HierarchyIdentifier: to.Ptr("exampleHierarchyId"),
 				Offerings: []armsecurity.CloudOfferingClassification{
 					&armsecurity.CspmMonitorAwsOffering{
 						OfferingType: to.Ptr(armsecurity.OfferingTypeCspmMonitorAws),
 						NativeCloudConnection: &armsecurity.CspmMonitorAwsOfferingNativeCloudConnection{
-							CloudRoleArn: to.Ptr("<cloud-role-arn>"),
+							CloudRoleArn: to.Ptr("arn:aws:iam::00000000:role/ASCMonitor"),
 						},
 					}},
 			},
@@ -135,25 +133,25 @@ func ExampleConnectorsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewConnectorsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<security-connector-name>",
+		"exampleResourceGroup",
+		"exampleSecurityConnectorName",
 		armsecurity.Connector{
-			Location: to.Ptr("<location>"),
-			Etag:     to.Ptr("<etag>"),
+			Location: to.Ptr("Central US"),
+			Etag:     to.Ptr("etag value (must be supplied for update)"),
 			Tags:     map[string]*string{},
 			Properties: &armsecurity.ConnectorProperties{
 				CloudName:           to.Ptr(armsecurity.CloudNameAWS),
-				HierarchyIdentifier: to.Ptr("<hierarchy-identifier>"),
+				HierarchyIdentifier: to.Ptr("exampleHierarchyId"),
 				Offerings: []armsecurity.CloudOfferingClassification{
 					&armsecurity.CspmMonitorAwsOffering{
 						OfferingType: to.Ptr(armsecurity.OfferingTypeCspmMonitorAws),
 						NativeCloudConnection: &armsecurity.CspmMonitorAwsOfferingNativeCloudConnection{
-							CloudRoleArn: to.Ptr("<cloud-role-arn>"),
+							CloudRoleArn: to.Ptr("arn:aws:iam::00000000:role/ASCMonitor"),
 						},
 					}},
 			},
@@ -173,13 +171,13 @@ func ExampleConnectorsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewConnectorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<security-connector-name>",
+		"myRg",
+		"mySecurityConnectorName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

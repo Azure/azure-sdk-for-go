@@ -39,7 +39,7 @@ func NewSQLPoolSensitivityLabelsClient(subscriptionID string, credential azcore.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSQLPoolSensitivityLabelsClient(subscriptionID string, credential azcore.
 
 // CreateOrUpdate - Creates or updates the sensitivity label of a given column in a Sql pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -120,7 +121,7 @@ func (client *SQLPoolSensitivityLabelsClient) createOrUpdateCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -135,6 +136,7 @@ func (client *SQLPoolSensitivityLabelsClient) createOrUpdateHandleResponse(resp 
 
 // Delete - Deletes the sensitivity label of a given column in a Sql pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -202,6 +204,7 @@ func (client *SQLPoolSensitivityLabelsClient) deleteCreateRequest(ctx context.Co
 
 // DisableRecommendation - Disables sensitivity recommendations on a given column
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -270,6 +273,7 @@ func (client *SQLPoolSensitivityLabelsClient) disableRecommendationCreateRequest
 // EnableRecommendation - Enables sensitivity recommendations on a given column (recommendations are enabled by default on
 // all columns)
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -337,6 +341,7 @@ func (client *SQLPoolSensitivityLabelsClient) enableRecommendationCreateRequest(
 
 // Get - Gets the sensitivity label of a given column
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -403,7 +408,7 @@ func (client *SQLPoolSensitivityLabelsClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -418,13 +423,14 @@ func (client *SQLPoolSensitivityLabelsClient) getHandleResponse(resp *http.Respo
 
 // NewListCurrentPager - Gets SQL pool sensitivity labels.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolSensitivityLabelsClientListCurrentOptions contains the optional parameters for the SQLPoolSensitivityLabelsClient.ListCurrent
 // method.
 func (client *SQLPoolSensitivityLabelsClient) NewListCurrentPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListCurrentOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListCurrentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLPoolSensitivityLabelsClientListCurrentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLPoolSensitivityLabelsClientListCurrentResponse]{
 		More: func(page SQLPoolSensitivityLabelsClientListCurrentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -480,7 +486,7 @@ func (client *SQLPoolSensitivityLabelsClient) listCurrentCreateRequest(ctx conte
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -495,13 +501,14 @@ func (client *SQLPoolSensitivityLabelsClient) listCurrentHandleResponse(resp *ht
 
 // NewListRecommendedPager - Gets sensitivity labels of a given SQL pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolSensitivityLabelsClientListRecommendedOptions contains the optional parameters for the SQLPoolSensitivityLabelsClient.ListRecommended
 // method.
 func (client *SQLPoolSensitivityLabelsClient) NewListRecommendedPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListRecommendedOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListRecommendedResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLPoolSensitivityLabelsClientListRecommendedResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLPoolSensitivityLabelsClientListRecommendedResponse]{
 		More: func(page SQLPoolSensitivityLabelsClientListRecommendedResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -563,7 +570,7 @@ func (client *SQLPoolSensitivityLabelsClient) listRecommendedCreateRequest(ctx c
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -578,6 +585,7 @@ func (client *SQLPoolSensitivityLabelsClient) listRecommendedHandleResponse(resp
 
 // Update - Update sensitivity labels of a given SQL Pool using an operations batch.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name

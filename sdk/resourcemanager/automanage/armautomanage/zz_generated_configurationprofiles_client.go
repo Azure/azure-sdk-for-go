@@ -38,7 +38,7 @@ func NewConfigurationProfilesClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewConfigurationProfilesClient(subscriptionID string, credential azcore.Tok
 
 // CreateOrUpdate - Creates a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // configurationProfileName - Name of the configuration profile.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // parameters - Parameters supplied to create or update configuration profile.
@@ -98,7 +99,7 @@ func (client *ConfigurationProfilesClient) createOrUpdateCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -113,6 +114,7 @@ func (client *ConfigurationProfilesClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - Delete a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // configurationProfileName - Name of the configuration profile
 // options - ConfigurationProfilesClientDeleteOptions contains the optional parameters for the ConfigurationProfilesClient.Delete
@@ -154,12 +156,13 @@ func (client *ConfigurationProfilesClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get information about a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // configurationProfileName - The configuration profile name.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfilesClientGetOptions contains the optional parameters for the ConfigurationProfilesClient.Get
@@ -201,7 +204,7 @@ func (client *ConfigurationProfilesClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -216,11 +219,12 @@ func (client *ConfigurationProfilesClient) getHandleResponse(resp *http.Response
 
 // NewListByResourceGroupPager - Retrieve a list of configuration profile within a given resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.ListByResourceGroup
 // method.
 func (client *ConfigurationProfilesClient) NewListByResourceGroupPager(resourceGroupName string, options *ConfigurationProfilesClientListByResourceGroupOptions) *runtime.Pager[ConfigurationProfilesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfilesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfilesClientListByResourceGroupResponse]{
 		More: func(page ConfigurationProfilesClientListByResourceGroupResponse) bool {
 			return false
 		},
@@ -259,7 +263,7 @@ func (client *ConfigurationProfilesClient) listByResourceGroupCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -274,10 +278,11 @@ func (client *ConfigurationProfilesClient) listByResourceGroupHandleResponse(res
 
 // NewListBySubscriptionPager - Retrieve a list of configuration profile within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // options - ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.ListBySubscription
 // method.
 func (client *ConfigurationProfilesClient) NewListBySubscriptionPager(options *ConfigurationProfilesClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfilesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfilesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfilesClientListBySubscriptionResponse]{
 		More: func(page ConfigurationProfilesClientListBySubscriptionResponse) bool {
 			return false
 		},
@@ -312,7 +317,7 @@ func (client *ConfigurationProfilesClient) listBySubscriptionCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -327,6 +332,7 @@ func (client *ConfigurationProfilesClient) listBySubscriptionHandleResponse(resp
 
 // Update - Updates a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // configurationProfileName - Name of the configuration profile.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // parameters - Parameters supplied to update configuration profile.
@@ -369,7 +375,7 @@ func (client *ConfigurationProfilesClient) updateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

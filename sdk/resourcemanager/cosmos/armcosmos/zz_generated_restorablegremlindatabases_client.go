@@ -38,7 +38,7 @@ func NewRestorableGremlinDatabasesClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,12 +58,13 @@ func NewRestorableGremlinDatabasesClient(subscriptionID string, credential azcor
 // account. This helps in scenario where database was accidentally deleted to get the deletion
 // time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableGremlinDatabasesClientListOptions contains the optional parameters for the RestorableGremlinDatabasesClient.List
 // method.
 func (client *RestorableGremlinDatabasesClient) NewListPager(location string, instanceID string, options *RestorableGremlinDatabasesClientListOptions) *runtime.Pager[RestorableGremlinDatabasesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RestorableGremlinDatabasesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RestorableGremlinDatabasesClientListResponse]{
 		More: func(page RestorableGremlinDatabasesClientListResponse) bool {
 			return false
 		},
@@ -106,7 +107,7 @@ func (client *RestorableGremlinDatabasesClient) listCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

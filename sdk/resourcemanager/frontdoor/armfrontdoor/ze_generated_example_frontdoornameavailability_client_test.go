@@ -30,7 +30,7 @@ func ExampleNameAvailabilityClient_Check() {
 	}
 	res, err := client.Check(ctx,
 		armfrontdoor.CheckNameAvailabilityInput{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("sampleName"),
 			Type: to.Ptr(armfrontdoor.ResourceTypeMicrosoftNetworkFrontDoors),
 		},
 		nil)

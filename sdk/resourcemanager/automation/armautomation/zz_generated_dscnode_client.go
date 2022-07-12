@@ -40,7 +40,7 @@ func NewDscNodeClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewDscNodeClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Delete - Delete the dsc node identified by node id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // nodeID - The node id.
@@ -103,12 +104,13 @@ func (client *DscNodeClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve the dsc node identified by node id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // nodeID - The node id.
@@ -154,7 +156,7 @@ func (client *DscNodeClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -169,12 +171,13 @@ func (client *DscNodeClient) getHandleResponse(resp *http.Response) (DscNodeClie
 
 // NewListByAutomationAccountPager - Retrieve a list of dsc nodes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.ListByAutomationAccount
 // method.
 func (client *DscNodeClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *DscNodeClientListByAutomationAccountOptions) *runtime.Pager[DscNodeClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DscNodeClientListByAutomationAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DscNodeClientListByAutomationAccountResponse]{
 		More: func(page DscNodeClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -235,7 +238,7 @@ func (client *DscNodeClient) listByAutomationAccountCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -250,6 +253,7 @@ func (client *DscNodeClient) listByAutomationAccountHandleResponse(resp *http.Re
 
 // Update - Update the dsc node.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // nodeID - Parameters supplied to the update dsc node.
@@ -296,7 +300,7 @@ func (client *DscNodeClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dscNodeUpdateParameters)
 }
 

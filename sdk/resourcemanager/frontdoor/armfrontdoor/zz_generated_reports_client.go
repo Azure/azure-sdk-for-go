@@ -40,7 +40,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // GetLatencyScorecards - Gets a Latency Scorecard for a given Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // experimentName - The Experiment identifier associated with the Experiment
@@ -112,7 +113,7 @@ func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("aggregationInterval", string(aggregationInterval))
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -127,6 +128,7 @@ func (client *ReportsClient) getLatencyScorecardsHandleResponse(resp *http.Respo
 
 // GetTimeseries - Gets a Timeseries for a given Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // experimentName - The Experiment identifier associated with the Experiment
@@ -186,7 +188,7 @@ func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, res
 		reqQP.Set("country", *options.Country)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

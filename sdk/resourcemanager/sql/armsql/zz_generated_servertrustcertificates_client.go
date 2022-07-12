@@ -38,7 +38,7 @@ func NewServerTrustCertificatesClient(subscriptionID string, credential azcore.T
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServerTrustCertificatesClient(subscriptionID string, credential azcore.T
 
 // BeginCreateOrUpdate - Uploads a server trust certificate from box to Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -63,20 +64,21 @@ func NewServerTrustCertificatesClient(subscriptionID string, credential azcore.T
 // parameters - The server trust certificate info.
 // options - ServerTrustCertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerTrustCertificatesClient.BeginCreateOrUpdate
 // method.
-func (client *ServerTrustCertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, parameters ServerTrustCertificate, options *ServerTrustCertificatesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerTrustCertificatesClientCreateOrUpdateResponse], error) {
+func (client *ServerTrustCertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, parameters ServerTrustCertificate, options *ServerTrustCertificatesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerTrustCertificatesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, certificateName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerTrustCertificatesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerTrustCertificatesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerTrustCertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerTrustCertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Uploads a server trust certificate from box to Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *ServerTrustCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, parameters ServerTrustCertificate, options *ServerTrustCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, certificateName, parameters, options)
 	if err != nil {
@@ -118,32 +120,34 @@ func (client *ServerTrustCertificatesClient) createOrUpdateCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // certificateName - Name of of the certificate to delete.
 // options - ServerTrustCertificatesClientBeginDeleteOptions contains the optional parameters for the ServerTrustCertificatesClient.BeginDelete
 // method.
-func (client *ServerTrustCertificatesClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, options *ServerTrustCertificatesClientBeginDeleteOptions) (*armruntime.Poller[ServerTrustCertificatesClientDeleteResponse], error) {
+func (client *ServerTrustCertificatesClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, options *ServerTrustCertificatesClientBeginDeleteOptions) (*runtime.Poller[ServerTrustCertificatesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, managedInstanceName, certificateName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerTrustCertificatesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerTrustCertificatesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerTrustCertificatesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerTrustCertificatesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *ServerTrustCertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, options *ServerTrustCertificatesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, certificateName, options)
 	if err != nil {
@@ -190,6 +194,7 @@ func (client *ServerTrustCertificatesClient) deleteCreateRequest(ctx context.Con
 
 // Get - Gets a server trust certificate that was uploaded from box to Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -237,7 +242,7 @@ func (client *ServerTrustCertificatesClient) getCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -253,13 +258,14 @@ func (client *ServerTrustCertificatesClient) getHandleResponse(resp *http.Respon
 // NewListByInstancePager - Gets a list of server trust certificates that were uploaded from box to the given Sql Managed
 // Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ServerTrustCertificatesClientListByInstanceOptions contains the optional parameters for the ServerTrustCertificatesClient.ListByInstance
 // method.
 func (client *ServerTrustCertificatesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ServerTrustCertificatesClientListByInstanceOptions) *runtime.Pager[ServerTrustCertificatesClientListByInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServerTrustCertificatesClientListByInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServerTrustCertificatesClientListByInstanceResponse]{
 		More: func(page ServerTrustCertificatesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -308,7 +314,7 @@ func (client *ServerTrustCertificatesClient) listByInstanceCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

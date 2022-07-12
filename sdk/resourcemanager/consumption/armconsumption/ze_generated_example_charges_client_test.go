@@ -28,7 +28,7 @@ func ExampleChargesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<scope>",
+		"providers/Microsoft.Billing/BillingAccounts/1234/departments/42425",
 		&armconsumption.ChargesClientListOptions{StartDate: nil,
 			EndDate: nil,
 			Filter:  nil,

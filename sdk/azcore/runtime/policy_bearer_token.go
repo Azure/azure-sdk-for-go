@@ -10,12 +10,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *shared.ExpiringResource[*azcore.AccessToken, acquiringResourceState]
+	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
 	// the following fields are read-only
 	cred   azcore.TokenCredential
 	scopes []string
@@ -28,10 +29,10 @@ type acquiringResourceState struct {
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
-func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, newExpiration time.Time, err error) {
+func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
 	tk, err := state.p.cred.GetToken(state.req.Raw().Context(), policy.TokenRequestOptions{Scopes: state.p.scopes})
 	if err != nil {
-		return nil, time.Time{}, err
+		return azcore.AccessToken{}, time.Time{}, err
 	}
 	return tk, tk.ExpiresOn, nil
 }
@@ -44,7 +45,7 @@ func NewBearerTokenPolicy(cred azcore.TokenCredential, scopes []string, opts *po
 	return &BearerTokenPolicy{
 		cred:         cred,
 		scopes:       scopes,
-		mainResource: shared.NewExpiringResource(acquire),
+		mainResource: temporal.NewResource(acquire),
 	}
 }
 
@@ -54,7 +55,7 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 		p:   b,
 		req: req,
 	}
-	tk, err := b.mainResource.GetResource(as)
+	tk, err := b.mainResource.Get(as)
 	if err != nil {
 		return nil, err
 	}

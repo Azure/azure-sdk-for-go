@@ -24,12 +24,12 @@ func ExampleLoggerClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewLoggerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewLoggerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.LoggerClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleLoggerClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleLoggerClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewLoggerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewLoggerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<logger-id>",
+		"rg1",
+		"apimService1",
+		"templateLogger",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,14 +74,14 @@ func ExampleLoggerClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewLoggerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewLoggerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<logger-id>",
+		"rg1",
+		"apimService1",
+		"templateLogger",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,17 +97,17 @@ func ExampleLoggerClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewLoggerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewLoggerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<logger-id>",
+		"rg1",
+		"apimService1",
+		"loggerId",
 		armapimanagement.LoggerContract{
 			Properties: &armapimanagement.LoggerContractProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("adding a new logger"),
 				Credentials: map[string]*string{
 					"instrumentationKey": to.Ptr("11................a1"),
 				},
@@ -130,18 +129,18 @@ func ExampleLoggerClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewLoggerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewLoggerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<logger-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"eh1",
+		"*",
 		armapimanagement.LoggerUpdateContract{
 			Properties: &armapimanagement.LoggerUpdateParameters{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("updating description"),
 				LoggerType:  to.Ptr(armapimanagement.LoggerTypeAzureEventHub),
 			},
 		},
@@ -160,15 +159,15 @@ func ExampleLoggerClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewLoggerClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewLoggerClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<logger-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"loggerId",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

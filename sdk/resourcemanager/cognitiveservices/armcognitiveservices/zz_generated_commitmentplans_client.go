@@ -38,7 +38,7 @@ func NewCommitmentPlansClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewCommitmentPlansClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Update the state of specified commitmentPlans associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of Cognitive Services account.
 // commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
@@ -103,7 +104,7 @@ func (client *CommitmentPlansClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, commitmentPlan)
 }
 
@@ -118,25 +119,27 @@ func (client *CommitmentPlansClient) createOrUpdateHandleResponse(resp *http.Res
 
 // BeginDelete - Deletes the specified commitmentPlan associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of Cognitive Services account.
 // commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
 // options - CommitmentPlansClientBeginDeleteOptions contains the optional parameters for the CommitmentPlansClient.BeginDelete
 // method.
-func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*armruntime.Poller[CommitmentPlansClientDeleteResponse], error) {
+func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*runtime.Poller[CommitmentPlansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, commitmentPlanName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CommitmentPlansClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CommitmentPlansClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CommitmentPlansClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified commitmentPlan associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *CommitmentPlansClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, commitmentPlanName, options)
 	if err != nil {
@@ -178,12 +181,13 @@ func (client *CommitmentPlansClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified commitmentPlans associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of Cognitive Services account.
 // commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
@@ -229,7 +233,7 @@ func (client *CommitmentPlansClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -244,11 +248,12 @@ func (client *CommitmentPlansClient) getHandleResponse(resp *http.Response) (Com
 
 // NewListPager - Gets the commitmentPlans associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of Cognitive Services account.
 // options - CommitmentPlansClientListOptions contains the optional parameters for the CommitmentPlansClient.List method.
 func (client *CommitmentPlansClient) NewListPager(resourceGroupName string, accountName string, options *CommitmentPlansClientListOptions) *runtime.Pager[CommitmentPlansClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CommitmentPlansClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CommitmentPlansClientListResponse]{
 		More: func(page CommitmentPlansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -297,7 +302,7 @@ func (client *CommitmentPlansClient) listCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
@@ -26,7 +24,7 @@ func ExampleGlobalSchedulesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewGlobalSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -39,7 +37,6 @@ func ExampleGlobalSchedulesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,11 +52,11 @@ func ExampleGlobalSchedulesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewGlobalSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("resourceGroupName",
 		&armdevtestlabs.GlobalSchedulesClientListByResourceGroupOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -69,7 +66,6 @@ func ExampleGlobalSchedulesClient_NewListByResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -85,13 +81,13 @@ func ExampleGlobalSchedulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewGlobalSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"labvmautostart",
 		&armdevtestlabs.GlobalSchedulesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -107,20 +103,20 @@ func ExampleGlobalSchedulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewGlobalSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"labvmautostart",
 		armdevtestlabs.Schedule{
 			Properties: &armdevtestlabs.ScheduleProperties{
 				Status:     to.Ptr(armdevtestlabs.EnableStatusEnabled),
-				TaskType:   to.Ptr("<task-type>"),
-				TimeZoneID: to.Ptr("<time-zone-id>"),
+				TaskType:   to.Ptr("LabVmsStartupTask"),
+				TimeZoneID: to.Ptr("Hawaiian Standard Time"),
 				WeeklyRecurrence: &armdevtestlabs.WeekDetails{
-					Time: to.Ptr("<time>"),
+					Time: to.Ptr("0700"),
 					Weekdays: []*string{
 						to.Ptr("Monday"),
 						to.Ptr("Tuesday"),
@@ -146,13 +142,13 @@ func ExampleGlobalSchedulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewGlobalSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"labvmautostart",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -166,13 +162,13 @@ func ExampleGlobalSchedulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewGlobalSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"labvmautostart",
 		armdevtestlabs.ScheduleFragment{
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
@@ -193,18 +189,18 @@ func ExampleGlobalSchedulesClient_BeginExecute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewGlobalSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginExecute(ctx,
-		"<resource-group-name>",
-		"<name>",
-		&armdevtestlabs.GlobalSchedulesClientBeginExecuteOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"labvmautostart",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -217,22 +213,22 @@ func ExampleGlobalSchedulesClient_BeginRetarget() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewGlobalSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRetarget(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"{scheduleName}",
 		armdevtestlabs.RetargetScheduleProperties{
-			CurrentResourceID: to.Ptr("<current-resource-id>"),
-			TargetResourceID:  to.Ptr("<target-resource-id>"),
+			CurrentResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{targetLab}"),
+			TargetResourceID:  to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{currentLab}"),
 		},
-		&armdevtestlabs.GlobalSchedulesClientBeginRetargetOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

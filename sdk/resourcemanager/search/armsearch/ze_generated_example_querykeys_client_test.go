@@ -23,14 +23,14 @@ func ExampleQueryKeysClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewQueryKeysClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewQueryKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
-		"<name>",
+		"rg1",
+		"mysearchservice",
+		"Query key for browser-based clients",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	if err != nil {
@@ -47,19 +47,18 @@ func ExampleQueryKeysClient_NewListBySearchServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewQueryKeysClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewQueryKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySearchServicePager("<resource-group-name>",
-		"<search-service-name>",
+	pager := client.NewListBySearchServicePager("rg1",
+		"mysearchservice",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,14 +74,14 @@ func ExampleQueryKeysClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewQueryKeysClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewQueryKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
-		"<key>",
+		"rg1",
+		"mysearchservice",
+		"<a query API key>",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	if err != nil {

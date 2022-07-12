@@ -38,7 +38,7 @@ func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Get - Get a Target Type resources for given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // locationName - String that represents a Location resource name.
 // targetTypeName - String that represents a Target Type resource name.
 // options - TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
@@ -96,7 +97,7 @@ func (client *TargetTypesClient) getCreateRequest(ctx context.Context, locationN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,10 +112,11 @@ func (client *TargetTypesClient) getHandleResponse(resp *http.Response) (TargetT
 
 // NewListPager - Get a list of Target Type resources for given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // locationName - String that represents a Location resource name.
 // options - TargetTypesClientListOptions contains the optional parameters for the TargetTypesClient.List method.
 func (client *TargetTypesClient) NewListPager(locationName string, options *TargetTypesClientListOptions) *runtime.Pager[TargetTypesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TargetTypesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TargetTypesClientListResponse]{
 		More: func(page TargetTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -162,7 +164,7 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

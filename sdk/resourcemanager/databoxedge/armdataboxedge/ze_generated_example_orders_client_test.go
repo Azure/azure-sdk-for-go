@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
@@ -26,18 +24,17 @@ func ExampleOrdersClient_NewListByDataBoxEdgeDevicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataBoxEdgeDevicePager("<device-name>",
-		"<resource-group-name>",
+	pager := client.NewListByDataBoxEdgeDevicePager("testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,13 +50,13 @@ func ExampleOrdersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,38 +72,38 @@ func ExampleOrdersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		armdataboxedge.Order{
 			Properties: &armdataboxedge.OrderProperties{
 				ContactInformation: &armdataboxedge.ContactDetails{
-					CompanyName:   to.Ptr("<company-name>"),
-					ContactPerson: to.Ptr("<contact-person>"),
+					CompanyName:   to.Ptr("Microsoft"),
+					ContactPerson: to.Ptr("John Mcclane"),
 					EmailList: []*string{
 						to.Ptr("john@microsoft.com")},
-					Phone: to.Ptr("<phone>"),
+					Phone: to.Ptr("(800) 426-9400"),
 				},
 				ShippingAddress: &armdataboxedge.Address{
-					AddressLine1: to.Ptr("<address-line1>"),
-					AddressLine2: to.Ptr("<address-line2>"),
-					AddressLine3: to.Ptr("<address-line3>"),
-					City:         to.Ptr("<city>"),
-					Country:      to.Ptr("<country>"),
-					PostalCode:   to.Ptr("<postal-code>"),
-					State:        to.Ptr("<state>"),
+					AddressLine1: to.Ptr("Microsoft Corporation"),
+					AddressLine2: to.Ptr("One Microsoft Way"),
+					AddressLine3: to.Ptr("Redmond"),
+					City:         to.Ptr("WA"),
+					Country:      to.Ptr("USA"),
+					PostalCode:   to.Ptr("98052"),
+					State:        to.Ptr("WA"),
 				},
 			},
 		},
-		&armdataboxedge.OrdersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -121,18 +118,18 @@ func ExampleOrdersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<resource-group-name>",
-		&armdataboxedge.OrdersClientBeginDeleteOptions{ResumeToken: ""})
+		"testedgedevice",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -145,13 +142,13 @@ func ExampleOrdersClient_ListDCAccessCode() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewOrdersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListDCAccessCode(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

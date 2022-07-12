@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover"
@@ -26,21 +24,21 @@ func ExampleMoveCollectionsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
+		"rg1",
+		"movecollection1",
 		&armresourcemover.MoveCollectionsClientCreateOptions{Body: &armresourcemover.MoveCollection{
 			Identity: &armresourcemover.Identity{
 				Type: to.Ptr(armresourcemover.ResourceIdentityTypeSystemAssigned),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus2"),
 			Properties: &armresourcemover.MoveCollectionProperties{
-				SourceRegion: to.Ptr("<source-region>"),
-				TargetRegion: to.Ptr("<target-region>"),
+				SourceRegion: to.Ptr("eastus"),
+				TargetRegion: to.Ptr("westus"),
 			},
 		},
 		})
@@ -58,13 +56,13 @@ func ExampleMoveCollectionsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
+		"rg1",
+		"movecollection1",
 		&armresourcemover.MoveCollectionsClientUpdateOptions{Body: &armresourcemover.UpdateMoveCollectionRequest{
 			Identity: &armresourcemover.Identity{
 				Type: to.Ptr(armresourcemover.ResourceIdentityTypeSystemAssigned),
@@ -88,18 +86,18 @@ func ExampleMoveCollectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"movecollection1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -114,13 +112,13 @@ func ExampleMoveCollectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
+		"rg1",
+		"movecollection1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -136,24 +134,23 @@ func ExampleMoveCollectionsClient_BeginPrepare() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPrepare(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
+		"rg1",
+		"movecollection1",
 		&armresourcemover.MoveCollectionsClientBeginPrepareOptions{Body: &armresourcemover.PrepareRequest{
 			MoveResources: []*string{
 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.Ptr(false),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -168,24 +165,23 @@ func ExampleMoveCollectionsClient_BeginInitiateMove() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginInitiateMove(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
+		"rg1",
+		"movecollection1",
 		&armresourcemover.MoveCollectionsClientBeginInitiateMoveOptions{Body: &armresourcemover.ResourceMoveRequest{
 			MoveResources: []*string{
 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.Ptr(false),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -200,24 +196,23 @@ func ExampleMoveCollectionsClient_BeginCommit() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCommit(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
+		"rg1",
+		"movecollection1",
 		&armresourcemover.MoveCollectionsClientBeginCommitOptions{Body: &armresourcemover.CommitRequest{
 			MoveResources: []*string{
 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.Ptr(false),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -232,24 +227,23 @@ func ExampleMoveCollectionsClient_BeginDiscard() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDiscard(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
+		"rg1",
+		"movecollection1",
 		&armresourcemover.MoveCollectionsClientBeginDiscardOptions{Body: &armresourcemover.DiscardRequest{
 			MoveResources: []*string{
 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.Ptr(false),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -264,18 +258,18 @@ func ExampleMoveCollectionsClient_BeginResolveDependencies() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResolveDependencies(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsClientBeginResolveDependenciesOptions{ResumeToken: ""})
+		"rg1",
+		"movecollection1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -290,24 +284,23 @@ func ExampleMoveCollectionsClient_BeginBulkRemove() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginBulkRemove(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
+		"rg1",
+		"movecollection1",
 		&armresourcemover.MoveCollectionsClientBeginBulkRemoveOptions{Body: &armresourcemover.BulkRemoveRequest{
 			MoveResources: []*string{
 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.Ptr(false),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -322,7 +315,7 @@ func ExampleMoveCollectionsClient_NewListMoveCollectionsBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -331,7 +324,6 @@ func ExampleMoveCollectionsClient_NewListMoveCollectionsBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -347,17 +339,16 @@ func ExampleMoveCollectionsClient_NewListMoveCollectionsByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMoveCollectionsByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListMoveCollectionsByResourceGroupPager("rg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -373,14 +364,14 @@ func ExampleMoveCollectionsClient_ListRequiredFor() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewMoveCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListRequiredFor(ctx,
-		"<resource-group-name>",
-		"<move-collection-name>",
-		"<source-id>",
+		"rg1",
+		"movecollection1",
+		"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/nic1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

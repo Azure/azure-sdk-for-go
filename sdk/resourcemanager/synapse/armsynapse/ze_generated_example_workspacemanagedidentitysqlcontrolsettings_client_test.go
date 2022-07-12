@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
@@ -26,13 +24,13 @@ func ExampleWorkspaceManagedIdentitySQLControlSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"resourceGroup1",
+		"workspace1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,13 +46,13 @@ func ExampleWorkspaceManagedIdentitySQLControlSettingsClient_BeginCreateOrUpdate
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"resourceGroup1",
+		"workspace1",
 		armsynapse.ManagedIdentitySQLControlSettingsModel{
 			Properties: &armsynapse.ManagedIdentitySQLControlSettingsModelProperties{
 				GrantSQLControlToManagedIdentity: &armsynapse.ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity{
@@ -62,11 +60,11 @@ func ExampleWorkspaceManagedIdentitySQLControlSettingsClient_BeginCreateOrUpdate
 				},
 			},
 		},
-		&armsynapse.WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

@@ -47,6 +47,22 @@ type AKS struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetCompute implements the ComputeClassification interface for type AKS.
+func (a *AKS) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        a.ComputeType,
+		ComputeLocation:    a.ComputeLocation,
+		ProvisioningState:  a.ProvisioningState,
+		Description:        a.Description,
+		CreatedOn:          a.CreatedOn,
+		ModifiedOn:         a.ModifiedOn,
+		ResourceID:         a.ResourceID,
+		ProvisioningErrors: a.ProvisioningErrors,
+		IsAttachedCompute:  a.IsAttachedCompute,
+		DisableLocalAuth:   a.DisableLocalAuth,
+	}
+}
+
 // AKSProperties - AKS properties
 type AKSProperties struct {
 	// Number of agents
@@ -90,6 +106,13 @@ type AksComputeSecrets struct {
 
 	// Content of kubeconfig file that can be used to connect to the Kubernetes cluster.
 	UserKubeConfig *string `json:"userKubeConfig,omitempty"`
+}
+
+// GetComputeSecrets implements the ComputeSecretsClassification interface for type AksComputeSecrets.
+func (a *AksComputeSecrets) GetComputeSecrets() *ComputeSecrets {
+	return &ComputeSecrets{
+		ComputeType: a.ComputeType,
+	}
 }
 
 // AksComputeSecretsProperties - Properties of AksComputeSecrets
@@ -156,6 +179,22 @@ type AmlCompute struct {
 
 	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetCompute implements the ComputeClassification interface for type AmlCompute.
+func (a *AmlCompute) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        a.ComputeType,
+		ComputeLocation:    a.ComputeLocation,
+		ProvisioningState:  a.ProvisioningState,
+		Description:        a.Description,
+		CreatedOn:          a.CreatedOn,
+		ModifiedOn:         a.ModifiedOn,
+		ResourceID:         a.ResourceID,
+		ProvisioningErrors: a.ProvisioningErrors,
+		IsAttachedCompute:  a.IsAttachedCompute,
+		DisableLocalAuth:   a.DisableLocalAuth,
+	}
 }
 
 // AmlComputeNodeInformation - Compute node information related to a AmlCompute.
@@ -346,6 +385,9 @@ type Compute struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetCompute implements the ComputeClassification interface for type Compute.
+func (c *Compute) GetCompute() *Compute { return c }
+
 // ComputeClientBeginCreateOrUpdateOptions contains the optional parameters for the ComputeClient.BeginCreateOrUpdate method.
 type ComputeClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -438,6 +480,22 @@ type ComputeInstance struct {
 
 	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetCompute implements the ComputeClassification interface for type ComputeInstance.
+func (c *ComputeInstance) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        c.ComputeType,
+		ComputeLocation:    c.ComputeLocation,
+		ProvisioningState:  c.ProvisioningState,
+		Description:        c.Description,
+		CreatedOn:          c.CreatedOn,
+		ModifiedOn:         c.ModifiedOn,
+		ResourceID:         c.ResourceID,
+		ProvisioningErrors: c.ProvisioningErrors,
+		IsAttachedCompute:  c.IsAttachedCompute,
+		DisableLocalAuth:   c.DisableLocalAuth,
+	}
 }
 
 // ComputeInstanceApplication - Defines an Aml Instance application and its connectivity endpoint URI.
@@ -588,6 +646,9 @@ type ComputeSecrets struct {
 	ComputeType *ComputeType `json:"computeType,omitempty"`
 }
 
+// GetComputeSecrets implements the ComputeSecretsClassification interface for type ComputeSecrets.
+func (c *ComputeSecrets) GetComputeSecrets() *ComputeSecrets { return c }
+
 // ContainerResourceRequirements - The resource requirements for the container (cpu and memory).
 type ContainerResourceRequirements struct {
 	// The minimum amount of CPU cores to be used by the container. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
@@ -648,6 +709,22 @@ type DataFactory struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetCompute implements the ComputeClassification interface for type DataFactory.
+func (d *DataFactory) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        d.ComputeType,
+		ComputeLocation:    d.ComputeLocation,
+		ProvisioningState:  d.ProvisioningState,
+		Description:        d.Description,
+		CreatedOn:          d.CreatedOn,
+		ModifiedOn:         d.ModifiedOn,
+		ResourceID:         d.ResourceID,
+		ProvisioningErrors: d.ProvisioningErrors,
+		IsAttachedCompute:  d.IsAttachedCompute,
+		DisableLocalAuth:   d.DisableLocalAuth,
+	}
+}
+
 // DataLakeAnalytics - A DataLakeAnalytics compute.
 type DataLakeAnalytics struct {
 	// REQUIRED; The type of compute
@@ -681,6 +758,22 @@ type DataLakeAnalytics struct {
 
 	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetCompute implements the ComputeClassification interface for type DataLakeAnalytics.
+func (d *DataLakeAnalytics) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        d.ComputeType,
+		ComputeLocation:    d.ComputeLocation,
+		ProvisioningState:  d.ProvisioningState,
+		Description:        d.Description,
+		CreatedOn:          d.CreatedOn,
+		ModifiedOn:         d.ModifiedOn,
+		ResourceID:         d.ResourceID,
+		ProvisioningErrors: d.ProvisioningErrors,
+		IsAttachedCompute:  d.IsAttachedCompute,
+		DisableLocalAuth:   d.DisableLocalAuth,
+	}
 }
 
 type DataLakeAnalyticsProperties struct {
@@ -725,6 +818,22 @@ type Databricks struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetCompute implements the ComputeClassification interface for type Databricks.
+func (d *Databricks) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        d.ComputeType,
+		ComputeLocation:    d.ComputeLocation,
+		ProvisioningState:  d.ProvisioningState,
+		Description:        d.Description,
+		CreatedOn:          d.CreatedOn,
+		ModifiedOn:         d.ModifiedOn,
+		ResourceID:         d.ResourceID,
+		ProvisioningErrors: d.ProvisioningErrors,
+		IsAttachedCompute:  d.IsAttachedCompute,
+		DisableLocalAuth:   d.DisableLocalAuth,
+	}
+}
+
 // DatabricksComputeSecrets - Secrets related to a Machine Learning compute based on Databricks.
 type DatabricksComputeSecrets struct {
 	// REQUIRED; The type of compute
@@ -732,6 +841,13 @@ type DatabricksComputeSecrets struct {
 
 	// access token for databricks account.
 	DatabricksAccessToken *string `json:"databricksAccessToken,omitempty"`
+}
+
+// GetComputeSecrets implements the ComputeSecretsClassification interface for type DatabricksComputeSecrets.
+func (d *DatabricksComputeSecrets) GetComputeSecrets() *ComputeSecrets {
+	return &ComputeSecrets{
+		ComputeType: d.ComputeType,
+	}
 }
 
 // DatabricksComputeSecretsProperties - Properties of Databricks Compute Secrets
@@ -940,6 +1056,22 @@ type HDInsight struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetCompute implements the ComputeClassification interface for type HDInsight.
+func (h *HDInsight) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        h.ComputeType,
+		ComputeLocation:    h.ComputeLocation,
+		ProvisioningState:  h.ProvisioningState,
+		Description:        h.Description,
+		CreatedOn:          h.CreatedOn,
+		ModifiedOn:         h.ModifiedOn,
+		ResourceID:         h.ResourceID,
+		ProvisioningErrors: h.ProvisioningErrors,
+		IsAttachedCompute:  h.IsAttachedCompute,
+		DisableLocalAuth:   h.DisableLocalAuth,
+	}
+}
+
 // HDInsightProperties - HDInsight compute properties
 type HDInsightProperties struct {
 	// Public IP address of the master node of the cluster.
@@ -1037,6 +1169,22 @@ type Kubernetes struct {
 
 	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetCompute implements the ComputeClassification interface for type Kubernetes.
+func (k *Kubernetes) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        k.ComputeType,
+		ComputeLocation:    k.ComputeLocation,
+		ProvisioningState:  k.ProvisioningState,
+		Description:        k.Description,
+		CreatedOn:          k.CreatedOn,
+		ModifiedOn:         k.ModifiedOn,
+		ResourceID:         k.ResourceID,
+		ProvisioningErrors: k.ProvisioningErrors,
+		IsAttachedCompute:  k.IsAttachedCompute,
+		DisableLocalAuth:   k.DisableLocalAuth,
+	}
 }
 
 // KubernetesProperties - Kubernetes properties
@@ -1699,6 +1847,22 @@ type SynapseSpark struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetCompute implements the ComputeClassification interface for type SynapseSpark.
+func (s *SynapseSpark) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        s.ComputeType,
+		ComputeLocation:    s.ComputeLocation,
+		ProvisioningState:  s.ProvisioningState,
+		Description:        s.Description,
+		CreatedOn:          s.CreatedOn,
+		ModifiedOn:         s.ModifiedOn,
+		ResourceID:         s.ResourceID,
+		ProvisioningErrors: s.ProvisioningErrors,
+		IsAttachedCompute:  s.IsAttachedCompute,
+		DisableLocalAuth:   s.DisableLocalAuth,
+	}
+}
+
 type SynapseSparkProperties struct {
 	// Auto pause properties.
 	AutoPauseProperties *AutoPauseProperties `json:"autoPauseProperties,omitempty"`
@@ -1889,6 +2053,22 @@ type VirtualMachine struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetCompute implements the ComputeClassification interface for type VirtualMachine.
+func (v *VirtualMachine) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        v.ComputeType,
+		ComputeLocation:    v.ComputeLocation,
+		ProvisioningState:  v.ProvisioningState,
+		Description:        v.Description,
+		CreatedOn:          v.CreatedOn,
+		ModifiedOn:         v.ModifiedOn,
+		ResourceID:         v.ResourceID,
+		ProvisioningErrors: v.ProvisioningErrors,
+		IsAttachedCompute:  v.IsAttachedCompute,
+		DisableLocalAuth:   v.DisableLocalAuth,
+	}
+}
+
 // VirtualMachineImage - Virtual Machine image for Windows AML Compute
 type VirtualMachineImage struct {
 	// REQUIRED; Virtual Machine image path
@@ -1934,6 +2114,13 @@ type VirtualMachineSecrets struct {
 
 	// Admin credentials for virtual machine.
 	AdministratorAccount *VirtualMachineSSHCredentials `json:"administratorAccount,omitempty"`
+}
+
+// GetComputeSecrets implements the ComputeSecretsClassification interface for type VirtualMachineSecrets.
+func (v *VirtualMachineSecrets) GetComputeSecrets() *ComputeSecrets {
+	return &ComputeSecrets{
+		ComputeType: v.ComputeType,
+	}
 }
 
 // VirtualMachineSize - Describes the properties of a VM size.

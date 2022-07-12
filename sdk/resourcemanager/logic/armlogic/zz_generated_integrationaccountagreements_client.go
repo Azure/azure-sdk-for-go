@@ -39,7 +39,7 @@ func NewIntegrationAccountAgreementsClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewIntegrationAccountAgreementsClient(subscriptionID string, credential azc
 
 // CreateOrUpdate - Creates or updates an integration account agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // agreementName - The integration account agreement name.
@@ -104,7 +105,7 @@ func (client *IntegrationAccountAgreementsClient) createOrUpdateCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, agreement)
 }
 
@@ -119,6 +120,7 @@ func (client *IntegrationAccountAgreementsClient) createOrUpdateHandleResponse(r
 
 // Delete - Deletes an integration account agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // agreementName - The integration account agreement name.
@@ -165,12 +167,13 @@ func (client *IntegrationAccountAgreementsClient) deleteCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an integration account agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // agreementName - The integration account agreement name.
@@ -217,7 +220,7 @@ func (client *IntegrationAccountAgreementsClient) getCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,12 +235,13 @@ func (client *IntegrationAccountAgreementsClient) getHandleResponse(resp *http.R
 
 // NewListPager - Gets a list of integration account agreements.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountAgreementsClientListOptions contains the optional parameters for the IntegrationAccountAgreementsClient.List
 // method.
 func (client *IntegrationAccountAgreementsClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountAgreementsClientListOptions) *runtime.Pager[IntegrationAccountAgreementsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountAgreementsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountAgreementsClientListResponse]{
 		More: func(page IntegrationAccountAgreementsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -292,7 +296,7 @@ func (client *IntegrationAccountAgreementsClient) listCreateRequest(ctx context.
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -307,6 +311,7 @@ func (client *IntegrationAccountAgreementsClient) listHandleResponse(resp *http.
 
 // ListContentCallbackURL - Get the content callback url.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // agreementName - The integration account agreement name.
@@ -353,7 +358,7 @@ func (client *IntegrationAccountAgreementsClient) listContentCallbackURLCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, listContentCallbackURL)
 }
 

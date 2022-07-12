@@ -38,7 +38,7 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,23 +56,25 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginGet - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // operationResultID - The ID of the operation result to get.
 // options - OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet
 // method.
-func (client *OperationResultsClient) BeginGet(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*armruntime.Poller[OperationResultsClientGetResponse], error) {
+func (client *OperationResultsClient) BeginGet(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*runtime.Poller[OperationResultsClientGetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.get(ctx, operationResultID, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OperationResultsClientGetResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OperationResultsClientGetResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OperationResultsClientGetResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OperationResultsClientGetResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Get - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 func (client *OperationResultsClient) get(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*http.Response, error) {
 	req, err := client.getCreateRequest(ctx, operationResultID, options)
 	if err != nil {
@@ -106,6 +108,6 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, oper
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

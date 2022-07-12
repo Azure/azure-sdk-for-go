@@ -26,25 +26,25 @@ func ExampleSupportPackagesClient_BeginTriggerSupportPackage() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewSupportPackagesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSupportPackagesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTriggerSupportPackage(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		armdataboxedge.TriggerSupportPackageRequest{
 			Properties: &armdataboxedge.SupportPackageRequestProperties{
-				Include:          to.Ptr("<include>"),
+				Include:          to.Ptr("DefaultWithDumps"),
 				MaximumTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:19:51.4270267Z"); return t }()),
 				MinimumTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.4270267Z"); return t }()),
 			},
 		},
-		&armdataboxedge.SupportPackagesClientBeginTriggerSupportPackageOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

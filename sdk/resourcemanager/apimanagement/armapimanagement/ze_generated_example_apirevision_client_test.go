@@ -23,13 +23,13 @@ func ExampleAPIRevisionClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIRevisionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIRevisionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f3",
 		&armapimanagement.APIRevisionClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleAPIRevisionClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

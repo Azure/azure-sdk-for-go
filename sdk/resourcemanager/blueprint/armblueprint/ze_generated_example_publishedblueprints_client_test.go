@@ -28,9 +28,9 @@ func ExamplePublishedBlueprintsClient_Create() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<version-id>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"v2",
 		&armblueprint.PublishedBlueprintsClientCreateOptions{PublishedBlueprint: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,9 +49,9 @@ func ExamplePublishedBlueprintsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<version-id>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"v2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,9 +72,9 @@ func ExamplePublishedBlueprintsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<version-id>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"v2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -94,14 +94,13 @@ func ExamplePublishedBlueprintsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-scope>",
-		"<blueprint-name>",
+	pager := client.NewListPager("providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

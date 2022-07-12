@@ -38,7 +38,7 @@ func NewVendorSKUsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,28 +57,30 @@ func NewVendorSKUsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service
 // behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // parameters - Parameters supplied to the create or update sku operation.
 // options - VendorSKUsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUsClient.BeginCreateOrUpdate
 // method.
-func (client *VendorSKUsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VendorSKUsClientCreateOrUpdateResponse], error) {
+func (client *VendorSKUsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VendorSKUsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, vendorName, skuName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VendorSKUsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VendorSKUsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VendorSKUsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VendorSKUsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service
 // behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 func (client *VendorSKUsClient) createOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, vendorName, skuName, parameters, options)
 	if err != nil {
@@ -116,31 +118,33 @@ func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the specified sku. This operation can take up to 2 hours to complete. This is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // options - VendorSKUsClientBeginDeleteOptions contains the optional parameters for the VendorSKUsClient.BeginDelete method.
-func (client *VendorSKUsClient) BeginDelete(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (*armruntime.Poller[VendorSKUsClientDeleteResponse], error) {
+func (client *VendorSKUsClient) BeginDelete(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (*runtime.Poller[VendorSKUsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, vendorName, skuName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VendorSKUsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VendorSKUsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VendorSKUsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VendorSKUsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified sku. This operation can take up to 2 hours to complete. This is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 func (client *VendorSKUsClient) deleteOperation(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, vendorName, skuName, options)
 	if err != nil {
@@ -178,12 +182,13 @@ func (client *VendorSKUsClient) deleteCreateRequest(ctx context.Context, vendorN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified sku.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // options - VendorSKUsClientGetOptions contains the optional parameters for the VendorSKUsClient.Get method.
@@ -224,7 +229,7 @@ func (client *VendorSKUsClient) getCreateRequest(ctx context.Context, vendorName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,10 +244,11 @@ func (client *VendorSKUsClient) getHandleResponse(resp *http.Response) (VendorSK
 
 // NewListPager - Lists all the skus of a vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // options - VendorSKUsClientListOptions contains the optional parameters for the VendorSKUsClient.List method.
 func (client *VendorSKUsClient) NewListPager(vendorName string, options *VendorSKUsClientListOptions) *runtime.Pager[VendorSKUsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VendorSKUsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VendorSKUsClientListResponse]{
 		More: func(page VendorSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -287,7 +293,7 @@ func (client *VendorSKUsClient) listCreateRequest(ctx context.Context, vendorNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -302,6 +308,7 @@ func (client *VendorSKUsClient) listHandleResponse(resp *http.Response) (VendorS
 
 // ListCredential - Generate credentials for publishing SKU images.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // options - VendorSKUsClientListCredentialOptions contains the optional parameters for the VendorSKUsClient.ListCredential
@@ -343,7 +350,7 @@ func (client *VendorSKUsClient) listCredentialCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

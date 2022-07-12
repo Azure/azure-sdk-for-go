@@ -40,7 +40,7 @@ func NewDeviceGroupsClient(subscriptionID string, iotDefenderLocation string, cr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewDeviceGroupsClient(subscriptionID string, iotDefenderLocation string, cr
 
 // CreateOrUpdate - Create or update device group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // deviceGroupName - Device group name
 // deviceGroupModel - Device group model
 // options - DeviceGroupsClientCreateOrUpdateOptions contains the optional parameters for the DeviceGroupsClient.CreateOrUpdate
@@ -100,7 +101,7 @@ func (client *DeviceGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, deviceGroupModel)
 }
 
@@ -115,6 +116,7 @@ func (client *DeviceGroupsClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Delete device group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // deviceGroupName - Device group name
 // options - DeviceGroupsClientDeleteOptions contains the optional parameters for the DeviceGroupsClient.Delete method.
 func (client *DeviceGroupsClient) Delete(ctx context.Context, deviceGroupName string, options *DeviceGroupsClientDeleteOptions) (DeviceGroupsClientDeleteResponse, error) {
@@ -154,12 +156,13 @@ func (client *DeviceGroupsClient) deleteCreateRequest(ctx context.Context, devic
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get device group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // deviceGroupName - Device group name
 // options - DeviceGroupsClientGetOptions contains the optional parameters for the DeviceGroupsClient.Get method.
 func (client *DeviceGroupsClient) Get(ctx context.Context, deviceGroupName string, options *DeviceGroupsClientGetOptions) (DeviceGroupsClientGetResponse, error) {
@@ -199,7 +202,7 @@ func (client *DeviceGroupsClient) getCreateRequest(ctx context.Context, deviceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -214,9 +217,10 @@ func (client *DeviceGroupsClient) getHandleResponse(resp *http.Response) (Device
 
 // NewListPager - List device groups
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - DeviceGroupsClientListOptions contains the optional parameters for the DeviceGroupsClient.List method.
 func (client *DeviceGroupsClient) NewListPager(options *DeviceGroupsClientListOptions) *runtime.Pager[DeviceGroupsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DeviceGroupsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DeviceGroupsClientListResponse]{
 		More: func(page DeviceGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -261,7 +265,7 @@ func (client *DeviceGroupsClient) listCreateRequest(ctx context.Context, options
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -378,6 +378,13 @@ type ForwardingConfiguration struct {
 	ForwardingProtocol *FrontDoorForwardingProtocol `json:"forwardingProtocol,omitempty"`
 }
 
+// GetRouteConfiguration implements the RouteConfigurationClassification interface for type ForwardingConfiguration.
+func (f *ForwardingConfiguration) GetRouteConfiguration() *RouteConfiguration {
+	return &RouteConfiguration{
+		ODataType: f.ODataType,
+	}
+}
+
 // FrontDoor - Front Door represents a collection of backend endpoints to route traffic to along with rules that specify how
 // traffic is sent there.
 type FrontDoor struct {
@@ -1223,6 +1230,13 @@ type RedirectConfiguration struct {
 	RedirectType *FrontDoorRedirectType `json:"redirectType,omitempty"`
 }
 
+// GetRouteConfiguration implements the RouteConfigurationClassification interface for type RedirectConfiguration.
+func (r *RedirectConfiguration) GetRouteConfiguration() *RouteConfiguration {
+	return &RouteConfiguration{
+		ODataType: r.ODataType,
+	}
+}
+
 // ReportsClientGetLatencyScorecardsOptions contains the optional parameters for the ReportsClient.GetLatencyScorecards method.
 type ReportsClientGetLatencyScorecardsOptions struct {
 	// The country associated with the Latency Scorecard. Values are country ISO codes as specified here- https://www.iso.org/iso-3166-country-codes.html
@@ -1271,6 +1285,9 @@ type RouteConfiguration struct {
 	// REQUIRED
 	ODataType *string `json:"@odata.type,omitempty"`
 }
+
+// GetRouteConfiguration implements the RouteConfigurationClassification interface for type RouteConfiguration.
+func (r *RouteConfiguration) GetRouteConfiguration() *RouteConfiguration { return r }
 
 // RoutingRule - A routing rule represents a specification for traffic to treat and where to send it, along with health probe
 // information.

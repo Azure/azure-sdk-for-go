@@ -38,7 +38,7 @@ func NewSourceControlClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,13 +56,14 @@ func NewSourceControlClient(subscriptionID string, credential azcore.TokenCreden
 
 // NewListRepositoriesPager - Gets a list of repositories metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // repoType - The repo type.
 // options - SourceControlClientListRepositoriesOptions contains the optional parameters for the SourceControlClient.ListRepositories
 // method.
 func (client *SourceControlClient) NewListRepositoriesPager(resourceGroupName string, workspaceName string, repoType RepoType, options *SourceControlClientListRepositoriesOptions) *runtime.Pager[SourceControlClientListRepositoriesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SourceControlClientListRepositoriesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SourceControlClientListRepositoriesResponse]{
 		More: func(page SourceControlClientListRepositoriesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -109,9 +110,9 @@ func (client *SourceControlClient) listRepositoriesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, repoType)
 }
 

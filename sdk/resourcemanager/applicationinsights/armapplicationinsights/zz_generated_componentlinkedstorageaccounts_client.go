@@ -38,7 +38,7 @@ func NewComponentLinkedStorageAccountsClient(subscriptionID string, credential a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewComponentLinkedStorageAccountsClient(subscriptionID string, credential a
 
 // CreateAndUpdate - Replace current linked storage account for an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // storageType - The type of the Application Insights component data source for the linked storage account.
@@ -104,7 +105,7 @@ func (client *ComponentLinkedStorageAccountsClient) createAndUpdateCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, linkedStorageAccountsProperties)
 }
 
@@ -119,6 +120,7 @@ func (client *ComponentLinkedStorageAccountsClient) createAndUpdateHandleRespons
 
 // Delete - Delete linked storage accounts for an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // storageType - The type of the Application Insights component data source for the linked storage account.
@@ -165,12 +167,13 @@ func (client *ComponentLinkedStorageAccountsClient) deleteCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns the current linked storage settings for an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // storageType - The type of the Application Insights component data source for the linked storage account.
@@ -217,7 +220,7 @@ func (client *ComponentLinkedStorageAccountsClient) getCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,6 +235,7 @@ func (client *ComponentLinkedStorageAccountsClient) getHandleResponse(resp *http
 
 // Update - Update linked storage accounts for an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // storageType - The type of the Application Insights component data source for the linked storage account.
@@ -280,7 +284,7 @@ func (client *ComponentLinkedStorageAccountsClient) updateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, linkedStorageAccountsProperties)
 }
 

@@ -39,7 +39,7 @@ func NewAttestationsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewAttestationsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdateAtResource - Creates or updates an attestation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceID - Resource ID.
 // attestationName - The name of the attestation.
 // parameters - The attestation parameters.
 // options - AttestationsClientBeginCreateOrUpdateAtResourceOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResource
 // method.
-func (client *AttestationsClient) BeginCreateOrUpdateAtResource(ctx context.Context, resourceID string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceOptions) (*armruntime.Poller[AttestationsClientCreateOrUpdateAtResourceResponse], error) {
+func (client *AttestationsClient) BeginCreateOrUpdateAtResource(ctx context.Context, resourceID string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceOptions) (*runtime.Poller[AttestationsClientCreateOrUpdateAtResourceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateAtResource(ctx, resourceID, attestationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AttestationsClientCreateOrUpdateAtResourceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtResourceResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtResourceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtResourceResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdateAtResource - Creates or updates an attestation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 func (client *AttestationsClient) createOrUpdateAtResource(ctx context.Context, resourceID string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateAtResourceCreateRequest(ctx, resourceID, attestationName, parameters, options)
 	if err != nil {
@@ -106,31 +108,33 @@ func (client *AttestationsClient) createOrUpdateAtResourceCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginCreateOrUpdateAtResourceGroup - Creates or updates an attestation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // attestationName - The name of the attestation.
 // parameters - The attestation parameters.
 // options - AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResourceGroup
 // method.
-func (client *AttestationsClient) BeginCreateOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions) (*armruntime.Poller[AttestationsClientCreateOrUpdateAtResourceGroupResponse], error) {
+func (client *AttestationsClient) BeginCreateOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions) (*runtime.Poller[AttestationsClientCreateOrUpdateAtResourceGroupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateAtResourceGroup(ctx, resourceGroupName, attestationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AttestationsClientCreateOrUpdateAtResourceGroupResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtResourceGroupResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtResourceGroupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtResourceGroupResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdateAtResourceGroup - Creates or updates an attestation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 func (client *AttestationsClient) createOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateAtResourceGroupCreateRequest(ctx, resourceGroupName, attestationName, parameters, options)
 	if err != nil {
@@ -168,30 +172,32 @@ func (client *AttestationsClient) createOrUpdateAtResourceGroupCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginCreateOrUpdateAtSubscription - Creates or updates an attestation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // attestationName - The name of the attestation.
 // parameters - The attestation parameters.
 // options - AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtSubscription
 // method.
-func (client *AttestationsClient) BeginCreateOrUpdateAtSubscription(ctx context.Context, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions) (*armruntime.Poller[AttestationsClientCreateOrUpdateAtSubscriptionResponse], error) {
+func (client *AttestationsClient) BeginCreateOrUpdateAtSubscription(ctx context.Context, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions) (*runtime.Poller[AttestationsClientCreateOrUpdateAtSubscriptionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateAtSubscription(ctx, attestationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AttestationsClientCreateOrUpdateAtSubscriptionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtSubscriptionResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtSubscriptionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtSubscriptionResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdateAtSubscription - Creates or updates an attestation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 func (client *AttestationsClient) createOrUpdateAtSubscription(ctx context.Context, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateAtSubscriptionCreateRequest(ctx, attestationName, parameters, options)
 	if err != nil {
@@ -225,12 +231,13 @@ func (client *AttestationsClient) createOrUpdateAtSubscriptionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // DeleteAtResource - Deletes an existing attestation at individual resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceID - Resource ID.
 // attestationName - The name of the attestation.
 // options - AttestationsClientDeleteAtResourceOptions contains the optional parameters for the AttestationsClient.DeleteAtResource
@@ -265,12 +272,13 @@ func (client *AttestationsClient) deleteAtResourceCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DeleteAtResourceGroup - Deletes an existing attestation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // attestationName - The name of the attestation.
 // options - AttestationsClientDeleteAtResourceGroupOptions contains the optional parameters for the AttestationsClient.DeleteAtResourceGroup
@@ -312,12 +320,13 @@ func (client *AttestationsClient) deleteAtResourceGroupCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DeleteAtSubscription - Deletes an existing attestation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // attestationName - The name of the attestation.
 // options - AttestationsClientDeleteAtSubscriptionOptions contains the optional parameters for the AttestationsClient.DeleteAtSubscription
 // method.
@@ -354,12 +363,13 @@ func (client *AttestationsClient) deleteAtSubscriptionCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetAtResource - Gets an existing attestation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceID - Resource ID.
 // attestationName - The name of the attestation.
 // options - AttestationsClientGetAtResourceOptions contains the optional parameters for the AttestationsClient.GetAtResource
@@ -394,7 +404,7 @@ func (client *AttestationsClient) getAtResourceCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -409,6 +419,7 @@ func (client *AttestationsClient) getAtResourceHandleResponse(resp *http.Respons
 
 // GetAtResourceGroup - Gets an existing attestation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // attestationName - The name of the attestation.
 // options - AttestationsClientGetAtResourceGroupOptions contains the optional parameters for the AttestationsClient.GetAtResourceGroup
@@ -450,7 +461,7 @@ func (client *AttestationsClient) getAtResourceGroupCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -465,6 +476,7 @@ func (client *AttestationsClient) getAtResourceGroupHandleResponse(resp *http.Re
 
 // GetAtSubscription - Gets an existing attestation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // attestationName - The name of the attestation.
 // options - AttestationsClientGetAtSubscriptionOptions contains the optional parameters for the AttestationsClient.GetAtSubscription
 // method.
@@ -501,7 +513,7 @@ func (client *AttestationsClient) getAtSubscriptionCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -516,13 +528,14 @@ func (client *AttestationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 
 // NewListForResourcePager - Gets all attestations for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceID - Resource ID.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.ListForResource
 // method.
 func (client *AttestationsClient) NewListForResourcePager(resourceID string, queryOptions *QueryOptions, options *AttestationsClientListForResourceOptions) *runtime.Pager[AttestationsClientListForResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AttestationsClientListForResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForResourceResponse]{
 		More: func(page AttestationsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -566,7 +579,7 @@ func (client *AttestationsClient) listForResourceCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -581,13 +594,14 @@ func (client *AttestationsClient) listForResourceHandleResponse(resp *http.Respo
 
 // NewListForResourceGroupPager - Gets all attestations for the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.ListForResourceGroup
 // method.
 func (client *AttestationsClient) NewListForResourceGroupPager(resourceGroupName string, queryOptions *QueryOptions, options *AttestationsClientListForResourceGroupOptions) *runtime.Pager[AttestationsClientListForResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AttestationsClientListForResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForResourceGroupResponse]{
 		More: func(page AttestationsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -638,7 +652,7 @@ func (client *AttestationsClient) listForResourceGroupCreateRequest(ctx context.
 	}
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -653,12 +667,13 @@ func (client *AttestationsClient) listForResourceGroupHandleResponse(resp *http.
 
 // NewListForSubscriptionPager - Gets all attestations for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.ListForSubscription
 // method.
 func (client *AttestationsClient) NewListForSubscriptionPager(queryOptions *QueryOptions, options *AttestationsClientListForSubscriptionOptions) *runtime.Pager[AttestationsClientListForSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AttestationsClientListForSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForSubscriptionResponse]{
 		More: func(page AttestationsClientListForSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -705,7 +720,7 @@ func (client *AttestationsClient) listForSubscriptionCreateRequest(ctx context.C
 	}
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

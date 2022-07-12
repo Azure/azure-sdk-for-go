@@ -39,7 +39,7 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create or update policy with specified rule set name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // policyName - The name of the Web Application Firewall Policy.
 // parameters - Policy to be created.
 // options - PoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdate
 // method.
-func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PoliciesClientCreateOrUpdateResponse], error) {
+func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, policyName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update policy with specified rule set name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01
 func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, policyName, parameters, options)
 	if err != nil {
@@ -113,29 +115,31 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes Policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // policyName - The name of the Web Application Firewall Policy.
 // options - PoliciesClientBeginDeleteOptions contains the optional parameters for the PoliciesClient.BeginDelete method.
-func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*armruntime.Poller[PoliciesClientDeleteResponse], error) {
+func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*runtime.Poller[PoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, policyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PoliciesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PoliciesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes Policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01
 func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, policyName, options)
 	if err != nil {
@@ -178,6 +182,7 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Retrieve protection policy with specified name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // policyName - The name of the Web Application Firewall Policy.
 // options - PoliciesClientGetOptions contains the optional parameters for the PoliciesClient.Get method.
@@ -218,7 +223,7 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -233,10 +238,11 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 
 // NewListPager - Lists all of the protection policies within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.List method.
 func (client *PoliciesClient) NewListPager(resourceGroupName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PoliciesClientListResponse]{
 		More: func(page PoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -281,7 +287,7 @@ func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

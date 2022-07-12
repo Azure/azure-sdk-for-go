@@ -38,7 +38,7 @@ func NewScheduledQueryRulesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewScheduledQueryRulesClient(subscriptionID string, credential azcore.Token
 
 // CreateOrUpdate - Creates or updates an log search rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-04-16
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // parameters - The parameters of the rule to create or update.
@@ -98,7 +99,7 @@ func (client *ScheduledQueryRulesClient) createOrUpdateCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-04-16")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -113,6 +114,7 @@ func (client *ScheduledQueryRulesClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Deletes a Log Search rule
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-04-16
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - ScheduledQueryRulesClientDeleteOptions contains the optional parameters for the ScheduledQueryRulesClient.Delete
@@ -154,12 +156,13 @@ func (client *ScheduledQueryRulesClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-04-16")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an Log Search rule
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-04-16
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - ScheduledQueryRulesClientGetOptions contains the optional parameters for the ScheduledQueryRulesClient.Get method.
@@ -200,7 +203,7 @@ func (client *ScheduledQueryRulesClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-04-16")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,11 +218,12 @@ func (client *ScheduledQueryRulesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - List the Log Search rules within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-04-16
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ScheduledQueryRulesClientListByResourceGroupOptions contains the optional parameters for the ScheduledQueryRulesClient.ListByResourceGroup
 // method.
 func (client *ScheduledQueryRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *ScheduledQueryRulesClientListByResourceGroupOptions) *runtime.Pager[ScheduledQueryRulesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ScheduledQueryRulesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ScheduledQueryRulesClientListByResourceGroupResponse]{
 		More: func(page ScheduledQueryRulesClientListByResourceGroupResponse) bool {
 			return false
 		},
@@ -261,7 +265,7 @@ func (client *ScheduledQueryRulesClient) listByResourceGroupCreateRequest(ctx co
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -276,10 +280,11 @@ func (client *ScheduledQueryRulesClient) listByResourceGroupHandleResponse(resp 
 
 // NewListBySubscriptionPager - List the Log Search rules within a subscription group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-04-16
 // options - ScheduledQueryRulesClientListBySubscriptionOptions contains the optional parameters for the ScheduledQueryRulesClient.ListBySubscription
 // method.
 func (client *ScheduledQueryRulesClient) NewListBySubscriptionPager(options *ScheduledQueryRulesClientListBySubscriptionOptions) *runtime.Pager[ScheduledQueryRulesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ScheduledQueryRulesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ScheduledQueryRulesClientListBySubscriptionResponse]{
 		More: func(page ScheduledQueryRulesClientListBySubscriptionResponse) bool {
 			return false
 		},
@@ -317,7 +322,7 @@ func (client *ScheduledQueryRulesClient) listBySubscriptionCreateRequest(ctx con
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -332,6 +337,7 @@ func (client *ScheduledQueryRulesClient) listBySubscriptionHandleResponse(resp *
 
 // Update - Update log search Rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-04-16
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // parameters - The parameters of the rule to update.
@@ -374,7 +380,7 @@ func (client *ScheduledQueryRulesClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-04-16")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -24,12 +24,12 @@ func ExampleArtifactSourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewArtifactSourcesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<lab-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"{labName}",
 		&armdevtestlabs.ArtifactSourcesClientListOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -39,7 +39,6 @@ func ExampleArtifactSourcesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,14 +54,14 @@ func ExampleArtifactSourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewArtifactSourcesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{artifactSourceName}",
 		&armdevtestlabs.ArtifactSourcesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,27 +77,27 @@ func ExampleArtifactSourcesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewArtifactSourcesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{artifactSourceName}",
 		armdevtestlabs.ArtifactSource{
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
 			},
 			Properties: &armdevtestlabs.ArtifactSourceProperties{
-				ArmTemplateFolderPath: to.Ptr("<arm-template-folder-path>"),
-				BranchRef:             to.Ptr("<branch-ref>"),
-				DisplayName:           to.Ptr("<display-name>"),
-				FolderPath:            to.Ptr("<folder-path>"),
-				SecurityToken:         to.Ptr("<security-token>"),
+				ArmTemplateFolderPath: to.Ptr("{armTemplateFolderPath}"),
+				BranchRef:             to.Ptr("{branchRef}"),
+				DisplayName:           to.Ptr("{displayName}"),
+				FolderPath:            to.Ptr("{folderPath}"),
+				SecurityToken:         to.Ptr("{securityToken}"),
 				SourceType:            to.Ptr(armdevtestlabs.SourceControlType("{VsoGit|GitHub|StorageAccount}")),
 				Status:                to.Ptr(armdevtestlabs.EnableStatus("{Enabled|Disabled}")),
-				URI:                   to.Ptr("<uri>"),
+				URI:                   to.Ptr("{artifactSourceUri}"),
 			},
 		},
 		nil)
@@ -116,14 +115,14 @@ func ExampleArtifactSourcesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewArtifactSourcesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{artifactSourceName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -137,14 +136,14 @@ func ExampleArtifactSourcesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewArtifactSourcesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{artifactSourceName}",
 		armdevtestlabs.ArtifactSourceFragment{
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),

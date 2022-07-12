@@ -36,7 +36,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,22 +53,24 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // BeginAcceptOwnership - Accept subscription ownership.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // subscriptionID - Subscription Id.
 // options - ClientBeginAcceptOwnershipOptions contains the optional parameters for the Client.BeginAcceptOwnership method.
-func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*armruntime.Poller[ClientAcceptOwnershipResponse], error) {
+func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*runtime.Poller[ClientAcceptOwnershipResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.acceptOwnership(ctx, subscriptionID, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientAcceptOwnershipResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientAcceptOwnershipResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientAcceptOwnershipResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientAcceptOwnershipResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // AcceptOwnership - Accept subscription ownership.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *Client) acceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*http.Response, error) {
 	req, err := client.acceptOwnershipCreateRequest(ctx, subscriptionID, body, options)
 	if err != nil {
@@ -98,12 +100,13 @@ func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscrip
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // AcceptOwnershipStatus - Accept subscription ownership status.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // subscriptionID - Subscription Id.
 // options - ClientAcceptOwnershipStatusOptions contains the optional parameters for the Client.AcceptOwnershipStatus method.
 func (client *Client) AcceptOwnershipStatus(ctx context.Context, subscriptionID string, options *ClientAcceptOwnershipStatusOptions) (ClientAcceptOwnershipStatusResponse, error) {
@@ -135,7 +138,7 @@ func (client *Client) acceptOwnershipStatusCreateRequest(ctx context.Context, su
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -150,6 +153,7 @@ func (client *Client) acceptOwnershipStatusHandleResponse(resp *http.Response) (
 
 // Cancel - The operation to cancel a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // subscriptionID - Subscription Id.
 // options - ClientCancelOptions contains the optional parameters for the Client.Cancel method.
 func (client *Client) Cancel(ctx context.Context, subscriptionID string, options *ClientCancelOptions) (ClientCancelResponse, error) {
@@ -181,7 +185,7 @@ func (client *Client) cancelCreateRequest(ctx context.Context, subscriptionID st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -196,6 +200,7 @@ func (client *Client) cancelHandleResponse(resp *http.Response) (ClientCancelRes
 
 // Enable - The operation to enable a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // subscriptionID - Subscription Id.
 // options - ClientEnableOptions contains the optional parameters for the Client.Enable method.
 func (client *Client) Enable(ctx context.Context, subscriptionID string, options *ClientEnableOptions) (ClientEnableResponse, error) {
@@ -227,7 +232,7 @@ func (client *Client) enableCreateRequest(ctx context.Context, subscriptionID st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -242,6 +247,7 @@ func (client *Client) enableHandleResponse(resp *http.Response) (ClientEnableRes
 
 // Rename - The operation to rename a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // subscriptionID - Subscription Id.
 // body - Subscription Name
 // options - ClientRenameOptions contains the optional parameters for the Client.Rename method.
@@ -274,7 +280,7 @@ func (client *Client) renameCreateRequest(ctx context.Context, subscriptionID st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

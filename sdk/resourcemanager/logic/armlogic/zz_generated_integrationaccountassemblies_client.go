@@ -38,7 +38,7 @@ func NewIntegrationAccountAssembliesClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewIntegrationAccountAssembliesClient(subscriptionID string, credential azc
 
 // CreateOrUpdate - Create or update an assembly for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // assemblyArtifactName - The assembly artifact name.
@@ -103,7 +104,7 @@ func (client *IntegrationAccountAssembliesClient) createOrUpdateCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, assemblyArtifact)
 }
 
@@ -118,6 +119,7 @@ func (client *IntegrationAccountAssembliesClient) createOrUpdateHandleResponse(r
 
 // Delete - Delete an assembly for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // assemblyArtifactName - The assembly artifact name.
@@ -164,12 +166,13 @@ func (client *IntegrationAccountAssembliesClient) deleteCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get an assembly for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // assemblyArtifactName - The assembly artifact name.
@@ -216,7 +219,7 @@ func (client *IntegrationAccountAssembliesClient) getCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,12 +234,13 @@ func (client *IntegrationAccountAssembliesClient) getHandleResponse(resp *http.R
 
 // NewListPager - List the assemblies for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountAssembliesClientListOptions contains the optional parameters for the IntegrationAccountAssembliesClient.List
 // method.
 func (client *IntegrationAccountAssembliesClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountAssembliesClientListOptions) *runtime.Pager[IntegrationAccountAssembliesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountAssembliesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountAssembliesClientListResponse]{
 		More: func(page IntegrationAccountAssembliesClientListResponse) bool {
 			return false
 		},
@@ -279,7 +283,7 @@ func (client *IntegrationAccountAssembliesClient) listCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -294,6 +298,7 @@ func (client *IntegrationAccountAssembliesClient) listHandleResponse(resp *http.
 
 // ListContentCallbackURL - Get the content callback url for an integration account assembly.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // assemblyArtifactName - The assembly artifact name.
@@ -340,7 +345,7 @@ func (client *IntegrationAccountAssembliesClient) listContentCallbackURLCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

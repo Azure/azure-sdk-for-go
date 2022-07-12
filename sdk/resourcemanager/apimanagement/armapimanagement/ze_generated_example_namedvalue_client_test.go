@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
@@ -26,12 +24,12 @@ func ExampleNamedValueClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNamedValueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNamedValueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.NamedValueClientListByServiceOptions{Filter: nil,
 			Top:                     nil,
 			Skip:                    nil,
@@ -41,7 +39,6 @@ func ExampleNamedValueClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,14 +54,14 @@ func ExampleNamedValueClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNamedValueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNamedValueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<named-value-id>",
+		"rg1",
+		"apimService1",
+		"testarmTemplateproperties2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,14 +75,14 @@ func ExampleNamedValueClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNamedValueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNamedValueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<named-value-id>",
+		"rg1",
+		"apimService1",
+		"testarmTemplateproperties2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,31 +98,29 @@ func ExampleNamedValueClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNamedValueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNamedValueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<named-value-id>",
+		"rg1",
+		"apimService1",
+		"testprop2",
 		armapimanagement.NamedValueCreateContract{
 			Properties: &armapimanagement.NamedValueCreateContractProperties{
 				Secret: to.Ptr(false),
 				Tags: []*string{
 					to.Ptr("foo"),
 					to.Ptr("bar")},
-				DisplayName: to.Ptr("<display-name>"),
-				Value:       to.Ptr("<value>"),
+				DisplayName: to.Ptr("prop3name"),
+				Value:       to.Ptr("propValue"),
 			},
 		},
-		&armapimanagement.NamedValueClientBeginCreateOrUpdateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armapimanagement.NamedValueClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -140,30 +135,30 @@ func ExampleNamedValueClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNamedValueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNamedValueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<named-value-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"testprop2",
+		"*",
 		armapimanagement.NamedValueUpdateParameters{
 			Properties: &armapimanagement.NamedValueUpdateParameterProperties{
 				Secret: to.Ptr(false),
 				Tags: []*string{
 					to.Ptr("foo"),
 					to.Ptr("bar2")},
-				DisplayName: to.Ptr("<display-name>"),
-				Value:       to.Ptr("<value>"),
+				DisplayName: to.Ptr("prop3name"),
+				Value:       to.Ptr("propValue"),
 			},
 		},
-		&armapimanagement.NamedValueClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -178,15 +173,15 @@ func ExampleNamedValueClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNamedValueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNamedValueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<named-value-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"testprop2",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -200,14 +195,14 @@ func ExampleNamedValueClient_ListValue() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNamedValueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNamedValueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListValue(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<named-value-id>",
+		"rg1",
+		"apimService1",
+		"testarmTemplateproperties2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -223,19 +218,19 @@ func ExampleNamedValueClient_BeginRefreshSecret() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNamedValueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNamedValueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRefreshSecret(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<named-value-id>",
-		&armapimanagement.NamedValueClientBeginRefreshSecretOptions{ResumeToken: ""})
+		"rg1",
+		"apimService1",
+		"testprop2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

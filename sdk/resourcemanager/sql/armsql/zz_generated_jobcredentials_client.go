@@ -38,7 +38,7 @@ func NewJobCredentialsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewJobCredentialsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Creates or updates a job credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -109,7 +110,7 @@ func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -124,6 +125,7 @@ func (client *JobCredentialsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes a job credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -180,6 +182,7 @@ func (client *JobCredentialsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a jobs credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -231,7 +234,7 @@ func (client *JobCredentialsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -246,6 +249,7 @@ func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobC
 
 // NewListByAgentPager - Gets a list of jobs credentials.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -253,7 +257,7 @@ func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobC
 // options - JobCredentialsClientListByAgentOptions contains the optional parameters for the JobCredentialsClient.ListByAgent
 // method.
 func (client *JobCredentialsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsClientListByAgentOptions) *runtime.Pager[JobCredentialsClientListByAgentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobCredentialsClientListByAgentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobCredentialsClientListByAgentResponse]{
 		More: func(page JobCredentialsClientListByAgentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -306,7 +310,7 @@ func (client *JobCredentialsClient) listByAgentCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

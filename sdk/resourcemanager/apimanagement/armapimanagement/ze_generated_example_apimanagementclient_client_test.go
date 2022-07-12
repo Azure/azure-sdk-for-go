@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
@@ -26,16 +24,16 @@ func ExampleClient_BeginPerformConnectivityCheckAsync() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPerformConnectivityCheckAsync(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ConnectivityCheckRequest{
 			Destination: &armapimanagement.ConnectivityCheckRequestDestination{
-				Address: to.Ptr("<address>"),
+				Address: to.Ptr("https://microsoft.com"),
 				Port:    to.Ptr[int64](3306),
 			},
 			ProtocolConfiguration: &armapimanagement.ConnectivityCheckRequestProtocolConfiguration{
@@ -43,8 +41,8 @@ func ExampleClient_BeginPerformConnectivityCheckAsync() {
 					Method: to.Ptr(armapimanagement.MethodGET),
 					Headers: []*armapimanagement.HTTPHeader{
 						{
-							Name:  to.Ptr("<name>"),
-							Value: to.Ptr("<value>"),
+							Name:  to.Ptr("Authorization"),
+							Value: to.Ptr("Bearer myPreciousToken"),
 						}},
 					ValidStatusCodes: []*int64{
 						to.Ptr[int64](200),
@@ -52,15 +50,15 @@ func ExampleClient_BeginPerformConnectivityCheckAsync() {
 				},
 			},
 			Source: &armapimanagement.ConnectivityCheckRequestSource{
-				Region: to.Ptr("<region>"),
+				Region: to.Ptr("northeurope"),
 			},
 			Protocol: to.Ptr(armapimanagement.ConnectivityCheckProtocolHTTPS),
 		},
-		&armapimanagement.ClientBeginPerformConnectivityCheckAsyncOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

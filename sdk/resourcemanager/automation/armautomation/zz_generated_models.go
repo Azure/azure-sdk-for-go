@@ -2426,6 +2426,9 @@ type PrivateEndpointConnectionListResult struct {
 
 // PrivateEndpointConnectionProperties - Properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
+	// Gets the groupIds.
+	GroupIDs []*string `json:"groupIds,omitempty"`
+
 	// Private endpoint which the connection belongs to.
 	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
 

@@ -39,7 +39,7 @@ func NewCustomCertificatesClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewCustomCertificatesClient(subscriptionID string, credential azcore.TokenC
 
 // BeginCreateOrUpdate - Create or update a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // certificateName - Custom certificate name
 // options - CustomCertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomCertificatesClient.BeginCreateOrUpdate
 // method.
-func (client *CustomCertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, options *CustomCertificatesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CustomCertificatesClientCreateOrUpdateResponse], error) {
+func (client *CustomCertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, options *CustomCertificatesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomCertificatesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, certificateName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CustomCertificatesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CustomCertificatesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomCertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomCertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *CustomCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, options *CustomCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, certificateName, parameters, options)
 	if err != nil {
@@ -118,12 +120,13 @@ func (client *CustomCertificatesClient) createOrUpdateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Delete - Delete a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
@@ -171,12 +174,13 @@ func (client *CustomCertificatesClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
@@ -223,7 +227,7 @@ func (client *CustomCertificatesClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,12 +242,13 @@ func (client *CustomCertificatesClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - List all custom certificates.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.List method.
 func (client *CustomCertificatesClient) NewListPager(resourceGroupName string, resourceName string, options *CustomCertificatesClientListOptions) *runtime.Pager[CustomCertificatesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomCertificatesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomCertificatesClientListResponse]{
 		More: func(page CustomCertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -292,7 +297,7 @@ func (client *CustomCertificatesClient) listCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

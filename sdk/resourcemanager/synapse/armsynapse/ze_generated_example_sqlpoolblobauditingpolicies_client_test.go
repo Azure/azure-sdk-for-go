@@ -24,14 +24,14 @@ func ExampleSQLPoolBlobAuditingPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolBlobAuditingPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+		"blobauditingtest-6852",
+		"blobauditingtest-2080",
+		"testdb",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleSQLPoolBlobAuditingPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolBlobAuditingPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+		"blobauditingtest-4799",
+		"blobauditingtest-6440",
+		"testdb",
 		armsynapse.SQLPoolBlobAuditingPolicy{
 			Properties: &armsynapse.SQLPoolBlobAuditingPolicyProperties{
 				AuditActionsAndGroups: []*string{
@@ -65,9 +65,9 @@ func ExampleSQLPoolBlobAuditingPoliciesClient_CreateOrUpdate() {
 				IsStorageSecondaryKeyInUse:   to.Ptr(false),
 				RetentionDays:                to.Ptr[int32](6),
 				State:                        to.Ptr(armsynapse.BlobAuditingPolicyStateEnabled),
-				StorageAccountAccessKey:      to.Ptr("<storage-account-access-key>"),
-				StorageAccountSubscriptionID: to.Ptr("<storage-account-subscription-id>"),
-				StorageEndpoint:              to.Ptr("<storage-endpoint>"),
+				StorageAccountAccessKey:      to.Ptr("sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD=="),
+				StorageAccountSubscriptionID: to.Ptr("00000000-1234-0000-5678-000000000000"),
+				StorageEndpoint:              to.Ptr("https://mystorage.blob.core.windows.net"),
 			},
 		},
 		nil)

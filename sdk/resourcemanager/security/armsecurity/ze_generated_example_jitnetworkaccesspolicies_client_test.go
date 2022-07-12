@@ -26,7 +26,7 @@ func ExampleJitNetworkAccessPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +35,6 @@ func ExampleJitNetworkAccessPoliciesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +50,16 @@ func ExampleJitNetworkAccessPoliciesClient_NewListByRegionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRegionPager("<asc-location>",
+	pager := client.NewListByRegionPager("westeurope",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,17 +75,16 @@ func ExampleJitNetworkAccessPoliciesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myRg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -103,18 +100,17 @@ func ExampleJitNetworkAccessPoliciesClient_NewListByResourceGroupAndRegionPager(
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupAndRegionPager("<resource-group-name>",
-		"<asc-location>",
+	pager := client.NewListByResourceGroupAndRegionPager("myRg1",
+		"westeurope",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -130,14 +126,14 @@ func ExampleJitNetworkAccessPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<asc-location>",
-		"<jit-network-access-policy-name>",
+		"myRg1",
+		"westeurope",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -153,32 +149,32 @@ func ExampleJitNetworkAccessPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<asc-location>",
-		"<jit-network-access-policy-name>",
+		"myRg1",
+		"westeurope",
+		"default",
 		armsecurity.JitNetworkAccessPolicy{
-			Kind:     to.Ptr("<kind>"),
-			Location: to.Ptr("<location>"),
-			Name:     to.Ptr("<name>"),
-			Type:     to.Ptr("<type>"),
-			ID:       to.Ptr("<id>"),
+			Kind:     to.Ptr("Basic"),
+			Location: to.Ptr("westeurope"),
+			Name:     to.Ptr("default"),
+			Type:     to.Ptr("Microsoft.Security/locations/jitNetworkAccessPolicies"),
+			ID:       to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Security/locations/westeurope/jitNetworkAccessPolicies/default"),
 			Properties: &armsecurity.JitNetworkAccessPolicyProperties{
-				ProvisioningState: to.Ptr("<provisioning-state>"),
+				ProvisioningState: to.Ptr("Succeeded"),
 				Requests: []*armsecurity.JitNetworkAccessRequest{
 					{
-						Requestor:    to.Ptr("<requestor>"),
+						Requestor:    to.Ptr("barbara@contoso.com"),
 						StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T08:06:45.5691611Z"); return t }()),
 						VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
 							{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 								Ports: []*armsecurity.JitNetworkAccessRequestPort{
 									{
-										AllowedSourceAddressPrefix: to.Ptr("<allowed-source-address-prefix>"),
+										AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
 										EndTimeUTC:                 to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.5691611Z"); return t }()),
 										Number:                     to.Ptr[int32](3389),
 										Status:                     to.Ptr(armsecurity.StatusInitiated),
@@ -188,17 +184,17 @@ func ExampleJitNetworkAccessPoliciesClient_CreateOrUpdate() {
 					}},
 				VirtualMachines: []*armsecurity.JitNetworkAccessPolicyVirtualMachine{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 						Ports: []*armsecurity.JitNetworkAccessPortRule{
 							{
-								AllowedSourceAddressPrefix: to.Ptr("<allowed-source-address-prefix>"),
-								MaxRequestAccessDuration:   to.Ptr("<max-request-access-duration>"),
+								AllowedSourceAddressPrefix: to.Ptr("*"),
+								MaxRequestAccessDuration:   to.Ptr("PT3H"),
 								Number:                     to.Ptr[int32](22),
 								Protocol:                   to.Ptr(armsecurity.ProtocolAll),
 							},
 							{
-								AllowedSourceAddressPrefix: to.Ptr("<allowed-source-address-prefix>"),
-								MaxRequestAccessDuration:   to.Ptr("<max-request-access-duration>"),
+								AllowedSourceAddressPrefix: to.Ptr("*"),
+								MaxRequestAccessDuration:   to.Ptr("PT3H"),
 								Number:                     to.Ptr[int32](3389),
 								Protocol:                   to.Ptr(armsecurity.ProtocolAll),
 							}},
@@ -220,14 +216,14 @@ func ExampleJitNetworkAccessPoliciesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<asc-location>",
-		"<jit-network-access-policy-name>",
+		"myRg1",
+		"westeurope",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -241,22 +237,22 @@ func ExampleJitNetworkAccessPoliciesClient_Initiate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewJitNetworkAccessPoliciesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Initiate(ctx,
-		"<resource-group-name>",
-		"<asc-location>",
-		"<jit-network-access-policy-name>",
+		"myRg1",
+		"westeurope",
+		"default",
 		armsecurity.JitNetworkAccessPolicyInitiateRequest{
-			Justification: to.Ptr("<justification>"),
+			Justification: to.Ptr("testing a new version of the product"),
 			VirtualMachines: []*armsecurity.JitNetworkAccessPolicyInitiateVirtualMachine{
 				{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 					Ports: []*armsecurity.JitNetworkAccessPolicyInitiatePort{
 						{
-							AllowedSourceAddressPrefix: to.Ptr("<allowed-source-address-prefix>"),
+							AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
 							Number:                     to.Ptr[int32](3389),
 						}},
 				}},

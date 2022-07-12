@@ -46,6 +46,14 @@ type AvailabilitySetResourceSettings struct {
 	UpdateDomain *int32 `json:"updateDomain,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type AvailabilitySetResourceSettings.
+func (a *AvailabilitySetResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       a.ResourceType,
+		TargetResourceName: a.TargetResourceName,
+	}
+}
+
 // AzureResourceReference - Defines reference to an Azure resource.
 type AzureResourceReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
@@ -121,6 +129,14 @@ type DiskEncryptionSetResourceSettings struct {
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type DiskEncryptionSetResourceSettings.
+func (d *DiskEncryptionSetResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       d.ResourceType,
+		TargetResourceName: d.TargetResourceName,
+	}
+}
+
 // Display - Contains the localized display information for this particular operation / action. These value will be used by
 // several clients for (1) custom role definitions for RBAC; (2) complex query filters for
 // the event service; and (3) audit history / records for management operations.
@@ -179,6 +195,14 @@ type KeyVaultResourceSettings struct {
 
 	// REQUIRED; Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type KeyVaultResourceSettings.
+func (k *KeyVaultResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       k.ResourceType,
+		TargetResourceName: k.TargetResourceName,
+	}
 }
 
 // LBBackendAddressPoolResourceSettings - Defines load balancer backend address pool properties.
@@ -247,6 +271,14 @@ type LoadBalancerResourceSettings struct {
 	// Gets or sets the csv list of zones common for all frontend IP configurations. Note this is given precedence only if frontend
 	// IP configurations settings are not present.
 	Zones *string `json:"zones,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type LoadBalancerResourceSettings.
+func (l *LoadBalancerResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       l.ResourceType,
+		TargetResourceName: l.TargetResourceName,
+	}
 }
 
 // ManualResolutionProperties - Defines the properties for manual resolution.
@@ -609,6 +641,14 @@ type NetworkInterfaceResourceSettings struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type NetworkInterfaceResourceSettings.
+func (n *NetworkInterfaceResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       n.ResourceType,
+		TargetResourceName: n.TargetResourceName,
+	}
+}
+
 // NetworkSecurityGroupResourceSettings - Defines the NSG resource settings.
 type NetworkSecurityGroupResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
@@ -622,6 +662,14 @@ type NetworkSecurityGroupResourceSettings struct {
 
 	// Gets or sets the Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type NetworkSecurityGroupResourceSettings.
+func (n *NetworkSecurityGroupResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       n.ResourceType,
+		TargetResourceName: n.TargetResourceName,
+	}
 }
 
 // NicIPConfigurationResourceSettings - Defines NIC IP configuration properties.
@@ -846,6 +894,14 @@ type PublicIPAddressResourceSettings struct {
 	Zones *string `json:"zones,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type PublicIPAddressResourceSettings.
+func (p *PublicIPAddressResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       p.ResourceType,
+		TargetResourceName: p.TargetResourceName,
+	}
+}
+
 // PublicIPReference - Defines reference to a public IP.
 type PublicIPReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
@@ -865,6 +921,14 @@ type ResourceGroupResourceSettings struct {
 
 	// REQUIRED; Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type ResourceGroupResourceSettings.
+func (r *ResourceGroupResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       r.ResourceType,
+		TargetResourceName: r.TargetResourceName,
+	}
 }
 
 // ResourceMoveRequest - Defines the request body for resource move operation.
@@ -901,6 +965,9 @@ type ResourceSettings struct {
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type ResourceSettings.
+func (r *ResourceSettings) GetResourceSettings() *ResourceSettings { return r }
+
 // SQLDatabaseResourceSettings - Defines the Sql Database resource settings.
 type SQLDatabaseResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
@@ -914,6 +981,14 @@ type SQLDatabaseResourceSettings struct {
 
 	// Defines the zone redundant resource setting.
 	ZoneRedundant *ZoneRedundant `json:"zoneRedundant,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type SQLDatabaseResourceSettings.
+func (s *SQLDatabaseResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       s.ResourceType,
+		TargetResourceName: s.TargetResourceName,
+	}
 }
 
 // SQLElasticPoolResourceSettings - Defines the Sql ElasticPool resource settings.
@@ -931,6 +1006,14 @@ type SQLElasticPoolResourceSettings struct {
 	ZoneRedundant *ZoneRedundant `json:"zoneRedundant,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type SQLElasticPoolResourceSettings.
+func (s *SQLElasticPoolResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       s.ResourceType,
+		TargetResourceName: s.TargetResourceName,
+	}
+}
+
 // SQLServerResourceSettings - Defines the SQL Server resource settings.
 type SQLServerResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
@@ -938,6 +1021,14 @@ type SQLServerResourceSettings struct {
 
 	// REQUIRED; Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type SQLServerResourceSettings.
+func (s *SQLServerResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       s.ResourceType,
+		TargetResourceName: s.TargetResourceName,
+	}
 }
 
 // SubnetReference - Defines reference to subnet.
@@ -1077,6 +1168,14 @@ type VirtualMachineResourceSettings struct {
 	UserManagedIdentities []*string `json:"userManagedIdentities,omitempty"`
 }
 
+// GetResourceSettings implements the ResourceSettingsClassification interface for type VirtualMachineResourceSettings.
+func (v *VirtualMachineResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       v.ResourceType,
+		TargetResourceName: v.TargetResourceName,
+	}
+}
+
 // VirtualNetworkResourceSettings - Defines the virtual network resource settings.
 type VirtualNetworkResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
@@ -1099,4 +1198,12 @@ type VirtualNetworkResourceSettings struct {
 
 	// Gets or sets the Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// GetResourceSettings implements the ResourceSettingsClassification interface for type VirtualNetworkResourceSettings.
+func (v *VirtualNetworkResourceSettings) GetResourceSettings() *ResourceSettings {
+	return &ResourceSettings{
+		ResourceType:       v.ResourceType,
+		TargetResourceName: v.TargetResourceName,
+	}
 }

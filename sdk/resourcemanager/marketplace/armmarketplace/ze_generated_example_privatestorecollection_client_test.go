@@ -29,7 +29,7 @@ func ExamplePrivateStoreCollectionClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,8 +50,8 @@ func ExamplePrivateStoreCollectionClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<private-store-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,13 +72,13 @@ func ExamplePrivateStoreCollectionClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<private-store-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"d0f5aa2c-ecc3-4d87-906a-f8c486dcc4f1",
 		&armmarketplace.PrivateStoreCollectionClientCreateOrUpdateOptions{Payload: &armmarketplace.Collection{
 			Properties: &armmarketplace.CollectionProperties{
 				AllSubscriptions: to.Ptr(false),
-				Claim:            to.Ptr("<claim>"),
-				CollectionName:   to.Ptr("<collection-name>"),
+				Claim:            to.Ptr(""),
+				CollectionName:   to.Ptr("Test Collection"),
 				SubscriptionsList: []*string{
 					to.Ptr("b340914e-353d-453a-85fb-8f9b65b51f91"),
 					to.Ptr("f2baa04d-5bfc-461b-b6d8-61b403c9ec48")},
@@ -104,8 +104,8 @@ func ExamplePrivateStoreCollectionClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<private-store-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"d0f5aa2c-ecc3-4d87-906a-f8c486dcc4f1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,8 +124,8 @@ func ExamplePrivateStoreCollectionClient_Post() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Post(ctx,
-		"<private-store-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		&armmarketplace.PrivateStoreCollectionClientPostOptions{Payload: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -144,14 +144,14 @@ func ExamplePrivateStoreCollectionClient_TransferOffers() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.TransferOffers(ctx,
-		"<private-store-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		&armmarketplace.PrivateStoreCollectionClientTransferOffersOptions{Payload: &armmarketplace.TransferOffersProperties{
 			Properties: &armmarketplace.TransferOffersDetails{
 				OfferIDsList: []*string{
 					to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 					to.Ptr("marketplacetestthirdparty.md-test-third-party-3")},
-				Operation: to.Ptr("<operation>"),
+				Operation: to.Ptr("copy"),
 				TargetCollections: []*string{
 					to.Ptr("c752f021-1c37-4af5-b82f-74c51c27b44a"),
 					to.Ptr("f47ef1c7-e908-4f39-ae29-db181634ad8d")},

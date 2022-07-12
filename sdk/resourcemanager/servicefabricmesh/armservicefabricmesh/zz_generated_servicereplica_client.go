@@ -38,7 +38,7 @@ func NewServiceReplicaClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewServiceReplicaClient(subscriptionID string, credential azcore.TokenCrede
 // Get - Gets the information about the service replica with the given name. The information include the description and other
 // properties of the service replica.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // serviceResourceName - The identity of the service.
@@ -98,7 +99,7 @@ func (client *ServiceReplicaClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -114,12 +115,13 @@ func (client *ServiceReplicaClient) getHandleResponse(resp *http.Response) (Serv
 // NewListPager - Gets the information about all replicas of a given service of an application. The information includes the
 // runtime properties of the replica instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // serviceResourceName - The identity of the service.
 // options - ServiceReplicaClientListOptions contains the optional parameters for the ServiceReplicaClient.List method.
 func (client *ServiceReplicaClient) NewListPager(resourceGroupName string, applicationResourceName string, serviceResourceName string, options *ServiceReplicaClientListOptions) *runtime.Pager[ServiceReplicaClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServiceReplicaClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServiceReplicaClientListResponse]{
 		More: func(page ServiceReplicaClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -166,7 +168,7 @@ func (client *ServiceReplicaClient) listCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

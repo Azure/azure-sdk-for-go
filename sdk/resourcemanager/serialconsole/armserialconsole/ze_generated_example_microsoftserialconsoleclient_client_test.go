@@ -43,12 +43,12 @@ func ExampleMicrosoftSerialConsoleClient_GetConsoleStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewMicrosoftSerialConsoleClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewMicrosoftSerialConsoleClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetConsoleStatus(ctx,
-		"<default-param>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -64,12 +64,12 @@ func ExampleMicrosoftSerialConsoleClient_DisableConsole() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewMicrosoftSerialConsoleClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewMicrosoftSerialConsoleClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DisableConsole(ctx,
-		"<default-param>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -85,12 +85,12 @@ func ExampleMicrosoftSerialConsoleClient_EnableConsole() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armserialconsole.NewMicrosoftSerialConsoleClient("<subscription-id>", cred, nil)
+	client, err := armserialconsole.NewMicrosoftSerialConsoleClient("00000000-00000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.EnableConsole(ctx,
-		"<default-param>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -38,7 +38,7 @@ func NewPrivateLinkServicesForM365SecurityCenterClient(subscriptionID string, cr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewPrivateLinkServicesForM365SecurityCenterClient(subscriptionID string, cr
 
 // BeginCreateOrUpdate - Create or update the metadata of a privateLinkServicesForM365SecurityCenter instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateLinkServicesForM365SecurityCenterDescription - The service instance metadata.
 // options - PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the PrivateLinkServicesForM365SecurityCenterClient.BeginCreateOrUpdate method.
-func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForM365SecurityCenterDescription PrivateLinkServicesForM365SecurityCenterDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse], error) {
+func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForM365SecurityCenterDescription PrivateLinkServicesForM365SecurityCenterDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForM365SecurityCenterDescription, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update the metadata of a privateLinkServicesForM365SecurityCenter instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateLinkServicesForM365SecurityCenterClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForM365SecurityCenterDescription PrivateLinkServicesForM365SecurityCenterDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, privateLinkServicesForM365SecurityCenterDescription, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) createOrUpdateCrea
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateLinkServicesForM365SecurityCenterDescription)
 }
 
 // BeginDelete - Delete a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.BeginDelete
 // method.
-func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions) (*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse], error) {
+func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions) (*runtime.Poller[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateLinkServicesForM365SecurityCenterClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
@@ -177,12 +181,13 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) deleteCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the metadata of a privateLinkServicesForM365SecurityCenter resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateLinkServicesForM365SecurityCenterClientGetOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.Get
@@ -224,7 +229,7 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) getCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,10 +244,11 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) getHandleResponse(
 
 // NewListPager - Get all the privateLinkServicesForM365SecurityCenter instances in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // options - PrivateLinkServicesForM365SecurityCenterClientListOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.List
 // method.
 func (client *PrivateLinkServicesForM365SecurityCenterClient) NewListPager(options *PrivateLinkServicesForM365SecurityCenterClientListOptions) *runtime.Pager[PrivateLinkServicesForM365SecurityCenterClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForM365SecurityCenterClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesForM365SecurityCenterClientListResponse]{
 		More: func(page PrivateLinkServicesForM365SecurityCenterClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -283,7 +289,7 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) listCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -298,11 +304,12 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) listHandleResponse
 
 // NewListByResourceGroupPager - Get all the service instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupOptions contains the optional parameters for
 // the PrivateLinkServicesForM365SecurityCenterClient.ListByResourceGroup method.
 func (client *PrivateLinkServicesForM365SecurityCenterClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -347,7 +354,7 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) listByResourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -362,27 +369,29 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) listByResourceGrou
 
 // BeginUpdate - Update the metadata of a privateLinkServicesForM365SecurityCenter instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // servicePatchDescription - The service instance metadata and security metadata.
 // options - PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.BeginUpdate
 // method.
-func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse], error) {
+func (client *PrivateLinkServicesForM365SecurityCenterClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions) (*runtime.Poller[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update the metadata of a privateLinkServicesForM365SecurityCenter instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateLinkServicesForM365SecurityCenterClient) update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
 	if err != nil {
@@ -420,6 +429,6 @@ func (client *PrivateLinkServicesForM365SecurityCenterClient) updateCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, servicePatchDescription)
 }

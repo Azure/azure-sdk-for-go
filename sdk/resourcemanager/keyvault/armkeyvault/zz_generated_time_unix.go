@@ -48,13 +48,13 @@ func populateTimeUnix(m map[string]interface{}, k string, t *time.Time) {
 	m[k] = (*timeUnix)(t)
 }
 
-func unpopulateTimeUnix(data json.RawMessage, t **time.Time) error {
+func unpopulateTimeUnix(data json.RawMessage, fn string, t **time.Time) error {
 	if data == nil || strings.EqualFold(string(data), "null") {
 		return nil
 	}
 	var aux timeUnix
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return err
+		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	*t = (*time.Time)(&aux)
 	return nil

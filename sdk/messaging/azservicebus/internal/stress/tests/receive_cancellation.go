@@ -5,6 +5,7 @@ package tests
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -34,14 +35,20 @@ func ReceiveCancellation(remainingArgs []string) {
 
 			// from a cold receiver link
 			_, err = receiver.ReceiveMessages(ctx, 95, nil)
-			sc.PanicOnError("failed to receive messages (1)", err)
+
+			if !errors.Is(err, context.Canceled) && !errors.Is(err, context.DeadlineExceeded) {
+				sc.PanicOnError("failed to receive messages (1)", err)
+			}
 
 			ctx, cancel = context.WithTimeout(context.Background(), time.Duration(i)*time.Millisecond)
 			defer cancel()
 
 			// and one more time, now that the link has been warmed up
 			_, err = receiver.ReceiveMessages(ctx, 95, nil)
-			sc.PanicOnError("failed to receive messages (2)", err)
+
+			if !errors.Is(err, context.Canceled) && !errors.Is(err, context.DeadlineExceeded) {
+				sc.PanicOnError("failed to receive messages (2)", err)
+			}
 		}()
 	}
 }

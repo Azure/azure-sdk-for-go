@@ -23,13 +23,13 @@ func ExampleUserSubscriptionClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewUserSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewUserSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<service-name>",
-		"<user-id>",
+	pager := client.NewListPager("rg1",
+		"apimService1",
+		"57681833a40f7eb6c49f6acf",
 		&armapimanagement.UserSubscriptionClientListOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleUserSubscriptionClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +53,15 @@ func ExampleUserSubscriptionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewUserSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewUserSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<user-id>",
-		"<sid>",
+		"rg1",
+		"apimService1",
+		"1",
+		"5fa9b096f3df14003c070001",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

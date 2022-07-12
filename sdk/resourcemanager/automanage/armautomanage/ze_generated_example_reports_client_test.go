@@ -23,15 +23,15 @@ func ExampleReportsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewReportsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<configuration-profile-assignment-name>",
-		"<report-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"default",
+		"b4e9ee6b-1717-4ff0-a8d2-e6d72c33d5f4",
+		"myVMName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,19 +47,18 @@ func ExampleReportsClient_NewListByConfigurationProfileAssignmentsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewReportsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByConfigurationProfileAssignmentsPager("<resource-group-name>",
-		"<configuration-profile-assignment-name>",
-		"<vm-name>",
+	pager := client.NewListByConfigurationProfileAssignmentsPager("myResourceGroupName",
+		"default",
+		"myVMName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

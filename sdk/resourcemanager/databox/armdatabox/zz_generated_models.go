@@ -30,6 +30,13 @@ type AccountCopyLogDetails struct {
 	CopyVerboseLogLink *string `json:"copyVerboseLogLink,omitempty" azure:"ro"`
 }
 
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type AccountCopyLogDetails.
+func (a *AccountCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
+	return &CopyLogDetails{
+		CopyLogDetailsType: a.CopyLogDetailsType,
+	}
+}
+
 // AccountCredentialDetails - Credential details of the account.
 type AccountCredentialDetails struct {
 	// READ-ONLY; Connection string of the account endpoint to use the account as a storage endpoint on the device.
@@ -73,6 +80,14 @@ type AddressValidationProperties struct {
 
 	// READ-ONLY; The address validation status.
 	ValidationStatus *AddressValidationStatus `json:"validationStatus,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type AddressValidationProperties.
+func (a *AddressValidationProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: a.ValidationType,
+		Error:          a.Error,
+	}
 }
 
 // ApplianceNetworkConfiguration - The Network Adapter configuration of a DataBox.
@@ -221,6 +236,9 @@ type CommonJobDetails struct {
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
 
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+
 	// READ-ONLY; List of stages that run in the job.
 	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
 
@@ -233,6 +251,9 @@ type CommonJobDetails struct {
 	// READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
 }
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type CommonJobDetails.
+func (c *CommonJobDetails) GetCommonJobDetails() *CommonJobDetails { return c }
 
 // CommonJobSecretsClassification provides polymorphic access to related types.
 // Call the interface's GetCommonJobSecrets() method to access the common type.
@@ -255,6 +276,9 @@ type CommonJobSecrets struct {
 	Error *CloudError `json:"error,omitempty" azure:"ro"`
 }
 
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type CommonJobSecrets.
+func (c *CommonJobSecrets) GetCommonJobSecrets() *CommonJobSecrets { return c }
+
 // CommonScheduleAvailabilityRequestClassification provides polymorphic access to related types.
 // Call the interface's GetCommonScheduleAvailabilityRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -274,6 +298,12 @@ type CommonScheduleAvailabilityRequest struct {
 
 	// Country in which storage location should be supported.
 	Country *string `json:"country,omitempty"`
+}
+
+// GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
+// CommonScheduleAvailabilityRequest.
+func (c *CommonScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest {
+	return c
 }
 
 // ContactDetails - Contact Details.
@@ -311,6 +341,9 @@ type CopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
 	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
 }
+
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type CopyLogDetails.
+func (c *CopyLogDetails) GetCopyLogDetails() *CopyLogDetails { return c }
 
 // CopyProgress - Copy progress.
 type CopyProgress struct {
@@ -369,6 +402,14 @@ type CreateJobValidations struct {
 	ValidationCategory *string `json:"validationCategory,omitempty"`
 }
 
+// GetValidationRequest implements the ValidationRequestClassification interface for type CreateJobValidations.
+func (c *CreateJobValidations) GetValidationRequest() *ValidationRequest {
+	return &ValidationRequest{
+		ValidationCategory:       c.ValidationCategory,
+		IndividualRequestDetails: c.IndividualRequestDetails,
+	}
+}
+
 // CreateOrderLimitForSubscriptionValidationRequest - Request to validate create order limit for current subscription.
 type CreateOrderLimitForSubscriptionValidationRequest struct {
 	// REQUIRED; Device type to be used for the job.
@@ -376,6 +417,13 @@ type CreateOrderLimitForSubscriptionValidationRequest struct {
 
 	// REQUIRED; Identifies the type of validation request.
 	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+}
+
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type CreateOrderLimitForSubscriptionValidationRequest.
+func (c *CreateOrderLimitForSubscriptionValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: c.ValidationType,
+	}
 }
 
 // CreateOrderLimitForSubscriptionValidationResponseProperties - Properties of create order limit for subscription validation
@@ -391,6 +439,14 @@ type CreateOrderLimitForSubscriptionValidationResponseProperties struct {
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
 }
 
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type CreateOrderLimitForSubscriptionValidationResponseProperties.
+func (c *CreateOrderLimitForSubscriptionValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: c.ValidationType,
+		Error:          c.Error,
+	}
+}
+
 // CustomerDiskCopyLogDetails - Copy Log Details for customer disk
 type CustomerDiskCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
@@ -404,6 +460,13 @@ type CustomerDiskCopyLogDetails struct {
 
 	// READ-ONLY; Link for copy verbose logs.
 	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
+}
+
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type CustomerDiskCopyLogDetails.
+func (c *CustomerDiskCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
+	return &CopyLogDetails{
+		CopyLogDetailsType: c.CopyLogDetailsType,
+	}
 }
 
 // CustomerDiskCopyProgress - DataBox CustomerDisk Copy Progress
@@ -519,6 +582,9 @@ type CustomerDiskJobDetails struct {
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
 
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+
 	// READ-ONLY; Contains the map of disk serial number to the disk details for export jobs.
 	ExportDiskDetailsCollection map[string]*ExportDiskDetails `json:"exportDiskDetailsCollection,omitempty" azure:"ro"`
 
@@ -533,6 +599,31 @@ type CustomerDiskJobDetails struct {
 
 	// READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type CustomerDiskJobDetails.
+func (c *CustomerDiskJobDetails) GetCommonJobDetails() *CommonJobDetails {
+	return &CommonJobDetails{
+		JobStages:                   c.JobStages,
+		ContactDetails:              c.ContactDetails,
+		ShippingAddress:             c.ShippingAddress,
+		DeliveryPackage:             c.DeliveryPackage,
+		ReturnPackage:               c.ReturnPackage,
+		DataImportDetails:           c.DataImportDetails,
+		DataExportDetails:           c.DataExportDetails,
+		JobDetailsType:              c.JobDetailsType,
+		Preferences:                 c.Preferences,
+		CopyLogDetails:              c.CopyLogDetails,
+		ReverseShipmentLabelSasKey:  c.ReverseShipmentLabelSasKey,
+		ChainOfCustodySasKey:        c.ChainOfCustodySasKey,
+		DeviceErasureDetails:        c.DeviceErasureDetails,
+		KeyEncryptionKey:            c.KeyEncryptionKey,
+		ExpectedDataSizeInTeraBytes: c.ExpectedDataSizeInTeraBytes,
+		Actions:                     c.Actions,
+		LastMitigationActionOnJob:   c.LastMitigationActionOnJob,
+		DatacenterAddress:           c.DatacenterAddress,
+		DataCenterCode:              c.DataCenterCode,
+	}
 }
 
 // CustomerDiskJobSecrets - The secrets related to customer disk job.
@@ -551,6 +642,15 @@ type CustomerDiskJobSecrets struct {
 
 	// READ-ONLY; Error while fetching the secrets.
 	Error *CloudError `json:"error,omitempty" azure:"ro"`
+}
+
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type CustomerDiskJobSecrets.
+func (c *CustomerDiskJobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
+	return &CommonJobSecrets{
+		JobSecretsType:       c.JobSecretsType,
+		DcAccessSecurityCode: c.DcAccessSecurityCode,
+		Error:                c.Error,
+	}
 }
 
 // DataAccountDetailsClassification provides polymorphic access to related types.
@@ -575,6 +675,9 @@ type DataAccountDetails struct {
 	// : @#-$%^!+=;:_()]+
 	SharePassword *string `json:"sharePassword,omitempty"`
 }
+
+// GetDataAccountDetails implements the DataAccountDetailsClassification interface for type DataAccountDetails.
+func (d *DataAccountDetails) GetDataAccountDetails() *DataAccountDetails { return d }
 
 // DataExportDetails - Details of the data to be used for exporting data from azure.
 type DataExportDetails struct {
@@ -624,6 +727,13 @@ type DataTransferDetailsValidationRequest struct {
 	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
 }
 
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type DataTransferDetailsValidationRequest.
+func (d *DataTransferDetailsValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: d.ValidationType,
+	}
+}
+
 // DataTransferDetailsValidationResponseProperties - Properties of data transfer details validation response.
 type DataTransferDetailsValidationResponseProperties struct {
 	// REQUIRED; Identifies the type of validation response.
@@ -634,6 +744,14 @@ type DataTransferDetailsValidationResponseProperties struct {
 
 	// READ-ONLY; Data transfer details validation status.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type DataTransferDetailsValidationResponseProperties.
+func (d *DataTransferDetailsValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: d.ValidationType,
+		Error:          d.Error,
+	}
 }
 
 // DatacenterAddressInstructionResponse - Datacenter instruction for given storage location.
@@ -649,6 +767,15 @@ type DatacenterAddressInstructionResponse struct {
 
 	// READ-ONLY; List of supported carriers for return shipment.
 	SupportedCarriersForReturnShipment []*string `json:"supportedCarriersForReturnShipment,omitempty" azure:"ro"`
+}
+
+// GetDatacenterAddressResponse implements the DatacenterAddressResponseClassification interface for type DatacenterAddressInstructionResponse.
+func (d *DatacenterAddressInstructionResponse) GetDatacenterAddressResponse() *DatacenterAddressResponse {
+	return &DatacenterAddressResponse{
+		DatacenterAddressType:              d.DatacenterAddressType,
+		SupportedCarriersForReturnShipment: d.SupportedCarriersForReturnShipment,
+		DataCenterAzureLocation:            d.DataCenterAzureLocation,
+	}
 }
 
 // DatacenterAddressLocationResponse - Datacenter address for given storage location.
@@ -702,6 +829,15 @@ type DatacenterAddressLocationResponse struct {
 	Zip *string `json:"zip,omitempty" azure:"ro"`
 }
 
+// GetDatacenterAddressResponse implements the DatacenterAddressResponseClassification interface for type DatacenterAddressLocationResponse.
+func (d *DatacenterAddressLocationResponse) GetDatacenterAddressResponse() *DatacenterAddressResponse {
+	return &DatacenterAddressResponse{
+		DatacenterAddressType:              d.DatacenterAddressType,
+		SupportedCarriersForReturnShipment: d.SupportedCarriersForReturnShipment,
+		DataCenterAzureLocation:            d.DataCenterAzureLocation,
+	}
+}
+
 // DatacenterAddressRequest - Request body to get the datacenter address.
 type DatacenterAddressRequest struct {
 	// REQUIRED; Sku Name for which the data center address requested.
@@ -732,6 +868,11 @@ type DatacenterAddressResponse struct {
 	SupportedCarriersForReturnShipment []*string `json:"supportedCarriersForReturnShipment,omitempty" azure:"ro"`
 }
 
+// GetDatacenterAddressResponse implements the DatacenterAddressResponseClassification interface for type DatacenterAddressResponse.
+func (d *DatacenterAddressResponse) GetDatacenterAddressResponse() *DatacenterAddressResponse {
+	return d
+}
+
 // DcAccessSecurityCode - Dc access security code
 type DcAccessSecurityCode struct {
 	// Forward Dc access security code.
@@ -749,6 +890,15 @@ type Details struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// DeviceErasureDetails - Device erasure details with erasure completion status and erasureordestructionlog sas key
+type DeviceErasureDetails struct {
+	// READ-ONLY; Holds the device erasure completion status
+	DeviceErasureStatus *StageStatus `json:"deviceErasureStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download cleanup or destruction certificate for device
+	ErasureOrDestructionCertificateSasKey *string `json:"erasureOrDestructionCertificateSasKey,omitempty" azure:"ro"`
+}
+
 // DiskCopyLogDetails - Copy Log Details for a disk
 type DiskCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
@@ -762,6 +912,13 @@ type DiskCopyLogDetails struct {
 
 	// READ-ONLY; Link for copy verbose logs.
 	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
+}
+
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type DiskCopyLogDetails.
+func (d *DiskCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
+	return &CopyLogDetails{
+		CopyLogDetailsType: d.CopyLogDetailsType,
+	}
 }
 
 // DiskCopyProgress - DataBox Disk Copy Progress
@@ -795,6 +952,13 @@ type DiskGranularCopyLogDetails struct {
 
 	// READ-ONLY; Link for copy verbose logs.
 	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
+}
+
+// GetGranularCopyLogDetails implements the GranularCopyLogDetailsClassification interface for type DiskGranularCopyLogDetails.
+func (d *DiskGranularCopyLogDetails) GetGranularCopyLogDetails() *GranularCopyLogDetails {
+	return &GranularCopyLogDetails{
+		CopyLogDetailsType: d.CopyLogDetailsType,
+	}
 }
 
 // DiskGranularCopyProgress - DataBox Disk Granular Copy Progress
@@ -905,6 +1069,9 @@ type DiskJobDetails struct {
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
 
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+
 	// READ-ONLY; Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks
 	// are shipped to the customer.
 	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails,omitempty" azure:"ro"`
@@ -923,6 +1090,31 @@ type DiskJobDetails struct {
 
 	// READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type DiskJobDetails.
+func (d *DiskJobDetails) GetCommonJobDetails() *CommonJobDetails {
+	return &CommonJobDetails{
+		JobStages:                   d.JobStages,
+		ContactDetails:              d.ContactDetails,
+		ShippingAddress:             d.ShippingAddress,
+		DeliveryPackage:             d.DeliveryPackage,
+		ReturnPackage:               d.ReturnPackage,
+		DataImportDetails:           d.DataImportDetails,
+		DataExportDetails:           d.DataExportDetails,
+		JobDetailsType:              d.JobDetailsType,
+		Preferences:                 d.Preferences,
+		CopyLogDetails:              d.CopyLogDetails,
+		ReverseShipmentLabelSasKey:  d.ReverseShipmentLabelSasKey,
+		ChainOfCustodySasKey:        d.ChainOfCustodySasKey,
+		DeviceErasureDetails:        d.DeviceErasureDetails,
+		KeyEncryptionKey:            d.KeyEncryptionKey,
+		ExpectedDataSizeInTeraBytes: d.ExpectedDataSizeInTeraBytes,
+		Actions:                     d.Actions,
+		LastMitigationActionOnJob:   d.LastMitigationActionOnJob,
+		DatacenterAddress:           d.DatacenterAddress,
+		DataCenterCode:              d.DataCenterCode,
+	}
 }
 
 // DiskJobSecrets - The secrets related to disk job.
@@ -946,6 +1138,15 @@ type DiskJobSecrets struct {
 	PassKey *string `json:"passKey,omitempty" azure:"ro"`
 }
 
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type DiskJobSecrets.
+func (d *DiskJobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
+	return &CommonJobSecrets{
+		JobSecretsType:       d.JobSecretsType,
+		DcAccessSecurityCode: d.DcAccessSecurityCode,
+		Error:                d.Error,
+	}
+}
+
 // DiskScheduleAvailabilityRequest - Request body to get the availability for scheduling disk orders.
 type DiskScheduleAvailabilityRequest struct {
 	// REQUIRED; The expected size of the data, which needs to be transferred in this job, in terabytes.
@@ -959,6 +1160,16 @@ type DiskScheduleAvailabilityRequest struct {
 
 	// Country in which storage location should be supported.
 	Country *string `json:"country,omitempty"`
+}
+
+// GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
+// DiskScheduleAvailabilityRequest.
+func (d *DiskScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest {
+	return &CommonScheduleAvailabilityRequest{
+		StorageLocation: d.StorageLocation,
+		SKUName:         d.SKUName,
+		Country:         d.Country,
+	}
 }
 
 // DiskSecret - Contains all the secrets of a Disk.
@@ -1021,6 +1232,9 @@ type GranularCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
 	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
 }
+
+// GetGranularCopyLogDetails implements the GranularCopyLogDetailsClassification interface for type GranularCopyLogDetails.
+func (g *GranularCopyLogDetails) GetGranularCopyLogDetails() *GranularCopyLogDetails { return g }
 
 // GranularCopyProgress - Granular Copy progress.
 type GranularCopyProgress struct {
@@ -1085,6 +1299,13 @@ type HeavyAccountCopyLogDetails struct {
 	CopyVerboseLogLink []*string `json:"copyVerboseLogLink,omitempty" azure:"ro"`
 }
 
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type HeavyAccountCopyLogDetails.
+func (h *HeavyAccountCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
+	return &CopyLogDetails{
+		CopyLogDetailsType: h.CopyLogDetailsType,
+	}
+}
+
 // HeavyJobDetails - Databox Heavy Device Job Details
 type HeavyJobDetails struct {
 	// REQUIRED; Contact details for notification and shipping.
@@ -1139,6 +1360,9 @@ type HeavyJobDetails struct {
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
 
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+
 	// READ-ONLY; List of stages that run in the job.
 	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
 
@@ -1150,6 +1374,31 @@ type HeavyJobDetails struct {
 
 	// READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type HeavyJobDetails.
+func (h *HeavyJobDetails) GetCommonJobDetails() *CommonJobDetails {
+	return &CommonJobDetails{
+		JobStages:                   h.JobStages,
+		ContactDetails:              h.ContactDetails,
+		ShippingAddress:             h.ShippingAddress,
+		DeliveryPackage:             h.DeliveryPackage,
+		ReturnPackage:               h.ReturnPackage,
+		DataImportDetails:           h.DataImportDetails,
+		DataExportDetails:           h.DataExportDetails,
+		JobDetailsType:              h.JobDetailsType,
+		Preferences:                 h.Preferences,
+		CopyLogDetails:              h.CopyLogDetails,
+		ReverseShipmentLabelSasKey:  h.ReverseShipmentLabelSasKey,
+		ChainOfCustodySasKey:        h.ChainOfCustodySasKey,
+		DeviceErasureDetails:        h.DeviceErasureDetails,
+		KeyEncryptionKey:            h.KeyEncryptionKey,
+		ExpectedDataSizeInTeraBytes: h.ExpectedDataSizeInTeraBytes,
+		Actions:                     h.Actions,
+		LastMitigationActionOnJob:   h.LastMitigationActionOnJob,
+		DatacenterAddress:           h.DatacenterAddress,
+		DataCenterCode:              h.DataCenterCode,
+	}
 }
 
 // HeavyJobSecrets - The secrets related to a databox heavy job.
@@ -1167,6 +1416,15 @@ type HeavyJobSecrets struct {
 	Error *CloudError `json:"error,omitempty" azure:"ro"`
 }
 
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type HeavyJobSecrets.
+func (h *HeavyJobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
+	return &CommonJobSecrets{
+		JobSecretsType:       h.JobSecretsType,
+		DcAccessSecurityCode: h.DcAccessSecurityCode,
+		Error:                h.Error,
+	}
+}
+
 // HeavyScheduleAvailabilityRequest - Request body to get the availability for scheduling heavy orders.
 type HeavyScheduleAvailabilityRequest struct {
 	// REQUIRED; Sku Name for which the order is to be scheduled.
@@ -1177,6 +1435,16 @@ type HeavyScheduleAvailabilityRequest struct {
 
 	// Country in which storage location should be supported.
 	Country *string `json:"country,omitempty"`
+}
+
+// GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
+// HeavyScheduleAvailabilityRequest.
+func (h *HeavyScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest {
+	return &CommonScheduleAvailabilityRequest{
+		StorageLocation: h.StorageLocation,
+		SKUName:         h.SKUName,
+		Country:         h.Country,
+	}
 }
 
 // HeavySecret - The secrets related to a databox heavy.
@@ -1281,6 +1549,9 @@ type JobDetails struct {
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
 
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+
 	// READ-ONLY; List of stages that run in the job.
 	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
 
@@ -1292,6 +1563,31 @@ type JobDetails struct {
 
 	// READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type JobDetails.
+func (j *JobDetails) GetCommonJobDetails() *CommonJobDetails {
+	return &CommonJobDetails{
+		JobStages:                   j.JobStages,
+		ContactDetails:              j.ContactDetails,
+		ShippingAddress:             j.ShippingAddress,
+		DeliveryPackage:             j.DeliveryPackage,
+		ReturnPackage:               j.ReturnPackage,
+		DataImportDetails:           j.DataImportDetails,
+		DataExportDetails:           j.DataExportDetails,
+		JobDetailsType:              j.JobDetailsType,
+		Preferences:                 j.Preferences,
+		CopyLogDetails:              j.CopyLogDetails,
+		ReverseShipmentLabelSasKey:  j.ReverseShipmentLabelSasKey,
+		ChainOfCustodySasKey:        j.ChainOfCustodySasKey,
+		DeviceErasureDetails:        j.DeviceErasureDetails,
+		KeyEncryptionKey:            j.KeyEncryptionKey,
+		ExpectedDataSizeInTeraBytes: j.ExpectedDataSizeInTeraBytes,
+		Actions:                     j.Actions,
+		LastMitigationActionOnJob:   j.LastMitigationActionOnJob,
+		DatacenterAddress:           j.DatacenterAddress,
+		DataCenterCode:              j.DataCenterCode,
+	}
 }
 
 // JobProperties - Job Properties
@@ -1404,6 +1700,15 @@ type JobSecrets struct {
 
 	// READ-ONLY; Error while fetching the secrets.
 	Error *CloudError `json:"error,omitempty" azure:"ro"`
+}
+
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type JobSecrets.
+func (j *JobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
+	return &CommonJobSecrets{
+		JobSecretsType:       j.JobSecretsType,
+		DcAccessSecurityCode: j.DcAccessSecurityCode,
+		Error:                j.Error,
+	}
 }
 
 // JobStages - Job stages.
@@ -1527,6 +1832,14 @@ type ManagedDiskDetails struct {
 	// Password cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
 	// : @#-$%^!+=;:_()]+
 	SharePassword *string `json:"sharePassword,omitempty"`
+}
+
+// GetDataAccountDetails implements the DataAccountDetailsClassification interface for type ManagedDiskDetails.
+func (m *ManagedDiskDetails) GetDataAccountDetails() *DataAccountDetails {
+	return &DataAccountDetails{
+		DataAccountType: m.DataAccountType,
+		SharePassword:   m.SharePassword,
+	}
 }
 
 // ManagementClientMitigateOptions contains the optional parameters for the ManagementClient.Mitigate method.
@@ -1662,6 +1975,13 @@ type PreferencesValidationRequest struct {
 	Preference *Preferences `json:"preference,omitempty"`
 }
 
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type PreferencesValidationRequest.
+func (p *PreferencesValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: p.ValidationType,
+	}
+}
+
 // PreferencesValidationResponseProperties - Properties of data center and transport preference validation response.
 type PreferencesValidationResponseProperties struct {
 	// REQUIRED; Identifies the type of validation response.
@@ -1672,6 +1992,14 @@ type PreferencesValidationResponseProperties struct {
 
 	// READ-ONLY; Validation status of requested data center and transport.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type PreferencesValidationResponseProperties.
+func (p *PreferencesValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: p.ValidationType,
+		Error:          p.Error,
+	}
 }
 
 // RegionConfigurationRequest - Request body to get the configuration for the region.
@@ -1761,6 +2089,13 @@ type SKUAvailabilityValidationRequest struct {
 	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
 }
 
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type SKUAvailabilityValidationRequest.
+func (s *SKUAvailabilityValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: s.ValidationType,
+	}
+}
+
 // SKUAvailabilityValidationResponseProperties - Properties of sku availability validation response.
 type SKUAvailabilityValidationResponseProperties struct {
 	// REQUIRED; Identifies the type of validation response.
@@ -1771,6 +2106,14 @@ type SKUAvailabilityValidationResponseProperties struct {
 
 	// READ-ONLY; Sku availability validation status.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type SKUAvailabilityValidationResponseProperties.
+func (s *SKUAvailabilityValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: s.ValidationType,
+		Error:          s.Error,
+	}
 }
 
 // SKUCapacity - Capacity of the sku.
@@ -1841,6 +2184,16 @@ type ScheduleAvailabilityRequest struct {
 
 	// Country in which storage location should be supported.
 	Country *string `json:"country,omitempty"`
+}
+
+// GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
+// ScheduleAvailabilityRequest.
+func (s *ScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest {
+	return &CommonScheduleAvailabilityRequest{
+		StorageLocation: s.StorageLocation,
+		SKUName:         s.SKUName,
+		Country:         s.Country,
+	}
 }
 
 // ScheduleAvailabilityResponse - Schedule availability for given sku in a region.
@@ -1989,10 +2342,25 @@ type StorageAccountDetails struct {
 	SharePassword *string `json:"sharePassword,omitempty"`
 }
 
+// GetDataAccountDetails implements the DataAccountDetailsClassification interface for type StorageAccountDetails.
+func (s *StorageAccountDetails) GetDataAccountDetails() *DataAccountDetails {
+	return &DataAccountDetails{
+		DataAccountType: s.DataAccountType,
+		SharePassword:   s.SharePassword,
+	}
+}
+
 // SubscriptionIsAllowedToCreateJobValidationRequest - Request to validate subscription permission to create jobs.
 type SubscriptionIsAllowedToCreateJobValidationRequest struct {
 	// REQUIRED; Identifies the type of validation request.
 	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+}
+
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type SubscriptionIsAllowedToCreateJobValidationRequest.
+func (s *SubscriptionIsAllowedToCreateJobValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: s.ValidationType,
+	}
 }
 
 // SubscriptionIsAllowedToCreateJobValidationResponseProperties - Properties of subscription permission to create job validation
@@ -2006,6 +2374,14 @@ type SubscriptionIsAllowedToCreateJobValidationResponseProperties struct {
 
 	// READ-ONLY; Validation status of subscription permission to create job.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type SubscriptionIsAllowedToCreateJobValidationResponseProperties.
+func (s *SubscriptionIsAllowedToCreateJobValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: s.ValidationType,
+		Error:          s.Error,
+	}
 }
 
 // SystemData - Provides details about resource creation and update time
@@ -2177,6 +2553,13 @@ type ValidateAddress struct {
 	TransportPreferences *TransportPreferences `json:"transportPreferences,omitempty"`
 }
 
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type ValidateAddress.
+func (v *ValidateAddress) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: v.ValidationType,
+	}
+}
+
 // ValidationInputRequestClassification provides polymorphic access to related types.
 // Call the interface's GetValidationInputRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2192,6 +2575,9 @@ type ValidationInputRequest struct {
 	// REQUIRED; Identifies the type of validation request.
 	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
 }
+
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type ValidationInputRequest.
+func (v *ValidationInputRequest) GetValidationInputRequest() *ValidationInputRequest { return v }
 
 // ValidationInputResponseClassification provides polymorphic access to related types.
 // Call the interface's GetValidationInputResponse() method to access the common type.
@@ -2213,6 +2599,9 @@ type ValidationInputResponse struct {
 	Error *CloudError `json:"error,omitempty" azure:"ro"`
 }
 
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type ValidationInputResponse.
+func (v *ValidationInputResponse) GetValidationInputResponse() *ValidationInputResponse { return v }
+
 // ValidationRequestClassification provides polymorphic access to related types.
 // Call the interface's GetValidationRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2230,6 +2619,9 @@ type ValidationRequest struct {
 	// REQUIRED; Identify the nature of validation.
 	ValidationCategory *string `json:"validationCategory,omitempty"`
 }
+
+// GetValidationRequest implements the ValidationRequestClassification interface for type ValidationRequest.
+func (v *ValidationRequest) GetValidationRequest() *ValidationRequest { return v }
 
 // ValidationResponse - Response of pre job creation validations.
 type ValidationResponse struct {

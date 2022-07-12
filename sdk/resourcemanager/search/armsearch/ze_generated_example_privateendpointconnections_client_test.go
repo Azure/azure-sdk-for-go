@@ -24,18 +24,18 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewPrivateEndpointConnectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
-		"<private-endpoint-connection-name>",
+		"rg1",
+		"mysearchservice",
+		"testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546",
 		armsearch.PrivateEndpointConnection{
 			Properties: &armsearch.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
-					Description: to.Ptr("<description>"),
+					Description: to.Ptr("Rejected for some reason"),
 					Status:      to.Ptr(armsearch.PrivateLinkServiceConnectionStatusRejected),
 				},
 			},
@@ -56,14 +56,14 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewPrivateEndpointConnectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
-		"<private-endpoint-connection-name>",
+		"rg1",
+		"mysearchservice",
+		"testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	if err != nil {
@@ -80,14 +80,14 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewPrivateEndpointConnectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
-		"<private-endpoint-connection-name>",
+		"rg1",
+		"mysearchservice",
+		"testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	if err != nil {
@@ -104,19 +104,18 @@ func ExamplePrivateEndpointConnectionsClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewPrivateEndpointConnectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<search-service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"mysearchservice",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

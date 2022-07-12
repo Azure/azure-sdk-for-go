@@ -36,7 +36,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,24 +53,26 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // BeginCreateResource - Creates a SaaS resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // parameters - Parameters supplied to the create saas operation.
 // options - ClientBeginCreateResourceOptions contains the optional parameters for the Client.BeginCreateResource method.
-func (client *Client) BeginCreateResource(ctx context.Context, parameters ResourceCreation, options *ClientBeginCreateResourceOptions) (*armruntime.Poller[ClientCreateResourceResponse], error) {
+func (client *Client) BeginCreateResource(ctx context.Context, parameters ResourceCreation, options *ClientBeginCreateResourceOptions) (*runtime.Poller[ClientCreateResourceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createResource(ctx, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientCreateResourceResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientCreateResourceResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientCreateResourceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientCreateResourceResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateResource - Creates a SaaS resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 func (client *Client) createResource(ctx context.Context, parameters ResourceCreation, options *ClientBeginCreateResourceOptions) (*http.Response, error) {
 	req, err := client.createResourceCreateRequest(ctx, parameters, options)
 	if err != nil {
@@ -96,31 +98,33 @@ func (client *Client) createResourceCreateRequest(ctx context.Context, parameter
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the specified SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceID - The Saas resource ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // parameters - Parameters supplied to delete saas operation.
 // options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceID string, parameters DeleteOptions, options *ClientBeginDeleteOptions) (*armruntime.Poller[ClientDeleteResponse], error) {
+func (client *Client) BeginDelete(ctx context.Context, resourceID string, parameters DeleteOptions, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceID, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 func (client *Client) deleteOperation(ctx context.Context, resourceID string, parameters DeleteOptions, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceID, parameters, options)
 	if err != nil {
@@ -150,12 +154,13 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceID string
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // GetResource - Gets information about the specified SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceID - The Saas resource ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // options - ClientGetResourceOptions contains the optional parameters for the Client.GetResource method.
 func (client *Client) GetResource(ctx context.Context, resourceID string, options *ClientGetResourceOptions) (ClientGetResourceResponse, error) {
@@ -187,7 +192,7 @@ func (client *Client) getResourceCreateRequest(ctx context.Context, resourceID s
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -202,25 +207,27 @@ func (client *Client) getResourceHandleResponse(resp *http.Response) (ClientGetR
 
 // BeginUpdateResource - Updates a SaaS resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceID - The Saas resource ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // parameters - Parameters supplied to the update saas operation.
 // options - ClientBeginUpdateResourceOptions contains the optional parameters for the Client.BeginUpdateResource method.
-func (client *Client) BeginUpdateResource(ctx context.Context, resourceID string, parameters ResourceCreation, options *ClientBeginUpdateResourceOptions) (*armruntime.Poller[ClientUpdateResourceResponse], error) {
+func (client *Client) BeginUpdateResource(ctx context.Context, resourceID string, parameters ResourceCreation, options *ClientBeginUpdateResourceOptions) (*runtime.Poller[ClientUpdateResourceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateResource(ctx, resourceID, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientUpdateResourceResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientUpdateResourceResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientUpdateResourceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientUpdateResourceResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // UpdateResource - Updates a SaaS resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 func (client *Client) updateResource(ctx context.Context, resourceID string, parameters ResourceCreation, options *ClientBeginUpdateResourceOptions) (*http.Response, error) {
 	req, err := client.updateResourceCreateRequest(ctx, resourceID, parameters, options)
 	if err != nil {
@@ -250,6 +257,6 @@ func (client *Client) updateResourceCreateRequest(ctx context.Context, resourceI
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

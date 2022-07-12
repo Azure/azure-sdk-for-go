@@ -24,20 +24,19 @@ func ExampleDatabaseClient_NewListMetricsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewDatabaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricsPager("<resource-group-name>",
-		"<account-name>",
-		"<database-rid>",
-		"<filter>",
+	pager := client.NewListMetricsPager("rg1",
+		"ddb1",
+		"rid",
+		"$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,19 +52,18 @@ func ExampleDatabaseClient_NewListUsagesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewDatabaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUsagesPager("<resource-group-name>",
-		"<account-name>",
-		"<database-rid>",
-		&armcosmos.DatabaseClientListUsagesOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListUsagesPager("rg1",
+		"ddb1",
+		"databaseRid",
+		&armcosmos.DatabaseClientListUsagesOptions{Filter: to.Ptr("$filter=name.value eq 'Storage'")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -81,19 +79,18 @@ func ExampleDatabaseClient_NewListMetricDefinitionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewDatabaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricDefinitionsPager("<resource-group-name>",
-		"<account-name>",
-		"<database-rid>",
+	pager := client.NewListMetricDefinitionsPager("rg1",
+		"ddb1",
+		"databaseRid",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

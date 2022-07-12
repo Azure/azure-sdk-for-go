@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 )
@@ -25,13 +23,13 @@ func ExampleManagementClient_ResetQueryPerformanceInsightData() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysql.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armmysql.NewManagementClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ResetQueryPerformanceInsightData(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"testResourceGroupName",
+		"testServerName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,20 +45,20 @@ func ExampleManagementClient_BeginCreateRecommendedActionSession() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysql.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armmysql.NewManagementClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateRecommendedActionSession(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<advisor-name>",
-		"<database-name>",
-		&armmysql.ManagementClientBeginCreateRecommendedActionSessionOptions{ResumeToken: ""})
+		"testResourceGroupName",
+		"testServerName",
+		"Index",
+		"someDatabaseName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

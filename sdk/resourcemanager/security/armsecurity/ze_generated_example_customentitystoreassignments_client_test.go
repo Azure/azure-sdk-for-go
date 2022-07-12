@@ -24,13 +24,13 @@ func ExampleCustomEntityStoreAssignmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<custom-entity-store-assignment-name>",
+		"TestResourceGroup",
+		"33e7cc6e-a139-4723-a0e5-76993aee0771",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,16 +46,16 @@ func ExampleCustomEntityStoreAssignmentsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<custom-entity-store-assignment-name>",
+		"TestResourceGroup",
+		"33e7cc6e-a139-4723-a0e5-76993aee0771",
 		armsecurity.CustomEntityStoreAssignmentRequest{
 			Properties: &armsecurity.CustomEntityStoreAssignmentRequestProperties{
-				Principal: to.Ptr("<principal>"),
+				Principal: to.Ptr("aaduser=f3923a3e-ad57-4752-b1a9-fbf3c8e5e082;72f988bf-86f1-41af-91ab-2d7cd011db47"),
 			},
 		},
 		nil)
@@ -73,13 +73,13 @@ func ExampleCustomEntityStoreAssignmentsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<custom-entity-store-assignment-name>",
+		"TestResourceGroup",
+		"33e7cc6e-a139-4723-a0e5-76993aee0771",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -93,17 +93,16 @@ func ExampleCustomEntityStoreAssignmentsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("TestResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -119,7 +118,7 @@ func ExampleCustomEntityStoreAssignmentsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewCustomEntityStoreAssignmentsClient("e5d1b86c-3051-44d5-8802-aa65d45a279b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -128,7 +127,6 @@ func ExampleCustomEntityStoreAssignmentsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

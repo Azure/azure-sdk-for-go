@@ -16,22 +16,22 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/GetAllMetadataOData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/metadata/GetAllMetadataOData.json
 func ExampleMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListPager("myRg",
+		"myWorkspace",
 		&armsecurityinsights.MetadataClientListOptions{Filter: nil,
 			Orderby: nil,
 			Top:     nil,
@@ -41,7 +41,6 @@ func ExampleMetadataClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,21 +49,21 @@ func ExampleMetadataClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/GetMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/metadata/GetMetadata.json
 func ExampleMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("2e1dc338-d04d-4443-b721-037eff4fdcac", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<metadata-name>",
+		"myRg",
+		"myWorkspace",
+		"metadataName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,47 +72,47 @@ func ExampleMetadataClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/DeleteMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/metadata/DeleteMetadata.json
 func ExampleMetadataClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<metadata-name>",
+		"myRg",
+		"myWorkspace",
+		"metadataName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/PutMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/metadata/PutMetadata.json
 func ExampleMetadataClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<metadata-name>",
+		"myRg",
+		"myWorkspace",
+		"metadataName",
 		armsecurityinsights.MetadataModel{
 			Properties: &armsecurityinsights.MetadataProperties{
 				Author: &armsecurityinsights.MetadataAuthor{
-					Name:  to.Ptr("<name>"),
-					Email: to.Ptr("<email>"),
+					Name:  to.Ptr("User Name"),
+					Email: to.Ptr("email@microsoft.com"),
 				},
 				Categories: &armsecurityinsights.MetadataCategories{
 					Domains: []*string{
@@ -122,36 +121,36 @@ func ExampleMetadataClient_Create() {
 					Verticals: []*string{
 						to.Ptr("Healthcare")},
 				},
-				ContentID:            to.Ptr("<content-id>"),
-				ContentSchemaVersion: to.Ptr("<content-schema-version>"),
-				CustomVersion:        to.Ptr("<custom-version>"),
+				ContentID:            to.Ptr("c00ee137-7475-47c8-9cce-ec6f0f1bedd0"),
+				ContentSchemaVersion: to.Ptr("2.0"),
+				CustomVersion:        to.Ptr("1.0"),
 				Dependencies: &armsecurityinsights.MetadataDependencies{
 					Criteria: []*armsecurityinsights.MetadataDependencies{
 						{
 							Criteria: []*armsecurityinsights.MetadataDependencies{
 								{
-									Name:      to.Ptr("<name>"),
-									ContentID: to.Ptr("<content-id>"),
+									Name:      to.Ptr("Microsoft Defender for Endpoint"),
+									ContentID: to.Ptr("045d06d0-ee72-4794-aba4-cf5646e4c756"),
 									Kind:      to.Ptr(armsecurityinsights.KindDataConnector),
 								},
 								{
-									ContentID: to.Ptr("<content-id>"),
+									ContentID: to.Ptr("dbfcb2cc-d782-40ef-8d94-fe7af58a6f2d"),
 									Kind:      to.Ptr(armsecurityinsights.KindDataConnector),
 								},
 								{
-									ContentID: to.Ptr("<content-id>"),
+									ContentID: to.Ptr("de4dca9b-eb37-47d6-a56f-b8b06b261593"),
 									Kind:      to.Ptr(armsecurityinsights.KindDataConnector),
-									Version:   to.Ptr("<version>"),
+									Version:   to.Ptr("2.0"),
 								}},
 							Operator: to.Ptr(armsecurityinsights.OperatorOR),
 						},
 						{
-							ContentID: to.Ptr("<content-id>"),
+							ContentID: to.Ptr("31ee11cc-9989-4de8-b176-5e0ef5c4dbab"),
 							Kind:      to.Ptr(armsecurityinsights.KindPlaybook),
-							Version:   to.Ptr("<version>"),
+							Version:   to.Ptr("1.0"),
 						},
 						{
-							ContentID: to.Ptr("<content-id>"),
+							ContentID: to.Ptr("21ba424a-9438-4444-953a-7059539a7a1b"),
 							Kind:      to.Ptr(armsecurityinsights.KindParser),
 						}},
 					Operator: to.Ptr(armsecurityinsights.OperatorAND),
@@ -159,7 +158,7 @@ func ExampleMetadataClient_Create() {
 				FirstPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-05-18"); return t }()),
 				Kind:             to.Ptr(armsecurityinsights.KindAnalyticsRule),
 				LastPublishDate:  to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-05-18"); return t }()),
-				ParentID:         to.Ptr("<parent-id>"),
+				ParentID:         to.Ptr("/subscriptions/2e1dc338-d04d-4443-b721-037eff4fdcac/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/ruleName"),
 				PreviewImages: []*string{
 					to.Ptr("firstImage.png"),
 					to.Ptr("secondImage.jpeg")},
@@ -170,14 +169,14 @@ func ExampleMetadataClient_Create() {
 					to.Ptr("Amazon"),
 					to.Ptr("Microsoft")},
 				Source: &armsecurityinsights.MetadataSource{
-					Name:     to.Ptr("<name>"),
+					Name:     to.Ptr("Contoso Solution 1.0"),
 					Kind:     to.Ptr(armsecurityinsights.SourceKindSolution),
-					SourceID: to.Ptr("<source-id>"),
+					SourceID: to.Ptr("b688a130-76f4-4a07-bf57-762222a3cadf"),
 				},
 				Support: &armsecurityinsights.MetadataSupport{
-					Name:  to.Ptr("<name>"),
-					Email: to.Ptr("<email>"),
-					Link:  to.Ptr("<link>"),
+					Name:  to.Ptr("Microsoft"),
+					Email: to.Ptr("support@microsoft.com"),
+					Link:  to.Ptr("https://support.microsoft.com/"),
 					Tier:  to.Ptr(armsecurityinsights.SupportTierPartner),
 				},
 				ThreatAnalysisTactics: []*string{
@@ -186,7 +185,7 @@ func ExampleMetadataClient_Create() {
 				ThreatAnalysisTechniques: []*string{
 					to.Ptr("T1548"),
 					to.Ptr("T1548.001")},
-				Version: to.Ptr("<version>"),
+				Version: to.Ptr("1.0.0.0"),
 			},
 		},
 		nil)
@@ -197,26 +196,26 @@ func ExampleMetadataClient_Create() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/metadata/PatchMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/metadata/PatchMetadata.json
 func ExampleMetadataClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewMetadataClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewMetadataClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<metadata-name>",
+		"myRg",
+		"myWorkspace",
+		"metadataName",
 		armsecurityinsights.MetadataPatch{
 			Properties: &armsecurityinsights.MetadataPropertiesPatch{
 				Author: &armsecurityinsights.MetadataAuthor{
-					Name:  to.Ptr("<name>"),
-					Email: to.Ptr("<email>"),
+					Name:  to.Ptr("User Name"),
+					Email: to.Ptr("email@microsoft.com"),
 				},
 			},
 		},

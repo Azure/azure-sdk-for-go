@@ -10,7 +10,7 @@ package armchanges
 
 const (
 	moduleName    = "armchanges"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ChangeCategory - The entity that made the change

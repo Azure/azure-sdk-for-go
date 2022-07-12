@@ -34,7 +34,7 @@ func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,10 +51,11 @@ func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(credential az
 
 // NewListPager - Get access review instances assigned for my approval.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // options - AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions contains the optional parameters for the
 // AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.List method.
 func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) NewListPager(options *AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse]{
 		More: func(page AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -96,7 +97,7 @@ func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listCr
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

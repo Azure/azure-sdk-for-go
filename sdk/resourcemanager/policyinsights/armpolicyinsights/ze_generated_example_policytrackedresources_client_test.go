@@ -27,7 +27,7 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForManagementGroupPa
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListQueryResultsForManagementGroupPager("<management-group-name>",
+	pager := client.NewListQueryResultsForManagementGroupPager("myManagementGroup",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -44,7 +44,6 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForManagementGroupPa
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -60,7 +59,7 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForSubscriptionPager
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewPolicyTrackedResourcesClient("fffedd8f-ffff-fffd-fffd-fffed2f84852", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -80,7 +79,6 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForSubscriptionPager
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -96,11 +94,11 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForResourceGroupPage
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewPolicyTrackedResourcesClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewPolicyTrackedResourcesClient("fffedd8f-ffff-fffd-fffd-fffed2f84852", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListQueryResultsForResourceGroupPager("<resource-group-name>",
+	pager := client.NewListQueryResultsForResourceGroupPager("myResourceGroup",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -117,7 +115,6 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForResourceGroupPage
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -137,7 +134,7 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListQueryResultsForResourcePager("<resource-id>",
+	pager := client.NewListQueryResultsForResourcePager("subscriptions/fff8dfdb-fff3-fff0-fff4-fffdcbe6b2ef/resourceGroups/myResourceGroup/providers/Microsoft.Example/exampleResourceType/myResource",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -154,7 +151,6 @@ func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForResourcePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

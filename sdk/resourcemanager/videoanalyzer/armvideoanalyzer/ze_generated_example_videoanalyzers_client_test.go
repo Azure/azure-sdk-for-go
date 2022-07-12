@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/videoanalyzer/armvideoanalyzer"
@@ -26,12 +24,12 @@ func ExampleVideoAnalyzersClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideoAnalyzersClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideoAnalyzersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
+		"contoso",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,13 +45,13 @@ func ExampleVideoAnalyzersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideoAnalyzersClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideoAnalyzersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contosotv",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -69,21 +67,21 @@ func ExampleVideoAnalyzersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideoAnalyzersClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideoAnalyzersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contosotv",
 		armvideoanalyzer.VideoAnalyzer{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("South Central US"),
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 			Identity: &armvideoanalyzer.Identity{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("UserAssigned"),
 				UserAssignedIdentities: map[string]*armvideoanalyzer.UserAssignedManagedIdentity{
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
@@ -96,31 +94,31 @@ func ExampleVideoAnalyzersClient_BeginCreateOrUpdate() {
 				},
 				IotHubs: []*armvideoanalyzer.IotHub{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Devices/IotHubs/hub1"),
 						Identity: &armvideoanalyzer.ResourceIdentity{
-							UserAssignedIdentity: to.Ptr("<user-assigned-identity>"),
+							UserAssignedIdentity: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id3"),
 						},
 					},
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Devices/IotHubs/hub2"),
 						Identity: &armvideoanalyzer.ResourceIdentity{
-							UserAssignedIdentity: to.Ptr("<user-assigned-identity>"),
+							UserAssignedIdentity: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id3"),
 						},
 					}},
 				StorageAccounts: []*armvideoanalyzer.StorageAccount{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/storage1"),
 						Identity: &armvideoanalyzer.ResourceIdentity{
-							UserAssignedIdentity: to.Ptr("<user-assigned-identity>"),
+							UserAssignedIdentity: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2"),
 						},
 					}},
 			},
 		},
-		&armvideoanalyzer.VideoAnalyzersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -135,13 +133,13 @@ func ExampleVideoAnalyzersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideoAnalyzersClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideoAnalyzersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contosotv",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -155,23 +153,23 @@ func ExampleVideoAnalyzersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideoAnalyzersClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideoAnalyzersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contosotv",
 		armvideoanalyzer.Update{
 			Tags: map[string]*string{
 				"key1": to.Ptr("value3"),
 			},
 		},
-		&armvideoanalyzer.VideoAnalyzersClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -184,7 +182,7 @@ func ExampleVideoAnalyzersClient_ListBySubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideoAnalyzersClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideoAnalyzersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

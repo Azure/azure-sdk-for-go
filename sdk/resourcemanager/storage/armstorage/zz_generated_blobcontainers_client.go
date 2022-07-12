@@ -38,7 +38,7 @@ func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCrede
 // ClearLegalHold - Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
 // clears out only the specified tags in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -107,7 +108,7 @@ func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, legalHold)
 }
 
@@ -124,6 +125,7 @@ func (client *BlobContainersClient) clearLegalHoldHandleResponse(resp *http.Resp
 // metadata and properties for that container. It does not include a list of the blobs
 // contained by the container.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -173,7 +175,7 @@ func (client *BlobContainersClient) createCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, blobContainer)
 }
 
@@ -189,6 +191,7 @@ func (client *BlobContainersClient) createHandleResponse(resp *http.Response) (B
 // CreateOrUpdateImmutabilityPolicy - Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given
 // but not required for this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -240,9 +243,9 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateReques
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -263,6 +266,7 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyHandleRespon
 
 // Delete - Deletes specified container under its account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -319,6 +323,7 @@ func (client *BlobContainersClient) deleteCreateRequest(ctx context.Context, res
 // policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked
 // container.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -372,8 +377,8 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -392,6 +397,7 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp 
 // ExtendImmutabilityPolicy - Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action
 // allowed on a Locked policy will be this action. ETag in If-Match is required for this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -444,8 +450,8 @@ func (client *BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -466,6 +472,7 @@ func (client *BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp 
 
 // Get - Gets properties of a specified container.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -514,7 +521,7 @@ func (client *BlobContainersClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -530,6 +537,7 @@ func (client *BlobContainersClient) getHandleResponse(resp *http.Response) (Blob
 // GetImmutabilityPolicy - Gets the existing immutability policy along with the corresponding ETag in response headers and
 // body.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -581,9 +589,9 @@ func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx conte
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -602,6 +610,7 @@ func (client *BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *ht
 // Lease - The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration
 // can be 15 to 60 seconds, or can be infinite.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -650,7 +659,7 @@ func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -669,12 +678,13 @@ func (client *BlobContainersClient) leaseHandleResponse(resp *http.Response) (Bl
 // NewListPager - Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
 // token.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - BlobContainersClientListOptions contains the optional parameters for the BlobContainersClient.List method.
 func (client *BlobContainersClient) NewListPager(resourceGroupName string, accountName string, options *BlobContainersClientListOptions) *runtime.Pager[BlobContainersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BlobContainersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BlobContainersClientListResponse]{
 		More: func(page BlobContainersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -732,7 +742,7 @@ func (client *BlobContainersClient) listCreateRequest(ctx context.Context, resou
 		reqQP.Set("$include", string(*options.Include))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -748,6 +758,7 @@ func (client *BlobContainersClient) listHandleResponse(resp *http.Response) (Blo
 // LockImmutabilityPolicy - Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is ExtendImmutabilityPolicy
 // action. ETag in If-Match is required for this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -800,8 +811,8 @@ func (client *BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -821,6 +832,7 @@ func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *h
 // enabled container. Prerequisites require a container level immutability policy either in locked or
 // unlocked state, Account level versioning must be enabled and there should be no Legal hold on the container.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -829,17 +841,17 @@ func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *h
 // dash (-) character must be immediately preceded and followed by a letter or number.
 // options - BlobContainersClientBeginObjectLevelWormOptions contains the optional parameters for the BlobContainersClient.BeginObjectLevelWorm
 // method.
-func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*armruntime.Poller[BlobContainersClientObjectLevelWormResponse], error) {
+func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*runtime.Poller[BlobContainersClientObjectLevelWormResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.objectLevelWorm(ctx, resourceGroupName, accountName, containerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BlobContainersClientObjectLevelWormResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BlobContainersClientObjectLevelWormResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[BlobContainersClientObjectLevelWormResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BlobContainersClientObjectLevelWormResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -847,6 +859,7 @@ func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, re
 // container. Prerequisites require a container level immutability policy either in locked or
 // unlocked state, Account level versioning must be enabled and there should be no Legal hold on the container.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 func (client *BlobContainersClient) objectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*http.Response, error) {
 	req, err := client.objectLevelWormCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
@@ -888,13 +901,14 @@ func (client *BlobContainersClient) objectLevelWormCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // SetLegalHold - Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
 // pattern and does not clear out the existing tags that are not specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -945,7 +959,7 @@ func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, legalHold)
 }
 
@@ -961,6 +975,7 @@ func (client *BlobContainersClient) setLegalHoldHandleResponse(resp *http.Respon
 // Update - Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged.
 // Update fails if the specified container doesn't already exist.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -1010,7 +1025,7 @@ func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, blobContainer)
 }
 

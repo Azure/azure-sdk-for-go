@@ -7,7 +7,6 @@
 package exported
 
 import (
-	"errors"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -49,7 +48,7 @@ func HasStatusCode(resp *http.Response, statusCodes ...int) bool {
 // Exported as runtime.Payload().
 func Payload(resp *http.Response) ([]byte, error) {
 	// r.Body won't be a nopClosingBytesReader if downloading was skipped
-	if buf, ok := resp.Body.(*nopClosingBytesReader); ok {
+	if buf, ok := resp.Body.(*shared.NopClosingBytesReader); ok {
 		return buf.Bytes(), nil
 	}
 	bytesBody, err := ioutil.ReadAll(resp.Body)
@@ -57,61 +56,6 @@ func Payload(resp *http.Response) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	resp.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
+	resp.Body = shared.NewNopClosingBytesReader(bytesBody)
 	return bytesBody, nil
 }
-
-// NopClosingBytesReader is an io.ReadSeekCloser around a byte slice.
-// It also provides direct access to the byte slice to avoid rereading.
-type nopClosingBytesReader struct {
-	s []byte
-	i int64
-}
-
-// Bytes returns the underlying byte slice.
-func (r *nopClosingBytesReader) Bytes() []byte {
-	return r.s
-}
-
-// Close implements the io.Closer interface.
-func (*nopClosingBytesReader) Close() error {
-	return nil
-}
-
-// Read implements the io.Reader interface.
-func (r *nopClosingBytesReader) Read(b []byte) (n int, err error) {
-	if r.i >= int64(len(r.s)) {
-		return 0, io.EOF
-	}
-	n = copy(b, r.s[r.i:])
-	r.i += int64(n)
-	return
-}
-
-// Set replaces the existing byte slice with the specified byte slice and resets the reader.
-func (r *nopClosingBytesReader) Set(b []byte) {
-	r.s = b
-	r.i = 0
-}
-
-// Seek implements the io.Seeker interface.
-func (r *nopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
-	var i int64
-	switch whence {
-	case io.SeekStart:
-		i = offset
-	case io.SeekCurrent:
-		i = r.i + offset
-	case io.SeekEnd:
-		i = int64(len(r.s)) + offset
-	default:
-		return 0, errors.New("nopClosingBytesReader: invalid whence")
-	}
-	if i < 0 {
-		return 0, errors.New("nopClosingBytesReader: negative position")
-	}
-	r.i = i
-	return i, nil
-}
-
-var _ shared.BytesSetter = (*nopClosingBytesReader)(nil)

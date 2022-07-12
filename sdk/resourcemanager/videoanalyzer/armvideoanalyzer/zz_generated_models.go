@@ -100,6 +100,14 @@ type AudioEncoderAac struct {
 	BitrateKbps *string `json:"bitrateKbps,omitempty"`
 }
 
+// GetAudioEncoderBase implements the AudioEncoderBaseClassification interface for type AudioEncoderAac.
+func (a *AudioEncoderAac) GetAudioEncoderBase() *AudioEncoderBase {
+	return &AudioEncoderBase{
+		Type:        a.Type,
+		BitrateKbps: a.BitrateKbps,
+	}
+}
+
 // AudioEncoderBaseClassification provides polymorphic access to related types.
 // Call the interface's GetAudioEncoderBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -121,6 +129,9 @@ type AudioEncoderBase struct {
 	BitrateKbps *string `json:"bitrateKbps,omitempty"`
 }
 
+// GetAudioEncoderBase implements the AudioEncoderBaseClassification interface for type AudioEncoderBase.
+func (a *AudioEncoderBase) GetAudioEncoderBase() *AudioEncoderBase { return a }
+
 // AuthenticationBaseClassification provides polymorphic access to related types.
 // Call the interface's GetAuthenticationBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -136,6 +147,9 @@ type AuthenticationBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetAuthenticationBase implements the AuthenticationBaseClassification interface for type AuthenticationBase.
+func (a *AuthenticationBase) GetAuthenticationBase() *AuthenticationBase { return a }
+
 // CertificateSourceClassification provides polymorphic access to related types.
 // Call the interface's GetCertificateSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -150,6 +164,9 @@ type CertificateSource struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
+
+// GetCertificateSource implements the CertificateSourceClassification interface for type CertificateSource.
+func (c *CertificateSource) GetCertificateSource() *CertificateSource { return c }
 
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
@@ -193,6 +210,9 @@ type CredentialsBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetCredentialsBase implements the CredentialsBaseClassification interface for type CredentialsBase.
+func (c *CredentialsBase) GetCredentialsBase() *CredentialsBase { return c }
+
 // EccTokenKey - Required validation properties for tokens generated with Elliptical Curve algorithm.
 type EccTokenKey struct {
 	// REQUIRED; Elliptical curve algorithm to be used: ES256, ES384 or ES512.
@@ -209,6 +229,14 @@ type EccTokenKey struct {
 
 	// REQUIRED; Y coordinate.
 	Y *string `json:"y,omitempty"`
+}
+
+// GetTokenKey implements the TokenKeyClassification interface for type EccTokenKey.
+func (e *EccTokenKey) GetTokenKey() *TokenKey {
+	return &TokenKey{
+		Type: e.Type,
+		Kid:  e.Kid,
+	}
 }
 
 // EdgeModuleEntity - The representation of an edge module.
@@ -301,6 +329,13 @@ type EncoderCustomPreset struct {
 	VideoEncoder VideoEncoderBaseClassification `json:"videoEncoder,omitempty"`
 }
 
+// GetEncoderPresetBase implements the EncoderPresetBaseClassification interface for type EncoderCustomPreset.
+func (e *EncoderCustomPreset) GetEncoderPresetBase() *EncoderPresetBase {
+	return &EncoderPresetBase{
+		Type: e.Type,
+	}
+}
+
 // EncoderPresetBaseClassification provides polymorphic access to related types.
 // Call the interface's GetEncoderPresetBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -316,6 +351,9 @@ type EncoderPresetBase struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
+
+// GetEncoderPresetBase implements the EncoderPresetBaseClassification interface for type EncoderPresetBase.
+func (e *EncoderPresetBase) GetEncoderPresetBase() *EncoderPresetBase { return e }
 
 // EncoderProcessor - Encoder processor allows for encoding of the input content. For example, it can used to change the resolution
 // from 4K to 1280x720.
@@ -333,6 +371,23 @@ type EncoderProcessor struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetNodeBase implements the NodeBaseClassification interface for type EncoderProcessor.
+func (e *EncoderProcessor) GetNodeBase() *NodeBase {
+	return &NodeBase{
+		Type: e.Type,
+		Name: e.Name,
+	}
+}
+
+// GetProcessorNodeBase implements the ProcessorNodeBaseClassification interface for type EncoderProcessor.
+func (e *EncoderProcessor) GetProcessorNodeBase() *ProcessorNodeBase {
+	return &ProcessorNodeBase{
+		Inputs: e.Inputs,
+		Type:   e.Type,
+		Name:   e.Name,
+	}
+}
+
 // EncoderSystemPreset - Describes a built-in preset for encoding the input content using the encoder processor.
 type EncoderSystemPreset struct {
 	// REQUIRED; Name of the built-in encoding preset.
@@ -340,6 +395,13 @@ type EncoderSystemPreset struct {
 
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
+}
+
+// GetEncoderPresetBase implements the EncoderPresetBaseClassification interface for type EncoderSystemPreset.
+func (e *EncoderSystemPreset) GetEncoderPresetBase() *EncoderPresetBase {
+	return &EncoderPresetBase{
+		Type: e.Type,
+	}
 }
 
 // Endpoint - The endpoint details.
@@ -375,6 +437,9 @@ type EndpointBase struct {
 	// used when the endpoint is behind a firewall.
 	Tunnel TunnelBaseClassification `json:"tunnel,omitempty"`
 }
+
+// GetEndpointBase implements the EndpointBaseClassification interface for type EndpointBase.
+func (e *EndpointBase) GetEndpointBase() *EndpointBase { return e }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
@@ -454,6 +519,13 @@ type JwtAuthentication struct {
 	// List of keys which can be used to validate access tokens. Having multiple keys allow for seamless key rotation of the token
 	// signing key. Token signature must match exactly one key.
 	Keys []TokenKeyClassification `json:"keys,omitempty"`
+}
+
+// GetAuthenticationBase implements the AuthenticationBaseClassification interface for type JwtAuthentication.
+func (j *JwtAuthentication) GetAuthenticationBase() *AuthenticationBase {
+	return &AuthenticationBase{
+		Type: j.Type,
+	}
 }
 
 // KeyVaultProperties - The details for accessing the encryption keys in Key Vault.
@@ -739,6 +811,9 @@ type NodeBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetNodeBase implements the NodeBaseClassification interface for type NodeBase.
+func (n *NodeBase) GetNodeBase() *NodeBase { return n }
+
 // NodeInput - Describes an input signal to be used on a pipeline node.
 type NodeInput struct {
 	// REQUIRED; The name of the upstream node in the pipeline which output is used as input of the current node.
@@ -857,6 +932,13 @@ type PemCertificateList struct {
 
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
+}
+
+// GetCertificateSource implements the CertificateSourceClassification interface for type PemCertificateList.
+func (p *PemCertificateList) GetCertificateSource() *CertificateSource {
+	return &CertificateSource{
+		Type: p.Type,
+	}
 }
 
 // PipelineJob - Pipeline job represents a unique instance of a batch topology, used for offline processing of selected portions
@@ -1351,6 +1433,17 @@ type ProcessorNodeBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetNodeBase implements the NodeBaseClassification interface for type ProcessorNodeBase.
+func (p *ProcessorNodeBase) GetNodeBase() *NodeBase {
+	return &NodeBase{
+		Type: p.Type,
+		Name: p.Name,
+	}
+}
+
+// GetProcessorNodeBase implements the ProcessorNodeBaseClassification interface for type ProcessorNodeBase.
+func (p *ProcessorNodeBase) GetProcessorNodeBase() *ProcessorNodeBase { return p }
+
 // Properties - The properties of the Video Analyzer account.
 type Properties struct {
 	// REQUIRED; The storage accounts for this resource.
@@ -1460,6 +1553,14 @@ type RsaTokenKey struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetTokenKey implements the TokenKeyClassification interface for type RsaTokenKey.
+func (r *RsaTokenKey) GetTokenKey() *TokenKey {
+	return &TokenKey{
+		Type: r.Type,
+		Kid:  r.Kid,
+	}
+}
+
 // RtspSource - RTSP source allows for media from an RTSP camera or generic RTSP server to be ingested into a pipeline.
 type RtspSource struct {
 	// REQUIRED; RTSP endpoint information for Video Analyzer to connect to. This contains the required information for Video
@@ -1476,6 +1577,22 @@ type RtspSource struct {
 	// the TCP RTSP connection. When using HTTP, the RTSP messages are exchanged
 	// through long lived HTTP connections, and the RTP packages are interleaved in the HTTP connections alongside the RTSP messages.
 	Transport *RtspTransport `json:"transport,omitempty"`
+}
+
+// GetNodeBase implements the NodeBaseClassification interface for type RtspSource.
+func (r *RtspSource) GetNodeBase() *NodeBase {
+	return &NodeBase{
+		Type: r.Type,
+		Name: r.Name,
+	}
+}
+
+// GetSourceNodeBase implements the SourceNodeBaseClassification interface for type RtspSource.
+func (r *RtspSource) GetSourceNodeBase() *SourceNodeBase {
+	return &SourceNodeBase{
+		Type: r.Type,
+		Name: r.Name,
+	}
 }
 
 // SKU - The SKU details.
@@ -1497,6 +1614,13 @@ type SecureIotDeviceRemoteTunnel struct {
 
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
+}
+
+// GetTunnelBase implements the TunnelBaseClassification interface for type SecureIotDeviceRemoteTunnel.
+func (s *SecureIotDeviceRemoteTunnel) GetTunnelBase() *TunnelBase {
+	return &TunnelBase{
+		Type: s.Type,
+	}
 }
 
 // ServiceSpecification - The service metric specifications.
@@ -1530,6 +1654,17 @@ type SinkNodeBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetNodeBase implements the NodeBaseClassification interface for type SinkNodeBase.
+func (s *SinkNodeBase) GetNodeBase() *NodeBase {
+	return &NodeBase{
+		Type: s.Type,
+		Name: s.Name,
+	}
+}
+
+// GetSinkNodeBase implements the SinkNodeBaseClassification interface for type SinkNodeBase.
+func (s *SinkNodeBase) GetSinkNodeBase() *SinkNodeBase { return s }
+
 // SourceNodeBaseClassification provides polymorphic access to related types.
 // Call the interface's GetSourceNodeBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1548,6 +1683,17 @@ type SourceNodeBase struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
+
+// GetNodeBase implements the NodeBaseClassification interface for type SourceNodeBase.
+func (s *SourceNodeBase) GetNodeBase() *NodeBase {
+	return &NodeBase{
+		Type: s.Type,
+		Name: s.Name,
+	}
+}
+
+// GetSourceNodeBase implements the SourceNodeBaseClassification interface for type SourceNodeBase.
+func (s *SourceNodeBase) GetSourceNodeBase() *SourceNodeBase { return s }
 
 // StorageAccount - The details about the associated storage account.
 type StorageAccount struct {
@@ -1608,6 +1754,16 @@ type TLSEndpoint struct {
 	ValidationOptions *TLSValidationOptions `json:"validationOptions,omitempty"`
 }
 
+// GetEndpointBase implements the EndpointBaseClassification interface for type TLSEndpoint.
+func (t *TLSEndpoint) GetEndpointBase() *EndpointBase {
+	return &EndpointBase{
+		Type:        t.Type,
+		Credentials: t.Credentials,
+		URL:         t.URL,
+		Tunnel:      t.Tunnel,
+	}
+}
+
 // TLSValidationOptions - Options for controlling the validation of TLS endpoints.
 type TLSValidationOptions struct {
 	// When set to 'true' causes the certificate subject name validation to be skipped. Default is 'false'.
@@ -1631,6 +1787,9 @@ type TimeSequenceBase struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
+
+// GetTimeSequenceBase implements the TimeSequenceBaseClassification interface for type TimeSequenceBase.
+func (t *TimeSequenceBase) GetTimeSequenceBase() *TimeSequenceBase { return t }
 
 // TokenClaim - Properties for expected token claims.
 type TokenClaim struct {
@@ -1658,6 +1817,9 @@ type TokenKey struct {
 	// REQUIRED; The discriminator for derived types.
 	Type *string `json:"@type,omitempty"`
 }
+
+// GetTokenKey implements the TokenKeyClassification interface for type TokenKey.
+func (t *TokenKey) GetTokenKey() *TokenKey { return t }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
@@ -1696,6 +1858,9 @@ type TunnelBase struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetTunnelBase implements the TunnelBaseClassification interface for type TunnelBase.
+func (t *TunnelBase) GetTunnelBase() *TunnelBase { return t }
+
 // UnsecuredEndpoint - Unsecured endpoint describes an endpoint that the pipeline can connect to over clear transport (no
 // encryption in transit).
 type UnsecuredEndpoint struct {
@@ -1711,6 +1876,16 @@ type UnsecuredEndpoint struct {
 	// Describes the tunnel through which Video Analyzer can connect to the endpoint URL. This is an optional property, typically
 	// used when the endpoint is behind a firewall.
 	Tunnel TunnelBaseClassification `json:"tunnel,omitempty"`
+}
+
+// GetEndpointBase implements the EndpointBaseClassification interface for type UnsecuredEndpoint.
+func (u *UnsecuredEndpoint) GetEndpointBase() *EndpointBase {
+	return &EndpointBase{
+		Type:        u.Type,
+		Credentials: u.Credentials,
+		URL:         u.URL,
+		Tunnel:      u.Tunnel,
+	}
 }
 
 // Update - The update operation for a Video Analyzer account.
@@ -1746,6 +1921,13 @@ type UsernamePasswordCredentials struct {
 
 	// REQUIRED; Username to be presented as part of the credentials.
 	Username *string `json:"username,omitempty"`
+}
+
+// GetCredentialsBase implements the CredentialsBaseClassification interface for type UsernamePasswordCredentials.
+func (u *UsernamePasswordCredentials) GetCredentialsBase() *CredentialsBase {
+	return &CredentialsBase{
+		Type: u.Type,
+	}
 }
 
 // VideoAnalyzer - The Video Analyzer account.
@@ -1910,6 +2092,9 @@ type VideoEncoderBase struct {
 	Scale *VideoScale `json:"scale,omitempty"`
 }
 
+// GetVideoEncoderBase implements the VideoEncoderBaseClassification interface for type VideoEncoderBase.
+func (v *VideoEncoderBase) GetVideoEncoderBase() *VideoEncoderBase { return v }
+
 // VideoEncoderH264 - A custom preset for encoding video with the H.264 (AVC) codec.
 type VideoEncoderH264 struct {
 	// REQUIRED; The discriminator for derived types.
@@ -1925,6 +2110,16 @@ type VideoEncoderH264 struct {
 
 	// Describes the resolution of the encoded video. If omitted, the encoder uses the resolution of the input video.
 	Scale *VideoScale `json:"scale,omitempty"`
+}
+
+// GetVideoEncoderBase implements the VideoEncoderBaseClassification interface for type VideoEncoderH264.
+func (v *VideoEncoderH264) GetVideoEncoderBase() *VideoEncoderBase {
+	return &VideoEncoderBase{
+		Type:        v.Type,
+		BitrateKbps: v.BitrateKbps,
+		FrameRate:   v.FrameRate,
+		Scale:       v.Scale,
+	}
 }
 
 // VideoEntity - Represents a video resource within Azure Video Analyzer. Videos can be ingested from RTSP cameras through
@@ -2061,6 +2256,13 @@ type VideoSequenceAbsoluteTimeMarkers struct {
 	Type *string `json:"@type,omitempty"`
 }
 
+// GetTimeSequenceBase implements the TimeSequenceBaseClassification interface for type VideoSequenceAbsoluteTimeMarkers.
+func (v *VideoSequenceAbsoluteTimeMarkers) GetTimeSequenceBase() *TimeSequenceBase {
+	return &TimeSequenceBase{
+		Type: v.Type,
+	}
+}
+
 // VideoSink - Video sink in a live topology allows for video and audio to be captured, optionally archived, and published
 // via a video resource. If archiving is enabled, this results in a video of type 'archive'. If
 // used in a batch topology, this allows for video and audio to be stored as a file, and published via a video resource of
@@ -2087,6 +2289,23 @@ type VideoSink struct {
 	VideoPublishingOptions *VideoPublishingOptions `json:"videoPublishingOptions,omitempty"`
 }
 
+// GetNodeBase implements the NodeBaseClassification interface for type VideoSink.
+func (v *VideoSink) GetNodeBase() *NodeBase {
+	return &NodeBase{
+		Type: v.Type,
+		Name: v.Name,
+	}
+}
+
+// GetSinkNodeBase implements the SinkNodeBaseClassification interface for type VideoSink.
+func (v *VideoSink) GetSinkNodeBase() *SinkNodeBase {
+	return &SinkNodeBase{
+		Inputs: v.Inputs,
+		Type:   v.Type,
+		Name:   v.Name,
+	}
+}
+
 // VideoSource - Video source allows for content from a Video Analyzer video resource to be ingested into a pipeline. Currently
 // supported only with batch pipelines.
 type VideoSource struct {
@@ -2101,6 +2320,22 @@ type VideoSource struct {
 
 	// REQUIRED; Name of the Video Analyzer video resource to be used as the source.
 	VideoName *string `json:"videoName,omitempty"`
+}
+
+// GetNodeBase implements the NodeBaseClassification interface for type VideoSource.
+func (v *VideoSource) GetNodeBase() *NodeBase {
+	return &NodeBase{
+		Type: v.Type,
+		Name: v.Name,
+	}
+}
+
+// GetSourceNodeBase implements the SourceNodeBaseClassification interface for type VideoSource.
+func (v *VideoSource) GetSourceNodeBase() *SourceNodeBase {
+	return &SourceNodeBase{
+		Type: v.Type,
+		Name: v.Name,
+	}
 }
 
 // VideosClientCreateOrUpdateOptions contains the optional parameters for the VideosClient.CreateOrUpdate method.

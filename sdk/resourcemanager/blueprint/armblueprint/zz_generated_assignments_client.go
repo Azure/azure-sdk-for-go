@@ -36,7 +36,7 @@ func NewAssignmentsClient(credential azcore.TokenCredential, options *arm.Client
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewAssignmentsClient(credential azcore.TokenCredential, options *arm.Client
 
 // CreateOrUpdate - Create or update a blueprint assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // assignmentName - Name of the blueprint assignment.
@@ -89,7 +90,7 @@ func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, assignment)
 }
 
@@ -104,6 +105,7 @@ func (client *AssignmentsClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Delete a blueprint assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // assignmentName - Name of the blueprint assignment.
@@ -141,7 +143,7 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resour
 		reqQP.Set("deleteBehavior", string(*options.DeleteBehavior))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -156,6 +158,7 @@ func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (Assi
 
 // Get - Get a blueprint assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // assignmentName - Name of the blueprint assignment.
@@ -190,7 +193,7 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, resourceS
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -205,11 +208,12 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 
 // NewListPager - List blueprint assignments within a subscription or a management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
 func (client *AssignmentsClient) NewListPager(resourceScope string, options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
 		More: func(page AssignmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -247,7 +251,7 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -262,6 +266,7 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 
 // WhoIsBlueprint - Get Blueprints service SPN objectId
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // assignmentName - Name of the blueprint assignment.
@@ -297,7 +302,7 @@ func (client *AssignmentsClient) whoIsBlueprintCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

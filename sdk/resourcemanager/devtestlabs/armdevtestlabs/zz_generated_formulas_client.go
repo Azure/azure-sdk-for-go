@@ -39,7 +39,7 @@ func NewFormulasClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewFormulasClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create or replace an existing formula. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the formula.
 // formula - A formula for creating a VM, specifying an image base and other parameters
 // options - FormulasClientBeginCreateOrUpdateOptions contains the optional parameters for the FormulasClient.BeginCreateOrUpdate
 // method.
-func (client *FormulasClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasClientBeginCreateOrUpdateOptions) (*armruntime.Poller[FormulasClientCreateOrUpdateResponse], error) {
+func (client *FormulasClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasClientBeginCreateOrUpdateOptions) (*runtime.Poller[FormulasClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, name, formula, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[FormulasClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[FormulasClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[FormulasClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FormulasClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or replace an existing formula. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *FormulasClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, name, formula, options)
 	if err != nil {
@@ -118,12 +120,13 @@ func (client *FormulasClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, formula)
 }
 
 // Delete - Delete formula.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the formula.
@@ -169,12 +172,13 @@ func (client *FormulasClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get formula.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the formula.
@@ -223,7 +227,7 @@ func (client *FormulasClient) getCreateRequest(ctx context.Context, resourceGrou
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,11 +242,12 @@ func (client *FormulasClient) getHandleResponse(resp *http.Response) (FormulasCl
 
 // NewListPager - List formulas in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - FormulasClientListOptions contains the optional parameters for the FormulasClient.List method.
 func (client *FormulasClient) NewListPager(resourceGroupName string, labName string, options *FormulasClientListOptions) *runtime.Pager[FormulasClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FormulasClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FormulasClientListResponse]{
 		More: func(page FormulasClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -303,7 +308,7 @@ func (client *FormulasClient) listCreateRequest(ctx context.Context, resourceGro
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -318,6 +323,7 @@ func (client *FormulasClient) listHandleResponse(resp *http.Response) (FormulasC
 
 // Update - Allows modifying tags of formulas. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the formula.
@@ -364,7 +370,7 @@ func (client *FormulasClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, formula)
 }
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
@@ -26,25 +24,25 @@ func ExampleServiceClient_BeginRestore() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestore(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ServiceBackupRestoreParameters{
-			AccessKey:      to.Ptr("<access-key>"),
+			AccessKey:      to.Ptr("**************************************************"),
 			AccessType:     to.Ptr(armapimanagement.AccessTypeAccessKey),
-			BackupName:     to.Ptr("<backup-name>"),
-			ContainerName:  to.Ptr("<container-name>"),
-			StorageAccount: to.Ptr("<storage-account>"),
+			BackupName:     to.Ptr("apimService1backup_2017_03_19"),
+			ContainerName:  to.Ptr("backupContainer"),
+			StorageAccount: to.Ptr("teststorageaccount"),
 		},
-		&armapimanagement.ServiceClientBeginRestoreOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -59,25 +57,25 @@ func ExampleServiceClient_BeginBackup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginBackup(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ServiceBackupRestoreParameters{
-			AccessKey:      to.Ptr("<access-key>"),
+			AccessKey:      to.Ptr("**************************************************"),
 			AccessType:     to.Ptr(armapimanagement.AccessTypeAccessKey),
-			BackupName:     to.Ptr("<backup-name>"),
-			ContainerName:  to.Ptr("<container-name>"),
-			StorageAccount: to.Ptr("<storage-account>"),
+			BackupName:     to.Ptr("apimService1backup_2017_03_19"),
+			ContainerName:  to.Ptr("backupContainer"),
+			StorageAccount: to.Ptr("teststorageaccount"),
 		},
-		&armapimanagement.ServiceClientBeginBackupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -92,67 +90,67 @@ func ExampleServiceClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ServiceResource{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 				"tag3": to.Ptr("value3"),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armapimanagement.ServiceProperties{
 				AdditionalLocations: []*armapimanagement.AdditionalLocation{
 					{
 						DisableGateway: to.Ptr(true),
-						Location:       to.Ptr("<location>"),
+						Location:       to.Ptr("East US"),
 						SKU: &armapimanagement.ServiceSKUProperties{
 							Name:     to.Ptr(armapimanagement.SKUTypePremium),
 							Capacity: to.Ptr[int32](1),
 						},
 					}},
 				APIVersionConstraint: &armapimanagement.APIVersionConstraint{
-					MinAPIVersion: to.Ptr("<min-apiversion>"),
+					MinAPIVersion: to.Ptr("2019-01-01"),
 				},
 				HostnameConfigurations: []*armapimanagement.HostnameConfiguration{
 					{
 						Type:                to.Ptr(armapimanagement.HostnameTypeProxy),
-						CertificatePassword: to.Ptr("<certificate-password>"),
+						CertificatePassword: to.Ptr("Password"),
 						DefaultSSLBinding:   to.Ptr(true),
-						EncodedCertificate:  to.Ptr("<encoded-certificate>"),
-						HostName:            to.Ptr("<host-name>"),
+						EncodedCertificate:  to.Ptr("****** Base 64 Encoded Certificate ************"),
+						HostName:            to.Ptr("gateway1.msitesting.net"),
 					},
 					{
 						Type:                to.Ptr(armapimanagement.HostnameTypeManagement),
-						CertificatePassword: to.Ptr("<certificate-password>"),
-						EncodedCertificate:  to.Ptr("<encoded-certificate>"),
-						HostName:            to.Ptr("<host-name>"),
+						CertificatePassword: to.Ptr("Password"),
+						EncodedCertificate:  to.Ptr("****** Base 64 Encoded Certificate ************"),
+						HostName:            to.Ptr("mgmt.msitesting.net"),
 					},
 					{
 						Type:                to.Ptr(armapimanagement.HostnameTypePortal),
-						CertificatePassword: to.Ptr("<certificate-password>"),
-						EncodedCertificate:  to.Ptr("<encoded-certificate>"),
-						HostName:            to.Ptr("<host-name>"),
+						CertificatePassword: to.Ptr("Password"),
+						EncodedCertificate:  to.Ptr("****** Base 64 Encoded Certificate ************"),
+						HostName:            to.Ptr("portal1.msitesting.net"),
 					}},
 				VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeNone),
-				PublisherEmail:     to.Ptr("<publisher-email>"),
-				PublisherName:      to.Ptr("<publisher-name>"),
+				PublisherEmail:     to.Ptr("apim@autorestsdk.com"),
+				PublisherName:      to.Ptr("autorestsdk"),
 			},
 			SKU: &armapimanagement.ServiceSKUProperties{
 				Name:     to.Ptr(armapimanagement.SKUTypePremium),
 				Capacity: to.Ptr[int32](1),
 			},
 		},
-		&armapimanagement.ServiceClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -167,13 +165,13 @@ func ExampleServiceClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ServiceUpdateParameters{
 			Properties: &armapimanagement.ServiceUpdateProperties{
 				CustomProperties: map[string]*string{
@@ -181,11 +179,11 @@ func ExampleServiceClient_BeginUpdate() {
 				},
 			},
 		},
-		&armapimanagement.ServiceClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -200,13 +198,13 @@ func ExampleServiceClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -222,18 +220,18 @@ func ExampleServiceClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		&armapimanagement.ServiceClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"apimService1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -246,17 +244,16 @@ func ExampleServiceClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -272,7 +269,7 @@ func ExampleServiceClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -281,7 +278,6 @@ func ExampleServiceClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -297,13 +293,13 @@ func ExampleServiceClient_GetSsoToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSsoToken(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -319,13 +315,13 @@ func ExampleServiceClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armapimanagement.ServiceCheckNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("apimService1"),
 		},
 		nil)
 	if err != nil {
@@ -342,7 +338,7 @@ func ExampleServiceClient_GetDomainOwnershipIdentifier() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -362,22 +358,21 @@ func ExampleServiceClient_BeginApplyNetworkConfigurationUpdates() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginApplyNetworkConfigurationUpdates(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		&armapimanagement.ServiceClientBeginApplyNetworkConfigurationUpdatesOptions{Parameters: &armapimanagement.ServiceApplyNetworkConfigurationParameters{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("west us"),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

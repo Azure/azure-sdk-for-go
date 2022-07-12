@@ -38,7 +38,7 @@ func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.Clien
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,6 +55,7 @@ func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.Clien
 
 // NewListQueryResultsForManagementGroupPager - Queries policy events for the resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // managementGroupName - Management group name.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
@@ -62,7 +63,7 @@ func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.Clien
 // options - PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForManagementGroup
 // method.
 func (client *PolicyEventsClient) NewListQueryResultsForManagementGroupPager(policyEventsResource PolicyEventsResourceType, managementGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForManagementGroupResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForManagementGroupResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -132,7 +133,7 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupCreateReques
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -147,6 +148,7 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupHandleRespon
 
 // NewListQueryResultsForPolicyDefinitionPager - Queries policy events for the subscription level policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // policyDefinitionName - Policy definition name.
@@ -155,7 +157,7 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupHandleRespon
 // options - PolicyEventsClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicyDefinition
 // method.
 func (client *PolicyEventsClient) NewListQueryResultsForPolicyDefinitionPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForPolicyDefinitionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -229,7 +231,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionCreateReque
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -244,6 +246,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionHandleRespo
 
 // NewListQueryResultsForPolicySetDefinitionPager - Queries policy events for the subscription level policy set definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // policySetDefinitionName - Policy set definition name.
@@ -252,7 +255,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionHandleRespo
 // options - PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicySetDefinition
 // method.
 func (client *PolicyEventsClient) NewListQueryResultsForPolicySetDefinitionPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -326,7 +329,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionCreateRe
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -341,6 +344,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionHandleRe
 
 // NewListQueryResultsForResourcePager - Queries policy events for the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // resourceID - Resource ID.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
@@ -348,7 +352,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionHandleRe
 // options - PolicyEventsClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResource
 // method.
 func (client *PolicyEventsClient) NewListQueryResultsForResourcePager(policyEventsResource PolicyEventsResourceType, resourceID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForResourceResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForResourceResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -417,7 +421,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceCreateRequest(ctx c
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -432,6 +436,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceHandleResponse(resp
 
 // NewListQueryResultsForResourceGroupPager - Queries policy events for the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // resourceGroupName - Resource group name.
@@ -440,7 +445,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceHandleResponse(resp
 // options - PolicyEventsClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResourceGroup
 // method.
 func (client *PolicyEventsClient) NewListQueryResultsForResourceGroupPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForResourceGroupResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForResourceGroupResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -513,7 +518,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupCreateRequest(
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -529,6 +534,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupHandleResponse
 // NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager - Queries policy events for the resource group level policy
 // assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // resourceGroupName - Resource group name.
@@ -538,7 +544,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupHandleResponse
 // options - PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters
 // for the PolicyEventsClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
 func (client *PolicyEventsClient) NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -616,7 +622,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -631,6 +637,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 
 // NewListQueryResultsForSubscriptionPager - Queries policy events for the resources under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
@@ -638,7 +645,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 // options - PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForSubscription
 // method.
 func (client *PolicyEventsClient) NewListQueryResultsForSubscriptionPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForSubscriptionResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForSubscriptionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -707,7 +714,7 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(c
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -723,6 +730,7 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionHandleResponse(
 // NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager - Queries policy events for the subscription level policy
 // assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
 // policyAssignmentName - Policy assignment name.
@@ -731,7 +739,7 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionHandleResponse(
 // options - PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters
 // for the PolicyEventsClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
 func (client *PolicyEventsClient) NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -805,7 +813,7 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionLevelPolicyAssi
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

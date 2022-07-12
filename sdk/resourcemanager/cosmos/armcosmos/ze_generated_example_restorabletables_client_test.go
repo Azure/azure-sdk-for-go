@@ -23,12 +23,12 @@ func ExampleRestorableTablesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableTablesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewRestorableTablesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<location>",
-		"<instance-id>",
+	pager := client.NewListPager("WestUS",
+		"98a570f2-63db-4117-91f0-366327b7b353",
 		&armcosmos.RestorableTablesClientListOptions{StartTime: nil,
 			EndTime: nil,
 		})
@@ -36,7 +36,6 @@ func ExampleRestorableTablesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -27,14 +27,13 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInvoicePager("<billing-account-name>",
-		"<invoice-name>",
+	pager := client.NewListByInvoicePager("{billingAccountName}",
+		"{invoiceName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

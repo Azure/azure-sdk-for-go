@@ -10,19 +10,10 @@ package armbotservice
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// GetChannel implements the ChannelClassification interface for type AlexaChannel.
-func (a *AlexaChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       a.ChannelName,
-		Etag:              a.Etag,
-		ProvisioningState: a.ProvisioningState,
-		Location:          a.Location,
-	}
-}
 
 // MarshalJSON implements the json.Marshaller interface for type AlexaChannel.
 func (a AlexaChannel) MarshalJSON() ([]byte, error) {
@@ -39,29 +30,29 @@ func (a AlexaChannel) MarshalJSON() ([]byte, error) {
 func (a *AlexaChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &a.ChannelName)
+			err = unpopulate(val, "ChannelName", &a.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &a.Etag)
+			err = unpopulate(val, "Etag", &a.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &a.Location)
+			err = unpopulate(val, "Location", &a.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &a.Properties)
+			err = unpopulate(val, "Properties", &a.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -103,44 +94,44 @@ func (b BotChannel) MarshalJSON() ([]byte, error) {
 func (b *BotChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", b, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "etag":
-			err = unpopulate(val, &b.Etag)
+			err = unpopulate(val, "Etag", &b.Etag)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &b.ID)
+			err = unpopulate(val, "ID", &b.ID)
 			delete(rawMsg, key)
 		case "kind":
-			err = unpopulate(val, &b.Kind)
+			err = unpopulate(val, "Kind", &b.Kind)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &b.Location)
+			err = unpopulate(val, "Location", &b.Location)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &b.Name)
+			err = unpopulate(val, "Name", &b.Name)
 			delete(rawMsg, key)
 		case "properties":
 			b.Properties, err = unmarshalChannelClassification(val)
 			delete(rawMsg, key)
 		case "sku":
-			err = unpopulate(val, &b.SKU)
+			err = unpopulate(val, "SKU", &b.SKU)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, &b.Tags)
+			err = unpopulate(val, "Tags", &b.Tags)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &b.Type)
+			err = unpopulate(val, "Type", &b.Type)
 			delete(rawMsg, key)
 		case "zones":
-			err = unpopulate(val, &b.Zones)
+			err = unpopulate(val, "Zones", &b.Zones)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", b, err)
 		}
 	}
 	return nil
@@ -183,25 +174,6 @@ func (b BotProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "publishingCredentials", b.PublishingCredentials)
 	populate(objectMap, "schemaTransformationVersion", b.SchemaTransformationVersion)
 	populate(objectMap, "storageResourceId", b.StorageResourceID)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BotResponseList.
-func (b BotResponseList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// GetChannel implements the ChannelClassification interface for type Channel.
-func (c *Channel) GetChannel() *Channel { return c }
-
-// MarshalJSON implements the json.Marshaller interface for type ChannelResponseList.
-func (c ChannelResponseList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -252,24 +224,6 @@ func (c ConnectionSettingProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConnectionSettingResponseList.
-func (c ConnectionSettingResponseList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
-// GetChannel implements the ChannelClassification interface for type DirectLineChannel.
-func (d *DirectLineChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       d.ChannelName,
-		Etag:              d.Etag,
-		ProvisioningState: d.ProvisioningState,
-		Location:          d.Location,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type DirectLineChannel.
 func (d DirectLineChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -285,29 +239,29 @@ func (d DirectLineChannel) MarshalJSON() ([]byte, error) {
 func (d *DirectLineChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &d.ChannelName)
+			err = unpopulate(val, "ChannelName", &d.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &d.Etag)
+			err = unpopulate(val, "Etag", &d.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &d.Location)
+			err = unpopulate(val, "Location", &d.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &d.Properties)
+			err = unpopulate(val, "Properties", &d.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &d.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
@@ -337,16 +291,6 @@ func (d DirectLineSite) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetChannel implements the ChannelClassification interface for type DirectLineSpeechChannel.
-func (d *DirectLineSpeechChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       d.ChannelName,
-		Etag:              d.Etag,
-		ProvisioningState: d.ProvisioningState,
-		Location:          d.Location,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type DirectLineSpeechChannel.
 func (d DirectLineSpeechChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -362,42 +306,32 @@ func (d DirectLineSpeechChannel) MarshalJSON() ([]byte, error) {
 func (d *DirectLineSpeechChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &d.ChannelName)
+			err = unpopulate(val, "ChannelName", &d.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &d.Etag)
+			err = unpopulate(val, "Etag", &d.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &d.Location)
+			err = unpopulate(val, "Location", &d.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &d.Properties)
+			err = unpopulate(val, "Properties", &d.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &d.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
-}
-
-// GetChannel implements the ChannelClassification interface for type EmailChannel.
-func (e *EmailChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       e.ChannelName,
-		Etag:              e.Etag,
-		ProvisioningState: e.ProvisioningState,
-		Location:          e.Location,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EmailChannel.
@@ -415,42 +349,32 @@ func (e EmailChannel) MarshalJSON() ([]byte, error) {
 func (e *EmailChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &e.ChannelName)
+			err = unpopulate(val, "ChannelName", &e.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &e.Etag)
+			err = unpopulate(val, "Etag", &e.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &e.Location)
+			err = unpopulate(val, "Location", &e.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &e.Properties)
+			err = unpopulate(val, "Properties", &e.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &e.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
 		}
 	}
 	return nil
-}
-
-// GetChannel implements the ChannelClassification interface for type FacebookChannel.
-func (f *FacebookChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       f.ChannelName,
-		Etag:              f.Etag,
-		ProvisioningState: f.ProvisioningState,
-		Location:          f.Location,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FacebookChannel.
@@ -468,29 +392,29 @@ func (f FacebookChannel) MarshalJSON() ([]byte, error) {
 func (f *FacebookChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &f.ChannelName)
+			err = unpopulate(val, "ChannelName", &f.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &f.Etag)
+			err = unpopulate(val, "Etag", &f.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &f.Location)
+			err = unpopulate(val, "Location", &f.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &f.Properties)
+			err = unpopulate(val, "Properties", &f.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &f.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &f.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
 		}
 	}
 	return nil
@@ -508,16 +432,6 @@ func (f FacebookChannelProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetChannel implements the ChannelClassification interface for type KikChannel.
-func (k *KikChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       k.ChannelName,
-		Etag:              k.Etag,
-		ProvisioningState: k.ProvisioningState,
-		Location:          k.Location,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type KikChannel.
 func (k KikChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -533,42 +447,32 @@ func (k KikChannel) MarshalJSON() ([]byte, error) {
 func (k *KikChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", k, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &k.ChannelName)
+			err = unpopulate(val, "ChannelName", &k.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &k.Etag)
+			err = unpopulate(val, "Etag", &k.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &k.Location)
+			err = unpopulate(val, "Location", &k.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &k.Properties)
+			err = unpopulate(val, "Properties", &k.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &k.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &k.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", k, err)
 		}
 	}
 	return nil
-}
-
-// GetChannel implements the ChannelClassification interface for type LineChannel.
-func (l *LineChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       l.ChannelName,
-		Etag:              l.Etag,
-		ProvisioningState: l.ProvisioningState,
-		Location:          l.Location,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LineChannel.
@@ -586,29 +490,29 @@ func (l LineChannel) MarshalJSON() ([]byte, error) {
 func (l *LineChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &l.ChannelName)
+			err = unpopulate(val, "ChannelName", &l.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &l.Etag)
+			err = unpopulate(val, "Etag", &l.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &l.Location)
+			err = unpopulate(val, "Location", &l.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &l.Properties)
+			err = unpopulate(val, "Properties", &l.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &l.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &l.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
 		}
 	}
 	return nil
@@ -648,72 +552,62 @@ func (l ListChannelWithKeysResponse) MarshalJSON() ([]byte, error) {
 func (l *ListChannelWithKeysResponse) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "changedTime":
-			err = unpopulate(val, &l.ChangedTime)
+			err = unpopulate(val, "ChangedTime", &l.ChangedTime)
 			delete(rawMsg, key)
 		case "entityTag":
-			err = unpopulate(val, &l.EntityTag)
+			err = unpopulate(val, "EntityTag", &l.EntityTag)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &l.Etag)
+			err = unpopulate(val, "Etag", &l.Etag)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &l.ID)
+			err = unpopulate(val, "ID", &l.ID)
 			delete(rawMsg, key)
 		case "kind":
-			err = unpopulate(val, &l.Kind)
+			err = unpopulate(val, "Kind", &l.Kind)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &l.Location)
+			err = unpopulate(val, "Location", &l.Location)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &l.Name)
+			err = unpopulate(val, "Name", &l.Name)
 			delete(rawMsg, key)
 		case "properties":
 			l.Properties, err = unmarshalChannelClassification(val)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &l.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &l.ProvisioningState)
 			delete(rawMsg, key)
 		case "resource":
 			l.Resource, err = unmarshalChannelClassification(val)
 			delete(rawMsg, key)
 		case "sku":
-			err = unpopulate(val, &l.SKU)
+			err = unpopulate(val, "SKU", &l.SKU)
 			delete(rawMsg, key)
 		case "setting":
-			err = unpopulate(val, &l.Setting)
+			err = unpopulate(val, "Setting", &l.Setting)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, &l.Tags)
+			err = unpopulate(val, "Tags", &l.Tags)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &l.Type)
+			err = unpopulate(val, "Type", &l.Type)
 			delete(rawMsg, key)
 		case "zones":
-			err = unpopulate(val, &l.Zones)
+			err = unpopulate(val, "Zones", &l.Zones)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
 		}
 	}
 	return nil
-}
-
-// GetChannel implements the ChannelClassification interface for type MsTeamsChannel.
-func (m *MsTeamsChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       m.ChannelName,
-		Etag:              m.Etag,
-		ProvisioningState: m.ProvisioningState,
-		Location:          m.Location,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MsTeamsChannel.
@@ -731,93 +625,61 @@ func (m MsTeamsChannel) MarshalJSON() ([]byte, error) {
 func (m *MsTeamsChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &m.ChannelName)
+			err = unpopulate(val, "ChannelName", &m.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &m.Etag)
+			err = unpopulate(val, "Etag", &m.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &m.Location)
+			err = unpopulate(val, "Location", &m.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &m.Properties)
+			err = unpopulate(val, "Properties", &m.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &m.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &m.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationEntityListResult.
-func (o OperationEntityListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationResultsDescription.
-func (o OperationResultsDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "name", o.Name)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	populate(objectMap, "status", o.Status)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type OperationResultsDescription.
 func (o *OperationResultsDescription) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, &o.ID)
+			err = unpopulate(val, "ID", &o.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &o.Name)
+			err = unpopulate(val, "Name", &o.Name)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &o.StartTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &o.Status)
+			err = unpopulate(val, "Status", &o.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
@@ -844,26 +706,6 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceProviderProperties.
-func (s ServiceProviderProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "devPortalUrl", s.DevPortalURL)
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "iconUrl", s.IconURL)
-	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "serviceProviderName", s.ServiceProviderName)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceProviderResponseList.
-func (s ServiceProviderResponseList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type Site.
 func (s Site) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -883,16 +725,6 @@ func (s Site) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetChannel implements the ChannelClassification interface for type SkypeChannel.
-func (s *SkypeChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       s.ChannelName,
-		Etag:              s.Etag,
-		ProvisioningState: s.ProvisioningState,
-		Location:          s.Location,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type SkypeChannel.
 func (s SkypeChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -908,42 +740,32 @@ func (s SkypeChannel) MarshalJSON() ([]byte, error) {
 func (s *SkypeChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &s.ChannelName)
+			err = unpopulate(val, "ChannelName", &s.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &s.Etag)
+			err = unpopulate(val, "Etag", &s.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &s.Location)
+			err = unpopulate(val, "Location", &s.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &s.Properties)
+			err = unpopulate(val, "Properties", &s.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetChannel implements the ChannelClassification interface for type SlackChannel.
-func (s *SlackChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       s.ChannelName,
-		Etag:              s.Etag,
-		ProvisioningState: s.ProvisioningState,
-		Location:          s.Location,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SlackChannel.
@@ -961,42 +783,32 @@ func (s SlackChannel) MarshalJSON() ([]byte, error) {
 func (s *SlackChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &s.ChannelName)
+			err = unpopulate(val, "ChannelName", &s.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &s.Etag)
+			err = unpopulate(val, "Etag", &s.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &s.Location)
+			err = unpopulate(val, "Location", &s.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &s.Properties)
+			err = unpopulate(val, "Properties", &s.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetChannel implements the ChannelClassification interface for type SmsChannel.
-func (s *SmsChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       s.ChannelName,
-		Etag:              s.Etag,
-		ProvisioningState: s.ProvisioningState,
-		Location:          s.Location,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SmsChannel.
@@ -1014,42 +826,32 @@ func (s SmsChannel) MarshalJSON() ([]byte, error) {
 func (s *SmsChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &s.ChannelName)
+			err = unpopulate(val, "ChannelName", &s.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &s.Etag)
+			err = unpopulate(val, "Etag", &s.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &s.Location)
+			err = unpopulate(val, "Location", &s.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &s.Properties)
+			err = unpopulate(val, "Properties", &s.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetChannel implements the ChannelClassification interface for type TelegramChannel.
-func (t *TelegramChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       t.ChannelName,
-		Etag:              t.Etag,
-		ProvisioningState: t.ProvisioningState,
-		Location:          t.Location,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TelegramChannel.
@@ -1067,42 +869,32 @@ func (t TelegramChannel) MarshalJSON() ([]byte, error) {
 func (t *TelegramChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &t.ChannelName)
+			err = unpopulate(val, "ChannelName", &t.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &t.Etag)
+			err = unpopulate(val, "Etag", &t.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &t.Location)
+			err = unpopulate(val, "Location", &t.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &t.Properties)
+			err = unpopulate(val, "Properties", &t.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &t.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &t.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil
-}
-
-// GetChannel implements the ChannelClassification interface for type WebChatChannel.
-func (w *WebChatChannel) GetChannel() *Channel {
-	return &Channel{
-		ChannelName:       w.ChannelName,
-		Etag:              w.Etag,
-		ProvisioningState: w.ProvisioningState,
-		Location:          w.Location,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WebChatChannel.
@@ -1120,29 +912,29 @@ func (w WebChatChannel) MarshalJSON() ([]byte, error) {
 func (w *WebChatChannel) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", w, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelName":
-			err = unpopulate(val, &w.ChannelName)
+			err = unpopulate(val, "ChannelName", &w.ChannelName)
 			delete(rawMsg, key)
 		case "etag":
-			err = unpopulate(val, &w.Etag)
+			err = unpopulate(val, "Etag", &w.Etag)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, &w.Location)
+			err = unpopulate(val, "Location", &w.Location)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &w.Properties)
+			err = unpopulate(val, "Properties", &w.Properties)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &w.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &w.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", w, err)
 		}
 	}
 	return nil
@@ -1166,9 +958,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

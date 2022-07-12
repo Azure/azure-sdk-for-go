@@ -17,19 +17,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryListByNamespace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/SchemaRegistry/SchemaRegistryListByNamespace.json
 func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewSchemaRegistryClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewSchemaRegistryClient("e8baea74-64ce-459b-bee3-5aa4c47b3ae3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByNamespacePager("<resource-group-name>",
-		"<namespace-name>",
+	pager := client.NewListByNamespacePager("alitest",
+		"ali-ua-test-eh-system-1",
 		&armeventhub.SchemaRegistryClientListByNamespaceOptions{Skip: nil,
 			Top: nil,
 		})
@@ -37,7 +37,6 @@ func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -46,21 +45,21 @@ func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/SchemaRegistry/SchemaRegistryCreate.json
 func ExampleSchemaRegistryClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewSchemaRegistryClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewSchemaRegistryClient("e8baea74-64ce-459b-bee3-5aa4c47b3ae3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<schema-group-name>",
+		"alitest",
+		"ali-ua-test-eh-system-1",
+		"testSchemaGroup1",
 		armeventhub.SchemaGroup{
 			Properties: &armeventhub.SchemaGroupProperties{
 				GroupProperties:     map[string]*string{},
@@ -76,42 +75,42 @@ func ExampleSchemaRegistryClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/SchemaRegistry/SchemaRegistryDelete.json
 func ExampleSchemaRegistryClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewSchemaRegistryClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewSchemaRegistryClient("e8baea74-64ce-459b-bee3-5aa4c47b3ae3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<schema-group-name>",
+		"alitest",
+		"ali-ua-test-eh-system-1",
+		"testSchemaGroup1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/SchemaRegistry/SchemaRegistryGet.json
 func ExampleSchemaRegistryClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewSchemaRegistryClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewSchemaRegistryClient("e8baea74-64ce-459b-bee3-5aa4c47b3ae3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<schema-group-name>",
+		"alitest",
+		"ali-ua-test-eh-system-1",
+		"testSchemaGroup1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

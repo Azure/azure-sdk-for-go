@@ -38,7 +38,7 @@ func NewAlertRuleIncidentsClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAlertRuleIncidentsClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Gets an incident associated to an alert rule
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // incidentName - The name of the incident to retrieve.
@@ -101,7 +102,7 @@ func (client *AlertRuleIncidentsClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,12 +117,13 @@ func (client *AlertRuleIncidentsClient) getHandleResponse(resp *http.Response) (
 
 // NewListByAlertRulePager - Gets a list of incidents associated to an alert rule
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - AlertRuleIncidentsClientListByAlertRuleOptions contains the optional parameters for the AlertRuleIncidentsClient.ListByAlertRule
 // method.
 func (client *AlertRuleIncidentsClient) NewListByAlertRulePager(resourceGroupName string, ruleName string, options *AlertRuleIncidentsClientListByAlertRuleOptions) *runtime.Pager[AlertRuleIncidentsClientListByAlertRuleResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AlertRuleIncidentsClientListByAlertRuleResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AlertRuleIncidentsClientListByAlertRuleResponse]{
 		More: func(page AlertRuleIncidentsClientListByAlertRuleResponse) bool {
 			return false
 		},
@@ -164,7 +166,7 @@ func (client *AlertRuleIncidentsClient) listByAlertRuleCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

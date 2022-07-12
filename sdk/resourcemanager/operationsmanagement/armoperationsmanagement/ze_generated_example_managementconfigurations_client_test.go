@@ -24,7 +24,7 @@ func ExampleManagementConfigurationsClient_ListBySubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewManagementConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewManagementConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -44,15 +44,15 @@ func ExampleManagementConfigurationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewManagementConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewManagementConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<management-configuration-name>",
+		"rg1",
+		"managementConfiguration1",
 		armoperationsmanagement.ManagementConfiguration{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 		},
 		nil)
 	if err != nil {
@@ -69,13 +69,13 @@ func ExampleManagementConfigurationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewManagementConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewManagementConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<management-configuration-name>",
+		"rg1",
+		"managementConfigurationName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -89,13 +89,13 @@ func ExampleManagementConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewManagementConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewManagementConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<management-configuration-name>",
+		"rg1",
+		"managementConfigurationName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -42,6 +42,9 @@ type CapabilityProperties struct {
 	// READ-ONLY
 	SupportedFlexibleServerEditions []*FlexibleServerEditionCapability `json:"supportedFlexibleServerEditions,omitempty" azure:"ro"`
 
+	// READ-ONLY; Supported high availability mode
+	SupportedHAMode []*string `json:"supportedHAMode,omitempty" azure:"ro"`
+
 	// READ-ONLY
 	SupportedHyperscaleNodeEditions []*HyperscaleNodeEditionCapability `json:"supportedHyperscaleNodeEditions,omitempty" azure:"ro"`
 
@@ -812,4 +815,10 @@ type VirtualNetworkSubnetUsageParameter struct {
 type VirtualNetworkSubnetUsageResult struct {
 	// READ-ONLY
 	DelegatedSubnetsUsage []*DelegatedSubnetUsage `json:"delegatedSubnetsUsage,omitempty" azure:"ro"`
+
+	// READ-ONLY; The location the resource resides in.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }

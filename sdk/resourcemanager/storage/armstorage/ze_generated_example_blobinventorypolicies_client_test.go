@@ -24,13 +24,13 @@ func ExampleBlobInventoryPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobInventoryPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res7687",
+		"sto9699",
 		armstorage.BlobInventoryPolicyNameDefault,
 		nil)
 	if err != nil {
@@ -47,13 +47,13 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobInventoryPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res7687",
+		"sto9699",
 		armstorage.BlobInventoryPolicyNameDefault,
 		armstorage.BlobInventoryPolicy{
 			Properties: &armstorage.BlobInventoryPolicyProperties{
@@ -62,7 +62,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate() {
 					Enabled: to.Ptr(true),
 					Rules: []*armstorage.BlobInventoryPolicyRule{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("inventoryPolicyRule1"),
 							Definition: &armstorage.BlobInventoryPolicyDefinition{
 								Format: to.Ptr(armstorage.FormatCSV),
 								Filters: &armstorage.BlobInventoryPolicyFilter{
@@ -95,11 +95,11 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate() {
 									to.Ptr("IsCurrentVersion"),
 									to.Ptr("Metadata")},
 							},
-							Destination: to.Ptr("<destination>"),
+							Destination: to.Ptr("container1"),
 							Enabled:     to.Ptr(true),
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("inventoryPolicyRule2"),
 							Definition: &armstorage.BlobInventoryPolicyDefinition{
 								Format:     to.Ptr(armstorage.FormatParquet),
 								ObjectType: to.Ptr(armstorage.ObjectTypeContainer),
@@ -115,7 +115,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate() {
 									to.Ptr("HasImmutabilityPolicy"),
 									to.Ptr("HasLegalHold")},
 							},
-							Destination: to.Ptr("<destination>"),
+							Destination: to.Ptr("container2"),
 							Enabled:     to.Ptr(true),
 						}},
 				},
@@ -136,13 +136,13 @@ func ExampleBlobInventoryPoliciesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobInventoryPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res6977",
+		"sto2527",
 		armstorage.BlobInventoryPolicyNameDefault,
 		nil)
 	if err != nil {
@@ -157,18 +157,17 @@ func ExampleBlobInventoryPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobInventoryPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobInventoryPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("res7687",
+		"sto9699",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

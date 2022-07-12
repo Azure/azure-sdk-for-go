@@ -23,13 +23,13 @@ func ExampleIntegrationServiceEnvironmentNetworkHealthClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentNetworkHealthClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentNetworkHealthClient("f34b22a3-2202-4fb1-b040-1332bd928c84", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group>",
-		"<integration-service-environment-name>",
+		"testResourceGroup",
+		"testIntegrationServiceEnvironment",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

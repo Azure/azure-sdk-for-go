@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications"
@@ -26,13 +24,13 @@ func ExampleApplicationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<application-name>",
+		"rg",
+		"myManagedApplication",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,18 +46,18 @@ func ExampleApplicationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<application-name>",
-		&armmanagedapplications.ApplicationsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg",
+		"myManagedApplication",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -72,25 +70,25 @@ func ExampleApplicationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<application-name>",
+		"rg",
+		"myManagedApplication",
 		armmanagedapplications.Application{
-			Kind: to.Ptr("<kind>"),
+			Kind: to.Ptr("ServiceCatalog"),
 			Properties: &armmanagedapplications.ApplicationProperties{
-				ApplicationDefinitionID: to.Ptr("<application-definition-id>"),
-				ManagedResourceGroupID:  to.Ptr("<managed-resource-group-id>"),
+				ApplicationDefinitionID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applicationDefinitions/myAppDef"),
+				ManagedResourceGroupID:  to.Ptr("/subscriptions/subid/resourceGroups/myManagedRG"),
 			},
 		},
-		&armmanagedapplications.ApplicationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -105,18 +103,18 @@ func ExampleApplicationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<application-name>",
+		"rg",
+		"myManagedApplication",
 		&armmanagedapplications.ApplicationsClientUpdateOptions{Parameters: &armmanagedapplications.ApplicationPatchable{
-			Kind: to.Ptr("<kind>"),
+			Kind: to.Ptr("ServiceCatalog"),
 			Properties: &armmanagedapplications.ApplicationProperties{
-				ApplicationDefinitionID: to.Ptr("<application-definition-id>"),
-				ManagedResourceGroupID:  to.Ptr("<managed-resource-group-id>"),
+				ApplicationDefinitionID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applicationDefinitions/myAppDef"),
+				ManagedResourceGroupID:  to.Ptr("/subscriptions/subid/resourceGroups/myManagedRG"),
 			},
 		},
 		})
@@ -134,17 +132,16 @@ func ExampleApplicationsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -160,7 +157,7 @@ func ExampleApplicationsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -169,7 +166,6 @@ func ExampleApplicationsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -185,18 +181,18 @@ func ExampleApplicationsClient_BeginRefreshPermissions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRefreshPermissions(ctx,
-		"<resource-group-name>",
-		"<application-name>",
-		&armmanagedapplications.ApplicationsClientBeginRefreshPermissionsOptions{ResumeToken: ""})
+		"rg",
+		"myManagedApplication",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -209,13 +205,13 @@ func ExampleApplicationsClient_ListAllowedUpgradePlans() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.ListAllowedUpgradePlans(ctx,
-		"<resource-group-name>",
-		"<application-name>",
+		"rg",
+		"myManagedApplication",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

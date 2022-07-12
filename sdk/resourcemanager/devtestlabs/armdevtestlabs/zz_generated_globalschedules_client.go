@@ -39,7 +39,7 @@ func NewGlobalSchedulesClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewGlobalSchedulesClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Create or replace an existing schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the schedule.
 // schedule - A schedule.
@@ -99,7 +100,7 @@ func (client *GlobalSchedulesClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schedule)
 }
 
@@ -114,6 +115,7 @@ func (client *GlobalSchedulesClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the schedule.
 // options - GlobalSchedulesClientDeleteOptions contains the optional parameters for the GlobalSchedulesClient.Delete method.
@@ -154,30 +156,32 @@ func (client *GlobalSchedulesClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginExecute - Execute a schedule. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the schedule.
 // options - GlobalSchedulesClientBeginExecuteOptions contains the optional parameters for the GlobalSchedulesClient.BeginExecute
 // method.
-func (client *GlobalSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientBeginExecuteOptions) (*armruntime.Poller[GlobalSchedulesClientExecuteResponse], error) {
+func (client *GlobalSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientBeginExecuteOptions) (*runtime.Poller[GlobalSchedulesClientExecuteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.execute(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[GlobalSchedulesClientExecuteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GlobalSchedulesClientExecuteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[GlobalSchedulesClientExecuteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GlobalSchedulesClientExecuteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Execute - Execute a schedule. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *GlobalSchedulesClient) execute(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientBeginExecuteOptions) (*http.Response, error) {
 	req, err := client.executeCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -215,12 +219,13 @@ func (client *GlobalSchedulesClient) executeCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the schedule.
 // options - GlobalSchedulesClientGetOptions contains the optional parameters for the GlobalSchedulesClient.Get method.
@@ -264,7 +269,7 @@ func (client *GlobalSchedulesClient) getCreateRequest(ctx context.Context, resou
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -279,11 +284,12 @@ func (client *GlobalSchedulesClient) getHandleResponse(resp *http.Response) (Glo
 
 // NewListByResourceGroupPager - List schedules in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // options - GlobalSchedulesClientListByResourceGroupOptions contains the optional parameters for the GlobalSchedulesClient.ListByResourceGroup
 // method.
 func (client *GlobalSchedulesClient) NewListByResourceGroupPager(resourceGroupName string, options *GlobalSchedulesClientListByResourceGroupOptions) *runtime.Pager[GlobalSchedulesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[GlobalSchedulesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[GlobalSchedulesClientListByResourceGroupResponse]{
 		More: func(page GlobalSchedulesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -340,7 +346,7 @@ func (client *GlobalSchedulesClient) listByResourceGroupCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -355,10 +361,11 @@ func (client *GlobalSchedulesClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - List schedules in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // options - GlobalSchedulesClientListBySubscriptionOptions contains the optional parameters for the GlobalSchedulesClient.ListBySubscription
 // method.
 func (client *GlobalSchedulesClient) NewListBySubscriptionPager(options *GlobalSchedulesClientListBySubscriptionOptions) *runtime.Pager[GlobalSchedulesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[GlobalSchedulesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[GlobalSchedulesClientListBySubscriptionResponse]{
 		More: func(page GlobalSchedulesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -411,7 +418,7 @@ func (client *GlobalSchedulesClient) listBySubscriptionCreateRequest(ctx context
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -426,25 +433,27 @@ func (client *GlobalSchedulesClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginRetarget - Updates a schedule's target resource Id. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the schedule.
 // retargetScheduleProperties - Properties for retargeting a virtual machine schedule.
 // options - GlobalSchedulesClientBeginRetargetOptions contains the optional parameters for the GlobalSchedulesClient.BeginRetarget
 // method.
-func (client *GlobalSchedulesClient) BeginRetarget(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesClientBeginRetargetOptions) (*armruntime.Poller[GlobalSchedulesClientRetargetResponse], error) {
+func (client *GlobalSchedulesClient) BeginRetarget(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesClientBeginRetargetOptions) (*runtime.Poller[GlobalSchedulesClientRetargetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.retarget(ctx, resourceGroupName, name, retargetScheduleProperties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[GlobalSchedulesClientRetargetResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GlobalSchedulesClientRetargetResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[GlobalSchedulesClientRetargetResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GlobalSchedulesClientRetargetResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Retarget - Updates a schedule's target resource Id. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *GlobalSchedulesClient) retarget(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesClientBeginRetargetOptions) (*http.Response, error) {
 	req, err := client.retargetCreateRequest(ctx, resourceGroupName, name, retargetScheduleProperties, options)
 	if err != nil {
@@ -482,12 +491,13 @@ func (client *GlobalSchedulesClient) retargetCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, retargetScheduleProperties)
 }
 
 // Update - Allows modifying tags of schedules. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the schedule.
 // schedule - A schedule.
@@ -529,7 +539,7 @@ func (client *GlobalSchedulesClient) updateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schedule)
 }
 

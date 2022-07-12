@@ -224,7 +224,7 @@ func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runt
 	if listOptions == nil {
 		listOptions = &ListTablesOptions{}
 	}
-	return runtime.NewPager(runtime.PageProcessor[ListTablesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListTablesResponse]{
 		More: func(page ListTablesResponse) bool {
 			if page.NextTableName == nil || len(*page.NextTableName) == 0 {
 				return false

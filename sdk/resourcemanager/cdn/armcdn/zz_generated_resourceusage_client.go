@@ -38,7 +38,7 @@ func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,9 +56,10 @@ func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCreden
 
 // NewListPager - Check the quota and actual usage of the CDN profiles under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // options - ResourceUsageClientListOptions contains the optional parameters for the ResourceUsageClient.List method.
 func (client *ResourceUsageClient) NewListPager(options *ResourceUsageClientListOptions) *runtime.Pager[ResourceUsageClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourceUsageClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourceUsageClientListResponse]{
 		More: func(page ResourceUsageClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -99,7 +100,7 @@ func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, option
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

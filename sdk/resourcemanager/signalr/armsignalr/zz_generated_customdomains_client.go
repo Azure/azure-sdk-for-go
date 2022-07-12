@@ -39,7 +39,7 @@ func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Create or update a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // name - Custom domain name.
 // options - CustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomDomainsClient.BeginCreateOrUpdate
 // method.
-func (client *CustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters CustomDomain, options *CustomDomainsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CustomDomainsClientCreateOrUpdateResponse], error) {
+func (client *CustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters CustomDomain, options *CustomDomainsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomDomainsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, name, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CustomDomainsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CustomDomainsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomDomainsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomDomainsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *CustomDomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters CustomDomain, options *CustomDomainsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, name, parameters, options)
 	if err != nil {
@@ -118,32 +120,34 @@ func (client *CustomDomainsClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Delete a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // name - Custom domain name.
 // options - CustomDomainsClientBeginDeleteOptions contains the optional parameters for the CustomDomainsClient.BeginDelete
 // method.
-func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, name string, options *CustomDomainsClientBeginDeleteOptions) (*armruntime.Poller[CustomDomainsClientDeleteResponse], error) {
+func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, name string, options *CustomDomainsClientBeginDeleteOptions) (*runtime.Poller[CustomDomainsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CustomDomainsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CustomDomainsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomDomainsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomDomainsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, name string, options *CustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, name, options)
 	if err != nil {
@@ -185,12 +189,13 @@ func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
@@ -237,7 +242,7 @@ func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,12 +257,13 @@ func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (Custo
 
 // NewListPager - List all custom domains.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
 func (client *CustomDomainsClient) NewListPager(resourceGroupName string, resourceName string, options *CustomDomainsClientListOptions) *runtime.Pager[CustomDomainsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomDomainsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomDomainsClientListResponse]{
 		More: func(page CustomDomainsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -306,7 +312,7 @@ func (client *CustomDomainsClient) listCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

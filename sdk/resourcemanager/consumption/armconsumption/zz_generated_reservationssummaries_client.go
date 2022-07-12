@@ -36,7 +36,7 @@ func NewReservationsSummariesClient(credential azcore.TokenCredential, options *
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,15 +53,16 @@ func NewReservationsSummariesClient(credential azcore.TokenCredential, options *
 
 // NewListPager - Lists the reservations summaries for the defined scope daily or monthly grain.
 // If the operation fails it returns an *azcore.ResponseError type.
-// scope - The scope associated with reservations summaries operations. This includes '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
+// Generated from API version 2021-10-01
+// resourceScope - The scope associated with reservations summaries operations. This includes '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
 // for BillingAccount scope (legacy), and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile
 // scope (modern).
 // grain - Can be daily or monthly
 // options - ReservationsSummariesClientListOptions contains the optional parameters for the ReservationsSummariesClient.List
 // method.
-func (client *ReservationsSummariesClient) NewListPager(scope string, grain Datagrain, options *ReservationsSummariesClientListOptions) *runtime.Pager[ReservationsSummariesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationsSummariesClientListResponse]{
+func (client *ReservationsSummariesClient) NewListPager(resourceScope string, grain Datagrain, options *ReservationsSummariesClientListOptions) *runtime.Pager[ReservationsSummariesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListResponse]{
 		More: func(page ReservationsSummariesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -69,7 +70,7 @@ func (client *ReservationsSummariesClient) NewListPager(scope string, grain Data
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, scope, grain, options)
+				req, err = client.listCreateRequest(ctx, resourceScope, grain, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -89,9 +90,9 @@ func (client *ReservationsSummariesClient) NewListPager(scope string, grain Data
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, scope string, grain Datagrain, options *ReservationsSummariesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Consumption/reservationSummaries"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, resourceScope string, grain Datagrain, options *ReservationsSummariesClientListOptions) (*policy.Request, error) {
+	urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationSummaries"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -115,7 +116,7 @@ func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -130,12 +131,13 @@ func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Respons
 
 // NewListByReservationOrderPager - Lists the reservations summaries for daily or monthly grain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // reservationOrderID - Order Id of the reservation
 // grain - Can be daily or monthly
 // options - ReservationsSummariesClientListByReservationOrderOptions contains the optional parameters for the ReservationsSummariesClient.ListByReservationOrder
 // method.
 func (client *ReservationsSummariesClient) NewListByReservationOrderPager(reservationOrderID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationsSummariesClientListByReservationOrderResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListByReservationOrderResponse]{
 		More: func(page ReservationsSummariesClientListByReservationOrderResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -180,7 +182,7 @@ func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(c
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -195,13 +197,14 @@ func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(
 
 // NewListByReservationOrderAndReservationPager - Lists the reservations summaries for daily or monthly grain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // reservationOrderID - Order Id of the reservation
 // reservationID - Id of the reservation
 // grain - Can be daily or monthly
 // options - ReservationsSummariesClientListByReservationOrderAndReservationOptions contains the optional parameters for the
 // ReservationsSummariesClient.ListByReservationOrderAndReservation method.
 func (client *ReservationsSummariesClient) NewListByReservationOrderAndReservationPager(reservationOrderID string, reservationID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderAndReservationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationsSummariesClientListByReservationOrderAndReservationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListByReservationOrderAndReservationResponse]{
 		More: func(page ReservationsSummariesClientListByReservationOrderAndReservationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -250,7 +253,7 @@ func (client *ReservationsSummariesClient) listByReservationOrderAndReservationC
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

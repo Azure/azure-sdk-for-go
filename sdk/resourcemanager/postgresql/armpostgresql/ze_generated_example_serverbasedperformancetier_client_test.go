@@ -23,18 +23,17 @@ func ExampleServerBasedPerformanceTierClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServerBasedPerformanceTierClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServerBasedPerformanceTierClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<server-name>",
+	pager := client.NewListPager("TestGroup",
+		"testserver",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

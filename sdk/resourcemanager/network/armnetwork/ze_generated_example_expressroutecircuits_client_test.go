@@ -12,51 +12,49 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitDelete.json
 func ExampleExpressRouteCircuitsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
-		&armnetwork.ExpressRouteCircuitsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"circuitName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitGet.json
 func ExampleExpressRouteCircuitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
+		"rg1",
+		"circuitName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,43 +63,43 @@ func ExampleExpressRouteCircuitsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitCreate.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
+		"rg1",
+		"circuitName",
 		armnetwork.ExpressRouteCircuit{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Brazil South"),
 			Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
 				AllowClassicOperations: to.Ptr(false),
 				Authorizations:         []*armnetwork.ExpressRouteCircuitAuthorization{},
 				Peerings:               []*armnetwork.ExpressRouteCircuitPeering{},
 				ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
 					BandwidthInMbps:     to.Ptr[int32](200),
-					PeeringLocation:     to.Ptr("<peering-location>"),
-					ServiceProviderName: to.Ptr("<service-provider-name>"),
+					PeeringLocation:     to.Ptr("Silicon Valley"),
+					ServiceProviderName: to.Ptr("Equinix"),
 				},
 			},
 			SKU: &armnetwork.ExpressRouteCircuitSKU{
-				Name:   to.Ptr("<name>"),
+				Name:   to.Ptr("Standard_MeteredData"),
 				Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
 				Tier:   to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
 			},
 		},
-		&armnetwork.ExpressRouteCircuitsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -109,20 +107,20 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitUpdateTags.json
 func ExampleExpressRouteCircuitsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
+		"ertest",
+		"er1",
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -137,27 +135,27 @@ func ExampleExpressRouteCircuitsClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitARPTableList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitARPTableList.json
 func ExampleExpressRouteCircuitsClient_BeginListArpTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginListArpTable(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
-		"<peering-name>",
-		"<device-path>",
-		&armnetwork.ExpressRouteCircuitsClientBeginListArpTableOptions{ResumeToken: ""})
+		"rg1",
+		"circuitName",
+		"peeringName",
+		"devicePath",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -165,27 +163,27 @@ func ExampleExpressRouteCircuitsClient_BeginListArpTable() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitRouteTableList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitRouteTableList.json
 func ExampleExpressRouteCircuitsClient_BeginListRoutesTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginListRoutesTable(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
-		"<peering-name>",
-		"<device-path>",
-		&armnetwork.ExpressRouteCircuitsClientBeginListRoutesTableOptions{ResumeToken: ""})
+		"rg1",
+		"circuitName",
+		"peeringName",
+		"devicePath",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -193,27 +191,27 @@ func ExampleExpressRouteCircuitsClient_BeginListRoutesTable() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitRouteTableSummaryList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitRouteTableSummaryList.json
 func ExampleExpressRouteCircuitsClient_BeginListRoutesTableSummary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginListRoutesTableSummary(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
-		"<peering-name>",
-		"<device-path>",
-		&armnetwork.ExpressRouteCircuitsClientBeginListRoutesTableSummaryOptions{ResumeToken: ""})
+		"rg1",
+		"circuitName",
+		"peeringName",
+		"devicePath",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -221,20 +219,20 @@ func ExampleExpressRouteCircuitsClient_BeginListRoutesTableSummary() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitStats.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitStats.json
 func ExampleExpressRouteCircuitsClient_GetStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetStats(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
+		"rg1",
+		"circuitName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -243,21 +241,21 @@ func ExampleExpressRouteCircuitsClient_GetStats() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitPeeringStats.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitPeeringStats.json
 func ExampleExpressRouteCircuitsClient_GetPeeringStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPeeringStats(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
-		"<peering-name>",
+		"rg1",
+		"circuitName",
+		"peeringName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -266,24 +264,23 @@ func ExampleExpressRouteCircuitsClient_GetPeeringStats() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitListByResourceGroup.json
 func ExampleExpressRouteCircuitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("rg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -292,14 +289,14 @@ func ExampleExpressRouteCircuitsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitListBySubscription.json
 func ExampleExpressRouteCircuitsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewExpressRouteCircuitsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -308,7 +305,6 @@ func ExampleExpressRouteCircuitsClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

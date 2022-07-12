@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine"
@@ -26,13 +24,13 @@ func ExampleGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-group-name>",
+		"testrg",
+		"testvmgroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,37 +46,37 @@ func ExampleGroupsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-group-name>",
+		"testrg",
+		"testvmgroup",
 		armsqlvirtualmachine.Group{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("northeurope"),
 			Tags: map[string]*string{
 				"mytag": to.Ptr("myval"),
 			},
 			Properties: &armsqlvirtualmachine.GroupProperties{
-				SQLImageOffer: to.Ptr("<sqlimage-offer>"),
+				SQLImageOffer: to.Ptr("SQL2016-WS2016"),
 				SQLImageSKU:   to.Ptr(armsqlvirtualmachine.SQLVMGroupImageSKUEnterprise),
 				WsfcDomainProfile: &armsqlvirtualmachine.WsfcDomainProfile{
-					ClusterBootstrapAccount:  to.Ptr("<cluster-bootstrap-account>"),
-					ClusterOperatorAccount:   to.Ptr("<cluster-operator-account>"),
-					DomainFqdn:               to.Ptr("<domain-fqdn>"),
-					OuPath:                   to.Ptr("<ou-path>"),
-					SQLServiceAccount:        to.Ptr("<sqlservice-account>"),
-					StorageAccountPrimaryKey: to.Ptr("<storage-account-primary-key>"),
-					StorageAccountURL:        to.Ptr("<storage-account-url>"),
+					ClusterBootstrapAccount:  to.Ptr("testrpadmin"),
+					ClusterOperatorAccount:   to.Ptr("testrp@testdomain.com"),
+					DomainFqdn:               to.Ptr("testdomain.com"),
+					OuPath:                   to.Ptr("OU=WSCluster,DC=testdomain,DC=com"),
+					SQLServiceAccount:        to.Ptr("sqlservice@testdomain.com"),
+					StorageAccountPrimaryKey: to.Ptr("<primary storage access key>"),
+					StorageAccountURL:        to.Ptr("https://storgact.blob.core.windows.net/"),
 				},
 			},
 		},
-		&armsqlvirtualmachine.GroupsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -93,18 +91,18 @@ func ExampleGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-group-name>",
-		&armsqlvirtualmachine.GroupsClientBeginDeleteOptions{ResumeToken: ""})
+		"testrg",
+		"testvmgroup",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,23 +115,23 @@ func ExampleGroupsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-group-name>",
+		"testrg",
+		"testvmgroup",
 		armsqlvirtualmachine.GroupUpdate{
 			Tags: map[string]*string{
 				"mytag": to.Ptr("myval"),
 			},
 		},
-		&armsqlvirtualmachine.GroupsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -148,17 +146,16 @@ func ExampleGroupsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testrg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -174,7 +171,7 @@ func ExampleGroupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -183,7 +180,6 @@ func ExampleGroupsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

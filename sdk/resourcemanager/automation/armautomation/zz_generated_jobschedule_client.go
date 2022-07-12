@@ -39,7 +39,7 @@ func NewJobScheduleClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewJobScheduleClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Create - Create a job schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobScheduleID - The job schedule name.
@@ -100,7 +101,7 @@ func (client *JobScheduleClient) createCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -115,6 +116,7 @@ func (client *JobScheduleClient) createHandleResponse(resp *http.Response) (JobS
 
 // Delete - Delete the job schedule identified by job schedule name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobScheduleID - The job schedule name.
@@ -157,12 +159,13 @@ func (client *JobScheduleClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve the job schedule identified by job schedule name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobScheduleID - The job schedule name.
@@ -205,7 +208,7 @@ func (client *JobScheduleClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -220,12 +223,13 @@ func (client *JobScheduleClient) getHandleResponse(resp *http.Response) (JobSche
 
 // NewListByAutomationAccountPager - Retrieve a list of job schedules.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.ListByAutomationAccount
 // method.
 func (client *JobScheduleClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *JobScheduleClientListByAutomationAccountOptions) *runtime.Pager[JobScheduleClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobScheduleClientListByAutomationAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobScheduleClientListByAutomationAccountResponse]{
 		More: func(page JobScheduleClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -277,7 +281,7 @@ func (client *JobScheduleClient) listByAutomationAccountCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

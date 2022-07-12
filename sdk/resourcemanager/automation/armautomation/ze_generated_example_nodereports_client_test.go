@@ -23,19 +23,18 @@ func ExampleNodeReportsClient_NewListByNodePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewNodeReportsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewNodeReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByNodePager("<resource-group-name>",
-		"<automation-account-name>",
-		"<node-id>",
+	pager := client.NewListByNodePager("rg",
+		"myAutomationAccount33",
+		"nodeId",
 		&armautomation.NodeReportsClientListByNodeOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,15 +50,15 @@ func ExampleNodeReportsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewNodeReportsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewNodeReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<node-id>",
-		"<report-id>",
+		"rg",
+		"myAutomationAccount33",
+		"nodeId",
+		"903a5ead-140c-11e7-a943-000d3a6140c9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,15 +74,15 @@ func ExampleNodeReportsClient_GetContent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewNodeReportsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewNodeReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetContent(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<node-id>",
-		"<report-id>",
+		"rg",
+		"myAutomationAccount33",
+		"nodeId",
+		"reportId",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

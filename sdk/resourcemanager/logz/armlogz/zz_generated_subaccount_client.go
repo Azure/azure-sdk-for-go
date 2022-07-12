@@ -38,7 +38,7 @@ func NewSubAccountClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewSubAccountClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreate - Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountClientBeginCreateOptions contains the optional parameters for the SubAccountClient.BeginCreate method.
-func (client *SubAccountClient) BeginCreate(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginCreateOptions) (*armruntime.Poller[SubAccountClientCreateResponse], error) {
+func (client *SubAccountClient) BeginCreate(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginCreateOptions) (*runtime.Poller[SubAccountClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, monitorName, subAccountName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SubAccountClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SubAccountClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SubAccountClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubAccountClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 func (client *SubAccountClient) create(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
@@ -117,7 +119,7 @@ func (client *SubAccountClient) createCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -126,26 +128,28 @@ func (client *SubAccountClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountClientBeginDeleteOptions contains the optional parameters for the SubAccountClient.BeginDelete method.
-func (client *SubAccountClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginDeleteOptions) (*armruntime.Poller[SubAccountClientDeleteResponse], error) {
+func (client *SubAccountClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginDeleteOptions) (*runtime.Poller[SubAccountClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, monitorName, subAccountName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SubAccountClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SubAccountClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SubAccountClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubAccountClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 func (client *SubAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
@@ -187,12 +191,13 @@ func (client *SubAccountClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a sub account under a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
@@ -238,7 +243,7 @@ func (client *SubAccountClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -253,11 +258,12 @@ func (client *SubAccountClient) getHandleResponse(resp *http.Response) (SubAccou
 
 // NewListPager - List the sub account under a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - SubAccountClientListOptions contains the optional parameters for the SubAccountClient.List method.
 func (client *SubAccountClient) NewListPager(resourceGroupName string, monitorName string, options *SubAccountClientListOptions) *runtime.Pager[SubAccountClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubAccountClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubAccountClientListResponse]{
 		More: func(page SubAccountClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -306,7 +312,7 @@ func (client *SubAccountClient) listCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -321,13 +327,14 @@ func (client *SubAccountClient) listHandleResponse(resp *http.Response) (SubAcco
 
 // NewListMonitoredResourcesPager - List the resources currently being monitored by the Logz sub account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountClientListMonitoredResourcesOptions contains the optional parameters for the SubAccountClient.ListMonitoredResources
 // method.
 func (client *SubAccountClient) NewListMonitoredResourcesPager(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListMonitoredResourcesOptions) *runtime.Pager[SubAccountClientListMonitoredResourcesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubAccountClientListMonitoredResourcesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubAccountClientListMonitoredResourcesResponse]{
 		More: func(page SubAccountClientListMonitoredResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -380,7 +387,7 @@ func (client *SubAccountClient) listMonitoredResourcesCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -396,13 +403,14 @@ func (client *SubAccountClient) listMonitoredResourcesHandleResponse(resp *http.
 // NewListVMHostUpdatePager - Sending request to update the collection when Logz.io agent has been installed on a VM for a
 // given monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountClientListVMHostUpdateOptions contains the optional parameters for the SubAccountClient.ListVMHostUpdate
 // method.
 func (client *SubAccountClient) NewListVMHostUpdatePager(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostUpdateOptions) *runtime.Pager[SubAccountClientListVMHostUpdateResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubAccountClientListVMHostUpdateResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubAccountClientListVMHostUpdateResponse]{
 		More: func(page SubAccountClientListVMHostUpdateResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -455,7 +463,7 @@ func (client *SubAccountClient) listVMHostUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -473,12 +481,13 @@ func (client *SubAccountClient) listVMHostUpdateHandleResponse(resp *http.Respon
 
 // NewListVMHostsPager - List the compute resources currently being monitored by the Logz sub account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountClientListVMHostsOptions contains the optional parameters for the SubAccountClient.ListVMHosts method.
 func (client *SubAccountClient) NewListVMHostsPager(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostsOptions) *runtime.Pager[SubAccountClientListVMHostsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubAccountClientListVMHostsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubAccountClientListVMHostsResponse]{
 		More: func(page SubAccountClientListVMHostsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -531,7 +540,7 @@ func (client *SubAccountClient) listVMHostsCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -546,6 +555,7 @@ func (client *SubAccountClient) listVMHostsHandleResponse(resp *http.Response) (
 
 // Update - Update a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
@@ -591,7 +601,7 @@ func (client *SubAccountClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -609,6 +619,7 @@ func (client *SubAccountClient) updateHandleResponse(resp *http.Response) (SubAc
 
 // VMHostPayload - Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
@@ -655,7 +666,7 @@ func (client *SubAccountClient) vmHostPayloadCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

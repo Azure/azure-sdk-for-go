@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs"
@@ -26,13 +24,13 @@ func ExampleNamespacesClient_CheckAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckAvailability(ctx,
 		armnotificationhubs.CheckAvailabilityParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("sdk-Namespace-2924"),
 		},
 		nil)
 	if err != nil {
@@ -49,18 +47,18 @@ func ExampleNamespacesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"5ktrial",
+		"nh-sdk-ns",
 		armnotificationhubs.NamespaceCreateOrUpdateParameters{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("South Central US"),
 			SKU: &armnotificationhubs.SKU{
 				Name: to.Ptr(armnotificationhubs.SKUNameStandard),
-				Tier: to.Ptr("<tier>"),
+				Tier: to.Ptr("Standard"),
 			},
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -82,17 +80,17 @@ func ExampleNamespacesClient_Patch() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Patch(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"5ktrial",
+		"nh-sdk-ns",
 		armnotificationhubs.NamespacePatchParameters{
 			SKU: &armnotificationhubs.SKU{
 				Name: to.Ptr(armnotificationhubs.SKUNameStandard),
-				Tier: to.Ptr("<tier>"),
+				Tier: to.Ptr("Standard"),
 			},
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -114,18 +112,18 @@ func ExampleNamespacesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		&armnotificationhubs.NamespacesClientBeginDeleteOptions{ResumeToken: ""})
+		"5ktrial",
+		"nh-sdk-ns",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -138,13 +136,13 @@ func ExampleNamespacesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"5ktrial",
+		"nh-sdk-ns",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -160,14 +158,14 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"sdk-AuthRules-1788",
 		armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters{
 			Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
 				Rights: []*armnotificationhubs.AccessRights{
@@ -190,14 +188,14 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"RootManageSharedAccessKey",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -211,14 +209,14 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"RootManageSharedAccessKey",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -234,17 +232,16 @@ func ExampleNamespacesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("5ktrial",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -260,7 +257,7 @@ func ExampleNamespacesClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -269,7 +266,6 @@ func ExampleNamespacesClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -285,18 +281,17 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
-		"<namespace-name>",
+	pager := client.NewListAuthorizationRulesPager("5ktrial",
+		"nh-sdk-ns",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -312,14 +307,14 @@ func ExampleNamespacesClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"RootManageSharedAccessKey",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -335,16 +330,16 @@ func ExampleNamespacesClient_RegenerateKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewNamespacesClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewNamespacesClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"RootManageSharedAccessKey",
 		armnotificationhubs.PolicykeyResource{
-			PolicyKey: to.Ptr("<policy-key>"),
+			PolicyKey: to.Ptr("PrimaryKey"),
 		},
 		nil)
 	if err != nil {

@@ -36,7 +36,7 @@ func NewMarketplaceRegistrationDefinitionsClient(credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewMarketplaceRegistrationDefinitionsClient(credential azcore.TokenCredenti
 
 // Get - Get the marketplace registration definition for the marketplace identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // marketplaceIdentifier - The Azure Marketplace identifier. Expected formats: {publisher}.{product[-preview]}.{planName}.{version}
 // or {publisher}.{product[-preview]}.{planName} or {publisher}.{product[-preview]} or
@@ -89,7 +90,7 @@ func (client *MarketplaceRegistrationDefinitionsClient) getCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -104,11 +105,12 @@ func (client *MarketplaceRegistrationDefinitionsClient) getHandleResponse(resp *
 
 // NewListPager - Gets a list of the marketplace registration definitions for the marketplace identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // options - MarketplaceRegistrationDefinitionsClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsClient.List
 // method.
 func (client *MarketplaceRegistrationDefinitionsClient) NewListPager(scope string, options *MarketplaceRegistrationDefinitionsClientListOptions) *runtime.Pager[MarketplaceRegistrationDefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MarketplaceRegistrationDefinitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MarketplaceRegistrationDefinitionsClientListResponse]{
 		More: func(page MarketplaceRegistrationDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -149,7 +151,7 @@ func (client *MarketplaceRegistrationDefinitionsClient) listCreateRequest(ctx co
 	}
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

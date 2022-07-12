@@ -520,3 +520,72 @@ func TestContainerQueryItems(t *testing.T) {
 		}
 	}
 }
+
+func TestContainerExecuteBatch(t *testing.T) {
+	batchResponseRaw := []map[string]interface{}{
+		{"statusCode": 200, "requestCharge": 10.0, "eTag": "someETag", "resourceBody": "someBody"},
+		{"statusCode": 201, "requestCharge": 11.0, "eTag": "someETag2"},
+	}
+
+	jsonString, err := json.Marshal(batchResponseRaw)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"))
+
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	pk := NewPartitionKeyString("pk")
+	batch := container.NewTransactionalBatch(pk)
+	_, err = container.ExecuteTransactionalBatch(context.TODO(), batch, nil)
+	if err == nil {
+		t.Fatal("Expected error, but got nil")
+	}
+
+	batch.ReadItem("someId", nil)
+
+	body := map[string]string{
+		"foo": "bar",
+	}
+
+	itemMarshall, _ := json.Marshal(body)
+	batch.CreateItem(itemMarshall, nil)
+
+	_, err = container.ExecuteTransactionalBatch(context.TODO(), batch, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(verifier.requests) != 1 {
+		t.Fatalf("Expected 1 request, got %d", len(verifier.requests))
+	}
+
+	request := verifier.requests[0]
+
+	if request.method != http.MethodPost {
+		t.Errorf("Expected method to be %s, but got %s", http.MethodPost, request.method)
+	}
+
+	if request.url.RequestURI() != "/dbs/databaseId/colls/containerId/docs" {
+		t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs", request.url.RequestURI())
+	}
+
+	marshalledOperations, _ := json.Marshal(batch.operations)
+	if request.body != string(marshalledOperations) {
+		t.Errorf("Expected %v, but got %v", string(marshalledOperations), request.body)
+	}
+}

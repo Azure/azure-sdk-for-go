@@ -38,7 +38,7 @@ func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // CreateOrUpdate - Create or update a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
@@ -112,7 +113,7 @@ func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, target)
 }
 
@@ -127,6 +128,7 @@ func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
@@ -182,12 +184,13 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
@@ -243,7 +246,7 @@ func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -258,13 +261,14 @@ func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsClie
 
 // NewListPager - Get a list of Target resources that extend a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
 // parentResourceName - String that represents a resource name.
 // options - TargetsClientListOptions contains the optional parameters for the TargetsClient.List method.
 func (client *TargetsClient) NewListPager(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsClientListOptions) *runtime.Pager[TargetsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TargetsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TargetsClientListResponse]{
 		More: func(page TargetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -324,7 +328,7 @@ func (client *TargetsClient) listCreateRequest(ctx context.Context, resourceGrou
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

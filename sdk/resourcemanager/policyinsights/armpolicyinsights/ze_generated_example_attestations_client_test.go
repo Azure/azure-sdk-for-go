@@ -26,7 +26,7 @@ func ExampleAttestationsClient_NewListForSubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -45,7 +45,6 @@ func ExampleAttestationsClient_NewListForSubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -61,23 +60,23 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtSubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdateAtSubscription(ctx,
-		"<attestation-name>",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		armpolicyinsights.Attestation{
 			Properties: &armpolicyinsights.AttestationProperties{
 				ComplianceState:    to.Ptr(armpolicyinsights.ComplianceStateCompliant),
-				PolicyAssignmentID: to.Ptr("<policy-assignment-id>"),
+				PolicyAssignmentID: to.Ptr("/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5"),
 			},
 		},
-		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -92,12 +91,12 @@ func ExampleAttestationsClient_GetAtSubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtSubscription(ctx,
-		"<attestation-name>",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -113,12 +112,12 @@ func ExampleAttestationsClient_DeleteAtSubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAtSubscription(ctx,
-		"<attestation-name>",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -132,11 +131,11 @@ func ExampleAttestationsClient_NewListForResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForResourceGroupPager("<resource-group-name>",
+	pager := client.NewListForResourceGroupPager("myRg",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -152,7 +151,6 @@ func ExampleAttestationsClient_NewListForResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -168,33 +166,33 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdateAtResourceGroup(ctx,
-		"<resource-group-name>",
-		"<attestation-name>",
+		"myRg",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		armpolicyinsights.Attestation{
 			Properties: &armpolicyinsights.AttestationProperties{
-				Comments:        to.Ptr("<comments>"),
+				Comments:        to.Ptr("This subscription has passed a security audit."),
 				ComplianceState: to.Ptr(armpolicyinsights.ComplianceStateCompliant),
 				Evidence: []*armpolicyinsights.AttestationEvidence{
 					{
-						Description: to.Ptr("<description>"),
-						SourceURI:   to.Ptr("<source-uri>"),
+						Description: to.Ptr("The results of the security audit."),
+						SourceURI:   to.Ptr("https://gist.github.com/contoso/9573e238762c60166c090ae16b814011"),
 					}},
 				ExpiresOn:                   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T00:00:00Z"); return t }()),
-				Owner:                       to.Ptr("<owner>"),
-				PolicyAssignmentID:          to.Ptr("<policy-assignment-id>"),
-				PolicyDefinitionReferenceID: to.Ptr("<policy-definition-reference-id>"),
+				Owner:                       to.Ptr("55a32e28-3aa5-4eea-9b5a-4cd85153b966"),
+				PolicyAssignmentID:          to.Ptr("/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5"),
+				PolicyDefinitionReferenceID: to.Ptr("0b158b46-ff42-4799-8e39-08a5c23b4551"),
 			},
 		},
-		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -209,13 +207,13 @@ func ExampleAttestationsClient_GetAtResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtResourceGroup(ctx,
-		"<resource-group-name>",
-		"<attestation-name>",
+		"myRg",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -231,13 +229,13 @@ func ExampleAttestationsClient_DeleteAtResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAtResourceGroup(ctx,
-		"<resource-group-name>",
-		"<attestation-name>",
+		"myRg",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -255,7 +253,7 @@ func ExampleAttestationsClient_NewListForResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForResourcePager("<resource-id>",
+	pager := client.NewListForResourcePager("subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myrg/providers/microsoft.compute/virtualMachines/devVM",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -271,7 +269,6 @@ func ExampleAttestationsClient_NewListForResourcePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -292,28 +289,28 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdateAtResource(ctx,
-		"<resource-id>",
-		"<attestation-name>",
+		"subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myrg/providers/microsoft.compute/virtualMachines/devVM",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		armpolicyinsights.Attestation{
 			Properties: &armpolicyinsights.AttestationProperties{
-				Comments:        to.Ptr("<comments>"),
+				Comments:        to.Ptr("This subscription has passed a security audit."),
 				ComplianceState: to.Ptr(armpolicyinsights.ComplianceStateCompliant),
 				Evidence: []*armpolicyinsights.AttestationEvidence{
 					{
-						Description: to.Ptr("<description>"),
-						SourceURI:   to.Ptr("<source-uri>"),
+						Description: to.Ptr("The results of the security audit."),
+						SourceURI:   to.Ptr("https://gist.github.com/contoso/9573e238762c60166c090ae16b814011"),
 					}},
 				ExpiresOn:                   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T00:00:00Z"); return t }()),
-				Owner:                       to.Ptr("<owner>"),
-				PolicyAssignmentID:          to.Ptr("<policy-assignment-id>"),
-				PolicyDefinitionReferenceID: to.Ptr("<policy-definition-reference-id>"),
+				Owner:                       to.Ptr("55a32e28-3aa5-4eea-9b5a-4cd85153b966"),
+				PolicyAssignmentID:          to.Ptr("/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5"),
+				PolicyDefinitionReferenceID: to.Ptr("0b158b46-ff42-4799-8e39-08a5c23b4551"),
 			},
 		},
-		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtResourceOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -333,8 +330,8 @@ func ExampleAttestationsClient_GetAtResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtResource(ctx,
-		"<resource-id>",
-		"<attestation-name>",
+		"subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myrg/providers/microsoft.compute/virtualMachines/devVM",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -355,8 +352,8 @@ func ExampleAttestationsClient_DeleteAtResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAtResource(ctx,
-		"<resource-id>",
-		"<attestation-name>",
+		"subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myrg/providers/microsoft.compute/virtualMachines/devVM",
+		"790996e6-9871-4b1f-9cd9-ec42cd6ced1e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

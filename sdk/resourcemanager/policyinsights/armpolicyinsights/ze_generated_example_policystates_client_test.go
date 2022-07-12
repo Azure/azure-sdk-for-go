@@ -31,7 +31,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForManagementGroupPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListQueryResultsForManagementGroupPager(armpolicyinsights.PolicyStatesResourceLatest,
-		"<management-group-name>",
+		"myManagementGroup",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -47,7 +47,6 @@ func ExamplePolicyStatesClient_NewListQueryResultsForManagementGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -69,9 +68,9 @@ func ExamplePolicyStatesClient_SummarizeForManagementGroup() {
 	}
 	res, err := client.SummarizeForManagementGroup(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
-		"<management-group-name>",
+		"myManagementGroup",
 		&armpolicyinsights.QueryOptions{Top: to.Ptr[int32](0),
-			Filter:    to.Ptr("<filter>"),
+			Filter:    to.Ptr("PolicyDefinitionAction eq 'deny' or PolicyDefinitionAction eq 'audit'"),
 			OrderBy:   nil,
 			Select:    nil,
 			From:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
@@ -100,14 +99,14 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListQueryResultsForSubscriptionPager(armpolicyinsights.PolicyStatesResourceLatest,
-		"<subscription-id>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
 		&armpolicyinsights.QueryOptions{Top: nil,
-			Filter:    to.Ptr("<filter>"),
+			Filter:    to.Ptr("PolicyDefinitionAction eq 'deny'"),
 			OrderBy:   nil,
 			Select:    nil,
 			From:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
 			To:        nil,
-			Apply:     to.Ptr("<apply>"),
+			Apply:     to.Ptr("aggregate($count as NumDenyStates)"),
 			SkipToken: nil,
 			Expand:    nil,
 		},
@@ -116,7 +115,6 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -138,7 +136,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription() {
 	}
 	res, err := client.SummarizeForSubscription(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
-		"<subscription-id>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
 		&armpolicyinsights.QueryOptions{Top: to.Ptr[int32](5),
 			Filter:    nil,
 			OrderBy:   nil,
@@ -169,8 +167,8 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListQueryResultsForResourceGroupPager(armpolicyinsights.PolicyStatesResourceLatest,
-		"<subscription-id>",
-		"<resource-group-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"myResourceGroup",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -186,7 +184,6 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -208,8 +205,8 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	}
 	res, err := client.SummarizeForResourceGroup(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
-		"<subscription-id>",
-		"<resource-group-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"myResourceGroup",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -240,7 +237,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListQueryResultsForResourcePager(armpolicyinsights.PolicyStatesResourceDefault,
-		"<resource-id>",
+		"subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.ServiceFabric/clusters/myCluster/applications/myApplication",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -256,7 +253,6 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -278,7 +274,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	}
 	res, err := client.SummarizeForResource(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
-		"<resource-id>",
+		"subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault",
 		&armpolicyinsights.QueryOptions{Top: to.Ptr[int32](2),
 			Filter:    nil,
 			OrderBy:   nil,
@@ -309,12 +305,12 @@ func ExamplePolicyStatesClient_BeginTriggerSubscriptionEvaluation() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTriggerSubscriptionEvaluation(ctx,
-		"<subscription-id>",
-		&armpolicyinsights.PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions{ResumeToken: ""})
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -332,13 +328,13 @@ func ExamplePolicyStatesClient_BeginTriggerResourceGroupEvaluation() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTriggerResourceGroupEvaluation(ctx,
-		"<subscription-id>",
-		"<resource-group-name>",
-		&armpolicyinsights.PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions{ResumeToken: ""})
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"myResourceGroup",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -356,8 +352,8 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicySetDefinitionPager() 
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListQueryResultsForPolicySetDefinitionPager(armpolicyinsights.PolicyStatesResourceLatest,
-		"<subscription-id>",
-		"<policy-set-definition-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"3e3807c1-65c9-49e0-a406-82d8ae3e338c",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -373,7 +369,6 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicySetDefinitionPager() 
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -395,10 +390,10 @@ func ExamplePolicyStatesClient_SummarizeForPolicySetDefinition() {
 	}
 	res, err := client.SummarizeForPolicySetDefinition(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
-		"<subscription-id>",
-		"<policy-set-definition-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"3e3807c1-65c9-49e0-a406-82d8ae3e338c",
 		&armpolicyinsights.QueryOptions{Top: to.Ptr[int32](1),
-			Filter:    to.Ptr("<filter>"),
+			Filter:    to.Ptr("PolicyDefinitionAction eq 'deny'"),
 			OrderBy:   nil,
 			Select:    nil,
 			From:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
@@ -427,8 +422,8 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicyDefinitionPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListQueryResultsForPolicyDefinitionPager(armpolicyinsights.PolicyStatesResourceLatest,
-		"<subscription-id>",
-		"<policy-definition-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"24813039-7534-408a-9842-eb99f45721b1",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -444,7 +439,6 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicyDefinitionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -466,8 +460,8 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	}
 	res, err := client.SummarizeForPolicyDefinition(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
-		"<subscription-id>",
-		"<policy-definition-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"24813039-7534-408a-9842-eb99f45721b1",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -498,8 +492,8 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionLevelPolicyAssi
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(armpolicyinsights.PolicyStatesResourceLatest,
-		"<subscription-id>",
-		"<policy-assignment-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"ec8f9645-8ecb-4abb-9c0b-5292f19d4003",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -515,7 +509,6 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionLevelPolicyAssi
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -537,8 +530,8 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	}
 	res, err := client.SummarizeForSubscriptionLevelPolicyAssignment(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
-		"<subscription-id>",
-		"<policy-assignment-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"ec8f9645-8ecb-4abb-9c0b-5292f19d4003",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -569,9 +562,9 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupLevelPolicyAss
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(armpolicyinsights.PolicyStatesResourceLatest,
-		"<subscription-id>",
-		"<resource-group-name>",
-		"<policy-assignment-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"myResourceGroup",
+		"myPolicyAssignment",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -587,7 +580,6 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupLevelPolicyAss
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -609,9 +601,9 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 	}
 	res, err := client.SummarizeForResourceGroupLevelPolicyAssignment(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
-		"<subscription-id>",
-		"<resource-group-name>",
-		"<policy-assignment-name>",
+		"fffedd8f-ffff-fffd-fffd-fffed2f84852",
+		"myResourceGroup",
+		"b7a1ca2596524e3ab19597f2",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,

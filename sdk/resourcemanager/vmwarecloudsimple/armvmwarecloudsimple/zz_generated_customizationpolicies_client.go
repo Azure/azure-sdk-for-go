@@ -38,7 +38,7 @@ func NewCustomizationPoliciesClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewCustomizationPoliciesClient(subscriptionID string, credential azcore.Tok
 
 // Get - Returns customization policy by its name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // customizationPolicyName - customization policy name
@@ -102,7 +103,7 @@ func (client *CustomizationPoliciesClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *CustomizationPoliciesClient) getHandleResponse(resp *http.Response
 
 // NewListPager - Returns list of customization policies in region for private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // options - CustomizationPoliciesClientListOptions contains the optional parameters for the CustomizationPoliciesClient.List
 // method.
 func (client *CustomizationPoliciesClient) NewListPager(regionID string, pcName string, options *CustomizationPoliciesClientListOptions) *runtime.Pager[CustomizationPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomizationPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomizationPoliciesClientListResponse]{
 		More: func(page CustomizationPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -174,7 +176,7 @@ func (client *CustomizationPoliciesClient) listCreateRequest(ctx context.Context
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

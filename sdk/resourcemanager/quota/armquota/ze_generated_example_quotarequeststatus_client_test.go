@@ -28,8 +28,8 @@ func ExampleRequestStatusClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<id>",
-		"<scope>",
+		"2B5C8515-37D8-4B6A-879B-CD641A2CF605",
+		"subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,7 +49,7 @@ func ExampleRequestStatusClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus",
 		&armquota.RequestStatusClientListOptions{Filter: nil,
 			Top:       nil,
 			Skiptoken: nil,
@@ -58,7 +58,6 @@ func ExampleRequestStatusClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

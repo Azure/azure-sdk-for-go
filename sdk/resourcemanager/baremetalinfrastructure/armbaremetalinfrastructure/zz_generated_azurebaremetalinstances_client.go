@@ -38,7 +38,7 @@ func NewAzureBareMetalInstancesClient(subscriptionID string, credential azcore.T
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAzureBareMetalInstancesClient(subscriptionID string, credential azcore.T
 
 // Get - Gets an Azure BareMetal instance for the specified subscription, resource group, and instance name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-09
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // azureBareMetalInstanceName - Name of the Azure BareMetal on Azure instance.
 // options - AzureBareMetalInstancesClientGetOptions contains the optional parameters for the AzureBareMetalInstancesClient.Get
@@ -97,7 +98,7 @@ func (client *AzureBareMetalInstancesClient) getCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-09")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -113,11 +114,12 @@ func (client *AzureBareMetalInstancesClient) getHandleResponse(resp *http.Respon
 // NewListByResourceGroupPager - Gets a list of AzureBareMetal instances in the specified subscription and resource group.
 // The operations returns various properties of each Azure BareMetal instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-09
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AzureBareMetalInstancesClientListByResourceGroupOptions contains the optional parameters for the AzureBareMetalInstancesClient.ListByResourceGroup
 // method.
 func (client *AzureBareMetalInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *AzureBareMetalInstancesClientListByResourceGroupOptions) *runtime.Pager[AzureBareMetalInstancesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AzureBareMetalInstancesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AzureBareMetalInstancesClientListByResourceGroupResponse]{
 		More: func(page AzureBareMetalInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -162,7 +164,7 @@ func (client *AzureBareMetalInstancesClient) listByResourceGroupCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-09")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -178,10 +180,11 @@ func (client *AzureBareMetalInstancesClient) listByResourceGroupHandleResponse(r
 // NewListBySubscriptionPager - Gets a list of AzureBareMetal instances in the specified subscription. The operations returns
 // various properties of each Azure BareMetal instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-09
 // options - AzureBareMetalInstancesClientListBySubscriptionOptions contains the optional parameters for the AzureBareMetalInstancesClient.ListBySubscription
 // method.
 func (client *AzureBareMetalInstancesClient) NewListBySubscriptionPager(options *AzureBareMetalInstancesClientListBySubscriptionOptions) *runtime.Pager[AzureBareMetalInstancesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AzureBareMetalInstancesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AzureBareMetalInstancesClientListBySubscriptionResponse]{
 		More: func(page AzureBareMetalInstancesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -222,7 +225,7 @@ func (client *AzureBareMetalInstancesClient) listBySubscriptionCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-09")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,6 +241,7 @@ func (client *AzureBareMetalInstancesClient) listBySubscriptionHandleResponse(re
 // Update - Patches the Tags field of a Azure BareMetal instance for the specified subscription, resource group, and instance
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-09
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // azureBareMetalInstanceName - Name of the Azure BareMetal on Azure instance.
 // tagsParameter - Request body that only contains the new Tags field
@@ -280,7 +284,7 @@ func (client *AzureBareMetalInstancesClient) updateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-09")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, tagsParameter)
 }
 

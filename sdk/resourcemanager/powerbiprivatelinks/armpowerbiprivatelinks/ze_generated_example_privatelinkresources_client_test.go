@@ -23,9 +23,9 @@ func ExamplePrivateLinkResourcesClient_NewListByResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPrivateLinkResourcesClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPrivateLinkResourcesClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -34,7 +34,6 @@ func ExamplePrivateLinkResourcesClient_NewListByResourcePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPrivateLinkResourcesClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPrivateLinkResourcesClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<private-link-resource-name>",
+		"tenant",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

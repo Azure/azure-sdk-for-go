@@ -33,7 +33,7 @@ func NewApplicationClient(credential azcore.TokenCredential, options *arm.Client
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,10 +50,11 @@ func NewApplicationClient(credential azcore.TokenCredential, options *arm.Client
 
 // NewListOperationsPager - Lists all of the available Microsoft.Solutions REST API operations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // options - ApplicationClientListOperationsOptions contains the optional parameters for the ApplicationClient.ListOperations
 // method.
 func (client *ApplicationClient) NewListOperationsPager(options *ApplicationClientListOperationsOptions) *runtime.Pager[ApplicationClientListOperationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListOperationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationClientListOperationsResponse]{
 		More: func(page ApplicationClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -90,7 +91,7 @@ func (client *ApplicationClient) listOperationsCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

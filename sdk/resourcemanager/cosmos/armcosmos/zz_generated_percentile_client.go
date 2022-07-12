@@ -38,7 +38,7 @@ func NewPercentileClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPercentileClient(subscriptionID string, credential azcore.TokenCredentia
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account. This url is
 // only for PBS and Replication Latency data
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
@@ -64,7 +65,7 @@ func NewPercentileClient(subscriptionID string, credential azcore.TokenCredentia
 // and timeGrain. The supported operator is eq.
 // options - PercentileClientListMetricsOptions contains the optional parameters for the PercentileClient.ListMetrics method.
 func (client *PercentileClient) NewListMetricsPager(resourceGroupName string, accountName string, filter string, options *PercentileClientListMetricsOptions) *runtime.Pager[PercentileClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PercentileClientListMetricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PercentileClientListMetricsResponse]{
 		More: func(page PercentileClientListMetricsResponse) bool {
 			return false
 		},
@@ -108,7 +109,7 @@ func (client *PercentileClient) listMetricsCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2022-02-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

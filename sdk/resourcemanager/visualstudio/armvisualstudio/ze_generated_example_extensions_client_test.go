@@ -24,13 +24,13 @@ func ExampleExtensionsClient_ListByAccount() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByAccount(ctx,
-		"<resource-group-name>",
-		"<account-resource-name>",
+		"VS-Example-Group",
+		"ExampleAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,22 +46,22 @@ func ExampleExtensionsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-resource-name>",
-		"<extension-resource-name>",
+		"VS-Example-Group",
+		"ExampleAccount",
+		"ms.example",
 		armvisualstudio.ExtensionResourceRequest{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Central US"),
 			Plan: &armvisualstudio.ExtensionResourcePlan{
-				Name:          to.Ptr("<name>"),
-				Product:       to.Ptr("<product>"),
-				PromotionCode: to.Ptr("<promotion-code>"),
-				Publisher:     to.Ptr("<publisher>"),
-				Version:       to.Ptr("<version>"),
+				Name:          to.Ptr("ExamplePlan"),
+				Product:       to.Ptr("ExampleExtensionName"),
+				PromotionCode: to.Ptr(""),
+				Publisher:     to.Ptr("ExampleExtensionPublisher"),
+				Version:       to.Ptr("1.0"),
 			},
 			Properties: map[string]*string{},
 			Tags:       map[string]*string{},
@@ -81,14 +81,14 @@ func ExampleExtensionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-resource-name>",
-		"<extension-resource-name>",
+		"VS-Example-Group",
+		"Example",
+		"ms.example",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,14 +102,14 @@ func ExampleExtensionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-resource-name>",
-		"<extension-resource-name>",
+		"VS-Example-Group",
+		"ExampleAccount",
+		"ms.example",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -125,22 +125,22 @@ func ExampleExtensionsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewExtensionsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-resource-name>",
-		"<extension-resource-name>",
+		"VS-Example-Group",
+		"ExampleAccount",
+		"Example",
 		armvisualstudio.ExtensionResourceRequest{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Central US"),
 			Plan: &armvisualstudio.ExtensionResourcePlan{
-				Name:          to.Ptr("<name>"),
-				Product:       to.Ptr("<product>"),
-				PromotionCode: to.Ptr("<promotion-code>"),
-				Publisher:     to.Ptr("<publisher>"),
-				Version:       to.Ptr("<version>"),
+				Name:          to.Ptr("ExamplePlan"),
+				Product:       to.Ptr("ExampleExtensionName"),
+				PromotionCode: to.Ptr(""),
+				Publisher:     to.Ptr("ExampleExtensionPublisher"),
+				Version:       to.Ptr("1.0"),
 			},
 			Properties: map[string]*string{},
 			Tags:       map[string]*string{},

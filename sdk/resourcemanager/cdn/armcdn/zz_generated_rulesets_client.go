@@ -38,7 +38,7 @@ func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Create - Creates a new rule set within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -102,7 +103,7 @@ func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,28 +119,30 @@ func (client *RuleSetsClient) createHandleResponse(resp *http.Response) (RuleSet
 // BeginDelete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // ruleSetName - Name of the rule set under the profile which is unique globally.
 // options - RuleSetsClientBeginDeleteOptions contains the optional parameters for the RuleSetsClient.BeginDelete method.
-func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*armruntime.Poller[RuleSetsClientDeleteResponse], error) {
+func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*runtime.Poller[RuleSetsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, ruleSetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RuleSetsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RuleSetsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RuleSetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RuleSetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *RuleSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
 	if err != nil {
@@ -181,13 +184,14 @@ func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -234,7 +238,7 @@ func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,12 +253,13 @@ func (client *RuleSetsClient) getHandleResponse(resp *http.Response) (RuleSetsCl
 
 // NewListByProfilePager - Lists existing AzureFrontDoor rule sets within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // options - RuleSetsClientListByProfileOptions contains the optional parameters for the RuleSetsClient.ListByProfile method.
 func (client *RuleSetsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *RuleSetsClientListByProfileOptions) *runtime.Pager[RuleSetsClientListByProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RuleSetsClientListByProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RuleSetsClientListByProfileResponse]{
 		More: func(page RuleSetsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -303,7 +308,7 @@ func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -316,8 +321,10 @@ func (client *RuleSetsClient) listByProfileHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN
+// profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -325,7 +332,7 @@ func (client *RuleSetsClient) listByProfileHandleResponse(resp *http.Response) (
 // options - RuleSetsClientListResourceUsageOptions contains the optional parameters for the RuleSetsClient.ListResourceUsage
 // method.
 func (client *RuleSetsClient) NewListResourceUsagePager(resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientListResourceUsageOptions) *runtime.Pager[RuleSetsClientListResourceUsageResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RuleSetsClientListResourceUsageResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RuleSetsClientListResourceUsageResponse]{
 		More: func(page RuleSetsClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -378,7 +385,7 @@ func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

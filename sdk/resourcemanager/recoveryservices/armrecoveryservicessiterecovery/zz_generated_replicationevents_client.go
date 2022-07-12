@@ -42,7 +42,7 @@ func NewReplicationEventsClient(resourceName string, resourceGroupName string, s
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewReplicationEventsClient(resourceName string, resourceGroupName string, s
 
 // Get - The operation to get the details of an Azure Site recovery event.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // eventName - The name of the Azure Site Recovery event.
 // options - ReplicationEventsClientGetOptions contains the optional parameters for the ReplicationEventsClient.Get method.
 func (client *ReplicationEventsClient) Get(ctx context.Context, eventName string, options *ReplicationEventsClientGetOptions) (ReplicationEventsClientGetResponse, error) {
@@ -105,7 +106,7 @@ func (client *ReplicationEventsClient) getCreateRequest(ctx context.Context, eve
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -120,9 +121,10 @@ func (client *ReplicationEventsClient) getHandleResponse(resp *http.Response) (R
 
 // NewListPager - Gets the list of Azure Site Recovery events for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationEventsClientListOptions contains the optional parameters for the ReplicationEventsClient.List method.
 func (client *ReplicationEventsClient) NewListPager(options *ReplicationEventsClientListOptions) *runtime.Pager[ReplicationEventsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationEventsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationEventsClientListResponse]{
 		More: func(page ReplicationEventsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -174,7 +176,7 @@ func (client *ReplicationEventsClient) listCreateRequest(ctx context.Context, op
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

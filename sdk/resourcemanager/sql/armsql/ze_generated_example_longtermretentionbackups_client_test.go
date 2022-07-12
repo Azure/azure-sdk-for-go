@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,27 +24,27 @@ func ExampleLongTermRetentionBackupsClient_BeginCopy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCopy(ctx,
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
-		"<backup-name>",
+		"japaneast",
+		"testserver",
+		"testDatabase",
+		"55555555-6666-7777-8888-999999999999;131637960820000000",
 		armsql.CopyLongTermRetentionBackupParameters{
 			Properties: &armsql.CopyLongTermRetentionBackupParametersProperties{
 				TargetBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-				TargetDatabaseName:            to.Ptr("<target-database-name>"),
-				TargetServerResourceID:        to.Ptr("<target-server-resource-id>"),
+				TargetDatabaseName:            to.Ptr("testDatabase2"),
+				TargetServerResourceID:        to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/resourceGroups/resourceGroup/servers/testserver2"),
 			},
 		},
-		&armsql.LongTermRetentionBackupsClientBeginCopyOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -61,25 +59,25 @@ func ExampleLongTermRetentionBackupsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
-		"<backup-name>",
+		"japaneast",
+		"testserver",
+		"testDatabase",
+		"55555555-6666-7777-8888-999999999999;131637960820000000",
 		armsql.UpdateLongTermRetentionBackupParameters{
 			Properties: &armsql.UpdateLongTermRetentionBackupParametersProperties{
 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 			},
 		},
-		&armsql.LongTermRetentionBackupsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -94,15 +92,15 @@ func ExampleLongTermRetentionBackupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
-		"<backup-name>",
+		"japaneast",
+		"testserver",
+		"testDatabase",
+		"55555555-6666-7777-8888-999999999999;131637960820000000",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -118,20 +116,20 @@ func ExampleLongTermRetentionBackupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
-		"<backup-name>",
-		&armsql.LongTermRetentionBackupsClientBeginDeleteOptions{ResumeToken: ""})
+		"japaneast",
+		"testserver",
+		"testDatabase",
+		"55555555-6666-7777-8888-999999999999;131637960820000000",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -144,13 +142,13 @@ func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
+	pager := client.NewListByDatabasePager("japaneast",
+		"testserver",
+		"testDatabase",
 		&armsql.LongTermRetentionBackupsClientListByDatabaseOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
 		})
@@ -158,7 +156,6 @@ func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -174,11 +171,11 @@ func ExampleLongTermRetentionBackupsClient_NewListByLocationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocationPager("<location-name>",
+	pager := client.NewListByLocationPager("japaneast",
 		&armsql.LongTermRetentionBackupsClientListByLocationOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
 		})
@@ -186,7 +183,6 @@ func ExampleLongTermRetentionBackupsClient_NewListByLocationPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -202,12 +198,12 @@ func ExampleLongTermRetentionBackupsClient_NewListByServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("<location-name>",
-		"<long-term-retention-server-name>",
+	pager := client.NewListByServerPager("japaneast",
+		"testserver",
 		&armsql.LongTermRetentionBackupsClientListByServerOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
 		})
@@ -215,7 +211,6 @@ func ExampleLongTermRetentionBackupsClient_NewListByServerPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -231,28 +226,28 @@ func ExampleLongTermRetentionBackupsClient_BeginCopyByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCopyByResourceGroup(ctx,
-		"<resource-group-name>",
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
-		"<backup-name>",
+		"testResourceGroup",
+		"japaneast",
+		"testserver",
+		"testDatabase",
+		"55555555-6666-7777-8888-999999999999;131637960820000000",
 		armsql.CopyLongTermRetentionBackupParameters{
 			Properties: &armsql.CopyLongTermRetentionBackupParametersProperties{
 				TargetBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-				TargetDatabaseName:            to.Ptr("<target-database-name>"),
-				TargetServerResourceID:        to.Ptr("<target-server-resource-id>"),
+				TargetDatabaseName:            to.Ptr("testDatabase2"),
+				TargetServerResourceID:        to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/resourceGroups/resourceGroup/servers/testserver2"),
 			},
 		},
-		&armsql.LongTermRetentionBackupsClientBeginCopyByResourceGroupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -267,26 +262,26 @@ func ExampleLongTermRetentionBackupsClient_BeginUpdateByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateByResourceGroup(ctx,
-		"<resource-group-name>",
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
-		"<backup-name>",
+		"testResourceGroup",
+		"japaneast",
+		"testserver",
+		"testDatabase",
+		"55555555-6666-7777-8888-999999999999;131637960820000000",
 		armsql.UpdateLongTermRetentionBackupParameters{
 			Properties: &armsql.UpdateLongTermRetentionBackupParametersProperties{
 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 			},
 		},
-		&armsql.LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -301,16 +296,16 @@ func ExampleLongTermRetentionBackupsClient_GetByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByResourceGroup(ctx,
-		"<resource-group-name>",
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
-		"<backup-name>",
+		"testResourceGroup",
+		"japaneast",
+		"testserver",
+		"testDatabase",
+		"55555555-6666-7777-8888-999999999999;131637960820000000",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -326,21 +321,21 @@ func ExampleLongTermRetentionBackupsClient_BeginDeleteByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteByResourceGroup(ctx,
-		"<resource-group-name>",
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
-		"<backup-name>",
-		&armsql.LongTermRetentionBackupsClientBeginDeleteByResourceGroupOptions{ResumeToken: ""})
+		"testResourceGroup",
+		"japaneast",
+		"testserver",
+		"testDatabase",
+		"55555555-6666-7777-8888-999999999999;131637960820000000",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -353,14 +348,14 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupDatabasePager("<resource-group-name>",
-		"<location-name>",
-		"<long-term-retention-server-name>",
-		"<long-term-retention-database-name>",
+	pager := client.NewListByResourceGroupDatabasePager("testResourceGroup",
+		"japaneast",
+		"testserver",
+		"testDatabase",
 		&armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
 		})
@@ -368,7 +363,6 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager()
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -384,12 +378,12 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupLocationPager("<resource-group-name>",
-		"<location-name>",
+	pager := client.NewListByResourceGroupLocationPager("testResourceGroup",
+		"japaneast",
 		&armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
 		})
@@ -397,7 +391,6 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager()
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -413,13 +406,13 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewLongTermRetentionBackupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewLongTermRetentionBackupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupServerPager("<resource-group-name>",
-		"<location-name>",
-		"<long-term-retention-server-name>",
+	pager := client.NewListByResourceGroupServerPager("testResourceGroup",
+		"japaneast",
+		"testserver",
 		&armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
 		})
@@ -427,7 +420,6 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

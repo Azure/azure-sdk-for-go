@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices"
@@ -26,7 +24,7 @@ func ExampleLabsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleLabsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleLabsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testrg123",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleLabsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
+		"testrg123",
+		"testlab",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,21 +95,21 @@ func ExampleLabsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
+		"testrg123",
+		"testlab",
 		armlabservices.Lab{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armlabservices.LabProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("This is a test lab."),
 				AutoShutdownProfile: &armlabservices.AutoShutdownProfile{
-					DisconnectDelay:          to.Ptr("<disconnect-delay>"),
-					IdleDelay:                to.Ptr("<idle-delay>"),
-					NoConnectDelay:           to.Ptr("<no-connect-delay>"),
+					DisconnectDelay:          to.Ptr("00:05"),
+					IdleDelay:                to.Ptr("01:00"),
+					NoConnectDelay:           to.Ptr("01:00"),
 					ShutdownOnDisconnect:     to.Ptr(armlabservices.EnableStateEnabled),
 					ShutdownOnIdle:           to.Ptr(armlabservices.ShutdownOnIdleModeUserAbsence),
 					ShutdownWhenNotConnected: to.Ptr(armlabservices.EnableStateEnabled),
@@ -124,42 +120,42 @@ func ExampleLabsClient_BeginCreateOrUpdate() {
 					WebRdpAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
 					WebSSHAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
 				},
-				LabPlanID: to.Ptr("<lab-plan-id>"),
+				LabPlanID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.LabServices/labPlans/testlabplan"),
 				SecurityProfile: &armlabservices.SecurityProfile{
 					OpenAccess: to.Ptr(armlabservices.EnableStateDisabled),
 				},
-				Title: to.Ptr("<title>"),
+				Title: to.Ptr("Test Lab"),
 				VirtualMachineProfile: &armlabservices.VirtualMachineProfile{
 					AdditionalCapabilities: &armlabservices.VirtualMachineAdditionalCapabilities{
 						InstallGpuDrivers: to.Ptr(armlabservices.EnableStateDisabled),
 					},
 					AdminUser: &armlabservices.Credentials{
-						Username: to.Ptr("<username>"),
+						Username: to.Ptr("test-user"),
 					},
 					CreateOption: to.Ptr(armlabservices.CreateOptionTemplateVM),
 					ImageReference: &armlabservices.ImageReference{
-						Offer:     to.Ptr("<offer>"),
-						Publisher: to.Ptr("<publisher>"),
-						SKU:       to.Ptr("<sku>"),
-						Version:   to.Ptr("<version>"),
+						Offer:     to.Ptr("WindowsServer"),
+						Publisher: to.Ptr("Microsoft"),
+						SKU:       to.Ptr("2019-Datacenter"),
+						Version:   to.Ptr("2019.0.20190410"),
 					},
 					SKU: &armlabservices.SKU{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("Medium"),
 					},
-					UsageQuota:        to.Ptr("<usage-quota>"),
+					UsageQuota:        to.Ptr("10:00"),
 					UseSharedPassword: to.Ptr(armlabservices.EnableStateDisabled),
 				},
 				NetworkProfile: &armlabservices.LabNetworkProfile{
-					SubnetID: to.Ptr("<subnet-id>"),
+					SubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"),
 				},
 				State: to.Ptr(armlabservices.LabStateDraft),
 			},
 		},
-		&armlabservices.LabsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -174,13 +170,13 @@ func ExampleLabsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
+		"testrg123",
+		"testlab",
 		armlabservices.LabUpdate{
 			Properties: &armlabservices.LabUpdateProperties{
 				SecurityProfile: &armlabservices.SecurityProfile{
@@ -188,11 +184,11 @@ func ExampleLabsClient_BeginUpdate() {
 				},
 			},
 		},
-		&armlabservices.LabsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -207,18 +203,18 @@ func ExampleLabsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		&armlabservices.LabsClientBeginDeleteOptions{ResumeToken: ""})
+		"testrg123",
+		"testlab",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -231,18 +227,18 @@ func ExampleLabsClient_BeginPublish() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPublish(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		&armlabservices.LabsClientBeginPublishOptions{ResumeToken: ""})
+		"testrg123",
+		"testlab",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -255,18 +251,18 @@ func ExampleLabsClient_BeginSyncGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewLabsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSyncGroup(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		&armlabservices.LabsClientBeginSyncGroupOptions{ResumeToken: ""})
+		"testrg123",
+		"testlab",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

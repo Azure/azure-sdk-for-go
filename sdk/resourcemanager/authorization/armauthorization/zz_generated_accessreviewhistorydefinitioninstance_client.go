@@ -38,7 +38,7 @@ func NewAccessReviewHistoryDefinitionInstanceClient(subscriptionID string, crede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAccessReviewHistoryDefinitionInstanceClient(subscriptionID string, crede
 // GenerateDownloadURI - Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and
 // can be retrieved by fetching the accessReviewHistoryDefinition object.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // historyDefinitionID - The id of the access review history definition.
 // instanceID - The id of the access review history definition instance to generate a URI for.
 // options - AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions contains the optional parameters for the
@@ -98,7 +99,7 @@ func (client *AccessReviewHistoryDefinitionInstanceClient) generateDownloadURICr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

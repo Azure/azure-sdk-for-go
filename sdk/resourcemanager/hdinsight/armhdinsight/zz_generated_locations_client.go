@@ -39,7 +39,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CheckNameAvailability - Check the cluster name is available or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The Azure location (region) for which to make the request.
 // options - LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
 // method.
@@ -93,7 +94,7 @@ func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -108,6 +109,7 @@ func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *http.Re
 
 // GetAzureAsyncOperationStatus - Get the async operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The Azure location (region) for which to make the request.
 // operationID - The long running operation id.
 // options - LocationsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the LocationsClient.GetAzureAsyncOperationStatus
@@ -149,7 +151,7 @@ func (client *LocationsClient) getAzureAsyncOperationStatusCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -164,6 +166,7 @@ func (client *LocationsClient) getAzureAsyncOperationStatusHandleResponse(resp *
 
 // GetCapabilities - Gets the capabilities for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The Azure location (region) for which to make the request.
 // options - LocationsClientGetCapabilitiesOptions contains the optional parameters for the LocationsClient.GetCapabilities
 // method.
@@ -200,7 +203,7 @@ func (client *LocationsClient) getCapabilitiesCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,6 +218,7 @@ func (client *LocationsClient) getCapabilitiesHandleResponse(resp *http.Response
 
 // ListBillingSpecs - Lists the billingSpecs for the specified subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The Azure location (region) for which to make the request.
 // options - LocationsClientListBillingSpecsOptions contains the optional parameters for the LocationsClient.ListBillingSpecs
 // method.
@@ -251,7 +255,7 @@ func (client *LocationsClient) listBillingSpecsCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -266,6 +270,7 @@ func (client *LocationsClient) listBillingSpecsHandleResponse(resp *http.Respons
 
 // ListUsages - Lists the usages for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The Azure location (region) for which to make the request.
 // options - LocationsClientListUsagesOptions contains the optional parameters for the LocationsClient.ListUsages method.
 func (client *LocationsClient) ListUsages(ctx context.Context, location string, options *LocationsClientListUsagesOptions) (LocationsClientListUsagesResponse, error) {
@@ -301,7 +306,7 @@ func (client *LocationsClient) listUsagesCreateRequest(ctx context.Context, loca
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -316,6 +321,7 @@ func (client *LocationsClient) listUsagesHandleResponse(resp *http.Response) (Lo
 
 // ValidateClusterCreateRequest - Validate the cluster create request spec is valid or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The Azure location (region) for which to make the request.
 // options - LocationsClientValidateClusterCreateRequestOptions contains the optional parameters for the LocationsClient.ValidateClusterCreateRequest
 // method.
@@ -352,7 +358,7 @@ func (client *LocationsClient) validateClusterCreateRequestCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

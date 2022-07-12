@@ -29,8 +29,8 @@ func ExampleRequestsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<request-id>",
-		"<subscription-id>",
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,10 +51,10 @@ func ExampleRequestsClient_UpdateStatus() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateStatus(ctx,
-		"<subscription-id>",
-		"<request-id>",
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		armcustomerlockbox.Approval{
-			Reason: to.Ptr("<reason>"),
+			Reason: to.Ptr("Customer approve"),
 			Status: to.Ptr(armcustomerlockbox.StatusApprove),
 		},
 		nil)
@@ -76,13 +76,12 @@ func ExampleRequestsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<subscription-id>",
-		&armcustomerlockbox.RequestsClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+		&armcustomerlockbox.RequestsClientListOptions{Filter: to.Ptr("properties/status eq 'Expired'")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

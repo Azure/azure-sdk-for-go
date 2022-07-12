@@ -38,7 +38,7 @@ func NewVendorNetworkFunctionsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,29 +57,31 @@ func NewVendorNetworkFunctionsClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Creates or updates a vendor network function. This operation can take up to 6 hours to complete.
 // This is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // locationName - The Azure region where the network function resource was created by the customer.
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
 // parameters - Parameters supplied to the create or update vendor network function operation.
 // options - VendorNetworkFunctionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorNetworkFunctionsClient.BeginCreateOrUpdate
 // method.
-func (client *VendorNetworkFunctionsClient) BeginCreateOrUpdate(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VendorNetworkFunctionsClientCreateOrUpdateResponse], error) {
+func (client *VendorNetworkFunctionsClient) BeginCreateOrUpdate(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VendorNetworkFunctionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, locationName, vendorName, serviceKey, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VendorNetworkFunctionsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VendorNetworkFunctionsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VendorNetworkFunctionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VendorNetworkFunctionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a vendor network function. This operation can take up to 6 hours to complete. This
 // is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 func (client *VendorNetworkFunctionsClient) createOrUpdate(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, locationName, vendorName, serviceKey, parameters, options)
 	if err != nil {
@@ -121,12 +123,13 @@ func (client *VendorNetworkFunctionsClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Get - Gets information about the specified vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // locationName - The Azure region where the network function resource was created by the customer.
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
@@ -173,7 +176,7 @@ func (client *VendorNetworkFunctionsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -188,12 +191,13 @@ func (client *VendorNetworkFunctionsClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Lists all the vendor network function sub resources in an Azure region, filtered by skuType, skuName, vendorProvisioningState.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // locationName - The Azure region where the network function resource was created by the customer.
 // vendorName - The name of the vendor.
 // options - VendorNetworkFunctionsClientListOptions contains the optional parameters for the VendorNetworkFunctionsClient.List
 // method.
 func (client *VendorNetworkFunctionsClient) NewListPager(locationName string, vendorName string, options *VendorNetworkFunctionsClientListOptions) *runtime.Pager[VendorNetworkFunctionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VendorNetworkFunctionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VendorNetworkFunctionsClientListResponse]{
 		More: func(page VendorNetworkFunctionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -245,7 +249,7 @@ func (client *VendorNetworkFunctionsClient) listCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

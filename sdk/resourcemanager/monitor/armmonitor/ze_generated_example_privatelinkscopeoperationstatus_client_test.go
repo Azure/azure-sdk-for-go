@@ -23,13 +23,13 @@ func ExamplePrivateLinkScopeOperationStatusClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewPrivateLinkScopeOperationStatusClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewPrivateLinkScopeOperationStatusClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<async-operation-id>",
-		"<resource-group-name>",
+		"713192d7-503f-477a-9cfe-4efc3ee2bd11",
+		"MyResourceGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

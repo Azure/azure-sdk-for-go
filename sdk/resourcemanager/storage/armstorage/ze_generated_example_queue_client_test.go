@@ -23,14 +23,14 @@ func ExampleQueueClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewQueueClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewQueueClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<queue-name>",
+		"res3376",
+		"sto328",
+		"queue6185",
 		armstorage.Queue{},
 		nil)
 	if err != nil {
@@ -47,14 +47,14 @@ func ExampleQueueClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewQueueClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewQueueClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<queue-name>",
+		"res3376",
+		"sto328",
+		"queue6185",
 		armstorage.Queue{},
 		nil)
 	if err != nil {
@@ -71,14 +71,14 @@ func ExampleQueueClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewQueueClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewQueueClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<queue-name>",
+		"res3376",
+		"sto328",
+		"queue6185",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -94,14 +94,14 @@ func ExampleQueueClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewQueueClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewQueueClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<queue-name>",
+		"res3376",
+		"sto328",
+		"queue6185",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -115,12 +115,12 @@ func ExampleQueueClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewQueueClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewQueueClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("res9290",
+		"sto328",
 		&armstorage.QueueClientListOptions{Maxpagesize: nil,
 			Filter: nil,
 		})
@@ -128,7 +128,6 @@ func ExampleQueueClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

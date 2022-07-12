@@ -24,15 +24,15 @@ func ExampleSQLPoolMaintenanceWindowsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolMaintenanceWindowsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolMaintenanceWindowsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<maintenance-window-name>",
+		"samplerg",
+		"testworkspace",
+		"testsp",
+		"current",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,22 +48,22 @@ func ExampleSQLPoolMaintenanceWindowsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolMaintenanceWindowsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolMaintenanceWindowsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<maintenance-window-name>",
+		"samplerg",
+		"testworkspace",
+		"testsp",
+		"current",
 		armsynapse.MaintenanceWindows{
 			Properties: &armsynapse.MaintenanceWindowsProperties{
 				TimeRanges: []*armsynapse.MaintenanceWindowTimeRange{
 					{
 						DayOfWeek: to.Ptr(armsynapse.DayOfWeekSaturday),
-						Duration:  to.Ptr("<duration>"),
-						StartTime: to.Ptr("<start-time>"),
+						Duration:  to.Ptr("PT60M"),
+						StartTime: to.Ptr("00:00:00"),
 					}},
 			},
 		},

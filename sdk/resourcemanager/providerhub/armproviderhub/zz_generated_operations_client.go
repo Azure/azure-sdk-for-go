@@ -38,7 +38,7 @@ func NewOperationsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewOperationsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CreateOrUpdate - Creates or updates the operation supported by the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // operationsPutContent - The operations content properties supplied to the CreateOrUpdate operation.
 // options - OperationsClientCreateOrUpdateOptions contains the optional parameters for the OperationsClient.CreateOrUpdate
@@ -93,7 +94,7 @@ func (client *OperationsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, operationsPutContent)
 }
 
@@ -108,6 +109,7 @@ func (client *OperationsClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes an operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - OperationsClientDeleteOptions contains the optional parameters for the OperationsClient.Delete method.
 func (client *OperationsClient) Delete(ctx context.Context, providerNamespace string, options *OperationsClientDeleteOptions) (OperationsClientDeleteResponse, error) {
@@ -143,15 +145,16 @@ func (client *OperationsClient) deleteCreateRequest(ctx context.Context, provide
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListPager - Lists all the operations supported by Microsoft.ProviderHub.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OperationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
 		More: func(page OperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -185,7 +188,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 	if err != nil {
 		return nil, err
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -200,6 +203,7 @@ func (client *OperationsClient) listHandleResponse(resp *http.Response) (Operati
 
 // ListByProviderRegistration - Gets the operations supported by the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - OperationsClientListByProviderRegistrationOptions contains the optional parameters for the OperationsClient.ListByProviderRegistration
 // method.
@@ -236,7 +240,7 @@ func (client *OperationsClient) listByProviderRegistrationCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

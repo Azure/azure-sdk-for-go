@@ -39,7 +39,7 @@ func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string,
 // Get - Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This aggregation
 // is performed by recommendation name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // aggregatedRecommendationName - Name of the recommendation aggregated for this query.
@@ -104,7 +105,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -119,12 +120,13 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleRespon
 
 // NewListPager - Use this method to get the list of aggregated security analytics recommendations of yours IoT Security solution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // options - IotSecuritySolutionsAnalyticsRecommendationClientListOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsRecommendationClient.List
 // method.
 func (client *IotSecuritySolutionsAnalyticsRecommendationClient) NewListPager(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsRecommendationClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsRecommendationClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionsAnalyticsRecommendationClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotSecuritySolutionsAnalyticsRecommendationClientListResponse]{
 		More: func(page IotSecuritySolutionsAnalyticsRecommendationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -176,7 +178,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateReque
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

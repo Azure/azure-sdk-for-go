@@ -38,7 +38,7 @@ func NewManagedDatabaseQueriesClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagedDatabaseQueriesClient(subscriptionID string, credential azcore.To
 
 // Get - Get query by query id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -107,7 +108,7 @@ func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -122,6 +123,7 @@ func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Respons
 
 // NewListByQueryPager - Get query execution statistics by query id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -129,7 +131,7 @@ func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Respons
 // options - ManagedDatabaseQueriesClientListByQueryOptions contains the optional parameters for the ManagedDatabaseQueriesClient.ListByQuery
 // method.
 func (client *ManagedDatabaseQueriesClient) NewListByQueryPager(resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesClientListByQueryOptions) *runtime.Pager[ManagedDatabaseQueriesClientListByQueryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseQueriesClientListByQueryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseQueriesClientListByQueryResponse]{
 		More: func(page ManagedDatabaseQueriesClientListByQueryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -195,7 +197,7 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

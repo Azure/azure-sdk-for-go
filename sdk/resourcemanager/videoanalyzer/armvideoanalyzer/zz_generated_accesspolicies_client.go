@@ -39,7 +39,7 @@ func NewAccessPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAccessPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Creates a new access policy resource or updates an existing one with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // accessPolicyName - The Access Policy name.
@@ -104,7 +105,7 @@ func (client *AccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *AccessPoliciesClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes an existing access policy resource with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // accessPolicyName - The Access Policy name.
@@ -164,12 +166,13 @@ func (client *AccessPoliciesClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves an existing access policy resource with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // accessPolicyName - The Access Policy name.
@@ -215,7 +218,7 @@ func (client *AccessPoliciesClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,11 +233,12 @@ func (client *AccessPoliciesClient) getHandleResponse(resp *http.Response) (Acce
 
 // NewListPager - Retrieves all existing access policy resources, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - AccessPoliciesClientListOptions contains the optional parameters for the AccessPoliciesClient.List method.
 func (client *AccessPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *AccessPoliciesClientListOptions) *runtime.Pager[AccessPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessPoliciesClientListResponse]{
 		More: func(page AccessPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -286,7 +290,7 @@ func (client *AccessPoliciesClient) listCreateRequest(ctx context.Context, resou
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,6 +305,7 @@ func (client *AccessPoliciesClient) listHandleResponse(resp *http.Response) (Acc
 
 // Update - Updates individual properties of an existing access policy resource with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // accessPolicyName - The Access Policy name.
@@ -347,7 +352,7 @@ func (client *AccessPoliciesClient) updateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

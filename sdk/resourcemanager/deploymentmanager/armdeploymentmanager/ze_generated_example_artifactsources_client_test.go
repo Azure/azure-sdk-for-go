@@ -24,24 +24,24 @@ func ExampleArtifactSourcesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewArtifactSourcesClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<artifact-source-name>",
+		"myResourceGroup",
+		"myArtifactSource",
 		&armdeploymentmanager.ArtifactSourcesClientCreateOrUpdateOptions{ArtifactSourceInfo: &armdeploymentmanager.ArtifactSource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("centralus"),
 			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.ArtifactSourceProperties{
 				Authentication: &armdeploymentmanager.SasAuthentication{
-					Type: to.Ptr("<type>"),
+					Type: to.Ptr("Sas"),
 					Properties: &armdeploymentmanager.SasProperties{
-						SasURI: to.Ptr("<sas-uri>"),
+						SasURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myartifactsource?st=2018-07-07T14%3A10%3A00Z&se=2019-12-31T15%3A10%3A00Z&sp=rl&sv=2017-04-17&sr=c&sig=Yh2SoJ1NhhLRwCLln7de%2Fkabcdefghijklmno5sWEIk%3D"),
 					},
 				},
-				SourceType: to.Ptr("<source-type>"),
+				SourceType: to.Ptr("AzureStorage"),
 			},
 		},
 		})
@@ -57,13 +57,13 @@ func ExampleArtifactSourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewArtifactSourcesClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<artifact-source-name>",
+		"myResourceGroup",
+		"myArtifactSource",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,13 +79,13 @@ func ExampleArtifactSourcesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewArtifactSourcesClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<artifact-source-name>",
+		"myResourceGroup",
+		"myArtifactSource",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,12 +99,12 @@ func ExampleArtifactSourcesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewArtifactSourcesClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewArtifactSourcesClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
+		"myResourceGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

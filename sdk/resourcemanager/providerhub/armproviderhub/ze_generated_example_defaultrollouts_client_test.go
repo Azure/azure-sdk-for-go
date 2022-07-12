@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub"
@@ -26,13 +24,13 @@ func ExampleDefaultRolloutsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewDefaultRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewDefaultRolloutsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<provider-namespace>",
-		"<rollout-name>",
+		"Microsoft.Contoso",
+		"2020week10",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,13 +46,13 @@ func ExampleDefaultRolloutsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewDefaultRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewDefaultRolloutsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<provider-namespace>",
-		"<rollout-name>",
+		"Microsoft.Contoso",
+		"2020week10",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,13 +66,13 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewDefaultRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewDefaultRolloutsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<provider-namespace>",
-		"<rollout-name>",
+		"Microsoft.Contoso",
+		"2020week10",
 		armproviderhub.DefaultRollout{
 			Properties: &armproviderhub.DefaultRolloutProperties{
 				Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
@@ -83,16 +81,16 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 							to.Ptr("eastus2euap")},
 					},
 					RestOfTheWorldGroupTwo: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupTwo{
-						WaitDuration: to.Ptr("<wait-duration>"),
+						WaitDuration: to.Ptr("PT4H"),
 					},
 				},
 			},
 		},
-		&armproviderhub.DefaultRolloutsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -107,17 +105,16 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewDefaultRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewDefaultRolloutsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProviderRegistrationPager("<provider-namespace>",
+	pager := client.NewListByProviderRegistrationPager("Microsoft.Contoso",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -133,13 +130,13 @@ func ExampleDefaultRolloutsClient_Stop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewDefaultRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewDefaultRolloutsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Stop(ctx,
-		"<provider-namespace>",
-		"<rollout-name>",
+		"Microsoft.Contoso",
+		"2020week10",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

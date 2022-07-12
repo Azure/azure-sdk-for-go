@@ -28,11 +28,12 @@ func ExampleReservationRecommendationDetailsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<region>",
+		"providers/Microsoft.Billing/billingAccounts/000000",
+		armconsumption.ScopeShared,
+		"eastus",
 		armconsumption.TermP1Y,
 		armconsumption.LookBackPeriodLast60Days,
-		"<product>",
+		"Standard_DS14_v2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

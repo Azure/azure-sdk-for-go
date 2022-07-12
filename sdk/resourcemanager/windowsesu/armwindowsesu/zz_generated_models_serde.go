@@ -10,18 +10,10 @@ package armwindowsesu
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDefinition.
-func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
-}
 
 // MarshalJSON implements the json.Marshaller interface for type MultipleActivationKey.
 func (m MultipleActivationKey) MarshalJSON() ([]byte, error) {
@@ -32,14 +24,6 @@ func (m MultipleActivationKey) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", m.Properties)
 	populate(objectMap, "tags", m.Tags)
 	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MultipleActivationKeyList.
-func (m MultipleActivationKeyList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -61,38 +45,38 @@ func (m MultipleActivationKeyProperties) MarshalJSON() ([]byte, error) {
 func (m *MultipleActivationKeyProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "agreementNumber":
-			err = unpopulate(val, &m.AgreementNumber)
+			err = unpopulate(val, "AgreementNumber", &m.AgreementNumber)
 			delete(rawMsg, key)
 		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &m.ExpirationDate)
+			err = unpopulateTimeRFC3339(val, "ExpirationDate", &m.ExpirationDate)
 			delete(rawMsg, key)
 		case "installedServerNumber":
-			err = unpopulate(val, &m.InstalledServerNumber)
+			err = unpopulate(val, "InstalledServerNumber", &m.InstalledServerNumber)
 			delete(rawMsg, key)
 		case "isEligible":
-			err = unpopulate(val, &m.IsEligible)
+			err = unpopulate(val, "IsEligible", &m.IsEligible)
 			delete(rawMsg, key)
 		case "multipleActivationKey":
-			err = unpopulate(val, &m.MultipleActivationKey)
+			err = unpopulate(val, "MultipleActivationKey", &m.MultipleActivationKey)
 			delete(rawMsg, key)
 		case "osType":
-			err = unpopulate(val, &m.OSType)
+			err = unpopulate(val, "OSType", &m.OSType)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &m.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &m.ProvisioningState)
 			delete(rawMsg, key)
 		case "supportType":
-			err = unpopulate(val, &m.SupportType)
+			err = unpopulate(val, "SupportType", &m.SupportType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
@@ -102,14 +86,6 @@ func (m *MultipleActivationKeyProperties) UnmarshalJSON(data []byte) error {
 func (m MultipleActivationKeyUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "tags", m.Tags)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -134,9 +110,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

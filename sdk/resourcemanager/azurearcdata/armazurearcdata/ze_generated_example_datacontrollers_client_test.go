@@ -26,7 +26,7 @@ func ExampleDataControllersClient_NewListInSubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewDataControllersClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewDataControllersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +35,6 @@ func ExampleDataControllersClient_NewListInSubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +50,16 @@ func ExampleDataControllersClient_NewListInGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewDataControllersClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewDataControllersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListInGroupPager("<resource-group-name>",
+	pager := client.NewListInGroupPager("testrg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,51 +75,51 @@ func ExampleDataControllersClient_BeginPutDataController() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewDataControllersClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewDataControllersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPutDataController(ctx,
-		"<resource-group-name>",
-		"<data-controller-name>",
+		"testrg",
+		"testdataController",
 		armazurearcdata.DataControllerResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("northeurope"),
 			Tags: map[string]*string{
 				"mytag": to.Ptr("myval"),
 			},
 			ExtendedLocation: &armazurearcdata.ExtendedLocation{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/arclocation"),
 				Type: to.Ptr(armazurearcdata.ExtendedLocationTypesCustomLocation),
 			},
 			Properties: &armazurearcdata.DataControllerProperties{
 				BasicLoginInformation: &armazurearcdata.BasicLoginInformation{
-					Password: to.Ptr("<password>"),
-					Username: to.Ptr("<username>"),
+					Password: to.Ptr("********"),
+					Username: to.Ptr("username"),
 				},
-				ClusterID:      to.Ptr("<cluster-id>"),
-				ExtensionID:    to.Ptr("<extension-id>"),
+				ClusterID:      to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s"),
+				ExtensionID:    to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s/providers/Microsoft.KubernetesConfiguration/extensions/extension"),
 				Infrastructure: to.Ptr(armazurearcdata.InfrastructureOnpremises),
 				LogAnalyticsWorkspaceConfig: &armazurearcdata.LogAnalyticsWorkspaceConfig{
-					PrimaryKey:  to.Ptr("<primary-key>"),
-					WorkspaceID: to.Ptr("<workspace-id>"),
+					PrimaryKey:  to.Ptr("********"),
+					WorkspaceID: to.Ptr("00000000-1111-2222-3333-444444444444"),
 				},
 				LogsDashboardCredential: &armazurearcdata.BasicLoginInformation{
-					Password: to.Ptr("<password>"),
-					Username: to.Ptr("<username>"),
+					Password: to.Ptr("********"),
+					Username: to.Ptr("username"),
 				},
 				MetricsDashboardCredential: &armazurearcdata.BasicLoginInformation{
-					Password: to.Ptr("<password>"),
-					Username: to.Ptr("<username>"),
+					Password: to.Ptr("********"),
+					Username: to.Ptr("username"),
 				},
 				OnPremiseProperty: &armazurearcdata.OnPremiseProperty{
-					ID:               to.Ptr("<id>"),
-					PublicSigningKey: to.Ptr("<public-signing-key>"),
+					ID:               to.Ptr("12345678-1234-1234-ab12-1a2b3c4d5e6f"),
+					PublicSigningKey: to.Ptr("publicOnPremSigningKey"),
 				},
 				UploadServicePrincipal: &armazurearcdata.UploadServicePrincipal{
-					Authority:    to.Ptr("<authority>"),
-					ClientID:     to.Ptr("<client-id>"),
-					ClientSecret: to.Ptr("<client-secret>"),
-					TenantID:     to.Ptr("<tenant-id>"),
+					Authority:    to.Ptr("https://login.microsoftonline.com/"),
+					ClientID:     to.Ptr("00000000-1111-2222-3333-444444444444"),
+					ClientSecret: to.Ptr("********"),
+					TenantID:     to.Ptr("00000000-1111-2222-3333-444444444444"),
 				},
 				UploadWatermark: &armazurearcdata.UploadWatermark{
 					Logs:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t }()),
@@ -130,11 +128,11 @@ func ExampleDataControllersClient_BeginPutDataController() {
 				},
 			},
 		},
-		&armazurearcdata.DataControllersClientBeginPutDataControllerOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -149,18 +147,18 @@ func ExampleDataControllersClient_BeginDeleteDataController() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewDataControllersClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewDataControllersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteDataController(ctx,
-		"<resource-group-name>",
-		"<data-controller-name>",
-		&armazurearcdata.DataControllersClientBeginDeleteDataControllerOptions{ResumeToken: ""})
+		"testrg",
+		"testdataController",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -173,13 +171,13 @@ func ExampleDataControllersClient_GetDataController() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewDataControllersClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewDataControllersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDataController(ctx,
-		"<resource-group-name>",
-		"<data-controller-name>",
+		"testrg",
+		"testdataController",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -189,19 +187,19 @@ func ExampleDataControllersClient_GetDataController() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/UpdateDataController.json
-func ExampleDataControllersClient_PatchDataController() {
+func ExampleDataControllersClient_BeginPatchDataController() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewDataControllersClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewDataControllersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.PatchDataController(ctx,
-		"<resource-group-name>",
-		"<data-controller-name>",
+	poller, err := client.BeginPatchDataController(ctx,
+		"testrg",
+		"testdataController1",
 		armazurearcdata.DataControllerUpdate{
 			Tags: map[string]*string{
 				"mytag": to.Ptr("myval"),
@@ -210,6 +208,10 @@ func ExampleDataControllersClient_PatchDataController() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// TODO: use response item
 	_ = res

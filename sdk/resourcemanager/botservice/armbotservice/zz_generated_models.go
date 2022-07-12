@@ -28,6 +28,16 @@ type AlexaChannel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetChannel implements the ChannelClassification interface for type AlexaChannel.
+func (a *AlexaChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       a.ChannelName,
+		Etag:              a.Etag,
+		ProvisioningState: a.ProvisioningState,
+		Location:          a.Location,
+	}
+}
+
 // AlexaChannelProperties - The parameters to provide for the Alexa channel.
 type AlexaChannelProperties struct {
 	// REQUIRED; The Alexa skill Id
@@ -322,6 +332,9 @@ type Channel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetChannel implements the ChannelClassification interface for type Channel.
+func (c *Channel) GetChannel() *Channel { return c }
+
 // ChannelResponseList - The list of bot service channel operation response.
 type ChannelResponseList struct {
 	// The link used to get the next page of bot service channel resources.
@@ -519,6 +532,16 @@ type DirectLineChannel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetChannel implements the ChannelClassification interface for type DirectLineChannel.
+func (d *DirectLineChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       d.ChannelName,
+		Etag:              d.Etag,
+		ProvisioningState: d.ProvisioningState,
+		Location:          d.Location,
+	}
+}
+
 // DirectLineChannelProperties - The parameters to provide for the Direct Line channel.
 type DirectLineChannelProperties struct {
 	// Direct Line embed code of the resource
@@ -584,6 +607,16 @@ type DirectLineSpeechChannel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetChannel implements the ChannelClassification interface for type DirectLineSpeechChannel.
+func (d *DirectLineSpeechChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       d.ChannelName,
+		Etag:              d.Etag,
+		ProvisioningState: d.ProvisioningState,
+		Location:          d.Location,
+	}
+}
+
 // DirectLineSpeechChannelProperties - The parameters to provide for the DirectLine Speech channel.
 type DirectLineSpeechChannelProperties struct {
 	// REQUIRED; The cognitive service region with this channel registration.
@@ -621,6 +654,16 @@ type EmailChannel struct {
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type EmailChannel.
+func (e *EmailChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       e.ChannelName,
+		Etag:              e.Etag,
+		ProvisioningState: e.ProvisioningState,
+		Location:          e.Location,
+	}
 }
 
 // EmailChannelProperties - The parameters to provide for the Email channel.
@@ -666,6 +709,16 @@ type FacebookChannel struct {
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type FacebookChannel.
+func (f *FacebookChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       f.ChannelName,
+		Etag:              f.Etag,
+		ProvisioningState: f.ProvisioningState,
+		Location:          f.Location,
+	}
 }
 
 // FacebookChannelProperties - The parameters to provide for the Facebook channel.
@@ -748,6 +801,16 @@ type KikChannel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetChannel implements the ChannelClassification interface for type KikChannel.
+func (k *KikChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       k.ChannelName,
+		Etag:              k.Etag,
+		ProvisioningState: k.ProvisioningState,
+		Location:          k.Location,
+	}
+}
+
 // KikChannelProperties - The parameters to provide for the Kik channel.
 type KikChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
@@ -779,6 +842,16 @@ type LineChannel struct {
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type LineChannel.
+func (l *LineChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       l.ChannelName,
+		Etag:              l.Etag,
+		ProvisioningState: l.ProvisioningState,
+		Location:          l.Location,
+	}
 }
 
 // LineChannelProperties - The parameters to provide for the Line channel.
@@ -869,6 +942,16 @@ type MsTeamsChannel struct {
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type MsTeamsChannel.
+func (m *MsTeamsChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       m.ChannelName,
+		Etag:              m.Etag,
+		ProvisioningState: m.ProvisioningState,
+		Location:          m.Location,
+	}
 }
 
 // MsTeamsChannelProperties - The parameters to provide for the Microsoft Teams channel.
@@ -1264,6 +1347,16 @@ type SkypeChannel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetChannel implements the ChannelClassification interface for type SkypeChannel.
+func (s *SkypeChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       s.ChannelName,
+		Etag:              s.Etag,
+		ProvisioningState: s.ProvisioningState,
+		Location:          s.Location,
+	}
+}
+
 // SkypeChannelProperties - The parameters to provide for the Microsoft Teams channel.
 type SkypeChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
@@ -1313,6 +1406,16 @@ type SlackChannel struct {
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type SlackChannel.
+func (s *SlackChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       s.ChannelName,
+		Etag:              s.Etag,
+		ProvisioningState: s.ProvisioningState,
+		Location:          s.Location,
+	}
 }
 
 // SlackChannelProperties - The parameters to provide for the Slack channel.
@@ -1369,6 +1472,16 @@ type SmsChannel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetChannel implements the ChannelClassification interface for type SmsChannel.
+func (s *SmsChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       s.ChannelName,
+		Etag:              s.Etag,
+		ProvisioningState: s.ProvisioningState,
+		Location:          s.Location,
+	}
+}
+
 // SmsChannelProperties - The parameters to provide for the Sms channel.
 type SmsChannelProperties struct {
 	// REQUIRED; The Sms account SID. Value only returned through POST to the action Channel List API, otherwise empty.
@@ -1405,6 +1518,16 @@ type TelegramChannel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetChannel implements the ChannelClassification interface for type TelegramChannel.
+func (t *TelegramChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       t.ChannelName,
+		Etag:              t.Etag,
+		ProvisioningState: t.ProvisioningState,
+		Location:          t.Location,
+	}
+}
+
 // TelegramChannelProperties - The parameters to provide for the Telegram channel.
 type TelegramChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
@@ -1433,6 +1556,16 @@ type WebChatChannel struct {
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type WebChatChannel.
+func (w *WebChatChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       w.ChannelName,
+		Etag:              w.Etag,
+		ProvisioningState: w.ProvisioningState,
+		Location:          w.Location,
+	}
 }
 
 // WebChatChannelProperties - The parameters to provide for the Web Chat channel.

@@ -23,7 +23,7 @@ func ExampleSolutionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewSolutionsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewSolutionsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,6 @@ func ExampleSolutionsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,14 +47,14 @@ func ExampleSolutionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewSolutionsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewSolutionsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<asc-location>",
-		"<security-solution-name>",
+		"myRg2",
+		"centralus",
+		"paloalto7",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

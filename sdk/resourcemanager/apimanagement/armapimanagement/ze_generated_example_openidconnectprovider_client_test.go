@@ -24,12 +24,12 @@ func ExampleOpenIDConnectProviderClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewOpenIDConnectProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewOpenIDConnectProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.OpenIDConnectProviderClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleOpenIDConnectProviderClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleOpenIDConnectProviderClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewOpenIDConnectProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewOpenIDConnectProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<opid>",
+		"rg1",
+		"apimService1",
+		"templateOpenIdConnect2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,14 +74,14 @@ func ExampleOpenIDConnectProviderClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewOpenIDConnectProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewOpenIDConnectProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<opid>",
+		"rg1",
+		"apimService1",
+		"templateOpenIdConnect2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,20 +97,20 @@ func ExampleOpenIDConnectProviderClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewOpenIDConnectProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewOpenIDConnectProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<opid>",
+		"rg1",
+		"apimService1",
+		"templateOpenIdConnect3",
 		armapimanagement.OpenidConnectProviderContract{
 			Properties: &armapimanagement.OpenidConnectProviderContractProperties{
-				ClientID:         to.Ptr("<client-id>"),
-				ClientSecret:     to.Ptr("<client-secret>"),
-				DisplayName:      to.Ptr("<display-name>"),
-				MetadataEndpoint: to.Ptr("<metadata-endpoint>"),
+				ClientID:         to.Ptr("oidprovidertemplate3"),
+				ClientSecret:     to.Ptr("x"),
+				DisplayName:      to.Ptr("templateoidprovider3"),
+				MetadataEndpoint: to.Ptr("https://oidprovider-template3.net"),
 			},
 		},
 		&armapimanagement.OpenIDConnectProviderClientCreateOrUpdateOptions{IfMatch: nil})
@@ -129,18 +128,18 @@ func ExampleOpenIDConnectProviderClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewOpenIDConnectProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewOpenIDConnectProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<opid>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"templateOpenIdConnect2",
+		"*",
 		armapimanagement.OpenidConnectProviderUpdateContract{
 			Properties: &armapimanagement.OpenidConnectProviderUpdateContractProperties{
-				ClientSecret: to.Ptr("<client-secret>"),
+				ClientSecret: to.Ptr("updatedsecret"),
 			},
 		},
 		nil)
@@ -158,15 +157,15 @@ func ExampleOpenIDConnectProviderClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewOpenIDConnectProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewOpenIDConnectProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<opid>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"templateOpenIdConnect3",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -180,14 +179,14 @@ func ExampleOpenIDConnectProviderClient_ListSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewOpenIDConnectProviderClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewOpenIDConnectProviderClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSecrets(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<opid>",
+		"rg1",
+		"apimService1",
+		"templateOpenIdConnect2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

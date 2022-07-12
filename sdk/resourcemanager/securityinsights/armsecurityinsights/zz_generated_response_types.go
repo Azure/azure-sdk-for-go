@@ -500,6 +500,46 @@ func (p *ProductSettingsClientUpdateResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse contains the response from method SecurityMLAnalyticsSettingsClient.CreateOrUpdate.
+type SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse struct {
+	SecurityMLAnalyticsSettingClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse.
+func (s *SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalSecurityMLAnalyticsSettingClassification(data)
+	if err != nil {
+		return err
+	}
+	s.SecurityMLAnalyticsSettingClassification = res
+	return nil
+}
+
+// SecurityMLAnalyticsSettingsClientDeleteResponse contains the response from method SecurityMLAnalyticsSettingsClient.Delete.
+type SecurityMLAnalyticsSettingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SecurityMLAnalyticsSettingsClientGetResponse contains the response from method SecurityMLAnalyticsSettingsClient.Get.
+type SecurityMLAnalyticsSettingsClientGetResponse struct {
+	SecurityMLAnalyticsSettingClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityMLAnalyticsSettingsClientGetResponse.
+func (s *SecurityMLAnalyticsSettingsClientGetResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalSecurityMLAnalyticsSettingClassification(data)
+	if err != nil {
+		return err
+	}
+	s.SecurityMLAnalyticsSettingClassification = res
+	return nil
+}
+
+// SecurityMLAnalyticsSettingsClientListResponse contains the response from method SecurityMLAnalyticsSettingsClient.List.
+type SecurityMLAnalyticsSettingsClientListResponse struct {
+	SecurityMLAnalyticsSettingsList
+}
+
 // SentinelOnboardingStatesClientCreateResponse contains the response from method SentinelOnboardingStatesClient.Create.
 type SentinelOnboardingStatesClientCreateResponse struct {
 	SentinelOnboardingState

@@ -24,18 +24,17 @@ func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewAFDProfilesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDProfilesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListResourceUsagePager("<resource-group-name>",
-		"<profile-name>",
+	pager := client.NewListResourceUsagePager("RG",
+		"profile1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,15 +50,15 @@ func ExampleAFDProfilesClient_CheckHostNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewAFDProfilesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewAFDProfilesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckHostNameAvailability(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"RG",
+		"profile1",
 		armcdn.CheckHostNameAvailabilityInput{
-			HostName: to.Ptr("<host-name>"),
+			HostName: to.Ptr("www.someDomain.net"),
 		},
 		nil)
 	if err != nil {

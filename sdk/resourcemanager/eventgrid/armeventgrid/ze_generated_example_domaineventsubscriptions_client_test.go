@@ -12,190 +12,189 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_Get.json
-func ExampleDomainEventSubscriptionsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventgrid.NewDomainEventSubscriptionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<domain-name>",
-		"<event-subscription-name>",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_CreateOrUpdate.json
-func ExampleDomainEventSubscriptionsClient_BeginCreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventgrid.NewDomainEventSubscriptionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<domain-name>",
-		"<event-subscription-name>",
-		armeventgrid.EventSubscription{
-			Properties: &armeventgrid.EventSubscriptionProperties{
-				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-					Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-						EndpointURL: to.Ptr("<endpoint-url>"),
-					},
-				},
-				Filter: &armeventgrid.EventSubscriptionFilter{
-					IsSubjectCaseSensitive: to.Ptr(false),
-					SubjectBeginsWith:      to.Ptr("<subject-begins-with>"),
-					SubjectEndsWith:        to.Ptr("<subject-ends-with>"),
-				},
-			},
-		},
-		&armeventgrid.DomainEventSubscriptionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_Delete.json
-func ExampleDomainEventSubscriptionsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventgrid.NewDomainEventSubscriptionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<domain-name>",
-		"<event-subscription-name>",
-		&armeventgrid.DomainEventSubscriptionsClientBeginDeleteOptions{ResumeToken: ""})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_Update.json
-func ExampleDomainEventSubscriptionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventgrid.NewDomainEventSubscriptionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<domain-name>",
-		"<event-subscription-name>",
-		armeventgrid.EventSubscriptionUpdateParameters{
-			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-				Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-					EndpointURL: to.Ptr("<endpoint-url>"),
-				},
-			},
-			Filter: &armeventgrid.EventSubscriptionFilter{
-				IsSubjectCaseSensitive: to.Ptr(true),
-				SubjectBeginsWith:      to.Ptr("<subject-begins-with>"),
-				SubjectEndsWith:        to.Ptr("<subject-ends-with>"),
-			},
-			Labels: []*string{
-				to.Ptr("label1"),
-				to.Ptr("label2")},
-		},
-		&armeventgrid.DomainEventSubscriptionsClientBeginUpdateOptions{ResumeToken: ""})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_List.json
-func ExampleDomainEventSubscriptionsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventgrid.NewDomainEventSubscriptionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<domain-name>",
-		nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-			return
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_GetDeliveryAttributes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainEventSubscriptions_GetDeliveryAttributes.json
 func ExampleDomainEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewDomainEventSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewDomainEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDeliveryAttributes(ctx,
-		"<resource-group-name>",
-		"<domain-name>",
-		"<event-subscription-name>",
+		"examplerg",
+		"exampleDomain1",
+		"examplesubscription1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// TODO: use response item
 	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainEventSubscriptions_Get.json
+func ExampleDomainEventSubscriptionsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventgrid.NewDomainEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Get(ctx,
+		"examplerg",
+		"exampleDomain1",
+		"examplesubscription1",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainEventSubscriptions_CreateOrUpdate.json
+func ExampleDomainEventSubscriptionsClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventgrid.NewDomainEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx,
+		"examplerg",
+		"exampleDomain1",
+		"exampleEventSubscriptionName1",
+		armeventgrid.EventSubscription{
+			Properties: &armeventgrid.EventSubscriptionProperties{
+				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+					Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+						EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+					},
+				},
+				Filter: &armeventgrid.EventSubscriptionFilter{
+					IsSubjectCaseSensitive: to.Ptr(false),
+					SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
+					SubjectEndsWith:        to.Ptr("ExampleSuffix"),
+				},
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainEventSubscriptions_Delete.json
+func ExampleDomainEventSubscriptionsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventgrid.NewDomainEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginDelete(ctx,
+		"examplerg",
+		"exampleDomain1",
+		"examplesubscription1",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainEventSubscriptions_Update.json
+func ExampleDomainEventSubscriptionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventgrid.NewDomainEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdate(ctx,
+		"examplerg",
+		"exampleDomain1",
+		"exampleEventSubscriptionName1",
+		armeventgrid.EventSubscriptionUpdateParameters{
+			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+				Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+					EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+				},
+			},
+			Filter: &armeventgrid.EventSubscriptionFilter{
+				IsSubjectCaseSensitive: to.Ptr(true),
+				SubjectBeginsWith:      to.Ptr("existingPrefix"),
+				SubjectEndsWith:        to.Ptr("newSuffix"),
+			},
+			Labels: []*string{
+				to.Ptr("label1"),
+				to.Ptr("label2")},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainEventSubscriptions_List.json
+func ExampleDomainEventSubscriptionsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventgrid.NewDomainEventSubscriptionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("examplerg",
+		"exampleDomain1",
+		&armeventgrid.DomainEventSubscriptionsClientListOptions{Filter: nil,
+			Top: nil,
+		})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }

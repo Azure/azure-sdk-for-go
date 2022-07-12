@@ -10,7 +10,7 @@ package armlogz
 
 const (
 	moduleName    = "armlogz"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

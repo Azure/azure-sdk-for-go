@@ -38,6 +38,11 @@ type ArcSettingsClientListByClusterResponse struct {
 	ArcSettingList
 }
 
+// ArcSettingsClientUpdateResponse contains the response from method ArcSettingsClient.Update.
+type ArcSettingsClientUpdateResponse struct {
+	ArcSetting
+}
+
 // ClustersClientCreateIdentityResponse contains the response from method ClustersClient.CreateIdentity.
 type ClustersClientCreateIdentityResponse struct {
 	ClusterIdentityResponse

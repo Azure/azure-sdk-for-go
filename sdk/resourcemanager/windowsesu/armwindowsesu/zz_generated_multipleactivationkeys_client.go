@@ -38,7 +38,7 @@ func NewMultipleActivationKeysClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewMultipleActivationKeysClient(subscriptionID string, credential azcore.To
 
 // BeginCreate - Create a MAK key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-09-16-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // multipleActivationKeyName - The name of the MAK key.
 // multipleActivationKey - Details of the MAK key.
 // options - MultipleActivationKeysClientBeginCreateOptions contains the optional parameters for the MultipleActivationKeysClient.BeginCreate
 // method.
-func (client *MultipleActivationKeysClient) BeginCreate(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysClientBeginCreateOptions) (*armruntime.Poller[MultipleActivationKeysClientCreateResponse], error) {
+func (client *MultipleActivationKeysClient) BeginCreate(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysClientBeginCreateOptions) (*runtime.Poller[MultipleActivationKeysClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, multipleActivationKeyName, multipleActivationKey, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[MultipleActivationKeysClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MultipleActivationKeysClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[MultipleActivationKeysClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MultipleActivationKeysClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create a MAK key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-09-16-preview
 func (client *MultipleActivationKeysClient) create(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, multipleActivationKeyName, multipleActivationKey, options)
 	if err != nil {
@@ -112,12 +114,13 @@ func (client *MultipleActivationKeysClient) createCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, multipleActivationKey)
 }
 
 // Delete - Delete a MAK key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-09-16-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // multipleActivationKeyName - The name of the MAK key.
 // options - MultipleActivationKeysClientDeleteOptions contains the optional parameters for the MultipleActivationKeysClient.Delete
@@ -159,12 +162,13 @@ func (client *MultipleActivationKeysClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a MAK key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-09-16-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // multipleActivationKeyName - The name of the MAK key.
 // options - MultipleActivationKeysClientGetOptions contains the optional parameters for the MultipleActivationKeysClient.Get
@@ -206,7 +210,7 @@ func (client *MultipleActivationKeysClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -221,10 +225,11 @@ func (client *MultipleActivationKeysClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - List all Multiple Activation Keys (MAK) created for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-09-16-preview
 // options - MultipleActivationKeysClientListOptions contains the optional parameters for the MultipleActivationKeysClient.List
 // method.
 func (client *MultipleActivationKeysClient) NewListPager(options *MultipleActivationKeysClientListOptions) *runtime.Pager[MultipleActivationKeysClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MultipleActivationKeysClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MultipleActivationKeysClientListResponse]{
 		More: func(page MultipleActivationKeysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -265,7 +270,7 @@ func (client *MultipleActivationKeysClient) listCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -280,11 +285,12 @@ func (client *MultipleActivationKeysClient) listHandleResponse(resp *http.Respon
 
 // NewListByResourceGroupPager - List all Multiple Activation Keys (MAK) in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-09-16-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MultipleActivationKeysClientListByResourceGroupOptions contains the optional parameters for the MultipleActivationKeysClient.ListByResourceGroup
 // method.
 func (client *MultipleActivationKeysClient) NewListByResourceGroupPager(resourceGroupName string, options *MultipleActivationKeysClientListByResourceGroupOptions) *runtime.Pager[MultipleActivationKeysClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MultipleActivationKeysClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MultipleActivationKeysClientListByResourceGroupResponse]{
 		More: func(page MultipleActivationKeysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -329,7 +335,7 @@ func (client *MultipleActivationKeysClient) listByResourceGroupCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -344,6 +350,7 @@ func (client *MultipleActivationKeysClient) listByResourceGroupHandleResponse(re
 
 // Update - Update a MAK key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-09-16-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // multipleActivationKeyName - The name of the MAK key.
 // multipleActivationKey - Details of the MAK key.
@@ -386,7 +393,7 @@ func (client *MultipleActivationKeysClient) updateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, multipleActivationKey)
 }
 

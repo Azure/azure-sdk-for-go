@@ -38,7 +38,7 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,9 +56,10 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // NewListPager - Lists the available SKUs supported by Microsoft.Storage for given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // options - SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
 func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SKUsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SKUsClientListResponse]{
 		More: func(page SKUsClientListResponse) bool {
 			return false
 		},
@@ -93,7 +94,7 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsCl
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

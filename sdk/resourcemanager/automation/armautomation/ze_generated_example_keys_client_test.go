@@ -23,13 +23,13 @@ func ExampleKeysClient_ListByAutomationAccount() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewKeysClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByAutomationAccount(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
+		"rg",
+		"MyAutomationAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

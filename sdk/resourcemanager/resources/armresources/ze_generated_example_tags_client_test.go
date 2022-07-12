@@ -29,7 +29,7 @@ func ExampleTagsClient_CreateOrUpdateAtScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtScope(ctx,
-		"<scope>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
 		armresources.TagsResource{
 			Properties: &armresources.Tags{
 				Tags: map[string]*string{
@@ -58,7 +58,7 @@ func ExampleTagsClient_GetAtScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtScope(ctx,
-		"<scope>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -40,7 +40,7 @@ func NewPartnerRegistrationsClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,25 +58,27 @@ func NewPartnerRegistrationsClient(subscriptionID string, credential azcore.Toke
 
 // BeginCreateOrUpdate - Creates a new partner registration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerRegistrationName - Name of the partner registration.
 // partnerRegistrationInfo - PartnerRegistration information.
 // options - PartnerRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerRegistrationsClient.BeginCreateOrUpdate
 // method.
-func (client *PartnerRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationInfo PartnerRegistration, options *PartnerRegistrationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PartnerRegistrationsClientCreateOrUpdateResponse], error) {
+func (client *PartnerRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationInfo PartnerRegistration, options *PartnerRegistrationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PartnerRegistrationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PartnerRegistrationsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PartnerRegistrationsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PartnerRegistrationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PartnerRegistrationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new partner registration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *PartnerRegistrationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationInfo PartnerRegistration, options *PartnerRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, options)
 	if err != nil {
@@ -112,32 +114,34 @@ func (client *PartnerRegistrationsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, partnerRegistrationInfo)
 }
 
 // BeginDelete - Deletes a partner registration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerRegistrationName - Name of the partner registration.
 // options - PartnerRegistrationsClientBeginDeleteOptions contains the optional parameters for the PartnerRegistrationsClient.BeginDelete
 // method.
-func (client *PartnerRegistrationsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsClientBeginDeleteOptions) (*armruntime.Poller[PartnerRegistrationsClientDeleteResponse], error) {
+func (client *PartnerRegistrationsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsClientBeginDeleteOptions) (*runtime.Poller[PartnerRegistrationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerRegistrationName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PartnerRegistrationsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PartnerRegistrationsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PartnerRegistrationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PartnerRegistrationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a partner registration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *PartnerRegistrationsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, partnerRegistrationName, options)
 	if err != nil {
@@ -173,13 +177,14 @@ func (client *PartnerRegistrationsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets a partner registration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerRegistrationName - Name of the partner registration.
 // options - PartnerRegistrationsClientGetOptions contains the optional parameters for the PartnerRegistrationsClient.Get
@@ -219,9 +224,9 @@ func (client *PartnerRegistrationsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -236,11 +241,12 @@ func (client *PartnerRegistrationsClient) getHandleResponse(resp *http.Response)
 
 // NewListByResourceGroupPager - List all the partner registrations under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - PartnerRegistrationsClientListByResourceGroupOptions contains the optional parameters for the PartnerRegistrationsClient.ListByResourceGroup
 // method.
 func (client *PartnerRegistrationsClient) NewListByResourceGroupPager(resourceGroupName string, options *PartnerRegistrationsClientListByResourceGroupOptions) *runtime.Pager[PartnerRegistrationsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PartnerRegistrationsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PartnerRegistrationsClientListByResourceGroupResponse]{
 		More: func(page PartnerRegistrationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -283,7 +289,7 @@ func (client *PartnerRegistrationsClient) listByResourceGroupCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -291,7 +297,7 @@ func (client *PartnerRegistrationsClient) listByResourceGroupCreateRequest(ctx c
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -306,10 +312,11 @@ func (client *PartnerRegistrationsClient) listByResourceGroupHandleResponse(resp
 
 // NewListBySubscriptionPager - List all the partner registrations under an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // options - PartnerRegistrationsClientListBySubscriptionOptions contains the optional parameters for the PartnerRegistrationsClient.ListBySubscription
 // method.
 func (client *PartnerRegistrationsClient) NewListBySubscriptionPager(options *PartnerRegistrationsClientListBySubscriptionOptions) *runtime.Pager[PartnerRegistrationsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PartnerRegistrationsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PartnerRegistrationsClientListBySubscriptionResponse]{
 		More: func(page PartnerRegistrationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -348,7 +355,7 @@ func (client *PartnerRegistrationsClient) listBySubscriptionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -356,7 +363,7 @@ func (client *PartnerRegistrationsClient) listBySubscriptionCreateRequest(ctx co
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -371,25 +378,27 @@ func (client *PartnerRegistrationsClient) listBySubscriptionHandleResponse(resp 
 
 // BeginUpdate - Updates a partner registration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // resourceGroupName - The name of the resource group within the user's subscription.
 // partnerRegistrationName - Name of the partner registration.
 // partnerRegistrationUpdateParameters - Partner registration update information.
 // options - PartnerRegistrationsClientBeginUpdateOptions contains the optional parameters for the PartnerRegistrationsClient.BeginUpdate
 // method.
-func (client *PartnerRegistrationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters PartnerRegistrationUpdateParameters, options *PartnerRegistrationsClientBeginUpdateOptions) (*armruntime.Poller[PartnerRegistrationsClientUpdateResponse], error) {
+func (client *PartnerRegistrationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters PartnerRegistrationUpdateParameters, options *PartnerRegistrationsClientBeginUpdateOptions) (*runtime.Poller[PartnerRegistrationsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PartnerRegistrationsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PartnerRegistrationsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PartnerRegistrationsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PartnerRegistrationsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a partner registration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 func (client *PartnerRegistrationsClient) update(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters PartnerRegistrationUpdateParameters, options *PartnerRegistrationsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, options)
 	if err != nil {
@@ -425,8 +434,8 @@ func (client *PartnerRegistrationsClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, partnerRegistrationUpdateParameters)
 }

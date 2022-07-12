@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/SessionHost_Get.json
@@ -24,14 +24,14 @@ func ExampleSessionHostsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewSessionHostsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewSessionHostsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<session-host-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"sessionHost1.microsoft.com",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleSessionHostsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewSessionHostsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewSessionHostsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<session-host-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"sessionHost1.microsoft.com",
 		&armdesktopvirtualization.SessionHostsClientDeleteOptions{Force: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,20 +68,20 @@ func ExampleSessionHostsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewSessionHostsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewSessionHostsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<session-host-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"sessionHost1.microsoft.com",
 		&armdesktopvirtualization.SessionHostsClientUpdateOptions{Force: to.Ptr(true),
 			SessionHost: &armdesktopvirtualization.SessionHostPatch{
 				Properties: &armdesktopvirtualization.SessionHostPatchProperties{
 					AllowNewSession: to.Ptr(true),
-					AssignedUser:    to.Ptr("<assigned-user>"),
-					FriendlyName:    to.Ptr("<friendly-name>"),
+					AssignedUser:    to.Ptr("user1@microsoft.com"),
+					FriendlyName:    to.Ptr("friendly"),
 				},
 			},
 		})
@@ -99,18 +99,17 @@ func ExampleSessionHostsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewSessionHostsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewSessionHostsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<host-pool-name>",
+	pager := client.NewListPager("resourceGroup1",
+		"hostPool1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -38,7 +38,7 @@ func NewPostgresInstancesClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewPostgresInstancesClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreate - Creates or replaces a postgres Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // postgresInstanceName - Name of Postgres Instance
 // resource - The postgres instance
 // options - PostgresInstancesClientBeginCreateOptions contains the optional parameters for the PostgresInstancesClient.BeginCreate
 // method.
-func (client *PostgresInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, postgresInstanceName string, resource PostgresInstance, options *PostgresInstancesClientBeginCreateOptions) (*armruntime.Poller[PostgresInstancesClientCreateResponse], error) {
+func (client *PostgresInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, postgresInstanceName string, resource PostgresInstance, options *PostgresInstancesClientBeginCreateOptions) (*runtime.Poller[PostgresInstancesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, postgresInstanceName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PostgresInstancesClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PostgresInstancesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PostgresInstancesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PostgresInstancesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates or replaces a postgres Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 func (client *PostgresInstancesClient) create(ctx context.Context, resourceGroupName string, postgresInstanceName string, resource PostgresInstance, options *PostgresInstancesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, postgresInstanceName, resource, options)
 	if err != nil {
@@ -114,30 +116,32 @@ func (client *PostgresInstancesClient) createCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
 }
 
 // BeginDelete - Deletes a postgres Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // postgresInstanceName - Name of Postgres Instance
 // options - PostgresInstancesClientBeginDeleteOptions contains the optional parameters for the PostgresInstancesClient.BeginDelete
 // method.
-func (client *PostgresInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, postgresInstanceName string, options *PostgresInstancesClientBeginDeleteOptions) (*armruntime.Poller[PostgresInstancesClientDeleteResponse], error) {
+func (client *PostgresInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, postgresInstanceName string, options *PostgresInstancesClientBeginDeleteOptions) (*runtime.Poller[PostgresInstancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, postgresInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PostgresInstancesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PostgresInstancesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PostgresInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PostgresInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a postgres Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 func (client *PostgresInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, postgresInstanceName string, options *PostgresInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, postgresInstanceName, options)
 	if err != nil {
@@ -175,12 +179,13 @@ func (client *PostgresInstancesClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves a postgres Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // postgresInstanceName - Name of Postgres Instance
 // options - PostgresInstancesClientGetOptions contains the optional parameters for the PostgresInstancesClient.Get method.
@@ -221,7 +226,7 @@ func (client *PostgresInstancesClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -236,9 +241,10 @@ func (client *PostgresInstancesClient) getHandleResponse(resp *http.Response) (P
 
 // NewListPager - List postgres Instance resources in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // options - PostgresInstancesClientListOptions contains the optional parameters for the PostgresInstancesClient.List method.
 func (client *PostgresInstancesClient) NewListPager(options *PostgresInstancesClientListOptions) *runtime.Pager[PostgresInstancesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PostgresInstancesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PostgresInstancesClientListResponse]{
 		More: func(page PostgresInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -279,7 +285,7 @@ func (client *PostgresInstancesClient) listCreateRequest(ctx context.Context, op
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -294,11 +300,12 @@ func (client *PostgresInstancesClient) listHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Get a postgres Instances list by Resource group name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // options - PostgresInstancesClientListByResourceGroupOptions contains the optional parameters for the PostgresInstancesClient.ListByResourceGroup
 // method.
 func (client *PostgresInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *PostgresInstancesClientListByResourceGroupOptions) *runtime.Pager[PostgresInstancesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PostgresInstancesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PostgresInstancesClientListByResourceGroupResponse]{
 		More: func(page PostgresInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -343,7 +350,7 @@ func (client *PostgresInstancesClient) listByResourceGroupCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -358,6 +365,7 @@ func (client *PostgresInstancesClient) listByResourceGroupHandleResponse(resp *h
 
 // Update - Updates a postgres Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // postgresInstanceName - Name of Postgres Instance
 // parameters - The Postgres Instance.
@@ -400,7 +408,7 @@ func (client *PostgresInstancesClient) updateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

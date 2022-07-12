@@ -39,7 +39,7 @@ func NewApplicationPackageClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewApplicationPackageClient(subscriptionID string, credential azcore.TokenC
 // uploaded. This needs to be done before an ApplicationPackage can be used on Pools or
 // Tasks.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
@@ -111,7 +112,7 @@ func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -129,6 +130,7 @@ func (client *ApplicationPackageClient) activateHandleResponse(resp *http.Respon
 // ApplicationPackageActive before it can be used. If the auto storage account was configured to use storage keys, the URL
 // returned will contain a SAS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
@@ -180,7 +182,7 @@ func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -198,6 +200,7 @@ func (client *ApplicationPackageClient) createHandleResponse(resp *http.Response
 
 // Delete - Deletes an application package record and its associated binary file.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
@@ -249,12 +252,13 @@ func (client *ApplicationPackageClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified application package.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
@@ -305,7 +309,7 @@ func (client *ApplicationPackageClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -320,12 +324,13 @@ func (client *ApplicationPackageClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Lists all of the application packages in the specified application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // applicationName - The name of the application. This must be unique within the account.
 // options - ApplicationPackageClientListOptions contains the optional parameters for the ApplicationPackageClient.List method.
 func (client *ApplicationPackageClient) NewListPager(resourceGroupName string, accountName string, applicationName string, options *ApplicationPackageClientListOptions) *runtime.Pager[ApplicationPackageClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationPackageClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationPackageClientListResponse]{
 		More: func(page ApplicationPackageClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -381,7 +386,7 @@ func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, r
 	}
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

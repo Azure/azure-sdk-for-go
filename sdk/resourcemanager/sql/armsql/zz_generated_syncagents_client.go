@@ -38,7 +38,7 @@ func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates or updates a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server on which the sync agent is hosted.
@@ -63,20 +64,21 @@ func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredentia
 // parameters - The requested sync agent resource state.
 // options - SyncAgentsClientBeginCreateOrUpdateOptions contains the optional parameters for the SyncAgentsClient.BeginCreateOrUpdate
 // method.
-func (client *SyncAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SyncAgentsClientCreateOrUpdateResponse], error) {
+func (client *SyncAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SyncAgentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, syncAgentName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SyncAgentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SyncAgentsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SyncAgentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SyncAgentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *SyncAgentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, parameters, options)
 	if err != nil {
@@ -118,31 +120,33 @@ func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server on which the sync agent is hosted.
 // syncAgentName - The name of the sync agent.
 // options - SyncAgentsClientBeginDeleteOptions contains the optional parameters for the SyncAgentsClient.BeginDelete method.
-func (client *SyncAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (*armruntime.Poller[SyncAgentsClientDeleteResponse], error) {
+func (client *SyncAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (*runtime.Poller[SyncAgentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, syncAgentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SyncAgentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SyncAgentsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SyncAgentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SyncAgentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *SyncAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, options)
 	if err != nil {
@@ -189,6 +193,7 @@ func (client *SyncAgentsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // GenerateKey - Generates a sync agent key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server on which the sync agent is hosted.
@@ -235,7 +240,7 @@ func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -250,6 +255,7 @@ func (client *SyncAgentsClient) generateKeyHandleResponse(resp *http.Response) (
 
 // Get - Gets a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server on which the sync agent is hosted.
@@ -296,7 +302,7 @@ func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -311,12 +317,13 @@ func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgen
 
 // NewListByServerPager - Lists sync agents in a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server on which the sync agent is hosted.
 // options - SyncAgentsClientListByServerOptions contains the optional parameters for the SyncAgentsClient.ListByServer method.
 func (client *SyncAgentsClient) NewListByServerPager(resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) *runtime.Pager[SyncAgentsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SyncAgentsClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SyncAgentsClientListByServerResponse]{
 		More: func(page SyncAgentsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -365,7 +372,7 @@ func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -380,6 +387,7 @@ func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) 
 
 // NewListLinkedDatabasesPager - Lists databases linked to a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server on which the sync agent is hosted.
@@ -387,7 +395,7 @@ func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) 
 // options - SyncAgentsClientListLinkedDatabasesOptions contains the optional parameters for the SyncAgentsClient.ListLinkedDatabases
 // method.
 func (client *SyncAgentsClient) NewListLinkedDatabasesPager(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) *runtime.Pager[SyncAgentsClientListLinkedDatabasesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SyncAgentsClientListLinkedDatabasesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SyncAgentsClientListLinkedDatabasesResponse]{
 		More: func(page SyncAgentsClientListLinkedDatabasesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -440,7 +448,7 @@ func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

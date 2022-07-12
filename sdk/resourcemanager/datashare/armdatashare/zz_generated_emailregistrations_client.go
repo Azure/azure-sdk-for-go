@@ -36,7 +36,7 @@ func NewEmailRegistrationsClient(credential azcore.TokenCredential, options *arm
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewEmailRegistrationsClient(credential azcore.TokenCredential, options *arm
 
 // ActivateEmail - Activate the email registration for the current tenant
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // location - Location of the activation.
 // emailRegistration - The payload for tenant domain activation.
 // options - EmailRegistrationsClientActivateEmailOptions contains the optional parameters for the EmailRegistrationsClient.ActivateEmail
@@ -86,7 +87,7 @@ func (client *EmailRegistrationsClient) activateEmailCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, emailRegistration)
 }
 
@@ -101,6 +102,7 @@ func (client *EmailRegistrationsClient) activateEmailHandleResponse(resp *http.R
 
 // RegisterEmail - Register an email for the current tenant
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // location - Location of the registration
 // options - EmailRegistrationsClientRegisterEmailOptions contains the optional parameters for the EmailRegistrationsClient.RegisterEmail
 // method.
@@ -133,7 +135,7 @@ func (client *EmailRegistrationsClient) registerEmailCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

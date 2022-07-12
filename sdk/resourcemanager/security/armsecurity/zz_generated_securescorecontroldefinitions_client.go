@@ -38,7 +38,7 @@ func NewSecureScoreControlDefinitionsClient(subscriptionID string, credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,10 +56,11 @@ func NewSecureScoreControlDefinitionsClient(subscriptionID string, credential az
 
 // NewListPager - List the available security controls, their assessments, and the max score
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - SecureScoreControlDefinitionsClientListOptions contains the optional parameters for the SecureScoreControlDefinitionsClient.List
 // method.
 func (client *SecureScoreControlDefinitionsClient) NewListPager(options *SecureScoreControlDefinitionsClientListOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecureScoreControlDefinitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecureScoreControlDefinitionsClientListResponse]{
 		More: func(page SecureScoreControlDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -96,7 +97,7 @@ func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -112,10 +113,11 @@ func (client *SecureScoreControlDefinitionsClient) listHandleResponse(resp *http
 // NewListBySubscriptionPager - For a specified subscription, list the available security controls, their assessments, and
 // the max score
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - SecureScoreControlDefinitionsClientListBySubscriptionOptions contains the optional parameters for the SecureScoreControlDefinitionsClient.ListBySubscription
 // method.
 func (client *SecureScoreControlDefinitionsClient) NewListBySubscriptionPager(options *SecureScoreControlDefinitionsClientListBySubscriptionOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecureScoreControlDefinitionsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecureScoreControlDefinitionsClientListBySubscriptionResponse]{
 		More: func(page SecureScoreControlDefinitionsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -156,7 +158,7 @@ func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateReque
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

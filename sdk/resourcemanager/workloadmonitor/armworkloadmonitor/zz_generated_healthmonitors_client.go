@@ -37,7 +37,7 @@ func NewHealthMonitorsClient(credential azcore.TokenCredential, options *arm.Cli
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,6 +55,7 @@ func NewHealthMonitorsClient(credential azcore.TokenCredential, options *arm.Cli
 // Get - Get the current health status of a monitor of a virtual machine. Optional parameter: $expand (retrieve the monitor's
 // evidence and configuration).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // subscriptionID - The subscription Id of the virtual machine.
 // resourceGroupName - The resource group of the virtual machine.
 // providerName - The provider name (ex: Microsoft.Compute for virtual machines).
@@ -114,7 +115,7 @@ func (client *HealthMonitorsClient) getCreateRequest(ctx context.Context, subscr
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -130,6 +131,7 @@ func (client *HealthMonitorsClient) getHandleResponse(resp *http.Response) (Heal
 // GetStateChange - Get the health state change of a monitor of a virtual machine at the provided timestamp. Optional parameter:
 // $expand (retrieve the monitor's evidence and configuration).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // subscriptionID - The subscription Id of the virtual machine.
 // resourceGroupName - The resource group of the virtual machine.
 // providerName - The provider name (ex: Microsoft.Compute for virtual machines).
@@ -195,7 +197,7 @@ func (client *HealthMonitorsClient) getStateChangeCreateRequest(ctx context.Cont
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -211,6 +213,7 @@ func (client *HealthMonitorsClient) getStateChangeHandleResponse(resp *http.Resp
 // NewListPager - Get the current health status of all monitors of a virtual machine. Optional parameters: $expand (retrieve
 // the monitor's evidence and configuration) and $filter (filter by monitor name).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // subscriptionID - The subscription Id of the virtual machine.
 // resourceGroupName - The resource group of the virtual machine.
 // providerName - The provider name (ex: Microsoft.Compute for virtual machines).
@@ -218,7 +221,7 @@ func (client *HealthMonitorsClient) getStateChangeHandleResponse(resp *http.Resp
 // resourceName - The name of the virtual machine.
 // options - HealthMonitorsClientListOptions contains the optional parameters for the HealthMonitorsClient.List method.
 func (client *HealthMonitorsClient) NewListPager(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsClientListOptions) *runtime.Pager[HealthMonitorsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[HealthMonitorsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[HealthMonitorsClientListResponse]{
 		More: func(page HealthMonitorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -281,7 +284,7 @@ func (client *HealthMonitorsClient) listCreateRequest(ctx context.Context, subsc
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -298,6 +301,7 @@ func (client *HealthMonitorsClient) listHandleResponse(resp *http.Response) (Hea
 // (default is the last 24 hours). Optional parameters: $expand (retrieve the monitor's evidence and
 // configuration) and $filter (filter by heartbeat condition).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // subscriptionID - The subscription Id of the virtual machine.
 // resourceGroupName - The resource group of the virtual machine.
 // providerName - The provider name (ex: Microsoft.Compute for virtual machines).
@@ -307,7 +311,7 @@ func (client *HealthMonitorsClient) listHandleResponse(resp *http.Response) (Hea
 // options - HealthMonitorsClientListStateChangesOptions contains the optional parameters for the HealthMonitorsClient.ListStateChanges
 // method.
 func (client *HealthMonitorsClient) NewListStateChangesPager(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientListStateChangesOptions) *runtime.Pager[HealthMonitorsClientListStateChangesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[HealthMonitorsClientListStateChangesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[HealthMonitorsClientListStateChangesResponse]{
 		More: func(page HealthMonitorsClientListStateChangesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -380,7 +384,7 @@ func (client *HealthMonitorsClient) listStateChangesCreateRequest(ctx context.Co
 		reqQP.Set("endTimestampUtc", options.EndTimestampUTC.Format(time.RFC3339Nano))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

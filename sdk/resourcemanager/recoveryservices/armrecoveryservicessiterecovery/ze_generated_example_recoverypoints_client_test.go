@@ -23,21 +23,20 @@ func ExampleRecoveryPointsClient_NewListByReplicationProtectedItemsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewRecoveryPointsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewRecoveryPointsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReplicationProtectedItemsPager("<fabric-name>",
-		"<protection-container-name>",
-		"<replicated-protected-item-name>",
+	pager := client.NewListByReplicationProtectedItemsPager("cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+		"f8491e4f-817a-40dd-a90c-af773978c75b",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,17 +52,17 @@ func ExampleRecoveryPointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewRecoveryPointsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewRecoveryPointsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<replicated-protected-item-name>",
-		"<recovery-point-name>",
+		"cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+		"f8491e4f-817a-40dd-a90c-af773978c75b",
+		"b22134ea-620c-474b-9fa5-3c1cb47708e3",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

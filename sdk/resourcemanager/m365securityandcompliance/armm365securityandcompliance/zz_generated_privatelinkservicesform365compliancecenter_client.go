@@ -38,7 +38,7 @@ func NewPrivateLinkServicesForM365ComplianceCenterClient(subscriptionID string, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewPrivateLinkServicesForM365ComplianceCenterClient(subscriptionID string, 
 
 // BeginCreateOrUpdate - Create or update the metadata of a privateLinkServicesForM365ComplianceCenter instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateLinkServicesForM365ComplianceCenterDescription - The service instance metadata.
 // options - PrivateLinkServicesForM365ComplianceCenterClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the PrivateLinkServicesForM365ComplianceCenterClient.BeginCreateOrUpdate method.
-func (client *PrivateLinkServicesForM365ComplianceCenterClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForM365ComplianceCenterDescription PrivateLinkServicesForM365ComplianceCenterDescription, options *PrivateLinkServicesForM365ComplianceCenterClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse], error) {
+func (client *PrivateLinkServicesForM365ComplianceCenterClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForM365ComplianceCenterDescription PrivateLinkServicesForM365ComplianceCenterDescription, options *PrivateLinkServicesForM365ComplianceCenterClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForM365ComplianceCenterDescription, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update the metadata of a privateLinkServicesForM365ComplianceCenter instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateLinkServicesForM365ComplianceCenterClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForM365ComplianceCenterDescription PrivateLinkServicesForM365ComplianceCenterDescription, options *PrivateLinkServicesForM365ComplianceCenterClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, privateLinkServicesForM365ComplianceCenterDescription, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) createOrUpdateCr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateLinkServicesForM365ComplianceCenterDescription)
 }
 
 // BeginDelete - Delete a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateLinkServicesForM365ComplianceCenterClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.BeginDelete
 // method.
-func (client *PrivateLinkServicesForM365ComplianceCenterClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForM365ComplianceCenterClientBeginDeleteOptions) (*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse], error) {
+func (client *PrivateLinkServicesForM365ComplianceCenterClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForM365ComplianceCenterClientBeginDeleteOptions) (*runtime.Poller[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateLinkServicesForM365ComplianceCenterClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForM365ComplianceCenterClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
@@ -177,12 +181,13 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) deleteCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the metadata of a privateLinkServicesForM365ComplianceCenter resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateLinkServicesForM365ComplianceCenterClientGetOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.Get
@@ -224,7 +229,7 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) getCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,10 +244,11 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) getHandleRespons
 
 // NewListPager - Get all the privateLinkServicesForM365ComplianceCenter instances in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // options - PrivateLinkServicesForM365ComplianceCenterClientListOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.List
 // method.
 func (client *PrivateLinkServicesForM365ComplianceCenterClient) NewListPager(options *PrivateLinkServicesForM365ComplianceCenterClientListOptions) *runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForM365ComplianceCenterClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesForM365ComplianceCenterClientListResponse]{
 		More: func(page PrivateLinkServicesForM365ComplianceCenterClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -283,7 +289,7 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) listCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -298,11 +304,12 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) listHandleRespon
 
 // NewListByResourceGroupPager - Get all the service instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupOptions contains the optional parameters for
 // the PrivateLinkServicesForM365ComplianceCenterClient.ListByResourceGroup method.
 func (client *PrivateLinkServicesForM365ComplianceCenterClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -347,7 +354,7 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) listByResourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -362,27 +369,29 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) listByResourceGr
 
 // BeginUpdate - Update the metadata of a privateLinkServicesForM365ComplianceCenter instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // servicePatchDescription - The service instance metadata and security metadata.
 // options - PrivateLinkServicesForM365ComplianceCenterClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.BeginUpdate
 // method.
-func (client *PrivateLinkServicesForM365ComplianceCenterClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForM365ComplianceCenterClientBeginUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse], error) {
+func (client *PrivateLinkServicesForM365ComplianceCenterClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForM365ComplianceCenterClientBeginUpdateOptions) (*runtime.Poller[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update the metadata of a privateLinkServicesForM365ComplianceCenter instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateLinkServicesForM365ComplianceCenterClient) update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForM365ComplianceCenterClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
 	if err != nil {
@@ -420,6 +429,6 @@ func (client *PrivateLinkServicesForM365ComplianceCenterClient) updateCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, servicePatchDescription)
 }

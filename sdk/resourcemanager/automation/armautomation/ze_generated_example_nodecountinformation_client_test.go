@@ -23,13 +23,13 @@ func ExampleNodeCountInformationClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewNodeCountInformationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewNodeCountInformationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
+		"rg",
+		"myAutomationAccount33",
 		armautomation.CountTypeNodeconfiguration,
 		nil)
 	if err != nil {

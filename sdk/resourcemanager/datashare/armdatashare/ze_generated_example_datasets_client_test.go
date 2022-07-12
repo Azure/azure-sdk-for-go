@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare"
@@ -26,15 +24,15 @@ func ExampleDataSetsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewDataSetsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewDataSetsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<data-set-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"Dataset1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,23 +48,23 @@ func ExampleDataSetsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewDataSetsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewDataSetsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<data-set-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"Dataset1",
 		&armdatashare.BlobDataSet{
 			Kind: to.Ptr(armdatashare.DataSetKindBlob),
 			Properties: &armdatashare.BlobProperties{
-				ContainerName:      to.Ptr("<container-name>"),
-				FilePath:           to.Ptr("<file-path>"),
-				ResourceGroup:      to.Ptr("<resource-group>"),
-				StorageAccountName: to.Ptr("<storage-account-name>"),
-				SubscriptionID:     to.Ptr("<subscription-id>"),
+				ContainerName:      to.Ptr("C1"),
+				FilePath:           to.Ptr("file21"),
+				ResourceGroup:      to.Ptr("SampleResourceGroup"),
+				StorageAccountName: to.Ptr("storage2"),
+				SubscriptionID:     to.Ptr("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a"),
 			},
 		},
 		nil)
@@ -84,20 +82,20 @@ func ExampleDataSetsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewDataSetsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewDataSetsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<data-set-name>",
-		&armdatashare.DataSetsClientBeginDeleteOptions{ResumeToken: ""})
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"Dataset1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -110,13 +108,13 @@ func ExampleDataSetsClient_NewListBySharePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewDataSetsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewDataSetsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySharePager("<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+	pager := client.NewListBySharePager("SampleResourceGroup",
+		"Account1",
+		"Share1",
 		&armdatashare.DataSetsClientListByShareOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
@@ -125,7 +123,6 @@ func ExampleDataSetsClient_NewListBySharePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

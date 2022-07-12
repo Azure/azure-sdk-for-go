@@ -24,14 +24,14 @@ func ExampleConnectionTypeClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionTypeClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionTypeClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<connection-type-name>",
+		"rg",
+		"myAutomationAccount22",
+		"myCT",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExampleConnectionTypeClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionTypeClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionTypeClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<connection-type-name>",
+		"rg",
+		"myAutomationAccount22",
+		"myCT",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,30 +68,30 @@ func ExampleConnectionTypeClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionTypeClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionTypeClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<connection-type-name>",
+		"rg",
+		"myAutomationAccount22",
+		"myCT",
 		armautomation.ConnectionTypeCreateOrUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("myCT"),
 			Properties: &armautomation.ConnectionTypeCreateOrUpdateProperties{
 				FieldDefinitions: map[string]*armautomation.FieldDefinition{
 					"myBoolField": {
-						Type:        to.Ptr("<type>"),
+						Type:        to.Ptr("bool"),
 						IsEncrypted: to.Ptr(false),
 						IsOptional:  to.Ptr(false),
 					},
 					"myStringField": {
-						Type:        to.Ptr("<type>"),
+						Type:        to.Ptr("string"),
 						IsEncrypted: to.Ptr(false),
 						IsOptional:  to.Ptr(false),
 					},
 					"myStringFieldEncrypted": {
-						Type:        to.Ptr("<type>"),
+						Type:        to.Ptr("string"),
 						IsEncrypted: to.Ptr(true),
 						IsOptional:  to.Ptr(false),
 					},
@@ -112,18 +112,17 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionTypeClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionTypeClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount25",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

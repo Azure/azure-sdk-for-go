@@ -38,7 +38,7 @@ func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Gets a database service objective.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -102,7 +103,7 @@ func (client *ServiceObjectivesClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,13 +118,14 @@ func (client *ServiceObjectivesClient) getHandleResponse(resp *http.Response) (S
 
 // NewListByServerPager - Returns database service objectives.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServiceObjectivesClientListByServerOptions contains the optional parameters for the ServiceObjectivesClient.ListByServer
 // method.
 func (client *ServiceObjectivesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) *runtime.Pager[ServiceObjectivesClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServiceObjectivesClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServiceObjectivesClientListByServerResponse]{
 		More: func(page ServiceObjectivesClientListByServerResponse) bool {
 			return false
 		},
@@ -166,7 +168,7 @@ func (client *ServiceObjectivesClient) listByServerCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -39,7 +39,7 @@ func NewIntegrationServiceEnvironmentsClient(subscriptionID string, credential a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewIntegrationServiceEnvironmentsClient(subscriptionID string, credential a
 
 // BeginCreateOrUpdate - Creates or updates an integration service environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // integrationServiceEnvironment - The integration service environment.
 // options - IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginCreateOrUpdate
 // method.
-func (client *IntegrationServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse], error) {
+func (client *IntegrationServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an integration service environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 func (client *IntegrationServiceEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
 	if err != nil {
@@ -113,12 +115,13 @@ func (client *IntegrationServiceEnvironmentsClient) createOrUpdateCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, integrationServiceEnvironment)
 }
 
 // Delete - Deletes an integration service environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // options - IntegrationServiceEnvironmentsClientDeleteOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Delete
@@ -160,12 +163,13 @@ func (client *IntegrationServiceEnvironmentsClient) deleteCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an integration service environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // options - IntegrationServiceEnvironmentsClientGetOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Get
@@ -207,7 +211,7 @@ func (client *IntegrationServiceEnvironmentsClient) getCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -222,11 +226,12 @@ func (client *IntegrationServiceEnvironmentsClient) getHandleResponse(resp *http
 
 // NewListByResourceGroupPager - Gets a list of integration service environments by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // options - IntegrationServiceEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListByResourceGroup
 // method.
 func (client *IntegrationServiceEnvironmentsClient) NewListByResourceGroupPager(resourceGroup string, options *IntegrationServiceEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationServiceEnvironmentsClientListByResourceGroupResponse]{
 		More: func(page IntegrationServiceEnvironmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -274,7 +279,7 @@ func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupCreateReq
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -289,10 +294,11 @@ func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupHandleRes
 
 // NewListBySubscriptionPager - Gets a list of integration service environments by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // options - IntegrationServiceEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListBySubscription
 // method.
 func (client *IntegrationServiceEnvironmentsClient) NewListBySubscriptionPager(options *IntegrationServiceEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationServiceEnvironmentsClientListBySubscriptionResponse]{
 		More: func(page IntegrationServiceEnvironmentsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -336,7 +342,7 @@ func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionCreateRequ
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -351,6 +357,7 @@ func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionHandleResp
 
 // Restart - Restarts an integration service environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // options - IntegrationServiceEnvironmentsClientRestartOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Restart
@@ -392,31 +399,33 @@ func (client *IntegrationServiceEnvironmentsClient) restartCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Updates an integration service environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // integrationServiceEnvironment - The integration service environment.
 // options - IntegrationServiceEnvironmentsClientBeginUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginUpdate
 // method.
-func (client *IntegrationServiceEnvironmentsClient) BeginUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginUpdateOptions) (*armruntime.Poller[IntegrationServiceEnvironmentsClientUpdateResponse], error) {
+func (client *IntegrationServiceEnvironmentsClient) BeginUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginUpdateOptions) (*runtime.Poller[IntegrationServiceEnvironmentsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationServiceEnvironmentsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationServiceEnvironmentsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationServiceEnvironmentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationServiceEnvironmentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an integration service environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 func (client *IntegrationServiceEnvironmentsClient) update(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
 	if err != nil {
@@ -454,6 +463,6 @@ func (client *IntegrationServiceEnvironmentsClient) updateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, integrationServiceEnvironment)
 }

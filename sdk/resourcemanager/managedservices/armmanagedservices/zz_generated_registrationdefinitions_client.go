@@ -36,7 +36,7 @@ func NewRegistrationDefinitionsClient(credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,25 +53,27 @@ func NewRegistrationDefinitionsClient(credential azcore.TokenCredential, options
 
 // BeginCreateOrUpdate - Creates or updates a registration definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // registrationDefinitionID - The GUID of the registration definition.
 // scope - The scope of the resource.
 // requestBody - The parameters required to create a new registration definition.
 // options - RegistrationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationDefinitionsClient.BeginCreateOrUpdate
 // method.
-func (client *RegistrationDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition, options *RegistrationDefinitionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[RegistrationDefinitionsClientCreateOrUpdateResponse], error) {
+func (client *RegistrationDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition, options *RegistrationDefinitionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[RegistrationDefinitionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, registrationDefinitionID, scope, requestBody, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistrationDefinitionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistrationDefinitionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistrationDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistrationDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a registration definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 func (client *RegistrationDefinitionsClient) createOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition, options *RegistrationDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, registrationDefinitionID, scope, requestBody, options)
 	if err != nil {
@@ -102,12 +104,13 @@ func (client *RegistrationDefinitionsClient) createOrUpdateCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, requestBody)
 }
 
 // Delete - Deletes the registration definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // registrationDefinitionID - The GUID of the registration definition.
 // scope - The scope of the resource.
 // options - RegistrationDefinitionsClientDeleteOptions contains the optional parameters for the RegistrationDefinitionsClient.Delete
@@ -142,12 +145,13 @@ func (client *RegistrationDefinitionsClient) deleteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the registration definition details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // registrationDefinitionID - The GUID of the registration definition.
 // options - RegistrationDefinitionsClientGetOptions contains the optional parameters for the RegistrationDefinitionsClient.Get
@@ -182,7 +186,7 @@ func (client *RegistrationDefinitionsClient) getCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -197,11 +201,12 @@ func (client *RegistrationDefinitionsClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Gets a list of the registration definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // options - RegistrationDefinitionsClientListOptions contains the optional parameters for the RegistrationDefinitionsClient.List
 // method.
 func (client *RegistrationDefinitionsClient) NewListPager(scope string, options *RegistrationDefinitionsClientListOptions) *runtime.Pager[RegistrationDefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegistrationDefinitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegistrationDefinitionsClientListResponse]{
 		More: func(page RegistrationDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -242,7 +247,7 @@ func (client *RegistrationDefinitionsClient) listCreateRequest(ctx context.Conte
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

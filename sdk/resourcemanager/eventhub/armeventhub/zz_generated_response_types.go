@@ -8,6 +8,26 @@
 
 package armeventhub
 
+// ApplicationGroupClientCreateOrUpdateApplicationGroupResponse contains the response from method ApplicationGroupClient.CreateOrUpdateApplicationGroup.
+type ApplicationGroupClientCreateOrUpdateApplicationGroupResponse struct {
+	ApplicationGroup
+}
+
+// ApplicationGroupClientDeleteResponse contains the response from method ApplicationGroupClient.Delete.
+type ApplicationGroupClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ApplicationGroupClientGetResponse contains the response from method ApplicationGroupClient.Get.
+type ApplicationGroupClientGetResponse struct {
+	ApplicationGroup
+}
+
+// ApplicationGroupClientListByNamespaceResponse contains the response from method ApplicationGroupClient.ListByNamespace.
+type ApplicationGroupClientListByNamespaceResponse struct {
+	ApplicationGroupListResult
+}
+
 // ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.CreateOrUpdate.
 type ClustersClientCreateOrUpdateResponse struct {
 	Cluster
@@ -256,6 +276,16 @@ type NamespacesClientRegenerateKeysResponse struct {
 // NamespacesClientUpdateResponse contains the response from method NamespacesClient.Update.
 type NamespacesClientUpdateResponse struct {
 	EHNamespace
+}
+
+// NetworkSecurityPerimeterConfigurationClientListResponse contains the response from method NetworkSecurityPerimeterConfigurationClient.List.
+type NetworkSecurityPerimeterConfigurationClientListResponse struct {
+	NetworkSecurityPerimeterConfigurationList
+}
+
+// NetworkSecurityPerimeterConfigurationsClientCreateOrUpdateResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.CreateOrUpdate.
+type NetworkSecurityPerimeterConfigurationsClientCreateOrUpdateResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.

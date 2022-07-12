@@ -39,7 +39,7 @@ func NewJobStepsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewJobStepsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates or updates a job step. This will implicitly create a new job version.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -114,7 +115,7 @@ func (client *JobStepsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -129,6 +130,7 @@ func (client *JobStepsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a job step. This will implicitly create a new job version.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -190,6 +192,7 @@ func (client *JobStepsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets a job step in a job's current version.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -246,7 +249,7 @@ func (client *JobStepsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -261,6 +264,7 @@ func (client *JobStepsClient) getHandleResponse(resp *http.Response) (JobStepsCl
 
 // GetByVersion - Gets the specified version of a job step.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -319,7 +323,7 @@ func (client *JobStepsClient) getByVersionCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -334,6 +338,7 @@ func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (J
 
 // NewListByJobPager - Gets all job steps for a job's current version.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -341,7 +346,7 @@ func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (J
 // jobName - The name of the job to get.
 // options - JobStepsClientListByJobOptions contains the optional parameters for the JobStepsClient.ListByJob method.
 func (client *JobStepsClient) NewListByJobPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsClientListByJobOptions) *runtime.Pager[JobStepsClientListByJobResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobStepsClientListByJobResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobStepsClientListByJobResponse]{
 		More: func(page JobStepsClientListByJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -398,7 +403,7 @@ func (client *JobStepsClient) listByJobCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -413,6 +418,7 @@ func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobS
 
 // NewListByVersionPager - Gets all job steps in the specified job version.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -421,7 +427,7 @@ func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobS
 // jobVersion - The version of the job to get.
 // options - JobStepsClientListByVersionOptions contains the optional parameters for the JobStepsClient.ListByVersion method.
 func (client *JobStepsClient) NewListByVersionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsClientListByVersionOptions) *runtime.Pager[JobStepsClientListByVersionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobStepsClientListByVersionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobStepsClientListByVersionResponse]{
 		More: func(page JobStepsClientListByVersionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -479,7 +485,7 @@ func (client *JobStepsClient) listByVersionCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

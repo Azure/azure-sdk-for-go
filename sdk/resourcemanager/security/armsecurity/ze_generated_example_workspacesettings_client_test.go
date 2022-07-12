@@ -24,7 +24,7 @@ func ExampleWorkspaceSettingsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewWorkspaceSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewWorkspaceSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleWorkspaceSettingsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,12 +48,12 @@ func ExampleWorkspaceSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewWorkspaceSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewWorkspaceSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<workspace-setting-name>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,19 +69,19 @@ func ExampleWorkspaceSettingsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewWorkspaceSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewWorkspaceSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<workspace-setting-name>",
+		"default",
 		armsecurity.WorkspaceSetting{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
-			ID:   to.Ptr("<id>"),
+			Name: to.Ptr("default"),
+			Type: to.Ptr("Microsoft.Security/workspaceSettings"),
+			ID:   to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/workspaceSettings/default"),
 			Properties: &armsecurity.WorkspaceSettingProperties{
-				Scope:       to.Ptr("<scope>"),
-				WorkspaceID: to.Ptr("<workspace-id>"),
+				Scope:       to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
+				WorkspaceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace"),
 			},
 		},
 		nil)
@@ -100,18 +99,18 @@ func ExampleWorkspaceSettingsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewWorkspaceSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewWorkspaceSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<workspace-setting-name>",
+		"default",
 		armsecurity.WorkspaceSetting{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
-			ID:   to.Ptr("<id>"),
+			Name: to.Ptr("default"),
+			Type: to.Ptr("Microsoft.Security/workspaceSettings"),
+			ID:   to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/workspaceSettings/default"),
 			Properties: &armsecurity.WorkspaceSettingProperties{
-				WorkspaceID: to.Ptr("<workspace-id>"),
+				WorkspaceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace"),
 			},
 		},
 		nil)
@@ -129,12 +128,12 @@ func ExampleWorkspaceSettingsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewWorkspaceSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewWorkspaceSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<workspace-setting-name>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -39,7 +39,7 @@ func NewTrustedIDProvidersClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewTrustedIDProvidersClient(subscriptionID string, credential azcore.TokenC
 // CreateOrUpdate - Creates or updates the specified trusted identity provider. During update, the trusted identity provider
 // with the specified name will be replaced with this new provider
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // trustedIDProviderName - The name of the trusted identity provider. This is used for differentiation of providers in the
@@ -106,7 +107,7 @@ func (client *TrustedIDProvidersClient) createOrUpdateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -121,6 +122,7 @@ func (client *TrustedIDProvidersClient) createOrUpdateHandleResponse(resp *http.
 
 // Delete - Deletes the specified trusted identity provider from the specified Data Lake Store account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // trustedIDProviderName - The name of the trusted identity provider to delete.
@@ -172,6 +174,7 @@ func (client *TrustedIDProvidersClient) deleteCreateRequest(ctx context.Context,
 
 // Get - Gets the specified Data Lake Store trusted identity provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // trustedIDProviderName - The name of the trusted identity provider to retrieve.
@@ -217,7 +220,7 @@ func (client *TrustedIDProvidersClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,12 +235,13 @@ func (client *TrustedIDProvidersClient) getHandleResponse(resp *http.Response) (
 
 // NewListByAccountPager - Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // options - TrustedIDProvidersClientListByAccountOptions contains the optional parameters for the TrustedIDProvidersClient.ListByAccount
 // method.
 func (client *TrustedIDProvidersClient) NewListByAccountPager(resourceGroupName string, accountName string, options *TrustedIDProvidersClientListByAccountOptions) *runtime.Pager[TrustedIDProvidersClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TrustedIDProvidersClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TrustedIDProvidersClientListByAccountResponse]{
 		More: func(page TrustedIDProvidersClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -286,7 +290,7 @@ func (client *TrustedIDProvidersClient) listByAccountCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,6 +305,7 @@ func (client *TrustedIDProvidersClient) listByAccountHandleResponse(resp *http.R
 
 // Update - Updates the specified trusted identity provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // trustedIDProviderName - The name of the trusted identity provider. This is used for differentiation of providers in the
@@ -348,7 +353,7 @@ func (client *TrustedIDProvidersClient) updateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}

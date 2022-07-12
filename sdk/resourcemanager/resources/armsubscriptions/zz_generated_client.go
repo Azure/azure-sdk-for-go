@@ -37,7 +37,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // CheckZonePeers - Compares a subscriptions logical zone mapping
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // subscriptionID - The ID of the target subscription.
 // parameters - Parameters for checking zone peers.
 // options - ClientCheckZonePeersOptions contains the optional parameters for the Client.CheckZonePeers method.
@@ -86,7 +87,7 @@ func (client *Client) checkZonePeersCreateRequest(ctx context.Context, subscript
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -101,6 +102,7 @@ func (client *Client) checkZonePeersHandleResponse(resp *http.Response) (ClientC
 
 // Get - Gets details about a specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // subscriptionID - The ID of the target subscription.
 // options - ClientGetOptions contains the optional parameters for the Client.Get method.
 func (client *Client) Get(ctx context.Context, subscriptionID string, options *ClientGetOptions) (ClientGetResponse, error) {
@@ -132,7 +134,7 @@ func (client *Client) getCreateRequest(ctx context.Context, subscriptionID strin
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -147,9 +149,10 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // NewListPager - Gets all subscriptions for a tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -186,7 +189,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -202,10 +205,11 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // NewListLocationsPager - This operation provides all the locations that are available for resource providers; however, each
 // resource provider may support a subset of this list.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // subscriptionID - The ID of the target subscription.
 // options - ClientListLocationsOptions contains the optional parameters for the Client.ListLocations method.
 func (client *Client) NewListLocationsPager(subscriptionID string, options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListLocationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListLocationsResponse]{
 		More: func(page ClientListLocationsResponse) bool {
 			return false
 		},
@@ -243,7 +247,7 @@ func (client *Client) listLocationsCreateRequest(ctx context.Context, subscripti
 		reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

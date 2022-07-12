@@ -39,7 +39,7 @@ func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string, cred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string, cred
 
 // GetByID - Get a single software update configuration machine run by Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // softwareUpdateConfigurationMachineRunID - The Id of the software update configuration machine run.
@@ -101,9 +102,9 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDCreateRequest
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,6 +119,7 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDHandleRespons
 
 // List - Return list of software update configuration machine runs
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - SoftwareUpdateConfigurationMachineRunsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRunsClient.List
@@ -169,9 +171,9 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) listCreateRequest(ct
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

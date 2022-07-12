@@ -19,7 +19,6 @@ import (
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -395,7 +394,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 		},
 	}
 	getTokenCalled := false
-	cred := mockCredential{getTokenImpl: func(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	cred := mockCredential{getTokenImpl: func(ctx context.Context, options azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
 		getTokenCalled = true
 		if n := len(options.Scopes); n != 1 {
 			t.Fatalf("expected 1 scope, got %d", n)
@@ -403,7 +402,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 		if options.Scopes[0] != audience+"/.default" {
 			t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
 		}
-		return &azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
+		return azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 	}}
 	opts := azpolicy.ClientOptions{Cloud: conf, Transport: srv}
 	rp, err := NewRPRegistrationPolicy(cred, &armpolicy.RegistrationOptions{ClientOptions: opts})

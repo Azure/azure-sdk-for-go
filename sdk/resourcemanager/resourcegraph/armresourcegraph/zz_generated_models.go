@@ -89,6 +89,9 @@ type Facet struct {
 	ResultType *string `json:"resultType,omitempty"`
 }
 
+// GetFacet implements the FacetClassification interface for type Facet.
+func (f *Facet) GetFacet() *Facet { return f }
+
 // FacetError - A facet whose execution resulted in an error.
 type FacetError struct {
 	// REQUIRED; An array containing detected facet errors with details.
@@ -99,6 +102,14 @@ type FacetError struct {
 
 	// REQUIRED; Result type
 	ResultType *string `json:"resultType,omitempty"`
+}
+
+// GetFacet implements the FacetClassification interface for type FacetError.
+func (f *FacetError) GetFacet() *Facet {
+	return &Facet{
+		Expression: f.Expression,
+		ResultType: f.ResultType,
+	}
 }
 
 // FacetRequest - A request to compute additional statistics (facets) over the query results.
@@ -142,6 +153,14 @@ type FacetResult struct {
 
 	// REQUIRED; Number of total records in the facet results.
 	TotalRecords *int64 `json:"totalRecords,omitempty"`
+}
+
+// GetFacet implements the FacetClassification interface for type FacetResult.
+func (f *FacetResult) GetFacet() *Facet {
+	return &Facet{
+		Expression: f.Expression,
+		ResultType: f.ResultType,
+	}
 }
 
 // Operation - Resource Graph REST API operation definition.

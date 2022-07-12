@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorderpartner/armedgeorderpartner"
@@ -35,7 +33,6 @@ func ExampleAPISClient_NewListOperationsPartnerPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,25 +48,25 @@ func ExampleAPISClient_BeginManageInventoryMetadata() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	client, err := armedgeorderpartner.NewAPISClient("b783ea86-c85c-4175-b76d-3992656af50d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginManageInventoryMetadata(ctx,
-		"<family-identifier>",
-		"<location>",
-		"<serial-number>",
+		"AzureStackEdge",
+		"westus",
+		"SerialNumber1",
 		armedgeorderpartner.ManageInventoryMetadataRequest{
 			ConfigurationOnDevice: &armedgeorderpartner.ConfigurationOnDevice{
-				ConfigurationIdentifier: to.Ptr("<configuration-identifier>"),
+				ConfigurationIdentifier: to.Ptr("EdgeP_High"),
 			},
-			InventoryMetadata: to.Ptr("<inventory-metadata>"),
+			InventoryMetadata: to.Ptr("InventoryMetadata"),
 		},
-		&armedgeorderpartner.APISClientBeginManageInventoryMetadataOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -82,18 +79,18 @@ func ExampleAPISClient_ManageLink() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	client, err := armedgeorderpartner.NewAPISClient("b783ea86-c85c-4175-b76d-3992656af50d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.ManageLink(ctx,
-		"<family-identifier>",
-		"<location>",
-		"<serial-number>",
+		"AzureStackEdge",
+		"westus",
+		"SerialNumber1",
 		armedgeorderpartner.ManageLinkRequest{
-			ManagementResourceArmID: to.Ptr("<management-resource-arm-id>"),
+			ManagementResourceArmID: to.Ptr("/subscriptions/c783ea86-c85c-4175-b76d-3992656af50d/resourceGroups/EdgeTestRG/providers/Microsoft.DataBoxEdge/DataBoxEdgeDevices/TestEdgeDeviceName1"),
 			Operation:               to.Ptr(armedgeorderpartner.ManageLinkOperationLink),
-			TenantID:                to.Ptr("<tenant-id>"),
+			TenantID:                to.Ptr("a783ea86-c85c-4175-b76d-3992656af50d"),
 		},
 		nil)
 	if err != nil {
@@ -108,20 +105,19 @@ func ExampleAPISClient_NewSearchInventoriesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorderpartner.NewAPISClient("<subscription-id>", cred, nil)
+	client, err := armedgeorderpartner.NewAPISClient("b783ea86-c85c-4175-b76d-3992656af50d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewSearchInventoriesPager(armedgeorderpartner.SearchInventoriesRequest{
-		FamilyIdentifier: to.Ptr("<family-identifier>"),
-		SerialNumber:     to.Ptr("<serial-number>"),
+		FamilyIdentifier: to.Ptr("AzureStackEdge"),
+		SerialNumber:     to.Ptr("SerialNumber1"),
 	},
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -38,7 +38,7 @@ func NewSimsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewSimsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // BeginCreateOrUpdate - Creates or updates a Sim.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // simName - The name of the SIM.
 // parameters - Parameters supplied to the create or update sim operation.
 // options - SimsClientBeginCreateOrUpdateOptions contains the optional parameters for the SimsClient.BeginCreateOrUpdate
 // method.
-func (client *SimsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, simName string, parameters Sim, options *SimsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SimsClientCreateOrUpdateResponse], error) {
+func (client *SimsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, simName string, parameters Sim, options *SimsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SimsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, simName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SimsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SimsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SimsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SimsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a Sim.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 func (client *SimsClient) createOrUpdate(ctx context.Context, resourceGroupName string, simName string, parameters Sim, options *SimsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, simName, parameters, options)
 	if err != nil {
@@ -114,31 +116,33 @@ func (client *SimsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the specified sim.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // simName - The name of the SIM.
 // options - SimsClientBeginDeleteOptions contains the optional parameters for the SimsClient.BeginDelete method.
-func (client *SimsClient) BeginDelete(ctx context.Context, resourceGroupName string, simName string, options *SimsClientBeginDeleteOptions) (*armruntime.Poller[SimsClientDeleteResponse], error) {
+func (client *SimsClient) BeginDelete(ctx context.Context, resourceGroupName string, simName string, options *SimsClientBeginDeleteOptions) (*runtime.Poller[SimsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, simName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SimsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SimsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SimsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SimsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified sim.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 func (client *SimsClient) deleteOperation(ctx context.Context, resourceGroupName string, simName string, options *SimsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, simName, options)
 	if err != nil {
@@ -176,12 +180,13 @@ func (client *SimsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified sim.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // simName - The name of the SIM.
 // options - SimsClientGetOptions contains the optional parameters for the SimsClient.Get method.
@@ -222,7 +227,7 @@ func (client *SimsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -237,11 +242,12 @@ func (client *SimsClient) getHandleResponse(resp *http.Response) (SimsClientGetR
 
 // NewListByResourceGroupPager - Gets all the Sims in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - SimsClientListByResourceGroupOptions contains the optional parameters for the SimsClient.ListByResourceGroup
 // method.
 func (client *SimsClient) NewListByResourceGroupPager(resourceGroupName string, options *SimsClientListByResourceGroupOptions) *runtime.Pager[SimsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SimsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SimsClientListByResourceGroupResponse]{
 		More: func(page SimsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -286,7 +292,7 @@ func (client *SimsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,9 +307,10 @@ func (client *SimsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // NewListBySubscriptionPager - Gets all the sims in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // options - SimsClientListBySubscriptionOptions contains the optional parameters for the SimsClient.ListBySubscription method.
 func (client *SimsClient) NewListBySubscriptionPager(options *SimsClientListBySubscriptionOptions) *runtime.Pager[SimsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SimsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SimsClientListBySubscriptionResponse]{
 		More: func(page SimsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -344,7 +351,7 @@ func (client *SimsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -359,6 +366,7 @@ func (client *SimsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 
 // UpdateTags - Updates a sim update tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // simName - The name of the SIM.
 // parameters - Parameters supplied to update sim tags.
@@ -400,7 +408,7 @@ func (client *SimsClient) updateTagsCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

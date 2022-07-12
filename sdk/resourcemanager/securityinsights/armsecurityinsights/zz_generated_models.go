@@ -19,6 +19,13 @@ type AADCheckRequirements struct {
 	Properties *AADCheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type AADCheckRequirements.
+func (a *AADCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: a.Kind,
+	}
+}
+
 // AADCheckRequirementsProperties - AAD (Azure Active Directory) requirements check properties.
 type AADCheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -49,6 +56,18 @@ type AADDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type AADDataConnector.
+func (a *AADDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
+}
+
 // AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
 type AADDataConnectorProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -65,6 +84,13 @@ type AATPCheckRequirements struct {
 
 	// AATP (Azure Advanced Threat Protection) requirements check properties.
 	Properties *AATPCheckRequirementsProperties `json:"properties,omitempty"`
+}
+
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type AATPCheckRequirements.
+func (a *AATPCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: a.Kind,
+	}
 }
 
 // AATPCheckRequirementsProperties - AATP (Azure Advanced Threat Protection) requirements check properties.
@@ -97,6 +123,18 @@ type AATPDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type AATPDataConnector.
+func (a *AATPDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
+}
+
 // AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
 type AATPDataConnectorProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -122,6 +160,13 @@ type ASCCheckRequirements struct {
 
 	// ASC (Azure Security Center) requirements check properties.
 	Properties *ASCCheckRequirementsProperties `json:"properties,omitempty"`
+}
+
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type ASCCheckRequirements.
+func (a *ASCCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: a.Kind,
+	}
 }
 
 // ASCCheckRequirementsProperties - ASC (Azure Security Center) requirements check properties.
@@ -154,6 +199,18 @@ type ASCDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type ASCDataConnector.
+func (a *ASCDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
+}
+
 // ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
 type ASCDataConnectorProperties struct {
 	// The available data types for the connector.
@@ -182,6 +239,17 @@ type AccountEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type AccountEntity.
+func (a *AccountEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
 }
 
 // AccountEntityProperties - Account entity property bag.
@@ -350,6 +418,18 @@ type ActivityCustomEntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetCustomEntityQuery implements the CustomEntityQueryClassification interface for type ActivityCustomEntityQuery.
+func (a *ActivityCustomEntityQuery) GetCustomEntityQuery() *CustomEntityQuery {
+	return &CustomEntityQuery{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
+}
+
 // ActivityEntityQueriesProperties - Describes activity entity query properties
 type ActivityEntityQueriesProperties struct {
 	// The entity query content to display in timeline
@@ -416,6 +496,18 @@ type ActivityEntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntityQuery implements the EntityQueryClassification interface for type ActivityEntityQuery.
+func (a *ActivityEntityQuery) GetEntityQuery() *EntityQuery {
+	return &EntityQuery{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
+}
+
 // ActivityEntityQueryTemplate - Represents Activity entity query.
 type ActivityEntityQueryTemplate struct {
 	// REQUIRED; the entity query template kind
@@ -435,6 +527,17 @@ type ActivityEntityQueryTemplate struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntityQueryTemplate implements the EntityQueryTemplateClassification interface for type ActivityEntityQueryTemplate.
+func (a *ActivityEntityQueryTemplate) GetEntityQueryTemplate() *EntityQueryTemplate {
+	return &EntityQueryTemplate{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
 }
 
 // ActivityEntityQueryTemplateProperties - Describes activity entity query properties
@@ -500,6 +603,13 @@ type ActivityTimelineItem struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type ActivityTimelineItem.
+func (a *ActivityTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
+	return &EntityTimelineItem{
+		Kind: a.Kind,
+	}
+}
+
 // AlertDetailsOverride - Settings for how to dynamically override alert static details
 type AlertDetailsOverride struct {
 	// the format containing columns name(s) to override the alert description
@@ -546,6 +656,9 @@ type AlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetAlertRule implements the AlertRuleClassification interface for type AlertRule.
+func (a *AlertRule) GetAlertRule() *AlertRule { return a }
+
 // AlertRuleTemplateClassification provides polymorphic access to related types.
 // Call the interface's GetAlertRuleTemplate() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -573,6 +686,9 @@ type AlertRuleTemplate struct {
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type AlertRuleTemplate.
+func (a *AlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate { return a }
 
 // AlertRuleTemplateDataSource - alert rule template data sources
 type AlertRuleTemplateDataSource struct {
@@ -715,10 +831,150 @@ type Anomalies struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetSettings implements the SettingsClassification interface for type Anomalies.
+func (a *Anomalies) GetSettings() *Settings {
+	return &Settings{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
+}
+
 // AnomaliesSettingsProperties - Anomalies property bag.
 type AnomaliesSettingsProperties struct {
 	// READ-ONLY; Determines whether the setting is enable or disabled.
 	IsEnabled *bool `json:"isEnabled,omitempty" azure:"ro"`
+}
+
+// AnomalySecurityMLAnalyticsSettings - Represents Anomaly Security ML Analytics Settings
+type AnomalySecurityMLAnalyticsSettings struct {
+	// REQUIRED; The kind of security ML Analytics Settings
+	Kind *SecurityMLAnalyticsSettingsKind `json:"kind,omitempty"`
+
+	// Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Anomaly Security ML Analytics Settings properties
+	Properties *AnomalySecurityMLAnalyticsSettingsProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetSecurityMLAnalyticsSetting implements the SecurityMLAnalyticsSettingClassification interface for type AnomalySecurityMLAnalyticsSettings.
+func (a *AnomalySecurityMLAnalyticsSettings) GetSecurityMLAnalyticsSetting() *SecurityMLAnalyticsSetting {
+	return &SecurityMLAnalyticsSetting{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
+}
+
+// AnomalySecurityMLAnalyticsSettingsProperties - AnomalySecurityMLAnalytics settings base property bag.
+type AnomalySecurityMLAnalyticsSettingsProperties struct {
+	// REQUIRED; The anomaly version of the AnomalySecurityMLAnalyticsSettings.
+	AnomalyVersion *string `json:"anomalyVersion,omitempty"`
+
+	// REQUIRED; The display name for settings created by this SecurityMLAnalyticsSettings.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// REQUIRED; Determines whether this settings is enabled or disabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// REQUIRED; The frequency that this SecurityMLAnalyticsSettings will be run.
+	Frequency *string `json:"frequency,omitempty"`
+
+	// REQUIRED; Determines whether this anomaly security ml analytics settings is a default settings
+	IsDefaultSettings *bool `json:"isDefaultSettings,omitempty"`
+
+	// REQUIRED; The anomaly SecurityMLAnalyticsSettings status
+	SettingsStatus *SettingsStatus `json:"settingsStatus,omitempty"`
+
+	// The anomaly settings version of the Anomaly security ml analytics settings that dictates whether job version gets updated
+	// or not.
+	AnomalySettingsVersion *int32 `json:"anomalySettingsVersion,omitempty"`
+
+	// The customizable observations of the AnomalySecurityMLAnalyticsSettings.
+	CustomizableObservations interface{} `json:"customizableObservations,omitempty"`
+
+	// The description of the SecurityMLAnalyticsSettings.
+	Description *string `json:"description,omitempty"`
+
+	// The required data sources for this SecurityMLAnalyticsSettings
+	RequiredDataConnectors []*SecurityMLAnalyticsSettingsDataSource `json:"requiredDataConnectors,omitempty"`
+
+	// The anomaly settings definition Id
+	SettingsDefinitionID *string `json:"settingsDefinitionId,omitempty"`
+
+	// The tactics of the SecurityMLAnalyticsSettings
+	Tactics []*AttackTactic `json:"tactics,omitempty"`
+
+	// The techniques of the SecurityMLAnalyticsSettings
+	Techniques []*string `json:"techniques,omitempty"`
+
+	// READ-ONLY; The last time that this SecurityMLAnalyticsSettings has been modified.
+	LastModifiedUTC *time.Time `json:"lastModifiedUtc,omitempty" azure:"ro"`
+}
+
+// AnomalyTimelineItem - Represents anomaly timeline item.
+type AnomalyTimelineItem struct {
+	// REQUIRED; The anomaly azure resource id.
+	AzureResourceID *string `json:"azureResourceId,omitempty"`
+
+	// REQUIRED; The anomaly name.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// REQUIRED; The anomaly end time.
+	EndTimeUTC *time.Time `json:"endTimeUtc,omitempty"`
+
+	// REQUIRED; The entity query kind type.
+	Kind *EntityTimelineKind `json:"kind,omitempty"`
+
+	// REQUIRED; The anomaly start time.
+	StartTimeUTC *time.Time `json:"startTimeUtc,omitempty"`
+
+	// REQUIRED; The anomaly generated time.
+	TimeGenerated *time.Time `json:"timeGenerated,omitempty"`
+
+	// The anomaly description.
+	Description *string `json:"description,omitempty"`
+
+	// The intent of the anomaly.
+	Intent *string `json:"intent,omitempty"`
+
+	// The anomaly product name.
+	ProductName *string `json:"productName,omitempty"`
+
+	// The reasons that cause the anomaly.
+	Reasons []*string `json:"reasons,omitempty"`
+
+	// The techniques of the anomaly.
+	Techniques []*string `json:"techniques,omitempty"`
+
+	// The name of the anomaly vendor.
+	Vendor *string `json:"vendor,omitempty"`
+}
+
+// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type AnomalyTimelineItem.
+func (a *AnomalyTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
+	return &EntityTimelineItem{
+		Kind: a.Kind,
+	}
 }
 
 type AutomationRule struct {
@@ -750,33 +1006,39 @@ type AutomationRuleActionClassification interface {
 	GetAutomationRuleAction() *AutomationRuleAction
 }
 
-// AutomationRuleAction - Describes an automation rule action
+// AutomationRuleAction - Describes an automation rule action.
 type AutomationRuleAction struct {
-	// REQUIRED; The type of the automation rule action
+	// REQUIRED; The type of the automation rule action.
 	ActionType *ActionType `json:"actionType,omitempty"`
 
 	// REQUIRED
 	Order *int32 `json:"order,omitempty"`
 }
 
+// GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleAction.
+func (a *AutomationRuleAction) GetAutomationRuleAction() *AutomationRuleAction { return a }
+
 // AutomationRuleConditionClassification provides polymorphic access to related types.
 // Call the interface's GetAutomationRuleCondition() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AutomationRuleCondition, *PropertyConditionProperties
+// - *AutomationRuleCondition, *PropertyArrayChangedConditionProperties, *PropertyChangedConditionProperties, *PropertyConditionProperties
 type AutomationRuleConditionClassification interface {
 	// GetAutomationRuleCondition returns the AutomationRuleCondition content of the underlying type.
 	GetAutomationRuleCondition() *AutomationRuleCondition
 }
 
-// AutomationRuleCondition - Describes an automation rule condition
+// AutomationRuleCondition - Describes an automation rule condition.
 type AutomationRuleCondition struct {
 	// REQUIRED
 	ConditionType *ConditionType `json:"conditionType,omitempty"`
 }
 
+// GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type AutomationRuleCondition.
+func (a *AutomationRuleCondition) GetAutomationRuleCondition() *AutomationRuleCondition { return a }
+
 // AutomationRuleModifyPropertiesAction - Describes an automation rule action to modify an object's properties
 type AutomationRuleModifyPropertiesAction struct {
-	// REQUIRED; The type of the automation rule action
+	// REQUIRED; The type of the automation rule action.
 	ActionType *ActionType `json:"actionType,omitempty"`
 
 	// REQUIRED
@@ -784,44 +1046,64 @@ type AutomationRuleModifyPropertiesAction struct {
 	ActionConfiguration *IncidentPropertiesAction `json:"actionConfiguration,omitempty"`
 }
 
+// GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleModifyPropertiesAction.
+func (a *AutomationRuleModifyPropertiesAction) GetAutomationRuleAction() *AutomationRuleAction {
+	return &AutomationRuleAction{
+		Order:      a.Order,
+		ActionType: a.ActionType,
+	}
+}
+
 // AutomationRuleProperties - Automation rule properties
 type AutomationRuleProperties struct {
-	// REQUIRED; The actions to execute when the automation rule is triggered
+	// REQUIRED; The actions to execute when the automation rule is triggered.
 	Actions []AutomationRuleActionClassification `json:"actions,omitempty"`
 
-	// REQUIRED; The display name of the automation rule
+	// REQUIRED; The display name of the automation rule.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// REQUIRED; The order of execution of the automation rule
+	// REQUIRED; The order of execution of the automation rule.
 	Order *int32 `json:"order,omitempty"`
 
-	// REQUIRED; Describes automation rule triggering logic
+	// REQUIRED; Describes automation rule triggering logic.
 	TriggeringLogic *AutomationRuleTriggeringLogic `json:"triggeringLogic,omitempty"`
 
 	// READ-ONLY; Information on the client (user or application) that made some action
 	CreatedBy *ClientInfo `json:"createdBy,omitempty" azure:"ro"`
 
-	// READ-ONLY; The time the automation rule was created
+	// READ-ONLY; The time the automation rule was created.
 	CreatedTimeUTC *time.Time `json:"createdTimeUtc,omitempty" azure:"ro"`
 
 	// READ-ONLY; Information on the client (user or application) that made some action
 	LastModifiedBy *ClientInfo `json:"lastModifiedBy,omitempty" azure:"ro"`
 
-	// READ-ONLY; The last time the automation rule was updated
+	// READ-ONLY; The last time the automation rule was updated.
 	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
+}
+
+type AutomationRulePropertyArrayChangedValuesCondition struct {
+	ArrayType  *AutomationRulePropertyArrayChangedConditionSupportedArrayType  `json:"arrayType,omitempty"`
+	ChangeType *AutomationRulePropertyArrayChangedConditionSupportedChangeType `json:"changeType,omitempty"`
+}
+
+type AutomationRulePropertyValuesChangedCondition struct {
+	ChangeType     *AutomationRulePropertyChangedConditionSupportedChangedType  `json:"changeType,omitempty"`
+	Operator       *AutomationRulePropertyConditionSupportedOperator            `json:"operator,omitempty"`
+	PropertyName   *AutomationRulePropertyChangedConditionSupportedPropertyType `json:"propertyName,omitempty"`
+	PropertyValues []*string                                                    `json:"propertyValues,omitempty"`
 }
 
 type AutomationRulePropertyValuesCondition struct {
 	Operator *AutomationRulePropertyConditionSupportedOperator `json:"operator,omitempty"`
 
-	// The property to evaluate in an automation rule property condition
+	// The property to evaluate in an automation rule property condition.
 	PropertyName   *AutomationRulePropertyConditionSupportedProperty `json:"propertyName,omitempty"`
 	PropertyValues []*string                                         `json:"propertyValues,omitempty"`
 }
 
 // AutomationRuleRunPlaybookAction - Describes an automation rule action to run a playbook
 type AutomationRuleRunPlaybookAction struct {
-	// REQUIRED; The type of the automation rule action
+	// REQUIRED; The type of the automation rule action.
 	ActionType *ActionType `json:"actionType,omitempty"`
 
 	// REQUIRED
@@ -829,9 +1111,17 @@ type AutomationRuleRunPlaybookAction struct {
 	ActionConfiguration *PlaybookActionProperties `json:"actionConfiguration,omitempty"`
 }
 
-// AutomationRuleTriggeringLogic - Describes automation rule triggering logic
+// GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleRunPlaybookAction.
+func (a *AutomationRuleRunPlaybookAction) GetAutomationRuleAction() *AutomationRuleAction {
+	return &AutomationRuleAction{
+		Order:      a.Order,
+		ActionType: a.ActionType,
+	}
+}
+
+// AutomationRuleTriggeringLogic - Describes automation rule triggering logic.
 type AutomationRuleTriggeringLogic struct {
-	// REQUIRED; Determines whether the automation rule is enabled or disabled
+	// REQUIRED; Determines whether the automation rule is enabled or disabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 
 	// REQUIRED
@@ -840,7 +1130,7 @@ type AutomationRuleTriggeringLogic struct {
 	// REQUIRED
 	TriggersWhen *TriggersWhen `json:"triggersWhen,omitempty"`
 
-	// The conditions to evaluate to determine if the automation rule should be triggered on a given object
+	// The conditions to evaluate to determine if the automation rule should be triggered on a given object.
 	Conditions []AutomationRuleConditionClassification `json:"conditions,omitempty"`
 
 	// Determines when the automation rule should automatically expire and be disabled.
@@ -889,6 +1179,13 @@ type AwsCloudTrailCheckRequirements struct {
 	Kind *DataConnectorKind `json:"kind,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type AwsCloudTrailCheckRequirements.
+func (a *AwsCloudTrailCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: a.Kind,
+	}
+}
+
 // AwsCloudTrailDataConnector - Represents Amazon Web Services CloudTrail data connector.
 type AwsCloudTrailDataConnector struct {
 	// REQUIRED; The data connector kind
@@ -911,6 +1208,18 @@ type AwsCloudTrailDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type AwsCloudTrailDataConnector.
+func (a *AwsCloudTrailDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
 }
 
 // AwsCloudTrailDataConnectorDataTypes - The available data types for Amazon Web Services CloudTrail data connector.
@@ -940,6 +1249,13 @@ type AwsS3CheckRequirements struct {
 	Kind *DataConnectorKind `json:"kind,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type AwsS3CheckRequirements.
+func (a *AwsS3CheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: a.Kind,
+	}
+}
+
 // AwsS3DataConnector - Represents Amazon Web Services S3 data connector.
 type AwsS3DataConnector struct {
 	// REQUIRED; The data connector kind
@@ -962,6 +1278,18 @@ type AwsS3DataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type AwsS3DataConnector.
+func (a *AwsS3DataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       a.Kind,
+		Etag:       a.Etag,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
 }
 
 // AwsS3DataConnectorDataTypes - The available data types for Amazon Web Services S3 data connector.
@@ -1019,6 +1347,17 @@ type AzureResourceEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type AzureResourceEntity.
+func (a *AzureResourceEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+		SystemData: a.SystemData,
+	}
 }
 
 // AzureResourceEntityProperties - AzureResource entity property bag.
@@ -1222,6 +1561,13 @@ type BookmarkTimelineItem struct {
 	StartTimeUTC *time.Time `json:"startTimeUtc,omitempty"`
 }
 
+// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type BookmarkTimelineItem.
+func (b *BookmarkTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
+	return &EntityTimelineItem{
+		Kind: b.Kind,
+	}
+}
+
 // BookmarksClientCreateOrUpdateOptions contains the optional parameters for the BookmarksClient.CreateOrUpdate method.
 type BookmarksClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -1276,6 +1622,17 @@ type CloudApplicationEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type CloudApplicationEntity.
+func (c *CloudApplicationEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       c.Kind,
+		ID:         c.ID,
+		Name:       c.Name,
+		Type:       c.Type,
+		SystemData: c.SystemData,
+	}
 }
 
 // CloudApplicationEntityProperties - CloudApplication entity property bag.
@@ -1335,6 +1692,18 @@ type CodelessAPIPollingDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type CodelessAPIPollingDataConnector.
+func (c *CodelessAPIPollingDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       c.Kind,
+		Etag:       c.Etag,
+		ID:         c.ID,
+		Name:       c.Name,
+		Type:       c.Type,
+		SystemData: c.SystemData,
+	}
 }
 
 // CodelessConnectorPollingAuthProperties - Describe the authentication properties needed to successfully authenticate with
@@ -1597,6 +1966,18 @@ type CodelessUIDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type CodelessUIDataConnector.
+func (c *CodelessUIDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       c.Kind,
+		Etag:       c.Etag,
+		ID:         c.ID,
+		Name:       c.Name,
+		Type:       c.Type,
+		SystemData: c.SystemData,
+	}
+}
+
 // ConnectedEntity - Expansion result connected entities
 type ConnectedEntity struct {
 	// key-value pairs for a connected entity mapping
@@ -1663,6 +2044,9 @@ type CustomEntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetCustomEntityQuery implements the CustomEntityQueryClassification interface for type CustomEntityQuery.
+func (c *CustomEntityQuery) GetCustomEntityQuery() *CustomEntityQuery { return c }
+
 // Customs permissions required for the connector
 type Customs struct {
 	// Customs permissions description
@@ -1700,6 +2084,17 @@ type DNSEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type DNSEntity.
+func (d *DNSEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       d.Kind,
+		ID:         d.ID,
+		Name:       d.Name,
+		Type:       d.Type,
+		SystemData: d.SystemData,
+	}
 }
 
 // DNSEntityProperties - Dns entity property bag.
@@ -1756,6 +2151,9 @@ type DataConnector struct {
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetDataConnector implements the DataConnectorClassification interface for type DataConnector.
+func (d *DataConnector) GetDataConnector() *DataConnector { return d }
 
 // DataConnectorConnectBody - Represents Codeless API Polling data connector.
 type DataConnectorConnectBody struct {
@@ -1834,6 +2232,11 @@ type DataConnectorsCheckRequirementsClassification interface {
 type DataConnectorsCheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
 	Kind *DataConnectorKind `json:"kind,omitempty"`
+}
+
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type DataConnectorsCheckRequirements.
+func (d *DataConnectorsCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return d
 }
 
 // DataConnectorsCheckRequirementsClientPostOptions contains the optional parameters for the DataConnectorsCheckRequirementsClient.Post
@@ -1923,6 +2326,13 @@ type Dynamics365CheckRequirements struct {
 	Properties *Dynamics365CheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type Dynamics365CheckRequirements.
+func (d *Dynamics365CheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: d.Kind,
+	}
+}
+
 // Dynamics365CheckRequirementsProperties - Dynamics365 requirements check properties.
 type Dynamics365CheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -1951,6 +2361,18 @@ type Dynamics365DataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type Dynamics365DataConnector.
+func (d *Dynamics365DataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       d.Kind,
+		Etag:       d.Etag,
+		ID:         d.ID,
+		Name:       d.Name,
+		Type:       d.Type,
+		SystemData: d.SystemData,
+	}
 }
 
 // Dynamics365DataConnectorDataTypes - The available data types for Dynamics365 data connector.
@@ -2207,6 +2629,9 @@ type Entity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntity implements the EntityClassification interface for type Entity.
+func (e *Entity) GetEntity() *Entity { return e }
+
 // EntityAnalytics - Settings with single toggle.
 type EntityAnalytics struct {
 	// REQUIRED; The kind of the setting
@@ -2229,6 +2654,18 @@ type EntityAnalytics struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetSettings implements the SettingsClassification interface for type EntityAnalytics.
+func (e *EntityAnalytics) GetSettings() *Settings {
+	return &Settings{
+		Kind:       e.Kind,
+		Etag:       e.Etag,
+		ID:         e.ID,
+		Name:       e.Name,
+		Type:       e.Type,
+		SystemData: e.SystemData,
+	}
 }
 
 // EntityAnalyticsProperties - EntityAnalytics property bag.
@@ -2412,6 +2849,9 @@ type EntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntityQuery implements the EntityQueryClassification interface for type EntityQuery.
+func (e *EntityQuery) GetEntityQuery() *EntityQuery { return e }
+
 // EntityQueryItemClassification provides polymorphic access to related types.
 // Call the interface's GetEntityQueryItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2435,6 +2875,9 @@ type EntityQueryItem struct {
 	// READ-ONLY; Query Template ARM ID
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
+
+// GetEntityQueryItem implements the EntityQueryItemClassification interface for type EntityQueryItem.
+func (e *EntityQueryItem) GetEntityQueryItem() *EntityQueryItem { return e }
 
 // EntityQueryItemProperties - An properties abstract Query item for entity
 type EntityQueryItemProperties struct {
@@ -2492,6 +2935,9 @@ type EntityQueryTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntityQueryTemplate implements the EntityQueryTemplateClassification interface for type EntityQueryTemplate.
+func (e *EntityQueryTemplate) GetEntityQueryTemplate() *EntityQueryTemplate { return e }
+
 // EntityQueryTemplateList - List of all the entity query templates.
 type EntityQueryTemplateList struct {
 	// REQUIRED; Array of entity query templates.
@@ -2520,7 +2966,7 @@ type EntityRelationsClientGetRelationOptions struct {
 // EntityTimelineItemClassification provides polymorphic access to related types.
 // Call the interface's GetEntityTimelineItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ActivityTimelineItem, *BookmarkTimelineItem, *EntityTimelineItem, *SecurityAlertTimelineItem
+// - *ActivityTimelineItem, *AnomalyTimelineItem, *BookmarkTimelineItem, *EntityTimelineItem, *SecurityAlertTimelineItem
 type EntityTimelineItemClassification interface {
 	// GetEntityTimelineItem returns the EntityTimelineItem content of the underlying type.
 	GetEntityTimelineItem() *EntityTimelineItem
@@ -2531,6 +2977,9 @@ type EntityTimelineItem struct {
 	// REQUIRED; The entity query kind type.
 	Kind *EntityTimelineKind `json:"kind,omitempty"`
 }
+
+// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type EntityTimelineItem.
+func (e *EntityTimelineItem) GetEntityTimelineItem() *EntityTimelineItem { return e }
 
 // EntityTimelineParameters - The parameters required to execute s timeline operation on the given entity.
 type EntityTimelineParameters struct {
@@ -2607,6 +3056,18 @@ type ExpansionEntityQuery struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntityQuery implements the EntityQueryClassification interface for type ExpansionEntityQuery.
+func (e *ExpansionEntityQuery) GetEntityQuery() *EntityQuery {
+	return &EntityQuery{
+		Kind:       e.Kind,
+		Etag:       e.Etag,
+		ID:         e.ID,
+		Name:       e.Name,
+		Type:       e.Type,
+		SystemData: e.SystemData,
+	}
+}
+
 // ExpansionResultAggregation - Information of a specific aggregation in the expansion result.
 type ExpansionResultAggregation struct {
 	// REQUIRED; Total number of aggregations of the given kind (and aggregationType if given) in the expansion result.
@@ -2652,6 +3113,18 @@ type EyesOn struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetSettings implements the SettingsClassification interface for type EyesOn.
+func (e *EyesOn) GetSettings() *Settings {
+	return &Settings{
+		Kind:       e.Kind,
+		Etag:       e.Etag,
+		ID:         e.ID,
+		Name:       e.Name,
+		Type:       e.Type,
+		SystemData: e.SystemData,
+	}
+}
+
 // EyesOnSettingsProperties - EyesOn property bag.
 type EyesOnSettingsProperties struct {
 	// READ-ONLY; Determines whether the setting is enable or disabled.
@@ -2686,6 +3159,17 @@ type FileEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type FileEntity.
+func (f *FileEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       f.Kind,
+		ID:         f.ID,
+		Name:       f.Name,
+		Type:       f.Type,
+		SystemData: f.SystemData,
+	}
 }
 
 // FileEntityProperties - File entity property bag.
@@ -2731,6 +3215,17 @@ type FileHashEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntity implements the EntityClassification interface for type FileHashEntity.
+func (f *FileHashEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       f.Kind,
+		ID:         f.ID,
+		Name:       f.Name,
+		Type:       f.Type,
+		SystemData: f.SystemData,
+	}
+}
+
 // FileHashEntityProperties - FileHash entity property bag.
 type FileHashEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -2769,6 +3264,18 @@ type FusionAlertRule struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAlertRule implements the AlertRuleClassification interface for type FusionAlertRule.
+func (f *FusionAlertRule) GetAlertRule() *AlertRule {
+	return &AlertRule{
+		Kind:       f.Kind,
+		Etag:       f.Etag,
+		ID:         f.ID,
+		Name:       f.Name,
+		Type:       f.Type,
+		SystemData: f.SystemData,
+	}
 }
 
 // FusionAlertRuleProperties - Fusion alert rule base property bag.
@@ -2823,6 +3330,17 @@ type FusionAlertRuleTemplate struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type FusionAlertRuleTemplate.
+func (f *FusionAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
+	return &AlertRuleTemplate{
+		Kind:       f.Kind,
+		ID:         f.ID,
+		Name:       f.Name,
+		Type:       f.Type,
+		SystemData: f.SystemData,
+	}
 }
 
 // FusionAlertRuleTemplateProperties - Fusion alert rule template properties
@@ -2975,13 +3493,13 @@ type GeoLocation struct {
 	State *string `json:"state,omitempty" azure:"ro"`
 }
 
-// GetInsightsError - GetInsights Query Errors.
-type GetInsightsError struct {
+// GetInsightsErrorKind - GetInsights Query Errors.
+type GetInsightsErrorKind struct {
 	// REQUIRED; the error message
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 
 	// REQUIRED; the query kind
-	Kind *GetInsightsErrorKind `json:"kind,omitempty"`
+	Kind *GetInsightsError `json:"kind,omitempty"`
 
 	// the query id
 	QueryID *string `json:"queryId,omitempty"`
@@ -2993,7 +3511,7 @@ type GetInsightsResultsMetadata struct {
 	TotalCount *int32 `json:"totalCount,omitempty"`
 
 	// information about the failed queries
-	Errors []*GetInsightsError `json:"errors,omitempty"`
+	Errors []*GetInsightsErrorKind `json:"errors,omitempty"`
 }
 
 // GetQueriesResponse - Retrieve queries for entity result operation response.
@@ -3068,6 +3586,17 @@ type HostEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntity implements the EntityClassification interface for type HostEntity.
+func (h *HostEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       h.Kind,
+		ID:         h.ID,
+		Name:       h.Name,
+		Type:       h.Type,
+		SystemData: h.SystemData,
+	}
+}
+
 // HostEntityProperties - Host entity property bag.
 type HostEntityProperties struct {
 	// The operating system type.
@@ -3125,6 +3654,17 @@ type HuntingBookmark struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type HuntingBookmark.
+func (h *HuntingBookmark) GetEntity() *Entity {
+	return &Entity{
+		Kind:       h.Kind,
+		ID:         h.ID,
+		Name:       h.Name,
+		Type:       h.Type,
+		SystemData: h.SystemData,
+	}
 }
 
 // HuntingBookmarkProperties - Describes bookmark properties
@@ -3189,6 +3729,17 @@ type IPEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type IPEntity.
+func (i *IPEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       i.Kind,
+		ID:         i.ID,
+		Name:       i.Name,
+		Type:       i.Type,
+		SystemData: i.SystemData,
+	}
 }
 
 // IPEntityProperties - Ip entity property bag.
@@ -3492,13 +4043,13 @@ type IncidentPropertiesAction struct {
 	// The reason the incident was closed
 	Classification *IncidentClassification `json:"classification,omitempty"`
 
-	// Describes the reason the incident was closed
+	// Describes the reason the incident was closed.
 	ClassificationComment *string `json:"classificationComment,omitempty"`
 
 	// The classification reason the incident was closed with
 	ClassificationReason *IncidentClassificationReason `json:"classificationReason,omitempty"`
 
-	// List of labels to add to the incident
+	// List of labels to add to the incident.
 	Labels []*IncidentLabel `json:"labels,omitempty"`
 
 	// Information on the user an incident is assigned to
@@ -3611,6 +4162,16 @@ type InsightQueryItem struct {
 
 	// READ-ONLY; Query Template ARM ID
 	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+// GetEntityQueryItem implements the EntityQueryItemClassification interface for type InsightQueryItem.
+func (i *InsightQueryItem) GetEntityQueryItem() *EntityQueryItem {
+	return &EntityQueryItem{
+		ID:   i.ID,
+		Name: i.Name,
+		Type: i.Type,
+		Kind: i.Kind,
+	}
 }
 
 // InsightQueryItemProperties - Represents Insight Query.
@@ -3764,6 +4325,13 @@ type IoTCheckRequirements struct {
 	Properties *IoTCheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type IoTCheckRequirements.
+func (i *IoTCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: i.Kind,
+	}
+}
+
 // IoTCheckRequirementsProperties - IoT requirements check properties.
 type IoTCheckRequirementsProperties struct {
 	// The subscription id to connect to, and get the data from.
@@ -3794,6 +4362,18 @@ type IoTDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type IoTDataConnector.
+func (i *IoTDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       i.Kind,
+		Etag:       i.Etag,
+		ID:         i.ID,
+		Name:       i.Name,
+		Type:       i.Type,
+		SystemData: i.SystemData,
+	}
+}
+
 // IoTDataConnectorProperties - IoT data connector properties.
 type IoTDataConnectorProperties struct {
 	// The available data types for the connector.
@@ -3822,6 +4402,17 @@ type IoTDeviceEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type IoTDeviceEntity.
+func (i *IoTDeviceEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       i.Kind,
+		ID:         i.ID,
+		Name:       i.Name,
+		Type:       i.Type,
+		SystemData: i.SystemData,
+	}
 }
 
 // IoTDeviceEntityProperties - IoTDevice entity property bag.
@@ -3903,6 +4494,13 @@ type MCASCheckRequirements struct {
 	Properties *MCASCheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MCASCheckRequirements.
+func (m *MCASCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: m.Kind,
+	}
+}
+
 // MCASCheckRequirementsProperties - MCAS (Microsoft Cloud App Security) requirements check properties.
 type MCASCheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -3933,6 +4531,18 @@ type MCASDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type MCASDataConnector.
+func (m *MCASDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       m.Kind,
+		Etag:       m.Etag,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
+}
+
 // MCASDataConnectorDataTypes - The available data types for MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnectorDataTypes struct {
 	// REQUIRED; Alerts data type connection.
@@ -3958,6 +4568,13 @@ type MDATPCheckRequirements struct {
 
 	// MDATP (Microsoft Defender Advanced Threat Protection) requirements check properties.
 	Properties *MDATPCheckRequirementsProperties `json:"properties,omitempty"`
+}
+
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MDATPCheckRequirements.
+func (m *MDATPCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: m.Kind,
+	}
 }
 
 // MDATPCheckRequirementsProperties - MDATP (Microsoft Defender Advanced Threat Protection) requirements check properties.
@@ -3988,6 +4605,18 @@ type MDATPDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type MDATPDataConnector.
+func (m *MDATPDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       m.Kind,
+		Etag:       m.Etag,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
 }
 
 // MDATPDataConnectorProperties - MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
@@ -4021,6 +4650,18 @@ type MLBehaviorAnalyticsAlertRule struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAlertRule implements the AlertRuleClassification interface for type MLBehaviorAnalyticsAlertRule.
+func (m *MLBehaviorAnalyticsAlertRule) GetAlertRule() *AlertRule {
+	return &AlertRule{
+		Kind:       m.Kind,
+		Etag:       m.Etag,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
 }
 
 // MLBehaviorAnalyticsAlertRuleProperties - MLBehaviorAnalytics alert rule base property bag.
@@ -4071,6 +4712,17 @@ type MLBehaviorAnalyticsAlertRuleTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type MLBehaviorAnalyticsAlertRuleTemplate.
+func (m *MLBehaviorAnalyticsAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
+	return &AlertRuleTemplate{
+		Kind:       m.Kind,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
+}
+
 // MLBehaviorAnalyticsAlertRuleTemplateProperties - MLBehaviorAnalytics alert rule template properties.
 type MLBehaviorAnalyticsAlertRuleTemplateProperties struct {
 	// REQUIRED; The severity for alerts created by this alert rule.
@@ -4113,6 +4765,13 @@ type MSTICheckRequirements struct {
 	Properties *MSTICheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MSTICheckRequirements.
+func (m *MSTICheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: m.Kind,
+	}
+}
+
 // MSTICheckRequirementsProperties - Microsoft Threat Intelligence requirements check properties.
 type MSTICheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -4141,6 +4800,18 @@ type MSTIDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type MSTIDataConnector.
+func (m *MSTIDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       m.Kind,
+		Etag:       m.Etag,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
 }
 
 // MSTIDataConnectorDataTypes - The available data types for Microsoft Threat Intelligence Platforms data connector.
@@ -4209,6 +4880,18 @@ type MTPDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type MTPDataConnector.
+func (m *MTPDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       m.Kind,
+		Etag:       m.Etag,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
+}
+
 // MTPDataConnectorDataTypes - The available data types for Microsoft Threat Protection Platforms data connector.
 type MTPDataConnectorDataTypes struct {
 	// REQUIRED; Data type for Microsoft Threat Protection Platforms data connector.
@@ -4249,6 +4932,17 @@ type MailClusterEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type MailClusterEntity.
+func (m *MailClusterEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       m.Kind,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
 }
 
 // MailClusterEntityProperties - Mail cluster entity property bag.
@@ -4325,6 +5019,17 @@ type MailMessageEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type MailMessageEntity.
+func (m *MailMessageEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       m.Kind,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
 }
 
 // MailMessageEntityProperties - Mail message entity property bag.
@@ -4434,6 +5139,17 @@ type MailboxEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntity implements the EntityClassification interface for type MailboxEntity.
+func (m *MailboxEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       m.Kind,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
+}
+
 // MailboxEntityProperties - Mailbox entity property bag.
 type MailboxEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -4476,6 +5192,17 @@ type MalwareEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type MalwareEntity.
+func (m *MalwareEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       m.Kind,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
 }
 
 // MalwareEntityProperties - Malware entity property bag.
@@ -4820,6 +5547,18 @@ type MicrosoftSecurityIncidentCreationAlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetAlertRule implements the AlertRuleClassification interface for type MicrosoftSecurityIncidentCreationAlertRule.
+func (m *MicrosoftSecurityIncidentCreationAlertRule) GetAlertRule() *AlertRule {
+	return &AlertRule{
+		Kind:       m.Kind,
+		Etag:       m.Etag,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
+}
+
 // MicrosoftSecurityIncidentCreationAlertRuleCommonProperties - MicrosoftSecurityIncidentCreation rule common property bag.
 type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
 	// REQUIRED; The alerts' productName on which the cases will be generated
@@ -4886,6 +5625,17 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (m *MicrosoftSecurityIncidentCreationAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
+	return &AlertRuleTemplate{
+		Kind:       m.Kind,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+		SystemData: m.SystemData,
+	}
+}
+
 // MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties - MicrosoftSecurityIncidentCreation rule template properties
 type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	// the number of alert rules that were created by this template
@@ -4931,6 +5681,13 @@ type MtpCheckRequirements struct {
 	Properties *MTPCheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MtpCheckRequirements.
+func (m *MtpCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: m.Kind,
+	}
+}
+
 // NrtAlertRule - Represents NRT alert rule.
 type NrtAlertRule struct {
 	// REQUIRED; The kind of the alert rule
@@ -4953,6 +5710,18 @@ type NrtAlertRule struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAlertRule implements the AlertRuleClassification interface for type NrtAlertRule.
+func (n *NrtAlertRule) GetAlertRule() *AlertRule {
+	return &AlertRule{
+		Kind:       n.Kind,
+		Etag:       n.Etag,
+		ID:         n.ID,
+		Name:       n.Name,
+		Type:       n.Type,
+		SystemData: n.SystemData,
+	}
 }
 
 // NrtAlertRuleProperties - Nrt alert rule base property bag.
@@ -5027,6 +5796,17 @@ type NrtAlertRuleTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type NrtAlertRuleTemplate.
+func (n *NrtAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
+	return &AlertRuleTemplate{
+		Kind:       n.Kind,
+		ID:         n.ID,
+		Name:       n.Name,
+		Type:       n.Type,
+		SystemData: n.SystemData,
+	}
+}
+
 // NrtAlertRuleTemplateProperties - NRT alert rule template properties
 type NrtAlertRuleTemplateProperties struct {
 	// The alert details override settings
@@ -5084,6 +5864,13 @@ type Office365ProjectCheckRequirements struct {
 	Properties *Office365ProjectCheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type Office365ProjectCheckRequirements.
+func (o *Office365ProjectCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: o.Kind,
+	}
+}
+
 // Office365ProjectCheckRequirementsProperties - Office365 Project requirements check properties.
 type Office365ProjectCheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -5126,6 +5913,18 @@ type Office365ProjectDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type Office365ProjectDataConnector.
+func (o *Office365ProjectDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       o.Kind,
+		Etag:       o.Etag,
+		ID:         o.ID,
+		Name:       o.Name,
+		Type:       o.Type,
+		SystemData: o.SystemData,
+	}
+}
+
 // Office365ProjectDataConnectorProperties - Office Microsoft Project data connector properties.
 type Office365ProjectDataConnectorProperties struct {
 	// REQUIRED; The available data types for the connector.
@@ -5142,6 +5941,13 @@ type OfficeATPCheckRequirements struct {
 
 	// OfficeATP (Office 365 Advanced Threat Protection) requirements check properties.
 	Properties *OfficeATPCheckRequirementsProperties `json:"properties,omitempty"`
+}
+
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type OfficeATPCheckRequirements.
+func (o *OfficeATPCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: o.Kind,
+	}
 }
 
 // OfficeATPCheckRequirementsProperties - OfficeATP (Office 365 Advanced Threat Protection) requirements check properties.
@@ -5172,6 +5978,18 @@ type OfficeATPDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type OfficeATPDataConnector.
+func (o *OfficeATPDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       o.Kind,
+		Etag:       o.Etag,
+		ID:         o.ID,
+		Name:       o.Name,
+		Type:       o.Type,
+		SystemData: o.SystemData,
+	}
 }
 
 // OfficeATPDataConnectorProperties - OfficeATP (Office 365 Advanced Threat Protection) data connector properties.
@@ -5258,6 +6076,18 @@ type OfficeDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type OfficeDataConnector.
+func (o *OfficeDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       o.Kind,
+		Etag:       o.Etag,
+		ID:         o.ID,
+		Name:       o.Name,
+		Type:       o.Type,
+		SystemData: o.SystemData,
+	}
+}
+
 // OfficeDataConnectorDataTypes - The available data types for office data connector.
 type OfficeDataConnectorDataTypes struct {
 	// REQUIRED; Exchange data type connection.
@@ -5306,6 +6136,13 @@ type OfficeIRMCheckRequirements struct {
 	Properties *OfficeIRMCheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type OfficeIRMCheckRequirements.
+func (o *OfficeIRMCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: o.Kind,
+	}
+}
+
 // OfficeIRMCheckRequirementsProperties - OfficeIRM (Microsoft Insider Risk Management) requirements check properties.
 type OfficeIRMCheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -5336,6 +6173,18 @@ type OfficeIRMDataConnector struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnector implements the DataConnectorClassification interface for type OfficeIRMDataConnector.
+func (o *OfficeIRMDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       o.Kind,
+		Etag:       o.Etag,
+		ID:         o.ID,
+		Name:       o.Name,
+		Type:       o.Type,
+		SystemData: o.SystemData,
+	}
+}
+
 // OfficeIRMDataConnectorProperties - OfficeIRM (Microsoft Insider Risk Management) data connector properties.
 type OfficeIRMDataConnectorProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -5352,6 +6201,13 @@ type OfficePowerBICheckRequirements struct {
 
 	// Office Power BI requirements check properties.
 	Properties *OfficePowerBICheckRequirementsProperties `json:"properties,omitempty"`
+}
+
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type OfficePowerBICheckRequirements.
+func (o *OfficePowerBICheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: o.Kind,
+	}
 }
 
 // OfficePowerBICheckRequirementsProperties - Office PowerBI requirements check properties.
@@ -5394,6 +6250,18 @@ type OfficePowerBIDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type OfficePowerBIDataConnector.
+func (o *OfficePowerBIDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       o.Kind,
+		Etag:       o.Etag,
+		ID:         o.ID,
+		Name:       o.Name,
+		Type:       o.Type,
+		SystemData: o.SystemData,
+	}
 }
 
 // OfficePowerBIDataConnectorProperties - Office Microsoft PowerBI data connector properties.
@@ -5484,10 +6352,10 @@ type PermissionsResourceProviderItem struct {
 }
 
 type PlaybookActionProperties struct {
-	// The resource id of the playbook resource
+	// The resource id of the playbook resource.
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
 
-	// The tenant id of the playbook resource
+	// The tenant id of the playbook resource.
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
@@ -5510,6 +6378,17 @@ type ProcessEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type ProcessEntity.
+func (p *ProcessEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       p.Kind,
+		ID:         p.ID,
+		Name:       p.Name,
+		Type:       p.Type,
+		SystemData: p.SystemData,
+	}
 }
 
 // ProcessEntityProperties - Process entity property bag.
@@ -5569,11 +6448,47 @@ type ProductSettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PropertyArrayChangedConditionProperties - Describes an automation rule condition that evaluates an array property's value
+// change
+type PropertyArrayChangedConditionProperties struct {
+	// REQUIRED
+	ConditionType       *ConditionType                                     `json:"conditionType,omitempty"`
+	ConditionProperties *AutomationRulePropertyArrayChangedValuesCondition `json:"conditionProperties,omitempty"`
+}
+
+// GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type PropertyArrayChangedConditionProperties.
+func (p *PropertyArrayChangedConditionProperties) GetAutomationRuleCondition() *AutomationRuleCondition {
+	return &AutomationRuleCondition{
+		ConditionType: p.ConditionType,
+	}
+}
+
+// PropertyChangedConditionProperties - Describes an automation rule condition that evaluates a property's value change
+type PropertyChangedConditionProperties struct {
+	// REQUIRED
+	ConditionType       *ConditionType                                `json:"conditionType,omitempty"`
+	ConditionProperties *AutomationRulePropertyValuesChangedCondition `json:"conditionProperties,omitempty"`
+}
+
+// GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type PropertyChangedConditionProperties.
+func (p *PropertyChangedConditionProperties) GetAutomationRuleCondition() *AutomationRuleCondition {
+	return &AutomationRuleCondition{
+		ConditionType: p.ConditionType,
+	}
+}
+
 // PropertyConditionProperties - Describes an automation rule condition that evaluates a property's value
 type PropertyConditionProperties struct {
 	// REQUIRED
 	ConditionType       *ConditionType                         `json:"conditionType,omitempty"`
 	ConditionProperties *AutomationRulePropertyValuesCondition `json:"conditionProperties,omitempty"`
+}
+
+// GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type PropertyConditionProperties.
+func (p *PropertyConditionProperties) GetAutomationRuleCondition() *AutomationRuleCondition {
+	return &AutomationRuleCondition{
+		ConditionType: p.ConditionType,
+	}
 }
 
 // QueryBasedAlertRuleTemplateProperties - Query based alert rule template base property bag.
@@ -5618,6 +6533,17 @@ type RegistryKeyEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntity implements the EntityClassification interface for type RegistryKeyEntity.
+func (r *RegistryKeyEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       r.Kind,
+		ID:         r.ID,
+		Name:       r.Name,
+		Type:       r.Type,
+		SystemData: r.SystemData,
+	}
+}
+
 // RegistryKeyEntityProperties - RegistryKey entity property bag.
 type RegistryKeyEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -5653,6 +6579,17 @@ type RegistryValueEntity struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type RegistryValueEntity.
+func (r *RegistryValueEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       r.Kind,
+		ID:         r.ID,
+		Name:       r.Name,
+		Type:       r.Type,
+		SystemData: r.SystemData,
+	}
 }
 
 // RegistryValueEntityProperties - RegistryValue entity property bag.
@@ -5840,15 +6777,6 @@ type ResourceWithEtag struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SKU - The pricing tier of the solution
-type SKU struct {
-	// The amount of reservation level
-	CapacityReservationLevel *int32 `json:"capacityReservationLevel,omitempty"`
-
-	// The kind of the tier
-	Name *SKUKind `json:"name,omitempty"`
-}
-
 // SampleQueries - The sample queries for the connector
 type SampleQueries struct {
 	// The sample query description
@@ -5880,6 +6808,18 @@ type ScheduledAlertRule struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAlertRule implements the AlertRuleClassification interface for type ScheduledAlertRule.
+func (s *ScheduledAlertRule) GetAlertRule() *AlertRule {
+	return &AlertRule{
+		Kind:       s.Kind,
+		Etag:       s.Etag,
+		ID:         s.ID,
+		Name:       s.Name,
+		Type:       s.Type,
+		SystemData: s.SystemData,
+	}
 }
 
 // ScheduledAlertRuleCommonProperties - Scheduled alert rule template property bag.
@@ -6002,6 +6942,17 @@ type ScheduledAlertRuleTemplate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type ScheduledAlertRuleTemplate.
+func (s *ScheduledAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
+	return &AlertRuleTemplate{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		Type:       s.Type,
+		SystemData: s.SystemData,
+	}
+}
+
 // ScheduledAlertRuleTemplateProperties - Scheduled alert rule template properties
 type ScheduledAlertRuleTemplateProperties struct {
 	// The alert details override settings
@@ -6084,6 +7035,17 @@ type SecurityAlert struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetEntity implements the EntityClassification interface for type SecurityAlert.
+func (s *SecurityAlert) GetEntity() *Entity {
+	return &Entity{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		Type:       s.Type,
+		SystemData: s.SystemData,
+	}
 }
 
 // SecurityAlertProperties - SecurityAlert entity property bag.
@@ -6214,6 +7176,13 @@ type SecurityAlertTimelineItem struct {
 	ProductName *string `json:"productName,omitempty"`
 }
 
+// GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type SecurityAlertTimelineItem.
+func (s *SecurityAlertTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
+	return &EntityTimelineItem{
+		Kind: s.Kind,
+	}
+}
+
 // SecurityGroupEntity - Represents a security group entity.
 type SecurityGroupEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -6235,6 +7204,17 @@ type SecurityGroupEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntity implements the EntityClassification interface for type SecurityGroupEntity.
+func (s *SecurityGroupEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		Type:       s.Type,
+		SystemData: s.SystemData,
+	}
+}
+
 // SecurityGroupEntityProperties - SecurityGroup entity property bag.
 type SecurityGroupEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -6252,6 +7232,83 @@ type SecurityGroupEntityProperties struct {
 
 	// READ-ONLY; The SID attribute is a single-value attribute that specifies the security identifier (SID) of the group
 	Sid *string `json:"sid,omitempty" azure:"ro"`
+}
+
+// SecurityMLAnalyticsSettingClassification provides polymorphic access to related types.
+// Call the interface's GetSecurityMLAnalyticsSetting() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AnomalySecurityMLAnalyticsSettings, *SecurityMLAnalyticsSetting
+type SecurityMLAnalyticsSettingClassification interface {
+	// GetSecurityMLAnalyticsSetting returns the SecurityMLAnalyticsSetting content of the underlying type.
+	GetSecurityMLAnalyticsSetting() *SecurityMLAnalyticsSetting
+}
+
+// SecurityMLAnalyticsSetting - Security ML Analytics Setting
+type SecurityMLAnalyticsSetting struct {
+	// REQUIRED; The kind of security ML Analytics Settings
+	Kind *SecurityMLAnalyticsSettingsKind `json:"kind,omitempty"`
+
+	// Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetSecurityMLAnalyticsSetting implements the SecurityMLAnalyticsSettingClassification interface for type SecurityMLAnalyticsSetting.
+func (s *SecurityMLAnalyticsSetting) GetSecurityMLAnalyticsSetting() *SecurityMLAnalyticsSetting {
+	return s
+}
+
+// SecurityMLAnalyticsSettingsClientCreateOrUpdateOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.CreateOrUpdate
+// method.
+type SecurityMLAnalyticsSettingsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SecurityMLAnalyticsSettingsClientDeleteOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.Delete
+// method.
+type SecurityMLAnalyticsSettingsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SecurityMLAnalyticsSettingsClientGetOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.Get
+// method.
+type SecurityMLAnalyticsSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SecurityMLAnalyticsSettingsClientListOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.List
+// method.
+type SecurityMLAnalyticsSettingsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SecurityMLAnalyticsSettingsDataSource - security ml analytics settings data sources
+type SecurityMLAnalyticsSettingsDataSource struct {
+	// The connector id that provides the following data types
+	ConnectorID *string `json:"connectorId,omitempty"`
+
+	// The data types used by the security ml analytics settings
+	DataTypes []*string `json:"dataTypes,omitempty"`
+}
+
+// SecurityMLAnalyticsSettingsList - List all the SecurityMLAnalyticsSettings
+type SecurityMLAnalyticsSettingsList struct {
+	// REQUIRED; Array of SecurityMLAnalyticsSettings
+	Value []SecurityMLAnalyticsSettingClassification `json:"value,omitempty"`
+
+	// READ-ONLY; URL to fetch the next set of SecurityMLAnalyticsSettings.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
 // SentinelOnboardingState - Sentinel onboarding state
@@ -6346,6 +7403,9 @@ type Settings struct {
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetSettings implements the SettingsClassification interface for type Settings.
+func (s *Settings) GetSettings() *Settings { return s }
 
 // SourceControl - Represents a SourceControl in Azure Security Insights.
 type SourceControl struct {
@@ -6454,6 +7514,17 @@ type SubmissionMailEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntity implements the EntityClassification interface for type SubmissionMailEntity.
+func (s *SubmissionMailEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		Type:       s.Type,
+		SystemData: s.SystemData,
+	}
+}
+
 // SubmissionMailEntityProperties - Submission mail entity property bag.
 type SubmissionMailEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -6524,6 +7595,13 @@ type TICheckRequirements struct {
 	Properties *TICheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type TICheckRequirements.
+func (t *TICheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: t.Kind,
+	}
+}
+
 // TICheckRequirementsProperties - Threat Intelligence Platforms data connector required properties.
 type TICheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -6552,6 +7630,18 @@ type TIDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type TIDataConnector.
+func (t *TIDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       t.Kind,
+		Etag:       t.Etag,
+		ID:         t.ID,
+		Name:       t.Name,
+		Type:       t.Type,
+		SystemData: t.SystemData,
+	}
 }
 
 // TIDataConnectorDataTypes - The available data types for TI (Threat Intelligence) data connector.
@@ -6656,6 +7746,18 @@ type ThreatIntelligenceAlertRule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetAlertRule implements the AlertRuleClassification interface for type ThreatIntelligenceAlertRule.
+func (t *ThreatIntelligenceAlertRule) GetAlertRule() *AlertRule {
+	return &AlertRule{
+		Kind:       t.Kind,
+		Etag:       t.Etag,
+		ID:         t.ID,
+		Name:       t.Name,
+		Type:       t.Type,
+		SystemData: t.SystemData,
+	}
+}
+
 // ThreatIntelligenceAlertRuleProperties - Threat Intelligence alert rule base property bag.
 type ThreatIntelligenceAlertRuleProperties struct {
 	// REQUIRED; The Name of the alert rule template used to create this rule.
@@ -6702,6 +7804,17 @@ type ThreatIntelligenceAlertRuleTemplate struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type ThreatIntelligenceAlertRuleTemplate.
+func (t *ThreatIntelligenceAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
+	return &AlertRuleTemplate{
+		Kind:       t.Kind,
+		ID:         t.ID,
+		Name:       t.Name,
+		Type:       t.Type,
+		SystemData: t.SystemData,
+	}
 }
 
 // ThreatIntelligenceAlertRuleTemplateProperties - Threat Intelligence alert rule template properties
@@ -6887,6 +8000,18 @@ type ThreatIntelligenceIndicatorModel struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetThreatIntelligenceInformation implements the ThreatIntelligenceInformationClassification interface for type ThreatIntelligenceIndicatorModel.
+func (t *ThreatIntelligenceIndicatorModel) GetThreatIntelligenceInformation() *ThreatIntelligenceInformation {
+	return &ThreatIntelligenceInformation{
+		Kind:       t.Kind,
+		Etag:       t.Etag,
+		ID:         t.ID,
+		Name:       t.Name,
+		Type:       t.Type,
+		SystemData: t.SystemData,
+	}
+}
+
 // ThreatIntelligenceIndicatorProperties - Describes threat intelligence entity properties
 type ThreatIntelligenceIndicatorProperties struct {
 	// Confidence of threat intelligence entity
@@ -7026,6 +8151,11 @@ type ThreatIntelligenceInformation struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetThreatIntelligenceInformation implements the ThreatIntelligenceInformationClassification interface for type ThreatIntelligenceInformation.
+func (t *ThreatIntelligenceInformation) GetThreatIntelligenceInformation() *ThreatIntelligenceInformation {
+	return t
+}
+
 // ThreatIntelligenceInformationList - List of all the threat intelligence information objects.
 type ThreatIntelligenceInformationList struct {
 	// REQUIRED; Array of threat intelligence information objects.
@@ -7116,6 +8246,13 @@ type TiTaxiiCheckRequirements struct {
 	Properties *TiTaxiiCheckRequirementsProperties `json:"properties,omitempty"`
 }
 
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type TiTaxiiCheckRequirements.
+func (t *TiTaxiiCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: t.Kind,
+	}
+}
+
 // TiTaxiiCheckRequirementsProperties - Threat Intelligence TAXII data connector required properties.
 type TiTaxiiCheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
@@ -7144,6 +8281,18 @@ type TiTaxiiDataConnector struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type TiTaxiiDataConnector.
+func (t *TiTaxiiDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Kind:       t.Kind,
+		Etag:       t.Etag,
+		ID:         t.ID,
+		Name:       t.Name,
+		Type:       t.Type,
+		SystemData: t.SystemData,
+	}
 }
 
 // TiTaxiiDataConnectorDataTypes - The available data types for Threat Intelligence TAXII data connector.
@@ -7245,6 +8394,17 @@ type URLEntity struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetEntity implements the EntityClassification interface for type URLEntity.
+func (u *URLEntity) GetEntity() *Entity {
+	return &Entity{
+		Kind:       u.Kind,
+		ID:         u.ID,
+		Name:       u.Name,
+		Type:       u.Type,
+		SystemData: u.SystemData,
+	}
+}
+
 // URLEntityProperties - Url entity property bag.
 type URLEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -7280,6 +8440,18 @@ type Ueba struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetSettings implements the SettingsClassification interface for type Ueba.
+func (u *Ueba) GetSettings() *Settings {
+	return &Settings{
+		Kind:       u.Kind,
+		Etag:       u.Etag,
+		ID:         u.ID,
+		Name:       u.Name,
+		Type:       u.Type,
+		SystemData: u.SystemData,
+	}
 }
 
 // UebaProperties - Ueba property bag.

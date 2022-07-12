@@ -23,13 +23,13 @@ func ExamplePrivateLinkResourcesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewPrivateLinkResourcesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"rg-1234",
+		"testworkspace",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

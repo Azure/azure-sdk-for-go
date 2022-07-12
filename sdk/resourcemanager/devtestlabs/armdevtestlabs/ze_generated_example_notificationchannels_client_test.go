@@ -24,12 +24,12 @@ func ExampleNotificationChannelsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewNotificationChannelsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewNotificationChannelsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<lab-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"{labName}",
 		&armdevtestlabs.NotificationChannelsClientListOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -39,7 +39,6 @@ func ExampleNotificationChannelsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,14 +54,14 @@ func ExampleNotificationChannelsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewNotificationChannelsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewNotificationChannelsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{notificationChannelName}",
 		&armdevtestlabs.NotificationChannelsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,24 +77,24 @@ func ExampleNotificationChannelsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewNotificationChannelsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewNotificationChannelsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{notificationChannelName}",
 		armdevtestlabs.NotificationChannel{
 			Properties: &armdevtestlabs.NotificationChannelProperties{
-				Description:    to.Ptr("<description>"),
-				EmailRecipient: to.Ptr("<email-recipient>"),
+				Description:    to.Ptr("Integration configured for auto-shutdown"),
+				EmailRecipient: to.Ptr("{email}"),
 				Events: []*armdevtestlabs.Event{
 					{
 						EventName: to.Ptr(armdevtestlabs.NotificationChannelEventTypeAutoShutdown),
 					}},
-				NotificationLocale: to.Ptr("<notification-locale>"),
-				WebHookURL:         to.Ptr("<web-hook-url>"),
+				NotificationLocale: to.Ptr("en"),
+				WebHookURL:         to.Ptr("{webhookUrl}"),
 			},
 		},
 		nil)
@@ -113,14 +112,14 @@ func ExampleNotificationChannelsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewNotificationChannelsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewNotificationChannelsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{notificationChannelName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,14 +133,14 @@ func ExampleNotificationChannelsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewNotificationChannelsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewNotificationChannelsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{notificationChannelName}",
 		armdevtestlabs.NotificationChannelFragment{},
 		nil)
 	if err != nil {
@@ -158,17 +157,17 @@ func ExampleNotificationChannelsClient_Notify() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewNotificationChannelsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewNotificationChannelsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Notify(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{notificationChannelName}",
 		armdevtestlabs.NotifyParameters{
 			EventName:   to.Ptr(armdevtestlabs.NotificationChannelEventTypeAutoShutdown),
-			JSONPayload: to.Ptr("<jsonpayload>"),
+			JSONPayload: to.Ptr("{\"eventType\":\"AutoShutdown\",\"subscriptionId\":\"{subscriptionId}\",\"resourceGroupName\":\"resourceGroupName\",\"labName\":\"{labName}\"}"),
 		},
 		nil)
 	if err != nil {

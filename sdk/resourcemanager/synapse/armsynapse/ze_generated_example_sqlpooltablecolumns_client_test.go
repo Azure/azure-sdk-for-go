@@ -23,21 +23,20 @@ func ExampleSQLPoolTableColumnsClient_NewListByTableNamePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolTableColumnsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolTableColumnsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTableNamePager("<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<schema-name>",
-		"<table-name>",
+	pager := client.NewListByTableNamePager("myRG",
+		"serverName",
+		"myDatabase",
+		"dbo",
+		"table1",
 		&armsynapse.SQLPoolTableColumnsClientListByTableNameOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

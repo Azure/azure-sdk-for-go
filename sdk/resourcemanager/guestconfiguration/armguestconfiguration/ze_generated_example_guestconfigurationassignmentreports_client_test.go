@@ -16,21 +16,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listAllGuestConfigurationAssignmentReports.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listAllGuestConfigurationAssignmentReports.json
 func ExampleAssignmentReportsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewAssignmentReportsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentReportsClient("mySubscriptionid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<guest-configuration-assignment-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"AuditSecureProtocol",
+		"myVMName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -39,22 +39,22 @@ func ExampleAssignmentReportsClient_List() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/getGuestConfigurationAssignmentReportById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/getGuestConfigurationAssignmentReportById.json
 func ExampleAssignmentReportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewAssignmentReportsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentReportsClient("mySubscriptionid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<guest-configuration-assignment-name>",
-		"<report-id>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"AuditSecureProtocol",
+		"7367cbb8-ae99-47d0-a33b-a283564d2cb1",
+		"myvm",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

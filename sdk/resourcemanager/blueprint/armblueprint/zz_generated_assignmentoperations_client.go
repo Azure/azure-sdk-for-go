@@ -36,7 +36,7 @@ func NewAssignmentOperationsClient(credential azcore.TokenCredential, options *a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewAssignmentOperationsClient(credential azcore.TokenCredential, options *a
 
 // Get - Get a blueprint assignment operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // assignmentName - Name of the blueprint assignment.
@@ -93,7 +94,7 @@ func (client *AssignmentOperationsClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,13 +109,14 @@ func (client *AssignmentOperationsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - List operations for given blueprint assignment within a subscription or a management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
 // resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format: '/subscriptions/{subscriptionId}').
 // assignmentName - Name of the blueprint assignment.
 // options - AssignmentOperationsClientListOptions contains the optional parameters for the AssignmentOperationsClient.List
 // method.
 func (client *AssignmentOperationsClient) NewListPager(resourceScope string, assignmentName string, options *AssignmentOperationsClientListOptions) *runtime.Pager[AssignmentOperationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentOperationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentOperationsClientListResponse]{
 		More: func(page AssignmentOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -156,7 +158,7 @@ func (client *AssignmentOperationsClient) listCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

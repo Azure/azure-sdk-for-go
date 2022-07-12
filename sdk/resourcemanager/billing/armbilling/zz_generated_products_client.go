@@ -37,7 +37,7 @@ func NewProductsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,6 +55,7 @@ func NewProductsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // Get - Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // productName - The ID that uniquely identifies a product.
 // options - ProductsClientGetOptions contains the optional parameters for the ProductsClient.Get method.
@@ -91,7 +92,7 @@ func (client *ProductsClient) getCreateRequest(ctx context.Context, billingAccou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,11 +109,12 @@ func (client *ProductsClient) getHandleResponse(resp *http.Response) (ProductsCl
 // The operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
 // Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - ProductsClientListByBillingAccountOptions contains the optional parameters for the ProductsClient.ListByBillingAccount
 // method.
 func (client *ProductsClient) NewListByBillingAccountPager(billingAccountName string, options *ProductsClientListByBillingAccountOptions) *runtime.Pager[ProductsClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProductsClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProductsClientListByBillingAccountResponse]{
 		More: func(page ProductsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -156,7 +158,7 @@ func (client *ProductsClient) listByBillingAccountCreateRequest(ctx context.Cont
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -173,12 +175,13 @@ func (client *ProductsClient) listByBillingAccountHandleResponse(resp *http.Resp
 // The operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
 // Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - ProductsClientListByBillingProfileOptions contains the optional parameters for the ProductsClient.ListByBillingProfile
 // method.
 func (client *ProductsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *ProductsClientListByBillingProfileOptions) *runtime.Pager[ProductsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProductsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProductsClientListByBillingProfileResponse]{
 		More: func(page ProductsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -226,7 +229,7 @@ func (client *ProductsClient) listByBillingProfileCreateRequest(ctx context.Cont
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -242,11 +245,12 @@ func (client *ProductsClient) listByBillingProfileHandleResponse(resp *http.Resp
 // NewListByCustomerPager - Lists the products for a customer. These don't include products billed based on usage.The operation
 // is supported only for billing accounts with agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // customerName - The ID that uniquely identifies a customer.
 // options - ProductsClientListByCustomerOptions contains the optional parameters for the ProductsClient.ListByCustomer method.
 func (client *ProductsClient) NewListByCustomerPager(billingAccountName string, customerName string, options *ProductsClientListByCustomerOptions) *runtime.Pager[ProductsClientListByCustomerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProductsClientListByCustomerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProductsClientListByCustomerResponse]{
 		More: func(page ProductsClientListByCustomerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -291,7 +295,7 @@ func (client *ProductsClient) listByCustomerCreateRequest(ctx context.Context, b
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -307,13 +311,14 @@ func (client *ProductsClient) listByCustomerHandleResponse(resp *http.Response) 
 // NewListByInvoiceSectionPager - Lists the products for an invoice section. These don't include products billed based on
 // usage. The operation is supported only for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // options - ProductsClientListByInvoiceSectionOptions contains the optional parameters for the ProductsClient.ListByInvoiceSection
 // method.
 func (client *ProductsClient) NewListByInvoiceSectionPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *ProductsClientListByInvoiceSectionOptions) *runtime.Pager[ProductsClientListByInvoiceSectionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProductsClientListByInvoiceSectionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProductsClientListByInvoiceSectionResponse]{
 		More: func(page ProductsClientListByInvoiceSectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -365,7 +370,7 @@ func (client *ProductsClient) listByInvoiceSectionCreateRequest(ctx context.Cont
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -382,6 +387,7 @@ func (client *ProductsClient) listByInvoiceSectionHandleResponse(resp *http.Resp
 // as the existing invoice section. This operation is supported only for products that
 // are purchased with a recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // productName - The ID that uniquely identifies a product.
 // parameters - Request parameters that are provided to the move product operation.
@@ -419,7 +425,7 @@ func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAcco
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -446,6 +452,7 @@ func (client *ProductsClient) moveHandleResponse(resp *http.Response) (ProductsC
 // Update - Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for
 // billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // productName - The ID that uniquely identifies a product.
 // parameters - Request parameters that are provided to the update product operation.
@@ -483,7 +490,7 @@ func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -500,6 +507,7 @@ func (client *ProductsClient) updateHandleResponse(resp *http.Response) (Product
 // for products that are purchased with a recurring charge and for billing accounts with agreement
 // type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // productName - The ID that uniquely identifies a product.
 // parameters - Request parameters that are provided to the validate move eligibility operation.
@@ -537,7 +545,7 @@ func (client *ProductsClient) validateMoveCreateRequest(ctx context.Context, bil
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

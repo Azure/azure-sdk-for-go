@@ -5,17 +5,17 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"sort"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
-	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -60,12 +60,9 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 	require.EqualValues(t, 5, len(messages))
 
 	for i := 0; i < 5; i++ {
-		body, err := messages[i].Body()
-		require.NoError(t, err)
-
 		require.EqualValues(t,
 			fmt.Sprintf("[%d]: send five, receive five", i),
-			string(body))
+			string(messages[i].Body))
 
 		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
 	}
@@ -380,11 +377,8 @@ func TestReceiverPeek(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, 1, len(repeekedMessages))
 
-	body, err := peekedMessages2[0].Body()
-	require.NoError(t, err)
-
 	require.EqualValues(t, []string{
-		string(body),
+		string(peekedMessages2[0].Body),
 	}, getSortedBodies(repeekedMessages))
 
 	// and peek again (note it won't reset so there'll be "nothing")
@@ -554,8 +548,10 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 	endCaptureFn := test.CaptureLogsForTest()
 	defer endCaptureFn()
 	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0], nil)
-	// String matching can go away once we fix #15644
-	// For now it at least provides the user with good context that something is incorrect about their lock token.
+
+	var asSBError *Error
+	require.ErrorAs(t, expectedLockBadError, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
 	require.Contains(t, expectedLockBadError.Error(),
 		"status code 410 and description: The lock supplied is invalid. Either the lock expired, or the message has already been removed from the queue",
 		"error message from SB comes through")
@@ -601,7 +597,7 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 			// - TypeCodeDecimal64
 			// - TypeCodeDecimal128
 			// - TypeCodeChar  (although note below that a 'character' does work, although it's not a TypecodeChar value)
-			// https://github.com/Azure/go-amqp/blob/e0c6c63fb01e6642686ee4f8e7412da042bf35dd/internal/encoding/decode.go#L568
+			// https://github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/blob/e0c6c63fb01e6642686ee4f8e7412da042bf35dd/internal/encoding/decode.go#L568
 			"timestamp": expectedTime,
 
 			"byte":   byte(128),
@@ -752,12 +748,32 @@ func TestReceiverMultiTopic(t *testing.T) {
 	require.Equal(t, []string{"sent to other queue2"}, getSortedBodies(otherMessages))
 }
 
-type badRPCLink struct {
-	internal.RPCLink
-}
+func TestReceiverMessageLockExpires(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
+		LockDuration: to.Ptr("PT5S"),
+	})
+	defer cleanup()
 
-func (br *badRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*internal.RPCResponse, error) {
-	return nil, errors.New("receive deferred messages failed")
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	// sleep so our message locks expire
+	time.Sleep(6 * time.Second)
+
+	err = receiver.CompleteMessage(context.Background(), messages[0], nil)
+
+	var asSBError *Error
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
 }
 
 type receivedMessageSlice []*ReceivedMessage
@@ -767,19 +783,7 @@ func (messages receivedMessageSlice) Len() int {
 }
 
 func (messages receivedMessageSlice) Less(i, j int) bool {
-	bodyI, err := messages[i].Body()
-
-	if err != nil {
-		panic(err)
-	}
-
-	bodyJ, err := messages[j].Body()
-
-	if err != nil {
-		panic(err)
-	}
-
-	return string(bodyI) < string(bodyJ)
+	return string(messages[i].Body) < string(messages[j].Body)
 }
 
 func (messages receivedMessageSlice) Swap(i, j int) {

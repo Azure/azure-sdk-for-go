@@ -23,14 +23,14 @@ func ExampleAPIExportClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIExportClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIExportClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"echo-api",
 		armapimanagement.ExportFormatSwagger,
 		armapimanagement.ExportAPITrue,
 		nil)

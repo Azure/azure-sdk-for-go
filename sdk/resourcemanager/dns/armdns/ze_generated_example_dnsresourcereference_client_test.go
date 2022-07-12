@@ -24,7 +24,7 @@ func ExampleResourceReferenceClient_GetByTargetResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewResourceReferenceClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewResourceReferenceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,7 @@ func ExampleResourceReferenceClient_GetByTargetResources() {
 			Properties: &armdns.ResourceReferenceRequestProperties{
 				TargetResources: []*armdns.SubResource{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/trafficManagerProfiles/testpp2"),
 					}},
 			},
 		},

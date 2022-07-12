@@ -26,13 +26,13 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticProactiveLogCollectionSettings
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDiagnosticSettingsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDiagnosticProactiveLogCollectionSettings(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,23 +48,23 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticProactiveLogCollection
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDiagnosticSettingsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateDiagnosticProactiveLogCollectionSettings(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		armdataboxedge.DiagnosticProactiveLogCollectionSettings{
 			Properties: &armdataboxedge.ProactiveLogCollectionSettingsProperties{
 				UserConsent: to.Ptr(armdataboxedge.ProactiveDiagnosticsConsentEnabled),
 			},
 		},
-		&armdataboxedge.DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -79,13 +79,13 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticRemoteSupportSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDiagnosticSettingsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDiagnosticRemoteSupportSettings(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,13 +101,13 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDiagnosticSettingsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateDiagnosticRemoteSupportSettings(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		armdataboxedge.DiagnosticRemoteSupportSettings{
 			Properties: &armdataboxedge.DiagnosticRemoteSupportSettingsProperties{
 				RemoteSupportSettingsList: []*armdataboxedge.RemoteSupportSettings{
@@ -118,11 +118,11 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 					}},
 			},
 		},
-		&armdataboxedge.DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

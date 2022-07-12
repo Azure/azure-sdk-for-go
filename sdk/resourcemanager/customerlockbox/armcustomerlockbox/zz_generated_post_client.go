@@ -33,7 +33,7 @@ func NewPostClient(credential azcore.TokenCredential, options *arm.ClientOptions
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,6 +50,7 @@ func NewPostClient(credential azcore.TokenCredential, options *arm.ClientOptions
 
 // DisableLockbox - Disable Tenant for Lockbox
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
 // options - PostClientDisableLockboxOptions contains the optional parameters for the PostClient.DisableLockbox method.
 func (client *PostClient) DisableLockbox(ctx context.Context, options *PostClientDisableLockboxOptions) (PostClientDisableLockboxResponse, error) {
 	req, err := client.disableLockboxCreateRequest(ctx, options)
@@ -76,12 +77,13 @@ func (client *PostClient) disableLockboxCreateRequest(ctx context.Context, optio
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-28-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // EnableLockbox - Enable Tenant for Lockbox
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
 // options - PostClientEnableLockboxOptions contains the optional parameters for the PostClient.EnableLockbox method.
 func (client *PostClient) EnableLockbox(ctx context.Context, options *PostClientEnableLockboxOptions) (PostClientEnableLockboxResponse, error) {
 	req, err := client.enableLockboxCreateRequest(ctx, options)
@@ -108,6 +110,6 @@ func (client *PostClient) enableLockboxCreateRequest(ctx context.Context, option
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-28-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

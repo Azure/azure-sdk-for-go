@@ -10,64 +10,35 @@ package armauthorization
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// MarshalJSON implements the json.Marshaller interface for type AccessReviewContactedReviewerListResult.
-func (a AccessReviewContactedReviewerListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccessReviewContactedReviewerProperties.
-func (a AccessReviewContactedReviewerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdDateTime", a.CreatedDateTime)
-	populate(objectMap, "userDisplayName", a.UserDisplayName)
-	populate(objectMap, "userPrincipalName", a.UserPrincipalName)
-	return json.Marshal(objectMap)
-}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AccessReviewContactedReviewerProperties.
 func (a *AccessReviewContactedReviewerProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "createdDateTime":
-			err = unpopulateTimeRFC3339(val, &a.CreatedDateTime)
+			err = unpopulateTimeRFC3339(val, "CreatedDateTime", &a.CreatedDateTime)
 			delete(rawMsg, key)
 		case "userDisplayName":
-			err = unpopulate(val, &a.UserDisplayName)
+			err = unpopulate(val, "UserDisplayName", &a.UserDisplayName)
 			delete(rawMsg, key)
 		case "userPrincipalName":
-			err = unpopulate(val, &a.UserPrincipalName)
+			err = unpopulate(val, "UserPrincipalName", &a.UserPrincipalName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionIdentity.
-func (a *AccessReviewDecisionIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
-	return a
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccessReviewDecisionListResult.
-func (a AccessReviewDecisionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccessReviewDecisionProperties.
@@ -90,61 +61,47 @@ func (a AccessReviewDecisionProperties) MarshalJSON() ([]byte, error) {
 func (a *AccessReviewDecisionProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "appliedBy":
-			err = unpopulate(val, &a.AppliedBy)
+			err = unpopulate(val, "AppliedBy", &a.AppliedBy)
 			delete(rawMsg, key)
 		case "appliedDateTime":
-			err = unpopulateTimeRFC3339(val, &a.AppliedDateTime)
+			err = unpopulateTimeRFC3339(val, "AppliedDateTime", &a.AppliedDateTime)
 			delete(rawMsg, key)
 		case "applyResult":
-			err = unpopulate(val, &a.ApplyResult)
+			err = unpopulate(val, "ApplyResult", &a.ApplyResult)
 			delete(rawMsg, key)
 		case "decision":
-			err = unpopulate(val, &a.Decision)
+			err = unpopulate(val, "Decision", &a.Decision)
 			delete(rawMsg, key)
 		case "justification":
-			err = unpopulate(val, &a.Justification)
+			err = unpopulate(val, "Justification", &a.Justification)
 			delete(rawMsg, key)
 		case "principal":
 			a.Principal, err = unmarshalAccessReviewDecisionIdentityClassification(val)
 			delete(rawMsg, key)
 		case "recommendation":
-			err = unpopulate(val, &a.Recommendation)
+			err = unpopulate(val, "Recommendation", &a.Recommendation)
 			delete(rawMsg, key)
 		case "resource":
 			a.Resource, err = unmarshalAccessReviewDecisionResourceClassification(val)
 			delete(rawMsg, key)
 		case "reviewedBy":
-			err = unpopulate(val, &a.ReviewedBy)
+			err = unpopulate(val, "ReviewedBy", &a.ReviewedBy)
 			delete(rawMsg, key)
 		case "reviewedDateTime":
-			err = unpopulateTimeRFC3339(val, &a.ReviewedDateTime)
+			err = unpopulateTimeRFC3339(val, "ReviewedDateTime", &a.ReviewedDateTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetAccessReviewDecisionResource implements the AccessReviewDecisionResourceClassification interface for type AccessReviewDecisionResource.
-func (a *AccessReviewDecisionResource) GetAccessReviewDecisionResource() *AccessReviewDecisionResource {
-	return a
-}
-
-// GetAccessReviewDecisionResource implements the AccessReviewDecisionResourceClassification interface for type AccessReviewDecisionResourceAzureRole.
-func (a *AccessReviewDecisionResourceAzureRole) GetAccessReviewDecisionResource() *AccessReviewDecisionResource {
-	return &AccessReviewDecisionResource{
-		Type:        a.Type,
-		ID:          a.ID,
-		DisplayName: a.DisplayName,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccessReviewDecisionResourceAzureRole.
@@ -160,35 +117,26 @@ func (a AccessReviewDecisionResourceAzureRole) MarshalJSON() ([]byte, error) {
 func (a *AccessReviewDecisionResourceAzureRole) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "displayName":
-			err = unpopulate(val, &a.DisplayName)
+			err = unpopulate(val, "DisplayName", &a.DisplayName)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &a.ID)
+			err = unpopulate(val, "ID", &a.ID)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &a.Type)
+			err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionServicePrincipalIdentity.
-func (a *AccessReviewDecisionServicePrincipalIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
-	return &AccessReviewDecisionIdentity{
-		Type:        a.Type,
-		ID:          a.ID,
-		DisplayName: a.DisplayName,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccessReviewDecisionServicePrincipalIdentity.
@@ -205,38 +153,29 @@ func (a AccessReviewDecisionServicePrincipalIdentity) MarshalJSON() ([]byte, err
 func (a *AccessReviewDecisionServicePrincipalIdentity) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "appId":
-			err = unpopulate(val, &a.AppID)
+			err = unpopulate(val, "AppID", &a.AppID)
 			delete(rawMsg, key)
 		case "displayName":
-			err = unpopulate(val, &a.DisplayName)
+			err = unpopulate(val, "DisplayName", &a.DisplayName)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &a.ID)
+			err = unpopulate(val, "ID", &a.ID)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &a.Type)
+			err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionUserIdentity.
-func (a *AccessReviewDecisionUserIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
-	return &AccessReviewDecisionIdentity{
-		Type:        a.Type,
-		ID:          a.ID,
-		DisplayName: a.DisplayName,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccessReviewDecisionUserIdentity.
@@ -253,45 +192,29 @@ func (a AccessReviewDecisionUserIdentity) MarshalJSON() ([]byte, error) {
 func (a *AccessReviewDecisionUserIdentity) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "displayName":
-			err = unpopulate(val, &a.DisplayName)
+			err = unpopulate(val, "DisplayName", &a.DisplayName)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &a.ID)
+			err = unpopulate(val, "ID", &a.ID)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &a.Type)
+			err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		case "userPrincipalName":
-			err = unpopulate(val, &a.UserPrincipalName)
+			err = unpopulate(val, "UserPrincipalName", &a.UserPrincipalName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccessReviewHistoryDefinitionInstanceListResult.
-func (a AccessReviewHistoryDefinitionInstanceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccessReviewHistoryDefinitionListResult.
-func (a AccessReviewHistoryDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccessReviewHistoryDefinitionProperties.
@@ -314,44 +237,44 @@ func (a AccessReviewHistoryDefinitionProperties) MarshalJSON() ([]byte, error) {
 func (a *AccessReviewHistoryDefinitionProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "createdBy":
-			err = unpopulate(val, &a.CreatedBy)
+			err = unpopulate(val, "CreatedBy", &a.CreatedBy)
 			delete(rawMsg, key)
 		case "createdDateTime":
-			err = unpopulateTimeRFC3339(val, &a.CreatedDateTime)
+			err = unpopulateTimeRFC3339(val, "CreatedDateTime", &a.CreatedDateTime)
 			delete(rawMsg, key)
 		case "decisions":
-			err = unpopulate(val, &a.Decisions)
+			err = unpopulate(val, "Decisions", &a.Decisions)
 			delete(rawMsg, key)
 		case "displayName":
-			err = unpopulate(val, &a.DisplayName)
+			err = unpopulate(val, "DisplayName", &a.DisplayName)
 			delete(rawMsg, key)
 		case "instances":
-			err = unpopulate(val, &a.Instances)
+			err = unpopulate(val, "Instances", &a.Instances)
 			delete(rawMsg, key)
 		case "reviewHistoryPeriodEndDateTime":
-			err = unpopulateTimeRFC3339(val, &a.ReviewHistoryPeriodEndDateTime)
+			err = unpopulateTimeRFC3339(val, "ReviewHistoryPeriodEndDateTime", &a.ReviewHistoryPeriodEndDateTime)
 			delete(rawMsg, key)
 		case "reviewHistoryPeriodStartDateTime":
-			err = unpopulateTimeRFC3339(val, &a.ReviewHistoryPeriodStartDateTime)
+			err = unpopulateTimeRFC3339(val, "ReviewHistoryPeriodStartDateTime", &a.ReviewHistoryPeriodStartDateTime)
 			delete(rawMsg, key)
 		case "scopes":
-			err = unpopulate(val, &a.Scopes)
+			err = unpopulate(val, "Scopes", &a.Scopes)
 			delete(rawMsg, key)
 		case "settings":
-			err = unpopulate(val, &a.Settings)
+			err = unpopulate(val, "Settings", &a.Settings)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &a.Status)
+			err = unpopulate(val, "Status", &a.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -375,49 +298,41 @@ func (a AccessReviewHistoryInstanceProperties) MarshalJSON() ([]byte, error) {
 func (a *AccessReviewHistoryInstanceProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "displayName":
-			err = unpopulate(val, &a.DisplayName)
+			err = unpopulate(val, "DisplayName", &a.DisplayName)
 			delete(rawMsg, key)
 		case "downloadUri":
-			err = unpopulate(val, &a.DownloadURI)
+			err = unpopulate(val, "DownloadURI", &a.DownloadURI)
 			delete(rawMsg, key)
 		case "expiration":
-			err = unpopulateTimeRFC3339(val, &a.Expiration)
+			err = unpopulateTimeRFC3339(val, "Expiration", &a.Expiration)
 			delete(rawMsg, key)
 		case "fulfilledDateTime":
-			err = unpopulateTimeRFC3339(val, &a.FulfilledDateTime)
+			err = unpopulateTimeRFC3339(val, "FulfilledDateTime", &a.FulfilledDateTime)
 			delete(rawMsg, key)
 		case "reviewHistoryPeriodEndDateTime":
-			err = unpopulateTimeRFC3339(val, &a.ReviewHistoryPeriodEndDateTime)
+			err = unpopulateTimeRFC3339(val, "ReviewHistoryPeriodEndDateTime", &a.ReviewHistoryPeriodEndDateTime)
 			delete(rawMsg, key)
 		case "reviewHistoryPeriodStartDateTime":
-			err = unpopulateTimeRFC3339(val, &a.ReviewHistoryPeriodStartDateTime)
+			err = unpopulateTimeRFC3339(val, "ReviewHistoryPeriodStartDateTime", &a.ReviewHistoryPeriodStartDateTime)
 			delete(rawMsg, key)
 		case "runDateTime":
-			err = unpopulateTimeRFC3339(val, &a.RunDateTime)
+			err = unpopulateTimeRFC3339(val, "RunDateTime", &a.RunDateTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &a.Status)
+			err = unpopulate(val, "Status", &a.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccessReviewInstanceListResult.
-func (a AccessReviewInstanceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccessReviewInstanceProperties.
@@ -436,32 +351,32 @@ func (a AccessReviewInstanceProperties) MarshalJSON() ([]byte, error) {
 func (a *AccessReviewInstanceProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "backupReviewers":
-			err = unpopulate(val, &a.BackupReviewers)
+			err = unpopulate(val, "BackupReviewers", &a.BackupReviewers)
 			delete(rawMsg, key)
 		case "endDateTime":
-			err = unpopulateTimeRFC3339(val, &a.EndDateTime)
+			err = unpopulateTimeRFC3339(val, "EndDateTime", &a.EndDateTime)
 			delete(rawMsg, key)
 		case "reviewers":
-			err = unpopulate(val, &a.Reviewers)
+			err = unpopulate(val, "Reviewers", &a.Reviewers)
 			delete(rawMsg, key)
 		case "reviewersType":
-			err = unpopulate(val, &a.ReviewersType)
+			err = unpopulate(val, "ReviewersType", &a.ReviewersType)
 			delete(rawMsg, key)
 		case "startDateTime":
-			err = unpopulateTimeRFC3339(val, &a.StartDateTime)
+			err = unpopulateTimeRFC3339(val, "StartDateTime", &a.StartDateTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &a.Status)
+			err = unpopulate(val, "Status", &a.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -481,37 +396,29 @@ func (a AccessReviewRecurrenceRange) MarshalJSON() ([]byte, error) {
 func (a *AccessReviewRecurrenceRange) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "endDate":
-			err = unpopulateTimeRFC3339(val, &a.EndDate)
+			err = unpopulateTimeRFC3339(val, "EndDate", &a.EndDate)
 			delete(rawMsg, key)
 		case "numberOfOccurrences":
-			err = unpopulate(val, &a.NumberOfOccurrences)
+			err = unpopulate(val, "NumberOfOccurrences", &a.NumberOfOccurrences)
 			delete(rawMsg, key)
 		case "startDate":
-			err = unpopulateTimeRFC3339(val, &a.StartDate)
+			err = unpopulateTimeRFC3339(val, "StartDate", &a.StartDate)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &a.Type)
+			err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccessReviewScheduleDefinitionListResult.
-func (a AccessReviewScheduleDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccessReviewScheduleDefinitionProperties.
@@ -531,14 +438,6 @@ func (a AccessReviewScheduleDefinitionProperties) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 func populate(m map[string]interface{}, k string, v interface{}) {
 	if v == nil {
 		return
@@ -549,9 +448,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

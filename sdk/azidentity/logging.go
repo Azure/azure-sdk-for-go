@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -22,6 +25,6 @@ func logGetTokenSuccess(cred azcore.TokenCredential, opts policy.TokenRequestOpt
 		return
 	}
 	scope := strings.Join(opts.Scopes, ", ")
-	msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %s\n", cred, scope)
+	msg := fmt.Sprintf("%T.GetToken() acquired a token for scope %s\n", cred, scope)
 	log.Write(EventAuthentication, msg)
 }

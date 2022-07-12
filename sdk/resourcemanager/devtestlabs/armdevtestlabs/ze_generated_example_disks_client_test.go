@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
@@ -26,13 +24,13 @@ func ExampleDisksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewDisksClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewDisksClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"{labName}",
+		"@me",
 		&armdevtestlabs.DisksClientListOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -42,7 +40,6 @@ func ExampleDisksClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,15 +55,15 @@ func ExampleDisksClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewDisksClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewDisksClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"@me",
+		"{diskName}",
 		&armdevtestlabs.DisksClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -82,27 +79,27 @@ func ExampleDisksClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewDisksClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewDisksClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{userId}",
+		"{diskName}",
 		armdevtestlabs.Disk{
 			Properties: &armdevtestlabs.DiskProperties{
 				DiskSizeGiB:     to.Ptr[int32](1023),
 				DiskType:        to.Ptr(armdevtestlabs.StorageTypeStandard),
-				LeasedByLabVMID: to.Ptr("<leased-by-lab-vmid>"),
+				LeasedByLabVMID: to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/vmName"),
 			},
 		},
-		&armdevtestlabs.DisksClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,20 +114,20 @@ func ExampleDisksClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewDisksClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewDisksClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
-		&armdevtestlabs.DisksClientBeginDeleteOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"{labName}",
+		"{userId}",
+		"{diskName}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -143,15 +140,15 @@ func ExampleDisksClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewDisksClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewDisksClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"@me",
+		"diskName",
 		armdevtestlabs.DiskFragment{
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
@@ -172,23 +169,23 @@ func ExampleDisksClient_BeginAttach() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewDisksClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewDisksClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginAttach(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{userId}",
+		"{diskName}",
 		armdevtestlabs.AttachDiskProperties{
-			LeasedByLabVMID: to.Ptr("<leased-by-lab-vmid>"),
+			LeasedByLabVMID: to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{vmName}"),
 		},
-		&armdevtestlabs.DisksClientBeginAttachOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -201,23 +198,23 @@ func ExampleDisksClient_BeginDetach() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewDisksClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewDisksClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDetach(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{userId}",
+		"{diskName}",
 		armdevtestlabs.DetachDiskProperties{
-			LeasedByLabVMID: to.Ptr("<leased-by-lab-vmid>"),
+			LeasedByLabVMID: to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{vmName}"),
 		},
-		&armdevtestlabs.DisksClientBeginDetachOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

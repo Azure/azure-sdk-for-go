@@ -24,16 +24,16 @@ func ExampleSetDefinitionsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<policy-set-definition-name>",
+		"CostManagement",
 		armpolicy.SetDefinition{
 			Properties: &armpolicy.SetDefinitionProperties{
-				Description: to.Ptr("<description>"),
-				DisplayName: to.Ptr("<display-name>"),
+				Description: to.Ptr("Policies to enforce low cost storage SKUs"),
+				DisplayName: to.Ptr("Cost Management"),
 				Metadata: map[string]interface{}{
 					"category": "Cost Management",
 				},
@@ -42,7 +42,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdate() {
 						Type:         to.Ptr(armpolicy.ParameterTypeString),
 						DefaultValue: "myPrefix",
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							DisplayName: to.Ptr("<display-name>"),
+							DisplayName: to.Ptr("Prefix to enforce on resource names"),
 						},
 					},
 				},
@@ -56,8 +56,8 @@ func ExampleSetDefinitionsClient_CreateOrUpdate() {
 								},
 							},
 						},
-						PolicyDefinitionID:          to.Ptr("<policy-definition-id>"),
-						PolicyDefinitionReferenceID: to.Ptr("<policy-definition-reference-id>"),
+						PolicyDefinitionID:          to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),
+						PolicyDefinitionReferenceID: to.Ptr("Limit_Skus"),
 					},
 					{
 						Parameters: map[string]*armpolicy.ParameterValuesValue{
@@ -68,8 +68,8 @@ func ExampleSetDefinitionsClient_CreateOrUpdate() {
 								Value: "-LC",
 							},
 						},
-						PolicyDefinitionID:          to.Ptr("<policy-definition-id>"),
-						PolicyDefinitionReferenceID: to.Ptr("<policy-definition-reference-id>"),
+						PolicyDefinitionID:          to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+						PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 					}},
 			},
 		},
@@ -88,12 +88,12 @@ func ExampleSetDefinitionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<policy-set-definition-name>",
+		"CostManagement",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -107,12 +107,12 @@ func ExampleSetDefinitionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<policy-set-definition-name>",
+		"CostManagement",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -133,7 +133,7 @@ func ExampleSetDefinitionsClient_GetBuiltIn() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetBuiltIn(ctx,
-		"<policy-set-definition-name>",
+		"1f3afdf9-d0c9-4c3d-847f-89da613e70a8",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -149,7 +149,7 @@ func ExampleSetDefinitionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -160,7 +160,6 @@ func ExampleSetDefinitionsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -187,7 +186,6 @@ func ExampleSetDefinitionsClient_NewListBuiltInPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -208,12 +206,12 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtManagementGroup(ctx,
-		"<policy-set-definition-name>",
-		"<management-group-id>",
+		"CostManagement",
+		"MyManagementGroup",
 		armpolicy.SetDefinition{
 			Properties: &armpolicy.SetDefinitionProperties{
-				Description: to.Ptr("<description>"),
-				DisplayName: to.Ptr("<display-name>"),
+				Description: to.Ptr("Policies to enforce low cost storage SKUs"),
+				DisplayName: to.Ptr("Cost Management"),
 				Metadata: map[string]interface{}{
 					"category": "Cost Management",
 				},
@@ -227,8 +225,8 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 								},
 							},
 						},
-						PolicyDefinitionID:          to.Ptr("<policy-definition-id>"),
-						PolicyDefinitionReferenceID: to.Ptr("<policy-definition-reference-id>"),
+						PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),
+						PolicyDefinitionReferenceID: to.Ptr("Limit_Skus"),
 					},
 					{
 						Parameters: map[string]*armpolicy.ParameterValuesValue{
@@ -239,8 +237,8 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 								Value: "-LC",
 							},
 						},
-						PolicyDefinitionID:          to.Ptr("<policy-definition-id>"),
-						PolicyDefinitionReferenceID: to.Ptr("<policy-definition-reference-id>"),
+						PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+						PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 					}},
 			},
 		},
@@ -264,8 +262,8 @@ func ExampleSetDefinitionsClient_DeleteAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAtManagementGroup(ctx,
-		"<policy-set-definition-name>",
-		"<management-group-id>",
+		"CostManagement",
+		"MyManagementGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -284,8 +282,8 @@ func ExampleSetDefinitionsClient_GetAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtManagementGroup(ctx,
-		"<policy-set-definition-name>",
-		"<management-group-id>",
+		"CostManagement",
+		"MyManagementGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -305,7 +303,7 @@ func ExampleSetDefinitionsClient_NewListByManagementGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByManagementGroupPager("<management-group-id>",
+	pager := client.NewListByManagementGroupPager("MyManagementGroup",
 		&armpolicy.SetDefinitionsClientListByManagementGroupOptions{Filter: nil,
 			Top: nil,
 		})
@@ -313,7 +311,6 @@ func ExampleSetDefinitionsClient_NewListByManagementGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

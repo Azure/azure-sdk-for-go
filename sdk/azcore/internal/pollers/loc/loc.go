@@ -7,33 +7,55 @@
 package loc
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // Kind is the identifier of this type in a resume token.
-const Kind = "Location"
+const kind = "loc"
 
 // Applicable returns true if the LRO is using Location.
 func Applicable(resp *http.Response) bool {
 	return resp.Header.Get(shared.HeaderLocation) != ""
 }
 
+// CanResume returns true if the token can rehydrate this poller type.
+func CanResume(token map[string]interface{}) bool {
+	t, ok := token["type"]
+	if !ok {
+		return false
+	}
+	tt, ok := t.(string)
+	if !ok {
+		return false
+	}
+	return tt == kind
+}
+
 // Poller is an LRO poller that uses the Location pattern.
-type Poller struct {
+type Poller[T any] struct {
+	pl   exported.Pipeline
+	resp *http.Response
+
 	Type     string `json:"type"`
 	PollURL  string `json:"pollURL"`
-	FinalGET string `json:"finalGET"`
-	CurState int    `json:"state"`
+	CurState string `json:"state"`
 }
 
 // New creates a new Poller from the provided initial response.
-func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string) (*Poller, error) {
+// Pass nil for response to create an empty Poller for rehydration.
+func New[T any](pl exported.Pipeline, resp *http.Response) (*Poller[T], error) {
+	if resp == nil {
+		log.Write(log.EventLRO, "Resuming Location poller.")
+		return &Poller[T]{pl: pl}, nil
+	}
 	log.Write(log.EventLRO, "Using Location poller.")
 	locURL := resp.Header.Get(shared.HeaderLocation)
 	if locURL == "" {
@@ -42,39 +64,55 @@ func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string)
 	if !pollers.IsValidURL(locURL) {
 		return nil, fmt.Errorf("invalid polling URL %s", locURL)
 	}
-	// TODO: calculate the final GET URL.  can be empty
-	finalGET := ""
-	return &Poller{
-		Type:     pollers.MakeID(pollerID, Kind),
+	// check for provisioning state.  if the operation is a RELO
+	// and terminates synchronously this will prevent extra polling.
+	// it's ok if there's no provisioning state.
+	state, _ := pollers.GetProvisioningState(resp)
+	if state == "" {
+		state = pollers.StatusInProgress
+	}
+	return &Poller[T]{
+		pl:       pl,
+		resp:     resp,
+		Type:     kind,
 		PollURL:  locURL,
-		FinalGET: finalGET,
-		CurState: resp.StatusCode,
+		CurState: state,
 	}, nil
 }
 
-func (p *Poller) URL() string {
-	return p.PollURL
+func (p *Poller[T]) Done() bool {
+	return pollers.IsTerminalState(p.CurState)
 }
 
-func (p *Poller) State() pollers.OperationState {
-	if p.CurState == http.StatusAccepted {
-		return pollers.OperationStateInProgress
-	} else if p.CurState > 199 && p.CurState < 300 {
-		// any 2xx other than a 202 indicates success
-		return pollers.OperationStateSucceeded
+func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
+	err := pollers.PollHelper(ctx, p.PollURL, p.pl, func(resp *http.Response) (string, error) {
+		// location polling can return an updated polling URL
+		if h := resp.Header.Get(shared.HeaderLocation); h != "" {
+			p.PollURL = h
+		}
+		// if provisioning state is available, use that.  this is only
+		// for some ARM LRO scenarios (e.g. DELETE with a Location header)
+		// so if it's missing then use HTTP status code.
+		provState, _ := pollers.GetProvisioningState(resp)
+		p.resp = resp
+		if provState != "" {
+			p.CurState = provState
+		} else if resp.StatusCode == http.StatusAccepted {
+			p.CurState = pollers.StatusInProgress
+		} else if resp.StatusCode > 199 && resp.StatusCode < 300 {
+			// any 2xx other than a 202 indicates success
+			p.CurState = pollers.StatusSucceeded
+		} else {
+			p.CurState = pollers.StatusFailed
+		}
+		return p.CurState, nil
+	})
+	if err != nil {
+		return nil, err
 	}
-	return pollers.OperationStateFailed
+	return p.resp, nil
 }
 
-func (p *Poller) Update(resp *http.Response) error {
-	// if the endpoint returned a location header, update cached value
-	if loc := resp.Header.Get(shared.HeaderLocation); loc != "" {
-		p.PollURL = loc
-	}
-	p.CurState = resp.StatusCode
-	return nil
-}
-
-func (p *Poller) FinalGetURL() string {
-	return p.FinalGET
+func (p *Poller[T]) Result(ctx context.Context, out *T) error {
+	return pollers.ResultHelper(p.resp, pollers.Failed(p.CurState), out)
 }

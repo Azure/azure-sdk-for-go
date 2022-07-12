@@ -24,13 +24,13 @@ func ExampleAPIDiagnosticClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIDiagnosticClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"echo-api",
 		&armapimanagement.APIDiagnosticClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -39,7 +39,6 @@ func ExampleAPIDiagnosticClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,15 +54,15 @@ func ExampleAPIDiagnosticClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIDiagnosticClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<diagnostic-id>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"applicationinsights",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,15 +76,15 @@ func ExampleAPIDiagnosticClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIDiagnosticClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<diagnostic-id>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"applicationinsights",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,15 +100,15 @@ func ExampleAPIDiagnosticClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIDiagnosticClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<diagnostic-id>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"applicationinsights",
 		armapimanagement.DiagnosticContract{
 			Properties: &armapimanagement.DiagnosticContractProperties{
 				AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
@@ -145,7 +144,7 @@ func ExampleAPIDiagnosticClient_CreateOrUpdate() {
 							to.Ptr("Content-type")},
 					},
 				},
-				LoggerID: to.Ptr("<logger-id>"),
+				LoggerID: to.Ptr("/loggers/applicationinsights"),
 				Sampling: &armapimanagement.SamplingSettings{
 					Percentage:   to.Ptr[float64](50),
 					SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
@@ -167,16 +166,16 @@ func ExampleAPIDiagnosticClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIDiagnosticClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<diagnostic-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"echo-api",
+		"applicationinsights",
+		"*",
 		armapimanagement.DiagnosticContract{
 			Properties: &armapimanagement.DiagnosticContractProperties{
 				AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
@@ -212,7 +211,7 @@ func ExampleAPIDiagnosticClient_Update() {
 							to.Ptr("Content-type")},
 					},
 				},
-				LoggerID: to.Ptr("<logger-id>"),
+				LoggerID: to.Ptr("/loggers/applicationinsights"),
 				Sampling: &armapimanagement.SamplingSettings{
 					Percentage:   to.Ptr[float64](50),
 					SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
@@ -234,16 +233,16 @@ func ExampleAPIDiagnosticClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIDiagnosticClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIDiagnosticClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<diagnostic-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"applicationinsights",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -38,7 +38,7 @@ func NewValidateOperationClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewValidateOperationClient(subscriptionID string, credential azcore.TokenCr
 // BeginTrigger - Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
 // headers which can be tracked using GetValidateOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // parameters - resource validate operation request
 // options - ValidateOperationClientBeginTriggerOptions contains the optional parameters for the ValidateOperationClient.BeginTrigger
 // method.
-func (client *ValidateOperationClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestClassification, options *ValidateOperationClientBeginTriggerOptions) (*armruntime.Poller[ValidateOperationClientTriggerResponse], error) {
+func (client *ValidateOperationClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestClassification, options *ValidateOperationClientBeginTriggerOptions) (*runtime.Poller[ValidateOperationClientTriggerResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.trigger(ctx, vaultName, resourceGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ValidateOperationClientTriggerResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ValidateOperationClientTriggerResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ValidateOperationClientTriggerResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ValidateOperationClientTriggerResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Trigger - Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking headers
 // which can be tracked using GetValidateOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ValidateOperationClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestClassification, options *ValidateOperationClientBeginTriggerOptions) (*http.Response, error) {
 	req, err := client.triggerCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
@@ -112,8 +114,8 @@ func (client *ValidateOperationClient) triggerCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

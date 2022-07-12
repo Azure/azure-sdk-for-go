@@ -23,17 +23,17 @@ func ExampleFluxConfigOperationStatusClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkubernetesconfiguration.NewFluxConfigOperationStatusClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewFluxConfigOperationStatusClient("subId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-rp>",
-		"<cluster-resource-name>",
-		"<cluster-name>",
-		"<flux-configuration-name>",
-		"<operation-id>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"srs-fluxconfig",
+		"99999999-9999-9999-9999-999999999999",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

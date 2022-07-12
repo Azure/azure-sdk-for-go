@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
@@ -26,19 +24,18 @@ func ExampleContainersClient_NewListByStorageAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewContainersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewContainersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByStorageAccountPager("<device-name>",
-		"<storage-account-name>",
-		"<resource-group-name>",
+	pager := client.NewListByStorageAccountPager("testedgedevice",
+		"storageaccount1",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleContainersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewContainersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewContainersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<storage-account-name>",
-		"<container-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"storageaccount1",
+		"blobcontainer1",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,25 +75,25 @@ func ExampleContainersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewContainersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewContainersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<device-name>",
-		"<storage-account-name>",
-		"<container-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"storageaccount1",
+		"blobcontainer1",
+		"GroupForEdgeAutomation",
 		armdataboxedge.Container{
 			Properties: &armdataboxedge.ContainerProperties{
 				DataFormat: to.Ptr(armdataboxedge.AzureContainerDataFormatBlockBlob),
 			},
 		},
-		&armdataboxedge.ContainersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -111,20 +108,20 @@ func ExampleContainersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewContainersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewContainersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<storage-account-name>",
-		"<container-name>",
-		"<resource-group-name>",
-		&armdataboxedge.ContainersClientBeginDeleteOptions{ResumeToken: ""})
+		"testedgedevice",
+		"storageaccount1",
+		"blobcontainer1",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -137,20 +134,20 @@ func ExampleContainersClient_BeginRefresh() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewContainersClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewContainersClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRefresh(ctx,
-		"<device-name>",
-		"<storage-account-name>",
-		"<container-name>",
-		"<resource-group-name>",
-		&armdataboxedge.ContainersClientBeginRefreshOptions{ResumeToken: ""})
+		"testedgedevice",
+		"storageaccount1",
+		"blobcontainer1",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

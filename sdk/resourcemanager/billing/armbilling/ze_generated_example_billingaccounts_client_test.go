@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
@@ -35,7 +33,6 @@ func ExampleAccountsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,8 +53,8 @@ func ExampleAccountsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-account-name>",
-		&armbilling.AccountsClientGetOptions{Expand: to.Ptr("<expand>")})
+		"{billingAccountName}",
+		&armbilling.AccountsClientGetOptions{Expand: to.Ptr("soldTo,billingProfiles,billingProfiles/invoiceSections")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -77,27 +74,27 @@ func ExampleAccountsClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<billing-account-name>",
+		"{billingAccountName}",
 		armbilling.AccountUpdateRequest{
 			Properties: &armbilling.AccountProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("Test Account"),
 				SoldTo: &armbilling.AddressDetails{
-					AddressLine1: to.Ptr("<address-line1>"),
-					City:         to.Ptr("<city>"),
-					CompanyName:  to.Ptr("<company-name>"),
-					Country:      to.Ptr("<country>"),
-					FirstName:    to.Ptr("<first-name>"),
-					LastName:     to.Ptr("<last-name>"),
-					PostalCode:   to.Ptr("<postal-code>"),
-					Region:       to.Ptr("<region>"),
+					AddressLine1: to.Ptr("Test Address 1"),
+					City:         to.Ptr("Redmond"),
+					CompanyName:  to.Ptr("Contoso"),
+					Country:      to.Ptr("US"),
+					FirstName:    to.Ptr("Test"),
+					LastName:     to.Ptr("User"),
+					PostalCode:   to.Ptr("12345"),
+					Region:       to.Ptr("WA"),
 				},
 			},
 		},
-		&armbilling.AccountsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -116,13 +113,12 @@ func ExampleAccountsClient_NewListInvoiceSectionsByCreateSubscriptionPermissionP
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListInvoiceSectionsByCreateSubscriptionPermissionPager("<billing-account-name>",
+	pager := client.NewListInvoiceSectionsByCreateSubscriptionPermissionPager("{billingAccountName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

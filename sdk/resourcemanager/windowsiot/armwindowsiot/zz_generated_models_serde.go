@@ -10,6 +10,7 @@ package armwindowsiot
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
@@ -24,14 +25,6 @@ func (d DeviceService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "tags", d.Tags)
 	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DeviceServiceDescriptionListResult.
-func (d DeviceServiceDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -50,40 +43,32 @@ func (d DeviceServiceProperties) MarshalJSON() ([]byte, error) {
 func (d *DeviceServiceProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "adminDomainName":
-			err = unpopulate(val, &d.AdminDomainName)
+			err = unpopulate(val, "AdminDomainName", &d.AdminDomainName)
 			delete(rawMsg, key)
 		case "billingDomainName":
-			err = unpopulate(val, &d.BillingDomainName)
+			err = unpopulate(val, "BillingDomainName", &d.BillingDomainName)
 			delete(rawMsg, key)
 		case "notes":
-			err = unpopulate(val, &d.Notes)
+			err = unpopulate(val, "Notes", &d.Notes)
 			delete(rawMsg, key)
 		case "quantity":
-			err = unpopulate(val, &d.Quantity)
+			err = unpopulate(val, "Quantity", &d.Quantity)
 			delete(rawMsg, key)
 		case "startDate":
-			err = unpopulateTimeRFC3339(val, &d.StartDate)
+			err = unpopulateTimeRFC3339(val, "StartDate", &d.StartDate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
@@ -107,9 +92,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

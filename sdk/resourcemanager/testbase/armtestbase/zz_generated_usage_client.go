@@ -38,7 +38,7 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,11 +56,12 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // NewListPager - Lists the usage data of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - UsageClientListOptions contains the optional parameters for the UsageClient.List method.
 func (client *UsageClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *UsageClientListOptions) *runtime.Pager[UsageClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UsageClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UsageClientListResponse]{
 		More: func(page UsageClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -112,7 +113,7 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, resourceGroupN
 	}
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

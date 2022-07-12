@@ -24,23 +24,22 @@ func ExampleReceivedRoutesClient_NewListByPeeringPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewReceivedRoutesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewReceivedRoutesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPeeringPager("<resource-group-name>",
-		"<peering-name>",
-		&armpeering.ReceivedRoutesClientListByPeeringOptions{Prefix: to.Ptr("<prefix>"),
-			AsPath:                  to.Ptr("<as-path>"),
-			OriginAsValidationState: to.Ptr("<origin-as-validation-state>"),
-			RpkiValidationState:     to.Ptr("<rpki-validation-state>"),
+	pager := client.NewListByPeeringPager("rgName",
+		"peeringName",
+		&armpeering.ReceivedRoutesClientListByPeeringOptions{Prefix: to.Ptr("1.1.1.0/24"),
+			AsPath:                  to.Ptr("123 456"),
+			OriginAsValidationState: to.Ptr("Valid"),
+			RpkiValidationState:     to.Ptr("Valid"),
 			SkipToken:               nil,
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

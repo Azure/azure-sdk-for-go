@@ -23,15 +23,15 @@ func ExamplePipelineJobOperationStatusesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineJobOperationStatusesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineJobOperationStatusesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-job-name>",
-		"<operation-id>",
+		"testrg",
+		"testaccount2",
+		"pipelineJob1",
+		"00000000-0000-0000-0000-000000000001",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

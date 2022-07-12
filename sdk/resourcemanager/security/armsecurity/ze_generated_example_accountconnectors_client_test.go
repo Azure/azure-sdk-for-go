@@ -24,7 +24,7 @@ func ExampleAccountConnectorsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAccountConnectorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleAccountConnectorsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,12 +48,12 @@ func ExampleAccountConnectorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAccountConnectorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<connector-name>",
+		"aws_dev1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,29 +69,29 @@ func ExampleAccountConnectorsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAccountConnectorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<connector-name>",
+		"aws_dev2",
 		armsecurity.ConnectorSetting{
 			Properties: &armsecurity.ConnectorSettingProperties{
 				AuthenticationDetails: &armsecurity.AwAssumeRoleAuthenticationDetailsProperties{
 					AuthenticationType: to.Ptr(armsecurity.AuthenticationTypeAwsAssumeRole),
-					AwsAssumeRoleArn:   to.Ptr("<aws-assume-role-arn>"),
-					AwsExternalID:      to.Ptr("<aws-external-id>"),
+					AwsAssumeRoleArn:   to.Ptr("arn:aws:iam::81231569658:role/AscConnector"),
+					AwsExternalID:      to.Ptr("20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
 				},
 				HybridComputeSettings: &armsecurity.HybridComputeSettingsProperties{
 					AutoProvision: to.Ptr(armsecurity.AutoProvisionOn),
 					ProxyServer: &armsecurity.ProxyServerProperties{
-						IP:   to.Ptr("<ip>"),
-						Port: to.Ptr("<port>"),
+						IP:   to.Ptr("167.220.197.140"),
+						Port: to.Ptr("34"),
 					},
-					Region:            to.Ptr("<region>"),
-					ResourceGroupName: to.Ptr("<resource-group-name>"),
+					Region:            to.Ptr("West US 2"),
+					ResourceGroupName: to.Ptr("AwsConnectorRG"),
 					ServicePrincipal: &armsecurity.ServicePrincipalProperties{
-						ApplicationID: to.Ptr("<application-id>"),
+						ApplicationID: to.Ptr("ad9bcd79-be9c-45ab-abd8-80ca1654a7d1"),
 						Secret:        to.Ptr("<secret>"),
 					},
 				},
@@ -113,12 +112,12 @@ func ExampleAccountConnectorsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAccountConnectorsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAccountConnectorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<connector-name>",
+		"aws_dev1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -38,7 +38,7 @@ func NewWorkflowRunActionScopeRepetitionsClient(subscriptionID string, credentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkflowRunActionScopeRepetitionsClient(subscriptionID string, credentia
 
 // Get - Get a workflow run action scoped repetition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -112,7 +113,7 @@ func (client *WorkflowRunActionScopeRepetitionsClient) getCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -127,6 +128,7 @@ func (client *WorkflowRunActionScopeRepetitionsClient) getHandleResponse(resp *h
 
 // NewListPager - List the workflow run action scoped repetitions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -134,7 +136,7 @@ func (client *WorkflowRunActionScopeRepetitionsClient) getHandleResponse(resp *h
 // options - WorkflowRunActionScopeRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionScopeRepetitionsClient.List
 // method.
 func (client *WorkflowRunActionScopeRepetitionsClient) NewListPager(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionScopeRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionScopeRepetitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionScopeRepetitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionScopeRepetitionsClientListResponse]{
 		More: func(page WorkflowRunActionScopeRepetitionsClientListResponse) bool {
 			return false
 		},
@@ -185,7 +187,7 @@ func (client *WorkflowRunActionScopeRepetitionsClient) listCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

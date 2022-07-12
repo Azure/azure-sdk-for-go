@@ -42,7 +42,7 @@ func NewRecoveryPointsClient(resourceName string, resourceGroupName string, subs
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewRecoveryPointsClient(resourceName string, resourceGroupName string, subs
 
 // Get - Get the details of specified recovery point.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - The fabric name.
 // protectionContainerName - The protection container name.
 // replicatedProtectedItemName - The replication protected item name.
@@ -120,7 +121,7 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, fabric
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -135,13 +136,14 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 
 // NewListByReplicationProtectedItemsPager - Lists the available recovery points for a replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - The fabric name.
 // protectionContainerName - The protection container name.
 // replicatedProtectedItemName - The replication protected item name.
 // options - RecoveryPointsClientListByReplicationProtectedItemsOptions contains the optional parameters for the RecoveryPointsClient.ListByReplicationProtectedItems
 // method.
 func (client *RecoveryPointsClient) NewListByReplicationProtectedItemsPager(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) *runtime.Pager[RecoveryPointsClientListByReplicationProtectedItemsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RecoveryPointsClientListByReplicationProtectedItemsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RecoveryPointsClientListByReplicationProtectedItemsResponse]{
 		More: func(page RecoveryPointsClientListByReplicationProtectedItemsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -202,7 +204,7 @@ func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

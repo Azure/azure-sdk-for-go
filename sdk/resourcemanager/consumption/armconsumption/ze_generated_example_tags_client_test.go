@@ -28,7 +28,7 @@ func ExampleTagsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
+		"providers/Microsoft.CostManagement/billingAccounts/1234",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

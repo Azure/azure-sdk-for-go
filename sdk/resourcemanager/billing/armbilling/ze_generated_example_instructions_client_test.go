@@ -30,14 +30,13 @@ func ExampleInstructionsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingProfilePager("<billing-account-name>",
-		"<billing-profile-name>",
+	pager := client.NewListByBillingProfilePager("{billingAccountName}",
+		"{billingProfileName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,9 +57,9 @@ func ExampleInstructionsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
-		"<instruction-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
+		"{instructionName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -81,9 +80,9 @@ func ExampleInstructionsClient_Put() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Put(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
-		"<instruction-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
+		"{instructionName}",
 		armbilling.Instruction{
 			Properties: &armbilling.InstructionProperties{
 				Amount:    to.Ptr[float32](5000),

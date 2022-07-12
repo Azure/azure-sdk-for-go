@@ -24,20 +24,20 @@ func ExampleChannelsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewChannelsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewChannelsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OneResourceGroupName",
+		"samplebotname",
 		armbotservice.ChannelNameAlexaChannel,
 		armbotservice.BotChannel{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("global"),
 			Properties: &armbotservice.AlexaChannel{
-				ChannelName: to.Ptr("<channel-name>"),
+				ChannelName: to.Ptr("AlexaChannel"),
 				Properties: &armbotservice.AlexaChannelProperties{
-					AlexaSkillID: to.Ptr("<alexa-skill-id>"),
+					AlexaSkillID: to.Ptr("XAlexaSkillIdX"),
 					IsEnabled:    to.Ptr(true),
 				},
 			},
@@ -57,20 +57,20 @@ func ExampleChannelsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewChannelsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewChannelsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OneResourceGroupName",
+		"samplebotname",
 		armbotservice.ChannelNameAlexaChannel,
 		armbotservice.BotChannel{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("global"),
 			Properties: &armbotservice.AlexaChannel{
-				ChannelName: to.Ptr("<channel-name>"),
+				ChannelName: to.Ptr("AlexaChannel"),
 				Properties: &armbotservice.AlexaChannelProperties{
-					AlexaSkillID: to.Ptr("<alexa-skill-id>"),
+					AlexaSkillID: to.Ptr("XAlexaSkillIdX"),
 					IsEnabled:    to.Ptr(true),
 				},
 			},
@@ -90,14 +90,14 @@ func ExampleChannelsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewChannelsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewChannelsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<channel-name>",
+		"OneResourceGroupName",
+		"samplebotname",
+		"EmailChannel",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -111,14 +111,14 @@ func ExampleChannelsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewChannelsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewChannelsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<channel-name>",
+		"OneResourceGroupName",
+		"samplebotname",
+		"AlexaChannel",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,13 +134,13 @@ func ExampleChannelsClient_ListWithKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewChannelsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewChannelsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListWithKeys(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OneResourceGroupName",
+		"samplebotname",
 		armbotservice.ChannelNameEmailChannel,
 		nil)
 	if err != nil {
@@ -157,18 +157,17 @@ func ExampleChannelsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewChannelsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewChannelsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListByResourceGroupPager("OneResourceGroupName",
+		"samplebotname",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

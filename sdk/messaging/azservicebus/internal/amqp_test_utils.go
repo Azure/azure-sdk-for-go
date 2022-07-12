@@ -10,8 +10,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/Azure/go-amqp"
 )
 
 type FakeNS struct {
@@ -33,7 +33,7 @@ type FakeAMQPSender struct {
 type FakeAMQPSession struct {
 	amqpwrap.AMQPSession
 
-	NewReceiverFn func(opts ...amqp.LinkOption) (AMQPReceiverCloser, error)
+	NewReceiverFn func(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error)
 
 	closed int
 }
@@ -76,10 +76,24 @@ type FakeAMQPReceiver struct {
 		E error
 	}
 
-	PrefetchResults []struct {
-		M *amqp.Message
-		E error
-	}
+	PrefetchResults []*amqp.Message
+}
+
+type FakeRPCLink struct {
+	Resp  *RPCResponse
+	Error error
+}
+
+func (r *FakeRPCLink) Close(ctx context.Context) error {
+	return nil
+}
+
+func (r *FakeRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, error) {
+	return r.Resp, r.Error
+}
+
+func (r *FakeAMQPReceiver) LinkName() string {
+	return "fakelink"
 }
 
 func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {
@@ -129,17 +143,16 @@ func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 
 // Prefetched will return the next reuslt from PrefetchedResults or, if the PrefetchedResults
 // is empty will return nil, nil.
-func (r *FakeAMQPReceiver) Prefetched(ctx context.Context) (*amqp.Message, error) {
+func (r *FakeAMQPReceiver) Prefetched() *amqp.Message {
 	r.PrefetchedCalled++
 
 	if len(r.PrefetchResults) == 0 {
-		return nil, nil
+		return nil
 	}
 
 	res := r.PrefetchResults[0]
-	r.ReceiveResults = r.PrefetchResults[1:]
-
-	return res.M, res.E
+	r.PrefetchResults = r.PrefetchResults[1:]
+	return res
 }
 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
@@ -199,8 +212,8 @@ func (s *FakeAMQPSender) Close(ctx context.Context) error {
 	return nil
 }
 
-func (s *FakeAMQPSession) NewReceiver(opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
-	return s.NewReceiverFn(opts...)
+func (s *FakeAMQPSession) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
+	return s.NewReceiverFn(ctx, source, opts)
 }
 
 func (s *FakeAMQPSession) Close(ctx context.Context) error {

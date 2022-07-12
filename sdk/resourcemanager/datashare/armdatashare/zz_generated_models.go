@@ -31,6 +31,17 @@ type ADLSGen1FileDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type ADLSGen1FileDataSet.
+func (a *ADLSGen1FileDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
+}
+
 // ADLSGen1FileProperties - Properties of the ADLS Gen1 file data set.
 type ADLSGen1FileProperties struct {
 	// REQUIRED; The ADLS account name.
@@ -73,6 +84,17 @@ type ADLSGen1FolderDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type ADLSGen1FolderDataSet.
+func (a *ADLSGen1FolderDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
+}
+
 // ADLSGen1FolderProperties - Properties of the ADLS Gen1 folder data set.
 type ADLSGen1FolderProperties struct {
 	// REQUIRED; The ADLS account name.
@@ -112,6 +134,17 @@ type ADLSGen2FileDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type ADLSGen2FileDataSet.
+func (a *ADLSGen2FileDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
+}
+
 // ADLSGen2FileDataSetMapping - An ADLS Gen2 file data set mapping.
 type ADLSGen2FileDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -131,6 +164,17 @@ type ADLSGen2FileDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type ADLSGen2FileDataSetMapping.
+func (a *ADLSGen2FileDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
 }
 
 // ADLSGen2FileDataSetMappingProperties - ADLS Gen 2 file data set mapping property bag.
@@ -205,6 +249,17 @@ type ADLSGen2FileSystemDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type ADLSGen2FileSystemDataSet.
+func (a *ADLSGen2FileSystemDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
+}
+
 // ADLSGen2FileSystemDataSetMapping - An ADLS Gen2 file system data set mapping.
 type ADLSGen2FileSystemDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -224,6 +279,17 @@ type ADLSGen2FileSystemDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type ADLSGen2FileSystemDataSetMapping.
+func (a *ADLSGen2FileSystemDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
 }
 
 // ADLSGen2FileSystemDataSetMappingProperties - ADLS Gen 2 file system data set mapping property bag.
@@ -289,6 +355,17 @@ type ADLSGen2FolderDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type ADLSGen2FolderDataSet.
+func (a *ADLSGen2FolderDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
+}
+
 // ADLSGen2FolderDataSetMapping - An ADLS Gen2 folder data set mapping.
 type ADLSGen2FolderDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -308,6 +385,17 @@ type ADLSGen2FolderDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type ADLSGen2FolderDataSetMapping.
+func (a *ADLSGen2FolderDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       a.Kind,
+		ID:         a.ID,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
 }
 
 // ADLSGen2FolderDataSetMappingProperties - ADLS Gen 2 folder data set mapping property bag.
@@ -470,6 +558,17 @@ type BlobContainerDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type BlobContainerDataSet.
+func (b *BlobContainerDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       b.Kind,
+		ID:         b.ID,
+		Name:       b.Name,
+		SystemData: b.SystemData,
+		Type:       b.Type,
+	}
+}
+
 // BlobContainerDataSetMapping - A Blob container data set mapping.
 type BlobContainerDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -489,6 +588,17 @@ type BlobContainerDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type BlobContainerDataSetMapping.
+func (b *BlobContainerDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       b.Kind,
+		ID:         b.ID,
+		Name:       b.Name,
+		SystemData: b.SystemData,
+		Type:       b.Type,
+	}
 }
 
 // BlobContainerMappingProperties - Azure storage Blob container data set mapping property bag.
@@ -554,6 +664,17 @@ type BlobDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type BlobDataSet.
+func (b *BlobDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       b.Kind,
+		ID:         b.ID,
+		Name:       b.Name,
+		SystemData: b.SystemData,
+		Type:       b.Type,
+	}
+}
+
 // BlobDataSetMapping - A Blob data set mapping.
 type BlobDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -573,6 +694,17 @@ type BlobDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type BlobDataSetMapping.
+func (b *BlobDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       b.Kind,
+		ID:         b.ID,
+		Name:       b.Name,
+		SystemData: b.SystemData,
+		Type:       b.Type,
+	}
 }
 
 // BlobFolderDataSet - An Azure storage blob folder data set.
@@ -596,6 +728,17 @@ type BlobFolderDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type BlobFolderDataSet.
+func (b *BlobFolderDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       b.Kind,
+		ID:         b.ID,
+		Name:       b.Name,
+		SystemData: b.SystemData,
+		Type:       b.Type,
+	}
+}
+
 // BlobFolderDataSetMapping - A Blob folder data set mapping.
 type BlobFolderDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -615,6 +758,17 @@ type BlobFolderDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type BlobFolderDataSetMapping.
+func (b *BlobFolderDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       b.Kind,
+		ID:         b.ID,
+		Name:       b.Name,
+		SystemData: b.SystemData,
+		Type:       b.Type,
+	}
 }
 
 // BlobFolderMappingProperties - Azure storage Blob folder data set mapping property bag.
@@ -890,6 +1044,9 @@ type DataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type DataSet.
+func (d *DataSet) GetDataSet() *DataSet { return d }
+
 // DataSetList - List response for get DataSets
 type DataSetList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -927,6 +1084,9 @@ type DataSetMapping struct {
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type DataSetMapping.
+func (d *DataSetMapping) GetDataSetMapping() *DataSetMapping { return d }
 
 // DataSetMappingList - List response for get DataSetMappings
 type DataSetMappingList struct {
@@ -1189,6 +1349,17 @@ type KustoClusterDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type KustoClusterDataSet.
+func (k *KustoClusterDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       k.Kind,
+		ID:         k.ID,
+		Name:       k.Name,
+		SystemData: k.SystemData,
+		Type:       k.Type,
+	}
+}
+
 // KustoClusterDataSetMapping - A Kusto cluster data set mapping
 type KustoClusterDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -1208,6 +1379,17 @@ type KustoClusterDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type KustoClusterDataSetMapping.
+func (k *KustoClusterDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       k.Kind,
+		ID:         k.ID,
+		Name:       k.Name,
+		SystemData: k.SystemData,
+		Type:       k.Type,
+	}
 }
 
 // KustoClusterDataSetMappingProperties - Properties of the Kusto cluster data set mapping
@@ -1264,6 +1446,17 @@ type KustoDatabaseDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type KustoDatabaseDataSet.
+func (k *KustoDatabaseDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       k.Kind,
+		ID:         k.ID,
+		Name:       k.Name,
+		SystemData: k.SystemData,
+		Type:       k.Type,
+	}
+}
+
 // KustoDatabaseDataSetMapping - A Kusto database data set mapping
 type KustoDatabaseDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -1283,6 +1476,17 @@ type KustoDatabaseDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type KustoDatabaseDataSetMapping.
+func (k *KustoDatabaseDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       k.Kind,
+		ID:         k.ID,
+		Name:       k.Name,
+		SystemData: k.SystemData,
+		Type:       k.Type,
+	}
 }
 
 // KustoDatabaseDataSetMappingProperties - Properties of the Kusto database data set mapping
@@ -1571,6 +1775,17 @@ type SQLDBTableDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type SQLDBTableDataSet.
+func (s *SQLDBTableDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
+}
+
 // SQLDBTableDataSetMapping - A SQL DB Table data set mapping.
 type SQLDBTableDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -1590,6 +1805,17 @@ type SQLDBTableDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type SQLDBTableDataSetMapping.
+func (s *SQLDBTableDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
 }
 
 // SQLDBTableDataSetMappingProperties - Properties of the SQL DB table data set mapping.
@@ -1655,6 +1881,17 @@ type SQLDWTableDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type SQLDWTableDataSet.
+func (s *SQLDWTableDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
+}
+
 // SQLDWTableDataSetMapping - A SQL DW Table data set mapping.
 type SQLDWTableDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -1674,6 +1911,17 @@ type SQLDWTableDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type SQLDWTableDataSetMapping.
+func (s *SQLDWTableDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
 }
 
 // SQLDWTableDataSetMappingProperties - Properties of the SQL DW table data set mapping.
@@ -1736,6 +1984,14 @@ type ScheduledSourceSynchronizationSetting struct {
 	Properties *ScheduledSourceShareSynchronizationSettingProperties `json:"properties,omitempty"`
 }
 
+// GetSourceShareSynchronizationSetting implements the SourceShareSynchronizationSettingClassification interface for type
+// ScheduledSourceSynchronizationSetting.
+func (s *ScheduledSourceSynchronizationSetting) GetSourceShareSynchronizationSetting() *SourceShareSynchronizationSetting {
+	return &SourceShareSynchronizationSetting{
+		Kind: s.Kind,
+	}
+}
+
 // ScheduledSynchronizationSetting - A type of synchronization setting based on schedule
 type ScheduledSynchronizationSetting struct {
 	// REQUIRED; Kind of synchronization setting.
@@ -1755,6 +2011,17 @@ type ScheduledSynchronizationSetting struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetSynchronizationSetting implements the SynchronizationSettingClassification interface for type ScheduledSynchronizationSetting.
+func (s *ScheduledSynchronizationSetting) GetSynchronizationSetting() *SynchronizationSetting {
+	return &SynchronizationSetting{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
 }
 
 // ScheduledSynchronizationSettingProperties - A Scheduled synchronization setting data transfer object.
@@ -1794,6 +2061,17 @@ type ScheduledTrigger struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetTrigger implements the TriggerClassification interface for type ScheduledTrigger.
+func (s *ScheduledTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
 }
 
 // ScheduledTriggerProperties - A Scheduled trigger data transfer object.
@@ -2154,6 +2432,12 @@ type SourceShareSynchronizationSetting struct {
 	Kind *SourceShareSynchronizationSettingKind `json:"kind,omitempty"`
 }
 
+// GetSourceShareSynchronizationSetting implements the SourceShareSynchronizationSettingClassification interface for type
+// SourceShareSynchronizationSetting.
+func (s *SourceShareSynchronizationSetting) GetSourceShareSynchronizationSetting() *SourceShareSynchronizationSetting {
+	return s
+}
+
 // SourceShareSynchronizationSettingList - List response for get source share Synchronization settings
 type SourceShareSynchronizationSettingList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -2184,6 +2468,17 @@ type SynapseWorkspaceSQLPoolTableDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataSet implements the DataSetClassification interface for type SynapseWorkspaceSQLPoolTableDataSet.
+func (s *SynapseWorkspaceSQLPoolTableDataSet) GetDataSet() *DataSet {
+	return &DataSet{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
+}
+
 // SynapseWorkspaceSQLPoolTableDataSetMapping - A Synapse Workspace Sql Pool Table data set mapping
 type SynapseWorkspaceSQLPoolTableDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -2203,6 +2498,17 @@ type SynapseWorkspaceSQLPoolTableDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataSetMapping implements the DataSetMappingClassification interface for type SynapseWorkspaceSQLPoolTableDataSetMapping.
+func (s *SynapseWorkspaceSQLPoolTableDataSetMapping) GetDataSetMapping() *DataSetMapping {
+	return &DataSetMapping{
+		Kind:       s.Kind,
+		ID:         s.ID,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
 }
 
 // SynapseWorkspaceSQLPoolTableDataSetMappingProperties - Properties of the Synapse Workspace SQL Pool Table data set mapping
@@ -2313,6 +2619,9 @@ type SynchronizationSetting struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetSynchronizationSetting implements the SynchronizationSettingClassification interface for type SynchronizationSetting.
+func (s *SynchronizationSetting) GetSynchronizationSetting() *SynchronizationSetting { return s }
+
 // SynchronizationSettingList - List response for get Synchronization settings
 type SynchronizationSettingList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -2400,6 +2709,9 @@ type Trigger struct {
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetTrigger implements the TriggerClassification interface for type Trigger.
+func (t *Trigger) GetTrigger() *Trigger { return t }
 
 // TriggerList - List response for get triggers
 type TriggerList struct {

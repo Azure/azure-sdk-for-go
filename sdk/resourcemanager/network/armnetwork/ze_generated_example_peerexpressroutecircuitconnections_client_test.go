@@ -16,22 +16,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PeerExpressRouteCircuitConnectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PeerExpressRouteCircuitConnectionGet.json
 func ExamplePeerExpressRouteCircuitConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPeerExpressRouteCircuitConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPeerExpressRouteCircuitConnectionsClient("subid1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<circuit-name>",
-		"<peering-name>",
-		"<connection-name>",
+		"rg1",
+		"ExpressRouteARMCircuitA",
+		"AzurePrivatePeering",
+		"60aee347-e889-4a42-8c1b-0aae8b1e4013",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -40,26 +40,25 @@ func ExamplePeerExpressRouteCircuitConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PeerExpressRouteCircuitConnectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PeerExpressRouteCircuitConnectionList.json
 func ExamplePeerExpressRouteCircuitConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPeerExpressRouteCircuitConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewPeerExpressRouteCircuitConnectionsClient("subid1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<circuit-name>",
-		"<peering-name>",
+	pager := client.NewListPager("rg1",
+		"ExpressRouteARMCircuitA",
+		"AzurePrivatePeering",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

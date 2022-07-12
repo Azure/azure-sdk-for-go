@@ -40,7 +40,7 @@ func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential
 }
 
 // CheckEntityExists - Checks that user entity specified by identifier is associated with the group entity.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // groupID - Group identifier. Must be unique in the current API Management service instance.
@@ -72,11 +73,10 @@ func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGr
 	if err != nil {
 		return GroupUserClientCheckEntityExistsResponse{}, err
 	}
-	result := GroupUserClientCheckEntityExistsResponse{}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
+	if !runtime.HasStatusCode(resp, http.StatusNoContent, http.StatusNotFound) {
+		return GroupUserClientCheckEntityExistsResponse{}, runtime.NewResponseError(resp)
 	}
-	return result, nil
+	return GroupUserClientCheckEntityExistsResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}, nil
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
@@ -109,12 +109,13 @@ func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Create - Add existing user to existing group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // groupID - Group identifier. Must be unique in the current API Management service instance.
@@ -165,7 +166,7 @@ func (client *GroupUserClient) createCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -180,6 +181,7 @@ func (client *GroupUserClient) createHandleResponse(resp *http.Response) (GroupU
 
 // Delete - Remove existing user from existing group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // groupID - Group identifier. Must be unique in the current API Management service instance.
@@ -230,18 +232,19 @@ func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListPager - Lists a collection of user entities associated with the group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // groupID - Group identifier. Must be unique in the current API Management service instance.
 // options - GroupUserClientListOptions contains the optional parameters for the GroupUserClient.List method.
 func (client *GroupUserClient) NewListPager(resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) *runtime.Pager[GroupUserClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[GroupUserClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[GroupUserClientListResponse]{
 		More: func(page GroupUserClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -303,7 +306,7 @@ func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGr
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices"
@@ -26,13 +24,13 @@ func ExampleServersClient_GetDetails() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDetails(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"TestRG",
+		"azsdktest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,17 +46,17 @@ func ExampleServersClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"TestRG",
+		"azsdktest",
 		armanalysisservices.Server{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			SKU: &armanalysisservices.ResourceSKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("S1"),
 				Capacity: to.Ptr[int32](1),
 				Tier:     to.Ptr(armanalysisservices.SKUTierStandard),
 			},
@@ -73,11 +71,11 @@ func ExampleServersClient_BeginCreate() {
 				},
 			},
 		},
-		&armanalysisservices.ServersClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -92,18 +90,18 @@ func ExampleServersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armanalysisservices.ServersClientBeginDeleteOptions{ResumeToken: ""})
+		"TestRG",
+		"azsdktest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -116,13 +114,13 @@ func ExampleServersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"TestRG",
+		"azsdktest",
 		armanalysisservices.ServerUpdateParameters{
 			Properties: &armanalysisservices.ServerMutableProperties{
 				AsAdministrators: &armanalysisservices.ServerAdministrators{
@@ -132,7 +130,7 @@ func ExampleServersClient_BeginUpdate() {
 				},
 			},
 			SKU: &armanalysisservices.ResourceSKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("S1"),
 				Capacity: to.Ptr[int32](1),
 				Tier:     to.Ptr(armanalysisservices.SKUTierStandard),
 			},
@@ -140,11 +138,11 @@ func ExampleServersClient_BeginUpdate() {
 				"testKey": to.Ptr("testValue"),
 			},
 		},
-		&armanalysisservices.ServersClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -159,18 +157,18 @@ func ExampleServersClient_BeginSuspend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSuspend(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armanalysisservices.ServersClientBeginSuspendOptions{ResumeToken: ""})
+		"TestRG",
+		"azsdktest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -183,18 +181,18 @@ func ExampleServersClient_BeginResume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResume(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armanalysisservices.ServersClientBeginResumeOptions{ResumeToken: ""})
+		"TestRG",
+		"azsdktest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -207,17 +205,16 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("TestRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -233,7 +230,7 @@ func ExampleServersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -242,7 +239,6 @@ func ExampleServersClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -258,13 +254,13 @@ func ExampleServersClient_ListGatewayStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListGatewayStatus(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"TestRG",
+		"azsdktest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -280,13 +276,13 @@ func ExampleServersClient_DissociateGateway() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DissociateGateway(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"TestRG",
+		"azsdktest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -300,15 +296,15 @@ func ExampleServersClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<location>",
+		"West US",
 		armanalysisservices.CheckServerNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("azsdktest"),
+			Type: to.Ptr("Microsoft.AnalysisServices/servers"),
 		},
 		nil)
 	if err != nil {
@@ -325,13 +321,13 @@ func ExampleServersClient_ListOperationResults() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.ListOperationResults(ctx,
-		"<location>",
-		"<operation-id>",
+		"West US",
+		"00000000000000000000000000000000",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -345,13 +341,13 @@ func ExampleServersClient_ListOperationStatuses() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armanalysisservices.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armanalysisservices.NewServersClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListOperationStatuses(ctx,
-		"<location>",
-		"<operation-id>",
+		"West US",
+		"testoperationid",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

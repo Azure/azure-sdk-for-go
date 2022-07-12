@@ -13,7 +13,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/GetAccessReviewDefaultSettings.json
@@ -23,7 +23,7 @@ func ExampleAccessReviewDefaultSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewDefaultSettingsClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewDefaultSettingsClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -43,7 +43,7 @@ func ExampleAccessReviewDefaultSettingsClient_Put() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewDefaultSettingsClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewDefaultSettingsClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

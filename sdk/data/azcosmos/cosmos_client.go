@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -34,7 +35,7 @@ func (c *Client) Endpoint() string {
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
-	return &Client{endpoint: endpoint, pipeline: newPipeline([]policy.Policy{newSharedKeyCredPolicy(cred)}, o)}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), o)}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -46,10 +47,46 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, pipeline: newPipeline([]policy.Policy{azruntime.NewBearerTokenPolicy(cred, scope, nil), &cosmosBearerTokenPolicy{}}, o)}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o)}, nil
 }
 
-func newPipeline(authPolicy []policy.Policy, options *ClientOptions) azruntime.Pipeline {
+// NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
+// connectionString - The cosmos service connection string.
+// options - Optional Cosmos client options.  Pass nil to accept default values.
+func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*Client, error) {
+	const (
+		accountEndpoint = "AccountEndpoint"
+		accountKey      = "AccountKey"
+	)
+
+	splits := strings.SplitN(connectionString, ";", 2)
+	if len(splits) < 2 {
+		return nil, errors.New("failed parsing connection string due to it not consist of two parts separated by ';'")
+	}
+
+	var endpoint string
+	var cred KeyCredential
+	for _, split := range splits {
+		keyVal := strings.SplitN(split, "=", 2)
+		if len(keyVal) < 2 {
+			return nil, fmt.Errorf("failed parsing connection string due to unmatched key value separated by '='")
+		}
+		switch {
+		case strings.EqualFold(accountEndpoint, keyVal[0]):
+			endpoint = keyVal[1]
+		case strings.EqualFold(accountKey, keyVal[0]):
+			c, err := NewKeyCredential(strings.TrimSuffix(keyVal[1], ";"))
+			if err != nil {
+				return nil, err
+			}
+			cred = c
+		}
+	}
+
+	return NewClientWithKey(endpoint, cred, o)
+}
+
+func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -61,7 +98,9 @@ func newPipeline(authPolicy []policy.Policy, options *ClientOptions) azruntime.P
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
 				},
 			},
-			PerRetry: authPolicy,
+			PerRetry: []policy.Policy{
+				authPolicy,
+			},
 		},
 		&options.ClientOptions)
 }
@@ -238,6 +277,26 @@ func (c *Client) sendDeleteRequest(
 	return c.executeAndEnsureSuccessResponse(req)
 }
 
+func (c *Client) sendBatchRequest(
+	ctx context.Context,
+	path string,
+	batch []batchOperation,
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.attachContent(batch, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
 func (c *Client) createRequest(
 	path string,
 	ctx context.Context,
@@ -288,7 +347,6 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 	default:
 		// Otherwise, we need to marshal it
 		err = azruntime.MarshalAsJSON(req, content)
-
 	}
 
 	if err != nil {

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns"
@@ -26,34 +24,33 @@ func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewVirtualNetworkLinksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
-		"<virtual-network-link-name>",
+		"resourceGroup1",
+		"privatezone1.com",
+		"virtualNetworkLink1",
 		armprivatedns.VirtualNetworkLink{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Global"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
 			Properties: &armprivatedns.VirtualNetworkLinkProperties{
 				RegistrationEnabled: to.Ptr(false),
 				VirtualNetwork: &armprivatedns.SubResource{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/virtualNetworkSubscriptionId/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/virtualNetworkName"),
 				},
 			},
 		},
 		&armprivatedns.VirtualNetworkLinksClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -68,14 +65,14 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewVirtualNetworkLinksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
-		"<virtual-network-link-name>",
+		"resourceGroup1",
+		"privatezone1.com",
+		"virtualNetworkLink1",
 		armprivatedns.VirtualNetworkLink{
 			Tags: map[string]*string{
 				"key2": to.Ptr("value2"),
@@ -84,13 +81,11 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 				RegistrationEnabled: to.Ptr(true),
 			},
 		},
-		&armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -105,21 +100,19 @@ func ExampleVirtualNetworkLinksClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewVirtualNetworkLinksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
-		"<virtual-network-link-name>",
-		&armprivatedns.VirtualNetworkLinksClientBeginDeleteOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		"resourceGroup1",
+		"privatezone1.com",
+		"virtualNetworkLink1",
+		&armprivatedns.VirtualNetworkLinksClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -132,14 +125,14 @@ func ExampleVirtualNetworkLinksClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewVirtualNetworkLinksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<private-zone-name>",
-		"<virtual-network-link-name>",
+		"resourceGroup1",
+		"privatezone1.com",
+		"virtualNetworkLink1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -155,18 +148,17 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armprivatedns.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armprivatedns.NewVirtualNetworkLinksClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<private-zone-name>",
+	pager := client.NewListPager("resourceGroup1",
+		"privatezone1.com",
 		&armprivatedns.VirtualNetworkLinksClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

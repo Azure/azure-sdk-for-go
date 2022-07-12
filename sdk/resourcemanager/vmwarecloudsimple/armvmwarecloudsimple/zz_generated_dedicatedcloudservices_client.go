@@ -39,7 +39,7 @@ func NewDedicatedCloudServicesClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewDedicatedCloudServicesClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Create dedicate cloud service
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // dedicatedCloudServiceName - dedicated cloud Service name
 // dedicatedCloudServiceRequest - Create Dedicated Cloud Service request
@@ -99,7 +100,7 @@ func (client *DedicatedCloudServicesClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dedicatedCloudServiceRequest)
 }
 
@@ -114,24 +115,26 @@ func (client *DedicatedCloudServicesClient) createOrUpdateHandleResponse(resp *h
 
 // BeginDelete - Delete dedicate cloud service
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // dedicatedCloudServiceName - dedicated cloud service name
 // options - DedicatedCloudServicesClientBeginDeleteOptions contains the optional parameters for the DedicatedCloudServicesClient.BeginDelete
 // method.
-func (client *DedicatedCloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, options *DedicatedCloudServicesClientBeginDeleteOptions) (*armruntime.Poller[DedicatedCloudServicesClientDeleteResponse], error) {
+func (client *DedicatedCloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, options *DedicatedCloudServicesClientBeginDeleteOptions) (*runtime.Poller[DedicatedCloudServicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dedicatedCloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DedicatedCloudServicesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DedicatedCloudServicesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DedicatedCloudServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DedicatedCloudServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete dedicate cloud service
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 func (client *DedicatedCloudServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, options *DedicatedCloudServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dedicatedCloudServiceName, options)
 	if err != nil {
@@ -169,12 +172,13 @@ func (client *DedicatedCloudServicesClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns Dedicate Cloud Service
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // dedicatedCloudServiceName - dedicated cloud Service name
 // options - DedicatedCloudServicesClientGetOptions contains the optional parameters for the DedicatedCloudServicesClient.Get
@@ -216,7 +220,7 @@ func (client *DedicatedCloudServicesClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,11 +235,12 @@ func (client *DedicatedCloudServicesClient) getHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - Returns list of dedicated cloud services within a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // options - DedicatedCloudServicesClientListByResourceGroupOptions contains the optional parameters for the DedicatedCloudServicesClient.ListByResourceGroup
 // method.
 func (client *DedicatedCloudServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedCloudServicesClientListByResourceGroupOptions) *runtime.Pager[DedicatedCloudServicesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DedicatedCloudServicesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DedicatedCloudServicesClientListByResourceGroupResponse]{
 		More: func(page DedicatedCloudServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -289,7 +294,7 @@ func (client *DedicatedCloudServicesClient) listByResourceGroupCreateRequest(ctx
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -304,10 +309,11 @@ func (client *DedicatedCloudServicesClient) listByResourceGroupHandleResponse(re
 
 // NewListBySubscriptionPager - Returns list of dedicated cloud services within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // options - DedicatedCloudServicesClientListBySubscriptionOptions contains the optional parameters for the DedicatedCloudServicesClient.ListBySubscription
 // method.
 func (client *DedicatedCloudServicesClient) NewListBySubscriptionPager(options *DedicatedCloudServicesClientListBySubscriptionOptions) *runtime.Pager[DedicatedCloudServicesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DedicatedCloudServicesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DedicatedCloudServicesClientListBySubscriptionResponse]{
 		More: func(page DedicatedCloudServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -357,7 +363,7 @@ func (client *DedicatedCloudServicesClient) listBySubscriptionCreateRequest(ctx 
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -372,6 +378,7 @@ func (client *DedicatedCloudServicesClient) listBySubscriptionHandleResponse(res
 
 // Update - Patch dedicated cloud service's properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // dedicatedCloudServiceName - dedicated cloud service name
 // dedicatedCloudServiceRequest - Patch Dedicated Cloud Service request
@@ -414,7 +421,7 @@ func (client *DedicatedCloudServicesClient) updateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dedicatedCloudServiceRequest)
 }
 

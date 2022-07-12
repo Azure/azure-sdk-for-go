@@ -23,18 +23,17 @@ func ExampleDataServicesClient_NewListByDataManagerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewDataServicesClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewDataServicesClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataManagerPager("<resource-group-name>",
-		"<data-manager-name>",
+	pager := client.NewListByDataManagerPager("ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleDataServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewDataServicesClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewDataServicesClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<data-service-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+		"DataTransformation",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

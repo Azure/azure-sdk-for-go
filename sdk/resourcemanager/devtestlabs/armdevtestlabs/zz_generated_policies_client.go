@@ -39,7 +39,7 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Create or replace an existing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // policySetName - The name of the policy set.
@@ -108,7 +109,7 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, policy)
 }
 
@@ -123,6 +124,7 @@ func (client *PoliciesClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Delete policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // policySetName - The name of the policy set.
@@ -173,12 +175,13 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // policySetName - The name of the policy set.
@@ -232,7 +235,7 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -247,12 +250,13 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 
 // NewListPager - List policies in a given policy set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // policySetName - The name of the policy set.
 // options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.List method.
 func (client *PoliciesClient) NewListPager(resourceGroupName string, labName string, policySetName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PoliciesClientListResponse]{
 		More: func(page PoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -317,7 +321,7 @@ func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGro
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -332,6 +336,7 @@ func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesC
 
 // Update - Allows modifying tags of policies. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // policySetName - The name of the policy set.
@@ -383,7 +388,7 @@ func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, policy)
 }
 

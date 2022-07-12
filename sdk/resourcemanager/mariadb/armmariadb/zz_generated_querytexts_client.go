@@ -38,7 +38,7 @@ func NewQueryTextsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewQueryTextsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - Retrieve the Query-Store query texts for the queryId.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // queryID - The Query-Store query identifier.
@@ -101,7 +102,7 @@ func (client *QueryTextsClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,12 +117,13 @@ func (client *QueryTextsClient) getHandleResponse(resp *http.Response) (QueryTex
 
 // NewListByServerPager - Retrieve the Query-Store query texts for specified queryIds.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // queryIDs - The query identifiers
 // options - QueryTextsClientListByServerOptions contains the optional parameters for the QueryTextsClient.ListByServer method.
 func (client *QueryTextsClient) NewListByServerPager(resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsClientListByServerOptions) *runtime.Pager[QueryTextsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[QueryTextsClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[QueryTextsClientListByServerResponse]{
 		More: func(page QueryTextsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -173,7 +175,7 @@ func (client *QueryTextsClient) listByServerCreateRequest(ctx context.Context, r
 		reqQP.Add("queryIds", qv)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

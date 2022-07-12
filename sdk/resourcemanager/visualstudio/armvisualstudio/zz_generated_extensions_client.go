@@ -38,7 +38,7 @@ func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Create - Registers the extension with a Visual Studio Team Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // accountResourceName - The name of the Visual Studio Team Services account resource.
 // extensionResourceName - The name of the extension.
@@ -102,7 +103,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -117,6 +118,7 @@ func (client *ExtensionsClient) createHandleResponse(resp *http.Response) (Exten
 
 // Delete - Removes an extension resource registration for a Visual Studio Team Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // accountResourceName - The name of the Visual Studio Team Services account resource.
 // extensionResourceName - The name of the extension.
@@ -167,6 +169,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets the details of an extension associated with a Visual Studio Team Services account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // accountResourceName - The name of the Visual Studio Team Services account resource.
 // extensionResourceName - The name of the extension.
@@ -212,7 +215,7 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -227,6 +230,7 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 
 // ListByAccount - Gets the details of the extension resources created within the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // accountResourceName - The name of the Visual Studio Team Services account resource.
 // options - ExtensionsClientListByAccountOptions contains the optional parameters for the ExtensionsClient.ListByAccount
@@ -268,7 +272,7 @@ func (client *ExtensionsClient) listByAccountCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -283,6 +287,7 @@ func (client *ExtensionsClient) listByAccountHandleResponse(resp *http.Response)
 
 // Update - Updates an existing extension registration for the Visual Studio Team Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // accountResourceName - The name of the Visual Studio Team Services account resource.
 // extensionResourceName - The name of the extension.
@@ -329,7 +334,7 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

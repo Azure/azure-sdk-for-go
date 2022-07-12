@@ -23,18 +23,17 @@ func ExampleLegacyPeeringsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewLegacyPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewLegacyPeeringsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<peering-location>",
+	pager := client.NewListPager("peeringLocation0",
 		armpeering.LegacyPeeringsKindExchange,
 		&armpeering.LegacyPeeringsClientListOptions{Asn: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

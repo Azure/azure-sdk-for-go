@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -27,11 +30,11 @@ type azureCLITokenProvider func(ctx context.Context, resource string, tenantID s
 
 // AzureCLICredentialOptions contains optional parameters for AzureCLICredential.
 type AzureCLICredentialOptions struct {
-	tokenProvider azureCLITokenProvider
-
 	// TenantID identifies the tenant the credential should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the logged in user.
 	TenantID string
+
+	tokenProvider azureCLITokenProvider
 }
 
 // init returns an instance of AzureCLICredentialOptions initialized with default values.
@@ -47,8 +50,7 @@ type AzureCLICredential struct {
 	tenantID      string
 }
 
-// NewAzureCLICredential constructs an AzureCLICredential.
-// options: Optional configuration. Pass nil to accept default settings.
+// NewAzureCLICredential constructs an AzureCLICredential. Pass nil to accept default options.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
 	cp := AzureCLICredentialOptions{}
 	if options != nil {
@@ -63,17 +65,15 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 
 // GetToken requests a token from the Azure CLI. This credential doesn't cache tokens, so every call invokes the CLI.
 // This method is called automatically by Azure SDK clients.
-// ctx: Context controlling the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
-func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
-		return nil, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
+		return azcore.AccessToken{}, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
 	}
 	// CLI expects an AAD v1 resource, not a v2 scope
 	scope := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, scope)
 	if err != nil {
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 	logGetTokenSuccess(c, opts)
 	return at, nil
@@ -81,10 +81,10 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 
 const timeoutCLIRequest = 10 * time.Second
 
-func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) (*azcore.AccessToken, error) {
+func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) (azcore.AccessToken, error) {
 	output, err := c.tokenProvider(ctx, resource, c.tenantID)
 	if err != nil {
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 
 	return c.createAccessToken(output)
@@ -140,7 +140,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 	}
 }
 
-func (c *AzureCLICredential) createAccessToken(tk []byte) (*azcore.AccessToken, error) {
+func (c *AzureCLICredential) createAccessToken(tk []byte) (azcore.AccessToken, error) {
 	t := struct {
 		AccessToken      string `json:"accessToken"`
 		Authority        string `json:"_authority"`
@@ -155,15 +155,15 @@ func (c *AzureCLICredential) createAccessToken(tk []byte) (*azcore.AccessToken, 
 	}{}
 	err := json.Unmarshal(tk, &t)
 	if err != nil {
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 
 	tokenExpirationDate, err := parseExpirationDate(t.ExpiresOn)
 	if err != nil {
-		return nil, fmt.Errorf("Error parsing Token Expiration Date %q: %+v", t.ExpiresOn, err)
+		return azcore.AccessToken{}, fmt.Errorf("Error parsing Token Expiration Date %q: %+v", t.ExpiresOn, err)
 	}
 
-	converted := &azcore.AccessToken{
+	converted := azcore.AccessToken{
 		Token:     t.AccessToken,
 		ExpiresOn: *tokenExpirationDate,
 	}

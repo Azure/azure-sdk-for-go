@@ -39,7 +39,7 @@ func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.
 
 // CreateOrUpdate - Register configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceType - Resource type
@@ -114,7 +115,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configurationAssignment)
 }
 
@@ -129,6 +130,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateHandleResponse(resp 
 
 // CreateOrUpdateParent - Register configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceParentType - Resource parent type
@@ -196,7 +198,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configurationAssignment)
 }
 
@@ -211,6 +213,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentHandleResponse
 
 // Delete - Unregister configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceType - Resource type
@@ -267,7 +270,7 @@ func (client *ConfigurationAssignmentsClient) deleteCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -282,6 +285,7 @@ func (client *ConfigurationAssignmentsClient) deleteHandleResponse(resp *http.Re
 
 // DeleteParent - Unregister configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceParentType - Resource parent type
@@ -348,7 +352,7 @@ func (client *ConfigurationAssignmentsClient) deleteParentCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -363,6 +367,7 @@ func (client *ConfigurationAssignmentsClient) deleteParentHandleResponse(resp *h
 
 // Get - Get configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceType - Resource type
@@ -419,7 +424,7 @@ func (client *ConfigurationAssignmentsClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -434,6 +439,7 @@ func (client *ConfigurationAssignmentsClient) getHandleResponse(resp *http.Respo
 
 // GetParent - Get configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceParentType - Resource parent type
@@ -500,7 +506,7 @@ func (client *ConfigurationAssignmentsClient) getParentCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -515,6 +521,7 @@ func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http
 
 // NewListPager - List configurationAssignments for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceType - Resource type
@@ -522,7 +529,7 @@ func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http
 // options - ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.List
 // method.
 func (client *ConfigurationAssignmentsClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListOptions) *runtime.Pager[ConfigurationAssignmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationAssignmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsClientListResponse]{
 		More: func(page ConfigurationAssignmentsClientListResponse) bool {
 			return false
 		},
@@ -573,7 +580,7 @@ func (client *ConfigurationAssignmentsClient) listCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -588,6 +595,7 @@ func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Resp
 
 // NewListParentPager - List configurationAssignments for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceParentType - Resource parent type
@@ -597,7 +605,7 @@ func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Resp
 // options - ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.ListParent
 // method.
 func (client *ConfigurationAssignmentsClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListParentOptions) *runtime.Pager[ConfigurationAssignmentsClientListParentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationAssignmentsClientListParentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsClientListParentResponse]{
 		More: func(page ConfigurationAssignmentsClientListParentResponse) bool {
 			return false
 		},
@@ -656,7 +664,7 @@ func (client *ConfigurationAssignmentsClient) listParentCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

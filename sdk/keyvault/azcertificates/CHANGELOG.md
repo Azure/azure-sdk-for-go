@@ -1,5 +1,31 @@
 # Release History
 
+## 0.5.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.5.0 (2022-07-07)
+
+### Breaking Changes
+* The `Client` API now corresponds more directly to the Key Vault REST API.
+  Most method signatures and types have changed. See the
+  [module documentation](https://aka.ms/azsdk/go/keyvault-certificates/docs)
+  for updated code examples and more details.
+
+### Other Changes
+* Upgrade to latest `azcore`
+
+## 0.4.1 (2022-05-12)
+
+### Other Changes
+* Updated to latest `azcore` and `internal` modules.
+
 ## 0.4.0 (2022-04-21)
 
 ### Breaking Changes

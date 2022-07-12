@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
@@ -26,19 +24,18 @@ func ExamplePlacementPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewPlacementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewPlacementPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<private-cloud-name>",
-		"<cluster-name>",
+	pager := client.NewListPager("group1",
+		"cloud1",
+		"cluster1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExamplePlacementPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewPlacementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewPlacementPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<cluster-name>",
-		"<placement-policy-name>",
+		"group1",
+		"cloud1",
+		"cluster1",
+		"policy1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,15 +75,15 @@ func ExamplePlacementPoliciesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewPlacementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewPlacementPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<cluster-name>",
-		"<placement-policy-name>",
+		"group1",
+		"cloud1",
+		"cluster1",
+		"policy1",
 		armavs.PlacementPolicy{
 			Properties: &armavs.VMHostPlacementPolicyProperties{
 				Type:         to.Ptr(armavs.PlacementPolicyTypeVMHost),
@@ -100,11 +97,11 @@ func ExamplePlacementPoliciesClient_BeginCreateOrUpdate() {
 					to.Ptr("/subscriptions/{subscription-id}/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/clusters/cluster1/virtualMachines/vm-256")},
 			},
 		},
-		&armavs.PlacementPoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -119,15 +116,15 @@ func ExamplePlacementPoliciesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewPlacementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewPlacementPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<cluster-name>",
-		"<placement-policy-name>",
+		"group1",
+		"cloud1",
+		"cluster1",
+		"policy1",
 		armavs.PlacementPolicyUpdate{
 			Properties: &armavs.PlacementPolicyUpdateProperties{
 				HostMembers: []*string{
@@ -140,11 +137,11 @@ func ExamplePlacementPoliciesClient_BeginUpdate() {
 					to.Ptr("/subscriptions/{subscription-id}/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/clusters/cluster1/virtualMachines/vm-256")},
 			},
 		},
-		&armavs.PlacementPoliciesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -159,20 +156,20 @@ func ExamplePlacementPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewPlacementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewPlacementPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<cluster-name>",
-		"<placement-policy-name>",
-		&armavs.PlacementPoliciesClientBeginDeleteOptions{ResumeToken: ""})
+		"group1",
+		"cloud1",
+		"cluster1",
+		"policy1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

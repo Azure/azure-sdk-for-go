@@ -33,7 +33,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,6 +50,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // Resources - Queries the resources managed by Azure Resource Manager for scopes specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // query - Request specifying query and its options.
 // options - ClientResourcesOptions contains the optional parameters for the Client.Resources method.
 func (client *Client) Resources(ctx context.Context, query QueryRequest, options *ClientResourcesOptions) (ClientResourcesResponse, error) {
@@ -77,7 +78,7 @@ func (client *Client) resourcesCreateRequest(ctx context.Context, query QueryReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, query)
 }
 
@@ -92,6 +93,7 @@ func (client *Client) resourcesHandleResponse(resp *http.Response) (ClientResour
 
 // ResourcesHistory - List all snapshots of a resource for a given time interval.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // request - Request specifying the query and its options.
 // options - ClientResourcesHistoryOptions contains the optional parameters for the Client.ResourcesHistory method.
 func (client *Client) ResourcesHistory(ctx context.Context, request ResourcesHistoryRequest, options *ClientResourcesHistoryOptions) (ClientResourcesHistoryResponse, error) {
@@ -119,7 +121,7 @@ func (client *Client) resourcesHistoryCreateRequest(ctx context.Context, request
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }
 

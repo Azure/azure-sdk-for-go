@@ -23,17 +23,16 @@ func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableDatabaseAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewRestorableDatabaseAccountsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocationPager("<location>",
+	pager := client.NewListByLocationPager("West US",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,7 +48,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableDatabaseAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewRestorableDatabaseAccountsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -58,7 +57,6 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -74,13 +72,13 @@ func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableDatabaseAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewRestorableDatabaseAccountsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByLocation(ctx,
-		"<location>",
-		"<instance-id>",
+		"West US",
+		"d9b26648-2f53-4541-b3d8-3044f4f9810d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

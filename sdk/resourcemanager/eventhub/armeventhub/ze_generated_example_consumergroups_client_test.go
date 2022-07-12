@@ -17,25 +17,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/ConsumerGroup/EHConsumerGroupCreate.json
 func ExampleConsumerGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewConsumerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConsumerGroupsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<event-hub-name>",
-		"<consumer-group-name>",
+		"ArunMonocle",
+		"sdk-Namespace-2661",
+		"sdk-EventHub-6681",
+		"sdk-ConsumerGroup-5563",
 		armeventhub.ConsumerGroup{
 			Properties: &armeventhub.ConsumerGroupProperties{
-				UserMetadata: to.Ptr("<user-metadata>"),
+				UserMetadata: to.Ptr("New consumergroup"),
 			},
 		},
 		nil)
@@ -46,44 +46,44 @@ func ExampleConsumerGroupsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/ConsumerGroup/EHConsumerGroupDelete.json
 func ExampleConsumerGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewConsumerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConsumerGroupsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<event-hub-name>",
-		"<consumer-group-name>",
+		"ArunMonocle",
+		"sdk-Namespace-2661",
+		"sdk-EventHub-6681",
+		"sdk-ConsumerGroup-5563",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/ConsumerGroup/EHConsumerGroupGet.json
 func ExampleConsumerGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewConsumerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConsumerGroupsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<event-hub-name>",
-		"<consumer-group-name>",
+		"ArunMonocle",
+		"sdk-Namespace-2661",
+		"sdk-EventHub-6681",
+		"sdk-ConsumerGroup-5563",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -92,20 +92,20 @@ func ExampleConsumerGroupsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupListByEventHub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/ConsumerGroup/EHConsumerGroupListByEventHub.json
 func ExampleConsumerGroupsClient_NewListByEventHubPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewConsumerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConsumerGroupsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByEventHubPager("<resource-group-name>",
-		"<namespace-name>",
-		"<event-hub-name>",
+	pager := client.NewListByEventHubPager("ArunMonocle",
+		"sdk-Namespace-2661",
+		"sdk-EventHub-6681",
 		&armeventhub.ConsumerGroupsClientListByEventHubOptions{Skip: nil,
 			Top: nil,
 		})
@@ -113,7 +113,6 @@ func ExampleConsumerGroupsClient_NewListByEventHubPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

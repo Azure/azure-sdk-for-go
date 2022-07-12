@@ -38,7 +38,7 @@ func NewLocationsClient(acceptLanguage *string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewLocationsClient(acceptLanguage *string, credential azcore.TokenCredentia
 // Get - Returns the details about a location to which you can ship the disks associated with an import or export job. A location
 // is an Azure region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // locationName - The name of the location. For example, West US or westus.
 // options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 func (client *LocationsClient) Get(ctx context.Context, locationName string, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
@@ -89,9 +90,9 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, locationNam
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,9 +108,10 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 // NewListPager - Returns a list of locations to which you can ship the disks associated with an import or export job. A location
 // is a Microsoft data center region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
 func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LocationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
 			return false
 		},
@@ -141,9 +143,9 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, options *L
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

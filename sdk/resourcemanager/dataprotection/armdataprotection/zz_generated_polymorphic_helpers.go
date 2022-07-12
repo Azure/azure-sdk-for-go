@@ -285,6 +285,10 @@ func unmarshalItemLevelRestoreCriteriaClassification(rawMsg json.RawMessage) (It
 	}
 	var b ItemLevelRestoreCriteriaClassification
 	switch m["objectType"] {
+	case "KubernetesPVRestoreCriteria":
+		b = &KubernetesPVRestoreCriteria{}
+	case "KubernetesStorageClassRestoreCriteria":
+		b = &KubernetesStorageClassRestoreCriteria{}
 	case "RangeBasedItemLevelRestoreCriteria":
 		b = &RangeBasedItemLevelRestoreCriteria{}
 	default:

@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
-	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +21,7 @@ import (
 func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000)}
 
-	link, err := NewRPCLink(RPCLinkArgs{
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
 			session: tester,
 		},
@@ -72,7 +72,7 @@ LogLoop:
 func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
 
-	link, err := NewRPCLink(RPCLinkArgs{
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
 			session: tester,
 		},
@@ -122,7 +122,7 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
 
-	link, err := NewRPCLink(RPCLinkArgs{
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
 			session: tester,
 		},
@@ -142,7 +142,7 @@ func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 
 	// the 400 automatically gets translated into an RPC error. The response router should still be running.
 	require.Nil(t, resp)
-	var rpcErr rpcError
+	var rpcErr RPCError
 	require.ErrorAs(t, err, &rpcErr)
 	require.Equal(t, 400, rpcErr.RPCCode())
 
@@ -189,22 +189,26 @@ type rpcTesterClient struct {
 	session amqpwrap.AMQPSession
 }
 
-func (c *rpcTesterClient) NewSession(opts ...amqp.SessionOption) (amqpwrap.AMQPSession, error) {
+func (c *rpcTesterClient) NewSession(ctx context.Context, opts *amqp.SessionOptions) (amqpwrap.AMQPSession, error) {
 	return c.session, nil
 }
 
 func (c *rpcTesterClient) Close() error { return nil }
 
-func (tester *rpcTester) NewReceiver(opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
+func (tester *rpcTester) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
 	return tester, nil
 }
 
-func (tester *rpcTester) NewSender(opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
+func (tester *rpcTester) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
 	return tester, nil
 }
 
 func (tester *rpcTester) Close(ctx context.Context) error {
 	return nil
+}
+
+func (tester *rpcTester) LinkName() string {
+	return "hello"
 }
 
 // receiver functions

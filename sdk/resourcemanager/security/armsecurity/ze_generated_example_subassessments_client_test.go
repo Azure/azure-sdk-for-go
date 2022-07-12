@@ -27,13 +27,12 @@ func ExampleSubAssessmentsClient_NewListAllPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager("<scope>",
+	pager := client.NewListAllPager("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,13 @@ func ExampleSubAssessmentsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
-		"<assessment-name>",
+	pager := client.NewListPager("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+		"82e20e14-edc5-4373-bfc4-f13121257c37",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -81,9 +79,9 @@ func ExampleSubAssessmentsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<assessment-name>",
-		"<sub-assessment-name>",
+		"subscriptions/212f9889-769e-45ae-ab43-6da33674bd26/resourceGroups/DEMORG/providers/Microsoft.Compute/virtualMachines/vm2",
+		"1195afff-c881-495e-9bc5-1486211ae03f",
+		"95f7da9c-a2a4-1322-0758-fcd24ef09b85",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

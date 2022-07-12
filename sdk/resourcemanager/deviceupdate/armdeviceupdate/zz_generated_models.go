@@ -54,8 +54,14 @@ type AccountProperties struct {
 	// Whether or not public network access is allowed for the account.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
+	// Device Update Sku
+	SKU *SKU `json:"sku,omitempty"`
+
 	// READ-ONLY; API host name.
 	HostName *string `json:"hostName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Device Update account primary and failover location details
+	Locations []*Location `json:"locations,omitempty" azure:"ro"`
 
 	// READ-ONLY; Provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -342,12 +348,13 @@ type InstancesClientUpdateOptions struct {
 type IotHubSettings struct {
 	// REQUIRED; IoTHub resource ID
 	ResourceID *string `json:"resourceId,omitempty"`
+}
 
-	// EventHub connection string.
-	EventHubConnectionString *string `json:"eventHubConnectionString,omitempty"`
+type Location struct {
+	Name *string `json:"name,omitempty"`
 
-	// IoTHub connection string.
-	IoTHubConnectionString *string `json:"ioTHubConnectionString,omitempty"`
+	// Whether the location is primary or failover
+	Role *Role `json:"role,omitempty"`
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)

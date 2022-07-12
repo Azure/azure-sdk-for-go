@@ -24,27 +24,27 @@ func ExampleStepsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewStepsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<step-name>",
+		"myResourceGroup",
+		"healthCheckStep",
 		&armdeploymentmanager.StepsClientCreateOrUpdateOptions{StepInfo: &armdeploymentmanager.StepResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("centralus"),
 			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.HealthCheckStepProperties{
 				StepType: to.Ptr(armdeploymentmanager.StepTypeHealthCheck),
 				Attributes: &armdeploymentmanager.RestHealthCheckStepAttributes{
-					Type:                 to.Ptr("<type>"),
-					HealthyStateDuration: to.Ptr("<healthy-state-duration>"),
-					MaxElasticDuration:   to.Ptr("<max-elastic-duration>"),
-					WaitDuration:         to.Ptr("<wait-duration>"),
+					Type:                 to.Ptr("REST"),
+					HealthyStateDuration: to.Ptr("PT2H"),
+					MaxElasticDuration:   to.Ptr("PT30M"),
+					WaitDuration:         to.Ptr("PT15M"),
 					Properties: &armdeploymentmanager.RestParameters{
 						HealthChecks: []*armdeploymentmanager.RestHealthCheck{
 							{
-								Name: to.Ptr("<name>"),
+								Name: to.Ptr("appHealth"),
 								Response: &armdeploymentmanager.RestResponse{
 									Regex: &armdeploymentmanager.RestResponseRegex{
 										MatchQuantifier: to.Ptr(armdeploymentmanager.RestMatchQuantifierAll),
@@ -60,15 +60,15 @@ func ExampleStepsClient_CreateOrUpdate() {
 									Method: to.Ptr(armdeploymentmanager.RestRequestMethodGET),
 									Authentication: &armdeploymentmanager.APIKeyAuthentication{
 										Type:  to.Ptr(armdeploymentmanager.RestAuthTypeAPIKey),
-										Name:  to.Ptr("<name>"),
+										Name:  to.Ptr("Code"),
 										In:    to.Ptr(armdeploymentmanager.RestAuthLocationQuery),
-										Value: to.Ptr("<value>"),
+										Value: to.Ptr("NBCapiMOBQyAAbCkeytoPadnvO0eGHmidwFz5rXpappznKp3Jt7LLg=="),
 									},
-									URI: to.Ptr("<uri>"),
+									URI: to.Ptr("https://resthealth.healthservice.com/api/applications/contosoApp/healthStatus"),
 								},
 							},
 							{
-								Name: to.Ptr("<name>"),
+								Name: to.Ptr("serviceHealth"),
 								Response: &armdeploymentmanager.RestResponse{
 									Regex: &armdeploymentmanager.RestResponseRegex{
 										MatchQuantifier: to.Ptr(armdeploymentmanager.RestMatchQuantifierAll),
@@ -83,11 +83,11 @@ func ExampleStepsClient_CreateOrUpdate() {
 									Method: to.Ptr(armdeploymentmanager.RestRequestMethodGET),
 									Authentication: &armdeploymentmanager.APIKeyAuthentication{
 										Type:  to.Ptr(armdeploymentmanager.RestAuthTypeAPIKey),
-										Name:  to.Ptr("<name>"),
+										Name:  to.Ptr("code"),
 										In:    to.Ptr(armdeploymentmanager.RestAuthLocationHeader),
-										Value: to.Ptr("<value>"),
+										Value: to.Ptr("NBCapiMOBQyAAbCkeytoPadnvO0eGHmidwFz5rXpappznKp3Jt7LLg=="),
 									},
-									URI: to.Ptr("<uri>"),
+									URI: to.Ptr("https://resthealth.healthservice.com/api/services/contosoService/healthStatus"),
 								},
 							}},
 					},
@@ -107,13 +107,13 @@ func ExampleStepsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewStepsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<step-name>",
+		"myResourceGroup",
+		"waitStep",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -129,13 +129,13 @@ func ExampleStepsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewStepsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<step-name>",
+		"myResourceGroup",
+		"deploymentStep1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -149,12 +149,12 @@ func ExampleStepsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewStepsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
+		"myResourceGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

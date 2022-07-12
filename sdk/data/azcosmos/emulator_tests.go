@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"os"
 	"strconv"
 	"testing"
@@ -81,10 +82,20 @@ func (e *emulatorTests) deleteDatabase(
 	}
 }
 
+func (e *emulatorTests) marshallItem(id string, pk string) []byte {
+	item := map[string]string{
+		"id": id,
+		"pk": pk,
+	}
+
+	marshalled, _ := json.Marshal(item)
+	return marshalled
+}
+
 type emulatorTokenCredential struct {
 }
 
-func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	header := `{"typ":"JWT","alg":"RS256","x5t":"CosmosEmulatorPrimaryMaster","kid":"CosmosEmulatorPrimaryMaster"}`
 	unixNow := time.Now().Unix()
 	expiration := unixNow + 7200
@@ -119,7 +130,7 @@ func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.T
 
 	token := headerBase64 + "." + payloadBase64 + "." + masterKeyBase64
 
-	return &azcore.AccessToken{
+	return azcore.AccessToken{
 		Token:     token,
 		ExpiresOn: time.Unix(expiration, 0),
 	}, nil

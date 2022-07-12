@@ -28,7 +28,7 @@ func ExamplePartnerClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<partner-id>",
+		"123456",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,7 +49,7 @@ func ExamplePartnerClient_Create() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<partner-id>",
+		"123456",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,7 +70,7 @@ func ExamplePartnerClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<partner-id>",
+		"123456",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -91,7 +91,7 @@ func ExamplePartnerClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<partner-id>",
+		"123456",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

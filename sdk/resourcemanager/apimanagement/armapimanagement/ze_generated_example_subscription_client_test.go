@@ -24,12 +24,12 @@ func ExampleSubscriptionClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListPager("rg1",
+		"apimService1",
 		&armapimanagement.SubscriptionClientListOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleSubscriptionClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleSubscriptionClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<sid>",
+		"rg1",
+		"apimService1",
+		"5931a769d8d14f0ad8ce13b8",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,14 +74,14 @@ func ExampleSubscriptionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<sid>",
+		"rg1",
+		"apimService1",
+		"5931a769d8d14f0ad8ce13b8",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,19 +97,19 @@ func ExampleSubscriptionClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<sid>",
+		"rg1",
+		"apimService1",
+		"testsub",
 		armapimanagement.SubscriptionCreateParameters{
 			Properties: &armapimanagement.SubscriptionCreateParameterProperties{
-				DisplayName: to.Ptr("<display-name>"),
-				OwnerID:     to.Ptr("<owner-id>"),
-				Scope:       to.Ptr("<scope>"),
+				DisplayName: to.Ptr("testsub"),
+				OwnerID:     to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7"),
+				Scope:       to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060002"),
 			},
 		},
 		&armapimanagement.SubscriptionClientCreateOrUpdateOptions{Notify: nil,
@@ -131,18 +130,18 @@ func ExampleSubscriptionClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<sid>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"testsub",
+		"*",
 		armapimanagement.SubscriptionUpdateParameters{
 			Properties: &armapimanagement.SubscriptionUpdateParameterProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("testsub"),
 			},
 		},
 		&armapimanagement.SubscriptionClientUpdateOptions{Notify: nil,
@@ -162,15 +161,15 @@ func ExampleSubscriptionClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<sid>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"testsub",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -184,14 +183,14 @@ func ExampleSubscriptionClient_RegeneratePrimaryKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RegeneratePrimaryKey(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<sid>",
+		"rg1",
+		"apimService1",
+		"testsub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -205,14 +204,14 @@ func ExampleSubscriptionClient_RegenerateSecondaryKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RegenerateSecondaryKey(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<sid>",
+		"rg1",
+		"apimService1",
+		"testsub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -226,14 +225,14 @@ func ExampleSubscriptionClient_ListSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSubscriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSubscriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSecrets(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<sid>",
+		"rg1",
+		"apimService1",
+		"5931a769d8d14f0ad8ce13b8",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

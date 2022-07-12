@@ -38,7 +38,7 @@ func NewInvoicesClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewInvoicesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginDownloadBillingSubscriptionInvoice - Gets a URL to download an invoice.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // invoiceName - The ID that uniquely identifies an invoice.
 // downloadToken - Download token with document source and document ID.
 // options - InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions contains the optional parameters for the InvoicesClient.BeginDownloadBillingSubscriptionInvoice
 // method.
-func (client *InvoicesClient) BeginDownloadBillingSubscriptionInvoice(ctx context.Context, invoiceName string, downloadToken string, options *InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions) (*armruntime.Poller[InvoicesClientDownloadBillingSubscriptionInvoiceResponse], error) {
+func (client *InvoicesClient) BeginDownloadBillingSubscriptionInvoice(ctx context.Context, invoiceName string, downloadToken string, options *InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions) (*runtime.Poller[InvoicesClientDownloadBillingSubscriptionInvoiceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.downloadBillingSubscriptionInvoice(ctx, invoiceName, downloadToken, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[InvoicesClientDownloadBillingSubscriptionInvoiceResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[InvoicesClientDownloadBillingSubscriptionInvoiceResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[InvoicesClientDownloadBillingSubscriptionInvoiceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InvoicesClientDownloadBillingSubscriptionInvoiceResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DownloadBillingSubscriptionInvoice - Gets a URL to download an invoice.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *InvoicesClient) downloadBillingSubscriptionInvoice(ctx context.Context, invoiceName string, downloadToken string, options *InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions) (*http.Response, error) {
 	req, err := client.downloadBillingSubscriptionInvoiceCreateRequest(ctx, invoiceName, downloadToken, options)
 	if err != nil {
@@ -110,35 +112,37 @@ func (client *InvoicesClient) downloadBillingSubscriptionInvoiceCreateRequest(ct
 	reqQP.Set("api-version", "2020-05-01")
 	reqQP.Set("downloadToken", downloadToken)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDownloadInvoice - Gets a URL to download an invoice. The operation is supported for billing accounts with agreement
 // type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // invoiceName - The ID that uniquely identifies an invoice.
 // downloadToken - Download token with document source and document ID.
 // options - InvoicesClientBeginDownloadInvoiceOptions contains the optional parameters for the InvoicesClient.BeginDownloadInvoice
 // method.
-func (client *InvoicesClient) BeginDownloadInvoice(ctx context.Context, billingAccountName string, invoiceName string, downloadToken string, options *InvoicesClientBeginDownloadInvoiceOptions) (*armruntime.Poller[InvoicesClientDownloadInvoiceResponse], error) {
+func (client *InvoicesClient) BeginDownloadInvoice(ctx context.Context, billingAccountName string, invoiceName string, downloadToken string, options *InvoicesClientBeginDownloadInvoiceOptions) (*runtime.Poller[InvoicesClientDownloadInvoiceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.downloadInvoice(ctx, billingAccountName, invoiceName, downloadToken, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[InvoicesClientDownloadInvoiceResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[InvoicesClientDownloadInvoiceResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[InvoicesClientDownloadInvoiceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InvoicesClientDownloadInvoiceResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DownloadInvoice - Gets a URL to download an invoice. The operation is supported for billing accounts with agreement type
 // Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *InvoicesClient) downloadInvoice(ctx context.Context, billingAccountName string, invoiceName string, downloadToken string, options *InvoicesClientBeginDownloadInvoiceOptions) (*http.Response, error) {
 	req, err := client.downloadInvoiceCreateRequest(ctx, billingAccountName, invoiceName, downloadToken, options)
 	if err != nil {
@@ -173,7 +177,7 @@ func (client *InvoicesClient) downloadInvoiceCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2020-05-01")
 	reqQP.Set("downloadToken", downloadToken)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -181,21 +185,22 @@ func (client *InvoicesClient) downloadInvoiceCreateRequest(ctx context.Context, 
 // credit notes) as a zip file. The operation is supported for billing accounts with agreement type Microsoft Partner
 // Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // downloadUrls - An array of download urls for individual documents
 // options - InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions contains the optional parameters for the InvoicesClient.BeginDownloadMultipleBillingProfileInvoices
 // method.
-func (client *InvoicesClient) BeginDownloadMultipleBillingProfileInvoices(ctx context.Context, billingAccountName string, downloadUrls []*string, options *InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions) (*armruntime.Poller[InvoicesClientDownloadMultipleBillingProfileInvoicesResponse], error) {
+func (client *InvoicesClient) BeginDownloadMultipleBillingProfileInvoices(ctx context.Context, billingAccountName string, downloadUrls []*string, options *InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions) (*runtime.Poller[InvoicesClientDownloadMultipleBillingProfileInvoicesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.downloadMultipleBillingProfileInvoices(ctx, billingAccountName, downloadUrls, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[InvoicesClientDownloadMultipleBillingProfileInvoicesResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[InvoicesClientDownloadMultipleBillingProfileInvoicesResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[InvoicesClientDownloadMultipleBillingProfileInvoicesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InvoicesClientDownloadMultipleBillingProfileInvoicesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -203,6 +208,7 @@ func (client *InvoicesClient) BeginDownloadMultipleBillingProfileInvoices(ctx co
 // credit notes) as a zip file. The operation is supported for billing accounts with agreement type Microsoft Partner
 // Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *InvoicesClient) downloadMultipleBillingProfileInvoices(ctx context.Context, billingAccountName string, downloadUrls []*string, options *InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions) (*http.Response, error) {
 	req, err := client.downloadMultipleBillingProfileInvoicesCreateRequest(ctx, billingAccountName, downloadUrls, options)
 	if err != nil {
@@ -232,33 +238,35 @@ func (client *InvoicesClient) downloadMultipleBillingProfileInvoicesCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, downloadUrls)
 }
 
 // BeginDownloadMultipleBillingSubscriptionInvoices - Gets a URL to download multiple invoice documents (invoice pdf, tax
 // receipts, credit notes) as a zip file.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // downloadUrls - An array of download urls for individual documents
 // options - InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions contains the optional parameters for the
 // InvoicesClient.BeginDownloadMultipleBillingSubscriptionInvoices method.
-func (client *InvoicesClient) BeginDownloadMultipleBillingSubscriptionInvoices(ctx context.Context, downloadUrls []*string, options *InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions) (*armruntime.Poller[InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse], error) {
+func (client *InvoicesClient) BeginDownloadMultipleBillingSubscriptionInvoices(ctx context.Context, downloadUrls []*string, options *InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions) (*runtime.Poller[InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.downloadMultipleBillingSubscriptionInvoices(ctx, downloadUrls, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DownloadMultipleBillingSubscriptionInvoices - Gets a URL to download multiple invoice documents (invoice pdf, tax receipts,
 // credit notes) as a zip file.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *InvoicesClient) downloadMultipleBillingSubscriptionInvoices(ctx context.Context, downloadUrls []*string, options *InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions) (*http.Response, error) {
 	req, err := client.downloadMultipleBillingSubscriptionInvoicesCreateRequest(ctx, downloadUrls, options)
 	if err != nil {
@@ -288,13 +296,14 @@ func (client *InvoicesClient) downloadMultipleBillingSubscriptionInvoicesCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, downloadUrls)
 }
 
 // Get - Gets an invoice by billing account name and ID. The operation is supported for billing accounts with agreement type
 // Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // invoiceName - The ID that uniquely identifies an invoice.
 // options - InvoicesClientGetOptions contains the optional parameters for the InvoicesClient.Get method.
@@ -331,7 +340,7 @@ func (client *InvoicesClient) getCreateRequest(ctx context.Context, billingAccou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -347,6 +356,7 @@ func (client *InvoicesClient) getHandleResponse(resp *http.Response) (InvoicesCl
 // GetByID - Gets an invoice by ID. The operation is supported for billing accounts with agreement type Microsoft Partner
 // Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // invoiceName - The ID that uniquely identifies an invoice.
 // options - InvoicesClientGetByIDOptions contains the optional parameters for the InvoicesClient.GetByID method.
 func (client *InvoicesClient) GetByID(ctx context.Context, invoiceName string, options *InvoicesClientGetByIDOptions) (InvoicesClientGetByIDResponse, error) {
@@ -378,7 +388,7 @@ func (client *InvoicesClient) getByIDCreateRequest(ctx context.Context, invoiceN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -393,6 +403,7 @@ func (client *InvoicesClient) getByIDHandleResponse(resp *http.Response) (Invoic
 
 // GetBySubscriptionAndInvoiceID - Gets an invoice by subscription ID and invoice ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // invoiceName - The ID that uniquely identifies an invoice.
 // options - InvoicesClientGetBySubscriptionAndInvoiceIDOptions contains the optional parameters for the InvoicesClient.GetBySubscriptionAndInvoiceID
 // method.
@@ -429,7 +440,7 @@ func (client *InvoicesClient) getBySubscriptionAndInvoiceIDCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -446,13 +457,14 @@ func (client *InvoicesClient) getBySubscriptionAndInvoiceIDHandleResponse(resp *
 // is supported for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // periodStartDate - The start date to fetch the invoices. The date should be specified in MM-DD-YYYY format.
 // periodEndDate - The end date to fetch the invoices. The date should be specified in MM-DD-YYYY format.
 // options - InvoicesClientListByBillingAccountOptions contains the optional parameters for the InvoicesClient.ListByBillingAccount
 // method.
 func (client *InvoicesClient) NewListByBillingAccountPager(billingAccountName string, periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingAccountOptions) *runtime.Pager[InvoicesClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InvoicesClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InvoicesClientListByBillingAccountResponse]{
 		More: func(page InvoicesClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -495,7 +507,7 @@ func (client *InvoicesClient) listByBillingAccountCreateRequest(ctx context.Cont
 	reqQP.Set("periodStartDate", periodStartDate)
 	reqQP.Set("periodEndDate", periodEndDate)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -512,6 +524,7 @@ func (client *InvoicesClient) listByBillingAccountHandleResponse(resp *http.Resp
 // is supported for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // periodStartDate - The start date to fetch the invoices. The date should be specified in MM-DD-YYYY format.
@@ -519,7 +532,7 @@ func (client *InvoicesClient) listByBillingAccountHandleResponse(resp *http.Resp
 // options - InvoicesClientListByBillingProfileOptions contains the optional parameters for the InvoicesClient.ListByBillingProfile
 // method.
 func (client *InvoicesClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingProfileOptions) *runtime.Pager[InvoicesClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InvoicesClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InvoicesClientListByBillingProfileResponse]{
 		More: func(page InvoicesClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -566,7 +579,7 @@ func (client *InvoicesClient) listByBillingProfileCreateRequest(ctx context.Cont
 	reqQP.Set("periodStartDate", periodStartDate)
 	reqQP.Set("periodEndDate", periodEndDate)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -581,12 +594,13 @@ func (client *InvoicesClient) listByBillingProfileHandleResponse(resp *http.Resp
 
 // NewListByBillingSubscriptionPager - Lists the invoices for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // periodStartDate - Invoice period start date.
 // periodEndDate - Invoice period end date.
 // options - InvoicesClientListByBillingSubscriptionOptions contains the optional parameters for the InvoicesClient.ListByBillingSubscription
 // method.
 func (client *InvoicesClient) NewListByBillingSubscriptionPager(periodStartDate string, periodEndDate string, options *InvoicesClientListByBillingSubscriptionOptions) *runtime.Pager[InvoicesClientListByBillingSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InvoicesClientListByBillingSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InvoicesClientListByBillingSubscriptionResponse]{
 		More: func(page InvoicesClientListByBillingSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -629,7 +643,7 @@ func (client *InvoicesClient) listByBillingSubscriptionCreateRequest(ctx context
 	reqQP.Set("periodEndDate", periodEndDate)
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -23,18 +23,17 @@ func ExampleCapabilityTypesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchaos.NewCapabilityTypesClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewCapabilityTypesClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<location-name>",
-		"<target-type-name>",
+	pager := client.NewListPager("westus2",
+		"Microsoft-VirtualMachine",
 		&armchaos.CapabilityTypesClientListOptions{ContinuationToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleCapabilityTypesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchaos.NewCapabilityTypesClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewCapabilityTypesClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<target-type-name>",
-		"<capability-type-name>",
+		"westus2",
+		"Microsoft-VirtualMachine",
+		"Shutdown-1.0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -220,7 +220,7 @@ type DisasterRecoveryConfigsClientListOptions struct {
 // Encryption - Properties to configure Encryption
 type Encryption struct {
 	// Enumerates the possible value of keySource for Encryption
-	KeySource *string `json:"keySource,omitempty"`
+	KeySource *KeySource `json:"keySource,omitempty"`
 
 	// Properties of KeyVault
 	KeyVaultProperties []*KeyVaultProperties `json:"keyVaultProperties,omitempty"`
@@ -1005,8 +1005,14 @@ type SBNamespaceProperties struct {
 	// Properties of BYOK Encryption description
 	Encryption *Encryption `json:"encryption,omitempty"`
 
+	// The minimum TLS version for the cluster to support, e.g. '1.2'
+	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
+
 	// List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+
+	// This determines if traffic is allowed over public network. By default it is enabled.
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
 	// Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`

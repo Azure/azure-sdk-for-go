@@ -39,7 +39,7 @@ func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // CreateOrUpdate - Create or update automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-22
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // parameters - Parameters supplied to the create or update automation account.
@@ -98,7 +99,7 @@ func (client *AccountClient) createOrUpdateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -113,6 +114,7 @@ func (client *AccountClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete an automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-22
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - AccountClientDeleteOptions contains the optional parameters for the AccountClient.Delete method.
@@ -153,12 +155,13 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get information about an Automation Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-22
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
@@ -199,7 +202,7 @@ func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -214,9 +217,10 @@ func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClie
 
 // NewListPager - Retrieve a list of accounts within a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-22
 // options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
 func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountClientListResponse]{
 		More: func(page AccountClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -257,7 +261,7 @@ func (client *AccountClient) listCreateRequest(ctx context.Context, options *Acc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -272,11 +276,12 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 
 // NewListByResourceGroupPager - Retrieve a list of accounts within a given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-22
 // resourceGroupName - Name of an Azure Resource group.
 // options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup
 // method.
 func (client *AccountClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountClientListByResourceGroupResponse]{
 		More: func(page AccountClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -321,7 +326,7 @@ func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -336,6 +341,7 @@ func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // Update - Update an automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-22
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // parameters - Parameters supplied to the update automation account.
@@ -377,7 +383,7 @@ func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -24,12 +24,12 @@ func ExampleCertificateClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.CertificateClientListByServiceOptions{Filter: nil,
 			Top:                     nil,
 			Skip:                    nil,
@@ -39,7 +39,6 @@ func ExampleCertificateClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,14 +54,14 @@ func ExampleCertificateClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<certificate-id>",
+		"rg1",
+		"apimService1",
+		"templateCert1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,14 +75,14 @@ func ExampleCertificateClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<certificate-id>",
+		"rg1",
+		"apimService1",
+		"templateCert1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,18 +98,18 @@ func ExampleCertificateClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<certificate-id>",
+		"rg1",
+		"apimService1",
+		"tempcert",
 		armapimanagement.CertificateCreateOrUpdateParameters{
 			Properties: &armapimanagement.CertificateCreateOrUpdateProperties{
-				Data:     to.Ptr("<data>"),
-				Password: to.Ptr("<password>"),
+				Data:     to.Ptr("****************Base 64 Encoded Certificate *******************************"),
+				Password: to.Ptr("****Certificate Password******"),
 			},
 		},
 		&armapimanagement.CertificateClientCreateOrUpdateOptions{IfMatch: nil})
@@ -128,15 +127,15 @@ func ExampleCertificateClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<certificate-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"tempcert",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -150,14 +149,14 @@ func ExampleCertificateClient_RefreshSecret() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RefreshSecret(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<certificate-id>",
+		"rg1",
+		"apimService1",
+		"templateCertkv",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

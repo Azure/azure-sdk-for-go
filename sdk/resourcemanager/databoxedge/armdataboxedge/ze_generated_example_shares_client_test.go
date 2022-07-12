@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
@@ -26,18 +24,17 @@ func ExampleSharesClient_NewListByDataBoxEdgeDevicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataBoxEdgeDevicePager("<device-name>",
-		"<resource-group-name>",
+	pager := client.NewListByDataBoxEdgeDevicePager("testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleSharesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"smbshare",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,22 +73,22 @@ func ExampleSharesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"smbshare",
+		"GroupForEdgeAutomation",
 		armdataboxedge.Share{
 			Properties: &armdataboxedge.ShareProperties{
-				Description:    to.Ptr("<description>"),
+				Description:    to.Ptr(""),
 				AccessProtocol: to.Ptr(armdataboxedge.ShareAccessProtocolSMB),
 				AzureContainerInfo: &armdataboxedge.AzureContainerInfo{
-					ContainerName:              to.Ptr("<container-name>"),
+					ContainerName:              to.Ptr("testContainerSMB"),
 					DataFormat:                 to.Ptr(armdataboxedge.AzureContainerDataFormatBlockBlob),
-					StorageAccountCredentialID: to.Ptr("<storage-account-credential-id>"),
+					StorageAccountCredentialID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/storageAccountCredentials/sac1"),
 				},
 				DataPolicy:       to.Ptr(armdataboxedge.DataPolicyCloud),
 				MonitoringStatus: to.Ptr(armdataboxedge.MonitoringStatusEnabled),
@@ -99,15 +96,15 @@ func ExampleSharesClient_BeginCreateOrUpdate() {
 				UserAccessRights: []*armdataboxedge.UserAccessRight{
 					{
 						AccessType: to.Ptr(armdataboxedge.ShareAccessTypeChange),
-						UserID:     to.Ptr("<user-id>"),
+						UserID:     to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/users/user2"),
 					}},
 			},
 		},
-		&armdataboxedge.SharesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -122,19 +119,19 @@ func ExampleSharesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
-		&armdataboxedge.SharesClientBeginDeleteOptions{ResumeToken: ""})
+		"testedgedevice",
+		"smbshare",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -147,19 +144,19 @@ func ExampleSharesClient_BeginRefresh() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRefresh(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
-		&armdataboxedge.SharesClientBeginRefreshOptions{ResumeToken: ""})
+		"testedgedevice",
+		"smbshare",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

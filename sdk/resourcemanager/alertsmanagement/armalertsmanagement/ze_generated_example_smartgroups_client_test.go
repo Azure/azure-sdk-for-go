@@ -23,7 +23,7 @@ func ExampleSmartGroupsClient_NewGetAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armalertsmanagement.NewSmartGroupsClient("<subscription-id>", cred, nil)
+	client, err := armalertsmanagement.NewSmartGroupsClient("dd91de05-d791-4ceb-b6dc-988682dc7d72", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -43,7 +43,6 @@ func ExampleSmartGroupsClient_NewGetAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -59,12 +58,12 @@ func ExampleSmartGroupsClient_ChangeState() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armalertsmanagement.NewSmartGroupsClient("<subscription-id>", cred, nil)
+	client, err := armalertsmanagement.NewSmartGroupsClient("dd91de05-d791-4ceb-b6dc-988682dc7d72", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ChangeState(ctx,
-		"<smart-group-id>",
+		"a808445e-bb38-4751-85c2-1b109ccc1059",
 		armalertsmanagement.AlertStateAcknowledged,
 		nil)
 	if err != nil {
@@ -81,12 +80,12 @@ func ExampleSmartGroupsClient_GetHistory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armalertsmanagement.NewSmartGroupsClient("<subscription-id>", cred, nil)
+	client, err := armalertsmanagement.NewSmartGroupsClient("9e261de7-c804-4b9d-9ebf-6f50fe350a9a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetHistory(ctx,
-		"<smart-group-id>",
+		"a808445e-bb38-4751-85c2-1b109ccc1059",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

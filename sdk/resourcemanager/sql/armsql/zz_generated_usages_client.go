@@ -39,7 +39,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,13 +57,14 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListByInstancePoolPager - Gets all instance pool usage metrics
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // instancePoolName - The name of the instance pool to be retrieved.
 // options - UsagesClientListByInstancePoolOptions contains the optional parameters for the UsagesClient.ListByInstancePool
 // method.
 func (client *UsagesClient) NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) *runtime.Pager[UsagesClientListByInstancePoolResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UsagesClientListByInstancePoolResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UsagesClientListByInstancePoolResponse]{
 		More: func(page UsagesClientListByInstancePoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -115,7 +116,7 @@ func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context,
 	}
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

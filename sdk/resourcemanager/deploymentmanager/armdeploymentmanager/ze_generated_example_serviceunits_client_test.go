@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager"
@@ -26,32 +24,32 @@ func ExampleServiceUnitsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewServiceUnitsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewServiceUnitsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-topology-name>",
-		"<service-name>",
-		"<service-unit-name>",
+		"myResourceGroup",
+		"myTopology",
+		"myService",
+		"myServiceUnit",
 		armdeploymentmanager.ServiceUnitResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("centralus"),
 			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.ServiceUnitResourceProperties{
 				Artifacts: &armdeploymentmanager.ServiceUnitArtifacts{
-					ParametersURI: to.Ptr("<parameters-uri>"),
-					TemplateURI:   to.Ptr("<template-uri>"),
+					ParametersURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myartifactsource/parameter/myTopologyUnit.parameters.json?st=2018-07-07T14%3A10%3A00Z&se=2019-12-31T15%3A10%3A00Z&sp=rl&sv=2017-04-17&sr=c&sig=Yh2SoJ1NhhLRwCLln7de%2Fkabcdefghijklmno5sWEIk%3D"),
+					TemplateURI:   to.Ptr("https://mystorageaccount.blob.core.windows.net/myartifactsource/templates/myTopologyUnit.template.json?st=2018-07-07T14%3A10%3A00Z&se=2019-12-31T15%3A10%3A00Z&sp=rl&sv=2017-04-17&sr=c&sig=Yh2SoJ1NhhLRwCLln7de%2Fkabcdefghijklmno5sWEIk%3D"),
 				},
 				DeploymentMode:      to.Ptr(armdeploymentmanager.DeploymentModeIncremental),
-				TargetResourceGroup: to.Ptr("<target-resource-group>"),
+				TargetResourceGroup: to.Ptr("myDeploymentResourceGroup"),
 			},
 		},
-		&armdeploymentmanager.ServiceUnitsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -64,15 +62,15 @@ func ExampleServiceUnitsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewServiceUnitsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewServiceUnitsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-topology-name>",
-		"<service-name>",
-		"<service-unit-name>",
+		"myResourceGroup",
+		"myTopology",
+		"myService",
+		"myServiceUnit",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -88,15 +86,15 @@ func ExampleServiceUnitsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewServiceUnitsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewServiceUnitsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-topology-name>",
-		"<service-name>",
-		"<service-unit-name>",
+		"myResourceGroup",
+		"myTopology",
+		"myService",
+		"myServiceUnit",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -110,14 +108,14 @@ func ExampleServiceUnitsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewServiceUnitsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewServiceUnitsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<service-topology-name>",
-		"<service-name>",
+		"myResourceGroup",
+		"myTopology",
+		"myService",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

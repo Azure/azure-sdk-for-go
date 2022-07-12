@@ -24,18 +24,17 @@ func ExampleVideosClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideosClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideosClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("testrg",
+		"testaccount2",
 		&armvideoanalyzer.VideosClientListOptions{Top: to.Ptr[int32](2)})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExampleVideosClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideosClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideosClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<video-name>",
+		"testrg",
+		"testaccount2",
+		"video1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,18 +73,18 @@ func ExampleVideosClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideosClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideosClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<video-name>",
+		"testrg",
+		"testaccount2",
+		"video1",
 		armvideoanalyzer.VideoEntity{
 			Properties: &armvideoanalyzer.VideoProperties{
-				Description: to.Ptr("<description>"),
-				Title:       to.Ptr("<title>"),
+				Description: to.Ptr("Sample Description 1"),
+				Title:       to.Ptr("Sample Title 1"),
 			},
 		},
 		nil)
@@ -103,14 +102,14 @@ func ExampleVideosClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideosClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideosClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<video-name>",
+		"testrg",
+		"testaccount2",
+		"video1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,17 +123,17 @@ func ExampleVideosClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideosClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideosClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<video-name>",
+		"testrg",
+		"testaccount2",
+		"video1",
 		armvideoanalyzer.VideoEntity{
 			Properties: &armvideoanalyzer.VideoProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Parking Lot East Entrance"),
 			},
 		},
 		nil)
@@ -152,14 +151,14 @@ func ExampleVideosClient_ListContentToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewVideosClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewVideosClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListContentToken(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<video-name>",
+		"testrg",
+		"testaccount2",
+		"video3",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

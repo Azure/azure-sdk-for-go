@@ -38,7 +38,7 @@ func NewSubscriptionLevelClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewSubscriptionLevelClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - Creates or updates a SaaS resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // resourceName - The name of the resource.
 // parameters - Parameters supplied to the create or update subscription level saas operation.
 // options - SubscriptionLevelClientBeginCreateOrUpdateOptions contains the optional parameters for the SubscriptionLevelClient.BeginCreateOrUpdate
 // method.
-func (client *SubscriptionLevelClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceCreation, options *SubscriptionLevelClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SubscriptionLevelClientCreateOrUpdateResponse], error) {
+func (client *SubscriptionLevelClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceCreation, options *SubscriptionLevelClientBeginCreateOrUpdateOptions) (*runtime.Poller[SubscriptionLevelClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SubscriptionLevelClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SubscriptionLevelClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SubscriptionLevelClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubscriptionLevelClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a SaaS resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 func (client *SubscriptionLevelClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceCreation, options *SubscriptionLevelClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *SubscriptionLevelClient) createOrUpdateCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the specified SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // resourceName - The name of the resource.
 // options - SubscriptionLevelClientBeginDeleteOptions contains the optional parameters for the SubscriptionLevelClient.BeginDelete
 // method.
-func (client *SubscriptionLevelClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *SubscriptionLevelClientBeginDeleteOptions) (*armruntime.Poller[SubscriptionLevelClientDeleteResponse], error) {
+func (client *SubscriptionLevelClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *SubscriptionLevelClientBeginDeleteOptions) (*runtime.Poller[SubscriptionLevelClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SubscriptionLevelClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SubscriptionLevelClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SubscriptionLevelClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubscriptionLevelClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 func (client *SubscriptionLevelClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *SubscriptionLevelClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
@@ -177,12 +181,13 @@ func (client *SubscriptionLevelClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified Subscription Level SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // resourceName - The name of the resource.
 // options - SubscriptionLevelClientGetOptions contains the optional parameters for the SubscriptionLevelClient.Get method.
@@ -223,7 +228,7 @@ func (client *SubscriptionLevelClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,6 +243,7 @@ func (client *SubscriptionLevelClient) getHandleResponse(resp *http.Response) (S
 
 // ListAccessToken - Gets the ISV access token for a specified Subscription Level SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // resourceName - The name of the resource.
 // options - SubscriptionLevelClientListAccessTokenOptions contains the optional parameters for the SubscriptionLevelClient.ListAccessToken
@@ -279,7 +285,7 @@ func (client *SubscriptionLevelClient) listAccessTokenCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -294,10 +300,11 @@ func (client *SubscriptionLevelClient) listAccessTokenHandleResponse(resp *http.
 
 // NewListByAzureSubscriptionPager - Gets information about all the Subscription Level SaaS in a certain Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // options - SubscriptionLevelClientListByAzureSubscriptionOptions contains the optional parameters for the SubscriptionLevelClient.ListByAzureSubscription
 // method.
 func (client *SubscriptionLevelClient) NewListByAzureSubscriptionPager(options *SubscriptionLevelClientListByAzureSubscriptionOptions) *runtime.Pager[SubscriptionLevelClientListByAzureSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionLevelClientListByAzureSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionLevelClientListByAzureSubscriptionResponse]{
 		More: func(page SubscriptionLevelClientListByAzureSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -338,7 +345,7 @@ func (client *SubscriptionLevelClient) listByAzureSubscriptionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -353,11 +360,12 @@ func (client *SubscriptionLevelClient) listByAzureSubscriptionHandleResponse(res
 
 // NewListByResourceGroupPager - Gets information about all the Subscription Level SaaS in a certain resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // options - SubscriptionLevelClientListByResourceGroupOptions contains the optional parameters for the SubscriptionLevelClient.ListByResourceGroup
 // method.
 func (client *SubscriptionLevelClient) NewListByResourceGroupPager(resourceGroupName string, options *SubscriptionLevelClientListByResourceGroupOptions) *runtime.Pager[SubscriptionLevelClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionLevelClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionLevelClientListByResourceGroupResponse]{
 		More: func(page SubscriptionLevelClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -402,7 +410,7 @@ func (client *SubscriptionLevelClient) listByResourceGroupCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -417,26 +425,28 @@ func (client *SubscriptionLevelClient) listByResourceGroupHandleResponse(resp *h
 
 // BeginMoveResources - Move a specified Subscription Level SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // moveResourceParameter - Object that represents the resources to move.
 // options - SubscriptionLevelClientBeginMoveResourcesOptions contains the optional parameters for the SubscriptionLevelClient.BeginMoveResources
 // method.
-func (client *SubscriptionLevelClient) BeginMoveResources(ctx context.Context, resourceGroupName string, moveResourceParameter MoveResource, options *SubscriptionLevelClientBeginMoveResourcesOptions) (*armruntime.Poller[SubscriptionLevelClientMoveResourcesResponse], error) {
+func (client *SubscriptionLevelClient) BeginMoveResources(ctx context.Context, resourceGroupName string, moveResourceParameter MoveResource, options *SubscriptionLevelClientBeginMoveResourcesOptions) (*runtime.Poller[SubscriptionLevelClientMoveResourcesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.moveResources(ctx, resourceGroupName, moveResourceParameter, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SubscriptionLevelClientMoveResourcesResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SubscriptionLevelClientMoveResourcesResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SubscriptionLevelClientMoveResourcesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubscriptionLevelClientMoveResourcesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // MoveResources - Move a specified Subscription Level SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 func (client *SubscriptionLevelClient) moveResources(ctx context.Context, resourceGroupName string, moveResourceParameter MoveResource, options *SubscriptionLevelClientBeginMoveResourcesOptions) (*http.Response, error) {
 	req, err := client.moveResourcesCreateRequest(ctx, resourceGroupName, moveResourceParameter, options)
 	if err != nil {
@@ -470,33 +480,35 @@ func (client *SubscriptionLevelClient) moveResourcesCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, moveResourceParameter)
 }
 
 // BeginUpdate - Updates a SaaS Subscription Level resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // resourceName - The name of the resource.
 // parameters - Parameters supplied to the update saas operation.
 // options - SubscriptionLevelClientBeginUpdateOptions contains the optional parameters for the SubscriptionLevelClient.BeginUpdate
 // method.
-func (client *SubscriptionLevelClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceCreation, options *SubscriptionLevelClientBeginUpdateOptions) (*armruntime.Poller[SubscriptionLevelClientUpdateResponse], error) {
+func (client *SubscriptionLevelClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceCreation, options *SubscriptionLevelClientBeginUpdateOptions) (*runtime.Poller[SubscriptionLevelClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, resourceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SubscriptionLevelClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SubscriptionLevelClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SubscriptionLevelClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubscriptionLevelClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a SaaS Subscription Level resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 func (client *SubscriptionLevelClient) update(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceCreation, options *SubscriptionLevelClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
@@ -534,33 +546,35 @@ func (client *SubscriptionLevelClient) updateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginUpdateToUnsubscribed - Unsubscribe from a specified Subscription Level SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // resourceName - The name of the resource.
 // parameters - Parameters supplied to unsubscribe saas operation.
 // options - SubscriptionLevelClientBeginUpdateToUnsubscribedOptions contains the optional parameters for the SubscriptionLevelClient.BeginUpdateToUnsubscribed
 // method.
-func (client *SubscriptionLevelClient) BeginUpdateToUnsubscribed(ctx context.Context, resourceGroupName string, resourceName string, parameters DeleteOptions, options *SubscriptionLevelClientBeginUpdateToUnsubscribedOptions) (*armruntime.Poller[SubscriptionLevelClientUpdateToUnsubscribedResponse], error) {
+func (client *SubscriptionLevelClient) BeginUpdateToUnsubscribed(ctx context.Context, resourceGroupName string, resourceName string, parameters DeleteOptions, options *SubscriptionLevelClientBeginUpdateToUnsubscribedOptions) (*runtime.Poller[SubscriptionLevelClientUpdateToUnsubscribedResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateToUnsubscribed(ctx, resourceGroupName, resourceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SubscriptionLevelClientUpdateToUnsubscribedResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SubscriptionLevelClientUpdateToUnsubscribedResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SubscriptionLevelClientUpdateToUnsubscribedResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubscriptionLevelClientUpdateToUnsubscribedResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // UpdateToUnsubscribed - Unsubscribe from a specified Subscription Level SaaS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 func (client *SubscriptionLevelClient) updateToUnsubscribed(ctx context.Context, resourceGroupName string, resourceName string, parameters DeleteOptions, options *SubscriptionLevelClientBeginUpdateToUnsubscribedOptions) (*http.Response, error) {
 	req, err := client.updateToUnsubscribedCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
@@ -598,12 +612,13 @@ func (client *SubscriptionLevelClient) updateToUnsubscribedCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // ValidateMoveResources - Validate whether a specified Subscription Level SaaS can be moved.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceGroupName - The name of the resource group.
 // moveResourceParameter - Object that represents the resources to move.
 // options - SubscriptionLevelClientValidateMoveResourcesOptions contains the optional parameters for the SubscriptionLevelClient.ValidateMoveResources
@@ -641,6 +656,6 @@ func (client *SubscriptionLevelClient) validateMoveResourcesCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, moveResourceParameter)
 }

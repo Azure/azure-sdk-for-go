@@ -10,6 +10,275 @@ package armcommunication
 
 import "time"
 
+// CheckNameAvailabilityRequest - The check availability request body.
+type CheckNameAvailabilityRequest struct {
+	// The name of the resource for which availability needs to be checked.
+	Name *string `json:"name,omitempty"`
+
+	// The resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// CheckNameAvailabilityResponse - The check availability result.
+type CheckNameAvailabilityResponse struct {
+	// Detailed reason why the given name is available.
+	Message *string `json:"message,omitempty"`
+
+	// Indicates if the resource name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+
+	// The reason why the given name is not available.
+	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
+}
+
+// DNSRecord - A class that represents a VerificationStatus record.
+type DNSRecord struct {
+	// READ-ONLY; Name of the DNS record.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Represents an expiry time in seconds to represent how long this entry can be cached by the resolver, default
+	// = 3600sec.
+	TTL *int32 `json:"ttl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the DNS record. Example: TXT
+	Type *string `json:"type,omitempty" azure:"ro"`
+
+	// READ-ONLY; Value of the DNS record.
+	Value *string `json:"value,omitempty" azure:"ro"`
+}
+
+// DomainProperties - A class that describes the properties of a Domains resource.
+type DomainProperties struct {
+	// REQUIRED; Describes how a Domains resource is being managed.
+	DomainManagement *DomainManagement `json:"domainManagement,omitempty"`
+
+	// Describes whether user engagement tracking is enabled or disabled.
+	UserEngagementTracking *UserEngagementTracking `json:"userEngagementTracking,omitempty"`
+
+	// Collection of valid sender usernames. This is a key-value pair where key=username and value=display name.
+	ValidSenderUsernames map[string]*string `json:"validSenderUsernames,omitempty"`
+
+	// READ-ONLY; The location where the Domains resource data is stored at rest.
+	DataLocation *string `json:"dataLocation,omitempty" azure:"ro"`
+
+	// READ-ONLY; P2 sender domain that is displayed to the email recipients [RFC 5322].
+	FromSenderDomain *string `json:"fromSenderDomain,omitempty" azure:"ro"`
+
+	// READ-ONLY; P1 sender domain that is present on the email envelope [RFC 5321].
+	MailFromSenderDomain *string `json:"mailFromSenderDomain,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *DomainsProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of DnsRecord
+	VerificationRecords *DomainPropertiesVerificationRecords `json:"verificationRecords,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of VerificationStatusRecord
+	VerificationStates *DomainPropertiesVerificationStates `json:"verificationStates,omitempty" azure:"ro"`
+}
+
+// DomainPropertiesVerificationRecords - List of DnsRecord
+type DomainPropertiesVerificationRecords struct {
+	// A class that represents a VerificationStatus record.
+	DKIM *DNSRecord `json:"DKIM,omitempty"`
+
+	// A class that represents a VerificationStatus record.
+	DKIM2 *DNSRecord `json:"DKIM2,omitempty"`
+
+	// A class that represents a VerificationStatus record.
+	DMARC *DNSRecord `json:"DMARC,omitempty"`
+
+	// A class that represents a VerificationStatus record.
+	Domain *DNSRecord `json:"Domain,omitempty"`
+
+	// A class that represents a VerificationStatus record.
+	SPF *DNSRecord `json:"SPF,omitempty"`
+}
+
+// DomainPropertiesVerificationStates - List of VerificationStatusRecord
+type DomainPropertiesVerificationStates struct {
+	// A class that represents a VerificationStatus record.
+	DKIM *VerificationStatusRecord `json:"DKIM,omitempty"`
+
+	// A class that represents a VerificationStatus record.
+	DKIM2 *VerificationStatusRecord `json:"DKIM2,omitempty"`
+
+	// A class that represents a VerificationStatus record.
+	DMARC *VerificationStatusRecord `json:"DMARC,omitempty"`
+
+	// A class that represents a VerificationStatus record.
+	Domain *VerificationStatusRecord `json:"Domain,omitempty"`
+
+	// A class that represents a VerificationStatus record.
+	SPF *VerificationStatusRecord `json:"SPF,omitempty"`
+}
+
+// DomainResource - A class representing a Domains resource.
+type DomainResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// The properties of a Domains resource.
+	Properties *DomainProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DomainResourceList - Object that includes an array of Domains resource and a possible link for next set.
+type DomainResourceList struct {
+	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of Domains resource
+	Value []*DomainResource `json:"value,omitempty"`
+}
+
+// DomainsClientBeginCancelVerificationOptions contains the optional parameters for the DomainsClient.BeginCancelVerification
+// method.
+type DomainsClientBeginCancelVerificationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate method.
+type DomainsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DomainsClientBeginDeleteOptions contains the optional parameters for the DomainsClient.BeginDelete method.
+type DomainsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DomainsClientBeginInitiateVerificationOptions contains the optional parameters for the DomainsClient.BeginInitiateVerification
+// method.
+type DomainsClientBeginInitiateVerificationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DomainsClientBeginUpdateOptions contains the optional parameters for the DomainsClient.BeginUpdate method.
+type DomainsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DomainsClientGetOptions contains the optional parameters for the DomainsClient.Get method.
+type DomainsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DomainsClientListByEmailServiceResourceOptions contains the optional parameters for the DomainsClient.ListByEmailServiceResource
+// method.
+type DomainsClientListByEmailServiceResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EmailServiceProperties - A class that describes the properties of the EmailService.
+type EmailServiceProperties struct {
+	// REQUIRED; The location where the email service stores its data at rest.
+	DataLocation *string `json:"dataLocation,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *EmailServicesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// EmailServiceResource - A class representing an EmailService resource.
+type EmailServiceResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// The properties of the service.
+	Properties *EmailServiceProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// EmailServiceResourceList - Object that includes an array of EmailServices and a possible link for next set.
+type EmailServiceResourceList struct {
+	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of EmailService
+	Value []*EmailServiceResource `json:"value,omitempty"`
+}
+
+// EmailServiceResourceUpdate - A class representing update parameters for EmailService resource.
+type EmailServiceResourceUpdate struct {
+	// Tags of the service which is a list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// EmailServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the EmailServicesClient.BeginCreateOrUpdate
+// method.
+type EmailServicesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// EmailServicesClientBeginDeleteOptions contains the optional parameters for the EmailServicesClient.BeginDelete method.
+type EmailServicesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// EmailServicesClientBeginUpdateOptions contains the optional parameters for the EmailServicesClient.BeginUpdate method.
+type EmailServicesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// EmailServicesClientGetOptions contains the optional parameters for the EmailServicesClient.Get method.
+type EmailServicesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EmailServicesClientListByResourceGroupOptions contains the optional parameters for the EmailServicesClient.ListByResourceGroup
+// method.
+type EmailServicesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EmailServicesClientListBySubscriptionOptions contains the optional parameters for the EmailServicesClient.ListBySubscription
+// method.
+type EmailServicesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EmailServicesClientListVerifiedExchangeOnlineDomainsOptions contains the optional parameters for the EmailServicesClient.ListVerifiedExchangeOnlineDomains
+// method.
+type EmailServicesClientListVerifiedExchangeOnlineDomainsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -59,30 +328,12 @@ type LinkedNotificationHub struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// LocationResource - An ARM resource with its own location (not a global or an inherited location).
-type LocationResource struct {
-	// The Azure location where the CommunicationService is running.
-	Location *string `json:"location,omitempty"`
-}
-
-// NameAvailability - Result of the request to check name availability. It contains a flag and possible reason of failure.
-type NameAvailability struct {
-	// The message of the operation.
-	Message *string `json:"message,omitempty"`
-
-	// Indicates whether the name is available or not.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
-
-	// The reason of the availability. Required if name is not available.
-	Reason *string `json:"reason,omitempty"`
-}
-
 // NameAvailabilityParameters - Data POST-ed to the nameAvailability action
 type NameAvailabilityParameters struct {
-	// REQUIRED; The CommunicationService name to validate. e.g."my-CommunicationService-name-here"
+	// The name of the resource for which availability needs to be checked.
 	Name *string `json:"name,omitempty"`
 
-	// REQUIRED; The resource type. Should be always "Microsoft.Communication/CommunicationServices".
+	// The resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -154,66 +405,11 @@ type Resource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ServiceClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceClient.BeginCreateOrUpdate method.
-type ServiceClientBeginCreateOrUpdateOptions struct {
-	// Parameters for the create or update operation
-	Parameters *ServiceResource
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
-type ServiceClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ServiceClientCheckNameAvailabilityOptions contains the optional parameters for the ServiceClient.CheckNameAvailability
-// method.
-type ServiceClientCheckNameAvailabilityOptions struct {
-	// Parameters supplied to the operation.
-	NameAvailabilityParameters *NameAvailabilityParameters
-}
-
-// ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
-type ServiceClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceClientLinkNotificationHubOptions contains the optional parameters for the ServiceClient.LinkNotificationHub method.
-type ServiceClientLinkNotificationHubOptions struct {
-	// Parameters supplied to the operation.
-	LinkNotificationHubParameters *LinkNotificationHubParameters
-}
-
-// ServiceClientListByResourceGroupOptions contains the optional parameters for the ServiceClient.ListByResourceGroup method.
-type ServiceClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceClientListBySubscriptionOptions contains the optional parameters for the ServiceClient.ListBySubscription method.
-type ServiceClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceClientListKeysOptions contains the optional parameters for the ServiceClient.ListKeys method.
-type ServiceClientListKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceClientRegenerateKeyOptions contains the optional parameters for the ServiceClient.RegenerateKey method.
-type ServiceClientRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceClientUpdateOptions contains the optional parameters for the ServiceClient.Update method.
-type ServiceClientUpdateOptions struct {
-	// Parameters for the update operation
-	Parameters *ServiceResource
 }
 
 // ServiceKeys - A class representing the access keys of a CommunicationService.
@@ -236,6 +432,9 @@ type ServiceProperties struct {
 	// REQUIRED; The location where the communication service stores its data at rest.
 	DataLocation *string `json:"dataLocation,omitempty"`
 
+	// List of email Domain resource Ids.
+	LinkedDomains []*string `json:"linkedDomains,omitempty"`
+
 	// READ-ONLY; FQDN of the CommunicationService instance.
 	HostName *string `json:"hostName,omitempty" azure:"ro"`
 
@@ -246,7 +445,7 @@ type ServiceProperties struct {
 	NotificationHubID *string `json:"notificationHubId,omitempty" azure:"ro"`
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CommunicationServicesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Version of the CommunicationService resource. Probably you need the same or higher version of client SDKs.
 	Version *string `json:"version,omitempty" azure:"ro"`
@@ -254,13 +453,13 @@ type ServiceProperties struct {
 
 // ServiceResource - A class representing a CommunicationService resource.
 type ServiceResource struct {
-	// The Azure location where the CommunicationService is running.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// The properties of the service.
 	Properties *ServiceProperties `json:"properties,omitempty"`
 
-	// Tags of the service which is a list of key value pairs that describe the resource.
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -269,7 +468,7 @@ type ServiceResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -283,6 +482,77 @@ type ServiceResourceList struct {
 
 	// List of CommunicationService
 	Value []*ServiceResource `json:"value,omitempty"`
+}
+
+// ServiceResourceUpdate - A class representing update parameters for CommunicationService resource.
+type ServiceResourceUpdate struct {
+	// The properties of the service.
+	Properties *ServiceUpdateProperties `json:"properties,omitempty"`
+
+	// Tags of the service which is a list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// ServiceUpdateProperties - A class that describes the properties that can be updated for CommunicationService resource.
+type ServiceUpdateProperties struct {
+	// List of email Domain resource Ids.
+	LinkedDomains []*string `json:"linkedDomains,omitempty"`
+}
+
+// ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
+type ServicesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
+type ServicesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginRegenerateKeyOptions contains the optional parameters for the ServicesClient.BeginRegenerateKey method.
+type ServicesClientBeginRegenerateKeyOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
+type ServicesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
+// method.
+type ServicesClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+type ServicesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientLinkNotificationHubOptions contains the optional parameters for the ServicesClient.LinkNotificationHub method.
+type ServicesClientLinkNotificationHubOptions struct {
+	// Parameters supplied to the operation.
+	LinkNotificationHubParameters *LinkNotificationHubParameters
+}
+
+// ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup method.
+type ServicesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription method.
+type ServicesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientListKeysOptions contains the optional parameters for the ServicesClient.ListKeys method.
+type ServicesClientListKeysOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -310,4 +580,59 @@ type SystemData struct {
 type TaggedResource struct {
 	// Tags of the service which is a list of key value pairs that describe the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// UpdateDomainProperties - A class that describes the updatable properties of a Domains resource.
+type UpdateDomainProperties struct {
+	// Describes whether user engagement tracking is enabled or disabled.
+	UserEngagementTracking *UserEngagementTracking `json:"userEngagementTracking,omitempty"`
+
+	// Collection of valid sender usernames. This is a key-value pair where key=username and value=display name.
+	ValidSenderUsernames map[string]*string `json:"validSenderUsernames,omitempty"`
+}
+
+// UpdateDomainRequestParameters - A class that describes the PATCH request parameters of a Domains resource.
+type UpdateDomainRequestParameters struct {
+	// A class that describes the updatable properties of a Domains resource.
+	Properties *UpdateDomainProperties `json:"properties,omitempty"`
+
+	// Tags of the service which is a list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// VerificationParameter - Input parameter for verification APIs
+type VerificationParameter struct {
+	// REQUIRED; Type of verification.
+	VerificationType *VerificationType `json:"verificationType,omitempty"`
+}
+
+// VerificationStatusRecord - A class that represents a VerificationStatus record.
+type VerificationStatusRecord struct {
+	// READ-ONLY; Error code. This property will only be present if the status is UnableToVerify.
+	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the verification operation.
+	Status *VerificationStatus `json:"status,omitempty" azure:"ro"`
 }

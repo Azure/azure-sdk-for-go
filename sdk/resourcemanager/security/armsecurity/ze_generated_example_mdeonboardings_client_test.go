@@ -23,7 +23,7 @@ func ExampleMdeOnboardingsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewMdeOnboardingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewMdeOnboardingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -43,7 +43,7 @@ func ExampleMdeOnboardingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewMdeOnboardingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewMdeOnboardingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

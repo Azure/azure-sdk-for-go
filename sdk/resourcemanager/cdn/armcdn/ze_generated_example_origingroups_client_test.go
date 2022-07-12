@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
@@ -26,19 +24,18 @@ func ExampleOriginGroupsClient_NewListByEndpointPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginGroupsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByEndpointPager("<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
+	pager := client.NewListByEndpointPager("RG",
+		"profile1",
+		"endpoint1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleOriginGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginGroupsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<origin-group-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"originGroup1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,26 +75,26 @@ func ExampleOriginGroupsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginGroupsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<origin-group-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"origingroup1",
 		armcdn.OriginGroup{
 			Properties: &armcdn.OriginGroupProperties{
 				HealthProbeSettings: &armcdn.HealthProbeParameters{
 					ProbeIntervalInSeconds: to.Ptr[int32](120),
-					ProbePath:              to.Ptr("<probe-path>"),
+					ProbePath:              to.Ptr("/health.aspx"),
 					ProbeProtocol:          to.Ptr(armcdn.ProbeProtocolHTTP),
 					ProbeRequestType:       to.Ptr(armcdn.HealthProbeRequestTypeGET),
 				},
 				Origins: []*armcdn.ResourceReference{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
 					}},
 				ResponseBasedOriginErrorDetectionSettings: &armcdn.ResponseBasedOriginErrorDetectionParameters{
 					ResponseBasedDetectedErrorTypes:          to.Ptr(armcdn.ResponseBasedDetectedErrorTypesTCPErrorsOnly),
@@ -105,11 +102,11 @@ func ExampleOriginGroupsClient_BeginCreate() {
 				},
 			},
 		},
-		&armcdn.OriginGroupsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -124,34 +121,34 @@ func ExampleOriginGroupsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginGroupsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<origin-group-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"originGroup1",
 		armcdn.OriginGroupUpdateParameters{
 			Properties: &armcdn.OriginGroupUpdatePropertiesParameters{
 				HealthProbeSettings: &armcdn.HealthProbeParameters{
 					ProbeIntervalInSeconds: to.Ptr[int32](120),
-					ProbePath:              to.Ptr("<probe-path>"),
+					ProbePath:              to.Ptr("/health.aspx"),
 					ProbeProtocol:          to.Ptr(armcdn.ProbeProtocolHTTP),
 					ProbeRequestType:       to.Ptr(armcdn.HealthProbeRequestTypeGET),
 				},
 				Origins: []*armcdn.ResourceReference{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin2"),
 					}},
 			},
 		},
-		&armcdn.OriginGroupsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -166,20 +163,20 @@ func ExampleOriginGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginGroupsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<origin-group-name>",
-		&armcdn.OriginGroupsClientBeginDeleteOptions{ResumeToken: ""})
+		"RG",
+		"profile1",
+		"endpoint1",
+		"originGroup1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

@@ -23,14 +23,14 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewDscCompilationJobStreamClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscCompilationJobStreamClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByJob(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-id>",
+		"rg",
+		"myAutomationAccount33",
+		"836d4e06-2d88-46b4-8500-7febd4906838",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

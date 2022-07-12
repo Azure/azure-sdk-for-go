@@ -25,13 +25,13 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetLogAnalyticsMetrics(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"RG",
+		"profile1",
 		[]armcdn.LogMetric{
 			armcdn.LogMetricClientRequestCount},
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:30:00.000Z"); return t }(),
@@ -61,13 +61,13 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetLogAnalyticsRankings(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"RG",
+		"profile1",
 		[]armcdn.LogRanking{
 			armcdn.LogRankingURL},
 		[]armcdn.LogRankingMetric{
@@ -90,13 +90,13 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetLogAnalyticsLocations(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"RG",
+		"profile1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -112,13 +112,13 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetLogAnalyticsResources(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"RG",
+		"profile1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,13 +134,13 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetWafLogAnalyticsMetrics(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"RG",
+		"profile1",
 		[]armcdn.WafMetric{
 			armcdn.WafMetricClientRequestCount},
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(),
@@ -166,13 +166,13 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetWafLogAnalyticsRankings(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"RG",
+		"profile1",
 		[]armcdn.WafMetric{
 			armcdn.WafMetricClientRequestCount},
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(),

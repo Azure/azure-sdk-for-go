@@ -38,7 +38,7 @@ func NewOfferingsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,10 +56,11 @@ func NewOfferingsClient(subscriptionID string, credential azcore.TokenCredential
 
 // NewListPager - Returns the list of all provider offerings available for the given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-10-preview
 // locationName - Location.
 // options - OfferingsClientListOptions contains the optional parameters for the OfferingsClient.List method.
 func (client *OfferingsClient) NewListPager(locationName string, options *OfferingsClientListOptions) *runtime.Pager[OfferingsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OfferingsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OfferingsClientListResponse]{
 		More: func(page OfferingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -104,7 +105,7 @@ func (client *OfferingsClient) listCreateRequest(ctx context.Context, locationNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

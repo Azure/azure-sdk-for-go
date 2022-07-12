@@ -36,7 +36,7 @@ func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOption
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,14 +53,11 @@ func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOption
 
 // BeginCreateOrUpdate - Create or update the quota (service limits) of a resource to the requested value. Steps:
 // 1. Make the Get request to get the quota information for specific resource.
-//
-//
 // 2. To increase the quota, update the limit field in the response from Get request to new value.
-//
-//
 // 3. Submit the JSON to the quota request API to update the quota. The Create quota request may be constructed as follows.
 // The PUT operation can be used to update the quota.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-25
 // subscriptionID - Azure subscription ID.
 // providerID - Azure resource provider ID.
 // location - Azure region.
@@ -69,30 +66,27 @@ func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOption
 // createQuotaRequest - Quota requests payload.
 // options - QuotaClientBeginCreateOrUpdateOptions contains the optional parameters for the QuotaClient.BeginCreateOrUpdate
 // method.
-func (client *QuotaClient) BeginCreateOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (*armruntime.Poller[QuotaClientCreateOrUpdateResponse], error) {
+func (client *QuotaClient) BeginCreateOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (*runtime.Poller[QuotaClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[QuotaClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaOriginalURI,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[QuotaClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[QuotaClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[QuotaClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update the quota (service limits) of a resource to the requested value. Steps:
 // 1. Make the Get request to get the quota information for specific resource.
-//
-//
 // 2. To increase the quota, update the limit field in the response from Get request to new value.
-//
-//
 // 3. Submit the JSON to the quota request API to update the quota. The Create quota request may be constructed as follows.
 // The PUT operation can be used to update the quota.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-25
 func (client *QuotaClient) createOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
 	if err != nil {
@@ -134,13 +128,14 @@ func (client *QuotaClient) createOrUpdateCreateRequest(ctx context.Context, subs
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createQuotaRequest)
 }
 
 // Get - Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
 // submit quota update request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-25
 // subscriptionID - Azure subscription ID.
 // providerID - Azure resource provider ID.
 // location - Azure region.
@@ -188,7 +183,7 @@ func (client *QuotaClient) getCreateRequest(ctx context.Context, subscriptionID 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -207,12 +202,13 @@ func (client *QuotaClient) getHandleResponse(resp *http.Response) (QuotaClientGe
 // NewListPager - Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
 // operation can be leveraged to request quota updates.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-25
 // subscriptionID - Azure subscription ID.
 // providerID - Azure resource provider ID.
 // location - Azure region.
 // options - QuotaClientListOptions contains the optional parameters for the QuotaClient.List method.
 func (client *QuotaClient) NewListPager(subscriptionID string, providerID string, location string, options *QuotaClientListOptions) *runtime.Pager[QuotaClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[QuotaClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[QuotaClientListResponse]{
 		More: func(page QuotaClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -261,7 +257,7 @@ func (client *QuotaClient) listCreateRequest(ctx context.Context, subscriptionID
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -277,12 +273,12 @@ func (client *QuotaClient) listHandleResponse(resp *http.Response) (QuotaClientL
 	return result, nil
 }
 
-// BeginUpdate - Update the quota (service limits) of this resource to the requested value.
-// • To get the quota information for specific resource, send a GET request.
-// • To increase the quota, update the limit field from the GET response to a new value.
-// • To update the quota value, submit the JSON response to the quota request API to update the quota. • To update the quota.
-// use the PATCH operation.
+// BeginUpdate - Update the quota (service limits) of this resource to the requested value. • To get the quota information
+// for specific resource, send a GET request. • To increase the quota, update the limit field
+// from the GET response to a new value. • To update the quota value, submit the JSON response to the quota request API to
+// update the quota. • To update the quota. use the PATCH operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-25
 // subscriptionID - Azure subscription ID.
 // providerID - Azure resource provider ID.
 // location - Azure region.
@@ -290,26 +286,26 @@ func (client *QuotaClient) listHandleResponse(resp *http.Response) (QuotaClientL
 // for Microsoft.MachineLearningServices
 // createQuotaRequest - Payload for the quota request.
 // options - QuotaClientBeginUpdateOptions contains the optional parameters for the QuotaClient.BeginUpdate method.
-func (client *QuotaClient) BeginUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (*armruntime.Poller[QuotaClientUpdateResponse], error) {
+func (client *QuotaClient) BeginUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (*runtime.Poller[QuotaClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[QuotaClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaOriginalURI,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[QuotaClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[QuotaClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[QuotaClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// Update - Update the quota (service limits) of this resource to the requested value.
-// • To get the quota information for specific resource, send a GET request.
-// • To increase the quota, update the limit field from the GET response to a new value.
-// • To update the quota value, submit the JSON response to the quota request API to update the quota. • To update the quota.
-// use the PATCH operation.
+// Update - Update the quota (service limits) of this resource to the requested value. • To get the quota information for
+// specific resource, send a GET request. • To increase the quota, update the limit field
+// from the GET response to a new value. • To update the quota value, submit the JSON response to the quota request API to
+// update the quota. • To update the quota. use the PATCH operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-25
 func (client *QuotaClient) update(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
 	if err != nil {
@@ -351,6 +347,6 @@ func (client *QuotaClient) updateCreateRequest(ctx context.Context, subscription
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createQuotaRequest)
 }

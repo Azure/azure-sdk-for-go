@@ -38,7 +38,7 @@ func NewWorkItemConfigurationsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkItemConfigurationsClient(subscriptionID string, credential azcore.To
 
 // Create - Create a work item configuration for an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // workItemConfigurationProperties - Properties that need to be specified to create a work item configuration of a Application
@@ -99,7 +100,7 @@ func (client *WorkItemConfigurationsClient) createCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workItemConfigurationProperties)
 }
 
@@ -114,6 +115,7 @@ func (client *WorkItemConfigurationsClient) createHandleResponse(resp *http.Resp
 
 // Delete - Delete a work item configuration of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // workItemConfigID - The unique work item configuration Id. This can be either friendly name of connector as defined in connector
@@ -166,6 +168,7 @@ func (client *WorkItemConfigurationsClient) deleteCreateRequest(ctx context.Cont
 
 // GetDefault - Gets default work item configurations that exist for the application
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - WorkItemConfigurationsClientGetDefaultOptions contains the optional parameters for the WorkItemConfigurationsClient.GetDefault
@@ -207,7 +210,7 @@ func (client *WorkItemConfigurationsClient) getDefaultCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -222,6 +225,7 @@ func (client *WorkItemConfigurationsClient) getDefaultHandleResponse(resp *http.
 
 // GetItem - Gets specified work item configuration for an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // workItemConfigID - The unique work item configuration Id. This can be either friendly name of connector as defined in connector
@@ -269,7 +273,7 @@ func (client *WorkItemConfigurationsClient) getItemCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -284,12 +288,13 @@ func (client *WorkItemConfigurationsClient) getItemHandleResponse(resp *http.Res
 
 // NewListPager - Gets the list work item configurations that exist for the application
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - WorkItemConfigurationsClientListOptions contains the optional parameters for the WorkItemConfigurationsClient.List
 // method.
 func (client *WorkItemConfigurationsClient) NewListPager(resourceGroupName string, resourceName string, options *WorkItemConfigurationsClientListOptions) *runtime.Pager[WorkItemConfigurationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkItemConfigurationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkItemConfigurationsClientListResponse]{
 		More: func(page WorkItemConfigurationsClientListResponse) bool {
 			return false
 		},
@@ -332,7 +337,7 @@ func (client *WorkItemConfigurationsClient) listCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -347,6 +352,7 @@ func (client *WorkItemConfigurationsClient) listHandleResponse(resp *http.Respon
 
 // UpdateItem - Update a work item configuration for an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // workItemConfigID - The unique work item configuration Id. This can be either friendly name of connector as defined in connector
@@ -396,7 +402,7 @@ func (client *WorkItemConfigurationsClient) updateItemCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workItemConfigurationProperties)
 }
 

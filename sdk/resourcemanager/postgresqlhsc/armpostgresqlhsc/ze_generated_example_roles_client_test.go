@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc"
@@ -26,24 +24,24 @@ func ExampleRolesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewRolesClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		"<role-name>",
+		"TestGroup",
+		"pgtestsvc4",
+		"role1",
 		armpostgresqlhsc.Role{
 			Properties: &armpostgresqlhsc.RoleProperties{
-				Password: to.Ptr("<password>"),
+				Password: to.Ptr("secret"),
 			},
 		},
-		&armpostgresqlhsc.RolesClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -58,19 +56,19 @@ func ExampleRolesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewRolesClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		"<role-name>",
-		&armpostgresqlhsc.RolesClientBeginDeleteOptions{ResumeToken: ""})
+		"TestGroup",
+		"pgtestsvc4",
+		"role1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -83,18 +81,17 @@ func ExampleRolesClient_NewListByServerGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewRolesClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerGroupPager("<resource-group-name>",
-		"<server-group-name>",
+	pager := client.NewListByServerGroupPager("TestGroup",
+		"pgtestsvc4",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

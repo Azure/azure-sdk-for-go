@@ -37,7 +37,7 @@ func NewRegistrationAssignmentsClient(credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,25 +54,27 @@ func NewRegistrationAssignmentsClient(credential azcore.TokenCredential, options
 
 // BeginCreateOrUpdate - Creates or updates a registration assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // registrationAssignmentID - The GUID of the registration assignment.
 // requestBody - The parameters required to create new registration assignment.
 // options - RegistrationAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationAssignmentsClient.BeginCreateOrUpdate
 // method.
-func (client *RegistrationAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[RegistrationAssignmentsClientCreateOrUpdateResponse], error) {
+func (client *RegistrationAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[RegistrationAssignmentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, scope, registrationAssignmentID, requestBody, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistrationAssignmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistrationAssignmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistrationAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistrationAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a registration assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 func (client *RegistrationAssignmentsClient) createOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, registrationAssignmentID, requestBody, options)
 	if err != nil {
@@ -103,30 +105,32 @@ func (client *RegistrationAssignmentsClient) createOrUpdateCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, requestBody)
 }
 
 // BeginDelete - Deletes the specified registration assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // registrationAssignmentID - The GUID of the registration assignment.
 // options - RegistrationAssignmentsClientBeginDeleteOptions contains the optional parameters for the RegistrationAssignmentsClient.BeginDelete
 // method.
-func (client *RegistrationAssignmentsClient) BeginDelete(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsClientBeginDeleteOptions) (*armruntime.Poller[RegistrationAssignmentsClientDeleteResponse], error) {
+func (client *RegistrationAssignmentsClient) BeginDelete(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsClientBeginDeleteOptions) (*runtime.Poller[RegistrationAssignmentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, scope, registrationAssignmentID, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistrationAssignmentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistrationAssignmentsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistrationAssignmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistrationAssignmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified registration assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 func (client *RegistrationAssignmentsClient) deleteOperation(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, registrationAssignmentID, options)
 	if err != nil {
@@ -157,12 +161,13 @@ func (client *RegistrationAssignmentsClient) deleteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the details of the specified registration assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // registrationAssignmentID - The GUID of the registration assignment.
 // options - RegistrationAssignmentsClientGetOptions contains the optional parameters for the RegistrationAssignmentsClient.Get
@@ -200,7 +205,7 @@ func (client *RegistrationAssignmentsClient) getCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,11 +220,12 @@ func (client *RegistrationAssignmentsClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Gets a list of the registration assignments.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // scope - The scope of the resource.
 // options - RegistrationAssignmentsClientListOptions contains the optional parameters for the RegistrationAssignmentsClient.List
 // method.
 func (client *RegistrationAssignmentsClient) NewListPager(scope string, options *RegistrationAssignmentsClientListOptions) *runtime.Pager[RegistrationAssignmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegistrationAssignmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegistrationAssignmentsClientListResponse]{
 		More: func(page RegistrationAssignmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -263,7 +269,7 @@ func (client *RegistrationAssignmentsClient) listCreateRequest(ctx context.Conte
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

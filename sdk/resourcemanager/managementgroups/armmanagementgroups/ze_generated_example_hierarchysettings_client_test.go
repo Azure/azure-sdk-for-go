@@ -29,7 +29,7 @@ func ExampleHierarchySettingsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<group-id>",
+		"root",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,7 +50,7 @@ func ExampleHierarchySettingsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<group-id>",
+		"root",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -71,10 +71,10 @@ func ExampleHierarchySettingsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<group-id>",
+		"root",
 		armmanagementgroups.CreateOrUpdateSettingsRequest{
 			Properties: &armmanagementgroups.CreateOrUpdateSettingsProperties{
-				DefaultManagementGroup:               to.Ptr("<default-management-group>"),
+				DefaultManagementGroup:               to.Ptr("/providers/Microsoft.Management/managementGroups/DefaultGroup"),
 				RequireAuthorizationForGroupCreation: to.Ptr(true),
 			},
 		},
@@ -98,10 +98,10 @@ func ExampleHierarchySettingsClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<group-id>",
+		"root",
 		armmanagementgroups.CreateOrUpdateSettingsRequest{
 			Properties: &armmanagementgroups.CreateOrUpdateSettingsProperties{
-				DefaultManagementGroup:               to.Ptr("<default-management-group>"),
+				DefaultManagementGroup:               to.Ptr("/providers/Microsoft.Management/managementGroups/DefaultGroup"),
 				RequireAuthorizationForGroupCreation: to.Ptr(true),
 			},
 		},
@@ -125,7 +125,7 @@ func ExampleHierarchySettingsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<group-id>",
+		"root",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

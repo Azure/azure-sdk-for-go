@@ -26,13 +26,13 @@ func ExampleAPIIssueClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
 		&armapimanagement.APIIssueClientListByServiceOptions{Filter: nil,
 			ExpandCommentsAttachments: nil,
 			Top:                       nil,
@@ -42,7 +42,6 @@ func ExampleAPIIssueClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,15 +57,15 @@ func ExampleAPIIssueClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
+		"rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f3",
+		"57d2ef278aa04f0ad01d6cdc",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,15 +79,15 @@ func ExampleAPIIssueClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
+		"rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f3",
+		"57d2ef278aa04f0ad01d6cdc",
 		&armapimanagement.APIIssueClientGetOptions{ExpandCommentsAttachments: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,22 +103,22 @@ func ExampleAPIIssueClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"57d2ef278aa04f0ad01d6cdc",
 		armapimanagement.IssueContract{
 			Properties: &armapimanagement.IssueContractProperties{
 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t }()),
 				State:       to.Ptr(armapimanagement.StateOpen),
-				Description: to.Ptr("<description>"),
-				Title:       to.Ptr("<title>"),
-				UserID:      to.Ptr("<user-id>"),
+				Description: to.Ptr("New API issue description"),
+				Title:       to.Ptr("New API issue"),
+				UserID:      to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
 			},
 		},
 		&armapimanagement.APIIssueClientCreateOrUpdateOptions{IfMatch: nil})
@@ -137,16 +136,16 @@ func ExampleAPIIssueClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"57d2ef278aa04f0ad01d6cdc",
+		"*",
 		armapimanagement.IssueUpdateContract{
 			Properties: &armapimanagement.IssueUpdateContractProperties{
 				State: to.Ptr(armapimanagement.StateClosed),
@@ -167,16 +166,16 @@ func ExampleAPIIssueClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"57d2ef278aa04f0ad01d6cdc",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

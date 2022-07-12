@@ -24,15 +24,15 @@ func ExampleHybridRunbookWorkersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkersClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
-		"<hybrid-runbook-worker-id>",
+		"rg",
+		"myAutomationAccount20",
+		"myGroup",
+		"c010ad12-ef14-4a2a-aa9e-ef22c4745ddd",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,15 +46,15 @@ func ExampleHybridRunbookWorkersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkersClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
-		"<hybrid-runbook-worker-id>",
+		"rg",
+		"testaccount",
+		"TestHybridGroup",
+		"c010ad12-ef14-4a2a-aa9e-ef22c4745ddd",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,18 +70,18 @@ func ExampleHybridRunbookWorkersClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkersClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
-		"<hybrid-runbook-worker-id>",
+		"rg",
+		"testaccount",
+		"TestHybridGroup",
+		"c010ad12-ef14-4a2a-aa9e-ef22c4745ddd",
 		armautomation.HybridRunbookWorkerCreateParameters{
 			Properties: &armautomation.HybridRunbookWorkerCreateOrUpdateParameters{
-				VMResourceID: to.Ptr("<vmresource-id>"),
+				VMResourceID: to.Ptr("/subscriptions/vmsubid/resourceGroups/vmrg/providers/Microsoft.Compute/virtualMachines/vmname"),
 			},
 		},
 		nil)
@@ -99,17 +99,17 @@ func ExampleHybridRunbookWorkersClient_Move() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkersClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Move(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
-		"<hybrid-runbook-worker-id>",
+		"rg",
+		"testaccount",
+		"TestHybridGroup",
+		"c010ad12-ef14-4a2a-aa9e-ef22c4745ddd",
 		armautomation.HybridRunbookWorkerMoveParameters{
-			HybridRunbookWorkerGroupName: to.Ptr("<hybrid-runbook-worker-group-name>"),
+			HybridRunbookWorkerGroupName: to.Ptr("TestHybridGroup2"),
 		},
 		nil)
 	if err != nil {
@@ -124,19 +124,18 @@ func ExampleHybridRunbookWorkersClient_NewListByHybridRunbookWorkerGroupPager() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkersClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByHybridRunbookWorkerGroupPager("<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
+	pager := client.NewListByHybridRunbookWorkerGroupPager("rg",
+		"testaccount",
+		"TestHybridGroup",
 		&armautomation.HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

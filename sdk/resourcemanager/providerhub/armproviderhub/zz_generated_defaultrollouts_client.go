@@ -38,7 +38,7 @@ func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // rolloutName - The rollout name.
 // properties - The Default rollout properties supplied to the CreateOrUpdate operation.
 // options - DefaultRolloutsClientBeginCreateOrUpdateOptions contains the optional parameters for the DefaultRolloutsClient.BeginCreateOrUpdate
 // method.
-func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DefaultRolloutsClientCreateOrUpdateResponse], error) {
+func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DefaultRolloutsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, providerNamespace, rolloutName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DefaultRolloutsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DefaultRolloutsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[DefaultRolloutsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DefaultRolloutsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, providerNamespace, rolloutName, properties, options)
 	if err != nil {
@@ -114,12 +116,13 @@ func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // Delete - Deletes the rollout resource. Rollout must be in terminal state.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // rolloutName - The rollout name.
 // options - DefaultRolloutsClientDeleteOptions contains the optional parameters for the DefaultRolloutsClient.Delete method.
@@ -160,12 +163,13 @@ func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, pr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the default rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // rolloutName - The rollout name.
 // options - DefaultRolloutsClientGetOptions contains the optional parameters for the DefaultRolloutsClient.Get method.
@@ -206,7 +210,7 @@ func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, provi
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -221,11 +225,12 @@ func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (Def
 
 // NewListByProviderRegistrationPager - Gets the list of the rollouts for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - DefaultRolloutsClientListByProviderRegistrationOptions contains the optional parameters for the DefaultRolloutsClient.ListByProviderRegistration
 // method.
 func (client *DefaultRolloutsClient) NewListByProviderRegistrationPager(providerNamespace string, options *DefaultRolloutsClientListByProviderRegistrationOptions) *runtime.Pager[DefaultRolloutsClientListByProviderRegistrationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DefaultRolloutsClientListByProviderRegistrationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DefaultRolloutsClientListByProviderRegistrationResponse]{
 		More: func(page DefaultRolloutsClientListByProviderRegistrationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -270,7 +275,7 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -285,6 +290,7 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationHandleResponse(re
 
 // Stop - Stops or cancels the rollout, if in progress.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // rolloutName - The rollout name.
 // options - DefaultRolloutsClientStopOptions contains the optional parameters for the DefaultRolloutsClient.Stop method.
@@ -325,6 +331,6 @@ func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, prov
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -39,7 +39,7 @@ func NewServiceUnitsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewServiceUnitsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - This is an asynchronous operation and can be polled to completion using the operation resource returned
 // by this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serviceTopologyName - The name of the service topology .
 // serviceName - The name of the service resource.
@@ -65,21 +66,22 @@ func NewServiceUnitsClient(subscriptionID string, credential azcore.TokenCredent
 // serviceUnitInfo - The service unit resource object.
 // options - ServiceUnitsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceUnitsClient.BeginCreateOrUpdate
 // method.
-func (client *ServiceUnitsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceUnitName string, serviceUnitInfo ServiceUnitResource, options *ServiceUnitsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServiceUnitsClientCreateOrUpdateResponse], error) {
+func (client *ServiceUnitsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceUnitName string, serviceUnitInfo ServiceUnitResource, options *ServiceUnitsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServiceUnitsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServiceUnitsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServiceUnitsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServiceUnitsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServiceUnitsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - This is an asynchronous operation and can be polled to completion using the operation resource returned
 // by this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 func (client *ServiceUnitsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceUnitName string, serviceUnitInfo ServiceUnitResource, options *ServiceUnitsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo, options)
 	if err != nil {
@@ -125,12 +127,13 @@ func (client *ServiceUnitsClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, serviceUnitInfo)
 }
 
 // Delete - Deletes the service unit.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serviceTopologyName - The name of the service topology .
 // serviceName - The name of the service resource.
@@ -181,12 +184,13 @@ func (client *ServiceUnitsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the service unit.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serviceTopologyName - The name of the service topology .
 // serviceName - The name of the service resource.
@@ -237,7 +241,7 @@ func (client *ServiceUnitsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,6 +256,7 @@ func (client *ServiceUnitsClient) getHandleResponse(resp *http.Response) (Servic
 
 // List - Lists the service units under a service in the service topology.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serviceTopologyName - The name of the service topology .
 // serviceName - The name of the service resource.
@@ -297,7 +302,7 @@ func (client *ServiceUnitsClient) listCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

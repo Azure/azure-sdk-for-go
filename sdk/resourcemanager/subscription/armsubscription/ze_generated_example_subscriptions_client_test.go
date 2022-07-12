@@ -27,13 +27,12 @@ func ExampleSubscriptionsClient_NewListLocationsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListLocationsPager("<subscription-id>",
+	pager := client.NewListLocationsPager("83aa47df-e3e9-49ff-877b-94304bf3d3ad",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,7 +53,7 @@ func ExampleSubscriptionsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<subscription-id>",
+		"83aa47df-e3e9-49ff-877b-94304bf3d3ad",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,7 +78,6 @@ func ExampleSubscriptionsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

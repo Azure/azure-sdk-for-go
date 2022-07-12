@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
@@ -26,13 +24,13 @@ func ExampleResourceClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"testHub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,24 +46,24 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"testHub",
 		armiothub.Description{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("centraluseuap"),
 			Tags:     map[string]*string{},
-			Etag:     to.Ptr("<etag>"),
+			Etag:     to.Ptr("AAAAAAFD6M4="),
 			Properties: &armiothub.Properties{
 				CloudToDevice: &armiothub.CloudToDeviceProperties{
-					DefaultTTLAsIso8601: to.Ptr("<default-ttlas-iso8601>"),
+					DefaultTTLAsIso8601: to.Ptr("PT1H"),
 					Feedback: &armiothub.FeedbackProperties{
-						LockDurationAsIso8601: to.Ptr("<lock-duration-as-iso8601>"),
+						LockDurationAsIso8601: to.Ptr("PT1M"),
 						MaxDeliveryCount:      to.Ptr[int32](10),
-						TTLAsIso8601:          to.Ptr("<ttlas-iso8601>"),
+						TTLAsIso8601:          to.Ptr("PT1H"),
 					},
 					MaxDeliveryCount: to.Ptr[int32](10),
 				},
@@ -81,25 +79,25 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 				IPFilterRules: []*armiothub.IPFilterRule{},
 				MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 					"fileNotifications": {
-						LockDurationAsIso8601: to.Ptr("<lock-duration-as-iso8601>"),
+						LockDurationAsIso8601: to.Ptr("PT1M"),
 						MaxDeliveryCount:      to.Ptr[int32](10),
-						TTLAsIso8601:          to.Ptr("<ttlas-iso8601>"),
+						TTLAsIso8601:          to.Ptr("PT1H"),
 					},
 				},
-				MinTLSVersion: to.Ptr("<min-tlsversion>"),
+				MinTLSVersion: to.Ptr("1.2"),
 				NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
 					ApplyToBuiltInEventHubEndpoint: to.Ptr(true),
 					DefaultAction:                  to.Ptr(armiothub.DefaultActionDeny),
 					IPRules: []*armiothub.NetworkRuleSetIPRule{
 						{
 							Action:     to.Ptr(armiothub.NetworkRuleIPActionAllow),
-							FilterName: to.Ptr("<filter-name>"),
-							IPMask:     to.Ptr("<ipmask>"),
+							FilterName: to.Ptr("rule1"),
+							IPMask:     to.Ptr("131.117.159.53"),
 						},
 						{
 							Action:     to.Ptr(armiothub.NetworkRuleIPActionAllow),
-							FilterName: to.Ptr("<filter-name>"),
-							IPMask:     to.Ptr("<ipmask>"),
+							FilterName: to.Ptr("rule2"),
+							IPMask:     to.Ptr("157.55.59.128/25"),
 						}},
 				},
 				Routing: &armiothub.RoutingProperties{
@@ -110,8 +108,8 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 						StorageContainers: []*armiothub.RoutingStorageContainerProperties{},
 					},
 					FallbackRoute: &armiothub.FallbackRouteProperties{
-						Name:      to.Ptr("<name>"),
-						Condition: to.Ptr("<condition>"),
+						Name:      to.Ptr("$fallback"),
+						Condition: to.Ptr("true"),
 						EndpointNames: []*string{
 							to.Ptr("events")},
 						IsEnabled: to.Ptr(true),
@@ -121,9 +119,9 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 				},
 				StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
 					"$default": {
-						ConnectionString: to.Ptr("<connection-string>"),
-						ContainerName:    to.Ptr("<container-name>"),
-						SasTTLAsIso8601:  to.Ptr("<sas-ttlas-iso8601>"),
+						ConnectionString: to.Ptr(""),
+						ContainerName:    to.Ptr(""),
+						SasTTLAsIso8601:  to.Ptr("PT1H"),
 					},
 				},
 			},
@@ -132,13 +130,11 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 				Capacity: to.Ptr[int64](1),
 			},
 		},
-		&armiothub.ResourceClientBeginCreateOrUpdateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armiothub.ResourceClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -153,23 +149,23 @@ func ExampleResourceClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"myHub",
 		armiothub.TagsResource{
 			Tags: map[string]*string{
 				"foo": to.Ptr("bar"),
 			},
 		},
-		&armiothub.ResourceClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -184,18 +180,18 @@ func ExampleResourceClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armiothub.ResourceClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"testHub",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -210,7 +206,7 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -219,7 +215,6 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -235,17 +230,16 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -261,13 +255,13 @@ func ExampleResourceClient_GetStats() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetStats(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"testHub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -283,19 +277,18 @@ func ExampleResourceClient_NewListEventHubConsumerGroupsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListEventHubConsumerGroupsPager("<resource-group-name>",
-		"<resource-name>",
-		"<event-hub-endpoint-name>",
+	pager := client.NewListEventHubConsumerGroupsPager("myResourceGroup",
+		"testHub",
+		"events",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -311,15 +304,15 @@ func ExampleResourceClient_GetEventHubConsumerGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetEventHubConsumerGroup(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<event-hub-endpoint-name>",
-		"<name>",
+		"myResourceGroup",
+		"testHub",
+		"events",
+		"test",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -335,18 +328,18 @@ func ExampleResourceClient_CreateEventHubConsumerGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateEventHubConsumerGroup(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<event-hub-endpoint-name>",
-		"<name>",
+		"myResourceGroup",
+		"testHub",
+		"events",
+		"test",
 		armiothub.EventHubConsumerGroupBodyDescription{
 			Properties: &armiothub.EventHubConsumerGroupName{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("test"),
 			},
 		},
 		nil)
@@ -364,15 +357,15 @@ func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteEventHubConsumerGroup(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<event-hub-endpoint-name>",
-		"<name>",
+		"myResourceGroup",
+		"testHub",
+		"events",
+		"test",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -386,18 +379,17 @@ func ExampleResourceClient_NewListJobsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListJobsPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListJobsPager("myResourceGroup",
+		"testHub",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -413,14 +405,14 @@ func ExampleResourceClient_GetJob() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetJob(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<job-id>",
+		"myResourceGroup",
+		"testHub",
+		"test",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -436,18 +428,17 @@ func ExampleResourceClient_NewGetQuotaMetricsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetQuotaMetricsPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewGetQuotaMetricsPager("myResourceGroup",
+		"testHub",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -463,18 +454,17 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetEndpointHealthPager("<resource-group-name>",
-		"<iot-hub-name>",
+	pager := client.NewGetEndpointHealthPager("myResourceGroup",
+		"testHub",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -490,13 +480,13 @@ func ExampleResourceClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armiothub.OperationInputs{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("test-request"),
 		},
 		nil)
 	if err != nil {
@@ -513,19 +503,19 @@ func ExampleResourceClient_TestAllRoutes() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.TestAllRoutes(ctx,
-		"<iot-hub-name>",
-		"<resource-group-name>",
+		"testHub",
+		"myResourceGroup",
 		armiothub.TestAllRoutesInput{
 			Message: &armiothub.RoutingMessage{
 				AppProperties: map[string]*string{
 					"key1": to.Ptr("value1"),
 				},
-				Body: to.Ptr("<body>"),
+				Body: to.Ptr("Body of message"),
 				SystemProperties: map[string]*string{
 					"key1": to.Ptr("value1"),
 				},
@@ -547,25 +537,25 @@ func ExampleResourceClient_TestRoute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.TestRoute(ctx,
-		"<iot-hub-name>",
-		"<resource-group-name>",
+		"testHub",
+		"myResourceGroup",
 		armiothub.TestRouteInput{
 			Message: &armiothub.RoutingMessage{
 				AppProperties: map[string]*string{
 					"key1": to.Ptr("value1"),
 				},
-				Body: to.Ptr("<body>"),
+				Body: to.Ptr("Body of message"),
 				SystemProperties: map[string]*string{
 					"key1": to.Ptr("value1"),
 				},
 			},
 			Route: &armiothub.RouteProperties{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("Routeid"),
 				EndpointNames: []*string{
 					to.Ptr("id1")},
 				IsEnabled: to.Ptr(true),
@@ -587,18 +577,17 @@ func ExampleResourceClient_NewListKeysPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListKeysPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListKeysPager("myResourceGroup",
+		"testHub",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -614,14 +603,14 @@ func ExampleResourceClient_GetKeysForKeyName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetKeysForKeyName(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<key-name>",
+		"myResourceGroup",
+		"testHub",
+		"iothubowner",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -637,16 +626,16 @@ func ExampleResourceClient_ExportDevices() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ExportDevices(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"testHub",
 		armiothub.ExportDevicesRequest{
 			ExcludeKeys:            to.Ptr(true),
-			ExportBlobContainerURI: to.Ptr("<export-blob-container-uri>"),
+			ExportBlobContainerURI: to.Ptr("testBlob"),
 		},
 		nil)
 	if err != nil {
@@ -663,16 +652,16 @@ func ExampleResourceClient_ImportDevices() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ImportDevices(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"testHub",
 		armiothub.ImportDevicesRequest{
-			InputBlobContainerURI:  to.Ptr("<input-blob-container-uri>"),
-			OutputBlobContainerURI: to.Ptr("<output-blob-container-uri>"),
+			InputBlobContainerURI:  to.Ptr("testBlob"),
+			OutputBlobContainerURI: to.Ptr("testBlob"),
 		},
 		nil)
 	if err != nil {

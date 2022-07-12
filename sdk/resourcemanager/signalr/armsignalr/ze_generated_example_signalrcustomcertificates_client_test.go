@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
@@ -26,18 +24,17 @@ func ExampleCustomCertificatesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewCustomCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewCustomCertificatesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"mySignalRService",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleCustomCertificatesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewCustomCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewCustomCertificatesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<certificate-name>",
+		"myResourceGroup",
+		"mySignalRService",
+		"myCert",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,26 +73,26 @@ func ExampleCustomCertificatesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewCustomCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewCustomCertificatesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<certificate-name>",
+		"myResourceGroup",
+		"mySignalRService",
+		"myCert",
 		armsignalr.CustomCertificate{
 			Properties: &armsignalr.CustomCertificateProperties{
-				KeyVaultBaseURI:       to.Ptr("<key-vault-base-uri>"),
-				KeyVaultSecretName:    to.Ptr("<key-vault-secret-name>"),
-				KeyVaultSecretVersion: to.Ptr("<key-vault-secret-version>"),
+				KeyVaultBaseURI:       to.Ptr("https://myvault.keyvault.azure.net/"),
+				KeyVaultSecretName:    to.Ptr("mycert"),
+				KeyVaultSecretVersion: to.Ptr("bb6a44b2743f47f68dad0d6cc9756432"),
 			},
 		},
-		&armsignalr.CustomCertificatesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -110,14 +107,14 @@ func ExampleCustomCertificatesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewCustomCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewCustomCertificatesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<certificate-name>",
+		"myResourceGroup",
+		"mySignalRService",
+		"myCert",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

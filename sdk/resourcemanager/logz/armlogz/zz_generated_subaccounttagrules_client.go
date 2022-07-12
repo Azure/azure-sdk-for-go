@@ -38,7 +38,7 @@ func NewSubAccountTagRulesClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSubAccountTagRulesClient(subscriptionID string, credential azcore.TokenC
 
 // CreateOrUpdate - Create or update a tag rule set for a given sub account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
@@ -106,7 +107,7 @@ func (client *SubAccountTagRulesClient) createOrUpdateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -124,6 +125,7 @@ func (client *SubAccountTagRulesClient) createOrUpdateHandleResponse(resp *http.
 
 // Delete - Delete a tag rule set for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
@@ -174,7 +176,7 @@ func (client *SubAccountTagRulesClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -189,6 +191,7 @@ func (client *SubAccountTagRulesClient) deleteHandleResponse(resp *http.Response
 
 // Get - Get a tag rule set for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
@@ -238,7 +241,7 @@ func (client *SubAccountTagRulesClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -253,12 +256,13 @@ func (client *SubAccountTagRulesClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - List the tag rules for a given sub account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // subAccountName - Sub Account resource name
 // options - SubAccountTagRulesClientListOptions contains the optional parameters for the SubAccountTagRulesClient.List method.
 func (client *SubAccountTagRulesClient) NewListPager(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountTagRulesClientListOptions) *runtime.Pager[SubAccountTagRulesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubAccountTagRulesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubAccountTagRulesClientListResponse]{
 		More: func(page SubAccountTagRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -311,7 +315,7 @@ func (client *SubAccountTagRulesClient) listCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

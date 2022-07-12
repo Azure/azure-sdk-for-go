@@ -28,10 +28,10 @@ func ExampleQuotaRequestStatusClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<subscription-id>",
-		"<provider-id>",
-		"<location>",
-		"<id>",
+		"00000000-0000-0000-0000-000000000000",
+		"Microsoft.Compute",
+		"eastus",
+		"2B5C8515-37D8-4B6A-879B-CD641A2CF605",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,9 +51,9 @@ func ExampleQuotaRequestStatusClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<subscription-id>",
-		"<provider-id>",
-		"<location>",
+	pager := client.NewListPager("3f75fdf7-977e-44ad-990d-99f14f0f299f",
+		"Microsoft.Compute",
+		"eastus",
 		&armreservations.QuotaRequestStatusClientListOptions{Filter: nil,
 			Top:       nil,
 			Skiptoken: nil,
@@ -62,7 +62,6 @@ func ExampleQuotaRequestStatusClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

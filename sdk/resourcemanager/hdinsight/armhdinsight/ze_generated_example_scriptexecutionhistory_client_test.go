@@ -23,18 +23,17 @@ func ExampleScriptExecutionHistoryClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewScriptExecutionHistoryClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewScriptExecutionHistoryClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("<resource-group-name>",
-		"<cluster-name>",
+	pager := client.NewListByClusterPager("rg1",
+		"cluster1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleScriptExecutionHistoryClient_Promote() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewScriptExecutionHistoryClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewScriptExecutionHistoryClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Promote(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<script-execution-id>",
+		"rg1",
+		"cluster1",
+		"391145124054712",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

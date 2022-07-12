@@ -24,13 +24,13 @@ func ExampleServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armwindowsiot.NewServicesClient("45b60d85-fd72-427a-a708-f994d26e593e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<device-name>",
+		"res9407",
+		"service8596",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,19 +46,19 @@ func ExampleServicesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armwindowsiot.NewServicesClient("27de630f-e1ee-42de-8849-90def4986454", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<device-name>",
+		"res9101",
+		"service4445",
 		armwindowsiot.DeviceService{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Properties: &armwindowsiot.DeviceServiceProperties{
-				AdminDomainName:   to.Ptr("<admin-domain-name>"),
-				BillingDomainName: to.Ptr("<billing-domain-name>"),
-				Notes:             to.Ptr("<notes>"),
+				AdminDomainName:   to.Ptr("d.e.f"),
+				BillingDomainName: to.Ptr("a.b.c"),
+				Notes:             to.Ptr("blah"),
 				Quantity:          to.Ptr[int64](1000000),
 			},
 		},
@@ -77,19 +77,19 @@ func ExampleServicesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armwindowsiot.NewServicesClient("45b60d85-fd72-427a-a708-f994d26e593e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<device-name>",
+		"res9407",
+		"service8596",
 		armwindowsiot.DeviceService{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Properties: &armwindowsiot.DeviceServiceProperties{
-				AdminDomainName:   to.Ptr("<admin-domain-name>"),
-				BillingDomainName: to.Ptr("<billing-domain-name>"),
-				Notes:             to.Ptr("<notes>"),
+				AdminDomainName:   to.Ptr("d.e.f"),
+				BillingDomainName: to.Ptr("a.b.c"),
+				Notes:             to.Ptr("blah"),
 				Quantity:          to.Ptr[int64](1000000),
 			},
 		},
@@ -108,13 +108,13 @@ func ExampleServicesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armwindowsiot.NewServicesClient("27de630f-e1ee-42de-8849-90def4986454", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-group-name>",
-		"<device-name>",
+		"res4228",
+		"service2434",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -130,17 +130,16 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armwindowsiot.NewServicesClient("27de630f-e1ee-42de-8849-90def4986454", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("res6117",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -156,7 +155,7 @@ func ExampleServicesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armwindowsiot.NewServicesClient("27de630f-e1ee-42de-8849-90def4986454", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -165,7 +164,6 @@ func ExampleServicesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -181,13 +179,13 @@ func ExampleServicesClient_CheckDeviceServiceNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armwindowsiot.NewServicesClient("27de630f-e1ee-42de-8849-90def4986454", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckDeviceServiceNameAvailability(ctx,
 		armwindowsiot.DeviceServiceCheckNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("service3363"),
 		},
 		nil)
 	if err != nil {

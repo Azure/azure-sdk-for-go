@@ -23,13 +23,13 @@ func ExamplePrivateLinkResourcesClient_ListByStorageAccount() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewPrivateLinkResourcesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByStorageAccount(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res6977",
+		"sto2527",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

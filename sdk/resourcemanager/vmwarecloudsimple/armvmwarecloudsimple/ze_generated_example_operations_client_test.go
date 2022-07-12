@@ -32,7 +32,6 @@ func ExampleOperationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,14 +47,14 @@ func ExampleOperationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewOperationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<region-id>",
-		"<referer>",
-		"<operation-id>",
+		"westus2",
+		"https://management.azure.com/",
+		"d030bb3f-7d53-11e9-8e09-9a86872085ff",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

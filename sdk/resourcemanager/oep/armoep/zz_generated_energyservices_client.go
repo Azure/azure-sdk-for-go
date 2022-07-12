@@ -38,7 +38,7 @@ func NewEnergyServicesClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,28 +54,98 @@ func NewEnergyServicesClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
+// BeginAddPartition - Method that gets called if new partition is to be added in a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The resource name.
+// options - EnergyServicesClientBeginAddPartitionOptions contains the optional parameters for the EnergyServicesClient.BeginAddPartition
+// method.
+func (client *EnergyServicesClient) BeginAddPartition(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginAddPartitionOptions) (*runtime.Poller[EnergyServicesClientAddPartitionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.addPartition(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[EnergyServicesClientAddPartitionResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[EnergyServicesClientAddPartitionResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// AddPartition - Method that gets called if new partition is to be added in a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
+func (client *EnergyServicesClient) addPartition(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginAddPartitionOptions) (*http.Response, error) {
+	req, err := client.addPartitionCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// addPartitionCreateRequest creates the AddPartition request.
+func (client *EnergyServicesClient) addPartitionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginAddPartitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OpenEnergyPlatform/energyServices/{resourceName}/addPartition"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-04-04-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Body)
+	}
+	return req, nil
+}
+
 // BeginCreate - Method that gets called if subscribed for ResourceCreationBegin trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The resource name.
 // options - EnergyServicesClientBeginCreateOptions contains the optional parameters for the EnergyServicesClient.BeginCreate
 // method.
-func (client *EnergyServicesClient) BeginCreate(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginCreateOptions) (*armruntime.Poller[EnergyServicesClientCreateResponse], error) {
+func (client *EnergyServicesClient) BeginCreate(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginCreateOptions) (*runtime.Poller[EnergyServicesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, resourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[EnergyServicesClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[EnergyServicesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[EnergyServicesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnergyServicesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Method that gets called if subscribed for ResourceCreationBegin trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
 func (client *EnergyServicesClient) create(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
@@ -110,7 +180,7 @@ func (client *EnergyServicesClient) createCreateRequest(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -119,24 +189,26 @@ func (client *EnergyServicesClient) createCreateRequest(ctx context.Context, res
 
 // BeginDelete - Deletes oep resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The resource name.
 // options - EnergyServicesClientBeginDeleteOptions contains the optional parameters for the EnergyServicesClient.BeginDelete
 // method.
-func (client *EnergyServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginDeleteOptions) (*armruntime.Poller[EnergyServicesClientDeleteResponse], error) {
+func (client *EnergyServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginDeleteOptions) (*runtime.Poller[EnergyServicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EnergyServicesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnergyServicesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EnergyServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnergyServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes oep resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
 func (client *EnergyServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
@@ -172,13 +244,15 @@ func (client *EnergyServicesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-04-04-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns oep resource for a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The resource name.
 // options - EnergyServicesClientGetOptions contains the optional parameters for the EnergyServicesClient.Get method.
@@ -217,9 +291,9 @@ func (client *EnergyServicesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-04-04-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,11 +308,12 @@ func (client *EnergyServicesClient) getHandleResponse(resp *http.Response) (Ener
 
 // NewListByResourceGroupPager - Returns list of oep resources..
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - EnergyServicesClientListByResourceGroupOptions contains the optional parameters for the EnergyServicesClient.ListByResourceGroup
 // method.
 func (client *EnergyServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *EnergyServicesClientListByResourceGroupOptions) *runtime.Pager[EnergyServicesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnergyServicesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnergyServicesClientListByResourceGroupResponse]{
 		More: func(page EnergyServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -281,9 +356,9 @@ func (client *EnergyServicesClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-04-04-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -298,10 +373,11 @@ func (client *EnergyServicesClient) listByResourceGroupHandleResponse(resp *http
 
 // NewListBySubscriptionPager - Lists a collection of oep resources under the given Azure Subscription ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
 // options - EnergyServicesClientListBySubscriptionOptions contains the optional parameters for the EnergyServicesClient.ListBySubscription
 // method.
 func (client *EnergyServicesClient) NewListBySubscriptionPager(options *EnergyServicesClientListBySubscriptionOptions) *runtime.Pager[EnergyServicesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnergyServicesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnergyServicesClientListBySubscriptionResponse]{
 		More: func(page EnergyServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -340,9 +416,9 @@ func (client *EnergyServicesClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-04-04-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -355,8 +431,134 @@ func (client *EnergyServicesClient) listBySubscriptionHandleResponse(resp *http.
 	return result, nil
 }
 
+// ListPartitions - Method that gets called when list of partitions is requested.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The resource name.
+// options - EnergyServicesClientListPartitionsOptions contains the optional parameters for the EnergyServicesClient.ListPartitions
+// method.
+func (client *EnergyServicesClient) ListPartitions(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientListPartitionsOptions) (EnergyServicesClientListPartitionsResponse, error) {
+	req, err := client.listPartitionsCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return EnergyServicesClientListPartitionsResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return EnergyServicesClientListPartitionsResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return EnergyServicesClientListPartitionsResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.listPartitionsHandleResponse(resp)
+}
+
+// listPartitionsCreateRequest creates the ListPartitions request.
+func (client *EnergyServicesClient) listPartitionsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientListPartitionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OpenEnergyPlatform/energyServices/{resourceName}/listPartitions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-04-04-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPartitionsHandleResponse handles the ListPartitions response.
+func (client *EnergyServicesClient) listPartitionsHandleResponse(resp *http.Response) (EnergyServicesClientListPartitionsResponse, error) {
+	result := EnergyServicesClientListPartitionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataPartitionsListResult); err != nil {
+		return EnergyServicesClientListPartitionsResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginRemovePartition - Method that gets called if new partition is to be removed from a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The resource name.
+// options - EnergyServicesClientBeginRemovePartitionOptions contains the optional parameters for the EnergyServicesClient.BeginRemovePartition
+// method.
+func (client *EnergyServicesClient) BeginRemovePartition(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginRemovePartitionOptions) (*runtime.Poller[EnergyServicesClientRemovePartitionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removePartition(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[EnergyServicesClientRemovePartitionResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[EnergyServicesClientRemovePartitionResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// RemovePartition - Method that gets called if new partition is to be removed from a resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
+func (client *EnergyServicesClient) removePartition(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginRemovePartitionOptions) (*http.Response, error) {
+	req, err := client.removePartitionCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// removePartitionCreateRequest creates the RemovePartition request.
+func (client *EnergyServicesClient) removePartitionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *EnergyServicesClientBeginRemovePartitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OpenEnergyPlatform/energyServices/{resourceName}/removePartition"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-04-04-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Body)
+	}
+	return req, nil
+}
+
 // Update -
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-04-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The resource name.
 // options - EnergyServicesClientUpdateOptions contains the optional parameters for the EnergyServicesClient.Update method.
@@ -395,9 +597,9 @@ func (client *EnergyServicesClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-04-04-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}

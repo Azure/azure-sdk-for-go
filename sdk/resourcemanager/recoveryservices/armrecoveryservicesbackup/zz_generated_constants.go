@@ -10,7 +10,7 @@ package armrecoveryservicesbackup
 
 const (
 	moduleName    = "armrecoveryservicesbackup"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
@@ -1405,29 +1405,6 @@ func PossibleSupportStatusValues() []SupportStatus {
 		SupportStatusInvalid,
 		SupportStatusNotSupported,
 		SupportStatusSupported,
-	}
-}
-
-// TieringMode - Tiering Mode to control automatic tiering of recovery points. Supported values are:
-// 1. TierRecommended: Tier all recovery points recommended to be tiered
-// 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
-// 3. DoNotTier: Do not tier any recovery points
-type TieringMode string
-
-const (
-	TieringModeDoNotTier       TieringMode = "DoNotTier"
-	TieringModeInvalid         TieringMode = "Invalid"
-	TieringModeTierAfter       TieringMode = "TierAfter"
-	TieringModeTierRecommended TieringMode = "TierRecommended"
-)
-
-// PossibleTieringModeValues returns the possible values for the TieringMode const type.
-func PossibleTieringModeValues() []TieringMode {
-	return []TieringMode{
-		TieringModeDoNotTier,
-		TieringModeInvalid,
-		TieringModeTierAfter,
-		TieringModeTierRecommended,
 	}
 }
 

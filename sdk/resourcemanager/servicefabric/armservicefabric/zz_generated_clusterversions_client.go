@@ -38,7 +38,7 @@ func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Gets information about an available Service Fabric cluster code version.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The location for the cluster code versions. This is different from cluster location.
 // clusterVersion - The cluster code version.
 // options - ClusterVersionsClientGetOptions contains the optional parameters for the ClusterVersionsClient.Get method.
@@ -96,7 +97,7 @@ func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, locat
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,6 +112,7 @@ func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (Clu
 
 // GetByEnvironment - Gets information about an available Service Fabric cluster code version by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The location for the cluster code versions. This is different from cluster location.
 // environment - The operating system of the cluster. The default means all.
 // clusterVersion - The cluster code version.
@@ -157,7 +159,7 @@ func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -172,6 +174,7 @@ func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.R
 
 // List - Gets all available code versions for Service Fabric cluster resources by location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The location for the cluster code versions. This is different from cluster location.
 // options - ClusterVersionsClientListOptions contains the optional parameters for the ClusterVersionsClient.List method.
 func (client *ClusterVersionsClient) List(ctx context.Context, location string, options *ClusterVersionsClientListOptions) (ClusterVersionsClientListResponse, error) {
@@ -207,7 +210,7 @@ func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, loca
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -222,6 +225,7 @@ func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (Cl
 
 // ListByEnvironment - Gets all available code versions for Service Fabric cluster resources by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // location - The location for the cluster code versions. This is different from cluster location.
 // environment - The operating system of the cluster. The default means all.
 // options - ClusterVersionsClientListByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.ListByEnvironment
@@ -263,7 +267,7 @@ func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

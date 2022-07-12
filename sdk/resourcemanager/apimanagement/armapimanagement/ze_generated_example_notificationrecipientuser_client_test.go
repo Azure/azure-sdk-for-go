@@ -23,13 +23,13 @@ func ExampleNotificationRecipientUserClient_ListByNotification() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNotificationRecipientUserClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNotificationRecipientUserClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByNotification(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.NotificationNameRequestPublisherNotificationMessage,
 		nil)
 	if err != nil {
@@ -46,15 +46,15 @@ func ExampleNotificationRecipientUserClient_CheckEntityExists() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNotificationRecipientUserClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNotificationRecipientUserClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CheckEntityExists(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.NotificationNameRequestPublisherNotificationMessage,
-		"<user-id>",
+		"576823d0a40f7e74ec07d642",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,15 +68,15 @@ func ExampleNotificationRecipientUserClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNotificationRecipientUserClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNotificationRecipientUserClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.NotificationNameRequestPublisherNotificationMessage,
-		"<user-id>",
+		"576823d0a40f7e74ec07d642",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -92,15 +92,15 @@ func ExampleNotificationRecipientUserClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNotificationRecipientUserClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNotificationRecipientUserClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.NotificationNameRequestPublisherNotificationMessage,
-		"<user-id>",
+		"576823d0a40f7e74ec07d642",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

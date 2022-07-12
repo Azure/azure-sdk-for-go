@@ -36,7 +36,7 @@ func NewViewsClient(credential azcore.TokenCredential, options *arm.ClientOption
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,6 +55,7 @@ func NewViewsClient(credential azcore.TokenCredential, options *arm.ClientOption
 // You may obtain the latest eTag by performing a get operation. Create operation does not
 // require eTag.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // viewName - View name
 // parameters - Parameters supplied to the CreateOrUpdate View operation.
 // options - ViewsClientCreateOrUpdateOptions contains the optional parameters for the ViewsClient.CreateOrUpdate method.
@@ -87,7 +88,7 @@ func (client *ViewsClient) createOrUpdateCreateRequest(ctx context.Context, view
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -104,6 +105,7 @@ func (client *ViewsClient) createOrUpdateHandleResponse(resp *http.Response) (Vi
 // request. You may obtain the latest eTag by performing a get operation. Create operation does not
 // require eTag.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 // 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
@@ -154,7 +156,7 @@ func (client *ViewsClient) createOrUpdateByScopeCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -169,6 +171,7 @@ func (client *ViewsClient) createOrUpdateByScopeHandleResponse(resp *http.Respon
 
 // Delete - The operation to delete a view.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // viewName - View name
 // options - ViewsClientDeleteOptions contains the optional parameters for the ViewsClient.Delete method.
 func (client *ViewsClient) Delete(ctx context.Context, viewName string, options *ViewsClientDeleteOptions) (ViewsClientDeleteResponse, error) {
@@ -200,12 +203,13 @@ func (client *ViewsClient) deleteCreateRequest(ctx context.Context, viewName str
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DeleteByScope - The operation to delete a view.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 // 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
@@ -254,12 +258,13 @@ func (client *ViewsClient) deleteByScopeCreateRequest(ctx context.Context, scope
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the view by view name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // viewName - View name
 // options - ViewsClientGetOptions contains the optional parameters for the ViewsClient.Get method.
 func (client *ViewsClient) Get(ctx context.Context, viewName string, options *ViewsClientGetOptions) (ViewsClientGetResponse, error) {
@@ -291,7 +296,7 @@ func (client *ViewsClient) getCreateRequest(ctx context.Context, viewName string
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -306,6 +311,7 @@ func (client *ViewsClient) getHandleResponse(resp *http.Response) (ViewsClientGe
 
 // GetByScope - Gets the view for the defined scope by view name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 // 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
@@ -354,7 +360,7 @@ func (client *ViewsClient) getByScopeCreateRequest(ctx context.Context, scope st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -369,9 +375,10 @@ func (client *ViewsClient) getByScopeHandleResponse(resp *http.Response) (ViewsC
 
 // NewListPager - Lists all views by tenant and object.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // options - ViewsClientListOptions contains the optional parameters for the ViewsClient.List method.
 func (client *ViewsClient) NewListPager(options *ViewsClientListOptions) *runtime.Pager[ViewsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ViewsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ViewsClientListResponse]{
 		More: func(page ViewsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -408,7 +415,7 @@ func (client *ViewsClient) listCreateRequest(ctx context.Context, options *Views
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -423,6 +430,7 @@ func (client *ViewsClient) listHandleResponse(resp *http.Response) (ViewsClientL
 
 // NewListByScopePager - Lists all views at the given scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 // 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
@@ -438,7 +446,7 @@ func (client *ViewsClient) listHandleResponse(resp *http.Response) (ViewsClientL
 // 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription scope.
 // options - ViewsClientListByScopeOptions contains the optional parameters for the ViewsClient.ListByScope method.
 func (client *ViewsClient) NewListByScopePager(scope string, options *ViewsClientListByScopeOptions) *runtime.Pager[ViewsClientListByScopeResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ViewsClientListByScopeResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ViewsClientListByScopeResponse]{
 		More: func(page ViewsClientListByScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -479,7 +487,7 @@ func (client *ViewsClient) listByScopeCreateRequest(ctx context.Context, scope s
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

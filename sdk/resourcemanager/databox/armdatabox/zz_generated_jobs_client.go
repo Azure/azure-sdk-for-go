@@ -38,7 +38,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // BookShipmentPickUp - Book shipment pick up.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The Resource Group Name
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
@@ -96,9 +97,9 @@ func (client *JobsClient) bookShipmentPickUpCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, shipmentPickUpRequest)
 }
 
@@ -113,6 +114,7 @@ func (client *JobsClient) bookShipmentPickUpHandleResponse(resp *http.Response) 
 
 // Cancel - CancelJob.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The Resource Group Name
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
@@ -153,35 +155,37 @@ func (client *JobsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, cancellationReason)
 }
 
 // BeginCreate - Creates a new job with the specified parameters. Existing job cannot be updated with this API and should
 // instead be updated with the Update job API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The Resource Group Name
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
 // jobResource - Job details from request body.
 // options - JobsClientBeginCreateOptions contains the optional parameters for the JobsClient.BeginCreate method.
-func (client *JobsClient) BeginCreate(ctx context.Context, resourceGroupName string, jobName string, jobResource JobResource, options *JobsClientBeginCreateOptions) (*armruntime.Poller[JobsClientCreateResponse], error) {
+func (client *JobsClient) BeginCreate(ctx context.Context, resourceGroupName string, jobName string, jobResource JobResource, options *JobsClientBeginCreateOptions) (*runtime.Poller[JobsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, jobName, jobResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
 // be updated with the Update job API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *JobsClient) create(ctx context.Context, resourceGroupName string, jobName string, jobResource JobResource, options *JobsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, jobName, jobResource, options)
 	if err != nil {
@@ -217,32 +221,34 @@ func (client *JobsClient) createCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, jobResource)
 }
 
 // BeginDelete - Deletes a job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The Resource Group Name
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
 // options - JobsClientBeginDeleteOptions contains the optional parameters for the JobsClient.BeginDelete method.
-func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginDeleteOptions) (*armruntime.Poller[JobsClientDeleteResponse], error) {
+func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginDeleteOptions) (*runtime.Poller[JobsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, jobName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *JobsClient) deleteOperation(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, jobName, options)
 	if err != nil {
@@ -278,14 +284,15 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The Resource Group Name
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
@@ -325,12 +332,12 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -345,9 +352,10 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 
 // NewListPager - Lists all the jobs available under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
 func (client *JobsClient) NewListPager(options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -386,12 +394,12 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, options *JobsCl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -406,11 +414,12 @@ func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsClientLis
 
 // NewListByResourceGroupPager - Lists all the jobs available under the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The Resource Group Name
 // options - JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.ListByResourceGroup
 // method.
 func (client *JobsClient) NewListByResourceGroupPager(resourceGroupName string, options *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListByResourceGroupResponse]{
 		More: func(page JobsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -453,12 +462,12 @@ func (client *JobsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -473,12 +482,13 @@ func (client *JobsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // NewListCredentialsPager - This method gets the unencrypted secrets related to the job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The Resource Group Name
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
 // options - JobsClientListCredentialsOptions contains the optional parameters for the JobsClient.ListCredentials method.
 func (client *JobsClient) NewListCredentialsPager(resourceGroupName string, jobName string, options *JobsClientListCredentialsOptions) *runtime.Pager[JobsClientListCredentialsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListCredentialsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListCredentialsResponse]{
 		More: func(page JobsClientListCredentialsResponse) bool {
 			return false
 		},
@@ -519,9 +529,9 @@ func (client *JobsClient) listCredentialsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -536,6 +546,7 @@ func (client *JobsClient) listCredentialsHandleResponse(resp *http.Response) (Jo
 
 // MarkDevicesShipped - Request to mark devices for a given job as shipped
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
 // resourceGroupName - The Resource Group Name
@@ -576,33 +587,35 @@ func (client *JobsClient) markDevicesShippedCreateRequest(ctx context.Context, j
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, markDevicesShippedRequest)
 }
 
 // BeginUpdate - Updates the properties of an existing job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // resourceGroupName - The Resource Group Name
 // jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 // in length and use any alphanumeric and underscore only
 // jobResourceUpdateParameter - Job update parameters from request body.
 // options - JobsClientBeginUpdateOptions contains the optional parameters for the JobsClient.BeginUpdate method.
-func (client *JobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, jobName string, jobResourceUpdateParameter JobResourceUpdateParameter, options *JobsClientBeginUpdateOptions) (*armruntime.Poller[JobsClientUpdateResponse], error) {
+func (client *JobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, jobName string, jobResourceUpdateParameter JobResourceUpdateParameter, options *JobsClientBeginUpdateOptions) (*runtime.Poller[JobsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, jobName, jobResourceUpdateParameter, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the properties of an existing job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *JobsClient) update(ctx context.Context, resourceGroupName string, jobName string, jobResourceUpdateParameter JobResourceUpdateParameter, options *JobsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, jobName, jobResourceUpdateParameter, options)
 	if err != nil {
@@ -638,11 +651,11 @@ func (client *JobsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, jobResourceUpdateParameter)
 }

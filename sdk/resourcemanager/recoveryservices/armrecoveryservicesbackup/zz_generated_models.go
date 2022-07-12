@@ -16,6 +16,13 @@ type AzureBackupGoalFeatureSupportRequest struct {
 	FeatureType *string `json:"featureType,omitempty"`
 }
 
+// GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type AzureBackupGoalFeatureSupportRequest.
+func (a *AzureBackupGoalFeatureSupportRequest) GetFeatureSupportRequest() *FeatureSupportRequest {
+	return &FeatureSupportRequest{
+		FeatureType: a.FeatureType,
+	}
+}
+
 // AzureBackupServerContainer - AzureBackupServer (DPMVenus) workload-specific protection container.
 type AzureBackupServerContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
@@ -64,6 +71,38 @@ type AzureBackupServerContainer struct {
 	UpgradeAvailable *bool `json:"upgradeAvailable,omitempty"`
 }
 
+// GetDpmContainer implements the DpmContainerClassification interface for type AzureBackupServerContainer.
+func (a *AzureBackupServerContainer) GetDpmContainer() *DpmContainer {
+	return &DpmContainer{
+		CanReRegister:         a.CanReRegister,
+		ContainerID:           a.ContainerID,
+		ProtectedItemCount:    a.ProtectedItemCount,
+		DpmAgentVersion:       a.DpmAgentVersion,
+		DpmServers:            a.DpmServers,
+		UpgradeAvailable:      a.UpgradeAvailable,
+		ProtectionStatus:      a.ProtectionStatus,
+		ExtendedInfo:          a.ExtendedInfo,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureBackupServerContainer.
+func (a *AzureBackupServerContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
 // AzureBackupServerEngine - Backup engine type when Azure Backup Server is used to manage the backups.
 type AzureBackupServerEngine struct {
 	// REQUIRED; Type of the backup engine.
@@ -106,6 +145,25 @@ type AzureBackupServerEngine struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 }
 
+// GetBackupEngineBase implements the BackupEngineBaseClassification interface for type AzureBackupServerEngine.
+func (a *AzureBackupServerEngine) GetBackupEngineBase() *BackupEngineBase {
+	return &BackupEngineBase{
+		FriendlyName:                       a.FriendlyName,
+		BackupManagementType:               a.BackupManagementType,
+		RegistrationStatus:                 a.RegistrationStatus,
+		BackupEngineState:                  a.BackupEngineState,
+		HealthStatus:                       a.HealthStatus,
+		BackupEngineType:                   a.BackupEngineType,
+		CanReRegister:                      a.CanReRegister,
+		BackupEngineID:                     a.BackupEngineID,
+		DpmVersion:                         a.DpmVersion,
+		AzureBackupAgentVersion:            a.AzureBackupAgentVersion,
+		IsAzureBackupAgentUpgradeAvailable: a.IsAzureBackupAgentUpgradeAvailable,
+		IsDpmUpgradeAvailable:              a.IsDpmUpgradeAvailable,
+		ExtendedInfo:                       a.ExtendedInfo,
+	}
+}
+
 // AzureFileShareBackupRequest - AzureFileShare workload-specific backup request.
 type AzureFileShareBackupRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -113,6 +171,13 @@ type AzureFileShareBackupRequest struct {
 
 	// Backup copy will expire after the time specified (UTC).
 	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
+}
+
+// GetBackupRequest implements the BackupRequestClassification interface for type AzureFileShareBackupRequest.
+func (a *AzureFileShareBackupRequest) GetBackupRequest() *BackupRequest {
+	return &BackupRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureFileShareProtectableItem - Protectable item for Azure Fileshare workloads.
@@ -142,6 +207,17 @@ type AzureFileShareProtectableItem struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureFileShareProtectableItem.
+func (a *AzureFileShareProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
 // AzureFileShareProtectionPolicy - AzureStorage backup policy.
 type AzureFileShareProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -166,6 +242,15 @@ type AzureFileShareProtectionPolicy struct {
 	WorkLoadType *WorkloadType `json:"workLoadType,omitempty"`
 }
 
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureFileShareProtectionPolicy.
+func (a *AzureFileShareProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType:           a.BackupManagementType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+	}
+}
+
 // AzureFileShareProvisionILRRequest - Update snapshot Uri with the correct friendly Name of the source Azure file share.
 type AzureFileShareProvisionILRRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -176,6 +261,13 @@ type AzureFileShareProvisionILRRequest struct {
 
 	// Source Storage account ARM Id
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// GetILRRequest implements the ILRRequestClassification interface for type AzureFileShareProvisionILRRequest.
+func (a *AzureFileShareProvisionILRRequest) GetILRRequest() *ILRRequest {
+	return &ILRRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureFileShareRecoveryPoint - Azure File Share workload specific backup copy.
@@ -194,6 +286,13 @@ type AzureFileShareRecoveryPoint struct {
 
 	// Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureFileShareRecoveryPoint.
+func (a *AzureFileShareRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureFileShareRestoreRequest - AzureFileShare Restore Request
@@ -218,6 +317,13 @@ type AzureFileShareRestoreRequest struct {
 
 	// Target File Share Details
 	TargetDetails *TargetAFSRestoreInfo `json:"targetDetails,omitempty"`
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureFileShareRestoreRequest.
+func (a *AzureFileShareRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureFileshareProtectedItem - Azure File Share workload-specific backup item.
@@ -295,6 +401,29 @@ type AzureFileshareProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureFileshareProtectedItem.
+func (a *AzureFileshareProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureFileshareProtectedItemExtendedInfo - Additional information about Azure File Share backup item.
 type AzureFileshareProtectedItemExtendedInfo struct {
 	// The oldest backup copy available for this item in the service.
@@ -347,6 +476,33 @@ type AzureIaaSClassicComputeVMContainer struct {
 	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
 }
 
+// GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSClassicComputeVMContainer.
+func (a *AzureIaaSClassicComputeVMContainer) GetIaaSVMContainer() *IaaSVMContainer {
+	return &IaaSVMContainer{
+		VirtualMachineID:      a.VirtualMachineID,
+		VirtualMachineVersion: a.VirtualMachineVersion,
+		ResourceGroup:         a.ResourceGroup,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureIaaSClassicComputeVMContainer.
+func (a *AzureIaaSClassicComputeVMContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
 // AzureIaaSClassicComputeVMProtectableItem - IaaS VM workload-specific backup item representing the Classic Compute VM.
 type AzureIaaSClassicComputeVMProtectableItem struct {
 	// REQUIRED; Type of the backup item.
@@ -372,6 +528,31 @@ type AzureIaaSClassicComputeVMProtectableItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type AzureIaaSClassicComputeVMProtectableItem.
+func (a *AzureIaaSClassicComputeVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableItem {
+	return &IaaSVMProtectableItem{
+		VirtualMachineID:      a.VirtualMachineID,
+		VirtualMachineVersion: a.VirtualMachineVersion,
+		ResourceGroup:         a.ResourceGroup,
+		BackupManagementType:  a.BackupManagementType,
+		WorkloadType:          a.WorkloadType,
+		ProtectableItemType:   a.ProtectableItemType,
+		FriendlyName:          a.FriendlyName,
+		ProtectionState:       a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureIaaSClassicComputeVMProtectableItem.
+func (a *AzureIaaSClassicComputeVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureIaaSClassicComputeVMProtectedItem - IaaS VM workload-specific backup item representing the Classic Compute VM.
@@ -464,6 +645,64 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSClassicComputeVMProtectedItem.
+func (a *AzureIaaSClassicComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMProtectedItem {
+	return &AzureIaaSVMProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		VirtualMachineID:                 a.VirtualMachineID,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		HealthStatus:                     a.HealthStatus,
+		HealthDetails:                    a.HealthDetails,
+		KpisHealths:                      a.KpisHealths,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		ProtectedItemDataID:              a.ProtectedItemDataID,
+		ExtendedInfo:                     a.ExtendedInfo,
+		ExtendedProperties:               a.ExtendedProperties,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSClassicComputeVMProtectedItem.
+func (a *AzureIaaSClassicComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureIaaSComputeVMContainer - IaaS VM workload-specific backup item representing an Azure Resource Manager virtual machine.
 type AzureIaaSComputeVMContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
@@ -497,6 +736,33 @@ type AzureIaaSComputeVMContainer struct {
 	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
 }
 
+// GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSComputeVMContainer.
+func (a *AzureIaaSComputeVMContainer) GetIaaSVMContainer() *IaaSVMContainer {
+	return &IaaSVMContainer{
+		VirtualMachineID:      a.VirtualMachineID,
+		VirtualMachineVersion: a.VirtualMachineVersion,
+		ResourceGroup:         a.ResourceGroup,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureIaaSComputeVMContainer.
+func (a *AzureIaaSComputeVMContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
 // AzureIaaSComputeVMProtectableItem - IaaS VM workload-specific backup item representing the Azure Resource Manager VM.
 type AzureIaaSComputeVMProtectableItem struct {
 	// REQUIRED; Type of the backup item.
@@ -522,6 +788,31 @@ type AzureIaaSComputeVMProtectableItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type AzureIaaSComputeVMProtectableItem.
+func (a *AzureIaaSComputeVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableItem {
+	return &IaaSVMProtectableItem{
+		VirtualMachineID:      a.VirtualMachineID,
+		VirtualMachineVersion: a.VirtualMachineVersion,
+		ResourceGroup:         a.ResourceGroup,
+		BackupManagementType:  a.BackupManagementType,
+		WorkloadType:          a.WorkloadType,
+		ProtectableItemType:   a.ProtectableItemType,
+		FriendlyName:          a.FriendlyName,
+		ProtectionState:       a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureIaaSComputeVMProtectableItem.
+func (a *AzureIaaSComputeVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureIaaSComputeVMProtectedItem - IaaS VM workload-specific backup item representing the Azure Resource Manager VM.
@@ -614,6 +905,64 @@ type AzureIaaSComputeVMProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSComputeVMProtectedItem.
+func (a *AzureIaaSComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMProtectedItem {
+	return &AzureIaaSVMProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		VirtualMachineID:                 a.VirtualMachineID,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		HealthStatus:                     a.HealthStatus,
+		HealthDetails:                    a.HealthDetails,
+		KpisHealths:                      a.KpisHealths,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		ProtectedItemDataID:              a.ProtectedItemDataID,
+		ExtendedInfo:                     a.ExtendedInfo,
+		ExtendedProperties:               a.ExtendedProperties,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSComputeVMProtectedItem.
+func (a *AzureIaaSComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureIaaSVMErrorInfo - Azure IaaS VM workload-specific error information.
 type AzureIaaSVMErrorInfo struct {
 	// READ-ONLY; Error code.
@@ -690,6 +1039,20 @@ type AzureIaaSVMJob struct {
 
 	// Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
 	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type AzureIaaSVMJob.
+func (a *AzureIaaSVMJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   a.EntityFriendlyName,
+		BackupManagementType: a.BackupManagementType,
+		Operation:            a.Operation,
+		Status:               a.Status,
+		StartTime:            a.StartTime,
+		EndTime:              a.EndTime,
+		ActivityID:           a.ActivityID,
+		JobType:              a.JobType,
+	}
 }
 
 // AzureIaaSVMJobExtendedInfo - Azure IaaS VM workload-specific additional information for job.
@@ -783,6 +1146,20 @@ type AzureIaaSVMJobV2 struct {
 
 	// Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
 	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type AzureIaaSVMJobV2.
+func (a *AzureIaaSVMJobV2) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   a.EntityFriendlyName,
+		BackupManagementType: a.BackupManagementType,
+		Operation:            a.Operation,
+		Status:               a.Status,
+		StartTime:            a.StartTime,
+		EndTime:              a.EndTime,
+		ActivityID:           a.ActivityID,
+		JobType:              a.JobType,
+	}
 }
 
 // AzureIaaSVMProtectedItemClassification provides polymorphic access to related types.
@@ -885,19 +1262,36 @@ type AzureIaaSVMProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSVMProtectedItem.
+func (a *AzureIaaSVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMProtectedItem { return a }
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSVMProtectedItem.
+func (a *AzureIaaSVMProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureIaaSVMProtectedItemExtendedInfo - Additional information on Azure IaaS VM specific backup item.
 type AzureIaaSVMProtectedItemExtendedInfo struct {
-	// The latest backup copy available for this backup item in archive tier
-	NewestRecoveryPointInArchive *time.Time `json:"newestRecoveryPointInArchive,omitempty"`
-
-	// The oldest backup copy available for this backup item across all tiers.
+	// The oldest backup copy available for this backup item.
 	OldestRecoveryPoint *time.Time `json:"oldestRecoveryPoint,omitempty"`
-
-	// The oldest backup copy available for this backup item in archive tier
-	OldestRecoveryPointInArchive *time.Time `json:"oldestRecoveryPointInArchive,omitempty"`
-
-	// The oldest backup copy available for this backup item in vault tier
-	OldestRecoveryPointInVault *time.Time `json:"oldestRecoveryPointInVault,omitempty"`
 
 	// Specifies if backup policy associated with the backup item is inconsistent.
 	PolicyInconsistent *bool `json:"policyInconsistent,omitempty"`
@@ -928,12 +1322,17 @@ type AzureIaaSVMProtectionPolicy struct {
 	// Backup schedule specified as part of backup policy.
 	SchedulePolicy SchedulePolicyClassification `json:"schedulePolicy,omitempty"`
 
-	// Tiering policy to automatically move RPs to another tier Key is Target Tier, defined in RecoveryPointTierType enum. Tiering
-	// policy specifies the criteria to move RP to the target tier.
-	TieringPolicy map[string]*TieringPolicy `json:"tieringPolicy,omitempty"`
-
 	// TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
 	TimeZone *string `json:"timeZone,omitempty"`
+}
+
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureIaaSVMProtectionPolicy.
+func (a *AzureIaaSVMProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType:           a.BackupManagementType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+	}
 }
 
 // AzureRecoveryServiceVaultProtectionIntentClassification provides polymorphic access to related types.
@@ -967,6 +1366,24 @@ type AzureRecoveryServiceVaultProtectionIntent struct {
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
+// GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
+// for type AzureRecoveryServiceVaultProtectionIntent.
+func (a *AzureRecoveryServiceVaultProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
+	return a
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureRecoveryServiceVaultProtectionIntent.
+func (a *AzureRecoveryServiceVaultProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
 // AzureResourceProtectionIntent - IaaS VM specific backup protection intent item.
 type AzureResourceProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
@@ -989,6 +1406,18 @@ type AzureResourceProtectionIntent struct {
 
 	// ARM ID of the resource to be backed up.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureResourceProtectionIntent.
+func (a *AzureResourceProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
 }
 
 // AzureSQLAGWorkloadContainerProtectionContainer - Container for SQL workloads under SQL Availability Group.
@@ -1030,6 +1459,35 @@ type AzureSQLAGWorkloadContainerProtectionContainer struct {
 	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
 }
 
+// GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureSQLAGWorkloadContainerProtectionContainer.
+func (a *AzureSQLAGWorkloadContainerProtectionContainer) GetAzureWorkloadContainer() *AzureWorkloadContainer {
+	return &AzureWorkloadContainer{
+		SourceResourceID:      a.SourceResourceID,
+		LastUpdatedTime:       a.LastUpdatedTime,
+		ExtendedInfo:          a.ExtendedInfo,
+		WorkloadType:          a.WorkloadType,
+		OperationType:         a.OperationType,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureSQLAGWorkloadContainerProtectionContainer.
+func (a *AzureSQLAGWorkloadContainerProtectionContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
 // AzureSQLContainer - Azure Sql workload-specific container.
 type AzureSQLContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
@@ -1052,6 +1510,18 @@ type AzureSQLContainer struct {
 
 	// Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureSQLContainer.
+func (a *AzureSQLContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
 }
 
 // AzureSQLProtectedItem - Azure SQL workload-specific backup item.
@@ -1117,6 +1587,29 @@ type AzureSQLProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureSQLProtectedItem.
+func (a *AzureSQLProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureSQLProtectedItemExtendedInfo - Additional information on Azure Sql specific protected item.
 type AzureSQLProtectedItemExtendedInfo struct {
 	// The oldest backup copy available for this item in the service.
@@ -1142,6 +1635,15 @@ type AzureSQLProtectionPolicy struct {
 
 	// Retention policy details.
 	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
+}
+
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureSQLProtectionPolicy.
+func (a *AzureSQLProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType:           a.BackupManagementType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+	}
 }
 
 // AzureStorageContainer - Azure Storage Account workload-specific container.
@@ -1181,6 +1683,18 @@ type AzureStorageContainer struct {
 
 	// Storage account version.
 	StorageAccountVersion *string `json:"storageAccountVersion,omitempty"`
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureStorageContainer.
+func (a *AzureStorageContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
 }
 
 // AzureStorageErrorInfo - Azure storage specific error information
@@ -1243,6 +1757,20 @@ type AzureStorageJob struct {
 	StorageAccountVersion *string `json:"storageAccountVersion,omitempty"`
 }
 
+// GetJob implements the JobClassification interface for type AzureStorageJob.
+func (a *AzureStorageJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   a.EntityFriendlyName,
+		BackupManagementType: a.BackupManagementType,
+		Operation:            a.Operation,
+		Status:               a.Status,
+		StartTime:            a.StartTime,
+		EndTime:              a.EndTime,
+		ActivityID:           a.ActivityID,
+		JobType:              a.JobType,
+	}
+}
+
 // AzureStorageJobExtendedInfo - Azure Storage workload-specific additional information for job.
 type AzureStorageJobExtendedInfo struct {
 	// Non localized error message on job execution.
@@ -1284,6 +1812,17 @@ type AzureStorageProtectableContainer struct {
 	HealthStatus *string `json:"healthStatus,omitempty"`
 }
 
+// GetProtectableContainer implements the ProtectableContainerClassification interface for type AzureStorageProtectableContainer.
+func (a *AzureStorageProtectableContainer) GetProtectableContainer() *ProtectableContainer {
+	return &ProtectableContainer{
+		FriendlyName:             a.FriendlyName,
+		BackupManagementType:     a.BackupManagementType,
+		ProtectableContainerType: a.ProtectableContainerType,
+		HealthStatus:             a.HealthStatus,
+		ContainerID:              a.ContainerID,
+	}
+}
+
 // AzureVMAppContainerProtectableContainer - Azure workload-specific container
 type AzureVMAppContainerProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
@@ -1302,6 +1841,17 @@ type AzureVMAppContainerProtectableContainer struct {
 
 	// Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
+}
+
+// GetProtectableContainer implements the ProtectableContainerClassification interface for type AzureVMAppContainerProtectableContainer.
+func (a *AzureVMAppContainerProtectableContainer) GetProtectableContainer() *ProtectableContainer {
+	return &ProtectableContainer{
+		FriendlyName:             a.FriendlyName,
+		BackupManagementType:     a.BackupManagementType,
+		ProtectableContainerType: a.ProtectableContainerType,
+		HealthStatus:             a.HealthStatus,
+		ContainerID:              a.ContainerID,
+	}
 }
 
 // AzureVMAppContainerProtectionContainer - Container for SQL workloads under Azure Virtual Machines.
@@ -1343,6 +1893,35 @@ type AzureVMAppContainerProtectionContainer struct {
 	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
 }
 
+// GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureVMAppContainerProtectionContainer.
+func (a *AzureVMAppContainerProtectionContainer) GetAzureWorkloadContainer() *AzureWorkloadContainer {
+	return &AzureWorkloadContainer{
+		SourceResourceID:      a.SourceResourceID,
+		LastUpdatedTime:       a.LastUpdatedTime,
+		ExtendedInfo:          a.ExtendedInfo,
+		WorkloadType:          a.WorkloadType,
+		OperationType:         a.OperationType,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureVMAppContainerProtectionContainer.
+func (a *AzureVMAppContainerProtectionContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
 // AzureVMResourceFeatureSupportRequest - AzureResource(IaaS VM) Specific feature support request
 type AzureVMResourceFeatureSupportRequest struct {
 	// REQUIRED; backup support feature type.
@@ -1353,6 +1932,13 @@ type AzureVMResourceFeatureSupportRequest struct {
 
 	// Size of the resource: VM size(A/D series etc) in case of IaasVM
 	VMSize *string `json:"vmSize,omitempty"`
+}
+
+// GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type AzureVMResourceFeatureSupportRequest.
+func (a *AzureVMResourceFeatureSupportRequest) GetFeatureSupportRequest() *FeatureSupportRequest {
+	return &FeatureSupportRequest{
+		FeatureType: a.FeatureType,
+	}
 }
 
 // AzureVMResourceFeatureSupportResponse - Response for feature support requests for Azure IaasVm
@@ -1403,6 +1989,20 @@ type AzureVMWorkloadItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadItem.
+func (a *AzureVMWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem { return a }
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadItem.
+func (a *AzureVMWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadProtectableItemClassification provides polymorphic access to related types.
@@ -1458,6 +2058,22 @@ type AzureVMWorkloadProtectableItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadProtectableItem.
+func (a *AzureVMWorkloadProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return a
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadProtectableItem.
+func (a *AzureVMWorkloadProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadProtectedItemClassification provides polymorphic access to related types.
@@ -1564,19 +2180,38 @@ type AzureVMWorkloadProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadProtectedItem.
+func (a *AzureVMWorkloadProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
+	return a
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadProtectedItem.
+func (a *AzureVMWorkloadProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureVMWorkloadProtectedItemExtendedInfo - Additional information on Azure Workload for SQL specific backup item.
 type AzureVMWorkloadProtectedItemExtendedInfo struct {
-	// The latest backup copy available for this backup item in archive tier
-	NewestRecoveryPointInArchive *time.Time `json:"newestRecoveryPointInArchive,omitempty"`
-
-	// The oldest backup copy available for this backup item across all tiers.
+	// The oldest backup copy available for this backup item.
 	OldestRecoveryPoint *time.Time `json:"oldestRecoveryPoint,omitempty"`
-
-	// The oldest backup copy available for this backup item in archive tier
-	OldestRecoveryPointInArchive *time.Time `json:"oldestRecoveryPointInArchive,omitempty"`
-
-	// The oldest backup copy available for this backup item in vault tier
-	OldestRecoveryPointInVault *time.Time `json:"oldestRecoveryPointInVault,omitempty"`
 
 	// Indicates consistency of policy object and policy applied to this backup item.
 	PolicyState *string `json:"policyState,omitempty"`
@@ -1610,6 +2245,15 @@ type AzureVMWorkloadProtectionPolicy struct {
 
 	// Type of workload for the backup management
 	WorkLoadType *WorkloadType `json:"workLoadType,omitempty"`
+}
+
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureVMWorkloadProtectionPolicy.
+func (a *AzureVMWorkloadProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType:           a.BackupManagementType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+	}
 }
 
 // AzureVMWorkloadSAPAseDatabaseProtectedItem - Azure VM workload-specific protected item representing SAP ASE Database.
@@ -1705,6 +2349,65 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
+	return &AzureVMWorkloadProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		ServerName:                       a.ServerName,
+		ParentName:                       a.ParentName,
+		ParentType:                       a.ParentType,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		LastBackupErrorDetail:            a.LastBackupErrorDetail,
+		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
+		ExtendedInfo:                     a.ExtendedInfo,
+		KpisHealths:                      a.KpisHealths,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureVMWorkloadSAPAseDatabaseWorkloadItem - Azure VM workload-specific workload item representing SAP ASE Database.
 type AzureVMWorkloadSAPAseDatabaseWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
@@ -1736,6 +2439,33 @@ type AzureVMWorkloadSAPAseDatabaseWorkloadItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPAseDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSAPAseDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadSAPAseSystemProtectableItem - Azure VM workload-specific protectable item representing SAP ASE System.
@@ -1781,6 +2511,36 @@ type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPAseSystemProtectableItem.
+func (a *AzureVMWorkloadSAPAseSystemProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPAseSystemProtectableItem.
+func (a *AzureVMWorkloadSAPAseSystemProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
 // AzureVMWorkloadSAPAseSystemWorkloadItem - Azure VM workload-specific workload item representing SAP ASE System.
 type AzureVMWorkloadSAPAseSystemWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
@@ -1812,6 +2572,33 @@ type AzureVMWorkloadSAPAseSystemWorkloadItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPAseSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSAPAseSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadSAPHanaDatabaseProtectableItem - Azure VM workload-specific protectable item representing SAP HANA Database.
@@ -1855,6 +2642,36 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectableItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectableItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadSAPHanaDatabaseProtectedItem - Azure VM workload-specific protected item representing SAP HANA Database.
@@ -1950,6 +2767,65 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
+	return &AzureVMWorkloadProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		ServerName:                       a.ServerName,
+		ParentName:                       a.ParentName,
+		ParentType:                       a.ParentType,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		LastBackupErrorDetail:            a.LastBackupErrorDetail,
+		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
+		ExtendedInfo:                     a.ExtendedInfo,
+		KpisHealths:                      a.KpisHealths,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureVMWorkloadSAPHanaDatabaseWorkloadItem - Azure VM workload-specific workload item representing SAP HANA Database.
 type AzureVMWorkloadSAPHanaDatabaseWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
@@ -1981,6 +2857,33 @@ type AzureVMWorkloadSAPHanaDatabaseWorkloadItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadSAPHanaSystemProtectableItem - Azure VM workload-specific protectable item representing SAP HANA System.
@@ -2026,6 +2929,36 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaSystemProtectableItem.
+func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaSystemProtectableItem.
+func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
 // AzureVMWorkloadSAPHanaSystemWorkloadItem - Azure VM workload-specific workload item representing SAP HANA System.
 type AzureVMWorkloadSAPHanaSystemWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
@@ -2057,6 +2990,33 @@ type AzureVMWorkloadSAPHanaSystemWorkloadItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPHanaSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSAPHanaSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadSQLAvailabilityGroupProtectableItem - Azure VM workload-specific protectable item representing SQL Availability
@@ -2103,6 +3063,36 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
+func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
+func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
 // AzureVMWorkloadSQLDatabaseProtectableItem - Azure VM workload-specific protectable item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	// REQUIRED; Type of the backup item.
@@ -2144,6 +3134,36 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectableItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectableItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadSQLDatabaseProtectedItem - Azure VM workload-specific protected item representing SQL Database.
@@ -2239,6 +3259,65 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
+	return &AzureVMWorkloadProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		ServerName:                       a.ServerName,
+		ParentName:                       a.ParentName,
+		ParentType:                       a.ParentType,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		LastBackupErrorDetail:            a.LastBackupErrorDetail,
+		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
+		ExtendedInfo:                     a.ExtendedInfo,
+		KpisHealths:                      a.KpisHealths,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // AzureVMWorkloadSQLDatabaseWorkloadItem - Azure VM workload-specific workload item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
@@ -2270,6 +3349,33 @@ type AzureVMWorkloadSQLDatabaseWorkloadItem struct {
 
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSQLDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSQLDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // AzureVMWorkloadSQLInstanceProtectableItem - Azure VM workload-specific protectable item representing SQL Instance.
@@ -2315,6 +3421,36 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLInstanceProtectableItem.
+func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLInstanceProtectableItem.
+func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
 // AzureVMWorkloadSQLInstanceWorkloadItem - Azure VM workload-specific workload item representing SQL Instance.
 type AzureVMWorkloadSQLInstanceWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
@@ -2351,6 +3487,33 @@ type AzureVMWorkloadSQLInstanceWorkloadItem struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSQLInstanceWorkloadItem.
+func (a *AzureVMWorkloadSQLInstanceWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSQLInstanceWorkloadItem.
+func (a *AzureVMWorkloadSQLInstanceWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
 // AzureWorkloadAutoProtectionIntentClassification provides polymorphic access to related types.
 // Call the interface's GetAzureWorkloadAutoProtectionIntent() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2382,6 +3545,37 @@ type AzureWorkloadAutoProtectionIntent struct {
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
+// GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
+// for type AzureWorkloadAutoProtectionIntent.
+func (a *AzureWorkloadAutoProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
+	return &AzureRecoveryServiceVaultProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
+// GetAzureWorkloadAutoProtectionIntent implements the AzureWorkloadAutoProtectionIntentClassification interface for type
+// AzureWorkloadAutoProtectionIntent.
+func (a *AzureWorkloadAutoProtectionIntent) GetAzureWorkloadAutoProtectionIntent() *AzureWorkloadAutoProtectionIntent {
+	return a
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadAutoProtectionIntent.
+func (a *AzureWorkloadAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
 // AzureWorkloadBackupRequest - AzureWorkload workload-specific backup request.
 type AzureWorkloadBackupRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -2395,6 +3589,13 @@ type AzureWorkloadBackupRequest struct {
 
 	// Backup copy will expire after the time specified (UTC).
 	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
+}
+
+// GetBackupRequest implements the BackupRequestClassification interface for type AzureWorkloadBackupRequest.
+func (a *AzureWorkloadBackupRequest) GetBackupRequest() *BackupRequest {
+	return &BackupRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureWorkloadContainerClassification provides polymorphic access to related types.
@@ -2446,6 +3647,21 @@ type AzureWorkloadContainer struct {
 	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
 }
 
+// GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureWorkloadContainer.
+func (a *AzureWorkloadContainer) GetAzureWorkloadContainer() *AzureWorkloadContainer { return a }
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureWorkloadContainer.
+func (a *AzureWorkloadContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
 // AzureWorkloadContainerAutoProtectionIntent - Azure workload specific protection intent item.
 type AzureWorkloadContainerAutoProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
@@ -2465,6 +3681,18 @@ type AzureWorkloadContainerAutoProtectionIntent struct {
 
 	// ARM ID of the resource to be backed up.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadContainerAutoProtectionIntent.
+func (a *AzureWorkloadContainerAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
 }
 
 // AzureWorkloadContainerExtendedInfo - Extended information of the container.
@@ -2539,6 +3767,20 @@ type AzureWorkloadJob struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetJob implements the JobClassification interface for type AzureWorkloadJob.
+func (a *AzureWorkloadJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   a.EntityFriendlyName,
+		BackupManagementType: a.BackupManagementType,
+		Operation:            a.Operation,
+		Status:               a.Status,
+		StartTime:            a.StartTime,
+		EndTime:              a.EndTime,
+		ActivityID:           a.ActivityID,
+		JobType:              a.JobType,
+	}
+}
+
 // AzureWorkloadJobExtendedInfo - Azure VM workload-specific additional information for job.
 type AzureWorkloadJobExtendedInfo struct {
 	// Non localized error message on job execution.
@@ -2591,6 +3833,30 @@ type AzureWorkloadPointInTimeRecoveryPoint struct {
 	Type *RestorePointType `json:"type,omitempty"`
 }
 
+// GetAzureWorkloadPointInTimeRecoveryPoint implements the AzureWorkloadPointInTimeRecoveryPointClassification interface for
+// type AzureWorkloadPointInTimeRecoveryPoint.
+func (a *AzureWorkloadPointInTimeRecoveryPoint) GetAzureWorkloadPointInTimeRecoveryPoint() *AzureWorkloadPointInTimeRecoveryPoint {
+	return a
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadPointInTimeRecoveryPoint.
+func (a *AzureWorkloadPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadPointInTimeRecoveryPoint.
+func (a *AzureWorkloadPointInTimeRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadPointInTimeRestoreRequest - AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore
 type AzureWorkloadPointInTimeRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -2616,6 +3882,26 @@ type AzureWorkloadPointInTimeRestoreRequest struct {
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+}
+
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadPointInTimeRestoreRequest.
+func (a *AzureWorkloadPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadPointInTimeRestoreRequest.
+func (a *AzureWorkloadPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureWorkloadRecoveryPointClassification provides polymorphic access to related types.
@@ -2645,6 +3931,18 @@ type AzureWorkloadRecoveryPoint struct {
 
 	// Type of restore point
 	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadRecoveryPoint.
+func (a *AzureWorkloadRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return a
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadRecoveryPoint.
+func (a *AzureWorkloadRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureWorkloadRestoreRequestClassification provides polymorphic access to related types.
@@ -2684,6 +3982,18 @@ type AzureWorkloadRestoreRequest struct {
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadRestoreRequest.
+func (a *AzureWorkloadRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return a
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadRestoreRequest.
+func (a *AzureWorkloadRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadSAPHanaPointInTimeRecoveryPoint - Recovery point specific to PointInTime in SAPHana
 type AzureWorkloadSAPHanaPointInTimeRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -2703,6 +4013,37 @@ type AzureWorkloadSAPHanaPointInTimeRecoveryPoint struct {
 
 	// Type of restore point
 	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadPointInTimeRecoveryPoint implements the AzureWorkloadPointInTimeRecoveryPointClassification interface for
+// type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) GetAzureWorkloadPointInTimeRecoveryPoint() *AzureWorkloadPointInTimeRecoveryPoint {
+	return &AzureWorkloadPointInTimeRecoveryPoint{
+		TimeRanges:                     a.TimeRanges,
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification provides polymorphic access to related types.
@@ -2743,6 +4084,46 @@ type AzureWorkloadSAPHanaPointInTimeRestoreRequest struct {
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaPointInTimeRestoreRequest implements the AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification
+// interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest {
+	return a
+}
+
+// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
+// AzureWorkloadSAPHanaPointInTimeRestoreRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
+	return &AzureWorkloadSAPHanaRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest - AzureWorkload SAP Hana-specific restore with integrated rehydration
 // of recovery point.
 type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest struct {
@@ -2774,6 +4155,55 @@ type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest struct {
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaPointInTimeRestoreRequest implements the AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification
+// interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest {
+	return &AzureWorkloadSAPHanaPointInTimeRestoreRequest{
+		PointInTime:            a.PointInTime,
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
+// AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
+	return &AzureWorkloadSAPHanaRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadSAPHanaRecoveryPoint - SAPHana specific recoverypoint, specifically encapsulates full/diff recoverypoints
 type AzureWorkloadSAPHanaRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -2790,6 +4220,24 @@ type AzureWorkloadSAPHanaRecoveryPoint struct {
 
 	// Type of restore point
 	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSAPHanaRecoveryPoint.
+func (a *AzureWorkloadSAPHanaRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSAPHanaRecoveryPoint.
+func (a *AzureWorkloadSAPHanaRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureWorkloadSAPHanaRestoreRequestClassification provides polymorphic access to related types.
@@ -2827,6 +4275,32 @@ type AzureWorkloadSAPHanaRestoreRequest struct {
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
+func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
+// AzureWorkloadSAPHanaRestoreRequest.
+func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
+	return a
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
+func (a *AzureWorkloadSAPHanaRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadSAPHanaRestoreWithRehydrateRequest - AzureWorkload SAP Hana-specific restore with integrated rehydration of
 // recovery point.
 type AzureWorkloadSAPHanaRestoreWithRehydrateRequest struct {
@@ -2855,6 +4329,40 @@ type AzureWorkloadSAPHanaRestoreWithRehydrateRequest struct {
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
+// AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
+	return &AzureWorkloadSAPHanaRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadSQLAutoProtectionIntent - Azure Workload SQL Auto Protection intent item.
 type AzureWorkloadSQLAutoProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
@@ -2877,6 +4385,44 @@ type AzureWorkloadSQLAutoProtectionIntent struct {
 
 	// Workload item type of the item for which intent is to be set
 	WorkloadItemType *WorkloadItemType `json:"workloadItemType,omitempty"`
+}
+
+// GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
+// for type AzureWorkloadSQLAutoProtectionIntent.
+func (a *AzureWorkloadSQLAutoProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
+	return &AzureRecoveryServiceVaultProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
+// GetAzureWorkloadAutoProtectionIntent implements the AzureWorkloadAutoProtectionIntentClassification interface for type
+// AzureWorkloadSQLAutoProtectionIntent.
+func (a *AzureWorkloadSQLAutoProtectionIntent) GetAzureWorkloadAutoProtectionIntent() *AzureWorkloadAutoProtectionIntent {
+	return &AzureWorkloadAutoProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadSQLAutoProtectionIntent.
+func (a *AzureWorkloadSQLAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
 }
 
 // AzureWorkloadSQLPointInTimeRecoveryPoint - Recovery point specific to PointInTime
@@ -2903,6 +4449,36 @@ type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
 
 	// Type of restore point
 	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLRecoveryPoint implements the AzureWorkloadSQLRecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) GetAzureWorkloadSQLRecoveryPoint() *AzureWorkloadSQLRecoveryPoint {
+	return &AzureWorkloadSQLRecoveryPoint{
+		ExtendedInfo:                   a.ExtendedInfo,
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureWorkloadSQLPointInTimeRestoreRequestClassification provides polymorphic access to related types.
@@ -2951,6 +4527,48 @@ type AzureWorkloadSQLPointInTimeRestoreRequest struct {
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLPointInTimeRestoreRequest implements the AzureWorkloadSQLPointInTimeRestoreRequestClassification interface
+// for type AzureWorkloadSQLPointInTimeRestoreRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLPointInTimeRestoreRequest() *AzureWorkloadSQLPointInTimeRestoreRequest {
+	return a
+}
+
+// GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
+	return &AzureWorkloadSQLRestoreRequest{
+		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
+		IsNonRecoverable:                 a.IsNonRecoverable,
+		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
+		RecoveryType:                     a.RecoveryType,
+		SourceResourceID:                 a.SourceResourceID,
+		PropertyBag:                      a.PropertyBag,
+		TargetInfo:                       a.TargetInfo,
+		RecoveryMode:                     a.RecoveryMode,
+		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		ObjectType:                       a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest - AzureWorkload SQL-specific restore with integrated rehydration
 // of recovery point.
 type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest struct {
@@ -2991,6 +4609,60 @@ type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest struct {
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLPointInTimeRestoreRequest implements the AzureWorkloadSQLPointInTimeRestoreRequestClassification interface
+// for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSQLPointInTimeRestoreRequest() *AzureWorkloadSQLPointInTimeRestoreRequest {
+	return &AzureWorkloadSQLPointInTimeRestoreRequest{
+		PointInTime:                      a.PointInTime,
+		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
+		IsNonRecoverable:                 a.IsNonRecoverable,
+		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
+		RecoveryType:                     a.RecoveryType,
+		SourceResourceID:                 a.SourceResourceID,
+		PropertyBag:                      a.PropertyBag,
+		TargetInfo:                       a.TargetInfo,
+		RecoveryMode:                     a.RecoveryMode,
+		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		ObjectType:                       a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
+	return &AzureWorkloadSQLRestoreRequest{
+		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
+		IsNonRecoverable:                 a.IsNonRecoverable,
+		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
+		RecoveryType:                     a.RecoveryType,
+		SourceResourceID:                 a.SourceResourceID,
+		PropertyBag:                      a.PropertyBag,
+		TargetInfo:                       a.TargetInfo,
+		RecoveryMode:                     a.RecoveryMode,
+		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		ObjectType:                       a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadSQLRecoveryPointClassification provides polymorphic access to related types.
 // Call the interface's GetAzureWorkloadSQLRecoveryPoint() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -3023,6 +4695,29 @@ type AzureWorkloadSQLRecoveryPoint struct {
 
 	// Type of restore point
 	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
+func (a *AzureWorkloadSQLRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLRecoveryPoint implements the AzureWorkloadSQLRecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
+func (a *AzureWorkloadSQLRecoveryPoint) GetAzureWorkloadSQLRecoveryPoint() *AzureWorkloadSQLRecoveryPoint {
+	return a
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
+func (a *AzureWorkloadSQLRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureWorkloadSQLRecoveryPointExtendedInfo - Extended info class details
@@ -3078,6 +4773,31 @@ type AzureWorkloadSQLRestoreRequest struct {
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
+func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
+func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
+	return a
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
+func (a *AzureWorkloadSQLRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureWorkloadSQLRestoreWithRehydrateRequest - AzureWorkload SQL-specific restore with integrated rehydration of recovery
 // point
 type AzureWorkloadSQLRestoreWithRehydrateRequest struct {
@@ -3113,6 +4833,42 @@ type AzureWorkloadSQLRestoreWithRehydrateRequest struct {
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+}
+
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
+	return &AzureWorkloadSQLRestoreRequest{
+		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
+		IsNonRecoverable:                 a.IsNonRecoverable,
+		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
+		RecoveryType:                     a.RecoveryType,
+		SourceResourceID:                 a.SourceResourceID,
+		PropertyBag:                      a.PropertyBag,
+		TargetInfo:                       a.TargetInfo,
+		RecoveryMode:                     a.RecoveryMode,
+		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		ObjectType:                       a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // BEKDetails - BEK is bitlocker encryption key.
@@ -3295,6 +5051,9 @@ type BackupEngineBase struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 }
 
+// GetBackupEngineBase implements the BackupEngineBaseClassification interface for type BackupEngineBase.
+func (b *BackupEngineBase) GetBackupEngineBase() *BackupEngineBase { return b }
+
 // BackupEngineBaseResource - The base backup engine class. All workload specific backup engines derive from this class.
 type BackupEngineBaseResource struct {
 	// Optional ETag.
@@ -3467,6 +5226,9 @@ type BackupRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetBackupRequest implements the BackupRequestClassification interface for type BackupRequest.
+func (b *BackupRequest) GetBackupRequest() *BackupRequest { return b }
 
 // BackupRequestResource - Base class for backup request. Workload-specific backup requests are derived from this class.
 type BackupRequestResource struct {
@@ -3995,6 +5757,29 @@ type DPMProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetProtectedItem implements the ProtectedItemClassification interface for type DPMProtectedItem.
+func (d *DPMProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                d.ProtectedItemType,
+		BackupManagementType:             d.BackupManagementType,
+		WorkloadType:                     d.WorkloadType,
+		ContainerName:                    d.ContainerName,
+		SourceResourceID:                 d.SourceResourceID,
+		PolicyID:                         d.PolicyID,
+		LastRecoveryPoint:                d.LastRecoveryPoint,
+		BackupSetName:                    d.BackupSetName,
+		CreateMode:                       d.CreateMode,
+		DeferredDeleteTimeInUTC:          d.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     d.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      d.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: d.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      d.IsRehydrate,
+		ResourceGuardOperationRequests:   d.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 d.IsArchiveEnabled,
+		PolicyName:                       d.PolicyName,
+	}
+}
+
 // DPMProtectedItemExtendedInfo - Additional information of DPM Protected item.
 type DPMProtectedItemExtendedInfo struct {
 	// Used Disk storage in bytes.
@@ -4137,6 +5922,25 @@ type DpmBackupEngine struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 }
 
+// GetBackupEngineBase implements the BackupEngineBaseClassification interface for type DpmBackupEngine.
+func (d *DpmBackupEngine) GetBackupEngineBase() *BackupEngineBase {
+	return &BackupEngineBase{
+		FriendlyName:                       d.FriendlyName,
+		BackupManagementType:               d.BackupManagementType,
+		RegistrationStatus:                 d.RegistrationStatus,
+		BackupEngineState:                  d.BackupEngineState,
+		HealthStatus:                       d.HealthStatus,
+		BackupEngineType:                   d.BackupEngineType,
+		CanReRegister:                      d.CanReRegister,
+		BackupEngineID:                     d.BackupEngineID,
+		DpmVersion:                         d.DpmVersion,
+		AzureBackupAgentVersion:            d.AzureBackupAgentVersion,
+		IsAzureBackupAgentUpgradeAvailable: d.IsAzureBackupAgentUpgradeAvailable,
+		IsDpmUpgradeAvailable:              d.IsDpmUpgradeAvailable,
+		ExtendedInfo:                       d.ExtendedInfo,
+	}
+}
+
 // DpmContainerClassification provides polymorphic access to related types.
 // Call the interface's GetDpmContainer() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4193,6 +5997,21 @@ type DpmContainer struct {
 
 	// To check if upgrade available
 	UpgradeAvailable *bool `json:"upgradeAvailable,omitempty"`
+}
+
+// GetDpmContainer implements the DpmContainerClassification interface for type DpmContainer.
+func (d *DpmContainer) GetDpmContainer() *DpmContainer { return d }
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type DpmContainer.
+func (d *DpmContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          d.FriendlyName,
+		BackupManagementType:  d.BackupManagementType,
+		RegistrationStatus:    d.RegistrationStatus,
+		HealthStatus:          d.HealthStatus,
+		ContainerType:         d.ContainerType,
+		ProtectableObjectType: d.ProtectableObjectType,
+	}
 }
 
 // DpmErrorInfo - DPM workload-specific error information.
@@ -4253,6 +6072,20 @@ type DpmJob struct {
 
 	// Type of backup item.
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type DpmJob.
+func (d *DpmJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   d.EntityFriendlyName,
+		BackupManagementType: d.BackupManagementType,
+		Operation:            d.Operation,
+		Status:               d.Status,
+		StartTime:            d.StartTime,
+		EndTime:              d.EndTime,
+		ActivityID:           d.ActivityID,
+		JobType:              d.JobType,
+	}
 }
 
 // DpmJobExtendedInfo - Additional information on the DPM workload-specific job.
@@ -4342,6 +6175,13 @@ type ExportJobsOperationResultInfo struct {
 	ExcelFileBlobURL *string `json:"excelFileBlobUrl,omitempty"`
 }
 
+// GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type ExportJobsOperationResultInfo.
+func (e *ExportJobsOperationResultInfo) GetOperationResultInfoBase() *OperationResultInfoBase {
+	return &OperationResultInfoBase{
+		ObjectType: e.ObjectType,
+	}
+}
+
 // ExportJobsOperationResultsClientGetOptions contains the optional parameters for the ExportJobsOperationResultsClient.Get
 // method.
 type ExportJobsOperationResultsClientGetOptions struct {
@@ -4377,6 +6217,9 @@ type FeatureSupportRequest struct {
 	FeatureType *string `json:"featureType,omitempty"`
 }
 
+// GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type FeatureSupportRequest.
+func (f *FeatureSupportRequest) GetFeatureSupportRequest() *FeatureSupportRequest { return f }
+
 // GenericContainer - Base class for generic container of backup items
 type GenericContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
@@ -4405,6 +6248,18 @@ type GenericContainer struct {
 
 	// Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type GenericContainer.
+func (g *GenericContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          g.FriendlyName,
+		BackupManagementType:  g.BackupManagementType,
+		RegistrationStatus:    g.RegistrationStatus,
+		HealthStatus:          g.HealthStatus,
+		ContainerType:         g.ContainerType,
+		ProtectableObjectType: g.ProtectableObjectType,
+	}
 }
 
 // GenericContainerExtendedInfo - Container extended information
@@ -4491,6 +6346,29 @@ type GenericProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetProtectedItem implements the ProtectedItemClassification interface for type GenericProtectedItem.
+func (g *GenericProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                g.ProtectedItemType,
+		BackupManagementType:             g.BackupManagementType,
+		WorkloadType:                     g.WorkloadType,
+		ContainerName:                    g.ContainerName,
+		SourceResourceID:                 g.SourceResourceID,
+		PolicyID:                         g.PolicyID,
+		LastRecoveryPoint:                g.LastRecoveryPoint,
+		BackupSetName:                    g.BackupSetName,
+		CreateMode:                       g.CreateMode,
+		DeferredDeleteTimeInUTC:          g.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     g.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      g.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: g.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      g.IsRehydrate,
+		ResourceGuardOperationRequests:   g.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 g.IsArchiveEnabled,
+		PolicyName:                       g.PolicyName,
+	}
+}
+
 // GenericProtectionPolicy - Azure VM (Mercury) workload-specific backup policy.
 type GenericProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -4512,6 +6390,15 @@ type GenericProtectionPolicy struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type GenericProtectionPolicy.
+func (g *GenericProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            g.ProtectedItemsCount,
+		BackupManagementType:           g.BackupManagementType,
+		ResourceGuardOperationRequests: g.ResourceGuardOperationRequests,
+	}
+}
+
 // GenericRecoveryPoint - Generic backup copy.
 type GenericRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -4528,6 +6415,13 @@ type GenericRecoveryPoint struct {
 
 	// Type of the backup copy.
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type GenericRecoveryPoint.
+func (g *GenericRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: g.ObjectType,
+	}
 }
 
 // GetProtectedItemQueryObject - Filters to list backup items.
@@ -4561,6 +6455,9 @@ type ILRRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetILRRequest implements the ILRRequestClassification interface for type ILRRequest.
+func (i *ILRRequest) GetILRRequest() *ILRRequest { return i }
 
 // ILRRequestResource - Parameters to Provision ILR API.
 type ILRRequestResource struct {
@@ -4629,6 +6526,21 @@ type IaaSVMContainer struct {
 	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
 }
 
+// GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type IaaSVMContainer.
+func (i *IaaSVMContainer) GetIaaSVMContainer() *IaaSVMContainer { return i }
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type IaaSVMContainer.
+func (i *IaaSVMContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          i.FriendlyName,
+		BackupManagementType:  i.BackupManagementType,
+		RegistrationStatus:    i.RegistrationStatus,
+		HealthStatus:          i.HealthStatus,
+		ContainerType:         i.ContainerType,
+		ProtectableObjectType: i.ProtectableObjectType,
+	}
+}
+
 // IaaSVMProtectableItemClassification provides polymorphic access to related types.
 // Call the interface's GetIaaSVMProtectableItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4666,6 +6578,20 @@ type IaaSVMProtectableItem struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type IaaSVMProtectableItem.
+func (i *IaaSVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableItem { return i }
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type IaaSVMProtectableItem.
+func (i *IaaSVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: i.BackupManagementType,
+		WorkloadType:         i.WorkloadType,
+		ProtectableItemType:  i.ProtectableItemType,
+		FriendlyName:         i.FriendlyName,
+		ProtectionState:      i.ProtectionState,
+	}
+}
+
 // IaasVMBackupRequest - IaaS VM workload-specific backup request.
 type IaasVMBackupRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -4673,6 +6599,13 @@ type IaasVMBackupRequest struct {
 
 	// Backup copy will expire after the time specified (UTC).
 	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
+}
+
+// GetBackupRequest implements the BackupRequestClassification interface for type IaasVMBackupRequest.
+func (i *IaasVMBackupRequest) GetBackupRequest() *BackupRequest {
+	return &BackupRequest{
+		ObjectType: i.ObjectType,
+	}
 }
 
 // IaasVMILRRegistrationRequest - Restore files/folders from a backup copy of IaaS VM.
@@ -4691,6 +6624,13 @@ type IaasVMILRRegistrationRequest struct {
 
 	// Fully qualified ARM ID of the virtual machine whose the files / folders have to be restored.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+}
+
+// GetILRRequest implements the ILRRequestClassification interface for type IaasVMILRRegistrationRequest.
+func (i *IaasVMILRRegistrationRequest) GetILRRequest() *ILRRequest {
+	return &ILRRequest{
+		ObjectType: i.ObjectType,
+	}
 }
 
 // IaasVMRecoveryPoint - IaaS VM workload specific backup copy.
@@ -4742,6 +6682,13 @@ type IaasVMRecoveryPoint struct {
 
 	// Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms
 	Zones []*string `json:"zones,omitempty"`
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type IaasVMRecoveryPoint.
+func (i *IaasVMRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: i.ObjectType,
+	}
 }
 
 // IaasVMRestoreRequestClassification provides polymorphic access to related types.
@@ -4826,6 +6773,16 @@ type IaasVMRestoreRequest struct {
 	Zones []*string `json:"zones,omitempty"`
 }
 
+// GetIaasVMRestoreRequest implements the IaasVMRestoreRequestClassification interface for type IaasVMRestoreRequest.
+func (i *IaasVMRestoreRequest) GetIaasVMRestoreRequest() *IaasVMRestoreRequest { return i }
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type IaasVMRestoreRequest.
+func (i *IaasVMRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: i.ObjectType,
+	}
+}
+
 // IaasVMRestoreWithRehydrationRequest - IaaS VM workload-specific restore with integrated rehydration of recovery point.
 type IaasVMRestoreWithRehydrationRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -4899,6 +6856,40 @@ type IaasVMRestoreWithRehydrationRequest struct {
 
 	// Target zone where the VM and its disks should be restored.
 	Zones []*string `json:"zones,omitempty"`
+}
+
+// GetIaasVMRestoreRequest implements the IaasVMRestoreRequestClassification interface for type IaasVMRestoreWithRehydrationRequest.
+func (i *IaasVMRestoreWithRehydrationRequest) GetIaasVMRestoreRequest() *IaasVMRestoreRequest {
+	return &IaasVMRestoreRequest{
+		RecoveryPointID:              i.RecoveryPointID,
+		RecoveryType:                 i.RecoveryType,
+		SourceResourceID:             i.SourceResourceID,
+		TargetVirtualMachineID:       i.TargetVirtualMachineID,
+		TargetResourceGroupID:        i.TargetResourceGroupID,
+		StorageAccountID:             i.StorageAccountID,
+		VirtualNetworkID:             i.VirtualNetworkID,
+		SubnetID:                     i.SubnetID,
+		TargetDomainNameID:           i.TargetDomainNameID,
+		Region:                       i.Region,
+		AffinityGroup:                i.AffinityGroup,
+		CreateNewCloudService:        i.CreateNewCloudService,
+		OriginalStorageAccountOption: i.OriginalStorageAccountOption,
+		EncryptionDetails:            i.EncryptionDetails,
+		RestoreDiskLunList:           i.RestoreDiskLunList,
+		RestoreWithManagedDisks:      i.RestoreWithManagedDisks,
+		DiskEncryptionSetID:          i.DiskEncryptionSetID,
+		Zones:                        i.Zones,
+		IdentityInfo:                 i.IdentityInfo,
+		IdentityBasedRestoreDetails:  i.IdentityBasedRestoreDetails,
+		ObjectType:                   i.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type IaasVMRestoreWithRehydrationRequest.
+func (i *IaasVMRestoreWithRehydrationRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: i.ObjectType,
+	}
 }
 
 // IdentityBasedRestoreDetails - IaaS VM workload specific restore details for restores using managed identity
@@ -5001,6 +6992,9 @@ type Job struct {
 	// Job status.
 	Status *string `json:"status,omitempty"`
 }
+
+// GetJob implements the JobClassification interface for type Job.
+func (j *Job) GetJob() *Job { return j }
 
 // JobCancellationsClientTriggerOptions contains the optional parameters for the JobCancellationsClient.Trigger method.
 type JobCancellationsClientTriggerOptions struct {
@@ -5132,6 +7126,13 @@ type LogSchedulePolicy struct {
 	ScheduleFrequencyInMins *int32 `json:"scheduleFrequencyInMins,omitempty"`
 }
 
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type LogSchedulePolicy.
+func (l *LogSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
+	return &SchedulePolicy{
+		SchedulePolicyType: l.SchedulePolicyType,
+	}
+}
+
 // LongTermRetentionPolicy - Long term retention policy.
 type LongTermRetentionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -5150,10 +7151,24 @@ type LongTermRetentionPolicy struct {
 	YearlySchedule *YearlyRetentionSchedule `json:"yearlySchedule,omitempty"`
 }
 
+// GetRetentionPolicy implements the RetentionPolicyClassification interface for type LongTermRetentionPolicy.
+func (l *LongTermRetentionPolicy) GetRetentionPolicy() *RetentionPolicy {
+	return &RetentionPolicy{
+		RetentionPolicyType: l.RetentionPolicyType,
+	}
+}
+
 // LongTermSchedulePolicy - Long term policy schedule.
 type LongTermSchedulePolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+}
+
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type LongTermSchedulePolicy.
+func (l *LongTermSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
+	return &SchedulePolicy{
+		SchedulePolicyType: l.SchedulePolicyType,
+	}
 }
 
 // MABContainerHealthDetails - MAB workload-specific Health Details.
@@ -5214,6 +7229,18 @@ type MabContainer struct {
 
 	// Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type MabContainer.
+func (m *MabContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          m.FriendlyName,
+		BackupManagementType:  m.BackupManagementType,
+		RegistrationStatus:    m.RegistrationStatus,
+		HealthStatus:          m.HealthStatus,
+		ContainerType:         m.ContainerType,
+		ProtectableObjectType: m.ProtectableObjectType,
+	}
 }
 
 // MabContainerExtendedInfo - Additional information of the container.
@@ -5318,6 +7345,29 @@ type MabFileFolderProtectedItem struct {
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
+// GetProtectedItem implements the ProtectedItemClassification interface for type MabFileFolderProtectedItem.
+func (m *MabFileFolderProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                m.ProtectedItemType,
+		BackupManagementType:             m.BackupManagementType,
+		WorkloadType:                     m.WorkloadType,
+		ContainerName:                    m.ContainerName,
+		SourceResourceID:                 m.SourceResourceID,
+		PolicyID:                         m.PolicyID,
+		LastRecoveryPoint:                m.LastRecoveryPoint,
+		BackupSetName:                    m.BackupSetName,
+		CreateMode:                       m.CreateMode,
+		DeferredDeleteTimeInUTC:          m.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     m.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      m.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: m.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      m.IsRehydrate,
+		ResourceGuardOperationRequests:   m.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 m.IsArchiveEnabled,
+		PolicyName:                       m.PolicyName,
+	}
+}
+
 // MabFileFolderProtectedItemExtendedInfo - Additional information on the backed up item.
 type MabFileFolderProtectedItemExtendedInfo struct {
 	// Last time when the agent data synced to service.
@@ -5378,6 +7428,20 @@ type MabJob struct {
 	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
 }
 
+// GetJob implements the JobClassification interface for type MabJob.
+func (m *MabJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   m.EntityFriendlyName,
+		BackupManagementType: m.BackupManagementType,
+		Operation:            m.Operation,
+		Status:               m.Status,
+		StartTime:            m.StartTime,
+		EndTime:              m.EndTime,
+		ActivityID:           m.ActivityID,
+		JobType:              m.JobType,
+	}
+}
+
 // MabJobExtendedInfo - Additional information for the MAB workload-specific job.
 type MabJobExtendedInfo struct {
 	// Non localized error message specific to this job.
@@ -5424,6 +7488,15 @@ type MabProtectionPolicy struct {
 
 	// Backup schedule of backup policy.
 	SchedulePolicy SchedulePolicyClassification `json:"schedulePolicy,omitempty"`
+}
+
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type MabProtectionPolicy.
+func (m *MabProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            m.ProtectedItemsCount,
+		BackupManagementType:           m.BackupManagementType,
+		ResourceGuardOperationRequests: m.ResourceGuardOperationRequests,
+	}
 }
 
 // MonthlyRetentionSchedule - Monthly retention schedule.
@@ -5502,6 +7575,13 @@ type OperationResultInfo struct {
 	JobList []*string `json:"jobList,omitempty"`
 }
 
+// GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type OperationResultInfo.
+func (o *OperationResultInfo) GetOperationResultInfoBase() *OperationResultInfoBase {
+	return &OperationResultInfoBase{
+		ObjectType: o.ObjectType,
+	}
+}
+
 // OperationResultInfoBaseClassification provides polymorphic access to related types.
 // Call the interface's GetOperationResultInfoBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5516,6 +7596,9 @@ type OperationResultInfoBase struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type OperationResultInfoBase.
+func (o *OperationResultInfoBase) GetOperationResultInfoBase() *OperationResultInfoBase { return o }
 
 // OperationResultInfoBaseResource - Base class for operation result info.
 type OperationResultInfoBaseResource struct {
@@ -5578,6 +7661,11 @@ type OperationStatusExtendedInfo struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusExtendedInfo.
+func (o *OperationStatusExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return o
+}
+
 // OperationStatusJobExtendedInfo - Operation status job extended info.
 type OperationStatusJobExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -5585,6 +7673,13 @@ type OperationStatusJobExtendedInfo struct {
 
 	// ID of the job created for this protected item.
 	JobID *string `json:"jobId,omitempty"`
+}
+
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusJobExtendedInfo.
+func (o *OperationStatusJobExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return &OperationStatusExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
 }
 
 // OperationStatusJobsExtendedInfo - Operation status extended info for list of jobs.
@@ -5599,6 +7694,13 @@ type OperationStatusJobsExtendedInfo struct {
 	JobIDs []*string `json:"jobIds,omitempty"`
 }
 
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusJobsExtendedInfo.
+func (o *OperationStatusJobsExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return &OperationStatusExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
+}
+
 // OperationStatusProvisionILRExtendedInfo - Operation status extended info for ILR provision action.
 type OperationStatusProvisionILRExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -5608,6 +7710,13 @@ type OperationStatusProvisionILRExtendedInfo struct {
 	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
 }
 
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusProvisionILRExtendedInfo.
+func (o *OperationStatusProvisionILRExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return &OperationStatusExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
+}
+
 // OperationStatusValidateOperationExtendedInfo - Operation status extended info for ValidateOperation action.
 type OperationStatusValidateOperationExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -5615,6 +7724,13 @@ type OperationStatusValidateOperationExtendedInfo struct {
 
 	// Gets the validation operation response
 	ValidateOperationResponse *ValidateOperationResponse `json:"validateOperationResponse,omitempty"`
+}
+
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusValidateOperationExtendedInfo.
+func (o *OperationStatusValidateOperationExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return &OperationStatusExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
 }
 
 // OperationWorkerResponse - This is the base class for operation result responses.
@@ -5721,6 +7837,14 @@ type PrepareDataMoveResponse struct {
 
 	// Source Vault Properties
 	SourceVaultProperties map[string]*string `json:"sourceVaultProperties,omitempty"`
+}
+
+// GetVaultStorageConfigOperationResultResponse implements the VaultStorageConfigOperationResultResponseClassification interface
+// for type PrepareDataMoveResponse.
+func (p *PrepareDataMoveResponse) GetVaultStorageConfigOperationResultResponse() *VaultStorageConfigOperationResultResponse {
+	return &VaultStorageConfigOperationResultResponse{
+		ObjectType: p.ObjectType,
+	}
 }
 
 // PrivateEndpoint - The Private Endpoint network resource that is linked to the Private Endpoint connection
@@ -5832,6 +7956,9 @@ type ProtectableContainer struct {
 	HealthStatus *string `json:"healthStatus,omitempty"`
 }
 
+// GetProtectableContainer implements the ProtectableContainerClassification interface for type ProtectableContainer.
+func (p *ProtectableContainer) GetProtectableContainer() *ProtectableContainer { return p }
+
 // ProtectableContainerResource - Protectable Container Class.
 type ProtectableContainerResource struct {
 	// Optional ETag.
@@ -5935,6 +8062,9 @@ type ProtectedItem struct {
 	// Type of workload this item represents.
 	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type ProtectedItem.
+func (p *ProtectedItem) GetProtectedItem() *ProtectedItem { return p }
 
 // ProtectedItemOperationResultsClientGetOptions contains the optional parameters for the ProtectedItemOperationResultsClient.Get
 // method.
@@ -6064,6 +8194,9 @@ type ProtectionContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 }
 
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type ProtectionContainer.
+func (p *ProtectionContainer) GetProtectionContainer() *ProtectionContainer { return p }
+
 // ProtectionContainerOperationResultsClientGetOptions contains the optional parameters for the ProtectionContainerOperationResultsClient.Get
 // method.
 type ProtectionContainerOperationResultsClientGetOptions struct {
@@ -6169,6 +8302,9 @@ type ProtectionIntent struct {
 	// ARM ID of the resource to be backed up.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type ProtectionIntent.
+func (p *ProtectionIntent) GetProtectionIntent() *ProtectionIntent { return p }
 
 // ProtectionIntentClientCreateOrUpdateOptions contains the optional parameters for the ProtectionIntentClient.CreateOrUpdate
 // method.
@@ -6279,6 +8415,9 @@ type ProtectionPolicy struct {
 	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
 }
 
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type ProtectionPolicy.
+func (p *ProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy { return p }
+
 // ProtectionPolicyOperationResultsClientGetOptions contains the optional parameters for the ProtectionPolicyOperationResultsClient.Get
 // method.
 type ProtectionPolicyOperationResultsClientGetOptions struct {
@@ -6352,6 +8491,9 @@ type RecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type RecoveryPoint.
+func (r *RecoveryPoint) GetRecoveryPoint() *RecoveryPoint { return r }
 
 // RecoveryPointDiskConfiguration - Disk configuration
 type RecoveryPointDiskConfiguration struct {
@@ -6598,6 +8740,9 @@ type RestoreRequest struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetRestoreRequest implements the RestoreRequestClassification interface for type RestoreRequest.
+func (r *RestoreRequest) GetRestoreRequest() *RestoreRequest { return r }
+
 // RestoreRequestResource - Base class for restore request. Workload-specific restore requests are derived from this class.
 type RestoreRequestResource struct {
 	// Optional ETag.
@@ -6653,6 +8798,9 @@ type RetentionPolicy struct {
 	RetentionPolicyType *string `json:"retentionPolicyType,omitempty"`
 }
 
+// GetRetentionPolicy implements the RetentionPolicyClassification interface for type RetentionPolicy.
+func (r *RetentionPolicy) GetRetentionPolicy() *RetentionPolicy { return r }
+
 // SQLDataDirectory info
 type SQLDataDirectory struct {
 	// Logical name of the file
@@ -6695,6 +8843,9 @@ type SchedulePolicy struct {
 	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
 }
 
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type SchedulePolicy.
+func (s *SchedulePolicy) GetSchedulePolicy() *SchedulePolicy { return s }
+
 // SecurityPINsClientGetOptions contains the optional parameters for the SecurityPINsClient.Get method.
 type SecurityPINsClientGetOptions struct {
 	// security pin request
@@ -6729,6 +8880,13 @@ type SimpleRetentionPolicy struct {
 	RetentionDuration *RetentionDuration `json:"retentionDuration,omitempty"`
 }
 
+// GetRetentionPolicy implements the RetentionPolicyClassification interface for type SimpleRetentionPolicy.
+func (s *SimpleRetentionPolicy) GetRetentionPolicy() *RetentionPolicy {
+	return &RetentionPolicy{
+		RetentionPolicyType: s.RetentionPolicyType,
+	}
+}
+
 // SimpleSchedulePolicy - Simple policy schedule.
 type SimpleSchedulePolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -6750,6 +8908,13 @@ type SimpleSchedulePolicy struct {
 	ScheduleWeeklyFrequency *int32 `json:"scheduleWeeklyFrequency,omitempty"`
 }
 
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type SimpleSchedulePolicy.
+func (s *SimpleSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
+	return &SchedulePolicy{
+		SchedulePolicyType: s.SchedulePolicyType,
+	}
+}
+
 // SimpleSchedulePolicyV2 - The V2 policy schedule for IaaS that supports hourly backups.
 type SimpleSchedulePolicyV2 struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -6768,6 +8933,13 @@ type SimpleSchedulePolicyV2 struct {
 	WeeklySchedule *WeeklySchedule `json:"weeklySchedule,omitempty"`
 }
 
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type SimpleSchedulePolicyV2.
+func (s *SimpleSchedulePolicyV2) GetSchedulePolicy() *SchedulePolicy {
+	return &SchedulePolicy{
+		SchedulePolicyType: s.SchedulePolicyType,
+	}
+}
+
 // SubProtectionPolicy - Sub-protection policy which includes schedule and retention
 type SubProtectionPolicy struct {
 	// Type of backup policy type
@@ -6778,10 +8950,6 @@ type SubProtectionPolicy struct {
 
 	// Backup schedule specified as part of backup policy.
 	SchedulePolicy SchedulePolicyClassification `json:"schedulePolicy,omitempty"`
-
-	// Tiering policy to automatically move RPs to another tier. Key is Target Tier, defined in RecoveryPointTierType enum. Tiering
-	// policy specifies the criteria to move RP to the target tier.
-	TieringPolicy map[string]*TieringPolicy `json:"tieringPolicy,omitempty"`
 }
 
 // TargetAFSRestoreInfo - Target Azure File Share Info.
@@ -6806,23 +8974,6 @@ type TargetRestoreInfo struct {
 
 	// Target directory location for restore as files.
 	TargetDirectoryForFileRestore *string `json:"targetDirectoryForFileRestore,omitempty"`
-}
-
-// TieringPolicy - Tiering Policy for a target tier. If the policy is not specified for a given target tier, service retains
-// the existing configured tiering policy for that tier
-type TieringPolicy struct {
-	// Number of days/weeks/months/years to retain backups in current tier before tiering. Used only if TieringMode is set to
-	// TierAfter
-	Duration *int32 `json:"duration,omitempty"`
-
-	// Retention duration type: days/weeks/months/years Used only if TieringMode is set to TierAfter
-	DurationType *RetentionDurationType `json:"durationType,omitempty"`
-
-	// Tiering Mode to control automatic tiering of recovery points. Supported values are:
-	// 1. TierRecommended: Tier all recovery points recommended to be tiered
-	// 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
-	// 3. DoNotTier: Do not tier any recovery points
-	TieringMode *TieringMode `json:"tieringMode,omitempty"`
 }
 
 // TokenInformation - The token information details.
@@ -6879,6 +9030,21 @@ type ValidateIaasVMRestoreOperationRequest struct {
 	RestoreRequest RestoreRequestClassification `json:"restoreRequest,omitempty"`
 }
 
+// GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateIaasVMRestoreOperationRequest.
+func (v *ValidateIaasVMRestoreOperationRequest) GetValidateOperationRequest() *ValidateOperationRequest {
+	return &ValidateOperationRequest{
+		ObjectType: v.ObjectType,
+	}
+}
+
+// GetValidateRestoreOperationRequest implements the ValidateRestoreOperationRequestClassification interface for type ValidateIaasVMRestoreOperationRequest.
+func (v *ValidateIaasVMRestoreOperationRequest) GetValidateRestoreOperationRequest() *ValidateRestoreOperationRequest {
+	return &ValidateRestoreOperationRequest{
+		RestoreRequest: v.RestoreRequest,
+		ObjectType:     v.ObjectType,
+	}
+}
+
 // ValidateOperationClientBeginTriggerOptions contains the optional parameters for the ValidateOperationClient.BeginTrigger
 // method.
 type ValidateOperationClientBeginTriggerOptions struct {
@@ -6900,6 +9066,9 @@ type ValidateOperationRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateOperationRequest.
+func (v *ValidateOperationRequest) GetValidateOperationRequest() *ValidateOperationRequest { return v }
 
 // ValidateOperationResponse - Base class for validate operation response.
 type ValidateOperationResponse struct {
@@ -6942,6 +9111,18 @@ type ValidateRestoreOperationRequest struct {
 	RestoreRequest RestoreRequestClassification `json:"restoreRequest,omitempty"`
 }
 
+// GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateRestoreOperationRequest.
+func (v *ValidateRestoreOperationRequest) GetValidateOperationRequest() *ValidateOperationRequest {
+	return &ValidateOperationRequest{
+		ObjectType: v.ObjectType,
+	}
+}
+
+// GetValidateRestoreOperationRequest implements the ValidateRestoreOperationRequestClassification interface for type ValidateRestoreOperationRequest.
+func (v *ValidateRestoreOperationRequest) GetValidateRestoreOperationRequest() *ValidateRestoreOperationRequest {
+	return v
+}
+
 // VaultJob - Vault level Job
 type VaultJob struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -6981,6 +9162,20 @@ type VaultJob struct {
 	Status *string `json:"status,omitempty"`
 }
 
+// GetJob implements the JobClassification interface for type VaultJob.
+func (v *VaultJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   v.EntityFriendlyName,
+		BackupManagementType: v.BackupManagementType,
+		Operation:            v.Operation,
+		Status:               v.Status,
+		StartTime:            v.StartTime,
+		EndTime:              v.EndTime,
+		ActivityID:           v.ActivityID,
+		JobType:              v.JobType,
+	}
+}
+
 // VaultJobErrorInfo - Vault Job specific error information
 type VaultJobErrorInfo struct {
 	// Error code.
@@ -7012,6 +9207,12 @@ type VaultStorageConfigOperationResultResponseClassification interface {
 type VaultStorageConfigOperationResultResponse struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string `json:"objectType,omitempty"`
+}
+
+// GetVaultStorageConfigOperationResultResponse implements the VaultStorageConfigOperationResultResponseClassification interface
+// for type VaultStorageConfigOperationResultResponse.
+func (v *VaultStorageConfigOperationResultResponse) GetVaultStorageConfigOperationResultResponse() *VaultStorageConfigOperationResultResponse {
+	return v
 }
 
 // WeeklyRetentionFormat - Weekly retention format.
@@ -7083,6 +9284,9 @@ type WorkloadItem struct {
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
+// GetWorkloadItem implements the WorkloadItemClassification interface for type WorkloadItem.
+func (w *WorkloadItem) GetWorkloadItem() *WorkloadItem { return w }
+
 // WorkloadItemResource - Base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadItemResource struct {
 	// Optional ETag.
@@ -7145,6 +9349,9 @@ type WorkloadProtectableItem struct {
 	// Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type WorkloadProtectableItem.
+func (w *WorkloadProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem { return w }
 
 // WorkloadProtectableItemResource - Base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadProtectableItemResource struct {

@@ -8,6 +8,16 @@
 
 package armmonitor
 
+// ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse contains the response from method ActionGroupsClient.CreateNotificationsAtActionGroupResourceLevel.
+type ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse struct {
+	// placeholder for future response values
+}
+
+// ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse contains the response from method ActionGroupsClient.CreateNotificationsAtResourceGroupLevel.
+type ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse struct {
+	// placeholder for future response values
+}
+
 // ActionGroupsClientCreateOrUpdateResponse contains the response from method ActionGroupsClient.CreateOrUpdate.
 type ActionGroupsClientCreateOrUpdateResponse struct {
 	ActionGroupResource
@@ -28,6 +38,16 @@ type ActionGroupsClientGetResponse struct {
 	ActionGroupResource
 }
 
+// ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse contains the response from method ActionGroupsClient.GetTestNotificationsAtActionGroupResourceLevel.
+type ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse struct {
+	TestNotificationDetailsResponse
+}
+
+// ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse contains the response from method ActionGroupsClient.GetTestNotificationsAtResourceGroupLevel.
+type ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse struct {
+	TestNotificationDetailsResponse
+}
+
 // ActionGroupsClientGetTestNotificationsResponse contains the response from method ActionGroupsClient.GetTestNotifications.
 type ActionGroupsClientGetTestNotificationsResponse struct {
 	TestNotificationDetailsResponse
@@ -45,7 +65,7 @@ type ActionGroupsClientListBySubscriptionIDResponse struct {
 
 // ActionGroupsClientPostTestNotificationsResponse contains the response from method ActionGroupsClient.PostTestNotifications.
 type ActionGroupsClientPostTestNotificationsResponse struct {
-	TestNotificationResponse
+	// placeholder for future response values
 }
 
 // ActionGroupsClientUpdateResponse contains the response from method ActionGroupsClient.Update.

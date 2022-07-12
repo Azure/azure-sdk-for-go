@@ -39,7 +39,7 @@ func NewIntegrationAccountMapsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewIntegrationAccountMapsClient(subscriptionID string, credential azcore.To
 // in an Azure blob and use the blob's Shared Access Signature (SAS) URL as the 'contentLink'
 // property value.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // mapName - The integration account map name.
@@ -106,7 +107,7 @@ func (client *IntegrationAccountMapsClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, mapParam)
 }
 
@@ -121,6 +122,7 @@ func (client *IntegrationAccountMapsClient) createOrUpdateHandleResponse(resp *h
 
 // Delete - Deletes an integration account map.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // mapName - The integration account map name.
@@ -167,12 +169,13 @@ func (client *IntegrationAccountMapsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an integration account map.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // mapName - The integration account map name.
@@ -219,7 +222,7 @@ func (client *IntegrationAccountMapsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,12 +237,13 @@ func (client *IntegrationAccountMapsClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Gets a list of integration account maps.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountMapsClientListOptions contains the optional parameters for the IntegrationAccountMapsClient.List
 // method.
 func (client *IntegrationAccountMapsClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountMapsClientListOptions) *runtime.Pager[IntegrationAccountMapsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountMapsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountMapsClientListResponse]{
 		More: func(page IntegrationAccountMapsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -294,7 +298,7 @@ func (client *IntegrationAccountMapsClient) listCreateRequest(ctx context.Contex
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -309,6 +313,7 @@ func (client *IntegrationAccountMapsClient) listHandleResponse(resp *http.Respon
 
 // ListContentCallbackURL - Get the content callback url.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // mapName - The integration account map name.
@@ -355,7 +360,7 @@ func (client *IntegrationAccountMapsClient) listContentCallbackURLCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, listContentCallbackURL)
 }
 

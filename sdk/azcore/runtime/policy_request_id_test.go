@@ -15,11 +15,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func TestRequestIdPolicy(t *testing.T) {
+func TestRequestIDPolicy(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerCallPolicies: []policy.Policy{NewRequestIdPolicy()}})
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerCallPolicies: []policy.Policy{NewRequestIDPolicy()}})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

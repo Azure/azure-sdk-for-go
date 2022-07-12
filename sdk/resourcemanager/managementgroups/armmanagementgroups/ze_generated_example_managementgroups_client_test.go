@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups"
@@ -30,14 +28,13 @@ func ExampleClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armmanagementgroups.ClientListOptions{CacheControl: to.Ptr("<cache-control>"),
+	pager := client.NewListPager(&armmanagementgroups.ClientListOptions{CacheControl: to.Ptr("no-cache"),
 		Skiptoken: nil,
 	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,11 +55,11 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<group-id>",
+		"20000000-0001-0000-0000-000000000000",
 		&armmanagementgroups.ClientGetOptions{Expand: nil,
 			Recurse:      nil,
 			Filter:       nil,
-			CacheControl: to.Ptr("<cache-control>"),
+			CacheControl: to.Ptr("no-cache"),
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -83,24 +80,22 @@ func ExampleClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<group-id>",
+		"ChildGroup",
 		armmanagementgroups.CreateManagementGroupRequest{
 			Properties: &armmanagementgroups.CreateManagementGroupProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("ChildGroup"),
 				Details: &armmanagementgroups.CreateManagementGroupDetails{
 					Parent: &armmanagementgroups.CreateParentGroupInfo{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/providers/Microsoft.Management/managementGroups/RootGroup"),
 					},
 				},
 			},
 		},
-		&armmanagementgroups.ClientBeginCreateOrUpdateOptions{CacheControl: to.Ptr("<cache-control>"),
-			ResumeToken: "",
-		})
+		&armmanagementgroups.ClientBeginCreateOrUpdateOptions{CacheControl: to.Ptr("no-cache")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -120,12 +115,12 @@ func ExampleClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<group-id>",
+		"ChildGroup",
 		armmanagementgroups.PatchManagementGroupRequest{
-			DisplayName:   to.Ptr("<display-name>"),
-			ParentGroupID: to.Ptr("<parent-group-id>"),
+			DisplayName:   to.Ptr("AlternateDisplayName"),
+			ParentGroupID: to.Ptr("/providers/Microsoft.Management/managementGroups/AlternateRootGroup"),
 		},
-		&armmanagementgroups.ClientUpdateOptions{CacheControl: to.Ptr("<cache-control>")})
+		&armmanagementgroups.ClientUpdateOptions{CacheControl: to.Ptr("no-cache")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -145,14 +140,12 @@ func ExampleClient_BeginDelete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<group-id>",
-		&armmanagementgroups.ClientBeginDeleteOptions{CacheControl: to.Ptr("<cache-control>"),
-			ResumeToken: "",
-		})
+		"GroupToDelete",
+		&armmanagementgroups.ClientBeginDeleteOptions{CacheControl: to.Ptr("no-cache")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -169,7 +162,7 @@ func ExampleClient_NewGetDescendantsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDescendantsPager("<group-id>",
+	pager := client.NewGetDescendantsPager("20000000-0000-0000-0000-000000000000",
 		&armmanagementgroups.ClientGetDescendantsOptions{Skiptoken: nil,
 			Top: nil,
 		})
@@ -177,7 +170,6 @@ func ExampleClient_NewGetDescendantsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

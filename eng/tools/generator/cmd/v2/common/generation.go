@@ -46,6 +46,7 @@ type GenerateParam struct {
 	ReleaseDate         string
 	SkipGenerateExample bool
 	GoVersion           string
+	RemoveTagSet        bool
 }
 
 func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -74,6 +75,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string)
 				SkipGenerateExample: true,
 				NamespaceConfig:     packageInfo.Config,
 				GoVersion:           goVersion,
+				RemoveTagSet:        true,
 			})
 			if err != nil {
 				errors = append(errors, err)
@@ -90,6 +92,19 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
 	onBoard := false
+
+	version, err := semver.NewVersion("0.1.0")
+	if err != nil {
+		return nil, err
+	}
+	if generateParam.SpecficVersion != "" {
+		log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
+		version, err = semver.NewVersion(generateParam.SpecficVersion)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		onBoard = true
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
@@ -100,19 +115,20 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
-			SDKRoot:       ctx.SDKPath,
-			TemplatePath:  "eng/tools/generator/template/rpName/packageName",
-			PackageTitle:  generateParam.SpecficPackageTitle,
-			Commit:        ctx.SpecCommitHash,
-			PackageConfig: generateParam.NamespaceConfig,
-			GoVersion:     generateParam.GoVersion,
+			SDKRoot:        ctx.SDKPath,
+			TemplatePath:   "eng/tools/generator/template/rpName/packageName",
+			PackageTitle:   generateParam.SpecficPackageTitle,
+			Commit:         ctx.SpecCommitHash,
+			PackageConfig:  generateParam.NamespaceConfig,
+			GoVersion:      generateParam.GoVersion,
+			PackageVersion: version.String(),
 		}); err != nil {
 			return nil, err
 		}
 	} else {
 		log.Printf("Package '%s' existed, do update process", packagePath)
 
-		log.Printf("Remove all the files that start with `zz_generated_`...")
+		log.Printf("Remove all the generated files ...")
 		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
 			return nil, err
 		}
@@ -133,6 +149,15 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		}
 	}
 
+	// remove tag set
+	if generateParam.RemoveTagSet {
+		log.Printf("Remove tag set for swagger config in `autorest.md`...")
+		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		if err := RemoveTagSet(autorestMdPath); err != nil {
+			return nil, err
+		}
+	}
+
 	log.Printf("Run `go generate` to regenerate the code...")
 	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return nil, err
@@ -149,15 +174,12 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		currentAPIVersion, err := GetCurrentAPIVersion(packagePath)
+		isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
 			return nil, err
 		}
-		if strings.Contains(currentAPIVersion, "preview") {
-			isCurrentPreview = true
-		}
 
-		previousVersionTag := GetPreviousVersionTag(currentAPIVersion, tags)
+		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 
 		oriExports, err = GetExportsFromTag(*ctx.SDKRepo, packagePath, previousVersionTag)
 		if err != nil {
@@ -177,13 +199,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	if err != nil {
 		return nil, err
 	}
-
-	if !generateParam.SkipGenerateExample {
-		log.Printf("Generate examples...")
-		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
-			return nil, err
-		}
-	}
+	FilterChangelog(changelog)
 
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
@@ -191,13 +207,15 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		version := "0.1.0"
-		if generateParam.SpecficVersion != "" {
-			log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
-			version = generateParam.SpecficVersion
+		if !generateParam.SkipGenerateExample {
+			log.Printf("Generate examples...")
+			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+				return nil, err
+			}
 		}
+
 		return &GenerateResult{
-			Version:        version,
+			Version:        version.String(),
 			RPName:         generateParam.RPName,
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
@@ -206,15 +224,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
-		var version *semver.Version
 		if generateParam.SpecficVersion == "" {
 			version, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
-			version, err = semver.NewVersion(generateParam.SpecficVersion)
 			if err != nil {
 				return nil, err
 			}
@@ -226,9 +237,23 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
+		log.Printf("Update module definition if v2+...")
+		err = UpdateModuleDefinition(packagePath, generateParam.RPName, generateParam.NamespaceName, version)
+		if err != nil {
+			return nil, err
+		}
+
 		log.Printf("Replace version in autorest.md and constants...")
 		if err = ReplaceVersion(packagePath, version.String()); err != nil {
 			return nil, err
+		}
+
+		// Example generation should be the last step because the package import relay on the new calculated version
+		if !generateParam.SkipGenerateExample {
+			log.Printf("Generate examples...")
+			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+				return nil, err
+			}
 		}
 
 		return &GenerateResult{

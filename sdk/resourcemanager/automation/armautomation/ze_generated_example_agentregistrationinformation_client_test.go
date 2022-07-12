@@ -24,13 +24,13 @@ func ExampleAgentRegistrationInformationClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewAgentRegistrationInformationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewAgentRegistrationInformationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
+		"rg",
+		"myAutomationAccount18",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,13 +46,13 @@ func ExampleAgentRegistrationInformationClient_RegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewAgentRegistrationInformationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewAgentRegistrationInformationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKey(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
+		"rg",
+		"myAutomationAccount18",
 		armautomation.AgentRegistrationRegenerateKeyParameter{
 			KeyName: to.Ptr(armautomation.AgentRegistrationKeyNamePrimary),
 		},

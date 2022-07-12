@@ -24,19 +24,18 @@ func ExampleSQLPoolGeoBackupPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolGeoBackupPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolGeoBackupPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+	pager := client.NewListPager("sqlcrudtest-4799",
+		"sqlcrudtest-5961",
+		"testdw",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,14 +51,14 @@ func ExampleSQLPoolGeoBackupPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolGeoBackupPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolGeoBackupPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+		"testrg",
+		"testws",
+		"testdw",
 		armsynapse.GeoBackupPolicyNameDefault,
 		armsynapse.GeoBackupPolicy{
 			Properties: &armsynapse.GeoBackupPolicyProperties{
@@ -81,14 +80,14 @@ func ExampleSQLPoolGeoBackupPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolGeoBackupPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolGeoBackupPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+		"sqlcrudtest-4799",
+		"sqlcrudtest-5961",
+		"testdw",
 		armsynapse.GeoBackupPolicyNameDefault,
 		nil)
 	if err != nil {

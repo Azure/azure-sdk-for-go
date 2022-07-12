@@ -10,10 +10,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 )
 
 // SubscriptionProperties represents the static properties of the subscription.
@@ -140,17 +139,7 @@ func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscri
 	_, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		var respError *azcore.ResponseError
-
-		if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetSubscriptionResponse](err)
 	}
 
 	item, err := newSubscriptionItem(atomResp, topicName)
@@ -181,17 +170,7 @@ func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicNam
 	_, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		var respError *azcore.ResponseError
-
-		if errors.As(err, &respError) && respError.StatusCode == http.StatusNotFound {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetSubscriptionRuntimePropertiesResponse](err)
 	}
 
 	item, err := newSubscriptionRuntimePropertiesItem(atomResp, topicName)
@@ -225,8 +204,8 @@ type ListSubscriptionsResponse struct {
 	Subscriptions []SubscriptionPropertiesItem
 }
 
-// ListSubscriptions lists subscriptions for a topic.
-func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptionsOptions) *runtime.Pager[ListSubscriptionsResponse] {
+// NewListSubscriptionsPager creates a pager than can list subscriptions for a topic.
+func (ac *Client) NewListSubscriptionsPager(topicName string, options *ListSubscriptionsOptions) *runtime.Pager[ListSubscriptionsResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -242,7 +221,7 @@ func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptions
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListSubscriptionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListSubscriptionsResponse]{
 		More: func(ltr ListSubscriptionsResponse) bool {
 			return ep.More()
 		},
@@ -280,8 +259,8 @@ type ListSubscriptionsRuntimePropertiesResponse struct {
 	SubscriptionRuntimeProperties []SubscriptionRuntimePropertiesItem
 }
 
-// ListSubscriptionsRuntimeProperties lists runtime properties for subscriptions for a topic.
-func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) *runtime.Pager[ListSubscriptionsRuntimePropertiesResponse] {
+// NewListSubscriptionsRuntimePropertiesPager creates a pager than can list runtime properties for subscriptions for a topic.
+func (ac *Client) NewListSubscriptionsRuntimePropertiesPager(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) *runtime.Pager[ListSubscriptionsRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -297,7 +276,7 @@ func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListSubscriptionsRuntimePropertiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListSubscriptionsRuntimePropertiesResponse]{
 		More: func(ltr ListSubscriptionsRuntimePropertiesResponse) bool {
 			return ep.More()
 		},
@@ -360,20 +339,20 @@ func (ac *Client) createOrUpdateSubscriptionImpl(ctx context.Context, topicName 
 	}
 
 	env := newSubscriptionEnvelope(props, ac.em.TokenProvider())
-	var mw []atom.MiddlewareFunc
 
 	if !creating {
-		// an update requires the entity to already exist.
-		mw = append(mw, func(next atom.RestHandler) atom.RestHandler {
-			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-				req.Header.Set("If-Match", "*")
-				return next(ctx, req)
-			}
+		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+			"If-Match": []string{"*"},
 		})
 	}
 
+	executeOpts := &atom.ExecuteOptions{
+		ForwardTo:           props.ForwardTo,
+		ForwardToDeadLetter: props.ForwardDeadLetteredMessagesTo,
+	}
+
 	var atomResp *atom.SubscriptionEnvelope
-	resp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), env, &atomResp, mw...)
+	resp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), env, &atomResp, executeOpts)
 
 	if err != nil {
 		return nil, nil, err
@@ -436,6 +415,10 @@ func newSubscriptionItem(env *atom.SubscriptionEnvelope, topicName string) (*Sub
 
 func newSubscriptionRuntimePropertiesItem(env *atom.SubscriptionEnvelope, topicName string) (*SubscriptionRuntimePropertiesItem, error) {
 	desc := env.Content.SubscriptionDescription
+
+	if desc.CountDetails == nil {
+		return nil, errors.New("invalid subscription runtime properties: no CountDetails element")
+	}
 
 	rtp := SubscriptionRuntimeProperties{
 		TotalMessageCount:              *desc.MessageCount,

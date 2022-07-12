@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
@@ -26,20 +24,19 @@ func ExampleAdaptiveNetworkHardeningsClient_NewListByExtendedResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByExtendedResourcePager("<resource-group-name>",
-		"<resource-namespace>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListByExtendedResourcePager("rg1",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"vm1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,16 +52,16 @@ func ExampleAdaptiveNetworkHardeningsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-namespace>",
-		"<resource-type>",
-		"<resource-name>",
-		"<adaptive-network-hardening-resource-name>",
+		"rg1",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"vm1",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,23 +77,23 @@ func ExampleAdaptiveNetworkHardeningsClient_BeginEnforce() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginEnforce(ctx,
-		"<resource-group-name>",
-		"<resource-namespace>",
-		"<resource-type>",
-		"<resource-name>",
-		"<adaptive-network-hardening-resource-name>",
+		"rg1",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"vm1",
+		"default",
 		armsecurity.AdaptiveNetworkHardeningEnforceRequest{
 			NetworkSecurityGroups: []*string{
 				to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
 				to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg2/providers/Microsoft.Network/networkSecurityGroups/nsg2")},
 			Rules: []*armsecurity.Rule{
 				{
-					Name:            to.Ptr("<name>"),
+					Name:            to.Ptr("rule1"),
 					DestinationPort: to.Ptr[int32](3389),
 					Direction:       to.Ptr(armsecurity.DirectionInbound),
 					IPAddresses: []*string{
@@ -107,7 +104,7 @@ func ExampleAdaptiveNetworkHardeningsClient_BeginEnforce() {
 						to.Ptr(armsecurity.TransportProtocolTCP)},
 				},
 				{
-					Name:            to.Ptr("<name>"),
+					Name:            to.Ptr("rule2"),
 					DestinationPort: to.Ptr[int32](22),
 					Direction:       to.Ptr(armsecurity.DirectionInbound),
 					IPAddresses:     []*string{},
@@ -115,11 +112,11 @@ func ExampleAdaptiveNetworkHardeningsClient_BeginEnforce() {
 						to.Ptr(armsecurity.TransportProtocolTCP)},
 				}},
 		},
-		&armsecurity.AdaptiveNetworkHardeningsClientBeginEnforceOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

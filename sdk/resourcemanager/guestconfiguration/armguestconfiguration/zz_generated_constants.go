@@ -10,7 +10,7 @@ package armguestconfiguration
 
 const (
 	moduleName    = "armguestconfiguration"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionAfterReboot - Specifies what happens after a reboot during the application of a configuration. The possible values
@@ -85,6 +85,26 @@ func PossibleConfigurationModeValues() []ConfigurationMode {
 		ConfigurationModeApplyAndAutoCorrect,
 		ConfigurationModeApplyAndMonitor,
 		ConfigurationModeApplyOnly,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 

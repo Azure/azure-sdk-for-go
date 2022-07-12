@@ -36,7 +36,7 @@ func NewReservationTransactionsClient(credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,11 +53,12 @@ func NewReservationTransactionsClient(credential azcore.TokenCredential, options
 
 // NewListPager - List of transactions for reserved instances on billing account scope
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // billingAccountID - BillingAccount ID
 // options - ReservationTransactionsClientListOptions contains the optional parameters for the ReservationTransactionsClient.List
 // method.
 func (client *ReservationTransactionsClient) NewListPager(billingAccountID string, options *ReservationTransactionsClientListOptions) *runtime.Pager[ReservationTransactionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationTransactionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationTransactionsClientListResponse]{
 		More: func(page ReservationTransactionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -101,7 +102,7 @@ func (client *ReservationTransactionsClient) listCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,12 +117,13 @@ func (client *ReservationTransactionsClient) listHandleResponse(resp *http.Respo
 
 // NewListByBillingProfilePager - List of transactions for reserved instances on billing account scope
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // billingAccountID - BillingAccount ID
 // billingProfileID - Azure Billing Profile ID.
 // options - ReservationTransactionsClientListByBillingProfileOptions contains the optional parameters for the ReservationTransactionsClient.ListByBillingProfile
 // method.
 func (client *ReservationTransactionsClient) NewListByBillingProfilePager(billingAccountID string, billingProfileID string, options *ReservationTransactionsClientListByBillingProfileOptions) *runtime.Pager[ReservationTransactionsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationTransactionsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationTransactionsClientListByBillingProfileResponse]{
 		More: func(page ReservationTransactionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -169,7 +171,7 @@ func (client *ReservationTransactionsClient) listByBillingProfileCreateRequest(c
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

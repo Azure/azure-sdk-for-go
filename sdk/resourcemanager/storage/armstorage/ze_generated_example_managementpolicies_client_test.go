@@ -24,13 +24,13 @@ func ExampleManagementPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewManagementPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res6977",
+		"sto2527",
 		armstorage.ManagementPolicyNameDefault,
 		nil)
 	if err != nil {
@@ -47,20 +47,20 @@ func ExampleManagementPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewManagementPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res7687",
+		"sto9699",
 		armstorage.ManagementPolicyNameDefault,
 		armstorage.ManagementPolicy{
 			Properties: &armstorage.ManagementPolicyProperties{
 				Policy: &armstorage.ManagementPolicySchema{
 					Rules: []*armstorage.ManagementPolicyRule{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("olcmtest1"),
 							Type: to.Ptr(armstorage.RuleTypeLifecycle),
 							Definition: &armstorage.ManagementPolicyDefinition{
 								Actions: &armstorage.ManagementPolicyAction{
@@ -91,7 +91,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate() {
 							Enabled: to.Ptr(true),
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("olcmtest2"),
 							Type: to.Ptr(armstorage.RuleTypeLifecycle),
 							Definition: &armstorage.ManagementPolicyDefinition{
 								Actions: &armstorage.ManagementPolicyAction{
@@ -110,14 +110,14 @@ func ExampleManagementPoliciesClient_CreateOrUpdate() {
 								Filters: &armstorage.ManagementPolicyFilter{
 									BlobIndexMatch: []*armstorage.TagFilter{
 										{
-											Name:  to.Ptr("<name>"),
-											Op:    to.Ptr("<op>"),
-											Value: to.Ptr("<value>"),
+											Name:  to.Ptr("tag1"),
+											Op:    to.Ptr("=="),
+											Value: to.Ptr("val1"),
 										},
 										{
-											Name:  to.Ptr("<name>"),
-											Op:    to.Ptr("<op>"),
-											Value: to.Ptr("<value>"),
+											Name:  to.Ptr("tag2"),
+											Op:    to.Ptr("=="),
+											Value: to.Ptr("val2"),
 										}},
 									BlobTypes: []*string{
 										to.Ptr("blockBlob")},
@@ -145,13 +145,13 @@ func ExampleManagementPoliciesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewManagementPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewManagementPoliciesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res6977",
+		"sto2527",
 		armstorage.ManagementPolicyNameDefault,
 		nil)
 	if err != nil {

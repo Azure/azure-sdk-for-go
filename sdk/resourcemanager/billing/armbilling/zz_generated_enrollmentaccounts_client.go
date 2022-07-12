@@ -36,7 +36,7 @@ func NewEnrollmentAccountsClient(credential azcore.TokenCredential, options *arm
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewEnrollmentAccountsClient(credential azcore.TokenCredential, options *arm
 
 // Get - Gets a enrollment account by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-preview
 // name - Enrollment Account name.
 // options - EnrollmentAccountsClientGetOptions contains the optional parameters for the EnrollmentAccountsClient.Get method.
 func (client *EnrollmentAccountsClient) Get(ctx context.Context, name string, options *EnrollmentAccountsClientGetOptions) (EnrollmentAccountsClientGetResponse, error) {
@@ -84,7 +85,7 @@ func (client *EnrollmentAccountsClient) getCreateRequest(ctx context.Context, na
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -99,9 +100,10 @@ func (client *EnrollmentAccountsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Lists the enrollment accounts the caller has access to.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-preview
 // options - EnrollmentAccountsClientListOptions contains the optional parameters for the EnrollmentAccountsClient.List method.
 func (client *EnrollmentAccountsClient) NewListPager(options *EnrollmentAccountsClientListOptions) *runtime.Pager[EnrollmentAccountsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnrollmentAccountsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnrollmentAccountsClientListResponse]{
 		More: func(page EnrollmentAccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -138,7 +140,7 @@ func (client *EnrollmentAccountsClient) listCreateRequest(ctx context.Context, o
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

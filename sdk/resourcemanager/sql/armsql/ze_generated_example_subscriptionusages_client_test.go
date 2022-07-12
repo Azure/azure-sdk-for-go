@@ -23,17 +23,16 @@ func ExampleSubscriptionUsagesClient_NewListByLocationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSubscriptionUsagesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSubscriptionUsagesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocationPager("<location-name>",
+	pager := client.NewListByLocationPager("WestUS",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,13 +48,13 @@ func ExampleSubscriptionUsagesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSubscriptionUsagesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSubscriptionUsagesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<usage-name>",
+		"WestUS",
+		"ServerQuota",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

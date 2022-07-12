@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
@@ -26,12 +24,12 @@ func ExamplePortalRevisionClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewPortalRevisionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewPortalRevisionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.PortalRevisionClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -40,7 +38,6 @@ func ExamplePortalRevisionClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,14 +53,14 @@ func ExamplePortalRevisionClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewPortalRevisionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewPortalRevisionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<portal-revision-id>",
+		"rg1",
+		"apimService1",
+		"20201112101010",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,14 +74,14 @@ func ExamplePortalRevisionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewPortalRevisionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewPortalRevisionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<portal-revision-id>",
+		"rg1",
+		"apimService1",
+		"20201112101010",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -100,25 +97,25 @@ func ExamplePortalRevisionClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewPortalRevisionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewPortalRevisionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<portal-revision-id>",
+		"rg1",
+		"apimService1",
+		"20201112101010",
 		armapimanagement.PortalRevisionContract{
 			Properties: &armapimanagement.PortalRevisionContractProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("portal revision 1"),
 				IsCurrent:   to.Ptr(true),
 			},
 		},
-		&armapimanagement.PortalRevisionClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -131,26 +128,26 @@ func ExamplePortalRevisionClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewPortalRevisionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewPortalRevisionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<portal-revision-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"20201112101010",
+		"*",
 		armapimanagement.PortalRevisionContract{
 			Properties: &armapimanagement.PortalRevisionContractProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("portal revision update"),
 				IsCurrent:   to.Ptr(true),
 			},
 		},
-		&armapimanagement.PortalRevisionClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

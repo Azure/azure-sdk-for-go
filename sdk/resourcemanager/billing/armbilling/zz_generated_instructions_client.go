@@ -36,7 +36,7 @@ func NewInstructionsClient(credential azcore.TokenCredential, options *arm.Clien
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewInstructionsClient(credential azcore.TokenCredential, options *arm.Clien
 
 // Get - Get the instruction by name. These are custom billing instructions and are only applicable for certain customers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // instructionName - Instruction Name.
@@ -94,7 +95,7 @@ func (client *InstructionsClient) getCreateRequest(ctx context.Context, billingA
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -109,12 +110,13 @@ func (client *InstructionsClient) getHandleResponse(resp *http.Response) (Instru
 
 // NewListByBillingProfilePager - Lists the instructions by billing profile id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - InstructionsClientListByBillingProfileOptions contains the optional parameters for the InstructionsClient.ListByBillingProfile
 // method.
 func (client *InstructionsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *InstructionsClientListByBillingProfileOptions) *runtime.Pager[InstructionsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InstructionsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InstructionsClientListByBillingProfileResponse]{
 		More: func(page InstructionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -159,7 +161,7 @@ func (client *InstructionsClient) listByBillingProfileCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -174,6 +176,7 @@ func (client *InstructionsClient) listByBillingProfileHandleResponse(resp *http.
 
 // Put - Creates or updates an instruction. These are custom billing instructions and are only applicable for certain customers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // instructionName - Instruction Name.
@@ -216,7 +219,7 @@ func (client *InstructionsClient) putCreateRequest(ctx context.Context, billingA
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

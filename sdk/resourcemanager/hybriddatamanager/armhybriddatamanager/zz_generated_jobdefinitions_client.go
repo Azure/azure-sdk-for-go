@@ -38,7 +38,7 @@ func NewJobDefinitionsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewJobDefinitionsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Creates or updates a job definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataServiceName - The data service type of the job definition.
 // jobDefinitionName - The job definition name to be created or updated.
 // resourceGroupName - The Resource Group Name
@@ -64,20 +65,21 @@ func NewJobDefinitionsClient(subscriptionID string, credential azcore.TokenCrede
 // jobDefinition - Job Definition object to be created or updated.
 // options - JobDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobDefinitionsClient.BeginCreateOrUpdate
 // method.
-func (client *JobDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, jobDefinition JobDefinition, options *JobDefinitionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[JobDefinitionsClientCreateOrUpdateResponse], error) {
+func (client *JobDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, jobDefinition JobDefinition, options *JobDefinitionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JobDefinitionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, jobDefinition, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobDefinitionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobDefinitionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a job definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 func (client *JobDefinitionsClient) createOrUpdate(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, jobDefinition JobDefinition, options *JobDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, jobDefinition, options)
 	if err != nil {
@@ -123,12 +125,13 @@ func (client *JobDefinitionsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, jobDefinition)
 }
 
 // BeginDelete - This method deletes the given job definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataServiceName - The data service type of the job definition.
 // jobDefinitionName - The job definition name to be deleted.
 // resourceGroupName - The Resource Group Name
@@ -136,20 +139,21 @@ func (client *JobDefinitionsClient) createOrUpdateCreateRequest(ctx context.Cont
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobDefinitionsClientBeginDeleteOptions contains the optional parameters for the JobDefinitionsClient.BeginDelete
 // method.
-func (client *JobDefinitionsClient) BeginDelete(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobDefinitionsClientBeginDeleteOptions) (*armruntime.Poller[JobDefinitionsClientDeleteResponse], error) {
+func (client *JobDefinitionsClient) BeginDelete(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobDefinitionsClientBeginDeleteOptions) (*runtime.Poller[JobDefinitionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobDefinitionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobDefinitionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobDefinitionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobDefinitionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - This method deletes the given job definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 func (client *JobDefinitionsClient) deleteOperation(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, options)
 	if err != nil {
@@ -200,6 +204,7 @@ func (client *JobDefinitionsClient) deleteCreateRequest(ctx context.Context, dat
 
 // Get - This method gets job definition object by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataServiceName - The data service name of the job definition
 // jobDefinitionName - The job definition name that is being queried.
 // resourceGroupName - The Resource Group Name
@@ -251,7 +256,7 @@ func (client *JobDefinitionsClient) getCreateRequest(ctx context.Context, dataSe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -266,13 +271,14 @@ func (client *JobDefinitionsClient) getHandleResponse(resp *http.Response) (JobD
 
 // NewListByDataManagerPager - This method gets all the job definitions of the given data manager resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - JobDefinitionsClientListByDataManagerOptions contains the optional parameters for the JobDefinitionsClient.ListByDataManager
 // method.
 func (client *JobDefinitionsClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *JobDefinitionsClientListByDataManagerOptions) *runtime.Pager[JobDefinitionsClientListByDataManagerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobDefinitionsClientListByDataManagerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobDefinitionsClientListByDataManagerResponse]{
 		More: func(page JobDefinitionsClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -324,7 +330,7 @@ func (client *JobDefinitionsClient) listByDataManagerCreateRequest(ctx context.C
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -339,6 +345,7 @@ func (client *JobDefinitionsClient) listByDataManagerHandleResponse(resp *http.R
 
 // NewListByDataServicePager - This method gets all the job definitions of the given data service name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataServiceName - The data service type of interest.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
@@ -346,7 +353,7 @@ func (client *JobDefinitionsClient) listByDataManagerHandleResponse(resp *http.R
 // options - JobDefinitionsClientListByDataServiceOptions contains the optional parameters for the JobDefinitionsClient.ListByDataService
 // method.
 func (client *JobDefinitionsClient) NewListByDataServicePager(dataServiceName string, resourceGroupName string, dataManagerName string, options *JobDefinitionsClientListByDataServiceOptions) *runtime.Pager[JobDefinitionsClientListByDataServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobDefinitionsClientListByDataServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobDefinitionsClientListByDataServiceResponse]{
 		More: func(page JobDefinitionsClientListByDataServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -402,7 +409,7 @@ func (client *JobDefinitionsClient) listByDataServiceCreateRequest(ctx context.C
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -417,6 +424,7 @@ func (client *JobDefinitionsClient) listByDataServiceHandleResponse(resp *http.R
 
 // BeginRun - This method runs a job instance of the given job definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataServiceName - The data service type of the job definition.
 // jobDefinitionName - Name of the job definition.
 // resourceGroupName - The Resource Group Name
@@ -424,20 +432,21 @@ func (client *JobDefinitionsClient) listByDataServiceHandleResponse(resp *http.R
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // runParameters - Run time parameters for the job definition.
 // options - JobDefinitionsClientBeginRunOptions contains the optional parameters for the JobDefinitionsClient.BeginRun method.
-func (client *JobDefinitionsClient) BeginRun(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, runParameters RunParameters, options *JobDefinitionsClientBeginRunOptions) (*armruntime.Poller[JobDefinitionsClientRunResponse], error) {
+func (client *JobDefinitionsClient) BeginRun(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, runParameters RunParameters, options *JobDefinitionsClientBeginRunOptions) (*runtime.Poller[JobDefinitionsClientRunResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.run(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, runParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[JobDefinitionsClientRunResponse](resp, client.pl, nil)
+		return runtime.NewPoller[JobDefinitionsClientRunResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[JobDefinitionsClientRunResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobDefinitionsClientRunResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Run - This method runs a job instance of the given job definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 func (client *JobDefinitionsClient) run(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, runParameters RunParameters, options *JobDefinitionsClientBeginRunOptions) (*http.Response, error) {
 	req, err := client.runCreateRequest(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, runParameters, options)
 	if err != nil {

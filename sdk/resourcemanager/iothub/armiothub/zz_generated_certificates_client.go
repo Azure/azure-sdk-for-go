@@ -38,7 +38,7 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdate - Adds new or replaces existing certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // certificateName - The name of the certificate
@@ -104,9 +105,9 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificateDescription)
 }
 
@@ -121,6 +122,7 @@ func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Deletes an existing X509 certificate or does nothing if it does not exist.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // certificateName - The name of the certificate
@@ -167,14 +169,15 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GenerateVerificationCode - Generates verification code for proof of possession flow. The verification code will be used
 // to generate a leaf certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // certificateName - The name of the certificate
@@ -222,8 +225,8 @@ func (client *CertificatesClient) generateVerificationCodeCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,6 +241,7 @@ func (client *CertificatesClient) generateVerificationCodeHandleResponse(resp *h
 
 // Get - Returns the certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // certificateName - The name of the certificate
@@ -283,7 +287,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -298,6 +302,7 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 
 // ListByIotHub - Returns the list of certificates.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // options - CertificatesClientListByIotHubOptions contains the optional parameters for the CertificatesClient.ListByIotHub
@@ -339,7 +344,7 @@ func (client *CertificatesClient) listByIotHubCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -355,6 +360,7 @@ func (client *CertificatesClient) listByIotHubHandleResponse(resp *http.Response
 // Verify - Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
 // certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // certificateName - The name of the certificate
@@ -402,8 +408,8 @@ func (client *CertificatesClient) verifyCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificateVerificationBody)
 }
 

@@ -39,7 +39,7 @@ func NewQuotaByCounterKeysClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewQuotaByCounterKeysClient(subscriptionID string, credential azcore.TokenC
 // ListByService - Lists a collection of current quota counter periods associated with the counter-key configured in the policy
 // on the specified service instance. The api does not support paging yet.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // quotaCounterKey - Quota counter key identifier.This is the result of expression defined in counter-key attribute of the
@@ -106,7 +107,7 @@ func (client *QuotaByCounterKeysClient) listByServiceCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -122,6 +123,7 @@ func (client *QuotaByCounterKeysClient) listByServiceHandleResponse(resp *http.R
 // Update - Updates all the quota counter values specified with the existing quota counter key to a value in the specified
 // service instance. This should be used for reset of the quota counter values.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // quotaCounterKey - Quota counter key identifier.This is the result of expression defined in counter-key attribute of the
@@ -171,7 +173,7 @@ func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

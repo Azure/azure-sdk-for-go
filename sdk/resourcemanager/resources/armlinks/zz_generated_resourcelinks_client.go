@@ -38,7 +38,7 @@ func NewResourceLinksClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewResourceLinksClient(subscriptionID string, credential azcore.TokenCreden
 
 // CreateOrUpdate - Creates or updates a resource link between the specified resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
 // linkID - The fully qualified ID of the resource link. Use the format,
 // /subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/{provider-namespace}/{resource-type}/{resource-name}/Microsoft.Resources/links/{link-name}.
 // For example,
@@ -89,7 +90,7 @@ func (client *ResourceLinksClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -104,6 +105,7 @@ func (client *ResourceLinksClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Deletes a resource link with the specified ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
 // linkID - The fully qualified ID of the resource link. Use the format,
 // /subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/{provider-namespace}/{resource-type}/{resource-name}/Microsoft.Resources/links/{link-name}.
 // For example,
@@ -140,6 +142,7 @@ func (client *ResourceLinksClient) deleteCreateRequest(ctx context.Context, link
 
 // Get - Gets a resource link with the specified ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
 // linkID - The fully qualified Id of the resource link. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
 // options - ResourceLinksClientGetOptions contains the optional parameters for the ResourceLinksClient.Get method.
 func (client *ResourceLinksClient) Get(ctx context.Context, linkID string, options *ResourceLinksClientGetOptions) (ResourceLinksClientGetResponse, error) {
@@ -168,7 +171,7 @@ func (client *ResourceLinksClient) getCreateRequest(ctx context.Context, linkID 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -183,13 +186,14 @@ func (client *ResourceLinksClient) getHandleResponse(resp *http.Response) (Resou
 
 // NewListAtSourceScopePager - Gets a list of resource links at and below the specified source scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
 // scope - The fully qualified ID of the scope for getting the resource links. For example, to list resource links at and
 // under a resource group, set the scope to
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup.
 // options - ResourceLinksClientListAtSourceScopeOptions contains the optional parameters for the ResourceLinksClient.ListAtSourceScope
 // method.
 func (client *ResourceLinksClient) NewListAtSourceScopePager(scope string, options *ResourceLinksClientListAtSourceScopeOptions) *runtime.Pager[ResourceLinksClientListAtSourceScopeResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourceLinksClientListAtSourceScopeResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourceLinksClientListAtSourceScopeResponse]{
 		More: func(page ResourceLinksClientListAtSourceScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -230,7 +234,7 @@ func (client *ResourceLinksClient) listAtSourceScopeCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2016-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -245,10 +249,11 @@ func (client *ResourceLinksClient) listAtSourceScopeHandleResponse(resp *http.Re
 
 // NewListAtSubscriptionPager - Gets all the linked resources for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
 // options - ResourceLinksClientListAtSubscriptionOptions contains the optional parameters for the ResourceLinksClient.ListAtSubscription
 // method.
 func (client *ResourceLinksClient) NewListAtSubscriptionPager(options *ResourceLinksClientListAtSubscriptionOptions) *runtime.Pager[ResourceLinksClientListAtSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourceLinksClientListAtSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourceLinksClientListAtSubscriptionResponse]{
 		More: func(page ResourceLinksClientListAtSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -292,7 +297,7 @@ func (client *ResourceLinksClient) listAtSubscriptionCreateRequest(ctx context.C
 	}
 	reqQP.Set("api-version", "2016-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

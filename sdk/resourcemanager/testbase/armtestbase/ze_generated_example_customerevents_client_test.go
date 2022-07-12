@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase"
@@ -26,18 +24,17 @@ func ExampleCustomerEventsClient_NewListByTestBaseAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewCustomerEventsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewCustomerEventsClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTestBaseAccountPager("<resource-group-name>",
-		"<test-base-account-name>",
+	pager := client.NewListByTestBaseAccountPager("contoso-rg1",
+		"contoso-testBaseAccount1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,20 +50,20 @@ func ExampleCustomerEventsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewCustomerEventsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewCustomerEventsClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<customer-event-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"WeeklySummary",
 		armtestbase.CustomerEventResource{
 			Properties: &armtestbase.CustomerEventProperties{
-				EventName: to.Ptr("<event-name>"),
+				EventName: to.Ptr("WeeklySummary"),
 				Receivers: []*armtestbase.NotificationEventReceiver{
 					{
-						ReceiverType: to.Ptr("<receiver-type>"),
+						ReceiverType: to.Ptr("UserObjects"),
 						ReceiverValue: &armtestbase.NotificationReceiverValue{
 							UserObjectReceiverValue: &armtestbase.UserObjectReceiverValue{
 								UserObjectIDs: []*string{
@@ -76,7 +73,7 @@ func ExampleCustomerEventsClient_BeginCreate() {
 						},
 					},
 					{
-						ReceiverType: to.Ptr("<receiver-type>"),
+						ReceiverType: to.Ptr("DistributionGroup"),
 						ReceiverValue: &armtestbase.NotificationReceiverValue{
 							DistributionGroupListReceiverValue: &armtestbase.DistributionGroupListReceiverValue{
 								DistributionGroups: []*string{
@@ -86,11 +83,11 @@ func ExampleCustomerEventsClient_BeginCreate() {
 					}},
 			},
 		},
-		&armtestbase.CustomerEventsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -105,19 +102,19 @@ func ExampleCustomerEventsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewCustomerEventsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewCustomerEventsClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<customer-event-name>",
-		&armtestbase.CustomerEventsClientBeginDeleteOptions{ResumeToken: ""})
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"WeeklySummary",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -130,14 +127,14 @@ func ExampleCustomerEventsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewCustomerEventsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewCustomerEventsClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<customer-event-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"WeeklySummary",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

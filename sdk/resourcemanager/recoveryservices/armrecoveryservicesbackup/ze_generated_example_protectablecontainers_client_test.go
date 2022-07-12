@@ -17,26 +17,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectableContainers_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureStorage/ProtectableContainers_List.json
 func ExampleProtectableContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectableContainersClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectableContainersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<vault-name>",
-		"<resource-group-name>",
-		"<fabric-name>",
-		&armrecoveryservicesbackup.ProtectableContainersClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager("testvault",
+		"testRg",
+		"Azure",
+		&armrecoveryservicesbackup.ProtectableContainersClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureStorage' and workloadType eq 'AzureFileShare'")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

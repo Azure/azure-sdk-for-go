@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 )
 
 // QueueProperties represents the static properties of the queue.
@@ -72,6 +72,13 @@ type QueueProperties struct {
 
 	// UserMetadata is custom metadata that user can associate with the queue.
 	UserMetadata *string
+
+	// AuthorizationRules are the authorization rules for this entity.
+	AuthorizationRules []AuthorizationRule
+
+	// Maximum size (in KB) of the message payload that can be accepted by the queue. This feature is only available when
+	// using Service Bus Premium.
+	MaxMessageSizeInKilobytes *int64
 }
 
 // QueueRuntimeProperties represent dynamic properties of a queue, such as the ActiveMessageCount.
@@ -178,11 +185,7 @@ func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQu
 	_, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetQueueResponse](err)
 	}
 
 	queueItem, err := newQueueItem(atomResp)
@@ -213,11 +216,7 @@ func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName strin
 	_, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetQueueRuntimePropertiesResponse](err)
 	}
 
 	item, err := newQueueRuntimePropertiesItem(atomResp)
@@ -264,8 +263,8 @@ type QueueItem struct {
 	QueueProperties
 }
 
-// ListQueues lists queues.
-func (ac *Client) ListQueues(options *ListQueuesOptions) *runtime.Pager[ListQueuesResponse] {
+// NewListQueuesPager creates a pager that can be used to list queues.
+func (ac *Client) NewListQueuesPager(options *ListQueuesOptions) *runtime.Pager[ListQueuesResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -279,7 +278,7 @@ func (ac *Client) ListQueues(options *ListQueuesOptions) *runtime.Pager[ListQueu
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListQueuesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListQueuesResponse]{
 		More: func(ltr ListQueuesResponse) bool {
 			return ep.More()
 		},
@@ -314,8 +313,8 @@ type QueueRuntimePropertiesItem struct {
 	QueueRuntimeProperties
 }
 
-// ListQueuesRuntimeProperties lists runtime properties for queues.
-func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) *runtime.Pager[ListQueuesRuntimePropertiesResponse] {
+// NewListQueuesRuntimePropertiesPager creates a pager that lists the runtime properties for queues.
+func (ac *Client) NewListQueuesRuntimePropertiesPager(options *ListQueuesRuntimePropertiesOptions) *runtime.Pager[ListQueuesRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -329,7 +328,7 @@ func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimeProperti
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListQueuesRuntimePropertiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListQueuesRuntimePropertiesResponse]{
 		More: func(ltr ListQueuesRuntimePropertiesResponse) bool {
 			return ep.More()
 		},
@@ -352,20 +351,22 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 		props = &QueueProperties{}
 	}
 
-	env, mw := newQueueEnvelope(props, ac.em.TokenProvider())
+	env := newQueueEnvelope(props, ac.em.TokenProvider())
 
 	if !creating {
-		// an update requires the entity to already exist.
-		mw = append(mw, func(next atom.RestHandler) atom.RestHandler {
-			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-				req.Header.Set("If-Match", "*")
-				return next(ctx, req)
-			}
+		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+			"If-Match": []string{"*"},
 		})
 	}
 
+	executeOpts := &atom.ExecuteOptions{
+		ForwardTo:           props.ForwardTo,
+		ForwardToDeadLetter: props.ForwardDeadLetteredMessagesTo,
+	}
+
 	var atomResp *atom.QueueEnvelope
-	resp, err := ac.em.Put(ctx, "/"+queueName, env, &atomResp, mw...)
+
+	resp, err := ac.em.Put(ctx, "/"+queueName, env, &atomResp, executeOpts)
 
 	if err != nil {
 		return nil, nil, err
@@ -380,7 +381,7 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 	return &item.QueueProperties, resp, nil
 }
 
-func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) (*atom.QueueEnvelope, []atom.MiddlewareFunc) {
+func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) *atom.QueueEnvelope {
 	qpr := &atom.QueueDescription{
 		LockDuration:                        props.LockDuration,
 		MaxSizeInMegabytes:                  props.MaxSizeInMegabytes,
@@ -397,6 +398,8 @@ func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) 
 		ForwardTo:                           props.ForwardTo,
 		ForwardDeadLetteredMessagesTo:       props.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                        props.UserMetadata,
+		AuthorizationRules:                  publicAccessRightsToInternal(props.AuthorizationRules),
+		MaxMessageSizeInKilobytes:           props.MaxMessageSizeInKilobytes,
 	}
 
 	return atom.WrapWithQueueEnvelope(qpr, tokenProvider)
@@ -421,6 +424,8 @@ func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
 		ForwardTo:                           desc.ForwardTo,
 		ForwardDeadLetteredMessagesTo:       desc.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                        desc.UserMetadata,
+		AuthorizationRules:                  internalAccessRightsToPublic(desc.AuthorizationRules),
+		MaxMessageSizeInKilobytes:           desc.MaxMessageSizeInKilobytes,
 	}
 
 	return &QueueItem{
@@ -431,6 +436,10 @@ func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
 
 func newQueueRuntimePropertiesItem(env *atom.QueueEnvelope) (*QueueRuntimePropertiesItem, error) {
 	desc := env.Content.QueueDescription
+
+	if desc.CountDetails == nil {
+		return nil, errors.New("invalid queue runtime properties: no CountDetails element")
+	}
 
 	qrt := &QueueRuntimeProperties{
 		SizeInBytes:                    int64OrZero(desc.SizeInBytes),

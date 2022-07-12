@@ -42,7 +42,7 @@ func NewReplicationNetworksClient(resourceName string, resourceGroupName string,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewReplicationNetworksClient(resourceName string, resourceGroupName string,
 
 // Get - Gets the details of a network.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Server Id.
 // networkName - Primary network name.
 // options - ReplicationNetworksClientGetOptions contains the optional parameters for the ReplicationNetworksClient.Get method.
@@ -110,7 +111,7 @@ func (client *ReplicationNetworksClient) getCreateRequest(ctx context.Context, f
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -125,10 +126,11 @@ func (client *ReplicationNetworksClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Lists the networks available in a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationNetworksClientListOptions contains the optional parameters for the ReplicationNetworksClient.List
 // method.
 func (client *ReplicationNetworksClient) NewListPager(options *ReplicationNetworksClientListOptions) *runtime.Pager[ReplicationNetworksClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationNetworksClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationNetworksClientListResponse]{
 		More: func(page ReplicationNetworksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -177,7 +179,7 @@ func (client *ReplicationNetworksClient) listCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -192,11 +194,12 @@ func (client *ReplicationNetworksClient) listHandleResponse(resp *http.Response)
 
 // NewListByReplicationFabricsPager - Lists the networks available for a fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // options - ReplicationNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationNetworksClient.ListByReplicationFabrics
 // method.
 func (client *ReplicationNetworksClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationNetworksClientListByReplicationFabricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationNetworksClientListByReplicationFabricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationNetworksClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationNetworksClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -249,7 +252,7 @@ func (client *ReplicationNetworksClient) listByReplicationFabricsCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

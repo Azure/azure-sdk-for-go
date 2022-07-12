@@ -34,7 +34,7 @@ func NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientO
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,6 +51,7 @@ func NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // GetOnboardingStatus - Retrieves the VM Insights onboarding status for the specified resource or resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-27-preview
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource, or scope, whose status to retrieve.
 // options - VMInsightsClientGetOnboardingStatusOptions contains the optional parameters for the VMInsightsClient.GetOnboardingStatus
 // method.
@@ -80,7 +81,7 @@ func (client *VMInsightsClient) getOnboardingStatusCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-27-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

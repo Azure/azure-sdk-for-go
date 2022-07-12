@@ -24,18 +24,17 @@ func ExampleIntegrationAccountBatchConfigurationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountBatchConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountBatchConfigurationsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<integration-account-name>",
+	pager := client.NewListPager("testResourceGroup",
+		"testIntegrationAccount",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExampleIntegrationAccountBatchConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountBatchConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountBatchConfigurationsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<batch-configuration-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testBatchConfiguration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,26 +73,26 @@ func ExampleIntegrationAccountBatchConfigurationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountBatchConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountBatchConfigurationsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<batch-configuration-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testBatchConfiguration",
 		armlogic.BatchConfiguration{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armlogic.BatchConfigurationProperties{
-				BatchGroupName: to.Ptr("<batch-group-name>"),
+				BatchGroupName: to.Ptr("DEFAULT"),
 				ReleaseCriteria: &armlogic.BatchReleaseCriteria{
 					BatchSize:    to.Ptr[int32](234567),
 					MessageCount: to.Ptr[int32](10),
 					Recurrence: &armlogic.WorkflowTriggerRecurrence{
 						Frequency: to.Ptr(armlogic.RecurrenceFrequencyMinute),
 						Interval:  to.Ptr[int32](1),
-						StartTime: to.Ptr("<start-time>"),
-						TimeZone:  to.Ptr("<time-zone>"),
+						StartTime: to.Ptr("2017-03-24T11:43:00"),
+						TimeZone:  to.Ptr("India Standard Time"),
 					},
 				},
 			},
@@ -113,14 +112,14 @@ func ExampleIntegrationAccountBatchConfigurationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountBatchConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountBatchConfigurationsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
-		"<batch-configuration-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
+		"testBatchConfiguration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

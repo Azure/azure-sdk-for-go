@@ -37,6 +37,14 @@ type AddonHcxProperties struct {
 	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetAddonProperties implements the AddonPropertiesClassification interface for type AddonHcxProperties.
+func (a *AddonHcxProperties) GetAddonProperties() *AddonProperties {
+	return &AddonProperties{
+		AddonType:         a.AddonType,
+		ProvisioningState: a.ProvisioningState,
+	}
+}
+
 // AddonList - A paged list of addons
 type AddonList struct {
 	// READ-ONLY; URL to get the next page if any
@@ -64,6 +72,9 @@ type AddonProperties struct {
 	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetAddonProperties implements the AddonPropertiesClassification interface for type AddonProperties.
+func (a *AddonProperties) GetAddonProperties() *AddonProperties { return a }
+
 // AddonSrmProperties - The properties of a Site Recovery Manager (SRM) addon
 type AddonSrmProperties struct {
 	// REQUIRED; The type of private cloud addon
@@ -76,6 +87,14 @@ type AddonSrmProperties struct {
 	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetAddonProperties implements the AddonPropertiesClassification interface for type AddonSrmProperties.
+func (a *AddonSrmProperties) GetAddonProperties() *AddonProperties {
+	return &AddonProperties{
+		AddonType:         a.AddonType,
+		ProvisioningState: a.ProvisioningState,
+	}
+}
+
 // AddonVrProperties - The properties of a vSphere Replication (VR) addon
 type AddonVrProperties struct {
 	// REQUIRED; The type of private cloud addon
@@ -86,6 +105,14 @@ type AddonVrProperties struct {
 
 	// READ-ONLY; The state of the addon provisioning
 	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetAddonProperties implements the AddonPropertiesClassification interface for type AddonVrProperties.
+func (a *AddonVrProperties) GetAddonProperties() *AddonProperties {
+	return &AddonProperties{
+		AddonType:         a.AddonType,
+		ProvisioningState: a.ProvisioningState,
+	}
 }
 
 // AddonsClientBeginCreateOrUpdateOptions contains the optional parameters for the AddonsClient.BeginCreateOrUpdate method.
@@ -846,6 +873,14 @@ type PSCredentialExecutionParameter struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// GetScriptExecutionParameter implements the ScriptExecutionParameterClassification interface for type PSCredentialExecutionParameter.
+func (p *PSCredentialExecutionParameter) GetScriptExecutionParameter() *ScriptExecutionParameter {
+	return &ScriptExecutionParameter{
+		Name: p.Name,
+		Type: p.Type,
+	}
+}
+
 // PlacementPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PlacementPoliciesClient.BeginCreateOrUpdate
 // method.
 type PlacementPoliciesClientBeginCreateOrUpdateOptions struct {
@@ -923,6 +958,11 @@ type PlacementPolicyProperties struct {
 
 	// READ-ONLY; The provisioning state
 	ProvisioningState *PlacementPolicyProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type PlacementPolicyProperties.
+func (p *PlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementPolicyProperties {
+	return p
 }
 
 // PlacementPolicyUpdate - An update of a DRS placement policy resource
@@ -1254,6 +1294,9 @@ type ScriptExecutionParameter struct {
 	Type *ScriptExecutionParameterType `json:"type,omitempty"`
 }
 
+// GetScriptExecutionParameter implements the ScriptExecutionParameterClassification interface for type ScriptExecutionParameter.
+func (s *ScriptExecutionParameter) GetScriptExecutionParameter() *ScriptExecutionParameter { return s }
+
 // ScriptExecutionProperties - Properties of a user-invoked script
 type ScriptExecutionProperties struct {
 	// REQUIRED; Time limit for execution
@@ -1414,6 +1457,14 @@ type ScriptSecureStringExecutionParameter struct {
 	SecureValue *string `json:"secureValue,omitempty"`
 }
 
+// GetScriptExecutionParameter implements the ScriptExecutionParameterClassification interface for type ScriptSecureStringExecutionParameter.
+func (s *ScriptSecureStringExecutionParameter) GetScriptExecutionParameter() *ScriptExecutionParameter {
+	return &ScriptExecutionParameter{
+		Name: s.Name,
+		Type: s.Type,
+	}
+}
+
 // ScriptStringExecutionParameter - a plain text value execution parameter
 type ScriptStringExecutionParameter struct {
 	// REQUIRED; The parameter name
@@ -1424,6 +1475,14 @@ type ScriptStringExecutionParameter struct {
 
 	// The value for the passed parameter
 	Value *string `json:"value,omitempty"`
+}
+
+// GetScriptExecutionParameter implements the ScriptExecutionParameterClassification interface for type ScriptStringExecutionParameter.
+func (s *ScriptStringExecutionParameter) GetScriptExecutionParameter() *ScriptExecutionParameter {
+	return &ScriptExecutionParameter{
+		Name: s.Name,
+		Type: s.Type,
+	}
 }
 
 // ServiceSpecification - Service specification payload
@@ -1486,6 +1545,16 @@ type VMHostPlacementPolicyProperties struct {
 	ProvisioningState *PlacementPolicyProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type VMHostPlacementPolicyProperties.
+func (v *VMHostPlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementPolicyProperties {
+	return &PlacementPolicyProperties{
+		Type:              v.Type,
+		State:             v.State,
+		DisplayName:       v.DisplayName,
+		ProvisioningState: v.ProvisioningState,
+	}
+}
+
 // VMPlacementPolicyProperties - VM-VM placement policy properties
 type VMPlacementPolicyProperties struct {
 	// REQUIRED; placement policy affinity type
@@ -1505,6 +1574,16 @@ type VMPlacementPolicyProperties struct {
 
 	// READ-ONLY; The provisioning state
 	ProvisioningState *PlacementPolicyProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type VMPlacementPolicyProperties.
+func (v *VMPlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementPolicyProperties {
+	return &PlacementPolicyProperties{
+		Type:              v.Type,
+		State:             v.State,
+		DisplayName:       v.DisplayName,
+		ProvisioningState: v.ProvisioningState,
+	}
 }
 
 // VirtualMachine - Virtual Machine
@@ -1710,6 +1789,11 @@ type WorkloadNetworkDhcpEntity struct {
 	Segments []*string `json:"segments,omitempty" azure:"ro"`
 }
 
+// GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpEntity.
+func (w *WorkloadNetworkDhcpEntity) GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity {
+	return w
+}
+
 // WorkloadNetworkDhcpList - A list of NSX dhcp entities
 type WorkloadNetworkDhcpList struct {
 	// READ-ONLY; URL to get the next page if any
@@ -1740,6 +1824,17 @@ type WorkloadNetworkDhcpRelay struct {
 	Segments []*string `json:"segments,omitempty" azure:"ro"`
 }
 
+// GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpRelay.
+func (w *WorkloadNetworkDhcpRelay) GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity {
+	return &WorkloadNetworkDhcpEntity{
+		DhcpType:          w.DhcpType,
+		DisplayName:       w.DisplayName,
+		Segments:          w.Segments,
+		ProvisioningState: w.ProvisioningState,
+		Revision:          w.Revision,
+	}
+}
+
 // WorkloadNetworkDhcpServer - NSX DHCP Server
 type WorkloadNetworkDhcpServer struct {
 	// REQUIRED; Type of DHCP: SERVER or RELAY.
@@ -1762,6 +1857,17 @@ type WorkloadNetworkDhcpServer struct {
 
 	// READ-ONLY; NSX Segments consuming DHCP.
 	Segments []*string `json:"segments,omitempty" azure:"ro"`
+}
+
+// GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpServer.
+func (w *WorkloadNetworkDhcpServer) GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity {
+	return &WorkloadNetworkDhcpEntity{
+		DhcpType:          w.DhcpType,
+		DisplayName:       w.DisplayName,
+		Segments:          w.Segments,
+		ProvisioningState: w.ProvisioningState,
+		Revision:          w.Revision,
+	}
 }
 
 // WorkloadNetworkGateway - NSX Gateway.

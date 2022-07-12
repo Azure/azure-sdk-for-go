@@ -10,6 +10,8 @@ var authorizationRuleName_var = '${baseName}/RootManageSharedAccessKey'
 var authorizationRuleNameNoManage_var = '${baseName}/NoManage'
 var serviceBusDataOwnerRoleId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419'
 
+var sbPremiumName = 'sb-premium-${baseName}'
+
 resource servicebus 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = {
   name: baseName
   location: location
@@ -21,6 +23,16 @@ resource servicebus 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = {
     zoneRedundant: false
   }
 }
+
+resource servicebusPremium 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = {
+  name: sbPremiumName
+  location: location
+  sku: {
+    name: 'Premium'
+    tier: 'Premium'
+  }
+}
+
 
 resource authorizationRuleName 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2015-08-01' = {
   name: authorizationRuleName_var
@@ -102,6 +114,7 @@ resource testQueueWithSessions 'Microsoft.ServiceBus/namespaces/queues@2017-04-0
 
 output SERVICEBUS_CONNECTION_STRING string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'RootManageSharedAccessKey'), apiVersion).primaryConnectionString
 output SERVICEBUS_CONNECTION_STRING_NO_MANAGE string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'NoManage'), apiVersion).primaryConnectionString
+output SERVICEBUS_CONNECTION_STRING_PREMIUM string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', sbPremiumName, 'RootManageSharedAccessKey'), apiVersion).primaryConnectionString
 output SERVICEBUS_ENDPOINT string = replace(replace(servicebus.properties.serviceBusEndpoint, ':443/', ''), 'https://', '')
 output QUEUE_NAME string = 'testQueue'
 output QUEUE_NAME_WITH_SESSIONS string = 'testQueueWithSessions'

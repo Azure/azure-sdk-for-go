@@ -39,7 +39,7 @@ func NewJobStreamClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewJobStreamClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Retrieve the job stream identified by job stream id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
@@ -108,9 +109,9 @@ func (client *JobStreamClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -125,12 +126,13 @@ func (client *JobStreamClient) getHandleResponse(resp *http.Response) (JobStream
 
 // NewListByJobPager - Retrieve a list of jobs streams identified by job name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
 // options - JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.ListByJob method.
 func (client *JobStreamClient) NewListByJobPager(resourceGroupName string, automationAccountName string, jobName string, options *JobStreamClientListByJobOptions) *runtime.Pager[JobStreamClientListByJobResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobStreamClientListByJobResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobStreamClientListByJobResponse]{
 		More: func(page JobStreamClientListByJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -187,9 +189,9 @@ func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resou
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

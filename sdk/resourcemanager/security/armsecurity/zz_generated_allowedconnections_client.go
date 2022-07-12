@@ -38,7 +38,7 @@ func NewAllowedConnectionsClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAllowedConnectionsClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Gets the list of all possible traffic between resources for the subscription and location, based on connection type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // connectionType - The type of allowed connections (Internal, External)
@@ -101,7 +102,7 @@ func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,9 +117,10 @@ func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Gets the list of all possible traffic between resources for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - AllowedConnectionsClientListOptions contains the optional parameters for the AllowedConnectionsClient.List method.
 func (client *AllowedConnectionsClient) NewListPager(options *AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AllowedConnectionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AllowedConnectionsClientListResponse]{
 		More: func(page AllowedConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -159,7 +161,7 @@ func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, o
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -174,11 +176,12 @@ func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) 
 
 // NewListByHomeRegionPager - Gets the list of all possible traffic between resources for the subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - AllowedConnectionsClientListByHomeRegionOptions contains the optional parameters for the AllowedConnectionsClient.ListByHomeRegion
 // method.
 func (client *AllowedConnectionsClient) NewListByHomeRegionPager(ascLocation string, options *AllowedConnectionsClientListByHomeRegionOptions) *runtime.Pager[AllowedConnectionsClientListByHomeRegionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AllowedConnectionsClientListByHomeRegionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AllowedConnectionsClientListByHomeRegionResponse]{
 		More: func(page AllowedConnectionsClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -223,7 +226,7 @@ func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -10,7 +10,7 @@ package armresourcehealth
 
 const (
 	moduleName    = "armresourcehealth"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AvailabilityStateValues - Impacted resource status of the resource.

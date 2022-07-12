@@ -39,7 +39,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,19 +59,20 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // the specific service already exists, then any patchable properties will be updated and any immutable
 // properties will remain unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // domainService - Properties supplied to the Create or Update a Domain Service operation.
 // options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClientCreateOrUpdateResponse], error) {
+func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, domainServiceName, domainService, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -79,6 +80,7 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 // specific service already exists, then any patchable properties will be updated and any immutable
 // properties will remain unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, domainServiceName, domainService, options)
 	if err != nil {
@@ -116,29 +118,31 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, domainService)
 }
 
 // BeginDelete - The Delete Domain Service operation deletes an existing Domain Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, domainServiceName string, options *ClientBeginDeleteOptions) (*armruntime.Poller[ClientDeleteResponse], error) {
+func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, domainServiceName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, domainServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - The Delete Domain Service operation deletes an existing Domain Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, domainServiceName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, domainServiceName, options)
 	if err != nil {
@@ -176,12 +180,13 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - The Get Domain Service operation retrieves a json representation of the Domain Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -222,7 +227,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,9 +243,10 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 // NewListPager - The List Domain Services in Subscription operation lists all the domain services available under the given
 // subscription (and across all resource groups within that subscription).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -281,7 +287,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -297,10 +303,11 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // NewListByResourceGroupPager - The List Domain Services in Resource Group operation lists all the domain services available
 // under the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
 func (client *Client) NewListByResourceGroupPager(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListByResourceGroupResponse]{
 		More: func(page ClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -345,7 +352,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -361,25 +368,27 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 // BeginUpdate - The Update Domain Service operation can be used to update the existing deployment. The update call only supports
 // the properties listed in the PATCH body.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // domainService - Properties supplied to the Update a Domain Service operation.
 // options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginUpdateOptions) (*armruntime.Poller[ClientUpdateResponse], error) {
+func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, domainServiceName, domainService, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - The Update Domain Service operation can be used to update the existing deployment. The update call only supports
 // the properties listed in the PATCH body.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *Client) update(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, domainServiceName, domainService, options)
 	if err != nil {
@@ -417,6 +426,6 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, domainService)
 }

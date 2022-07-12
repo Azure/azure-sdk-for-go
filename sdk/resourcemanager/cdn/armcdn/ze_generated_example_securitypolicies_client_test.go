@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
@@ -26,18 +24,17 @@ func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewSecurityPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewSecurityPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProfilePager("<resource-group-name>",
-		"<profile-name>",
+	pager := client.NewListByProfilePager("RG",
+		"profile1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleSecurityPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewSecurityPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewSecurityPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<security-policy-name>",
+		"RG",
+		"profile1",
+		"securityPolicy1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,14 +73,14 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewSecurityPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewSecurityPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<security-policy-name>",
+		"RG",
+		"profile1",
+		"securityPolicy1",
 		armcdn.SecurityPolicy{
 			Properties: &armcdn.SecurityPolicyProperties{
 				Parameters: &armcdn.SecurityPolicyWebApplicationFirewallParameters{
@@ -92,25 +89,25 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 						{
 							Domains: []*armcdn.ActivatedResourceReference{
 								{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
 								},
 								{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
 								}},
 							PatternsToMatch: []*string{
 								to.Ptr("/*")},
 						}},
 					WafPolicy: &armcdn.ResourceReference{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
 					},
 				},
 			},
 		},
-		&armcdn.SecurityPoliciesClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -125,14 +122,14 @@ func ExampleSecurityPoliciesClient_BeginPatch() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewSecurityPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewSecurityPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPatch(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<security-policy-name>",
+		"RG",
+		"profile1",
+		"securityPolicy1",
 		armcdn.SecurityPolicyUpdateParameters{
 			Properties: &armcdn.SecurityPolicyUpdateProperties{
 				Parameters: &armcdn.SecurityPolicyWebApplicationFirewallParameters{
@@ -141,25 +138,25 @@ func ExampleSecurityPoliciesClient_BeginPatch() {
 						{
 							Domains: []*armcdn.ActivatedResourceReference{
 								{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
 								},
 								{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2"),
 								}},
 							PatternsToMatch: []*string{
 								to.Ptr("/*")},
 						}},
 					WafPolicy: &armcdn.ResourceReference{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"),
 					},
 				},
 			},
 		},
-		&armcdn.SecurityPoliciesClientBeginPatchOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -174,19 +171,19 @@ func ExampleSecurityPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewSecurityPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewSecurityPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<security-policy-name>",
-		&armcdn.SecurityPoliciesClientBeginDeleteOptions{ResumeToken: ""})
+		"RG",
+		"profile1",
+		"securityPolicy1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

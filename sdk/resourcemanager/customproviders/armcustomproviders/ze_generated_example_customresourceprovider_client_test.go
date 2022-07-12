@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customproviders/armcustomproviders"
@@ -26,35 +24,35 @@ func ExampleCustomResourceProviderClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcustomproviders.NewCustomResourceProviderClient("<subscription-id>", cred, nil)
+	client, err := armcustomproviders.NewCustomResourceProviderClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-provider-name>",
+		"testRG",
+		"newrp",
 		armcustomproviders.CustomRPManifest{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armcustomproviders.CustomRPManifestProperties{
 				Actions: []*armcustomproviders.CustomRPActionRouteDefinition{
 					{
-						Name:        to.Ptr("<name>"),
-						Endpoint:    to.Ptr("<endpoint>"),
+						Name:        to.Ptr("TestAction"),
+						Endpoint:    to.Ptr("https://mytestendpoint/"),
 						RoutingType: to.Ptr(armcustomproviders.ActionRoutingProxy),
 					}},
 				ResourceTypes: []*armcustomproviders.CustomRPResourceTypeRouteDefinition{
 					{
-						Name:        to.Ptr("<name>"),
-						Endpoint:    to.Ptr("<endpoint>"),
+						Name:        to.Ptr("TestResource"),
+						Endpoint:    to.Ptr("https://mytestendpoint2/"),
 						RoutingType: to.Ptr(armcustomproviders.ResourceTypeRoutingProxyCache),
 					}},
 			},
 		},
-		&armcustomproviders.CustomResourceProviderClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -69,18 +67,18 @@ func ExampleCustomResourceProviderClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcustomproviders.NewCustomResourceProviderClient("<subscription-id>", cred, nil)
+	client, err := armcustomproviders.NewCustomResourceProviderClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-provider-name>",
-		&armcustomproviders.CustomResourceProviderClientBeginDeleteOptions{ResumeToken: ""})
+		"testRG",
+		"newrp",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -93,13 +91,13 @@ func ExampleCustomResourceProviderClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcustomproviders.NewCustomResourceProviderClient("<subscription-id>", cred, nil)
+	client, err := armcustomproviders.NewCustomResourceProviderClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-provider-name>",
+		"testRG",
+		"newrp",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -115,13 +113,13 @@ func ExampleCustomResourceProviderClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcustomproviders.NewCustomResourceProviderClient("<subscription-id>", cred, nil)
+	client, err := armcustomproviders.NewCustomResourceProviderClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-provider-name>",
+		"testRG",
+		"newrp",
 		armcustomproviders.ResourceProvidersUpdate{
 			Tags: map[string]*string{},
 		},
@@ -140,17 +138,16 @@ func ExampleCustomResourceProviderClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcustomproviders.NewCustomResourceProviderClient("<subscription-id>", cred, nil)
+	client, err := armcustomproviders.NewCustomResourceProviderClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -166,7 +163,7 @@ func ExampleCustomResourceProviderClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcustomproviders.NewCustomResourceProviderClient("<subscription-id>", cred, nil)
+	client, err := armcustomproviders.NewCustomResourceProviderClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -175,7 +172,6 @@ func ExampleCustomResourceProviderClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

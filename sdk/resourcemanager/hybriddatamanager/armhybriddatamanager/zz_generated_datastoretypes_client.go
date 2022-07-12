@@ -38,7 +38,7 @@ func NewDataStoreTypesClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataStoreTypesClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets the data store/repository type given its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataStoreTypeName - The data store/repository type name for which details are needed.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
@@ -102,7 +103,7 @@ func (client *DataStoreTypesClient) getCreateRequest(ctx context.Context, dataSt
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,13 +118,14 @@ func (client *DataStoreTypesClient) getHandleResponse(resp *http.Response) (Data
 
 // NewListByDataManagerPager - Gets all the data store/repository types that the resource supports.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - DataStoreTypesClientListByDataManagerOptions contains the optional parameters for the DataStoreTypesClient.ListByDataManager
 // method.
 func (client *DataStoreTypesClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *DataStoreTypesClientListByDataManagerOptions) *runtime.Pager[DataStoreTypesClientListByDataManagerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataStoreTypesClientListByDataManagerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataStoreTypesClientListByDataManagerResponse]{
 		More: func(page DataStoreTypesClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -172,7 +174,7 @@ func (client *DataStoreTypesClient) listByDataManagerCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

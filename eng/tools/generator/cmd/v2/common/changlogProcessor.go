@@ -5,7 +5,6 @@ package common
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,6 +12,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/go-git/go-git/v5"
@@ -53,38 +53,38 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 	return tags, nil
 }
 
-func GetCurrentAPIVersion(packagePath string) (string, error) {
-	log.Printf("Get current release API version from '%s' ...", packagePath)
+func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
+	log.Printf("Judge whether contains preview API version from '%s' ...", packagePath)
 
 	files, err := ioutil.ReadDir(packagePath)
 	if err != nil {
-		return "", err
+		return false, err
 	}
 
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".go") {
 			b, err := ioutil.ReadFile(path.Join(packagePath, file.Name()))
 			if err != nil {
-				return "", err
+				return false, err
 			}
 
 			lines := strings.Split(string(b), "\n")
 			for _, line := range lines {
 				if strings.Contains(line, "\"api-version\"") {
 					parts := strings.Split(line, "\"")
-					if len(parts) == 5 {
-						return parts[3], nil
+					if len(parts) == 5 && strings.Contains(parts[3], "preview") {
+						return true, nil
 					}
 				}
 			}
 		}
 	}
 
-	return "", fmt.Errorf("Cannot find API version for current release")
+	return false, nil
 }
 
-func GetPreviousVersionTag(apiVersion string, allReleases []string) string {
-	if strings.Contains(apiVersion, "preview") {
+func GetPreviousVersionTag(isCurrentPreview bool, allReleases []string) string {
+	if isCurrentPreview {
 		// for preview api, always compare with latest release
 		return allReleases[0]
 	} else {
@@ -103,6 +103,12 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 
 	// get current head branch name
 	currentRef, err := sdkRepo.Head()
+	if err != nil {
+		return nil, err
+	}
+
+	// add package change
+	err = sdkRepo.Add(packagePath)
 	if err != nil {
 		return nil, err
 	}
@@ -163,4 +169,23 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 	}
 
 	return &result, nil
+}
+
+func FilterChangelog(changelog *model.Changelog) {
+	if changelog.Modified != nil {
+		if changelog.Modified.AdditiveChanges != nil {
+			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
+		}
+		if changelog.Modified.BreakingChanges != nil && changelog.Modified.BreakingChanges.Removed != nil {
+			removeMarshalUnmarshalFunc(changelog.Modified.BreakingChanges.Removed.Funcs)
+		}
+	}
+}
+
+func removeMarshalUnmarshalFunc(funcs map[string]exports.Func) {
+	for k := range funcs {
+		if strings.HasSuffix(k, ".MarshalJSON") || strings.HasSuffix(k, ".UnmarshalJSON") {
+			delete(funcs, k)
+		}
+	}
 }

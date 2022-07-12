@@ -23,13 +23,13 @@ func ExampleOperationsStatusClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewOperationsStatusClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewOperationsStatusClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location>",
-		"<operation-id>",
+		"West US",
+		"testoperationid",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

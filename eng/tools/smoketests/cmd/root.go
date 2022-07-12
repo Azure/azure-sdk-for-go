@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
-	"strconv"
 	"strings"
 
+	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 )
 
@@ -106,43 +106,38 @@ func getAllTags() []string {
 	return strings.Split(res, "\n")
 }
 
-// Convert a string to an integer and handle errors
-func toInt(a string) int {
-	r, err := strconv.Atoi(a)
-	handle(err)
-	return r
-}
-
 // Create a new SemVer type
-func NewSemVerFromTag(s string) SemVer {
+func NewSemVerFromTag(s string) (*semver.Version, error) {
 	path := strings.Split(s, "/")
 	versionStr := path[len(path)-1]
 	versionStr = strings.TrimLeft(versionStr, "v")
-	parts := strings.Split(versionStr, ".")
-	return SemVer{
-		Major: toInt(parts[0]),
-		Minor: toInt(parts[1]),
-		Patch: toInt(parts[2]),
-	}
+	return semver.NewVersion(versionStr)
 }
 
 // Find the most recent SemVer tag for a given package.
-func findLatestTag(p string, tags []string) (string, error) {
-	var v SemVer
+func findLatestTag(p string, tags []string) (*semver.Version, error) {
+	var v *semver.Version
+	var err error
 	for i, tag := range tags {
 		if strings.Contains(tag, p) {
-			v = NewSemVerFromTag(tag)
+			v, err = NewSemVerFromTag(tag)
+			if err != nil {
+				return nil, fmt.Errorf("could not parse version for tag %s", tag)
+			}
 			for strings.Contains(tags[i+1], p) {
-				newV := NewSemVerFromTag(tags[i+1])
-				if newV.Newer(v) {
+				newV, err := NewSemVerFromTag(tags[i+1])
+				if err != nil {
+					return nil, fmt.Errorf("could not parse version for tag %s", tags[i+1])
+				}
+				if newV.GreaterThan(v) {
 					v = newV
 				}
 				i += 1
 			}
-			return v.String(), nil
+			return v, nil
 		}
 	}
-	return "", fmt.Errorf("could not find a version for module %s", p)
+	return nil, fmt.Errorf("could not find a version for module %s", p)
 }
 
 // Creates a slice of modules matched with the most recent version
@@ -156,11 +151,21 @@ func matchModulesAndTags(goModFiles []string, tags []string) []Module {
 		if err != nil {
 			fmt.Println(err.Error())
 		} else {
-			m = append(m, Module{
-				Name:    goModFile,
-				Replace: fmt.Sprintf("../%s", relativePackagePath),
-				Version: version,
-			})
+			if version.Major() > 1 {
+				m = append(m, Module{
+					Name:    goModFile,
+					Package: fmt.Sprintf("%s/v%d", goModFile, version.Major()),
+					Replace: fmt.Sprintf("../%s", relativePackagePath),
+					Version: "v" + version.String(),
+				})
+			} else {
+				m = append(m, Module{
+					Name:    goModFile,
+					Package: goModFile,
+					Replace: fmt.Sprintf("../%s", relativePackagePath),
+					Version: "v" + version.String(),
+				})
+			}
 		}
 	}
 
@@ -189,7 +194,7 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 	replaceString := "replace %s => %s\n"
 	if serviceDirectory == "notset" {
 		for _, module := range modules {
-			s := fmt.Sprintf(replaceString, module.Name, module.Replace)
+			s := fmt.Sprintf(replaceString, module.Package, module.Replace)
 			_, err = f.Write([]byte(s))
 			handle(err)
 		}
@@ -197,7 +202,7 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 		fmt.Printf("Replace directive for %s\n", serviceDirectory)
 		for _, module := range modules {
 			if strings.Contains(module.Name, serviceDirectory) {
-				s := fmt.Sprintf(replaceString, module.Name, module.Replace)
+				s := fmt.Sprintf(replaceString, module.Package, module.Replace)
 				_, err = f.Write([]byte(s))
 				handle(err)
 			}
@@ -212,7 +217,7 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 
 	requireString := "\t%s %s\n"
 	for _, module := range modules {
-		s := fmt.Sprintf(requireString, module.Name, module.Version)
+		s := fmt.Sprintf(requireString, module.Package, module.Version)
 		_, err = f.Write([]byte(s))
 		handle(err)
 	}

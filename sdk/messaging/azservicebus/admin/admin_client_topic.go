@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 )
 
 // TopicProperties represents the static properties of the topic.
@@ -51,6 +51,13 @@ type TopicProperties struct {
 
 	// UserMetadata is custom metadata that user can associate with the topic.
 	UserMetadata *string
+
+	// AuthorizationRules are the authorization rules for this entity.
+	AuthorizationRules []AuthorizationRule
+
+	// Maximum size (in KB) of the message payload that can be accepted by the topic. This feature is only available when
+	// using Service Bus Premium.
+	MaxMessageSizeInKilobytes *int64
 }
 
 // TopicRuntimeProperties represent dynamic properties of a topic, such as the ActiveMessageCount.
@@ -121,11 +128,7 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	_, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetTopicResponse](err)
 	}
 
 	topicItem, err := newTopicItem(atomResp)
@@ -157,11 +160,7 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 	_, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetTopicRuntimePropertiesResponse](err)
 	}
 
 	item, err := newTopicRuntimePropertiesItem(atomResp)
@@ -194,8 +193,8 @@ type ListTopicsOptions struct {
 	MaxPageSize int32
 }
 
-// ListTopics lists topics.
-func (ac *Client) ListTopics(options *ListTopicsOptions) *runtime.Pager[ListTopicsResponse] {
+// NewListTopicsPager creates a pager that can list topics.
+func (ac *Client) NewListTopicsPager(options *ListTopicsOptions) *runtime.Pager[ListTopicsResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -209,7 +208,7 @@ func (ac *Client) ListTopics(options *ListTopicsOptions) *runtime.Pager[ListTopi
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListTopicsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListTopicsResponse]{
 		More: func(ltr ListTopicsResponse) bool {
 			return ep.More()
 		},
@@ -246,8 +245,8 @@ type ListTopicsRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
-// ListTopicsRuntimeProperties lists runtime properties for topics.
-func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) *runtime.Pager[ListTopicsRuntimePropertiesResponse] {
+// NewListTopicsRuntimePropertiesPager creates a pager than can list runtime properties for topics.
+func (ac *Client) NewListTopicsRuntimePropertiesPager(options *ListTopicsRuntimePropertiesOptions) *runtime.Pager[ListTopicsRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -261,7 +260,7 @@ func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimeProperti
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListTopicsRuntimePropertiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListTopicsRuntimePropertiesResponse]{
 		More: func(ltr ListTopicsRuntimePropertiesResponse) bool {
 			return ep.More()
 		},
@@ -327,20 +326,14 @@ func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string,
 
 	env := newTopicEnvelope(props, ac.em.TokenProvider())
 
-	var mw []atom.MiddlewareFunc
-
 	if !creating {
-		// an update requires the entity to already exist.
-		mw = append(mw, func(next atom.RestHandler) atom.RestHandler {
-			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-				req.Header.Set("If-Match", "*")
-				return next(ctx, req)
-			}
+		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+			"If-Match": []string{"*"},
 		})
 	}
 
 	var atomResp *atom.TopicEnvelope
-	resp, err := ac.em.Put(ctx, "/"+topicName, env, &atomResp, mw...)
+	resp, err := ac.em.Put(ctx, "/"+topicName, env, &atomResp, nil)
 
 	if err != nil {
 		return nil, nil, err
@@ -363,11 +356,13 @@ func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) 
 		DuplicateDetectionHistoryTimeWindow: props.DuplicateDetectionHistoryTimeWindow,
 		EnableBatchedOperations:             props.EnableBatchedOperations,
 
-		Status:             (*atom.EntityStatus)(props.Status),
-		UserMetadata:       props.UserMetadata,
-		SupportOrdering:    props.SupportOrdering,
-		AutoDeleteOnIdle:   props.AutoDeleteOnIdle,
-		EnablePartitioning: props.EnablePartitioning,
+		Status:                    (*atom.EntityStatus)(props.Status),
+		UserMetadata:              props.UserMetadata,
+		SupportOrdering:           props.SupportOrdering,
+		AutoDeleteOnIdle:          props.AutoDeleteOnIdle,
+		EnablePartitioning:        props.EnablePartitioning,
+		AuthorizationRules:        publicAccessRightsToInternal(props.AuthorizationRules),
+		MaxMessageSizeInKilobytes: props.MaxMessageSizeInKilobytes,
 	}
 
 	return atom.WrapWithTopicEnvelope(desc)
@@ -389,12 +384,18 @@ func newTopicItem(te *atom.TopicEnvelope) (*TopicItem, error) {
 			AutoDeleteOnIdle:                    td.AutoDeleteOnIdle,
 			EnablePartitioning:                  td.EnablePartitioning,
 			SupportOrdering:                     td.SupportOrdering,
+			AuthorizationRules:                  internalAccessRightsToPublic(td.AuthorizationRules),
+			MaxMessageSizeInKilobytes:           td.MaxMessageSizeInKilobytes,
 		},
 	}, nil
 }
 
 func newTopicRuntimePropertiesItem(env *atom.TopicEnvelope) (*TopicRuntimePropertiesItem, error) {
 	desc := env.Content.TopicDescription
+
+	if desc.CountDetails == nil {
+		return nil, errors.New("invalid topic runtime properties: no CountDetails element")
+	}
 
 	props := &TopicRuntimeProperties{
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 1.0.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.1 (2022-06-23)
+
+### Other Changes
+* Upgrade `azcore` version and change test `poller` method
+
+## 1.0.0 (2022-05-16)
+
+### Features Added
+* Export FakeCredential
+
+### Other Changes
+* Upgrade dependencies of azcore, azidentity and armresources to the stable version
 
 ## 0.3.0 (2022-04-08)
 

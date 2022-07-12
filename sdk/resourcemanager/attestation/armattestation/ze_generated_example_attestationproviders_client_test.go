@@ -24,13 +24,13 @@ func ExampleProvidersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewProvidersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
+		"MyResourceGroup",
+		"myattestationprovider",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,13 +46,13 @@ func ExampleProvidersClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewProvidersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
+		"MyResourceGroup",
+		"myattestationprovider",
 		armattestation.ServiceCreationParams{},
 		nil)
 	if err != nil {
@@ -69,13 +69,13 @@ func ExampleProvidersClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewProvidersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
+		"MyResourceGroup",
+		"myattestationprovider",
 		armattestation.ServicePatchParams{
 			Tags: map[string]*string{
 				"Property1": to.Ptr("Value1"),
@@ -98,13 +98,13 @@ func ExampleProvidersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewProvidersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
+		"sample-resource-group",
+		"myattestationprovider",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -118,7 +118,7 @@ func ExampleProvidersClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewProvidersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -138,12 +138,12 @@ func ExampleProvidersClient_ListByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewProvidersClient("6c96b33e-f5b8-40a6-9011-5cb1c58b0915", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
+		"testrg1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -159,7 +159,7 @@ func ExampleProvidersClient_ListDefault() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewProvidersClient("6c96b33e-f5b8-40a6-9011-5cb1c58b0915", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -179,12 +179,12 @@ func ExampleProvidersClient_GetDefaultByLocation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewProvidersClient("6c96b33e-f5b8-40a6-9011-5cb1c58b0915", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDefaultByLocation(ctx,
-		"<location>",
+		"Central US",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

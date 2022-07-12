@@ -38,7 +38,7 @@ func NewSubscriptionFeatureRegistrationsClient(subscriptionID string, credential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSubscriptionFeatureRegistrationsClient(subscriptionID string, credential
 
 // CreateOrUpdate - Create or update a feature registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // providerNamespace - The provider namespace.
 // featureName - The feature name.
 // options - SubscriptionFeatureRegistrationsClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.CreateOrUpdate
@@ -97,7 +98,7 @@ func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SubscriptionFeatureRegistrationType != nil {
 		return req, runtime.MarshalAsJSON(req, *options.SubscriptionFeatureRegistrationType)
 	}
@@ -115,6 +116,7 @@ func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateHandleRespon
 
 // Delete - Deletes a feature registration
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // providerNamespace - The provider namespace.
 // featureName - The feature name.
 // options - SubscriptionFeatureRegistrationsClientDeleteOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.Delete
@@ -156,12 +158,13 @@ func (client *SubscriptionFeatureRegistrationsClient) deleteCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns a feature registration
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // providerNamespace - The provider namespace.
 // featureName - The feature name.
 // options - SubscriptionFeatureRegistrationsClientGetOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.Get
@@ -203,7 +206,7 @@ func (client *SubscriptionFeatureRegistrationsClient) getCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -218,10 +221,11 @@ func (client *SubscriptionFeatureRegistrationsClient) getHandleResponse(resp *ht
 
 // NewListAllBySubscriptionPager - Returns subscription feature registrations for given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // options - SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListAllBySubscription
 // method.
 func (client *SubscriptionFeatureRegistrationsClient) NewListAllBySubscriptionPager(options *SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse]{
 		More: func(page SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -262,7 +266,7 @@ func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionCreat
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -277,11 +281,12 @@ func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionHandl
 
 // NewListBySubscriptionPager - Returns subscription feature registrations for given subscription and provider namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // providerNamespace - The provider namespace.
 // options - SubscriptionFeatureRegistrationsClientListBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListBySubscription
 // method.
 func (client *SubscriptionFeatureRegistrationsClient) NewListBySubscriptionPager(providerNamespace string, options *SubscriptionFeatureRegistrationsClientListBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse]{
 		More: func(page SubscriptionFeatureRegistrationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -326,7 +331,7 @@ func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

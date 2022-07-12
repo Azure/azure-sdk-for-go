@@ -38,7 +38,7 @@ func NewExternalSecuritySolutionsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewExternalSecuritySolutionsClient(subscriptionID string, credential azcore
 
 // Get - Gets a specific external Security Solution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // externalSecuritySolutionsName - Name of an external security solution.
@@ -102,7 +103,7 @@ func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,10 +118,11 @@ func (client *ExternalSecuritySolutionsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Gets a list of external security solutions for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - ExternalSecuritySolutionsClientListOptions contains the optional parameters for the ExternalSecuritySolutionsClient.List
 // method.
 func (client *ExternalSecuritySolutionsClient) NewListPager(options *ExternalSecuritySolutionsClientListOptions) *runtime.Pager[ExternalSecuritySolutionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ExternalSecuritySolutionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ExternalSecuritySolutionsClientListResponse]{
 		More: func(page ExternalSecuritySolutionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -161,7 +163,7 @@ func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -176,11 +178,12 @@ func (client *ExternalSecuritySolutionsClient) listHandleResponse(resp *http.Res
 
 // NewListByHomeRegionPager - Gets a list of external Security Solutions for the subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - ExternalSecuritySolutionsClientListByHomeRegionOptions contains the optional parameters for the ExternalSecuritySolutionsClient.ListByHomeRegion
 // method.
 func (client *ExternalSecuritySolutionsClient) NewListByHomeRegionPager(ascLocation string, options *ExternalSecuritySolutionsClientListByHomeRegionOptions) *runtime.Pager[ExternalSecuritySolutionsClientListByHomeRegionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ExternalSecuritySolutionsClientListByHomeRegionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ExternalSecuritySolutionsClientListByHomeRegionResponse]{
 		More: func(page ExternalSecuritySolutionsClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -225,7 +228,7 @@ func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

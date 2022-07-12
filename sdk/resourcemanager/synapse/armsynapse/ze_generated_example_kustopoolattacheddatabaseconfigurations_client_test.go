@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
@@ -26,19 +24,18 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_NewListByKustoPoolPage
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByKustoPoolPager("<workspace-name>",
-		"<kusto-pool-name>",
-		"<resource-group-name>",
+	pager := client.NewListByKustoPoolPager("kustorptest",
+		"kustoclusterrptest4",
+		"kustorptest",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<workspace-name>",
-		"<kusto-pool-name>",
-		"<attached-database-configuration-name>",
-		"<resource-group-name>",
+		"kustorptest",
+		"kustoclusterrptest4",
+		"attachedDatabaseConfigurations1",
+		"kustorptest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,20 +75,20 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<workspace-name>",
-		"<kusto-pool-name>",
-		"<attached-database-configuration-name>",
-		"<resource-group-name>",
+		"kustorptest",
+		"kustoclusterrptest4",
+		"attachedDatabaseConfigurations1",
+		"kustorptest",
 		armsynapse.AttachedDatabaseConfiguration{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armsynapse.AttachedDatabaseConfigurationProperties{
-				KustoPoolResourceID:               to.Ptr("<kusto-pool-resource-id>"),
-				DatabaseName:                      to.Ptr("<database-name>"),
+				KustoPoolResourceID:               to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Synapse/Workspaces/kustorptest/KustoPools/kustoclusterrptest4"),
+				DatabaseName:                      to.Ptr("kustodatabase"),
 				DefaultPrincipalsModificationKind: to.Ptr(armsynapse.DefaultPrincipalsModificationKindUnion),
 				TableLevelSharingProperties: &armsynapse.TableLevelSharingProperties{
 					ExternalTablesToExclude: []*string{
@@ -109,11 +106,11 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() 
 				},
 			},
 		},
-		&armsynapse.KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -128,20 +125,20 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<workspace-name>",
-		"<kusto-pool-name>",
-		"<attached-database-configuration-name>",
-		"<resource-group-name>",
-		&armsynapse.KustoPoolAttachedDatabaseConfigurationsClientBeginDeleteOptions{ResumeToken: ""})
+		"kustorptest",
+		"kustoclusterrptest4",
+		"attachedDatabaseConfigurations1",
+		"kustorptest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

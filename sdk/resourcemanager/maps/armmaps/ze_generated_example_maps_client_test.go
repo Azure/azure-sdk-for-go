@@ -32,7 +32,6 @@ func ExampleClient_NewListOperationsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,7 +47,7 @@ func ExampleClient_NewListSubscriptionOperationsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaps.NewClient("<subscription-id>", cred, nil)
+	client, err := armmaps.NewClient("21a9967a-e8a9-4656-a70b-96ff1c4d05a0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -57,7 +56,6 @@ func ExampleClient_NewListSubscriptionOperationsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

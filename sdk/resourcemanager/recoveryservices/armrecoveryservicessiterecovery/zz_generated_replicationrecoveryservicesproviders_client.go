@@ -42,7 +42,7 @@ func NewReplicationRecoveryServicesProvidersClient(resourceName string, resource
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,25 +62,27 @@ func NewReplicationRecoveryServicesProvidersClient(resourceName string, resource
 
 // BeginCreate - The operation to add a recovery services provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // providerName - Recovery services provider name.
 // addProviderInput - Add provider input.
 // options - ReplicationRecoveryServicesProvidersClientBeginCreateOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.BeginCreate
 // method.
-func (client *ReplicationRecoveryServicesProvidersClient) BeginCreate(ctx context.Context, fabricName string, providerName string, addProviderInput AddRecoveryServicesProviderInput, options *ReplicationRecoveryServicesProvidersClientBeginCreateOptions) (*armruntime.Poller[ReplicationRecoveryServicesProvidersClientCreateResponse], error) {
+func (client *ReplicationRecoveryServicesProvidersClient) BeginCreate(ctx context.Context, fabricName string, providerName string, addProviderInput AddRecoveryServicesProviderInput, options *ReplicationRecoveryServicesProvidersClientBeginCreateOptions) (*runtime.Poller[ReplicationRecoveryServicesProvidersClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, fabricName, providerName, addProviderInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationRecoveryServicesProvidersClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationRecoveryServicesProvidersClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - The operation to add a recovery services provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationRecoveryServicesProvidersClient) create(ctx context.Context, fabricName string, providerName string, addProviderInput AddRecoveryServicesProviderInput, options *ReplicationRecoveryServicesProvidersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, providerName, addProviderInput, options)
 	if err != nil {
@@ -126,30 +128,32 @@ func (client *ReplicationRecoveryServicesProvidersClient) createCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, addProviderInput)
 }
 
 // BeginDelete - The operation to removes/delete(unregister) a recovery services provider from the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // providerName - Recovery services provider name.
 // options - ReplicationRecoveryServicesProvidersClientBeginDeleteOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.BeginDelete
 // method.
-func (client *ReplicationRecoveryServicesProvidersClient) BeginDelete(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginDeleteOptions) (*armruntime.Poller[ReplicationRecoveryServicesProvidersClientDeleteResponse], error) {
+func (client *ReplicationRecoveryServicesProvidersClient) BeginDelete(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginDeleteOptions) (*runtime.Poller[ReplicationRecoveryServicesProvidersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, fabricName, providerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationRecoveryServicesProvidersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationRecoveryServicesProvidersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - The operation to removes/delete(unregister) a recovery services provider from the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationRecoveryServicesProvidersClient) deleteOperation(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, providerName, options)
 	if err != nil {
@@ -200,6 +204,7 @@ func (client *ReplicationRecoveryServicesProvidersClient) deleteCreateRequest(ct
 
 // Get - Gets the details of registered recovery services provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // providerName - Recovery services provider name.
 // options - ReplicationRecoveryServicesProvidersClientGetOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.Get
@@ -249,7 +254,7 @@ func (client *ReplicationRecoveryServicesProvidersClient) getCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -264,10 +269,11 @@ func (client *ReplicationRecoveryServicesProvidersClient) getHandleResponse(resp
 
 // NewListPager - Lists the registered recovery services providers in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationRecoveryServicesProvidersClientListOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.List
 // method.
 func (client *ReplicationRecoveryServicesProvidersClient) NewListPager(options *ReplicationRecoveryServicesProvidersClientListOptions) *runtime.Pager[ReplicationRecoveryServicesProvidersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationRecoveryServicesProvidersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationRecoveryServicesProvidersClientListResponse]{
 		More: func(page ReplicationRecoveryServicesProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -316,7 +322,7 @@ func (client *ReplicationRecoveryServicesProvidersClient) listCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -331,11 +337,12 @@ func (client *ReplicationRecoveryServicesProvidersClient) listHandleResponse(res
 
 // NewListByReplicationFabricsPager - Lists the registered recovery services providers for the specified fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // options - ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions contains the optional parameters for
 // the ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics method.
 func (client *ReplicationRecoveryServicesProvidersClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -388,7 +395,7 @@ func (client *ReplicationRecoveryServicesProvidersClient) listByReplicationFabri
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -403,24 +410,26 @@ func (client *ReplicationRecoveryServicesProvidersClient) listByReplicationFabri
 
 // BeginPurge - The operation to purge(force delete) a recovery services provider from the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // providerName - Recovery services provider name.
 // options - ReplicationRecoveryServicesProvidersClientBeginPurgeOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.BeginPurge
 // method.
-func (client *ReplicationRecoveryServicesProvidersClient) BeginPurge(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginPurgeOptions) (*armruntime.Poller[ReplicationRecoveryServicesProvidersClientPurgeResponse], error) {
+func (client *ReplicationRecoveryServicesProvidersClient) BeginPurge(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginPurgeOptions) (*runtime.Poller[ReplicationRecoveryServicesProvidersClientPurgeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.purge(ctx, fabricName, providerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationRecoveryServicesProvidersClientPurgeResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationRecoveryServicesProvidersClientPurgeResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientPurgeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientPurgeResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Purge - The operation to purge(force delete) a recovery services provider from the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationRecoveryServicesProvidersClient) purge(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginPurgeOptions) (*http.Response, error) {
 	req, err := client.purgeCreateRequest(ctx, fabricName, providerName, options)
 	if err != nil {
@@ -471,24 +480,26 @@ func (client *ReplicationRecoveryServicesProvidersClient) purgeCreateRequest(ctx
 
 // BeginRefreshProvider - The operation to refresh the information from the recovery services provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // providerName - Recovery services provider name.
 // options - ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions contains the optional parameters for the
 // ReplicationRecoveryServicesProvidersClient.BeginRefreshProvider method.
-func (client *ReplicationRecoveryServicesProvidersClient) BeginRefreshProvider(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions) (*armruntime.Poller[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse], error) {
+func (client *ReplicationRecoveryServicesProvidersClient) BeginRefreshProvider(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions) (*runtime.Poller[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.refreshProvider(ctx, fabricName, providerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RefreshProvider - The operation to refresh the information from the recovery services provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationRecoveryServicesProvidersClient) refreshProvider(ctx context.Context, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions) (*http.Response, error) {
 	req, err := client.refreshProviderCreateRequest(ctx, fabricName, providerName, options)
 	if err != nil {
@@ -534,6 +545,6 @@ func (client *ReplicationRecoveryServicesProvidersClient) refreshProviderCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

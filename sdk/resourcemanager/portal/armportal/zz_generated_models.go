@@ -99,6 +99,9 @@ type DashboardPartMetadata struct {
 	AdditionalProperties map[string]interface{}
 }
 
+// GetDashboardPartMetadata implements the DashboardPartMetadataClassification interface for type DashboardPartMetadata.
+func (d *DashboardPartMetadata) GetDashboardPartMetadata() *DashboardPartMetadata { return d }
+
 // DashboardParts - A dashboard part.
 type DashboardParts struct {
 	// REQUIRED; The dashboard's part position.
@@ -204,6 +207,14 @@ type MarkdownPartMetadata struct {
 
 	// Markdown part settings.
 	Settings *MarkdownPartMetadataSettings `json:"settings,omitempty"`
+}
+
+// GetDashboardPartMetadata implements the DashboardPartMetadataClassification interface for type MarkdownPartMetadata.
+func (m *MarkdownPartMetadata) GetDashboardPartMetadata() *DashboardPartMetadata {
+	return &DashboardPartMetadata{
+		Type:                 m.Type,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MarkdownPartMetadataSettings - Markdown part settings.

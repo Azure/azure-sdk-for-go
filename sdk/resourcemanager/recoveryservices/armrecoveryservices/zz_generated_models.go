@@ -10,6 +10,11 @@ package armrecoveryservices
 
 import "time"
 
+// AzureMonitorAlertSettings - Settings for Azure Monitor based alerts
+type AzureMonitorAlertSettings struct {
+	AlertsForAllJobFailures *AlertsState `json:"alertsForAllJobFailures,omitempty"`
+}
+
 // CertificateRequest - Details of the certificate to be uploaded to the vault.
 type CertificateRequest struct {
 	// Raw certificate data.
@@ -31,6 +36,11 @@ type CheckNameAvailabilityResult struct {
 	Message       *string `json:"message,omitempty"`
 	NameAvailable *bool   `json:"nameAvailable,omitempty"`
 	Reason        *string `json:"reason,omitempty"`
+}
+
+// ClassicAlertSettings - Settings for classic alerts
+type ClassicAlertSettings struct {
+	AlertsForCriticalOperations *AlertsState `json:"alertsForCriticalOperations,omitempty"`
 }
 
 // ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
@@ -178,6 +188,15 @@ type JobsSummary struct {
 
 	// Count of suspended jobs.
 	SuspendedJobs *int32 `json:"suspendedJobs,omitempty"`
+}
+
+// MonitoringSettings - Monitoring Settings of the vault
+type MonitoringSettings struct {
+	// Settings for Azure Monitor based alerts
+	AzureMonitorAlertSettings *AzureMonitorAlertSettings `json:"azureMonitorAlertSettings,omitempty"`
+
+	// Settings for classic alerts
+	ClassicAlertSettings *ClassicAlertSettings `json:"classicAlertSettings,omitempty"`
 }
 
 // MonitoringSummary - Summary of the replication monitoring data for this vault.
@@ -504,6 +523,21 @@ type ResourceCertificateAndAADDetails struct {
 	ValidTo *time.Time `json:"validTo,omitempty"`
 }
 
+// GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateAndAADDetails.
+func (r *ResourceCertificateAndAADDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
+	return &ResourceCertificateDetails{
+		AuthType:     r.AuthType,
+		Certificate:  r.Certificate,
+		FriendlyName: r.FriendlyName,
+		Issuer:       r.Issuer,
+		ResourceID:   r.ResourceID,
+		Subject:      r.Subject,
+		Thumbprint:   r.Thumbprint,
+		ValidFrom:    r.ValidFrom,
+		ValidTo:      r.ValidTo,
+	}
+}
+
 // ResourceCertificateAndAcsDetails - Certificate details representing the Vault credentials for ACS.
 type ResourceCertificateAndAcsDetails struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -543,6 +577,21 @@ type ResourceCertificateAndAcsDetails struct {
 	ValidTo *time.Time `json:"validTo,omitempty"`
 }
 
+// GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateAndAcsDetails.
+func (r *ResourceCertificateAndAcsDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
+	return &ResourceCertificateDetails{
+		AuthType:     r.AuthType,
+		Certificate:  r.Certificate,
+		FriendlyName: r.FriendlyName,
+		Issuer:       r.Issuer,
+		ResourceID:   r.ResourceID,
+		Subject:      r.Subject,
+		Thumbprint:   r.Thumbprint,
+		ValidFrom:    r.ValidFrom,
+		ValidTo:      r.ValidTo,
+	}
+}
+
 // ResourceCertificateDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetResourceCertificateDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -580,6 +629,11 @@ type ResourceCertificateDetails struct {
 
 	// Certificate Validity End Date time.
 	ValidTo *time.Time `json:"validTo,omitempty"`
+}
+
+// GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateDetails.
+func (r *ResourceCertificateDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
+	return r
 }
 
 // SKU - Identifies the unique system identifier for each Azure resource.
@@ -801,6 +855,9 @@ type VaultList struct {
 type VaultProperties struct {
 	// Customer Managed Key details of the resource.
 	Encryption *VaultPropertiesEncryption `json:"encryption,omitempty"`
+
+	// Monitoring Settings of the vault
+	MonitoringSettings *MonitoringSettings `json:"monitoringSettings,omitempty"`
 
 	// The details of the latest move operation performed on the Azure Resource
 	MoveDetails *VaultPropertiesMoveDetails `json:"moveDetails,omitempty"`

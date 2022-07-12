@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts"
@@ -26,13 +24,13 @@ func ExampleClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentscripts.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<script-name>",
+		"script-rg",
+		"MyDeploymentScript",
 		&armdeploymentscripts.AzurePowerShellScript{
 			Identity: &armdeploymentscripts.ManagedServiceIdentity{
 				Type: to.Ptr(armdeploymentscripts.ManagedServiceIdentityTypeUserAssigned),
@@ -41,24 +39,24 @@ func ExampleClient_BeginCreate() {
 				},
 			},
 			Kind:     to.Ptr(armdeploymentscripts.ScriptTypeAzurePowerShell),
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armdeploymentscripts.AzurePowerShellScriptProperties{
 				CleanupPreference: to.Ptr(armdeploymentscripts.CleanupOptionsAlways),
-				Arguments:         to.Ptr("<arguments>"),
-				RetentionInterval: to.Ptr("<retention-interval>"),
-				ScriptContent:     to.Ptr("<script-content>"),
+				Arguments:         to.Ptr("-Location 'westus' -Name \"*rg2\""),
+				RetentionInterval: to.Ptr("PT7D"),
+				ScriptContent:     to.Ptr("Param([string]$Location,[string]$Name) $deploymentScriptOutputs['test'] = 'value' Get-AzResourceGroup -Location $Location -Name $Name"),
 				SupportingScriptUris: []*string{
 					to.Ptr("https://uri1.to.supporting.script"),
 					to.Ptr("https://uri2.to.supporting.script")},
-				Timeout:             to.Ptr("<timeout>"),
-				AzPowerShellVersion: to.Ptr("<az-power-shell-version>"),
+				Timeout:             to.Ptr("PT1H"),
+				AzPowerShellVersion: to.Ptr("1.7.0"),
 			},
 		},
-		&armdeploymentscripts.ClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -73,13 +71,13 @@ func ExampleClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentscripts.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<script-name>",
+		"script-rg",
+		"MyDeploymentScript",
 		&armdeploymentscripts.ClientUpdateOptions{DeploymentScript: &armdeploymentscripts.DeploymentScriptUpdateParameter{
 			Tags: map[string]*string{},
 		},
@@ -98,13 +96,13 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentscripts.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<script-name>",
+		"script-rg",
+		"MyDeploymentScript",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -120,13 +118,13 @@ func ExampleClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentscripts.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<script-name>",
+		"script-rg",
+		"MyDeploymentScript",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -140,7 +138,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentscripts.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -149,7 +147,6 @@ func ExampleClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -165,13 +162,13 @@ func ExampleClient_GetLogs() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentscripts.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetLogs(ctx,
-		"<resource-group-name>",
-		"<script-name>",
+		"script-rg",
+		"MyDeploymentScript",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -187,13 +184,13 @@ func ExampleClient_GetLogsDefault() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentscripts.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetLogsDefault(ctx,
-		"<resource-group-name>",
-		"<script-name>",
+		"script-rg",
+		"MyDeploymentScript",
 		&armdeploymentscripts.ClientGetLogsDefaultOptions{Tail: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -209,17 +206,16 @@ func ExampleClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentscripts.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("script-rg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

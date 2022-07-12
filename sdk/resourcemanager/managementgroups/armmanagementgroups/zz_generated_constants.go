@@ -10,7 +10,7 @@ package armmanagementgroups
 
 const (
 	moduleName    = "armmanagementgroups"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v1.0.0"
 )
 
 type EntitySearchType string

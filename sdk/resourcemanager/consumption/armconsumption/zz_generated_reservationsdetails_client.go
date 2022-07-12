@@ -36,7 +36,7 @@ func NewReservationsDetailsClient(credential azcore.TokenCredential, options *ar
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,14 +53,15 @@ func NewReservationsDetailsClient(credential azcore.TokenCredential, options *ar
 
 // NewListPager - Lists the reservations details for the defined scope and provided date range.
 // If the operation fails it returns an *azcore.ResponseError type.
-// scope - The scope associated with reservations details operations. This includes '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
+// Generated from API version 2021-10-01
+// resourceScope - The scope associated with reservations details operations. This includes '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
 // for BillingAccount scope (legacy), and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile
 // scope (modern).
 // options - ReservationsDetailsClientListOptions contains the optional parameters for the ReservationsDetailsClient.List
 // method.
-func (client *ReservationsDetailsClient) NewListPager(scope string, options *ReservationsDetailsClientListOptions) *runtime.Pager[ReservationsDetailsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListResponse]{
+func (client *ReservationsDetailsClient) NewListPager(resourceScope string, options *ReservationsDetailsClientListOptions) *runtime.Pager[ReservationsDetailsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsDetailsClientListResponse]{
 		More: func(page ReservationsDetailsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -68,7 +69,7 @@ func (client *ReservationsDetailsClient) NewListPager(scope string, options *Res
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, scope, options)
+				req, err = client.listCreateRequest(ctx, resourceScope, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -88,9 +89,9 @@ func (client *ReservationsDetailsClient) NewListPager(scope string, options *Res
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationsDetailsClient) listCreateRequest(ctx context.Context, scope string, options *ReservationsDetailsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Consumption/reservationDetails"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+func (client *ReservationsDetailsClient) listCreateRequest(ctx context.Context, resourceScope string, options *ReservationsDetailsClientListOptions) (*policy.Request, error) {
+	urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationDetails"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -113,7 +114,7 @@ func (client *ReservationsDetailsClient) listCreateRequest(ctx context.Context, 
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -128,13 +129,14 @@ func (client *ReservationsDetailsClient) listHandleResponse(resp *http.Response)
 
 // NewListByReservationOrderPager - Lists the reservations details for provided date range.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // reservationOrderID - Order Id of the reservation
 // filter - Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports
 // 'le' and 'ge'
 // options - ReservationsDetailsClientListByReservationOrderOptions contains the optional parameters for the ReservationsDetailsClient.ListByReservationOrder
 // method.
 func (client *ReservationsDetailsClient) NewListByReservationOrderPager(reservationOrderID string, filter string, options *ReservationsDetailsClientListByReservationOrderOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListByReservationOrderResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationsDetailsClientListByReservationOrderResponse]{
 		More: func(page ReservationsDetailsClientListByReservationOrderResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -176,7 +178,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderCreateRequest(ctx
 	reqQP.Set("$filter", filter)
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -191,6 +193,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(re
 
 // NewListByReservationOrderAndReservationPager - Lists the reservations details for provided date range.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // reservationOrderID - Order Id of the reservation
 // reservationID - Id of the reservation
 // filter - Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports
@@ -198,7 +201,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(re
 // options - ReservationsDetailsClientListByReservationOrderAndReservationOptions contains the optional parameters for the
 // ReservationsDetailsClient.ListByReservationOrderAndReservation method.
 func (client *ReservationsDetailsClient) NewListByReservationOrderAndReservationPager(reservationOrderID string, reservationID string, filter string, options *ReservationsDetailsClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderAndReservationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationsDetailsClientListByReservationOrderAndReservationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationsDetailsClientListByReservationOrderAndReservationResponse]{
 		More: func(page ReservationsDetailsClientListByReservationOrderAndReservationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -244,7 +247,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderAndReservationCre
 	reqQP.Set("$filter", filter)
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

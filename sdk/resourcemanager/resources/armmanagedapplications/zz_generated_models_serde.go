@@ -46,14 +46,6 @@ func (a ApplicationDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationDefinitionListResult.
-func (a ApplicationDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ApplicationDefinitionProperties.
 func (a ApplicationDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -66,14 +58,6 @@ func (a ApplicationDefinitionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "lockLevel", a.LockLevel)
 	populate(objectMap, "mainTemplate", &a.MainTemplate)
 	populate(objectMap, "packageFileUri", a.PackageFileURI)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplicationListResult.
-func (a ApplicationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -105,14 +89,6 @@ func (g GenericResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sku", g.SKU)
 	populate(objectMap, "tags", g.Tags)
 	populate(objectMap, "type", g.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
 }
 

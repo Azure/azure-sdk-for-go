@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
@@ -30,13 +28,12 @@ func ExampleProfilesClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingAccountPager("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("{billingAccountName}",
 		&armbilling.ProfilesClientListByBillingAccountOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,8 +54,8 @@ func ExampleProfilesClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
 		&armbilling.ProfilesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,36 +76,36 @@ func ExampleProfilesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
 		armbilling.Profile{
 			Properties: &armbilling.ProfileProperties{
 				BillTo: &armbilling.AddressDetails{
-					AddressLine1: to.Ptr("<address-line1>"),
-					City:         to.Ptr("<city>"),
-					Country:      to.Ptr("<country>"),
-					FirstName:    to.Ptr("<first-name>"),
-					LastName:     to.Ptr("<last-name>"),
-					PostalCode:   to.Ptr("<postal-code>"),
-					Region:       to.Ptr("<region>"),
+					AddressLine1: to.Ptr("Test Address 1"),
+					City:         to.Ptr("Redmond"),
+					Country:      to.Ptr("US"),
+					FirstName:    to.Ptr("Test"),
+					LastName:     to.Ptr("User"),
+					PostalCode:   to.Ptr("12345"),
+					Region:       to.Ptr("WA"),
 				},
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("Finance"),
 				EnabledAzurePlans: []*armbilling.AzurePlan{
 					{
-						SKUID: to.Ptr("<skuid>"),
+						SKUID: to.Ptr("0001"),
 					},
 					{
-						SKUID: to.Ptr("<skuid>"),
+						SKUID: to.Ptr("0002"),
 					}},
 				InvoiceEmailOptIn: to.Ptr(true),
-				PoNumber:          to.Ptr("<po-number>"),
+				PoNumber:          to.Ptr("ABC12345"),
 			},
 		},
-		&armbilling.ProfilesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

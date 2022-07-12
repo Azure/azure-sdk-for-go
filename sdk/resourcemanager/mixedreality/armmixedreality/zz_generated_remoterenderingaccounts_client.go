@@ -38,7 +38,7 @@ func NewRemoteRenderingAccountsClient(subscriptionID string, credential azcore.T
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRemoteRenderingAccountsClient(subscriptionID string, credential azcore.T
 
 // Create - Creating or Updating a Remote Rendering Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // remoteRenderingAccount - Remote Rendering Account parameter.
@@ -98,7 +99,7 @@ func (client *RemoteRenderingAccountsClient) createCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, remoteRenderingAccount)
 }
 
@@ -113,6 +114,7 @@ func (client *RemoteRenderingAccountsClient) createHandleResponse(resp *http.Res
 
 // Delete - Delete a Remote Rendering Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - RemoteRenderingAccountsClientDeleteOptions contains the optional parameters for the RemoteRenderingAccountsClient.Delete
@@ -154,12 +156,13 @@ func (client *RemoteRenderingAccountsClient) deleteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve a Remote Rendering Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - RemoteRenderingAccountsClientGetOptions contains the optional parameters for the RemoteRenderingAccountsClient.Get
@@ -201,7 +204,7 @@ func (client *RemoteRenderingAccountsClient) getCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -216,11 +219,12 @@ func (client *RemoteRenderingAccountsClient) getHandleResponse(resp *http.Respon
 
 // NewListByResourceGroupPager - List Resources by Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // options - RemoteRenderingAccountsClientListByResourceGroupOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListByResourceGroup
 // method.
 func (client *RemoteRenderingAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *RemoteRenderingAccountsClientListByResourceGroupOptions) *runtime.Pager[RemoteRenderingAccountsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemoteRenderingAccountsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemoteRenderingAccountsClientListByResourceGroupResponse]{
 		More: func(page RemoteRenderingAccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -265,7 +269,7 @@ func (client *RemoteRenderingAccountsClient) listByResourceGroupCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -280,10 +284,11 @@ func (client *RemoteRenderingAccountsClient) listByResourceGroupHandleResponse(r
 
 // NewListBySubscriptionPager - List Remote Rendering Accounts by Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // options - RemoteRenderingAccountsClientListBySubscriptionOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListBySubscription
 // method.
 func (client *RemoteRenderingAccountsClient) NewListBySubscriptionPager(options *RemoteRenderingAccountsClientListBySubscriptionOptions) *runtime.Pager[RemoteRenderingAccountsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemoteRenderingAccountsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemoteRenderingAccountsClientListBySubscriptionResponse]{
 		More: func(page RemoteRenderingAccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -324,7 +329,7 @@ func (client *RemoteRenderingAccountsClient) listBySubscriptionCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -339,6 +344,7 @@ func (client *RemoteRenderingAccountsClient) listBySubscriptionHandleResponse(re
 
 // ListKeys - List Both of the 2 Keys of a Remote Rendering Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - RemoteRenderingAccountsClientListKeysOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListKeys
@@ -380,7 +386,7 @@ func (client *RemoteRenderingAccountsClient) listKeysCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -395,6 +401,7 @@ func (client *RemoteRenderingAccountsClient) listKeysHandleResponse(resp *http.R
 
 // RegenerateKeys - Regenerate specified Key of a Remote Rendering Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // regenerate - Required information for key regeneration.
@@ -437,7 +444,7 @@ func (client *RemoteRenderingAccountsClient) regenerateKeysCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerate)
 }
 
@@ -452,6 +459,7 @@ func (client *RemoteRenderingAccountsClient) regenerateKeysHandleResponse(resp *
 
 // Update - Updating a Remote Rendering Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // remoteRenderingAccount - Remote Rendering Account parameter.
@@ -494,7 +502,7 @@ func (client *RemoteRenderingAccountsClient) updateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, remoteRenderingAccount)
 }
 

@@ -38,7 +38,7 @@ func NewLogProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewLogProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Create or update a log profile in Azure Monitoring REST API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // logProfileName - The name of the log profile.
 // parameters - Parameters supplied to the operation.
 // options - LogProfilesClientCreateOrUpdateOptions contains the optional parameters for the LogProfilesClient.CreateOrUpdate
@@ -93,7 +94,7 @@ func (client *LogProfilesClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -108,6 +109,7 @@ func (client *LogProfilesClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Deletes the log profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // logProfileName - The name of the log profile.
 // options - LogProfilesClientDeleteOptions contains the optional parameters for the LogProfilesClient.Delete method.
 func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName string, options *LogProfilesClientDeleteOptions) (LogProfilesClientDeleteResponse, error) {
@@ -148,6 +150,7 @@ func (client *LogProfilesClient) deleteCreateRequest(ctx context.Context, logPro
 
 // Get - Gets the log profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // logProfileName - The name of the log profile.
 // options - LogProfilesClientGetOptions contains the optional parameters for the LogProfilesClient.Get method.
 func (client *LogProfilesClient) Get(ctx context.Context, logProfileName string, options *LogProfilesClientGetOptions) (LogProfilesClientGetResponse, error) {
@@ -183,7 +186,7 @@ func (client *LogProfilesClient) getCreateRequest(ctx context.Context, logProfil
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -198,9 +201,10 @@ func (client *LogProfilesClient) getHandleResponse(resp *http.Response) (LogProf
 
 // NewListPager - List the log profiles.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // options - LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.List method.
 func (client *LogProfilesClient) NewListPager(options *LogProfilesClientListOptions) *runtime.Pager[LogProfilesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LogProfilesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LogProfilesClientListResponse]{
 		More: func(page LogProfilesClientListResponse) bool {
 			return false
 		},
@@ -235,7 +239,7 @@ func (client *LogProfilesClient) listCreateRequest(ctx context.Context, options 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -250,6 +254,7 @@ func (client *LogProfilesClient) listHandleResponse(resp *http.Response) (LogPro
 
 // Update - Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // logProfileName - The name of the log profile.
 // logProfilesResource - Parameters supplied to the operation.
 // options - LogProfilesClientUpdateOptions contains the optional parameters for the LogProfilesClient.Update method.
@@ -286,7 +291,7 @@ func (client *LogProfilesClient) updateCreateRequest(ctx context.Context, logPro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, logProfilesResource)
 }
 

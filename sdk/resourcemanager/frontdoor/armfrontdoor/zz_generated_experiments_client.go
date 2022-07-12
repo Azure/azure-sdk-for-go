@@ -39,7 +39,7 @@ func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreateOrUpdate - Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // experimentName - The Experiment identifier associated with the Experiment
 // parameters - The Experiment resource
 // options - ExperimentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExperimentsClient.BeginCreateOrUpdate
 // method.
-func (client *ExperimentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ExperimentsClientCreateOrUpdateResponse], error) {
+func (client *ExperimentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExperimentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, profileName, experimentName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ExperimentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ExperimentsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ExperimentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ExperimentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, profileName, experimentName, parameters, options)
 	if err != nil {
@@ -118,30 +120,32 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // experimentName - The Experiment identifier associated with the Experiment
 // options - ExperimentsClientBeginDeleteOptions contains the optional parameters for the ExperimentsClient.BeginDelete method.
-func (client *ExperimentsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (*armruntime.Poller[ExperimentsClientDeleteResponse], error) {
+func (client *ExperimentsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (*runtime.Poller[ExperimentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, experimentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ExperimentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ExperimentsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ExperimentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ExperimentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, experimentName, options)
 	if err != nil {
@@ -183,12 +187,13 @@ func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an Experiment by ExperimentName
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // experimentName - The Experiment identifier associated with the Experiment
@@ -234,7 +239,7 @@ func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,12 +254,13 @@ func (client *ExperimentsClient) getHandleResponse(resp *http.Response) (Experim
 
 // NewListByProfilePager - Gets a list of Experiments
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // options - ExperimentsClientListByProfileOptions contains the optional parameters for the ExperimentsClient.ListByProfile
 // method.
 func (client *ExperimentsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *ExperimentsClientListByProfileOptions) *runtime.Pager[ExperimentsClientListByProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ExperimentsClientListByProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ExperimentsClientListByProfileResponse]{
 		More: func(page ExperimentsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -303,7 +309,7 @@ func (client *ExperimentsClient) listByProfileCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -318,25 +324,27 @@ func (client *ExperimentsClient) listByProfileHandleResponse(resp *http.Response
 
 // BeginUpdate - Updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - The Profile identifier associated with the Tenant and Partner
 // experimentName - The Experiment identifier associated with the Experiment
 // parameters - The Experiment Update Model
 // options - ExperimentsClientBeginUpdateOptions contains the optional parameters for the ExperimentsClient.BeginUpdate method.
-func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*armruntime.Poller[ExperimentsClientUpdateResponse], error) {
+func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*runtime.Poller[ExperimentsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, profileName, experimentName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ExperimentsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ExperimentsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ExperimentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ExperimentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
 func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, experimentName, parameters, options)
 	if err != nil {
@@ -378,6 +386,6 @@ func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

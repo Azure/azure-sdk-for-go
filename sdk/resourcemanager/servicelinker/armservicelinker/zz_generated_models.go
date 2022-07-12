@@ -26,25 +26,42 @@ type AuthInfoBase struct {
 	AuthType *AuthType `json:"authType,omitempty"`
 }
 
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type AuthInfoBase.
+func (a *AuthInfoBase) GetAuthInfoBase() *AuthInfoBase { return a }
+
 // AzureKeyVaultProperties - The resource properties when type is Azure Key Vault
 type AzureKeyVaultProperties struct {
 	// REQUIRED; The azure resource type.
-	Type *Type `json:"type,omitempty"`
+	Type *AzureResourceType `json:"type,omitempty"`
 
 	// True if connect via Kubernetes CSI Driver.
 	ConnectAsKubernetesCsiDriver *bool `json:"connectAsKubernetesCsiDriver,omitempty"`
 }
 
+// GetAzureResourcePropertiesBase implements the AzureResourcePropertiesBaseClassification interface for type AzureKeyVaultProperties.
+func (a *AzureKeyVaultProperties) GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase {
+	return &AzureResourcePropertiesBase{
+		Type: a.Type,
+	}
+}
+
 // AzureResource - The azure resource info when target service type is AzureResource
 type AzureResource struct {
 	// REQUIRED; The target service type.
-	Type *Type `json:"type,omitempty"`
+	Type *TargetServiceType `json:"type,omitempty"`
 
 	// The Id of azure resource.
 	ID *string `json:"id,omitempty"`
 
 	// The azure resource connection related properties.
 	ResourceProperties AzureResourcePropertiesBaseClassification `json:"resourceProperties,omitempty"`
+}
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type AzureResource.
+func (a *AzureResource) GetTargetServiceBase() *TargetServiceBase {
+	return &TargetServiceBase{
+		Type: a.Type,
+	}
 }
 
 // AzureResourcePropertiesBaseClassification provides polymorphic access to related types.
@@ -59,25 +76,44 @@ type AzureResourcePropertiesBaseClassification interface {
 // AzureResourcePropertiesBase - The azure resource properties
 type AzureResourcePropertiesBase struct {
 	// REQUIRED; The azure resource type.
-	Type *Type `json:"type,omitempty"`
+	Type *AzureResourceType `json:"type,omitempty"`
+}
+
+// GetAzureResourcePropertiesBase implements the AzureResourcePropertiesBaseClassification interface for type AzureResourcePropertiesBase.
+func (a *AzureResourcePropertiesBase) GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase {
+	return a
 }
 
 // ConfluentBootstrapServer - The service properties when target service type is ConfluentBootstrapServer
 type ConfluentBootstrapServer struct {
 	// REQUIRED; The target service type.
-	Type *Type `json:"type,omitempty"`
+	Type *TargetServiceType `json:"type,omitempty"`
 
 	// The endpoint of service.
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type ConfluentBootstrapServer.
+func (c *ConfluentBootstrapServer) GetTargetServiceBase() *TargetServiceBase {
+	return &TargetServiceBase{
+		Type: c.Type,
+	}
+}
+
 // ConfluentSchemaRegistry - The service properties when target service type is ConfluentSchemaRegistry
 type ConfluentSchemaRegistry struct {
 	// REQUIRED; The target service type.
-	Type *Type `json:"type,omitempty"`
+	Type *TargetServiceType `json:"type,omitempty"`
 
 	// The endpoint of service.
 	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type ConfluentSchemaRegistry.
+func (c *ConfluentSchemaRegistry) GetTargetServiceBase() *TargetServiceBase {
+	return &TargetServiceBase{
+		Type: c.Type,
+	}
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -128,6 +164,13 @@ type KeyVaultSecretReferenceSecretInfo struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// GetSecretInfoBase implements the SecretInfoBaseClassification interface for type KeyVaultSecretReferenceSecretInfo.
+func (k *KeyVaultSecretReferenceSecretInfo) GetSecretInfoBase() *SecretInfoBase {
+	return &SecretInfoBase{
+		SecretType: k.SecretType,
+	}
+}
+
 // KeyVaultSecretURISecretInfo - The secret info when type is keyVaultSecretUri. It's for scenario that user provides a secret
 // stored in user's keyvault and source is Web App, Spring Cloud or Container App.
 type KeyVaultSecretURISecretInfo struct {
@@ -136,6 +179,13 @@ type KeyVaultSecretURISecretInfo struct {
 
 	// URI to the keyvault secret
 	Value *string `json:"value,omitempty"`
+}
+
+// GetSecretInfoBase implements the SecretInfoBaseClassification interface for type KeyVaultSecretURISecretInfo.
+func (k *KeyVaultSecretURISecretInfo) GetSecretInfoBase() *SecretInfoBase {
+	return &SecretInfoBase{
+		SecretType: k.SecretType,
+	}
 }
 
 // LinkerClientBeginCreateOrUpdateOptions contains the optional parameters for the LinkerClient.BeginCreateOrUpdate method.
@@ -325,6 +375,13 @@ type SecretAuthInfo struct {
 	SecretInfo SecretInfoBaseClassification `json:"secretInfo,omitempty"`
 }
 
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type SecretAuthInfo.
+func (s *SecretAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: s.AuthType,
+	}
+}
+
 // SecretInfoBaseClassification provides polymorphic access to related types.
 // Call the interface's GetSecretInfoBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -339,6 +396,9 @@ type SecretInfoBase struct {
 	// REQUIRED; The secret type.
 	SecretType *SecretType `json:"secretType,omitempty"`
 }
+
+// GetSecretInfoBase implements the SecretInfoBaseClassification interface for type SecretInfoBase.
+func (s *SecretInfoBase) GetSecretInfoBase() *SecretInfoBase { return s }
 
 // SecretStore - An option to store secret value in secure place
 type SecretStore struct {
@@ -361,6 +421,13 @@ type ServicePrincipalCertificateAuthInfo struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 }
 
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type ServicePrincipalCertificateAuthInfo.
+func (s *ServicePrincipalCertificateAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: s.AuthType,
+	}
+}
+
 // ServicePrincipalSecretAuthInfo - The authentication info when authType is servicePrincipal secret
 type ServicePrincipalSecretAuthInfo struct {
 	// REQUIRED; The authentication type.
@@ -374,6 +441,13 @@ type ServicePrincipalSecretAuthInfo struct {
 
 	// REQUIRED; Secret for servicePrincipal auth.
 	Secret *string `json:"secret,omitempty"`
+}
+
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type ServicePrincipalSecretAuthInfo.
+func (s *ServicePrincipalSecretAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: s.AuthType,
+	}
 }
 
 // SourceConfiguration - A configuration item for source resource
@@ -395,6 +469,13 @@ type SourceConfigurationResult struct {
 type SystemAssignedIdentityAuthInfo struct {
 	// REQUIRED; The authentication type.
 	AuthType *AuthType `json:"authType,omitempty"`
+}
+
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type SystemAssignedIdentityAuthInfo.
+func (s *SystemAssignedIdentityAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: s.AuthType,
+	}
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -430,8 +511,11 @@ type TargetServiceBaseClassification interface {
 // TargetServiceBase - The target service properties
 type TargetServiceBase struct {
 	// REQUIRED; The target service type.
-	Type *Type `json:"type,omitempty"`
+	Type *TargetServiceType `json:"type,omitempty"`
 }
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type TargetServiceBase.
+func (t *TargetServiceBase) GetTargetServiceBase() *TargetServiceBase { return t }
 
 // UserAssignedIdentityAuthInfo - The authentication info when authType is userAssignedIdentity
 type UserAssignedIdentityAuthInfo struct {
@@ -445,10 +529,29 @@ type UserAssignedIdentityAuthInfo struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type UserAssignedIdentityAuthInfo.
+func (u *UserAssignedIdentityAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: u.AuthType,
+	}
+}
+
 // VNetSolution - The VNet solution for linker
 type VNetSolution struct {
 	// Type of VNet solution.
 	Type *VNetSolutionType `json:"type,omitempty"`
+}
+
+// ValidateOperationResult - The validation operation result for a linker.
+type ValidateOperationResult struct {
+	// The validation result detail.
+	Properties *ValidateResult `json:"properties,omitempty"`
+
+	// Validated linker id.
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// Validation operation status.
+	Status *string `json:"status,omitempty"`
 }
 
 // ValidateResult - The validation result for a linker.
@@ -503,4 +606,11 @@ type ValueSecretInfo struct {
 
 	// The actual value of the secret.
 	Value *string `json:"value,omitempty"`
+}
+
+// GetSecretInfoBase implements the SecretInfoBaseClassification interface for type ValueSecretInfo.
+func (v *ValueSecretInfo) GetSecretInfoBase() *SecretInfoBase {
+	return &SecretInfoBase{
+		SecretType: v.SecretType,
+	}
 }

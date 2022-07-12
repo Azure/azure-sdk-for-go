@@ -42,7 +42,7 @@ func NewSupportedOperatingSystemsClient(resourceName string, resourceGroupName s
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewSupportedOperatingSystemsClient(resourceName string, resourceGroupName s
 
 // Get - Gets the data of supported operating systems by SRS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - SupportedOperatingSystemsClientGetOptions contains the optional parameters for the SupportedOperatingSystemsClient.Get
 // method.
 func (client *SupportedOperatingSystemsClient) Get(ctx context.Context, options *SupportedOperatingSystemsClientGetOptions) (SupportedOperatingSystemsClientGetResponse, error) {
@@ -104,7 +105,7 @@ func (client *SupportedOperatingSystemsClient) getCreateRequest(ctx context.Cont
 		reqQP.Set("instanceType", *options.InstanceType)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

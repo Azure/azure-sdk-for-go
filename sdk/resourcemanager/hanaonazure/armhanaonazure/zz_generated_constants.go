@@ -10,7 +10,7 @@ package armhanaonazure
 
 const (
 	moduleName    = "armhanaonazure"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // HanaProvisioningStatesEnum - State of provisioning of the HanaInstance

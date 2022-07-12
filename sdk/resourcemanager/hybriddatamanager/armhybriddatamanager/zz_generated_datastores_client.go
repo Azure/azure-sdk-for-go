@@ -38,7 +38,7 @@ func NewDataStoresClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataStoresClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates or updates the data store/repository in the data manager.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataStoreName - The data store/repository name to be created or updated.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
@@ -63,20 +64,21 @@ func NewDataStoresClient(subscriptionID string, credential azcore.TokenCredentia
 // dataStore - The data store/repository object to be created or updated.
 // options - DataStoresClientBeginCreateOrUpdateOptions contains the optional parameters for the DataStoresClient.BeginCreateOrUpdate
 // method.
-func (client *DataStoresClient) BeginCreateOrUpdate(ctx context.Context, dataStoreName string, resourceGroupName string, dataManagerName string, dataStore DataStore, options *DataStoresClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DataStoresClientCreateOrUpdateResponse], error) {
+func (client *DataStoresClient) BeginCreateOrUpdate(ctx context.Context, dataStoreName string, resourceGroupName string, dataManagerName string, dataStore DataStore, options *DataStoresClientBeginCreateOrUpdateOptions) (*runtime.Poller[DataStoresClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, dataStoreName, resourceGroupName, dataManagerName, dataStore, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DataStoresClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataStoresClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DataStoresClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataStoresClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates the data store/repository in the data manager.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 func (client *DataStoresClient) createOrUpdate(ctx context.Context, dataStoreName string, resourceGroupName string, dataManagerName string, dataStore DataStore, options *DataStoresClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, dataStoreName, resourceGroupName, dataManagerName, dataStore, options)
 	if err != nil {
@@ -118,31 +120,33 @@ func (client *DataStoresClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataStore)
 }
 
 // BeginDelete - This method deletes the given data store/repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataStoreName - The data store/repository name to be deleted.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - DataStoresClientBeginDeleteOptions contains the optional parameters for the DataStoresClient.BeginDelete method.
-func (client *DataStoresClient) BeginDelete(ctx context.Context, dataStoreName string, resourceGroupName string, dataManagerName string, options *DataStoresClientBeginDeleteOptions) (*armruntime.Poller[DataStoresClientDeleteResponse], error) {
+func (client *DataStoresClient) BeginDelete(ctx context.Context, dataStoreName string, resourceGroupName string, dataManagerName string, options *DataStoresClientBeginDeleteOptions) (*runtime.Poller[DataStoresClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, dataStoreName, resourceGroupName, dataManagerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DataStoresClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataStoresClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DataStoresClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataStoresClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - This method deletes the given data store/repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 func (client *DataStoresClient) deleteOperation(ctx context.Context, dataStoreName string, resourceGroupName string, dataManagerName string, options *DataStoresClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, dataStoreName, resourceGroupName, dataManagerName, options)
 	if err != nil {
@@ -189,6 +193,7 @@ func (client *DataStoresClient) deleteCreateRequest(ctx context.Context, dataSto
 
 // Get - This method gets the data store/repository by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // dataStoreName - The data store/repository name queried.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
@@ -235,7 +240,7 @@ func (client *DataStoresClient) getCreateRequest(ctx context.Context, dataStoreN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -250,13 +255,14 @@ func (client *DataStoresClient) getHandleResponse(resp *http.Response) (DataStor
 
 // NewListByDataManagerPager - Gets all the data stores/repositories in the given resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - DataStoresClientListByDataManagerOptions contains the optional parameters for the DataStoresClient.ListByDataManager
 // method.
 func (client *DataStoresClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *DataStoresClientListByDataManagerOptions) *runtime.Pager[DataStoresClientListByDataManagerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataStoresClientListByDataManagerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataStoresClientListByDataManagerResponse]{
 		More: func(page DataStoresClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -308,7 +314,7 @@ func (client *DataStoresClient) listByDataManagerCreateRequest(ctx context.Conte
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

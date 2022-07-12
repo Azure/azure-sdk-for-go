@@ -23,13 +23,13 @@ func ExamplePrivateLinkResourcesClient_ListByCluster() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewPrivateLinkResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByCluster(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"rg1",
+		"cluster1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewPrivateLinkResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<private-link-resource-name>",
+		"rg1",
+		"cluster1",
+		"gateway",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

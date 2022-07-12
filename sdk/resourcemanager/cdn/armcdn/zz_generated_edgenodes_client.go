@@ -33,7 +33,7 @@ func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOp
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,9 +50,10 @@ func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // NewListPager - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // options - EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.List method.
 func (client *EdgeNodesClient) NewListPager(options *EdgeNodesClientListOptions) *runtime.Pager[EdgeNodesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EdgeNodesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EdgeNodesClientListResponse]{
 		More: func(page EdgeNodesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -89,7 +90,7 @@ func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, options *E
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

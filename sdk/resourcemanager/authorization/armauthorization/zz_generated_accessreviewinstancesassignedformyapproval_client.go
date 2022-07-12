@@ -36,7 +36,7 @@ func NewAccessReviewInstancesAssignedForMyApprovalClient(credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewAccessReviewInstancesAssignedForMyApprovalClient(credential azcore.Token
 
 // GetByID - Get single access review instance assigned for my approval.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.GetByID
@@ -90,7 +91,7 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -105,11 +106,12 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDHandleRes
 
 // NewListPager - Get access review instances assigned for my approval.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // options - AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.List
 // method.
 func (client *AccessReviewInstancesAssignedForMyApprovalClient) NewListPager(scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewInstancesAssignedForMyApprovalClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstancesAssignedForMyApprovalClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstancesAssignedForMyApprovalClientListResponse]{
 		More: func(page AccessReviewInstancesAssignedForMyApprovalClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -155,7 +157,7 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) listCreateReques
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

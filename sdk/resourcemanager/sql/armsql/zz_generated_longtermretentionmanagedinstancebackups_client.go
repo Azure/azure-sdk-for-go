@@ -39,7 +39,7 @@ func NewLongTermRetentionManagedInstanceBackupsClient(subscriptionID string, cre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewLongTermRetentionManagedInstanceBackupsClient(subscriptionID string, cre
 
 // BeginDelete - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // locationName - The location of the database.
 // managedInstanceName - The name of the managed instance.
 // databaseName - The name of the managed database.
 // backupName - The backup name.
 // options - LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.BeginDelete
 // method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDelete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions) (*armruntime.Poller[LongTermRetentionManagedInstanceBackupsClientDeleteResponse], error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDelete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions) (*runtime.Poller[LongTermRetentionManagedInstanceBackupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, locationName, managedInstanceName, databaseName, backupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LongTermRetentionManagedInstanceBackupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LongTermRetentionManagedInstanceBackupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LongTermRetentionManagedInstanceBackupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LongTermRetentionManagedInstanceBackupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 func (client *LongTermRetentionManagedInstanceBackupsClient) deleteOperation(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, locationName, managedInstanceName, databaseName, backupName, options)
 	if err != nil {
@@ -127,6 +129,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteCreateRequest
 
 // BeginDeleteByResourceGroup - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The location of the database
@@ -135,20 +138,21 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteCreateRequest
 // backupName - The backup name.
 // options - LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions contains the optional parameters
 // for the LongTermRetentionManagedInstanceBackupsClient.BeginDeleteByResourceGroup method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (*armruntime.Poller[LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse], error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (*runtime.Poller[LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteByResourceGroup(ctx, resourceGroupName, locationName, managedInstanceName, databaseName, backupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteByResourceGroup - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (*http.Response, error) {
 	req, err := client.deleteByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, databaseName, backupName, options)
 	if err != nil {
@@ -203,6 +207,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGro
 
 // Get - Gets a long term retention backup for a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // locationName - The location of the database.
 // managedInstanceName - The name of the managed instance.
 // databaseName - The name of the managed database.
@@ -254,7 +259,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -269,6 +274,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getHandleResponse(r
 
 // GetByResourceGroup - Gets a long term retention backup for a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The location of the database.
@@ -326,7 +332,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupC
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -341,13 +347,14 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupH
 
 // NewListByDatabasePager - Lists all long term retention backups for a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // locationName - The location of the database.
 // managedInstanceName - The name of the managed instance.
 // databaseName - The name of the managed database.
 // options - LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByDatabase
 // method.
 func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByDatabasePager(locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -406,7 +413,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreat
 	}
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -421,12 +428,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseHandl
 
 // NewListByInstancePager - Lists the long term retention backups for a given managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // locationName - The location of the database
 // managedInstanceName - The name of the managed instance.
 // options - LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByInstance
 // method.
 func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByInstancePager(locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -481,7 +489,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreat
 	}
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -496,11 +504,12 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceHandl
 
 // NewListByLocationPager - Lists the long term retention backups for managed databases in a given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // locationName - The location of the database.
 // options - LongTermRetentionManagedInstanceBackupsClientListByLocationOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByLocation
 // method.
 func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByLocationPager(locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -551,7 +560,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreat
 	}
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -566,6 +575,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandl
 
 // NewListByResourceGroupDatabasePager - Lists all long term retention backups for a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The location of the database
@@ -574,7 +584,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandl
 // options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions contains the optional parameters
 // for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupDatabase method.
 func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupDatabasePager(resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -637,7 +647,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	}
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -652,6 +662,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 
 // NewListByResourceGroupInstancePager - Lists the long term retention backups for a given managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The location of the database.
@@ -659,7 +670,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 // options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions contains the optional parameters
 // for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupInstance method.
 func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupInstancePager(resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -718,7 +729,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	}
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -733,13 +744,14 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 
 // NewListByResourceGroupLocationPager - Lists the long term retention backups for managed databases in a given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The location of the database.
 // options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions contains the optional parameters
 // for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupLocation method.
 func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupLocationPager(resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -794,7 +806,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	}
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -14,9 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,19 +33,22 @@ func (pe fakeNetError) Timeout() bool   { return pe.timeout }
 func (pe fakeNetError) Temporary() bool { return pe.temp }
 func (pe fakeNetError) Error() string   { return "Fake but very permanent error" }
 
-func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error) {
+func assertFailedLinks[T error, T2 error](t *testing.T, lwid *LinksWithID, expectedErr T, expectedRPCError T2) {
 	err := lwid.Sender.Send(context.TODO(), &amqp.Message{
 		Data: [][]byte{
 			{0},
 		},
 	})
+
+	require.True(t, errors.Is(err, expectedErr) || errors.As(err, &expectedErr))
 	require.ErrorIs(t, err, expectedErr)
 
-	_, err = PeekMessages(context.TODO(), lwid.RPC, 0, 1)
-	require.ErrorIs(t, err, expectedErr)
+	_, err = PeekMessages(context.TODO(), lwid.RPC, lwid.Receiver.LinkName(), 0, 1)
+	require.True(t, errors.Is(err, expectedRPCError) || errors.As(err, &expectedRPCError))
 
 	msg, err := lwid.Receiver.Receive(context.TODO())
 	require.ErrorIs(t, err, expectedErr)
+	require.True(t, errors.Is(err, expectedErr) || errors.As(err, &expectedErr))
 	require.Nil(t, msg)
 
 }
@@ -58,7 +61,7 @@ func assertLinks(t *testing.T, lwid *LinksWithID) {
 	})
 	require.NoError(t, err)
 
-	_, err = PeekMessages(context.TODO(), lwid.RPC, 0, 1)
+	_, err = PeekMessages(context.TODO(), lwid.RPC, lwid.Receiver.LinkName(), 0, 1)
 	require.NoError(t, err)
 
 	require.NoError(t, lwid.Receiver.IssueCredit(1))
@@ -126,7 +129,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	}()
 
 	require.EqualValues(t, 0, createLinksCalled)
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnectionError{}))
 	require.EqualValues(t, 1, createLinksCalled)
 
 	lwr, err := links.Get(context.Background())
@@ -138,10 +141,10 @@ func TestAMQPLinksLive(t *testing.T) {
 	require.NoError(t, amqpClient.Close())
 
 	// all the links are dead because the connection is dead.
-	assertFailedLinks(t, lwr, amqp.ErrConnClosed)
+	assertFailedLinks(t, lwr, &amqp.ConnectionError{}, &amqp.ConnectionError{})
 
 	// now we'll recover, which should recreate everything
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.ID, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.ID, &amqp.ConnectionError{}))
 	require.EqualValues(t, 2, createLinksCalled)
 
 	lwr, err = links.Get(context.Background())
@@ -156,7 +159,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	_ = actualLinks.Receiver.Close(context.Background())
 	_ = actualLinks.RPCLink.Close(context.Background())
 
-	assertFailedLinks(t, lwr, amqp.ErrLinkClosed)
+	assertFailedLinks(t, lwr, amqp.ErrLinkClosed, context.Canceled)
 
 	lwr, err = links.Get(context.Background())
 	require.NoError(t, err)
@@ -199,7 +202,7 @@ func TestAMQPLinksLiveRecoverLink(t *testing.T) {
 	}()
 
 	require.EqualValues(t, 0, createLinksCalled)
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnectionError{}))
 	require.EqualValues(t, 1, createLinksCalled)
 
 	lwr, err := links.Get(context.Background())
@@ -242,7 +245,7 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
+			err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnectionError{})
 			require.NoError(t, err)
 		}()
 	}
@@ -334,7 +337,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 
 	err = links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
-		return amqp.ErrConnClosed
+		return &amqp.ConnectionError{}
 	}, exported.RetryOptions{
 		MaxRetries: 2,
 		// note: omitting MaxRetries just to give a sanity check that
@@ -343,7 +346,8 @@ func TestAMQPLinksRetry(t *testing.T) {
 		MaxRetryDelay: time.Millisecond,
 	})
 
-	require.ErrorIs(t, err, amqp.ErrConnClosed)
+	var connErr *amqp.ConnectionError
+	require.ErrorAs(t, err, &connErr)
 	require.EqualValues(t, 3, createLinksCalled)
 }
 
@@ -530,7 +534,7 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 		_, err := links.Get(context.Background())
 		require.NoError(t, err)
 
-		rk := links.CloseIfNeeded(context.Background(), amqp.ErrConnClosed)
+		rk := links.CloseIfNeeded(context.Background(), &amqp.ConnectionError{})
 		require.Equal(t, RecoveryKindConn, rk)
 		require.Equal(t, 1, receiver.Closed)
 		require.Equal(t, 1, sender.Closed)
@@ -577,7 +581,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 		{Err: nil, Attempts: []int32{0}},
 
 		// connection related or unknown failures happen, all attempts exhausted
-		{Err: amqp.ErrConnClosed, Attempts: []int32{0, 1, 2, 3}},
+		{Err: &amqp.ConnectionError{}, Attempts: []int32{0, 1, 2, 3}},
 		{Err: errors.New("unknown error"), Attempts: []int32{0, 1, 2, 3}},
 
 		// fatal errors don't retry at all.
@@ -621,7 +625,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 
 			var attempts []int32
 
-			err := links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+			err := links.Retry(context.Background(), log.Event("NotUsed"), "OverallOperation", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 				attempts = append(attempts, args.I)
 				return testData.Err
 			}, exported.RetryOptions{
@@ -634,7 +638,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 			logMessages := endLogging()
 
 			if testData.ExpectReset {
-				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
+				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] (OverallOperation) Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
 			} else {
 				for _, msg := range logMessages {
 					require.NotContains(t, msg, "Link was previously detached")
@@ -698,7 +702,7 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		endCapture := test.CaptureLogsForTest()
 		defer endCapture()
 
-		err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
+		err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnectionError{})
 		require.NoError(t, err)
 
 		messages := endCapture()
@@ -712,25 +716,25 @@ func TestAMQPLinks_Logging(t *testing.T) {
 }
 
 func newLinksForAMQPLinksTest(entityPath string, session amqpwrap.AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-	receiveMode := amqp.ModeSecond
-
-	opts := []amqp.LinkOption{
-		amqp.LinkSourceAddress(entityPath),
-		amqp.LinkReceiverSettle(receiveMode),
-		amqp.LinkWithManualCredits(),
-		amqp.LinkCredit(1000),
+	receiverOpts := &amqp.ReceiverOptions{
+		SettlementMode: amqp.ModeSecond.Ptr(),
+		ManualCredits:  true,
+		Credit:         1000,
 	}
 
-	receiver, err := session.NewReceiver(opts...)
+	receiver, err := session.NewReceiver(context.Background(), entityPath, receiverOpts)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
 	sender, err := session.NewSender(
-		amqp.LinkSenderSettle(amqp.ModeMixed),
-		amqp.LinkReceiverSettle(amqp.ModeFirst),
-		amqp.LinkTargetAddress(entityPath))
+		context.Background(),
+		entityPath,
+		&amqp.SenderOptions{
+			SettlementMode:              amqp.ModeMixed.Ptr(),
+			RequestedReceiverSettleMode: amqp.ModeFirst.Ptr(),
+		})
 
 	if err != nil {
 		_ = receiver.Close(context.Background())

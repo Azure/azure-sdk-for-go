@@ -23,8 +23,8 @@ func ExampleDeviceGroupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDeviceGroupsClient("<subscription-id>",
-		"<iot-defender-location>", cred, nil)
+	client, err := armiotsecurity.NewDeviceGroupsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+		"eastus", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleDeviceGroupsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,13 +48,13 @@ func ExampleDeviceGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDeviceGroupsClient("<subscription-id>",
-		"<iot-defender-location>", cred, nil)
+	client, err := armiotsecurity.NewDeviceGroupsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+		"eastus", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-group-name>",
+		"myGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -71,13 +70,13 @@ func ExampleDeviceGroupsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDeviceGroupsClient("<subscription-id>",
-		"<iot-defender-location>", cred, nil)
+	client, err := armiotsecurity.NewDeviceGroupsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+		"eastus", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<device-group-name>",
+		"myGroup",
 		armiotsecurity.DeviceGroupModel{
 			Properties: map[string]interface{}{},
 		},
@@ -96,13 +95,13 @@ func ExampleDeviceGroupsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDeviceGroupsClient("<subscription-id>",
-		"<iot-defender-location>", cred, nil)
+	client, err := armiotsecurity.NewDeviceGroupsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+		"eastus", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<device-group-name>",
+		"myGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

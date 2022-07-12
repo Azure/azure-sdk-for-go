@@ -10,7 +10,7 @@ package armcdn
 
 const (
 	moduleName    = "armcdn"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AFDEndpointProtocols - Supported protocols for the customer's endpoint.
@@ -372,7 +372,7 @@ func PossibleCustomDomainResourceStateValues() []CustomDomainResourceState {
 	}
 }
 
-// CustomHTTPSProvisioningState - Provisioning status of Custom Https of the custom domain.
+// CustomHTTPSProvisioningState - Provisioning status of the custom domain.
 type CustomHTTPSProvisioningState string
 
 const (
@@ -568,6 +568,28 @@ func PossibleEnabledStateValues() []EnabledState {
 	return []EnabledState{
 		EnabledStateDisabled,
 		EnabledStateEnabled,
+	}
+}
+
+// EndpointProvisioningState - Provisioning status of the endpoint.
+type EndpointProvisioningState string
+
+const (
+	EndpointProvisioningStateCreating  EndpointProvisioningState = "Creating"
+	EndpointProvisioningStateDeleting  EndpointProvisioningState = "Deleting"
+	EndpointProvisioningStateFailed    EndpointProvisioningState = "Failed"
+	EndpointProvisioningStateSucceeded EndpointProvisioningState = "Succeeded"
+	EndpointProvisioningStateUpdating  EndpointProvisioningState = "Updating"
+)
+
+// PossibleEndpointProvisioningStateValues returns the possible values for the EndpointProvisioningState const type.
+func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
+	return []EndpointProvisioningState{
+		EndpointProvisioningStateCreating,
+		EndpointProvisioningStateDeleting,
+		EndpointProvisioningStateFailed,
+		EndpointProvisioningStateSucceeded,
+		EndpointProvisioningStateUpdating,
 	}
 }
 
@@ -1185,6 +1207,28 @@ func PossibleOriginGroupOverrideActionParametersTypeNameValues() []OriginGroupOv
 	}
 }
 
+// OriginGroupProvisioningState - Provisioning status of the origin group.
+type OriginGroupProvisioningState string
+
+const (
+	OriginGroupProvisioningStateCreating  OriginGroupProvisioningState = "Creating"
+	OriginGroupProvisioningStateDeleting  OriginGroupProvisioningState = "Deleting"
+	OriginGroupProvisioningStateFailed    OriginGroupProvisioningState = "Failed"
+	OriginGroupProvisioningStateSucceeded OriginGroupProvisioningState = "Succeeded"
+	OriginGroupProvisioningStateUpdating  OriginGroupProvisioningState = "Updating"
+)
+
+// PossibleOriginGroupProvisioningStateValues returns the possible values for the OriginGroupProvisioningState const type.
+func PossibleOriginGroupProvisioningStateValues() []OriginGroupProvisioningState {
+	return []OriginGroupProvisioningState{
+		OriginGroupProvisioningStateCreating,
+		OriginGroupProvisioningStateDeleting,
+		OriginGroupProvisioningStateFailed,
+		OriginGroupProvisioningStateSucceeded,
+		OriginGroupProvisioningStateUpdating,
+	}
+}
+
 // OriginGroupResourceState - Resource status of the origin group.
 type OriginGroupResourceState string
 
@@ -1200,6 +1244,28 @@ func PossibleOriginGroupResourceStateValues() []OriginGroupResourceState {
 		OriginGroupResourceStateActive,
 		OriginGroupResourceStateCreating,
 		OriginGroupResourceStateDeleting,
+	}
+}
+
+// OriginProvisioningState - Provisioning status of the origin.
+type OriginProvisioningState string
+
+const (
+	OriginProvisioningStateCreating  OriginProvisioningState = "Creating"
+	OriginProvisioningStateDeleting  OriginProvisioningState = "Deleting"
+	OriginProvisioningStateFailed    OriginProvisioningState = "Failed"
+	OriginProvisioningStateSucceeded OriginProvisioningState = "Succeeded"
+	OriginProvisioningStateUpdating  OriginProvisioningState = "Updating"
+)
+
+// PossibleOriginProvisioningStateValues returns the possible values for the OriginProvisioningState const type.
+func PossibleOriginProvisioningStateValues() []OriginProvisioningState {
+	return []OriginProvisioningState{
+		OriginProvisioningStateCreating,
+		OriginProvisioningStateDeleting,
+		OriginProvisioningStateFailed,
+		OriginProvisioningStateSucceeded,
+		OriginProvisioningStateUpdating,
 	}
 }
 
@@ -1400,6 +1466,28 @@ func PossibleProbeProtocolValues() []ProbeProtocol {
 		ProbeProtocolNotSet,
 		ProbeProtocolHTTP,
 		ProbeProtocolHTTPS,
+	}
+}
+
+// ProfileProvisioningState - Provisioning status of the profile.
+type ProfileProvisioningState string
+
+const (
+	ProfileProvisioningStateCreating  ProfileProvisioningState = "Creating"
+	ProfileProvisioningStateDeleting  ProfileProvisioningState = "Deleting"
+	ProfileProvisioningStateFailed    ProfileProvisioningState = "Failed"
+	ProfileProvisioningStateSucceeded ProfileProvisioningState = "Succeeded"
+	ProfileProvisioningStateUpdating  ProfileProvisioningState = "Updating"
+)
+
+// PossibleProfileProvisioningStateValues returns the possible values for the ProfileProvisioningState const type.
+func PossibleProfileProvisioningStateValues() []ProfileProvisioningState {
+	return []ProfileProvisioningState{
+		ProfileProvisioningStateCreating,
+		ProfileProvisioningStateDeleting,
+		ProfileProvisioningStateFailed,
+		ProfileProvisioningStateSucceeded,
+		ProfileProvisioningStateUpdating,
 	}
 }
 
@@ -1837,6 +1925,20 @@ func PossibleResourceTypeValues() []ResourceType {
 	return []ResourceType{
 		ResourceTypeMicrosoftCdnProfilesAfdEndpoints,
 		ResourceTypeMicrosoftCdnProfilesEndpoints,
+	}
+}
+
+// ResourceUsageUnit - Unit of the usage. e.g. count.
+type ResourceUsageUnit string
+
+const (
+	ResourceUsageUnitCount ResourceUsageUnit = "count"
+)
+
+// PossibleResourceUsageUnitValues returns the possible values for the ResourceUsageUnit const type.
+func PossibleResourceUsageUnitValues() []ResourceUsageUnit {
+	return []ResourceUsageUnit{
+		ResourceUsageUnitCount,
 	}
 }
 

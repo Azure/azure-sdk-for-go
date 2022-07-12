@@ -34,7 +34,7 @@ func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOp
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,10 +51,11 @@ func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // NewListPager - Lists the metric baseline values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-03-01
 // resourceURI - The identifier of the resource.
 // options - BaselinesClientListOptions contains the optional parameters for the BaselinesClient.List method.
 func (client *BaselinesClient) NewListPager(resourceURI string, options *BaselinesClientListOptions) *runtime.Pager[BaselinesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BaselinesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BaselinesClientListResponse]{
 		More: func(page BaselinesClientListResponse) bool {
 			return false
 		},
@@ -110,7 +111,7 @@ func (client *BaselinesClient) listCreateRequest(ctx context.Context, resourceUR
 	}
 	reqQP.Set("api-version", "2019-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -23,7 +23,7 @@ func ExampleResourceProviderCommonClient_GetSubscriptionQuota() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewResourceProviderCommonClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewResourceProviderCommonClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

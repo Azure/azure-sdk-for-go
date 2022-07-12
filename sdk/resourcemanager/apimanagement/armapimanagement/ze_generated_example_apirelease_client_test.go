@@ -24,13 +24,13 @@ func ExampleAPIReleaseClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIReleaseClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIReleaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"a1",
 		&armapimanagement.APIReleaseClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -39,7 +39,6 @@ func ExampleAPIReleaseClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,15 +54,15 @@ func ExampleAPIReleaseClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIReleaseClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIReleaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<release-id>",
+		"rg1",
+		"apimService1",
+		"a1",
+		"5a7cb545298324c53224a799",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,15 +76,15 @@ func ExampleAPIReleaseClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIReleaseClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIReleaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<release-id>",
+		"rg1",
+		"apimService1",
+		"a1",
+		"5a7cb545298324c53224a799",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,19 +100,19 @@ func ExampleAPIReleaseClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIReleaseClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIReleaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<release-id>",
+		"rg1",
+		"apimService1",
+		"a1",
+		"testrev",
 		armapimanagement.APIReleaseContract{
 			Properties: &armapimanagement.APIReleaseContractProperties{
-				APIID: to.Ptr("<apiid>"),
-				Notes: to.Ptr("<notes>"),
+				APIID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
+				Notes: to.Ptr("yahooagain"),
 			},
 		},
 		&armapimanagement.APIReleaseClientCreateOrUpdateOptions{IfMatch: nil})
@@ -131,20 +130,20 @@ func ExampleAPIReleaseClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIReleaseClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIReleaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<release-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"a1",
+		"testrev",
+		"*",
 		armapimanagement.APIReleaseContract{
 			Properties: &armapimanagement.APIReleaseContractProperties{
-				APIID: to.Ptr("<apiid>"),
-				Notes: to.Ptr("<notes>"),
+				APIID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
+				Notes: to.Ptr("yahooagain"),
 			},
 		},
 		nil)
@@ -162,16 +161,16 @@ func ExampleAPIReleaseClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIReleaseClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIReleaseClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<release-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"5a5fcc09124a7fa9b89f2f1d",
+		"testrev",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

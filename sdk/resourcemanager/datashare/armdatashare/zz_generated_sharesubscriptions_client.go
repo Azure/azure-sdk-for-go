@@ -38,7 +38,7 @@ func NewShareSubscriptionsClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,28 +56,30 @@ func NewShareSubscriptionsClient(subscriptionID string, credential azcore.TokenC
 
 // BeginCancelSynchronization - Request to cancel a synchronization.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
 // shareSubscriptionSynchronization - Share Subscription Synchronization payload.
 // options - ShareSubscriptionsClientBeginCancelSynchronizationOptions contains the optional parameters for the ShareSubscriptionsClient.BeginCancelSynchronization
 // method.
-func (client *ShareSubscriptionsClient) BeginCancelSynchronization(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization ShareSubscriptionSynchronization, options *ShareSubscriptionsClientBeginCancelSynchronizationOptions) (*armruntime.Poller[ShareSubscriptionsClientCancelSynchronizationResponse], error) {
+func (client *ShareSubscriptionsClient) BeginCancelSynchronization(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization ShareSubscriptionSynchronization, options *ShareSubscriptionsClientBeginCancelSynchronizationOptions) (*runtime.Poller[ShareSubscriptionsClientCancelSynchronizationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.cancelSynchronization(ctx, resourceGroupName, accountName, shareSubscriptionName, shareSubscriptionSynchronization, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ShareSubscriptionsClientCancelSynchronizationResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ShareSubscriptionsClientCancelSynchronizationResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ShareSubscriptionsClientCancelSynchronizationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ShareSubscriptionsClientCancelSynchronizationResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CancelSynchronization - Request to cancel a synchronization.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *ShareSubscriptionsClient) cancelSynchronization(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization ShareSubscriptionSynchronization, options *ShareSubscriptionsClientBeginCancelSynchronizationOptions) (*http.Response, error) {
 	req, err := client.cancelSynchronizationCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, shareSubscriptionSynchronization, options)
 	if err != nil {
@@ -119,12 +121,13 @@ func (client *ShareSubscriptionsClient) cancelSynchronizationCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, shareSubscriptionSynchronization)
 }
 
 // Create - Create a shareSubscription in an account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
@@ -172,7 +175,7 @@ func (client *ShareSubscriptionsClient) createCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, shareSubscription)
 }
 
@@ -187,25 +190,27 @@ func (client *ShareSubscriptionsClient) createHandleResponse(resp *http.Response
 
 // BeginDelete - Delete a shareSubscription in an account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
 // options - ShareSubscriptionsClientBeginDeleteOptions contains the optional parameters for the ShareSubscriptionsClient.BeginDelete
 // method.
-func (client *ShareSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientBeginDeleteOptions) (*armruntime.Poller[ShareSubscriptionsClientDeleteResponse], error) {
+func (client *ShareSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[ShareSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ShareSubscriptionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ShareSubscriptionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ShareSubscriptionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ShareSubscriptionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a shareSubscription in an account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *ShareSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, options)
 	if err != nil {
@@ -247,12 +252,13 @@ func (client *ShareSubscriptionsClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a shareSubscription in an account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
@@ -298,7 +304,7 @@ func (client *ShareSubscriptionsClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -313,12 +319,13 @@ func (client *ShareSubscriptionsClient) getHandleResponse(resp *http.Response) (
 
 // NewListByAccountPager - List share subscriptions in an account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // options - ShareSubscriptionsClientListByAccountOptions contains the optional parameters for the ShareSubscriptionsClient.ListByAccount
 // method.
 func (client *ShareSubscriptionsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *ShareSubscriptionsClientListByAccountOptions) *runtime.Pager[ShareSubscriptionsClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ShareSubscriptionsClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ShareSubscriptionsClientListByAccountResponse]{
 		More: func(page ShareSubscriptionsClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -376,7 +383,7 @@ func (client *ShareSubscriptionsClient) listByAccountCreateRequest(ctx context.C
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -391,13 +398,14 @@ func (client *ShareSubscriptionsClient) listByAccountHandleResponse(resp *http.R
 
 // NewListSourceShareSynchronizationSettingsPager - Get synchronization settings set on a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
 // options - ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions contains the optional parameters for the
 // ShareSubscriptionsClient.ListSourceShareSynchronizationSettings method.
 func (client *ShareSubscriptionsClient) NewListSourceShareSynchronizationSettingsPager(resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions) *runtime.Pager[ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse]{
 		More: func(page ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -453,7 +461,7 @@ func (client *ShareSubscriptionsClient) listSourceShareSynchronizationSettingsCr
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -468,6 +476,7 @@ func (client *ShareSubscriptionsClient) listSourceShareSynchronizationSettingsHa
 
 // NewListSynchronizationDetailsPager - List synchronization details
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the share subscription.
@@ -475,7 +484,7 @@ func (client *ShareSubscriptionsClient) listSourceShareSynchronizationSettingsHa
 // options - ShareSubscriptionsClientListSynchronizationDetailsOptions contains the optional parameters for the ShareSubscriptionsClient.ListSynchronizationDetails
 // method.
 func (client *ShareSubscriptionsClient) NewListSynchronizationDetailsPager(resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization ShareSubscriptionSynchronization, options *ShareSubscriptionsClientListSynchronizationDetailsOptions) *runtime.Pager[ShareSubscriptionsClientListSynchronizationDetailsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ShareSubscriptionsClientListSynchronizationDetailsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ShareSubscriptionsClientListSynchronizationDetailsResponse]{
 		More: func(page ShareSubscriptionsClientListSynchronizationDetailsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -537,7 +546,7 @@ func (client *ShareSubscriptionsClient) listSynchronizationDetailsCreateRequest(
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, shareSubscriptionSynchronization)
 }
 
@@ -552,13 +561,14 @@ func (client *ShareSubscriptionsClient) listSynchronizationDetailsHandleResponse
 
 // NewListSynchronizationsPager - List synchronizations of a share subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the share subscription.
 // options - ShareSubscriptionsClientListSynchronizationsOptions contains the optional parameters for the ShareSubscriptionsClient.ListSynchronizations
 // method.
 func (client *ShareSubscriptionsClient) NewListSynchronizationsPager(resourceGroupName string, accountName string, shareSubscriptionName string, options *ShareSubscriptionsClientListSynchronizationsOptions) *runtime.Pager[ShareSubscriptionsClientListSynchronizationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ShareSubscriptionsClientListSynchronizationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ShareSubscriptionsClientListSynchronizationsResponse]{
 		More: func(page ShareSubscriptionsClientListSynchronizationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -620,7 +630,7 @@ func (client *ShareSubscriptionsClient) listSynchronizationsCreateRequest(ctx co
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -635,28 +645,30 @@ func (client *ShareSubscriptionsClient) listSynchronizationsHandleResponse(resp 
 
 // BeginSynchronize - Initiate a copy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of share subscription
 // synchronize - Synchronize payload
 // options - ShareSubscriptionsClientBeginSynchronizeOptions contains the optional parameters for the ShareSubscriptionsClient.BeginSynchronize
 // method.
-func (client *ShareSubscriptionsClient) BeginSynchronize(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, synchronize Synchronize, options *ShareSubscriptionsClientBeginSynchronizeOptions) (*armruntime.Poller[ShareSubscriptionsClientSynchronizeResponse], error) {
+func (client *ShareSubscriptionsClient) BeginSynchronize(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, synchronize Synchronize, options *ShareSubscriptionsClientBeginSynchronizeOptions) (*runtime.Poller[ShareSubscriptionsClientSynchronizeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.synchronize(ctx, resourceGroupName, accountName, shareSubscriptionName, synchronize, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ShareSubscriptionsClientSynchronizeResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ShareSubscriptionsClientSynchronizeResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ShareSubscriptionsClientSynchronizeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ShareSubscriptionsClientSynchronizeResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Synchronize - Initiate a copy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *ShareSubscriptionsClient) synchronize(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, synchronize Synchronize, options *ShareSubscriptionsClientBeginSynchronizeOptions) (*http.Response, error) {
 	req, err := client.synchronizeCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, synchronize, options)
 	if err != nil {
@@ -698,6 +710,6 @@ func (client *ShareSubscriptionsClient) synchronizeCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, synchronize)
 }

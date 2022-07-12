@@ -36,7 +36,7 @@ func NewSensorsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewSensorsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 
 // CreateOrUpdate - Create or update IoT sensor
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // sensorName - Name of the IoT sensor
 // sensorModel - The IoT sensor model
@@ -87,7 +88,7 @@ func (client *SensorsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, sensorModel)
 }
 
@@ -102,6 +103,7 @@ func (client *SensorsClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete IoT sensor
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // sensorName - Name of the IoT sensor
 // options - SensorsClientDeleteOptions contains the optional parameters for the SensorsClient.Delete method.
@@ -135,12 +137,13 @@ func (client *SensorsClient) deleteCreateRequest(ctx context.Context, scope stri
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DownloadActivation - Download sensor activation file
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // sensorName - Name of the IoT sensor
 // options - SensorsClientDownloadActivationOptions contains the optional parameters for the SensorsClient.DownloadActivation
@@ -176,12 +179,13 @@ func (client *SensorsClient) downloadActivationCreateRequest(ctx context.Context
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
-	req.Raw().Header.Set("Accept", "application/zip")
+	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, nil
 }
 
 // DownloadResetPassword - Download file for reset password of the sensor
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // sensorName - Name of the IoT sensor
 // body - The reset password input.
@@ -218,12 +222,13 @@ func (client *SensorsClient) downloadResetPasswordCreateRequest(ctx context.Cont
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
-	req.Raw().Header.Set("Accept", "application/zip")
+	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // Get - Get IoT sensor
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // sensorName - Name of the IoT sensor
 // options - SensorsClientGetOptions contains the optional parameters for the SensorsClient.Get method.
@@ -257,7 +262,7 @@ func (client *SensorsClient) getCreateRequest(ctx context.Context, scope string,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -272,6 +277,7 @@ func (client *SensorsClient) getHandleResponse(resp *http.Response) (SensorsClie
 
 // List - List IoT sensors
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // options - SensorsClientListOptions contains the optional parameters for the SensorsClient.List method.
 func (client *SensorsClient) List(ctx context.Context, scope string, options *SensorsClientListOptions) (SensorsClientListResponse, error) {
@@ -300,7 +306,7 @@ func (client *SensorsClient) listCreateRequest(ctx context.Context, scope string
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -315,6 +321,7 @@ func (client *SensorsClient) listHandleResponse(resp *http.Response) (SensorsCli
 
 // TriggerTiPackageUpdate - Trigger threat intelligence package update
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // sensorName - Name of the IoT sensor
 // options - SensorsClientTriggerTiPackageUpdateOptions contains the optional parameters for the SensorsClient.TriggerTiPackageUpdate
@@ -349,6 +356,6 @@ func (client *SensorsClient) triggerTiPackageUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

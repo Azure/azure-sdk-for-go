@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
@@ -26,19 +24,18 @@ func ExampleReplicationvCentersClient_NewListByReplicationFabricsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("MadhaviVault",
+		"MadhaviVRG",
+		"7c943c1b-5122-4097-90c8-861411bdd574", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReplicationFabricsPager("<fabric-name>",
+	pager := client.NewListByReplicationFabricsPager("MadhaviFabric",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleReplicationvCentersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("MadhaviVault",
+		"MadhaviVRG",
+		"7c943c1b-5122-4097-90c8-861411bdd574", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<fabric-name>",
-		"<vcenter-name>",
+		"MadhaviFabric",
+		"esx-78",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,29 +75,29 @@ func ExampleReplicationvCentersClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("MadhaviVault",
+		"MadhaviVRG",
+		"7c943c1b-5122-4097-90c8-861411bdd574", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<fabric-name>",
-		"<vcenter-name>",
+		"MadhaviFabric",
+		"esx-78",
 		armrecoveryservicessiterecovery.AddVCenterRequest{
 			Properties: &armrecoveryservicessiterecovery.AddVCenterRequestProperties{
-				FriendlyName:    to.Ptr("<friendly-name>"),
-				IPAddress:       to.Ptr("<ipaddress>"),
-				Port:            to.Ptr("<port>"),
-				ProcessServerID: to.Ptr("<process-server-id>"),
-				RunAsAccountID:  to.Ptr("<run-as-account-id>"),
+				FriendlyName:    to.Ptr("esx-78"),
+				IPAddress:       to.Ptr("inmtest78"),
+				Port:            to.Ptr("443"),
+				ProcessServerID: to.Ptr("5A720CAB-39CB-F445-BD1662B0B33164B5"),
+				RunAsAccountID:  to.Ptr("2"),
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationvCentersClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -115,20 +112,20 @@ func ExampleReplicationvCentersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("MadhaviVault",
+		"MadhaviVRG",
+		"7c943c1b-5122-4097-90c8-861411bdd574", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<fabric-name>",
-		"<vcenter-name>",
-		&armrecoveryservicessiterecovery.ReplicationvCentersClientBeginDeleteOptions{ResumeToken: ""})
+		"MadhaviFabric",
+		"esx-78",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -141,25 +138,25 @@ func ExampleReplicationvCentersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("MadhaviVault",
+		"MadhaviVRG",
+		"7c943c1b-5122-4097-90c8-861411bdd574", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<fabric-name>",
-		"<vcenter-name>",
+		"MadhaviFabric",
+		"esx-78",
 		armrecoveryservicessiterecovery.UpdateVCenterRequest{
 			Properties: &armrecoveryservicessiterecovery.UpdateVCenterRequestProperties{
-				IPAddress: to.Ptr("<ipaddress>"),
+				IPAddress: to.Ptr("10.150.109.25"),
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationvCentersClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -174,9 +171,9 @@ func ExampleReplicationvCentersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationvCentersClient("MadhaviVault",
+		"MadhaviVRG",
+		"7c943c1b-5122-4097-90c8-861411bdd574", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -185,7 +182,6 @@ func ExampleReplicationvCentersClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
@@ -26,7 +24,7 @@ func ExampleDevicesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleDevicesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleDevicesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("GroupForEdgeAutomation",
 		&armdataboxedge.DevicesClientListByResourceGroupOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleDevicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,15 +95,15 @@ func ExampleDevicesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		armdataboxedge.Device{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("WUS"),
 			SKU: &armdataboxedge.SKUInfo{
 				Name: to.Ptr(armdataboxedge.SKUNameEdge),
 				Tier: to.Ptr(armdataboxedge.SKUTierStandard),
@@ -129,18 +125,18 @@ func ExampleDevicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<resource-group-name>",
-		&armdataboxedge.DevicesClientBeginDeleteOptions{ResumeToken: ""})
+		"testedgedevice",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -153,18 +149,18 @@ func ExampleDevicesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		armdataboxedge.DevicePatch{
 			Properties: &armdataboxedge.DevicePropertiesPatch{
 				EdgeProfile: &armdataboxedge.EdgeProfilePatch{
 					Subscription: &armdataboxedge.EdgeProfileSubscriptionPatch{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/0d44739e-0563-474f-97e7-24a0cdb23b29/resourceGroups/rapvs-rg/providers/Microsoft.AzureStack/linkedSubscriptions/ca014ddc-5cf2-45f8-b390-e901e4a0ae87"),
 					},
 				},
 			},
@@ -184,18 +180,18 @@ func ExampleDevicesClient_BeginDownloadUpdates() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDownloadUpdates(ctx,
-		"<device-name>",
-		"<resource-group-name>",
-		&armdataboxedge.DevicesClientBeginDownloadUpdatesOptions{ResumeToken: ""})
+		"testedgedevice",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -208,13 +204,13 @@ func ExampleDevicesClient_GenerateCertificate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GenerateCertificate(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -230,13 +226,13 @@ func ExampleDevicesClient_GetExtendedInformation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetExtendedInformation(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -252,18 +248,18 @@ func ExampleDevicesClient_BeginInstallUpdates() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginInstallUpdates(ctx,
-		"<device-name>",
-		"<resource-group-name>",
-		&armdataboxedge.DevicesClientBeginInstallUpdatesOptions{ResumeToken: ""})
+		"testedgedevice",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -276,13 +272,13 @@ func ExampleDevicesClient_GetNetworkSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkSettings(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -298,18 +294,18 @@ func ExampleDevicesClient_BeginScanForUpdates() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginScanForUpdates(ctx,
-		"<device-name>",
-		"<resource-group-name>",
-		&armdataboxedge.DevicesClientBeginScanForUpdatesOptions{ResumeToken: ""})
+		"testedgedevice",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -322,27 +318,27 @@ func ExampleDevicesClient_BeginCreateOrUpdateSecuritySettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdateSecuritySettings(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"AzureVM",
 		armdataboxedge.SecuritySettings{
 			Properties: &armdataboxedge.SecuritySettingsProperties{
 				DeviceAdminPassword: &armdataboxedge.AsymmetricEncryptedSecret{
 					EncryptionAlgorithm:      to.Ptr(armdataboxedge.EncryptionAlgorithmAES256),
-					EncryptionCertThumbprint: to.Ptr("<encryption-cert-thumbprint>"),
-					Value:                    to.Ptr("<value>"),
+					EncryptionCertThumbprint: to.Ptr("<encryptionThumprint>"),
+					Value:                    to.Ptr("<deviceAdminPassword>"),
 				},
 			},
 		},
-		&armdataboxedge.DevicesClientBeginCreateOrUpdateSecuritySettingsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -355,13 +351,13 @@ func ExampleDevicesClient_UpdateExtendedInformation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateExtendedInformation(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		armdataboxedge.DeviceExtendedInfoPatch{},
 		nil)
 	if err != nil {
@@ -378,13 +374,13 @@ func ExampleDevicesClient_GetUpdateSummary() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetUpdateSummary(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -400,16 +396,16 @@ func ExampleDevicesClient_UploadCertificate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDevicesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UploadCertificate(ctx,
-		"<device-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"GroupForEdgeAutomation",
 		armdataboxedge.UploadCertificateRequest{
 			Properties: &armdataboxedge.RawCertificateData{
-				Certificate: to.Ptr("<certificate>"),
+				Certificate: to.Ptr("MIIC9DCCAdygAwIBAgIQWJae7GNjiI9Mcv/gJyrOPTANBgkqhkiG9w0BAQUFADASMRAwDgYDVQQDDAdXaW5kb3dzMB4XDTE4MTEyNzAwMTA0NVoXDTIxMTEyODAwMTA0NVowEjEQMA4GA1UEAwwHV2luZG93czCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKxkRExqxf0qH1avnyORptIbRC2yQwqe3EIbJ2FPKr5jtAppGeX/dGKrFSnX+7/0HFr77aJHafdpEAtOiLyJ4zCAVs0obZCCIq4qJdmjYUTU0UXH/w/YzXfQA0d9Zh9AN+NJBX9xj05NzgsT24fkgsK2v6mWJQXT7YcWAsl5sEYPnx1e+MrupNyVSL/RUJmrS+etJSysHtFeWRhsUhVAs1DD5ExJvBLU3WH0IsojEvpXcjrutB5/MDQNrd/StGI6WovoSSPH7FyT9tgERx+q+Yg3YUGzfaIPCctlrRGehcdtzdNoKd0rsX62yCq0U6POoSfwe22NJu41oAUMd7e6R8cCAwEAAaNGMEQwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFDd0VxnS3LnMIfwc7xW4b4IZWG5GMA4GA1UdDwEB/wQEAwIFIDANBgkqhkiG9w0BAQUFAAOCAQEAPQRby2u9celvtvL/DLEb5Vt3/tPStRQC5MyTD62L5RT/q8E6EMCXVZNkXF5WlWucLJi/18tY+9PNgP9xWLJh7kpSWlWdi9KPtwMqKDlEH8L2TnQdjimt9XuiCrTnoFy/1X2BGLY/rCaUJNSd15QCkz2xeW+Z+YSk2GwAc/A/4YfNpqSIMfNuPrT76o02VdD9WmJUA3fS/HY0sU9qgQRS/3F5/0EPS+HYQ0SvXCK9tggcCd4O050ytNBMJC9qMOJ7yE0iOrFfOJSCfDAuPhn/rHFh79Kn1moF+/CE+nc0/2RPiLC8r54/rt5dYyyxJDfXg0a3VrrX39W69WZGW5OXiw=="),
 			},
 		},
 		nil)

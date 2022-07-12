@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,14 +24,14 @@ func ExampleManagedInstancePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancePrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancePrivateEndpointConnectionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<private-endpoint-connection-name>",
+		"Default",
+		"test-cl",
+		"private-endpoint-connection-name",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,27 +47,27 @@ func ExampleManagedInstancePrivateEndpointConnectionsClient_BeginCreateOrUpdate(
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancePrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancePrivateEndpointConnectionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<private-endpoint-connection-name>",
+		"Default",
+		"test-cl",
+		"private-endpoint-connection-name",
 		armsql.ManagedInstancePrivateEndpointConnection{
 			Properties: &armsql.ManagedInstancePrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armsql.ManagedInstancePrivateLinkServiceConnectionStateProperty{
-					Description: to.Ptr("<description>"),
-					Status:      to.Ptr("<status>"),
+					Description: to.Ptr("Approved by johndoe@contoso.com"),
+					Status:      to.Ptr("Approved"),
 				},
 			},
 		},
-		&armsql.ManagedInstancePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -84,19 +82,19 @@ func ExampleManagedInstancePrivateEndpointConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancePrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancePrivateEndpointConnectionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<private-endpoint-connection-name>",
-		&armsql.ManagedInstancePrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"Default",
+		"test-cl",
+		"private-endpoint-connection-name",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -109,18 +107,17 @@ func ExampleManagedInstancePrivateEndpointConnectionsClient_NewListByManagedInst
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstancePrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstancePrivateEndpointConnectionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByManagedInstancePager("<resource-group-name>",
-		"<managed-instance-name>",
+	pager := client.NewListByManagedInstancePager("Default",
+		"test-cl",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

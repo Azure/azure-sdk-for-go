@@ -23,21 +23,20 @@ func ExampleTargetComputeSizesClient_NewListByReplicationProtectedItemsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewTargetComputeSizesClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewTargetComputeSizesClient("avraiMgDiskVault",
+		"avraiMgDiskVaultRG",
+		"6808dbbc-98c7-431f-a1b1-9580902423b7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReplicationProtectedItemsPager("<fabric-name>",
-		"<protection-container-name>",
-		"<replicated-protected-item-name>",
+	pager := client.NewListByReplicationProtectedItemsPager("asr-a2a-default-centraluseuap",
+		"asr-a2a-default-centraluseuap-container",
+		"468c912d-b1ab-4ea2-97eb-4b5095155db2",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

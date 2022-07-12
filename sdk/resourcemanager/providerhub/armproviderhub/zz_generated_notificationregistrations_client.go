@@ -38,7 +38,7 @@ func NewNotificationRegistrationsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewNotificationRegistrationsClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Creates or updates a notification registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // notificationRegistrationName - The notification registration.
 // properties - The required body parameters supplied to the notification registration operation.
@@ -98,7 +99,7 @@ func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
@@ -113,6 +114,7 @@ func (client *NotificationRegistrationsClient) createOrUpdateHandleResponse(resp
 
 // Delete - Deletes a notification registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // notificationRegistrationName - The notification registration.
 // options - NotificationRegistrationsClientDeleteOptions contains the optional parameters for the NotificationRegistrationsClient.Delete
@@ -154,12 +156,13 @@ func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the notification registration details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // notificationRegistrationName - The notification registration.
 // options - NotificationRegistrationsClientGetOptions contains the optional parameters for the NotificationRegistrationsClient.Get
@@ -201,7 +204,7 @@ func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -216,11 +219,12 @@ func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Resp
 
 // NewListByProviderRegistrationPager - Gets the list of the notification registrations for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - NotificationRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the NotificationRegistrationsClient.ListByProviderRegistration
 // method.
 func (client *NotificationRegistrationsClient) NewListByProviderRegistrationPager(providerNamespace string, options *NotificationRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[NotificationRegistrationsClientListByProviderRegistrationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[NotificationRegistrationsClientListByProviderRegistrationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[NotificationRegistrationsClientListByProviderRegistrationResponse]{
 		More: func(page NotificationRegistrationsClientListByProviderRegistrationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -265,7 +269,7 @@ func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

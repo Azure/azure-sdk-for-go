@@ -36,7 +36,7 @@ func NewAssociationsClient(credential azcore.TokenCredential, options *arm.Clien
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewAssociationsClient(credential azcore.TokenCredential, options *arm.Clien
 
 // BeginCreateOrUpdate - Create or update an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // scope - The scope of the association. The scope can be any valid REST resource instance. For example, use
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.Compute/virtualMachines/{vm-name}'
 // for a virtual machine resource.
@@ -60,20 +61,21 @@ func NewAssociationsClient(credential azcore.TokenCredential, options *arm.Clien
 // association - The parameters required to create or update an association.
 // options - AssociationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociationsClient.BeginCreateOrUpdate
 // method.
-func (client *AssociationsClient) BeginCreateOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[AssociationsClientCreateOrUpdateResponse], error) {
+func (client *AssociationsClient) BeginCreateOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AssociationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, scope, associationName, association, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AssociationsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AssociationsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AssociationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AssociationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 func (client *AssociationsClient) createOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, associationName, association, options)
 	if err != nil {
@@ -104,30 +106,32 @@ func (client *AssociationsClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, association)
 }
 
 // BeginDelete - Delete an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // scope - The scope of the association.
 // associationName - The name of the association.
 // options - AssociationsClientBeginDeleteOptions contains the optional parameters for the AssociationsClient.BeginDelete
 // method.
-func (client *AssociationsClient) BeginDelete(ctx context.Context, scope string, associationName string, options *AssociationsClientBeginDeleteOptions) (*armruntime.Poller[AssociationsClientDeleteResponse], error) {
+func (client *AssociationsClient) BeginDelete(ctx context.Context, scope string, associationName string, options *AssociationsClientBeginDeleteOptions) (*runtime.Poller[AssociationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, scope, associationName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AssociationsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AssociationsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AssociationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AssociationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 func (client *AssociationsClient) deleteOperation(ctx context.Context, scope string, associationName string, options *AssociationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, associationName, options)
 	if err != nil {
@@ -158,12 +162,13 @@ func (client *AssociationsClient) deleteCreateRequest(ctx context.Context, scope
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // scope - The scope of the association.
 // associationName - The name of the association.
 // options - AssociationsClientGetOptions contains the optional parameters for the AssociationsClient.Get method.
@@ -197,7 +202,7 @@ func (client *AssociationsClient) getCreateRequest(ctx context.Context, scope st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -212,10 +217,11 @@ func (client *AssociationsClient) getHandleResponse(resp *http.Response) (Associ
 
 // NewListAllPager - Gets all association for the given scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // scope - The scope of the association.
 // options - AssociationsClientListAllOptions contains the optional parameters for the AssociationsClient.ListAll method.
 func (client *AssociationsClient) NewListAllPager(scope string, options *AssociationsClientListAllOptions) *runtime.Pager[AssociationsClientListAllResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssociationsClientListAllResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssociationsClientListAllResponse]{
 		More: func(page AssociationsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -253,7 +259,7 @@ func (client *AssociationsClient) listAllCreateRequest(ctx context.Context, scop
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

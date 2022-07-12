@@ -41,7 +41,7 @@ func NewDpsCertificateClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,13 +59,14 @@ func NewDpsCertificateClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Add new certificate or update an existing certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - Resource group identifier.
 // provisioningServiceName - The name of the provisioning service.
 // certificateName - The name of the certificate create or update.
 // certificateDescription - The certificate body.
 // options - DpsCertificateClientCreateOrUpdateOptions contains the optional parameters for the DpsCertificateClient.CreateOrUpdate
 // method.
-func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateBodyDescription, options *DpsCertificateClientCreateOrUpdateOptions) (DpsCertificateClientCreateOrUpdateResponse, error) {
+func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateResponse, options *DpsCertificateClientCreateOrUpdateOptions) (DpsCertificateClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, provisioningServiceName, certificateName, certificateDescription, options)
 	if err != nil {
 		return DpsCertificateClientCreateOrUpdateResponse{}, err
@@ -81,7 +82,7 @@ func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateBodyDescription, options *DpsCertificateClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateResponse, options *DpsCertificateClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -104,12 +105,12 @@ func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificateDescription)
 }
 
@@ -124,6 +125,7 @@ func (client *DpsCertificateClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes the specified certificate associated with the Provisioning Service
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - Resource group identifier.
 // ifMatch - ETag of the certificate
 // provisioningServiceName - The name of the provisioning service.
@@ -193,15 +195,16 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GenerateVerificationCode - Generate verification code for Proof of Possession.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // certificateName - The mandatory logical name of the certificate, that the provisioning service uses to access.
 // ifMatch - ETag of the certificate. This is required to update an existing certificate, and ignored while creating a brand
 // new certificate.
@@ -272,10 +275,10 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -290,6 +293,7 @@ func (client *DpsCertificateClient) generateVerificationCodeHandleResponse(resp 
 
 // Get - Get the certificate from the provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // certificateName - Name of the certificate to retrieve.
 // resourceGroupName - Resource group identifier.
 // provisioningServiceName - Name of the provisioning service the certificate is associated with.
@@ -333,12 +337,12 @@ func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, certif
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -353,6 +357,7 @@ func (client *DpsCertificateClient) getHandleResponse(resp *http.Response) (DpsC
 
 // List - Get all the certificates tied to the provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - Name of resource group.
 // provisioningServiceName - Name of provisioning service to retrieve certificates for.
 // options - DpsCertificateClientListOptions contains the optional parameters for the DpsCertificateClient.List method.
@@ -391,9 +396,9 @@ func (client *DpsCertificateClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -409,6 +414,7 @@ func (client *DpsCertificateClient) listHandleResponse(resp *http.Response) (Dps
 // VerifyCertificate - Verifies the certificate's private key possession by providing the leaf cert issued by the verifying
 // pre uploaded certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // certificateName - The mandatory logical name of the certificate, that the provisioning service uses to access.
 // ifMatch - ETag of the certificate.
 // resourceGroupName - Resource group name.
@@ -479,10 +485,10 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }
 

@@ -29,8 +29,8 @@ func ExampleDiagnosticSettingsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-uri>",
-		"<name>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
+		"mysetting",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,16 +51,16 @@ func ExampleDiagnosticSettingsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-uri>",
-		"<name>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
+		"mysetting",
 		armmonitor.DiagnosticSettingsResource{
 			Properties: &armmonitor.DiagnosticSettings{
-				EventHubAuthorizationRuleID: to.Ptr("<event-hub-authorization-rule-id>"),
-				EventHubName:                to.Ptr("<event-hub-name>"),
-				LogAnalyticsDestinationType: to.Ptr("<log-analytics-destination-type>"),
+				EventHubAuthorizationRuleID: to.Ptr("/subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourceGroups/montest/providers/microsoft.eventhub/namespaces/mynamespace/eventhubs/myeventhub/authorizationrules/myrule"),
+				EventHubName:                to.Ptr("myeventhub"),
+				LogAnalyticsDestinationType: to.Ptr("Dedicated"),
 				Logs: []*armmonitor.LogSettings{
 					{
-						Category: to.Ptr("<category>"),
+						Category: to.Ptr("WorkflowRuntime"),
 						Enabled:  to.Ptr(true),
 						RetentionPolicy: &armmonitor.RetentionPolicy{
 							Days:    to.Ptr[int32](0),
@@ -69,15 +69,15 @@ func ExampleDiagnosticSettingsClient_CreateOrUpdate() {
 					}},
 				Metrics: []*armmonitor.MetricSettings{
 					{
-						Category: to.Ptr("<category>"),
+						Category: to.Ptr("WorkflowMetrics"),
 						Enabled:  to.Ptr(true),
 						RetentionPolicy: &armmonitor.RetentionPolicy{
 							Days:    to.Ptr[int32](0),
 							Enabled: to.Ptr(false),
 						},
 					}},
-				StorageAccountID: to.Ptr("<storage-account-id>"),
-				WorkspaceID:      to.Ptr("<workspace-id>"),
+				StorageAccountID: to.Ptr("/subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/apptest/providers/Microsoft.Storage/storageAccounts/appteststorage1"),
+				WorkspaceID:      to.Ptr(""),
 			},
 		},
 		nil)
@@ -100,8 +100,8 @@ func ExampleDiagnosticSettingsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-uri>",
-		"<name>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
+		"mysetting",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -120,7 +120,7 @@ func ExampleDiagnosticSettingsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-uri>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

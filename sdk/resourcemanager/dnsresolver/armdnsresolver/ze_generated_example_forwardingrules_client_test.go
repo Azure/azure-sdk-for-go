@@ -24,28 +24,28 @@ func ExampleForwardingRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewForwardingRulesClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewForwardingRulesClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
-		"<forwarding-rule-name>",
+		"sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
+		"sampleForwardingRule",
 		armdnsresolver.ForwardingRule{
 			Properties: &armdnsresolver.ForwardingRuleProperties{
-				DomainName:          to.Ptr("<domain-name>"),
+				DomainName:          to.Ptr("contoso.com."),
 				ForwardingRuleState: to.Ptr(armdnsresolver.ForwardingRuleStateEnabled),
 				Metadata: map[string]*string{
 					"additionalProp1": to.Ptr("value1"),
 				},
 				TargetDNSServers: []*armdnsresolver.TargetDNSServer{
 					{
-						IPAddress: to.Ptr("<ipaddress>"),
+						IPAddress: to.Ptr("10.0.0.1"),
 						Port:      to.Ptr[int32](53),
 					},
 					{
-						IPAddress: to.Ptr("<ipaddress>"),
+						IPAddress: to.Ptr("10.0.0.2"),
 						Port:      to.Ptr[int32](53),
 					}},
 			},
@@ -67,14 +67,14 @@ func ExampleForwardingRulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewForwardingRulesClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewForwardingRulesClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
-		"<forwarding-rule-name>",
+		"sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
+		"sampleForwardingRule",
 		armdnsresolver.ForwardingRulePatch{
 			Properties: &armdnsresolver.ForwardingRulePatchProperties{
 				ForwardingRuleState: to.Ptr(armdnsresolver.ForwardingRuleStateDisabled),
@@ -98,14 +98,14 @@ func ExampleForwardingRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewForwardingRulesClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewForwardingRulesClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
-		"<forwarding-rule-name>",
+		"sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
+		"sampleForwardingRule",
 		&armdnsresolver.ForwardingRulesClientDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -119,14 +119,14 @@ func ExampleForwardingRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewForwardingRulesClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewForwardingRulesClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
-		"<forwarding-rule-name>",
+		"sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
+		"sampleForwardingRule",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -142,18 +142,17 @@ func ExampleForwardingRulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewForwardingRulesClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewForwardingRulesClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
+	pager := client.NewListPager("sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
 		&armdnsresolver.ForwardingRulesClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

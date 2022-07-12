@@ -23,17 +23,16 @@ func ExampleLocationClient_NewListUsagePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerinstance.NewLocationClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewLocationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUsagePager("<location>",
+	pager := client.NewListUsagePager("westcentralus",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,17 +48,16 @@ func ExampleLocationClient_NewListCachedImagesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerinstance.NewLocationClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewLocationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCachedImagesPager("<location>",
+	pager := client.NewListCachedImagesPager("westcentralus",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,17 +73,16 @@ func ExampleLocationClient_NewListCapabilitiesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerinstance.NewLocationClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewLocationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCapabilitiesPager("<location>",
+	pager := client.NewListCapabilitiesPager("westus",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

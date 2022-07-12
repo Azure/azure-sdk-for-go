@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
@@ -31,16 +29,16 @@ func ExampleClient_BeginDelete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-id>",
+		"115c3523-1fae-757f-af86-7b27cfd29805",
 		armsaas.DeleteOptions{
 			ReasonCode:      to.Ptr[float32](0),
 			UnsubscribeOnly: to.Ptr(true),
 		},
-		&armsaas.ClientBeginDeleteOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -58,7 +56,7 @@ func ExampleClient_GetResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetResource(ctx,
-		"<resource-id>",
+		"115c3523-1fae-757f-af86-7b27cfd29805",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,18 +77,18 @@ func ExampleClient_BeginUpdateResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateResource(ctx,
-		"<resource-id>",
+		"115c3523-1fae-757f-af86-7b27cfd29805",
 		armsaas.ResourceCreation{
 			Properties: &armsaas.CreationProperties{
-				SKUID: to.Ptr("<skuid>"),
+				SKUID: to.Ptr("premium"),
 			},
 			Tags: map[string]*string{},
 		},
-		&armsaas.ClientBeginUpdateResourceOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -112,22 +110,22 @@ func ExampleClient_BeginCreateResource() {
 	poller, err := client.BeginCreateResource(ctx,
 		armsaas.ResourceCreation{
 			Properties: &armsaas.CreationProperties{
-				OfferID: to.Ptr("<offer-id>"),
+				OfferID: to.Ptr("microsofthealthcarebot"),
 				PaymentChannelMetadata: map[string]*string{
 					"AzureSubscriptionId": to.Ptr("155af98a-3205-47e7-883b-a2ab9db9f88d"),
 				},
 				PaymentChannelType: to.Ptr(armsaas.PaymentChannelTypeSubscriptionDelegated),
-				PublisherID:        to.Ptr("<publisher-id>"),
-				SaasResourceName:   to.Ptr("<saas-resource-name>"),
-				SKUID:              to.Ptr("<skuid>"),
-				TermID:             to.Ptr("<term-id>"),
+				PublisherID:        to.Ptr("microsoft-hcb"),
+				SaasResourceName:   to.Ptr("testRunnerFromArm"),
+				SKUID:              to.Ptr("free"),
+				TermID:             to.Ptr("hjdtn7tfnxcy"),
 			},
 		},
-		&armsaas.ClientBeginCreateResourceOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

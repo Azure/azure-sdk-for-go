@@ -23,17 +23,17 @@ func ExampleSQLPoolColumnsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolColumnsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolColumnsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"serverName",
+		"myDatabase",
+		"dbo",
+		"table1",
+		"column1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

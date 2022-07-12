@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_ListByHostPool.json
@@ -24,18 +24,17 @@ func ExamplePrivateEndpointConnectionsClient_NewListByHostPoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByHostPoolPager("<resource-group-name>",
-		"<host-pool-name>",
+	pager := client.NewListByHostPoolPager("resourceGroup1",
+		"hostPool1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExamplePrivateEndpointConnectionsClient_GetByHostPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByHostPool(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,14 +73,14 @@ func ExamplePrivateEndpointConnectionsClient_DeleteByHostPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteByHostPool(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -95,19 +94,19 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateByHostPool(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		armdesktopvirtualization.PrivateEndpointConnection{
 			Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armdesktopvirtualization.PrivateLinkServiceConnectionState{
-					Description:     to.Ptr("<description>"),
-					ActionsRequired: to.Ptr("<actions-required>"),
+					Description:     to.Ptr("Approved by admin@consoto.com"),
+					ActionsRequired: to.Ptr("None"),
 					Status:          to.Ptr(armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved),
 				},
 			},
@@ -127,18 +126,17 @@ func ExamplePrivateEndpointConnectionsClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListByWorkspacePager("resourceGroup1",
+		"workspace1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -154,14 +152,14 @@ func ExamplePrivateEndpointConnectionsClient_GetByWorkspace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByWorkspace(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"workspace1",
+		"workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -177,14 +175,14 @@ func ExamplePrivateEndpointConnectionsClient_DeleteByWorkspace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteByWorkspace(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"workspace1",
+		"workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -198,19 +196,19 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateByWorkspace(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"workspace1",
+		"workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		armdesktopvirtualization.PrivateEndpointConnection{
 			Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armdesktopvirtualization.PrivateLinkServiceConnectionState{
-					Description:     to.Ptr("<description>"),
-					ActionsRequired: to.Ptr("<actions-required>"),
+					Description:     to.Ptr("Approved by admin@consoto.com"),
+					ActionsRequired: to.Ptr("None"),
 					Status:          to.Ptr(armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved),
 				},
 			},

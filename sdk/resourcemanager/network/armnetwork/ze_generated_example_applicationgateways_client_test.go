@@ -12,51 +12,49 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayDelete.json
 func ExampleApplicationGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<application-gateway-name>",
-		&armnetwork.ApplicationGatewaysClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"appgw",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayGet.json
 func ExampleApplicationGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<application-gateway-name>",
+		"rg1",
+		"appgw",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,22 +63,22 @@ func ExampleApplicationGatewaysClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayCreate.json
 func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<application-gateway-name>",
+		"rg1",
+		"appgw",
 		armnetwork.ApplicationGateway{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Identity: &armnetwork.ManagedServiceIdentity{
 				Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
 				UserAssignedIdentities: map[string]*armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
@@ -90,20 +88,20 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 			Properties: &armnetwork.ApplicationGatewayPropertiesFormat{
 				BackendAddressPools: []*armnetwork.ApplicationGatewayBackendAddressPool{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwpool"),
 						Properties: &armnetwork.ApplicationGatewayBackendAddressPoolPropertiesFormat{
 							BackendAddresses: []*armnetwork.ApplicationGatewayBackendAddress{
 								{
-									IPAddress: to.Ptr("<ipaddress>"),
+									IPAddress: to.Ptr("10.0.1.1"),
 								},
 								{
-									IPAddress: to.Ptr("<ipaddress>"),
+									IPAddress: to.Ptr("10.0.1.2"),
 								}},
 						},
 					},
 					{
-						ID:   to.Ptr("<id>"),
-						Name: to.Ptr("<name>"),
+						ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1"),
+						Name: to.Ptr("appgwpool1"),
 						Properties: &armnetwork.ApplicationGatewayBackendAddressPoolPropertiesFormat{
 							BackendAddresses: []*armnetwork.ApplicationGatewayBackendAddress{
 								{},
@@ -112,7 +110,7 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 					}},
 				BackendHTTPSettingsCollection: []*armnetwork.ApplicationGatewayBackendHTTPSettings{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwbhs"),
 						Properties: &armnetwork.ApplicationGatewayBackendHTTPSettingsPropertiesFormat{
 							CookieBasedAffinity: to.Ptr(armnetwork.ApplicationGatewayCookieBasedAffinityDisabled),
 							Port:                to.Ptr[int32](80),
@@ -122,32 +120,32 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 					}},
 				FrontendIPConfigurations: []*armnetwork.ApplicationGatewayFrontendIPConfiguration{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwfip"),
 						Properties: &armnetwork.ApplicationGatewayFrontendIPConfigurationPropertiesFormat{
 							PublicIPAddress: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/appgwpip"),
 							},
 						},
 					}},
 				FrontendPorts: []*armnetwork.ApplicationGatewayFrontendPort{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwfp"),
 						Properties: &armnetwork.ApplicationGatewayFrontendPortPropertiesFormat{
 							Port: to.Ptr[int32](443),
 						},
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwfp80"),
 						Properties: &armnetwork.ApplicationGatewayFrontendPortPropertiesFormat{
 							Port: to.Ptr[int32](80),
 						},
 					}},
 				GatewayIPConfigurations: []*armnetwork.ApplicationGatewayIPConfiguration{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwipc"),
 						Properties: &armnetwork.ApplicationGatewayIPConfigurationPropertiesFormat{
 							Subnet: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet/subnets/appgwsubnet"),
 							},
 						},
 					}},
@@ -157,56 +155,56 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 				},
 				HTTPListeners: []*armnetwork.ApplicationGatewayHTTPListener{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwhl"),
 						Properties: &armnetwork.ApplicationGatewayHTTPListenerPropertiesFormat{
 							FrontendIPConfiguration: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendIPConfigurations/appgwfip"),
 							},
 							FrontendPort: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendPorts/appgwfp"),
 							},
 							RequireServerNameIndication: to.Ptr(false),
 							SSLCertificate: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/sslCertificates/sslcert"),
 							},
 							SSLProfile: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/sslProfiles/sslProfile1"),
 							},
 							Protocol: to.Ptr(armnetwork.ApplicationGatewayProtocolHTTPS),
 						},
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwhttplistener"),
 						Properties: &armnetwork.ApplicationGatewayHTTPListenerPropertiesFormat{
 							FrontendIPConfiguration: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendIPConfigurations/appgwfip"),
 							},
 							FrontendPort: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendPorts/appgwfp80"),
 							},
 							Protocol: to.Ptr(armnetwork.ApplicationGatewayProtocolHTTP),
 						},
 					}},
 				LoadDistributionPolicies: []*armnetwork.ApplicationGatewayLoadDistributionPolicy{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("ldp1"),
 						Properties: &armnetwork.ApplicationGatewayLoadDistributionPolicyPropertiesFormat{
 							LoadDistributionAlgorithm: to.Ptr(armnetwork.ApplicationGatewayLoadDistributionAlgorithmRoundRobin),
 							LoadDistributionTargets: []*armnetwork.ApplicationGatewayLoadDistributionTarget{
 								{
-									Name: to.Ptr("<name>"),
+									Name: to.Ptr("ld11"),
 									Properties: &armnetwork.ApplicationGatewayLoadDistributionTargetPropertiesFormat{
 										BackendAddressPool: &armnetwork.SubResource{
-											ID: to.Ptr("<id>"),
+											ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
 										},
 										WeightPerServer: to.Ptr[int32](40),
 									},
 								},
 								{
-									Name: to.Ptr("<name>"),
+									Name: to.Ptr("ld11"),
 									Properties: &armnetwork.ApplicationGatewayLoadDistributionTargetPropertiesFormat{
 										BackendAddressPool: &armnetwork.SubResource{
-											ID: to.Ptr("<id>"),
+											ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1"),
 										},
 										WeightPerServer: to.Ptr[int32](60),
 									},
@@ -215,68 +213,68 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 					}},
 				RequestRoutingRules: []*armnetwork.ApplicationGatewayRequestRoutingRule{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwrule"),
 						Properties: &armnetwork.ApplicationGatewayRequestRoutingRulePropertiesFormat{
 							BackendAddressPool: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
 							},
 							BackendHTTPSettings: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"),
 							},
 							HTTPListener: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhl"),
 							},
 							LoadDistributionPolicy: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
 							},
 							Priority: to.Ptr[int32](10),
 							RewriteRuleSet: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
 							},
 							RuleType: to.Ptr(armnetwork.ApplicationGatewayRequestRoutingRuleTypeBasic),
 						},
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("appgwPathBasedRule"),
 						Properties: &armnetwork.ApplicationGatewayRequestRoutingRulePropertiesFormat{
 							HTTPListener: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhttplistener"),
 							},
 							Priority: to.Ptr[int32](20),
 							RuleType: to.Ptr(armnetwork.ApplicationGatewayRequestRoutingRuleTypePathBasedRouting),
 							URLPathMap: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/urlPathMaps/pathMap1"),
 							},
 						},
 					}},
 				RewriteRuleSets: []*armnetwork.ApplicationGatewayRewriteRuleSet{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("rewriteRuleSet1"),
 						Properties: &armnetwork.ApplicationGatewayRewriteRuleSetPropertiesFormat{
 							RewriteRules: []*armnetwork.ApplicationGatewayRewriteRule{
 								{
-									Name: to.Ptr("<name>"),
+									Name: to.Ptr("Set X-Forwarded-For"),
 									ActionSet: &armnetwork.ApplicationGatewayRewriteRuleActionSet{
 										RequestHeaderConfigurations: []*armnetwork.ApplicationGatewayHeaderConfiguration{
 											{
-												HeaderName:  to.Ptr("<header-name>"),
-												HeaderValue: to.Ptr("<header-value>"),
+												HeaderName:  to.Ptr("X-Forwarded-For"),
+												HeaderValue: to.Ptr("{var_add_x_forwarded_for_proxy}"),
 											}},
 										ResponseHeaderConfigurations: []*armnetwork.ApplicationGatewayHeaderConfiguration{
 											{
-												HeaderName:  to.Ptr("<header-name>"),
-												HeaderValue: to.Ptr("<header-value>"),
+												HeaderName:  to.Ptr("Strict-Transport-Security"),
+												HeaderValue: to.Ptr("max-age=31536000"),
 											}},
 										URLConfiguration: &armnetwork.ApplicationGatewayURLConfiguration{
-											ModifiedPath: to.Ptr("<modified-path>"),
+											ModifiedPath: to.Ptr("/abc"),
 										},
 									},
 									Conditions: []*armnetwork.ApplicationGatewayRewriteRuleCondition{
 										{
 											IgnoreCase: to.Ptr(true),
 											Negate:     to.Ptr(false),
-											Pattern:    to.Ptr("<pattern>"),
-											Variable:   to.Ptr("<variable>"),
+											Pattern:    to.Ptr("^Bearer"),
+											Variable:   to.Ptr("http_req_Authorization"),
 										}},
 									RuleSequence: to.Ptr[int32](102),
 								}},
@@ -289,21 +287,21 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 				},
 				SSLCertificates: []*armnetwork.ApplicationGatewaySSLCertificate{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("sslcert"),
 						Properties: &armnetwork.ApplicationGatewaySSLCertificatePropertiesFormat{
-							Data:     to.Ptr("<data>"),
-							Password: to.Ptr("<password>"),
+							Data:     to.Ptr("****"),
+							Password: to.Ptr("****"),
 						},
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("sslcert2"),
 						Properties: &armnetwork.ApplicationGatewaySSLCertificatePropertiesFormat{
-							KeyVaultSecretID: to.Ptr("<key-vault-secret-id>"),
+							KeyVaultSecretID: to.Ptr("https://kv/secret"),
 						},
 					}},
 				SSLProfiles: []*armnetwork.ApplicationGatewaySSLProfile{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("sslProfile1"),
 						Properties: &armnetwork.ApplicationGatewaySSLProfilePropertiesFormat{
 							ClientAuthConfiguration: &armnetwork.ApplicationGatewayClientAuthConfiguration{
 								VerifyClientCertIssuerDN: to.Ptr(true),
@@ -316,64 +314,64 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 							},
 							TrustedClientCertificates: []*armnetwork.SubResource{
 								{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/trustedClientCertificates/clientcert"),
 								}},
 						},
 					}},
 				TrustedClientCertificates: []*armnetwork.ApplicationGatewayTrustedClientCertificate{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("clientcert"),
 						Properties: &armnetwork.ApplicationGatewayTrustedClientCertificatePropertiesFormat{
-							Data: to.Ptr("<data>"),
+							Data: to.Ptr("****"),
 						},
 					}},
 				TrustedRootCertificates: []*armnetwork.ApplicationGatewayTrustedRootCertificate{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("rootcert"),
 						Properties: &armnetwork.ApplicationGatewayTrustedRootCertificatePropertiesFormat{
-							Data: to.Ptr("<data>"),
+							Data: to.Ptr("****"),
 						},
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("rootcert1"),
 						Properties: &armnetwork.ApplicationGatewayTrustedRootCertificatePropertiesFormat{
-							KeyVaultSecretID: to.Ptr("<key-vault-secret-id>"),
+							KeyVaultSecretID: to.Ptr("https://kv/secret"),
 						},
 					}},
 				URLPathMaps: []*armnetwork.ApplicationGatewayURLPathMap{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("pathMap1"),
 						Properties: &armnetwork.ApplicationGatewayURLPathMapPropertiesFormat{
 							DefaultBackendAddressPool: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
 							},
 							DefaultBackendHTTPSettings: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"),
 							},
 							DefaultLoadDistributionPolicy: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
 							},
 							DefaultRewriteRuleSet: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
 							},
 							PathRules: []*armnetwork.ApplicationGatewayPathRule{
 								{
-									Name: to.Ptr("<name>"),
+									Name: to.Ptr("apiPaths"),
 									Properties: &armnetwork.ApplicationGatewayPathRulePropertiesFormat{
 										BackendAddressPool: &armnetwork.SubResource{
-											ID: to.Ptr("<id>"),
+											ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
 										},
 										BackendHTTPSettings: &armnetwork.SubResource{
-											ID: to.Ptr("<id>"),
+											ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"),
 										},
 										LoadDistributionPolicy: &armnetwork.SubResource{
-											ID: to.Ptr("<id>"),
+											ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
 										},
 										Paths: []*string{
 											to.Ptr("/api"),
 											to.Ptr("/v1/api")},
 										RewriteRuleSet: &armnetwork.SubResource{
-											ID: to.Ptr("<id>"),
+											ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
 										},
 									},
 								}},
@@ -381,11 +379,11 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 					}},
 			},
 		},
-		&armnetwork.ApplicationGatewaysClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -393,20 +391,20 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayUpdateTags.json
 func ExampleApplicationGatewaysClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<application-gateway-name>",
+		"rg1",
+		"AppGw",
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -421,24 +419,23 @@ func ExampleApplicationGatewaysClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayList.json
 func ExampleApplicationGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("rg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -447,14 +444,14 @@ func ExampleApplicationGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayListAll.json
 func ExampleApplicationGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -463,7 +460,6 @@ func ExampleApplicationGatewaysClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -472,75 +468,73 @@ func ExampleApplicationGatewaysClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayStart.json
 func ExampleApplicationGatewaysClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<application-gateway-name>",
-		&armnetwork.ApplicationGatewaysClientBeginStartOptions{ResumeToken: ""})
+		"rg1",
+		"appgw",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayStop.json
 func ExampleApplicationGatewaysClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<application-gateway-name>",
-		&armnetwork.ApplicationGatewaysClientBeginStopOptions{ResumeToken: ""})
+		"rg1",
+		"appgw",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayBackendHealthGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayBackendHealthGet.json
 func ExampleApplicationGatewaysClient_BeginBackendHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginBackendHealth(ctx,
-		"<resource-group-name>",
-		"<application-gateway-name>",
-		&armnetwork.ApplicationGatewaysClientBeginBackendHealthOptions{Expand: nil,
-			ResumeToken: "",
-		})
+		"appgw",
+		"appgw",
+		&armnetwork.ApplicationGatewaysClientBeginBackendHealthOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -548,39 +542,37 @@ func ExampleApplicationGatewaysClient_BeginBackendHealth() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayBackendHealthTest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayBackendHealthTest.json
 func ExampleApplicationGatewaysClient_BeginBackendHealthOnDemand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginBackendHealthOnDemand(ctx,
-		"<resource-group-name>",
-		"<application-gateway-name>",
+		"rg1",
+		"appgw",
 		armnetwork.ApplicationGatewayOnDemandProbe{
-			Path: to.Ptr("<path>"),
+			Path: to.Ptr("/"),
 			BackendAddressPool: &armnetwork.SubResource{
-				ID: to.Ptr("<id>"),
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendaddressPools/MFAnalyticsPool"),
 			},
 			BackendHTTPSettings: &armnetwork.SubResource{
-				ID: to.Ptr("<id>"),
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/MFPoolSettings"),
 			},
 			PickHostNameFromBackendHTTPSettings: to.Ptr(true),
 			Timeout:                             to.Ptr[int32](30),
 			Protocol:                            to.Ptr(armnetwork.ApplicationGatewayProtocolHTTP),
 		},
-		&armnetwork.ApplicationGatewaysClientBeginBackendHealthOnDemandOptions{Expand: nil,
-			ResumeToken: "",
-		})
+		&armnetwork.ApplicationGatewaysClientBeginBackendHealthOnDemandOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -588,14 +580,14 @@ func ExampleApplicationGatewaysClient_BeginBackendHealthOnDemand() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
 func ExampleApplicationGatewaysClient_ListAvailableServerVariables() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("72f988bf-86f1-41af-91ab-2d7cd0dddd4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -608,14 +600,14 @@ func ExampleApplicationGatewaysClient_ListAvailableServerVariables() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayAvailableRequestHeadersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayAvailableRequestHeadersGet.json
 func ExampleApplicationGatewaysClient_ListAvailableRequestHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("72f988bf-86f1-41af-91ab-2d7cd0dddd4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -628,14 +620,14 @@ func ExampleApplicationGatewaysClient_ListAvailableRequestHeaders() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayAvailableResponseHeadersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayAvailableResponseHeadersGet.json
 func ExampleApplicationGatewaysClient_ListAvailableResponseHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("72f988bf-86f1-41af-91ab-2d7cd0dddd4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -648,14 +640,14 @@ func ExampleApplicationGatewaysClient_ListAvailableResponseHeaders() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayAvailableWafRuleSetsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayAvailableWafRuleSetsGet.json
 func ExampleApplicationGatewaysClient_ListAvailableWafRuleSets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

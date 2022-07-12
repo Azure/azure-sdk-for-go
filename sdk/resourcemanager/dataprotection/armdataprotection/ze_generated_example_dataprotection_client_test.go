@@ -17,21 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/CheckfeatureSupport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/CheckfeatureSupport.json
 func ExampleClient_CheckFeatureSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckFeatureSupport(ctx,
-		"<location>",
+		"WestUS",
 		&armdataprotection.FeatureValidationRequest{
-			ObjectType:  to.Ptr("<object-type>"),
+			ObjectType:  to.Ptr("FeatureValidationRequest"),
 			FeatureType: to.Ptr(armdataprotection.FeatureTypeDataSourceType),
 		},
 		nil)

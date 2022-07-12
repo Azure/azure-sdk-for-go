@@ -23,16 +23,16 @@ func ExampleCodePackageClient_GetContainerLogs() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewCodePackageClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewCodePackageClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetContainerLogs(ctx,
-		"<resource-group-name>",
-		"<application-resource-name>",
-		"<service-resource-name>",
-		"<replica-name>",
-		"<code-package-name>",
+		"sbz_demo",
+		"sbzDocApp",
+		"sbzDocService",
+		"0",
+		"sbzDocCode",
 		&armservicefabricmesh.CodePackageClientGetContainerLogsOptions{Tail: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

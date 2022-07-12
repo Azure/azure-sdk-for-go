@@ -28,6 +28,11 @@ type EndpointsClientListCredentialsResponse struct {
 	EndpointAccessResource
 }
 
+// EndpointsClientListManagedProxyDetailsResponse contains the response from method EndpointsClient.ListManagedProxyDetails.
+type EndpointsClientListManagedProxyDetailsResponse struct {
+	ManagedProxyResource
+}
+
 // EndpointsClientListResponse contains the response from method EndpointsClient.List.
 type EndpointsClientListResponse struct {
 	EndpointsList

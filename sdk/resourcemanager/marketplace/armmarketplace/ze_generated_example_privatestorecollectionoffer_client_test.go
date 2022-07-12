@@ -28,14 +28,13 @@ func ExamplePrivateStoreCollectionOfferClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<private-store-id>",
-		"<collection-id>",
+	pager := client.NewListPager("a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,9 +55,9 @@ func ExamplePrivateStoreCollectionOfferClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<private-store-id>",
-		"<offer-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,12 +78,12 @@ func ExamplePrivateStoreCollectionOfferClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<private-store-id>",
-		"<offer-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		&armmarketplace.PrivateStoreCollectionOfferClientCreateOrUpdateOptions{Payload: &armmarketplace.Offer{
 			Properties: &armmarketplace.OfferProperties{
-				ETag: to.Ptr("<etag>"),
+				ETag: to.Ptr("\"9301f4fd-0000-0100-0000-5e248b350666\""),
 				SpecificPlanIDsLimitation: []*string{
 					to.Ptr("0001"),
 					to.Ptr("0002")},
@@ -110,9 +109,9 @@ func ExamplePrivateStoreCollectionOfferClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<private-store-id>",
-		"<offer-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -131,9 +130,9 @@ func ExamplePrivateStoreCollectionOfferClient_Post() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Post(ctx,
-		"<private-store-id>",
-		"<offer-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		&armmarketplace.PrivateStoreCollectionOfferClientPostOptions{Payload: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

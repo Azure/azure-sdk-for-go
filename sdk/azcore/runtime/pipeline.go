@@ -24,9 +24,8 @@ type PipelineOptions struct {
 type Pipeline = exported.Pipeline
 
 // NewPipeline creates a pipeline from connection options, with any additional policies as specified.
-// module, version: used by the telemetry policy, when enabled
-// perCall: additional policies to invoke once per request
-// perRetry: additional policies to invoke once per request and once per retry of that request
+// Policies from ClientOptions are placed after policies from PipelineOptions.
+// The module and version parameters are used by the telemetry policy, when enabled.
 func NewPipeline(module, version string, plOpts PipelineOptions, options *policy.ClientOptions) Pipeline {
 	cp := policy.ClientOptions{}
 	if options != nil {
@@ -50,11 +49,11 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 	if !cp.Telemetry.Disabled {
 		policies = append(policies, NewTelemetryPolicy(module, version, &cp.Telemetry))
 	}
-	policies = append(policies, cp.PerCallPolicies...)
 	policies = append(policies, plOpts.PerCall...)
+	policies = append(policies, cp.PerCallPolicies...)
 	policies = append(policies, NewRetryPolicy(&cp.Retry))
-	policies = append(policies, cp.PerRetryPolicies...)
 	policies = append(policies, plOpts.PerRetry...)
+	policies = append(policies, cp.PerRetryPolicies...)
 	policies = append(policies, NewLogPolicy(&cp.Logging))
 	policies = append(policies, policyFunc(httpHeaderPolicy), policyFunc(bodyDownloadPolicy))
 	transport := cp.Transport

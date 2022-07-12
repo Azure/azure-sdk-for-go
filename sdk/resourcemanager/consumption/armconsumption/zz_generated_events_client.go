@@ -36,7 +36,7 @@ func NewEventsClient(credential azcore.TokenCredential, options *arm.ClientOptio
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,11 +54,12 @@ func NewEventsClient(credential azcore.TokenCredential, options *arm.ClientOptio
 // NewListByBillingAccountPager - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment
 // for a billing account or a billing profile for a given start and end date.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // billingAccountID - BillingAccount ID
 // options - EventsClientListByBillingAccountOptions contains the optional parameters for the EventsClient.ListByBillingAccount
 // method.
 func (client *EventsClient) NewListByBillingAccountPager(billingAccountID string, options *EventsClientListByBillingAccountOptions) *runtime.Pager[EventsClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EventsClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EventsClientListByBillingAccountResponse]{
 		More: func(page EventsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -102,7 +103,7 @@ func (client *EventsClient) listByBillingAccountCreateRequest(ctx context.Contex
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,6 +119,7 @@ func (client *EventsClient) listByBillingAccountHandleResponse(resp *http.Respon
 // NewListByBillingProfilePager - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment
 // for a billing account or a billing profile for a given start and end date.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // billingAccountID - BillingAccount ID
 // billingProfileID - Azure Billing Profile ID.
 // startDate - Start date
@@ -125,7 +127,7 @@ func (client *EventsClient) listByBillingAccountHandleResponse(resp *http.Respon
 // options - EventsClientListByBillingProfileOptions contains the optional parameters for the EventsClient.ListByBillingProfile
 // method.
 func (client *EventsClient) NewListByBillingProfilePager(billingAccountID string, billingProfileID string, startDate string, endDate string, options *EventsClientListByBillingProfileOptions) *runtime.Pager[EventsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EventsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EventsClientListByBillingProfileResponse]{
 		More: func(page EventsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -172,7 +174,7 @@ func (client *EventsClient) listByBillingProfileCreateRequest(ctx context.Contex
 	reqQP.Set("startDate", startDate)
 	reqQP.Set("endDate", endDate)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

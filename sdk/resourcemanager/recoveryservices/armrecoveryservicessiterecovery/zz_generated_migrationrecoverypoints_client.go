@@ -42,7 +42,7 @@ func NewMigrationRecoveryPointsClient(resourceName string, resourceGroupName str
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewMigrationRecoveryPointsClient(resourceName string, resourceGroupName str
 
 // Get - Gets a recovery point for a migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric unique name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -121,7 +122,7 @@ func (client *MigrationRecoveryPointsClient) getCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -136,13 +137,14 @@ func (client *MigrationRecoveryPointsClient) getHandleResponse(resp *http.Respon
 
 // NewListByReplicationMigrationItemsPager - Gets the recovery points for a migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric unique name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
 // options - MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions contains the optional parameters for the
 // MigrationRecoveryPointsClient.ListByReplicationMigrationItems method.
 func (client *MigrationRecoveryPointsClient) NewListByReplicationMigrationItemsPager(fabricName string, protectionContainerName string, migrationItemName string, options *MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions) *runtime.Pager[MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse]{
 		More: func(page MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -203,7 +205,7 @@ func (client *MigrationRecoveryPointsClient) listByReplicationMigrationItemsCrea
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

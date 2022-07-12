@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
@@ -26,12 +24,12 @@ func ExamplePoolClient_NewListByBatchAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewPoolClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewPoolClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBatchAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByBatchAccountPager("default-azurebatch-japaneast",
+		"sampleacct",
 		&armbatch.PoolClientListByBatchAccountOptions{Maxresults: nil,
 			Select: nil,
 			Filter: nil,
@@ -40,7 +38,6 @@ func ExamplePoolClient_NewListByBatchAccountPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,25 +53,25 @@ func ExamplePoolClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewPoolClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewPoolClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"testpool",
 		armbatch.Pool{
 			Properties: &armbatch.PoolProperties{
 				DeploymentConfiguration: &armbatch.DeploymentConfiguration{
 					VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
 						ImageReference: &armbatch.ImageReference{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/subid/resourceGroups/networking-group/providers/Microsoft.Compute/galleries/testgallery/images/testimagedef/versions/0.0.1"),
 						},
-						NodeAgentSKUID: to.Ptr("<node-agent-skuid>"),
+						NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
 					},
 				},
-				VMSize: to.Ptr("<vmsize>"),
+				VMSize: to.Ptr("STANDARD_D4"),
 			},
 		},
 		&armbatch.PoolClientCreateOptions{IfMatch: nil,
@@ -94,19 +91,19 @@ func ExamplePoolClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewPoolClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewPoolClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"testpool",
 		armbatch.Pool{
 			Properties: &armbatch.PoolProperties{
 				ScaleSettings: &armbatch.ScaleSettings{
 					AutoScale: &armbatch.AutoScaleSettings{
-						Formula: to.Ptr("<formula>"),
+						Formula: to.Ptr("$TargetDedicatedNodes=34"),
 					},
 				},
 			},
@@ -126,19 +123,19 @@ func ExamplePoolClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewPoolClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewPoolClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		&armbatch.PoolClientBeginDeleteOptions{ResumeToken: ""})
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"testpool",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -151,14 +148,14 @@ func ExamplePoolClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewPoolClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewPoolClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"testpool",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -174,14 +171,14 @@ func ExamplePoolClient_DisableAutoScale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewPoolClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewPoolClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DisableAutoScale(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"testpool",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -197,14 +194,14 @@ func ExamplePoolClient_StopResize() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewPoolClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewPoolClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.StopResize(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"testpool",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

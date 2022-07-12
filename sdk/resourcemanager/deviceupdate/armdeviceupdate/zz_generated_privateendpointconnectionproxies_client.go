@@ -38,7 +38,7 @@ func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,29 +57,31 @@ func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential
 // BeginCreateOrUpdate - (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource
 // associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
 // privateEndpointConnectionProxy - The parameters for creating a private endpoint connection proxy.
 // options - PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateEndpointConnectionProxiesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse], error) {
+func (client *PrivateEndpointConnectionProxiesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointConnectionProxy, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
 // with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 func (client *PrivateEndpointConnectionProxiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointConnectionProxy, options)
 	if err != nil {
@@ -119,37 +121,39 @@ func (client *PrivateEndpointConnectionProxiesClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnectionProxy)
 }
 
 // BeginDelete - (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device
 // update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
 // options - PrivateEndpointConnectionProxiesClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionProxiesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionProxiesClientDeleteResponse], error) {
+func (client *PrivateEndpointConnectionProxiesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionProxiesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionProxiesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionProxiesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
 // account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 func (client *PrivateEndpointConnectionProxiesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, options)
 	if err != nil {
@@ -189,14 +193,15 @@ func (client *PrivateEndpointConnectionProxiesClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
@@ -241,9 +246,9 @@ func (client *PrivateEndpointConnectionProxiesClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -258,12 +263,13 @@ func (client *PrivateEndpointConnectionProxiesClient) getHandleResponse(resp *ht
 
 // NewListByAccountPager - (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.ListByAccount
 // method.
 func (client *PrivateEndpointConnectionProxiesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *PrivateEndpointConnectionProxiesClientListByAccountOptions) *runtime.Pager[PrivateEndpointConnectionProxiesClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionProxiesClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionProxiesClientListByAccountResponse]{
 		More: func(page PrivateEndpointConnectionProxiesClientListByAccountResponse) bool {
 			return false
 		},
@@ -304,9 +310,9 @@ func (client *PrivateEndpointConnectionProxiesClient) listByAccountCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -322,6 +328,7 @@ func (client *PrivateEndpointConnectionProxiesClient) listByAccountHandleRespons
 // UpdatePrivateEndpointProperties - (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection
 // proxy object.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
@@ -367,14 +374,15 @@ func (client *PrivateEndpointConnectionProxiesClient) updatePrivateEndpointPrope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointUpdate)
 }
 
 // Validate - (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
@@ -420,8 +428,8 @@ func (client *PrivateEndpointConnectionProxiesClient) validateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnectionProxy)
 }

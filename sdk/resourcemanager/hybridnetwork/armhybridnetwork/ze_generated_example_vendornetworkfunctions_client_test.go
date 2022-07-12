@@ -12,11 +12,9 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorNfGet.json
@@ -26,14 +24,14 @@ func ExampleVendorNetworkFunctionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<vendor-name>",
-		"<service-key>",
+		"eastus",
+		"testVendor",
+		"testServiceKey",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,14 +47,14 @@ func ExampleVendorNetworkFunctionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<location-name>",
-		"<vendor-name>",
-		"<service-key>",
+		"eastus",
+		"testVendor",
+		"testServiceKey",
 		armhybridnetwork.VendorNetworkFunction{
 			Properties: &armhybridnetwork.VendorNetworkFunctionPropertiesFormat{
 				NetworkFunctionVendorConfigurations: []*armhybridnetwork.NetworkFunctionVendorConfiguration{
@@ -65,54 +63,54 @@ func ExampleVendorNetworkFunctionsClient_BeginCreateOrUpdate() {
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										Gateway:            to.Ptr("<gateway>"),
-										IPAddress:          to.Ptr("<ipaddress>"),
+										Gateway:            to.Ptr(""),
+										IPAddress:          to.Ptr(""),
 										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
 										IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
-										Subnet:             to.Ptr("<subnet>"),
+										Subnet:             to.Ptr(""),
 									}},
-								MacAddress:           to.Ptr("<mac-address>"),
-								NetworkInterfaceName: to.Ptr("<network-interface-name>"),
+								MacAddress:           to.Ptr(""),
+								NetworkInterfaceName: to.Ptr("nic1"),
 								VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
 							},
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										Gateway:            to.Ptr("<gateway>"),
-										IPAddress:          to.Ptr("<ipaddress>"),
+										Gateway:            to.Ptr(""),
+										IPAddress:          to.Ptr(""),
 										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
 										IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
-										Subnet:             to.Ptr("<subnet>"),
+										Subnet:             to.Ptr(""),
 									}},
-								MacAddress:           to.Ptr("<mac-address>"),
-								NetworkInterfaceName: to.Ptr("<network-interface-name>"),
+								MacAddress:           to.Ptr("DC-97-F8-79-16-7D"),
+								NetworkInterfaceName: to.Ptr("nic2"),
 								VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeWan),
 							}},
 						OSProfile: &armhybridnetwork.OsProfile{
-							AdminUsername: to.Ptr("<admin-username>"),
-							CustomData:    to.Ptr("<custom-data>"),
+							AdminUsername: to.Ptr("dummyuser"),
+							CustomData:    to.Ptr("base-64 encoded string of custom data"),
 							LinuxConfiguration: &armhybridnetwork.LinuxConfiguration{
 								SSH: &armhybridnetwork.SSHConfiguration{
 									PublicKeys: []*armhybridnetwork.SSHPublicKey{
 										{
-											Path:    to.Ptr("<path>"),
-											KeyData: to.Ptr("<key-data>"),
+											Path:    to.Ptr("home/user/.ssh/authorized_keys"),
+											KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEAwrr66r8n6B8Y0zMF3dOpXEapIQD9DiYQ6D6/zwor9o39jSkHNiMMER/GETBbzP83LOcekm02aRjo55ArO7gPPVvCXbrirJu9pkm4AC4BBre5xSLS= user@constoso-DSH"),
 										}},
 								},
 							},
 						},
-						RoleName:           to.Ptr("<role-name>"),
+						RoleName:           to.Ptr("testRole"),
 						UserDataParameters: map[string]interface{}{},
 					}},
 				SKUType:                 to.Ptr(armhybridnetwork.SKUTypeSDWAN),
 				VendorProvisioningState: to.Ptr(armhybridnetwork.VendorProvisioningStateProvisioning),
 			},
 		},
-		&armhybridnetwork.VendorNetworkFunctionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -127,18 +125,17 @@ func ExampleVendorNetworkFunctionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorNetworkFunctionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<location-name>",
-		"<vendor-name>",
+	pager := client.NewListPager("eastus",
+		"testVendor",
 		&armhybridnetwork.VendorNetworkFunctionsClientListOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

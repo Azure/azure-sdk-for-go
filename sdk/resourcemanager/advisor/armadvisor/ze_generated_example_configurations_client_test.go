@@ -24,7 +24,7 @@ func ExampleConfigurationsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewConfigurationsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleConfigurationsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,7 +48,7 @@ func ExampleConfigurationsClient_CreateInSubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewConfigurationsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -59,8 +58,8 @@ func ExampleConfigurationsClient_CreateInSubscription() {
 			Properties: &armadvisor.ConfigDataProperties{
 				Digests: []*armadvisor.DigestConfig{
 					{
-						Name:                  to.Ptr("<name>"),
-						ActionGroupResourceID: to.Ptr("<action-group-resource-id>"),
+						Name:                  to.Ptr("digestConfigName"),
+						ActionGroupResourceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/microsoft.insights/actionGroups/actionGroupName"),
 						Categories: []*armadvisor.Category{
 							to.Ptr(armadvisor.CategoryHighAvailability),
 							to.Ptr(armadvisor.CategorySecurity),
@@ -69,7 +68,7 @@ func ExampleConfigurationsClient_CreateInSubscription() {
 							to.Ptr(armadvisor.CategoryOperationalExcellence)},
 						Frequency: to.Ptr[int32](30),
 						State:     to.Ptr(armadvisor.DigestConfigStateActive),
-						Language:  to.Ptr("<language>"),
+						Language:  to.Ptr("en"),
 					}},
 				Exclude:         to.Ptr(true),
 				LowCPUThreshold: to.Ptr(armadvisor.CPUThresholdFive),
@@ -90,17 +89,16 @@ func ExampleConfigurationsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewConfigurationsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group>",
+	pager := client.NewListByResourceGroupPager("resourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -116,19 +114,19 @@ func ExampleConfigurationsClient_CreateInResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armadvisor.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewConfigurationsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateInResourceGroup(ctx,
 		armadvisor.ConfigurationNameDefault,
-		"<resource-group>",
+		"resourceGroup",
 		armadvisor.ConfigData{
 			Properties: &armadvisor.ConfigDataProperties{
 				Digests: []*armadvisor.DigestConfig{
 					{
-						Name:                  to.Ptr("<name>"),
-						ActionGroupResourceID: to.Ptr("<action-group-resource-id>"),
+						Name:                  to.Ptr("digestConfigName"),
+						ActionGroupResourceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/microsoft.insights/actionGroups/actionGroupName"),
 						Categories: []*armadvisor.Category{
 							to.Ptr(armadvisor.CategoryHighAvailability),
 							to.Ptr(armadvisor.CategorySecurity),
@@ -137,7 +135,7 @@ func ExampleConfigurationsClient_CreateInResourceGroup() {
 							to.Ptr(armadvisor.CategoryOperationalExcellence)},
 						Frequency: to.Ptr[int32](30),
 						State:     to.Ptr(armadvisor.DigestConfigStateActive),
-						Language:  to.Ptr("<language>"),
+						Language:  to.Ptr("en"),
 					}},
 				Exclude:         to.Ptr(true),
 				LowCPUThreshold: to.Ptr(armadvisor.CPUThresholdFive),

@@ -38,7 +38,7 @@ func NewSQLPoolMaintenanceWindowsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSQLPoolMaintenanceWindowsClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Creates or updates a Sql pool's maintenance windows settings.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -110,6 +111,7 @@ func (client *SQLPoolMaintenanceWindowsClient) createOrUpdateCreateRequest(ctx c
 
 // Get - Get a SQL pool's Maintenance Windows.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -158,7 +160,7 @@ func (client *SQLPoolMaintenanceWindowsClient) getCreateRequest(ctx context.Cont
 	reqQP.Set("api-version", "2021-06-01")
 	reqQP.Set("maintenanceWindowName", maintenanceWindowName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

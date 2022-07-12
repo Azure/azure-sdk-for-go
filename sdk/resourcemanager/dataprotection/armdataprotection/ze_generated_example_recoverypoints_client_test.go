@@ -16,20 +16,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ListRecoveryPoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/ListRecoveryPoints.json
 func ExampleRecoveryPointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewRecoveryPointsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewRecoveryPointsClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
+	pager := client.NewListPager("000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
 		&armdataprotection.RecoveryPointsClientListOptions{Filter: nil,
 			SkipToken: nil,
 		})
@@ -37,7 +37,6 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -46,22 +45,22 @@ func ExampleRecoveryPointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/GetRecoveryPoint.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/GetRecoveryPoint.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewRecoveryPointsClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewRecoveryPointsClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
-		"<recovery-point-id>",
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
+		"7fb2cddd-c5b3-44f6-a0d9-db3c4f9d5f25",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

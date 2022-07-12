@@ -38,7 +38,7 @@ func NewMachineExtensionsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewMachineExtensionsClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // machineName - The name of the machine where the extension should be created or updated.
 // extensionName - The name of the machine extension.
 // extensionParameters - Parameters supplied to the Create Machine Extension operation.
 // options - MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
 // method.
-func (client *MachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[MachineExtensionsClientCreateOrUpdateResponse], error) {
+func (client *MachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachineExtensionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, machineName, extensionName, extensionParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[MachineExtensionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MachineExtensionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[MachineExtensionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MachineExtensionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 func (client *MachineExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, machineName, extensionName, extensionParameters, options)
 	if err != nil {
@@ -115,33 +117,35 @@ func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-10-preview")
+	reqQP.Set("api-version", "2022-03-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, extensionParameters)
 }
 
 // BeginDelete - The operation to delete the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // machineName - The name of the machine where the extension should be deleted.
 // extensionName - The name of the machine extension.
 // options - MachineExtensionsClientBeginDeleteOptions contains the optional parameters for the MachineExtensionsClient.BeginDelete
 // method.
-func (client *MachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*armruntime.Poller[MachineExtensionsClientDeleteResponse], error) {
+func (client *MachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*runtime.Poller[MachineExtensionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, machineName, extensionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[MachineExtensionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MachineExtensionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[MachineExtensionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MachineExtensionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - The operation to delete the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 func (client *MachineExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, machineName, extensionName, options)
 	if err != nil {
@@ -181,14 +185,15 @@ func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-10-preview")
+	reqQP.Set("api-version", "2022-03-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - The operation to get the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // machineName - The name of the machine containing the extension.
 // extensionName - The name of the machine extension.
@@ -232,9 +237,9 @@ func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-10-preview")
+	reqQP.Set("api-version", "2022-03-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,11 +254,12 @@ func (client *MachineExtensionsClient) getHandleResponse(resp *http.Response) (M
 
 // NewListPager - The operation to get all extensions of a non-Azure machine
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // machineName - The name of the machine containing the extension.
 // options - MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.List method.
 func (client *MachineExtensionsClient) NewListPager(resourceGroupName string, machineName string, options *MachineExtensionsClientListOptions) *runtime.Pager[MachineExtensionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MachineExtensionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MachineExtensionsClientListResponse]{
 		More: func(page MachineExtensionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -303,9 +309,9 @@ func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, re
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-12-10-preview")
+	reqQP.Set("api-version", "2022-03-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -320,26 +326,28 @@ func (client *MachineExtensionsClient) listHandleResponse(resp *http.Response) (
 
 // BeginUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // machineName - The name of the machine where the extension should be created or updated.
 // extensionName - The name of the machine extension.
 // extensionParameters - Parameters supplied to the Create Machine Extension operation.
 // options - MachineExtensionsClientBeginUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginUpdate
 // method.
-func (client *MachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*armruntime.Poller[MachineExtensionsClientUpdateResponse], error) {
+func (client *MachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*runtime.Poller[MachineExtensionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, machineName, extensionName, extensionParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[MachineExtensionsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MachineExtensionsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[MachineExtensionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MachineExtensionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-10
 func (client *MachineExtensionsClient) update(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, machineName, extensionName, extensionParameters, options)
 	if err != nil {
@@ -379,8 +387,8 @@ func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-10-preview")
+	reqQP.Set("api-version", "2022-03-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, extensionParameters)
 }

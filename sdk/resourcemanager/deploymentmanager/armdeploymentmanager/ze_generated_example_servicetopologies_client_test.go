@@ -24,18 +24,18 @@ func ExampleServiceTopologiesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewServiceTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewServiceTopologiesClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-topology-name>",
+		"myResourceGroup",
+		"myTopology",
 		armdeploymentmanager.ServiceTopologyResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("centralus"),
 			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.ServiceTopologyResourceProperties{
-				ArtifactSourceID: to.Ptr("<artifact-source-id>"),
+				ArtifactSourceID: to.Ptr("Microsoft.DeploymentManager/artifactSources/myArtifactSource"),
 			},
 		},
 		nil)
@@ -51,13 +51,13 @@ func ExampleServiceTopologiesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewServiceTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewServiceTopologiesClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-topology-name>",
+		"myResourceGroup",
+		"myTopology",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,13 +73,13 @@ func ExampleServiceTopologiesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewServiceTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewServiceTopologiesClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-topology-name>",
+		"myResourceGroup",
+		"myTopology",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -93,12 +93,12 @@ func ExampleServiceTopologiesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeploymentmanager.NewServiceTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewServiceTopologiesClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
+		"myResourceGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

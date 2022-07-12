@@ -38,7 +38,7 @@ func NewPrivateEndpointsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPrivateEndpointsClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Creates a Stream Analytics Private Endpoint or replaces an already existing Private Endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // privateEndpointName - The name of the private endpoint.
@@ -105,12 +106,12 @@ func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpoint)
 }
 
@@ -125,25 +126,27 @@ func (client *PrivateEndpointsClient) createOrUpdateHandleResponse(resp *http.Re
 
 // BeginDelete - Delete the specified private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // privateEndpointName - The name of the private endpoint.
 // options - PrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointsClient.BeginDelete
 // method.
-func (client *PrivateEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointsClientDeleteResponse], error) {
+func (client *PrivateEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, privateEndpointName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateEndpointsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateEndpointsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete the specified private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 func (client *PrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointName, options)
 	if err != nil {
@@ -185,12 +188,13 @@ func (client *PrivateEndpointsClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified Private Endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // privateEndpointName - The name of the private endpoint.
@@ -236,7 +240,7 @@ func (client *PrivateEndpointsClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -251,12 +255,13 @@ func (client *PrivateEndpointsClient) getHandleResponse(resp *http.Response) (Pr
 
 // NewListByClusterPager - Lists the private endpoints in the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // options - PrivateEndpointsClientListByClusterOptions contains the optional parameters for the PrivateEndpointsClient.ListByCluster
 // method.
 func (client *PrivateEndpointsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateEndpointsClientListByClusterOptions) *runtime.Pager[PrivateEndpointsClientListByClusterResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointsClientListByClusterResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointsClientListByClusterResponse]{
 		More: func(page PrivateEndpointsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -305,7 +310,7 @@ func (client *PrivateEndpointsClient) listByClusterCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

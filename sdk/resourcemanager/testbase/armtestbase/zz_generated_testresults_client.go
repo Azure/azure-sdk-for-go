@@ -38,7 +38,7 @@ func NewTestResultsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTestResultsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Get - Get the Test Result by Id with specified OS Update type for a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -106,7 +107,7 @@ func (client *TestResultsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -121,6 +122,7 @@ func (client *TestResultsClient) getHandleResponse(resp *http.Response) (TestRes
 
 // GetDownloadURL - Gets the download URL of the test result.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -172,7 +174,7 @@ func (client *TestResultsClient) getDownloadURLCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -187,6 +189,7 @@ func (client *TestResultsClient) getDownloadURLHandleResponse(resp *http.Respons
 
 // GetVideoDownloadURL - Gets the download URL of the test execution screen recording.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -238,7 +241,7 @@ func (client *TestResultsClient) getVideoDownloadURLCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -254,13 +257,14 @@ func (client *TestResultsClient) getVideoDownloadURLHandleResponse(resp *http.Re
 // NewListPager - Lists all the Test Results with specified OS Update type for a Test Base Package. Can be filtered by osName,
 // releaseName, flightingRing, buildVersion, buildRevision.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
 // osUpdateType - The type of the OS Update.
 // options - TestResultsClientListOptions contains the optional parameters for the TestResultsClient.List method.
 func (client *TestResultsClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *TestResultsClientListOptions) *runtime.Pager[TestResultsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TestResultsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TestResultsClientListResponse]{
 		More: func(page TestResultsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -317,7 +321,7 @@ func (client *TestResultsClient) listCreateRequest(ctx context.Context, resource
 	}
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

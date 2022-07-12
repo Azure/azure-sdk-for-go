@@ -38,7 +38,7 @@ func NewResourceTypeRegistrationsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewResourceTypeRegistrationsClient(subscriptionID string, credential azcore
 
 // BeginCreateOrUpdate - Creates or updates a resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // resourceType - The resource type.
 // properties - The required request body parameters supplied to the resource type registration CreateOrUpdate operation.
 // options - ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceTypeRegistrationsClient.BeginCreateOrUpdate
 // method.
-func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ResourceTypeRegistrationsClientCreateOrUpdateResponse], error) {
+func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ResourceTypeRegistrationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, providerNamespace, resourceType, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ResourceTypeRegistrationsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ResourceTypeRegistrationsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ResourceTypeRegistrationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ResourceTypeRegistrationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, providerNamespace, resourceType, properties, options)
 	if err != nil {
@@ -114,12 +116,13 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // Delete - Deletes a resource type
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // resourceType - The resource type.
 // options - ResourceTypeRegistrationsClientDeleteOptions contains the optional parameters for the ResourceTypeRegistrationsClient.Delete
@@ -161,12 +164,13 @@ func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a resource type details in the given subscription and provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // resourceType - The resource type.
 // options - ResourceTypeRegistrationsClientGetOptions contains the optional parameters for the ResourceTypeRegistrationsClient.Get
@@ -208,7 +212,7 @@ func (client *ResourceTypeRegistrationsClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -223,11 +227,12 @@ func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Resp
 
 // NewListByProviderRegistrationPager - Gets the list of the resource types for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - ResourceTypeRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the ResourceTypeRegistrationsClient.ListByProviderRegistration
 // method.
 func (client *ResourceTypeRegistrationsClient) NewListByProviderRegistrationPager(providerNamespace string, options *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[ResourceTypeRegistrationsClientListByProviderRegistrationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourceTypeRegistrationsClientListByProviderRegistrationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourceTypeRegistrationsClientListByProviderRegistrationResponse]{
 		More: func(page ResourceTypeRegistrationsClientListByProviderRegistrationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -272,7 +277,7 @@ func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

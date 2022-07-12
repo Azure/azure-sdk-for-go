@@ -31,9 +31,35 @@ type CheckNameAvailabilityResponse struct {
 	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
 }
 
+// DataPartitionAddOrRemoveRequest - Defines the partition add/ delete action properties.
+type DataPartitionAddOrRemoveRequest struct {
+	// Name of the data partition
+	Name *string `json:"name,omitempty"`
+}
+
 // DataPartitionNames - The list of Energy services resource's Data Partition Names.
 type DataPartitionNames struct {
 	Name *string `json:"name,omitempty"`
+}
+
+// DataPartitionProperties - Defines the properties of an individual data partition.
+type DataPartitionProperties struct {
+	// Name of the data partition
+	Name *string `json:"name,omitempty"`
+
+	// Name of the data partition
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// DataPartitionsList - List of data partitions
+type DataPartitionsList struct {
+	DataPartitionNames []*DataPartitionNames `json:"dataPartitionNames,omitempty"`
+}
+
+// DataPartitionsListResult - List of data partitions.
+type DataPartitionsListResult struct {
+	// List of data partitions along with their properties in a given OEP resource.
+	Value []*DataPartitionProperties `json:"value,omitempty"`
 }
 
 // EnergyResourceUpdate - The resource model definition used for updating a tracked ARM resource.
@@ -83,6 +109,15 @@ type EnergyServiceProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// EnergyServicesClientBeginAddPartitionOptions contains the optional parameters for the EnergyServicesClient.BeginAddPartition
+// method.
+type EnergyServicesClientBeginAddPartitionOptions struct {
+	// add partition action payload
+	Body *DataPartitionAddOrRemoveRequest
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // EnergyServicesClientBeginCreateOptions contains the optional parameters for the EnergyServicesClient.BeginCreate method.
 type EnergyServicesClientBeginCreateOptions struct {
 	// Request body.
@@ -93,6 +128,15 @@ type EnergyServicesClientBeginCreateOptions struct {
 
 // EnergyServicesClientBeginDeleteOptions contains the optional parameters for the EnergyServicesClient.BeginDelete method.
 type EnergyServicesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// EnergyServicesClientBeginRemovePartitionOptions contains the optional parameters for the EnergyServicesClient.BeginRemovePartition
+// method.
+type EnergyServicesClientBeginRemovePartitionOptions struct {
+	// remove partition action payload
+	Body *DataPartitionAddOrRemoveRequest
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -111,6 +155,12 @@ type EnergyServicesClientListByResourceGroupOptions struct {
 // EnergyServicesClientListBySubscriptionOptions contains the optional parameters for the EnergyServicesClient.ListBySubscription
 // method.
 type EnergyServicesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnergyServicesClientListPartitionsOptions contains the optional parameters for the EnergyServicesClient.ListPartitions
+// method.
+type EnergyServicesClientListPartitionsOptions struct {
 	// placeholder for future optional parameters
 }
 

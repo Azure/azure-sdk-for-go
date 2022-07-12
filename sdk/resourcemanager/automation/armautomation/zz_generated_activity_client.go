@@ -39,7 +39,7 @@ func NewActivityClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewActivityClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Get - Retrieve the activity in the module identified by module name and activity name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The name of module.
@@ -107,7 +108,7 @@ func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -122,12 +123,13 @@ func (client *ActivityClient) getHandleResponse(resp *http.Response) (ActivityCl
 
 // NewListByModulePager - Retrieve a list of activities in the module identified by module name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The name of module.
 // options - ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.ListByModule method.
 func (client *ActivityClient) NewListByModulePager(resourceGroupName string, automationAccountName string, moduleName string, options *ActivityClientListByModuleOptions) *runtime.Pager[ActivityClientListByModuleResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ActivityClientListByModuleResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ActivityClientListByModuleResponse]{
 		More: func(page ActivityClientListByModuleResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -180,7 +182,7 @@ func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

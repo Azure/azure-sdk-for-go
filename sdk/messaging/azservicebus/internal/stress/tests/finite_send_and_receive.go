@@ -39,23 +39,22 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 	sender, err := client.NewSender(queueName, nil)
 	sc.PanicOnError("failed to create sender", err)
 
-	const messageLimit = 500
+	// 50000 isn't particularly special, but it does give us a decent # of receives
+	// so we get a decent view into our performance.
+	const messageLimit = 50000
 
 	log.Printf("Sending %d messages (all messages will be sent before receiving begins)", messageLimit)
-	shared.MustGenerateMessages(sc, sender, messageLimit, 100, sc.NewStat("sender"))
+	stats := sc.NewStat("finite")
+	shared.MustGenerateMessages(sc, sender, messageLimit, 100, stats)
 
 	log.Printf("Starting receiving...")
 
 	receiver, err := client.NewReceiverForQueue(queueName, nil)
 	sc.PanicOnError("Failed to create receiver", err)
 
-	completions := make(chan struct{}, 100)
-
-	receiverStats := sc.NewStat("receiver")
-
-	for receiverStats.Received < messageLimit {
+	for stats.Received < messageLimit {
 		log.Printf("[start] Receiving messages...")
-		messages, err := receiver.ReceiveMessages(context.Background(), 100, nil)
+		messages, err := receiver.ReceiveMessages(context.Background(), 1000, nil)
 		log.Printf("[done] Receiving messages... %v, %v", len(messages), err)
 		sc.PanicOnError("failed to create client", err)
 
@@ -68,26 +67,22 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 			wg.Add(1)
 
 			go func(msg *azservicebus.ReceivedMessage) {
-				completions <- struct{}{}
 				defer wg.Done()
-				defer func() { <-completions }()
 
 				ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 				defer cancel()
 
 				err := receiver.CompleteMessage(ctx, msg, nil)
 
-				var rpcCodeErr interface{ RPCCode() int }
+				var sbErr *azservicebus.Error
 
-				if errors.As(err, &rpcCodeErr) {
-					if rpcCodeErr.RPCCode() == 410 {
-						receiverStats.AddError("lock lost", err)
-						return
-					}
+				if errors.As(err, &sbErr) && sbErr.Code == azservicebus.CodeLockLost {
+					stats.AddError("lock lost", err)
+					return
 				}
 
 				sc.PanicOnError("failed to complete message", err)
-				receiverStats.AddReceived(1)
+				stats.AddReceived(1)
 			}(msg)
 		}
 

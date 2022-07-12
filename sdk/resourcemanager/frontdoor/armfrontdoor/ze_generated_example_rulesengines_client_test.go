@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
@@ -26,18 +24,17 @@ func ExampleRulesEnginesClient_NewListByFrontDoorPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfrontdoor.NewRulesEnginesClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewRulesEnginesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFrontDoorPager("<resource-group-name>",
-		"<front-door-name>",
+	pager := client.NewListByFrontDoorPager("rg1",
+		"frontDoor1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleRulesEnginesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfrontdoor.NewRulesEnginesClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewRulesEnginesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<front-door-name>",
-		"<rules-engine-name>",
+		"rg1",
+		"frontDoor1",
+		"rulesEngine1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,26 +73,26 @@ func ExampleRulesEnginesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfrontdoor.NewRulesEnginesClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewRulesEnginesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<front-door-name>",
-		"<rules-engine-name>",
+		"rg1",
+		"frontDoor1",
+		"rulesEngine1",
 		armfrontdoor.RulesEngine{
 			Properties: &armfrontdoor.RulesEngineProperties{
 				Rules: []*armfrontdoor.RulesEngineRule{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("Rule1"),
 						Action: &armfrontdoor.RulesEngineAction{
 							RouteConfigurationOverride: &armfrontdoor.RedirectConfiguration{
-								ODataType:         to.Ptr("<odata-type>"),
-								CustomFragment:    to.Ptr("<custom-fragment>"),
-								CustomHost:        to.Ptr("<custom-host>"),
-								CustomPath:        to.Ptr("<custom-path>"),
-								CustomQueryString: to.Ptr("<custom-query-string>"),
+								ODataType:         to.Ptr("#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration"),
+								CustomFragment:    to.Ptr("fragment"),
+								CustomHost:        to.Ptr("www.bing.com"),
+								CustomPath:        to.Ptr("/api"),
+								CustomQueryString: to.Ptr("a=b"),
 								RedirectProtocol:  to.Ptr(armfrontdoor.FrontDoorRedirectProtocolHTTPSOnly),
 								RedirectType:      to.Ptr(armfrontdoor.FrontDoorRedirectTypeMoved),
 							},
@@ -111,13 +108,13 @@ func ExampleRulesEnginesClient_BeginCreateOrUpdate() {
 						Priority:                to.Ptr[int32](1),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("Rule2"),
 						Action: &armfrontdoor.RulesEngineAction{
 							ResponseHeaderActions: []*armfrontdoor.HeaderAction{
 								{
 									HeaderActionType: to.Ptr(armfrontdoor.HeaderActionTypeOverwrite),
-									HeaderName:       to.Ptr("<header-name>"),
-									Value:            to.Ptr("<value>"),
+									HeaderName:       to.Ptr("Cache-Control"),
+									Value:            to.Ptr("public, max-age=31536000"),
 								}},
 						},
 						MatchConditions: []*armfrontdoor.RulesEngineMatchCondition{
@@ -132,18 +129,18 @@ func ExampleRulesEnginesClient_BeginCreateOrUpdate() {
 						Priority: to.Ptr[int32](2),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("Rule3"),
 						Action: &armfrontdoor.RulesEngineAction{
 							RouteConfigurationOverride: &armfrontdoor.ForwardingConfiguration{
-								ODataType: to.Ptr("<odata-type>"),
+								ODataType: to.Ptr("#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration"),
 								BackendPool: &armfrontdoor.SubResource{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/backendPools/backendPool1"),
 								},
 								CacheConfiguration: &armfrontdoor.CacheConfiguration{
-									CacheDuration:                to.Ptr("<cache-duration>"),
+									CacheDuration:                to.Ptr("P1DT12H20M30S"),
 									DynamicCompression:           to.Ptr(armfrontdoor.DynamicCompressionEnabledDisabled),
 									QueryParameterStripDirective: to.Ptr(armfrontdoor.FrontDoorQueryStripOnly),
-									QueryParameters:              to.Ptr("<query-parameters>"),
+									QueryParameters:              to.Ptr("a=b,p=q"),
 								},
 								ForwardingProtocol: to.Ptr(armfrontdoor.FrontDoorForwardingProtocolHTTPSOnly),
 							},
@@ -155,7 +152,7 @@ func ExampleRulesEnginesClient_BeginCreateOrUpdate() {
 									to.Ptr("allowoverride")},
 								RulesEngineMatchVariable: to.Ptr(armfrontdoor.RulesEngineMatchVariableRequestHeader),
 								RulesEngineOperator:      to.Ptr(armfrontdoor.RulesEngineOperatorEqual),
-								Selector:                 to.Ptr("<selector>"),
+								Selector:                 to.Ptr("Rules-Engine-Route-Forward"),
 								Transforms: []*armfrontdoor.Transform{
 									to.Ptr(armfrontdoor.TransformLowercase)},
 							}},
@@ -163,11 +160,11 @@ func ExampleRulesEnginesClient_BeginCreateOrUpdate() {
 					}},
 			},
 		},
-		&armfrontdoor.RulesEnginesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -182,19 +179,19 @@ func ExampleRulesEnginesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfrontdoor.NewRulesEnginesClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewRulesEnginesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<front-door-name>",
-		"<rules-engine-name>",
-		&armfrontdoor.RulesEnginesClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"frontDoor1",
+		"rulesEngine1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

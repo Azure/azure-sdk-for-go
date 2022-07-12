@@ -39,7 +39,7 @@ func NewRemediationsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewRemediationsClient(subscriptionID string, credential azcore.TokenCredent
 
 // CancelAtManagementGroup - Cancels a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientCancelAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CancelAtManagementGroup
@@ -95,7 +96,7 @@ func (client *RemediationsClient) cancelAtManagementGroupCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -110,6 +111,7 @@ func (client *RemediationsClient) cancelAtManagementGroupHandleResponse(resp *ht
 
 // CancelAtResource - Cancel a remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceID - Resource ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientCancelAtResourceOptions contains the optional parameters for the RemediationsClient.CancelAtResource
@@ -144,7 +146,7 @@ func (client *RemediationsClient) cancelAtResourceCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -159,6 +161,7 @@ func (client *RemediationsClient) cancelAtResourceHandleResponse(resp *http.Resp
 
 // CancelAtResourceGroup - Cancels a remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - Resource group name.
 // remediationName - The name of the remediation.
 // options - RemediationsClientCancelAtResourceGroupOptions contains the optional parameters for the RemediationsClient.CancelAtResourceGroup
@@ -200,7 +203,7 @@ func (client *RemediationsClient) cancelAtResourceGroupCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,6 +218,7 @@ func (client *RemediationsClient) cancelAtResourceGroupHandleResponse(resp *http
 
 // CancelAtSubscription - Cancels a remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // remediationName - The name of the remediation.
 // options - RemediationsClientCancelAtSubscriptionOptions contains the optional parameters for the RemediationsClient.CancelAtSubscription
 // method.
@@ -251,7 +255,7 @@ func (client *RemediationsClient) cancelAtSubscriptionCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -266,6 +270,7 @@ func (client *RemediationsClient) cancelAtSubscriptionHandleResponse(resp *http.
 
 // CreateOrUpdateAtManagementGroup - Creates or updates a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // parameters - The remediation parameters.
@@ -305,7 +310,7 @@ func (client *RemediationsClient) createOrUpdateAtManagementGroupCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -320,6 +325,7 @@ func (client *RemediationsClient) createOrUpdateAtManagementGroupHandleResponse(
 
 // CreateOrUpdateAtResource - Creates or updates a remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceID - Resource ID.
 // remediationName - The name of the remediation.
 // parameters - The remediation parameters.
@@ -355,7 +361,7 @@ func (client *RemediationsClient) createOrUpdateAtResourceCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -370,6 +376,7 @@ func (client *RemediationsClient) createOrUpdateAtResourceHandleResponse(resp *h
 
 // CreateOrUpdateAtResourceGroup - Creates or updates a remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - Resource group name.
 // remediationName - The name of the remediation.
 // parameters - The remediation parameters.
@@ -412,7 +419,7 @@ func (client *RemediationsClient) createOrUpdateAtResourceGroupCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -427,6 +434,7 @@ func (client *RemediationsClient) createOrUpdateAtResourceGroupHandleResponse(re
 
 // CreateOrUpdateAtSubscription - Creates or updates a remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // remediationName - The name of the remediation.
 // parameters - The remediation parameters.
 // options - RemediationsClientCreateOrUpdateAtSubscriptionOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtSubscription
@@ -464,7 +472,7 @@ func (client *RemediationsClient) createOrUpdateAtSubscriptionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -479,6 +487,7 @@ func (client *RemediationsClient) createOrUpdateAtSubscriptionHandleResponse(res
 
 // DeleteAtManagementGroup - Deletes an existing remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientDeleteAtManagementGroupOptions contains the optional parameters for the RemediationsClient.DeleteAtManagementGroup
@@ -517,7 +526,7 @@ func (client *RemediationsClient) deleteAtManagementGroupCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -532,6 +541,7 @@ func (client *RemediationsClient) deleteAtManagementGroupHandleResponse(resp *ht
 
 // DeleteAtResource - Deletes an existing remediation at individual resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceID - Resource ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientDeleteAtResourceOptions contains the optional parameters for the RemediationsClient.DeleteAtResource
@@ -566,7 +576,7 @@ func (client *RemediationsClient) deleteAtResourceCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -581,6 +591,7 @@ func (client *RemediationsClient) deleteAtResourceHandleResponse(resp *http.Resp
 
 // DeleteAtResourceGroup - Deletes an existing remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - Resource group name.
 // remediationName - The name of the remediation.
 // options - RemediationsClientDeleteAtResourceGroupOptions contains the optional parameters for the RemediationsClient.DeleteAtResourceGroup
@@ -622,7 +633,7 @@ func (client *RemediationsClient) deleteAtResourceGroupCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -637,6 +648,7 @@ func (client *RemediationsClient) deleteAtResourceGroupHandleResponse(resp *http
 
 // DeleteAtSubscription - Deletes an existing remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // remediationName - The name of the remediation.
 // options - RemediationsClientDeleteAtSubscriptionOptions contains the optional parameters for the RemediationsClient.DeleteAtSubscription
 // method.
@@ -673,7 +685,7 @@ func (client *RemediationsClient) deleteAtSubscriptionCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -688,6 +700,7 @@ func (client *RemediationsClient) deleteAtSubscriptionHandleResponse(resp *http.
 
 // GetAtManagementGroup - Gets an existing remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientGetAtManagementGroupOptions contains the optional parameters for the RemediationsClient.GetAtManagementGroup
@@ -726,7 +739,7 @@ func (client *RemediationsClient) getAtManagementGroupCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -741,6 +754,7 @@ func (client *RemediationsClient) getAtManagementGroupHandleResponse(resp *http.
 
 // GetAtResource - Gets an existing remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceID - Resource ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientGetAtResourceOptions contains the optional parameters for the RemediationsClient.GetAtResource
@@ -775,7 +789,7 @@ func (client *RemediationsClient) getAtResourceCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -790,6 +804,7 @@ func (client *RemediationsClient) getAtResourceHandleResponse(resp *http.Respons
 
 // GetAtResourceGroup - Gets an existing remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - Resource group name.
 // remediationName - The name of the remediation.
 // options - RemediationsClientGetAtResourceGroupOptions contains the optional parameters for the RemediationsClient.GetAtResourceGroup
@@ -831,7 +846,7 @@ func (client *RemediationsClient) getAtResourceGroupCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -846,6 +861,7 @@ func (client *RemediationsClient) getAtResourceGroupHandleResponse(resp *http.Re
 
 // GetAtSubscription - Gets an existing remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // remediationName - The name of the remediation.
 // options - RemediationsClientGetAtSubscriptionOptions contains the optional parameters for the RemediationsClient.GetAtSubscription
 // method.
@@ -882,7 +898,7 @@ func (client *RemediationsClient) getAtSubscriptionCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -897,6 +913,7 @@ func (client *RemediationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 
 // NewListDeploymentsAtManagementGroupPager - Gets all deployments for a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
@@ -904,7 +921,7 @@ func (client *RemediationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 // options - RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtManagementGroup
 // method.
 func (client *RemediationsClient) NewListDeploymentsAtManagementGroupPager(managementGroupID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtManagementGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListDeploymentsAtManagementGroupResponse]{
 		More: func(page RemediationsClientListDeploymentsAtManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -953,7 +970,7 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupCreateRequest(
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -968,6 +985,7 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupHandleResponse
 
 // NewListDeploymentsAtResourcePager - Gets all deployments for a remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceID - Resource ID.
 // remediationName - The name of the remediation.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
@@ -975,7 +993,7 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupHandleResponse
 // options - RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResource
 // method.
 func (client *RemediationsClient) NewListDeploymentsAtResourcePager(resourceID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListDeploymentsAtResourceResponse]{
 		More: func(page RemediationsClientListDeploymentsAtResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1020,7 +1038,7 @@ func (client *RemediationsClient) listDeploymentsAtResourceCreateRequest(ctx con
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1035,6 +1053,7 @@ func (client *RemediationsClient) listDeploymentsAtResourceHandleResponse(resp *
 
 // NewListDeploymentsAtResourceGroupPager - Gets all deployments for a remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - Resource group name.
 // remediationName - The name of the remediation.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
@@ -1042,7 +1061,7 @@ func (client *RemediationsClient) listDeploymentsAtResourceHandleResponse(resp *
 // options - RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResourceGroup
 // method.
 func (client *RemediationsClient) NewListDeploymentsAtResourceGroupPager(resourceGroupName string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListDeploymentsAtResourceGroupResponse]{
 		More: func(page RemediationsClientListDeploymentsAtResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1094,7 +1113,7 @@ func (client *RemediationsClient) listDeploymentsAtResourceGroupCreateRequest(ct
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1109,13 +1128,14 @@ func (client *RemediationsClient) listDeploymentsAtResourceGroupHandleResponse(r
 
 // NewListDeploymentsAtSubscriptionPager - Gets all deployments for a remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // remediationName - The name of the remediation.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtSubscription
 // method.
 func (client *RemediationsClient) NewListDeploymentsAtSubscriptionPager(remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtSubscriptionOptions) *runtime.Pager[RemediationsClientListDeploymentsAtSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListDeploymentsAtSubscriptionResponse]{
 		More: func(page RemediationsClientListDeploymentsAtSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1163,7 +1183,7 @@ func (client *RemediationsClient) listDeploymentsAtSubscriptionCreateRequest(ctx
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1178,13 +1198,14 @@ func (client *RemediationsClient) listDeploymentsAtSubscriptionHandleResponse(re
 
 // NewListForManagementGroupPager - Gets all remediations for the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // managementGroupID - Management group ID.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.ListForManagementGroup
 // method.
 func (client *RemediationsClient) NewListForManagementGroupPager(managementGroupID string, queryOptions *QueryOptions, options *RemediationsClientListForManagementGroupOptions) *runtime.Pager[RemediationsClientListForManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListForManagementGroupResponse]{
 		More: func(page RemediationsClientListForManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1232,7 +1253,7 @@ func (client *RemediationsClient) listForManagementGroupCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1247,13 +1268,14 @@ func (client *RemediationsClient) listForManagementGroupHandleResponse(resp *htt
 
 // NewListForResourcePager - Gets all remediations for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceID - Resource ID.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.ListForResource
 // method.
 func (client *RemediationsClient) NewListForResourcePager(resourceID string, queryOptions *QueryOptions, options *RemediationsClientListForResourceOptions) *runtime.Pager[RemediationsClientListForResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListForResourceResponse]{
 		More: func(page RemediationsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1297,7 +1319,7 @@ func (client *RemediationsClient) listForResourceCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1312,13 +1334,14 @@ func (client *RemediationsClient) listForResourceHandleResponse(resp *http.Respo
 
 // NewListForResourceGroupPager - Gets all remediations for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - Resource group name.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.ListForResourceGroup
 // method.
 func (client *RemediationsClient) NewListForResourceGroupPager(resourceGroupName string, queryOptions *QueryOptions, options *RemediationsClientListForResourceGroupOptions) *runtime.Pager[RemediationsClientListForResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListForResourceGroupResponse]{
 		More: func(page RemediationsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1369,7 +1392,7 @@ func (client *RemediationsClient) listForResourceGroupCreateRequest(ctx context.
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1384,12 +1407,13 @@ func (client *RemediationsClient) listForResourceGroupHandleResponse(resp *http.
 
 // NewListForSubscriptionPager - Gets all remediations for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.ListForSubscription
 // method.
 func (client *RemediationsClient) NewListForSubscriptionPager(queryOptions *QueryOptions, options *RemediationsClientListForSubscriptionOptions) *runtime.Pager[RemediationsClientListForSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListForSubscriptionResponse]{
 		More: func(page RemediationsClientListForSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1436,7 +1460,7 @@ func (client *RemediationsClient) listForSubscriptionCreateRequest(ctx context.C
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

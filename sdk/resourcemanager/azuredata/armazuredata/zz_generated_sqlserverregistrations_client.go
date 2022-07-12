@@ -38,7 +38,7 @@ func NewSQLServerRegistrationsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSQLServerRegistrationsClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Creates or updates a SQL Server registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
@@ -99,7 +100,7 @@ func (client *SQLServerRegistrationsClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -114,6 +115,7 @@ func (client *SQLServerRegistrationsClient) createOrUpdateHandleResponse(resp *h
 
 // Delete - Deletes a SQL Server registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
@@ -156,12 +158,13 @@ func (client *SQLServerRegistrationsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a SQL Server registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
@@ -204,7 +207,7 @@ func (client *SQLServerRegistrationsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -219,10 +222,11 @@ func (client *SQLServerRegistrationsClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Gets all SQL Server registrations in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // options - SQLServerRegistrationsClientListOptions contains the optional parameters for the SQLServerRegistrationsClient.List
 // method.
 func (client *SQLServerRegistrationsClient) NewListPager(options *SQLServerRegistrationsClientListOptions) *runtime.Pager[SQLServerRegistrationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLServerRegistrationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLServerRegistrationsClientListResponse]{
 		More: func(page SQLServerRegistrationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -263,7 +267,7 @@ func (client *SQLServerRegistrationsClient) listCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -278,12 +282,13 @@ func (client *SQLServerRegistrationsClient) listHandleResponse(resp *http.Respon
 
 // NewListByResourceGroupPager - Gets all SQL Server registrations in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // options - SQLServerRegistrationsClientListByResourceGroupOptions contains the optional parameters for the SQLServerRegistrationsClient.ListByResourceGroup
 // method.
 func (client *SQLServerRegistrationsClient) NewListByResourceGroupPager(resourceGroupName string, options *SQLServerRegistrationsClientListByResourceGroupOptions) *runtime.Pager[SQLServerRegistrationsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLServerRegistrationsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLServerRegistrationsClientListByResourceGroupResponse]{
 		More: func(page SQLServerRegistrationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -328,7 +333,7 @@ func (client *SQLServerRegistrationsClient) listByResourceGroupCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -343,6 +348,7 @@ func (client *SQLServerRegistrationsClient) listByResourceGroupHandleResponse(re
 
 // Update - Updates SQL Server Registration tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
@@ -386,7 +392,7 @@ func (client *SQLServerRegistrationsClient) updateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

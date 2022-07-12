@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
@@ -26,19 +24,19 @@ func ExampleRunbookClient_BeginPublish() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPublish(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
-		&armautomation.RunbookClientBeginPublishOptions{ResumeToken: ""})
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -51,14 +49,14 @@ func ExampleRunbookClient_GetContent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetContent(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,14 +70,14 @@ func ExampleRunbookClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -95,28 +93,28 @@ func ExampleRunbookClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		armautomation.RunbookCreateOrUpdateParameters{
-			Name:     to.Ptr("<name>"),
-			Location: to.Ptr("<location>"),
+			Name:     to.Ptr("Get-AzureVMTutorial"),
+			Location: to.Ptr("East US 2"),
 			Properties: &armautomation.RunbookCreateOrUpdateProperties{
-				Description:      to.Ptr("<description>"),
+				Description:      to.Ptr("Description of the Runbook"),
 				LogActivityTrace: to.Ptr[int32](1),
 				LogProgress:      to.Ptr(true),
 				LogVerbose:       to.Ptr(false),
 				PublishContentLink: &armautomation.ContentLink{
 					ContentHash: &armautomation.ContentHash{
-						Algorithm: to.Ptr("<algorithm>"),
-						Value:     to.Ptr("<value>"),
+						Algorithm: to.Ptr("SHA256"),
+						Value:     to.Ptr("115775B8FF2BE672D8A946BD0B489918C724DDE15A440373CA54461D53010A80"),
 					},
-					URI: to.Ptr("<uri>"),
+					URI: to.Ptr("https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-automation-runbook-getvms/Runbooks/Get-AzureVMTutorial.ps1"),
 				},
 				RunbookType: to.Ptr(armautomation.RunbookTypeEnumPowerShellWorkflow),
 			},
@@ -140,17 +138,17 @@ func ExampleRunbookClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		armautomation.RunbookUpdateParameters{
 			Properties: &armautomation.RunbookUpdateProperties{
-				Description:      to.Ptr("<description>"),
+				Description:      to.Ptr("Updated Description of the Runbook"),
 				LogActivityTrace: to.Ptr[int32](1),
 				LogProgress:      to.Ptr(true),
 				LogVerbose:       to.Ptr(false),
@@ -169,14 +167,14 @@ func ExampleRunbookClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -190,18 +188,17 @@ func ExampleRunbookClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"ContoseAutomationAccount",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

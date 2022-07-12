@@ -24,20 +24,20 @@ func ExampleNetworkClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewNetworkClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewNetworkClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<network-resource-name>",
+		"sbz_demo",
+		"sampleNetwork",
 		armservicefabricmesh.NetworkResourceDescription{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("EastUS"),
 			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.LocalNetworkResourceProperties{
 				Kind:                 to.Ptr(armservicefabricmesh.NetworkKindLocal),
-				Description:          to.Ptr("<description>"),
-				NetworkAddressPrefix: to.Ptr("<network-address-prefix>"),
+				Description:          to.Ptr("Service Fabric Mesh sample network."),
+				NetworkAddressPrefix: to.Ptr("2.0.0.0/16"),
 			},
 		},
 		nil)
@@ -55,13 +55,13 @@ func ExampleNetworkClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewNetworkClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewNetworkClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<network-resource-name>",
+		"sbz_demo",
+		"sampleNetwork",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,13 +77,13 @@ func ExampleNetworkClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewNetworkClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewNetworkClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<network-resource-name>",
+		"sbz_demo",
+		"sampleNetwork",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,17 +97,16 @@ func ExampleNetworkClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewNetworkClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewNetworkClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("sbz_demo",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -123,7 +122,7 @@ func ExampleNetworkClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewNetworkClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewNetworkClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -132,7 +131,6 @@ func ExampleNetworkClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

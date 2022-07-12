@@ -24,12 +24,12 @@ func ExampleClient_GenerateManifest() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GenerateManifest(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,15 +45,15 @@ func ExampleClient_CheckinManifest() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckinManifest(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		armproviderhub.CheckinManifestParams{
-			BaselineArmManifestLocation: to.Ptr("<baseline-arm-manifest-location>"),
-			Environment:                 to.Ptr("<environment>"),
+			BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
+			Environment:                 to.Ptr("Prod"),
 		},
 		nil)
 	if err != nil {

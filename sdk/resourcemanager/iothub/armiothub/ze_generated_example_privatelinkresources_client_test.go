@@ -23,13 +23,13 @@ func ExamplePrivateLinkResourcesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewPrivateLinkResourcesClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"testHub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewPrivateLinkResourcesClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<group-id>",
+		"myResourceGroup",
+		"testHub",
+		"iotHub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

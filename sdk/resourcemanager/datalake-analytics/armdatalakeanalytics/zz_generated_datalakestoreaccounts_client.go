@@ -40,7 +40,7 @@ func NewDataLakeStoreAccountsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewDataLakeStoreAccountsClient(subscriptionID string, credential azcore.Tok
 
 // Add - Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // dataLakeStoreAccountName - The name of the Data Lake Store account to add.
@@ -104,7 +105,7 @@ func (client *DataLakeStoreAccountsClient) addCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -113,6 +114,7 @@ func (client *DataLakeStoreAccountsClient) addCreateRequest(ctx context.Context,
 
 // Delete - Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // dataLakeStoreAccountName - The name of the Data Lake Store account to remove
@@ -159,12 +161,13 @@ func (client *DataLakeStoreAccountsClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // dataLakeStoreAccountName - The name of the Data Lake Store account to retrieve
@@ -211,7 +214,7 @@ func (client *DataLakeStoreAccountsClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -227,12 +230,13 @@ func (client *DataLakeStoreAccountsClient) getHandleResponse(resp *http.Response
 // NewListByAccountPager - Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
 // The response includes a link to the next page, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // options - DataLakeStoreAccountsClientListByAccountOptions contains the optional parameters for the DataLakeStoreAccountsClient.ListByAccount
 // method.
 func (client *DataLakeStoreAccountsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *DataLakeStoreAccountsClientListByAccountOptions) *runtime.Pager[DataLakeStoreAccountsClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataLakeStoreAccountsClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataLakeStoreAccountsClientListByAccountResponse]{
 		More: func(page DataLakeStoreAccountsClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -299,7 +303,7 @@ func (client *DataLakeStoreAccountsClient) listByAccountCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

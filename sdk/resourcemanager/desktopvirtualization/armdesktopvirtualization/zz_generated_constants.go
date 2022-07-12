@@ -10,7 +10,7 @@ package armdesktopvirtualization
 
 const (
 	moduleName    = "armdesktopvirtualization"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // ApplicationGroupType - Resource Type of ApplicationGroup.
@@ -84,7 +84,7 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DayOfWeek - Day of the week.
+// DayOfWeek - The day of the week (Monday-Sunday).
 type DayOfWeek string
 
 const (
@@ -495,14 +495,16 @@ func PossibleScalingScheduleDaysOfWeekItemValues() []ScalingScheduleDaysOfWeekIt
 	}
 }
 
-// SessionHostComponentUpdateType - The type of maintenance for session host components.
+// SessionHostComponentUpdateType - The preferred mechanism for updating the agent components. This is either Scheduled or
+// Default.
 type SessionHostComponentUpdateType string
 
 const (
-	// SessionHostComponentUpdateTypeDefault - Agent and other agent side components are delivery schedule is controlled by WVD
-	// Infra.
+	// SessionHostComponentUpdateTypeDefault - The agent components are updated according to the AVD infrastructure flighting.
+	// For more information, see https://aka.ms/avdagent.
 	SessionHostComponentUpdateTypeDefault SessionHostComponentUpdateType = "Default"
-	// SessionHostComponentUpdateTypeScheduled - TenantAdmin have opted in for Scheduled Component Update feature.
+	// SessionHostComponentUpdateTypeScheduled - This enables the Scheduled Agent Updates feature which allows the agent components
+	// to get updated according to the schedule that the admin define. For more information, see https://aka.ms/avdsau.
 	SessionHostComponentUpdateTypeScheduled SessionHostComponentUpdateType = "Scheduled"
 )
 

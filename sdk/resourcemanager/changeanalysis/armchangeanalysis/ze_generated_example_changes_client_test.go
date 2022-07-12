@@ -25,11 +25,11 @@ func ExampleChangesClient_NewListChangesByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchangeanalysis.NewChangesClient("<subscription-id>", cred, nil)
+	client, err := armchangeanalysis.NewChangesClient("4d962866-1e3f-47f2-bd18-450c08f914c1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListChangesByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListChangesByResourceGroupPager("MyResourceGroup",
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-25T12:09:03.141Z"); return t }(),
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-26T12:09:03.141Z"); return t }(),
 		&armchangeanalysis.ChangesClientListChangesByResourceGroupOptions{SkipToken: nil})
@@ -37,7 +37,6 @@ func ExampleChangesClient_NewListChangesByResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,7 +52,7 @@ func ExampleChangesClient_NewListChangesBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchangeanalysis.NewChangesClient("<subscription-id>", cred, nil)
+	client, err := armchangeanalysis.NewChangesClient("4d962866-1e3f-47f2-bd18-450c08f914c1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -64,7 +63,6 @@ func ExampleChangesClient_NewListChangesBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

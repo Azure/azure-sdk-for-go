@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
@@ -26,23 +24,23 @@ func ExampleEndpointsClient_BeginPurgeContent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfrontdoor.NewEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewEndpointsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPurgeContent(ctx,
-		"<resource-group-name>",
-		"<front-door-name>",
+		"rg1",
+		"frontDoor1",
 		armfrontdoor.PurgeParameters{
 			ContentPaths: []*string{
 				to.Ptr("/pictures.aspx"),
 				to.Ptr("/pictures/*")},
 		},
-		&armfrontdoor.EndpointsClientBeginPurgeContentOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

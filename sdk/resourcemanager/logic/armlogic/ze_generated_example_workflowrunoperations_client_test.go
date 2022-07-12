@@ -23,15 +23,15 @@ func ExampleWorkflowRunOperationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewWorkflowRunOperationsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewWorkflowRunOperationsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workflow-name>",
-		"<run-name>",
-		"<operation-id>",
+		"testResourceGroup",
+		"testFlow",
+		"08586774142730039209110422528",
+		"ebdcbbde-c4db-43ec-987c-fd0f7726f43b",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

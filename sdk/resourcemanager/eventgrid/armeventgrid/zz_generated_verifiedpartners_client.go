@@ -37,7 +37,7 @@ func NewVerifiedPartnersClient(credential azcore.TokenCredential, options *arm.C
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewVerifiedPartnersClient(credential azcore.TokenCredential, options *arm.C
 
 // Get - Get properties of a verified partner.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // verifiedPartnerName - Name of the verified partner.
 // options - VerifiedPartnersClientGetOptions contains the optional parameters for the VerifiedPartnersClient.Get method.
 func (client *VerifiedPartnersClient) Get(ctx context.Context, verifiedPartnerName string, options *VerifiedPartnersClientGetOptions) (VerifiedPartnersClientGetResponse, error) {
@@ -83,9 +84,9 @@ func (client *VerifiedPartnersClient) getCreateRequest(ctx context.Context, veri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -100,9 +101,10 @@ func (client *VerifiedPartnersClient) getHandleResponse(resp *http.Response) (Ve
 
 // NewListPager - Get a list of all verified partners.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
 // options - VerifiedPartnersClientListOptions contains the optional parameters for the VerifiedPartnersClient.List method.
 func (client *VerifiedPartnersClient) NewListPager(options *VerifiedPartnersClientListOptions) *runtime.Pager[VerifiedPartnersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VerifiedPartnersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VerifiedPartnersClientListResponse]{
 		More: func(page VerifiedPartnersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -137,7 +139,7 @@ func (client *VerifiedPartnersClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2022-06-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -145,7 +147,7 @@ func (client *VerifiedPartnersClient) listCreateRequest(ctx context.Context, opt
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -1,14 +1,23 @@
 # Release History
 
-## 0.4.1 (Unreleased)
+## 0.6.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* `ParseID()` no longer appends a trailing slash to vault URLs
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.5.0 (2022-05-12)
+
+### Breaking Changes
+* Removed `ExpiringResource` and its dependencies in favor of shared implementation from `internal/temporal`.
+
+### Other Changes
+* Updated to latest versions of `azcore` and `internal`.
 
 ## 0.4.0 (2022-04-22)
 

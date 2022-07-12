@@ -38,7 +38,7 @@ func NewGatewayClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewGatewayClient(subscriptionID string, credential azcore.TokenCredential, 
 // same name exists, then it is updated with the specified description and properties. Use
 // gateway resources to create a gateway for public connectivity for services within your application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // gatewayResourceName - The identity of the gateway.
 // gatewayResourceDescription - Description for creating a Gateway resource.
@@ -96,7 +97,7 @@ func (client *GatewayClient) createCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, gatewayResourceDescription)
 }
 
@@ -111,6 +112,7 @@ func (client *GatewayClient) createHandleResponse(resp *http.Response) (GatewayC
 
 // Delete - Deletes the gateway resource identified by the name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // gatewayResourceName - The identity of the gateway.
 // options - GatewayClientDeleteOptions contains the optional parameters for the GatewayClient.Delete method.
@@ -148,13 +150,14 @@ func (client *GatewayClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the information about the gateway resource with the given name. The information include the description and
 // other properties of the gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // gatewayResourceName - The identity of the gateway.
 // options - GatewayClientGetOptions contains the optional parameters for the GatewayClient.Get method.
@@ -192,7 +195,7 @@ func (client *GatewayClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -208,11 +211,12 @@ func (client *GatewayClient) getHandleResponse(resp *http.Response) (GatewayClie
 // NewListByResourceGroupPager - Gets the information about all gateway resources in a given resource group. The information
 // include the description and other properties of the Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // options - GatewayClientListByResourceGroupOptions contains the optional parameters for the GatewayClient.ListByResourceGroup
 // method.
 func (client *GatewayClient) NewListByResourceGroupPager(resourceGroupName string, options *GatewayClientListByResourceGroupOptions) *runtime.Pager[GatewayClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[GatewayClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[GatewayClientListByResourceGroupResponse]{
 		More: func(page GatewayClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -257,7 +261,7 @@ func (client *GatewayClient) listByResourceGroupCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -273,10 +277,11 @@ func (client *GatewayClient) listByResourceGroupHandleResponse(resp *http.Respon
 // NewListBySubscriptionPager - Gets the information about all gateway resources in a given resource group. The information
 // include the description and other properties of the gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // options - GatewayClientListBySubscriptionOptions contains the optional parameters for the GatewayClient.ListBySubscription
 // method.
 func (client *GatewayClient) NewListBySubscriptionPager(options *GatewayClientListBySubscriptionOptions) *runtime.Pager[GatewayClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[GatewayClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[GatewayClientListBySubscriptionResponse]{
 		More: func(page GatewayClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -317,7 +322,7 @@ func (client *GatewayClient) listBySubscriptionCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

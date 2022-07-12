@@ -39,7 +39,7 @@ func NewSoftwareUpdateConfigurationsClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSoftwareUpdateConfigurationsClient(subscriptionID string, credential azc
 
 // Create - Create a new software update configuration with the name given in the URI.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // softwareUpdateConfigurationName - The name of the software update configuration to be created.
@@ -105,9 +106,9 @@ func (client *SoftwareUpdateConfigurationsClient) createCreateRequest(ctx contex
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -122,6 +123,7 @@ func (client *SoftwareUpdateConfigurationsClient) createHandleResponse(resp *htt
 
 // Delete - delete a specific software update configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // softwareUpdateConfigurationName - The name of the software update configuration to be created.
@@ -169,14 +171,15 @@ func (client *SoftwareUpdateConfigurationsClient) deleteCreateRequest(ctx contex
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetByName - Get a single software update configuration by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // softwareUpdateConfigurationName - The name of the software update configuration to be created.
@@ -224,9 +227,9 @@ func (client *SoftwareUpdateConfigurationsClient) getByNameCreateRequest(ctx con
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -241,6 +244,7 @@ func (client *SoftwareUpdateConfigurationsClient) getByNameHandleResponse(resp *
 
 // List - Get all software update configurations for the account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - SoftwareUpdateConfigurationsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.List
@@ -286,9 +290,9 @@ func (client *SoftwareUpdateConfigurationsClient) listCreateRequest(ctx context.
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

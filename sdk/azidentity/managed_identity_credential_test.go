@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -11,6 +14,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -143,22 +147,6 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 	}
 }
 
-func TestManagedIdentityCredential_CloudShellUserAssigned(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: "http://localhost"})
-	for _, id := range []ManagedIDKind{ClientID("client-id"), ResourceID("/resource/id")} {
-		options := ManagedIdentityCredentialOptions{ID: id}
-		msiCred, err := NewManagedIdentityCredential(&options)
-		if err != nil {
-			t.Fatal(err)
-		}
-		_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-		var authErr AuthenticationFailedError
-		if !errors.As(err, &authErr) {
-			t.Fatal("expected AuthenticationFailedError")
-		}
-	}
-}
-
 func TestManagedIdentityCredential_AppService(t *testing.T) {
 	expectedID := "expected-ID"
 	expectedHeader := "header"
@@ -246,7 +234,7 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 		t.Fatal(err)
 	}
 	// cred should return credentialUnavailableError when IMDS responds 400 to a token request
-	var expected credentialUnavailableError
+	var expected *credentialUnavailableError
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 		if !errors.As(err, &expected) {
@@ -526,12 +514,12 @@ func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
 	}
 	cred.client.imdsTimeout = time.Nanosecond
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	var expected credentialUnavailableError
+	var expected *credentialUnavailableError
 	if !errors.As(err, &expected) {
 		t.Fatalf(`expected credentialUnavailableError, got %T: "%v"`, err, err)
 	}
-	if tk != nil {
-		t.Fatal("GetToken returned a token and an error")
+	if !reflect.ValueOf(tk).IsZero() {
+		t.Fatal("expected a zero value AccessToken")
 	}
 }
 

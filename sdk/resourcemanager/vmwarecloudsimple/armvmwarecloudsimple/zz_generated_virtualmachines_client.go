@@ -39,7 +39,7 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Create Or Update Virtual Machine
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // referer - referer url
 // virtualMachineName - virtual machine name
 // virtualMachineRequest - Create or Update Virtual Machine request
 // options - VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
 // method.
-func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, virtualMachineRequest VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error) {
+func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, virtualMachineRequest VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, referer, virtualMachineName, virtualMachineRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create Or Update Virtual Machine
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, virtualMachineRequest VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, referer, virtualMachineName, virtualMachineRequest, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Referer", referer)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Referer"] = []string{referer}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, virtualMachineRequest)
 }
 
 // BeginDelete - Delete virtual machine
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // referer - referer url
 // virtualMachineName - virtual machine name
 // options - VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete
 // method.
-func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteOptions) (*armruntime.Poller[VirtualMachinesClientDeleteResponse], error) {
+func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteOptions) (*runtime.Poller[VirtualMachinesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, referer, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete virtual machine
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, referer, virtualMachineName, options)
 	if err != nil {
@@ -177,13 +181,14 @@ func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Referer", referer)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Referer"] = []string{referer}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get virtual machine
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // virtualMachineName - virtual machine name
 // options - VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
@@ -224,7 +229,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,11 +244,12 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 
 // NewListByResourceGroupPager - Returns list of virtual machine within resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // options - VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.ListByResourceGroup
 // method.
 func (client *VirtualMachinesClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachinesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachinesClientListByResourceGroupResponse]{
 		More: func(page VirtualMachinesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -297,7 +303,7 @@ func (client *VirtualMachinesClient) listByResourceGroupCreateRequest(ctx contex
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -312,10 +318,11 @@ func (client *VirtualMachinesClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - Returns list virtual machine within subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // options - VirtualMachinesClientListBySubscriptionOptions contains the optional parameters for the VirtualMachinesClient.ListBySubscription
 // method.
 func (client *VirtualMachinesClient) NewListBySubscriptionPager(options *VirtualMachinesClientListBySubscriptionOptions) *runtime.Pager[VirtualMachinesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachinesClientListBySubscriptionResponse]{
 		More: func(page VirtualMachinesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -365,7 +372,7 @@ func (client *VirtualMachinesClient) listBySubscriptionCreateRequest(ctx context
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -380,25 +387,27 @@ func (client *VirtualMachinesClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginStart - Power on virtual machine
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // referer - referer url
 // virtualMachineName - virtual machine name
 // options - VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart
 // method.
-func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*armruntime.Poller[VirtualMachinesClientStartResponse], error) {
+func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*runtime.Poller[VirtualMachinesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, referer, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Power on virtual machine
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, referer, virtualMachineName, options)
 	if err != nil {
@@ -436,32 +445,34 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Referer", referer)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Referer"] = []string{referer}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Power off virtual machine, options: shutdown, poweroff, and suspend
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // referer - referer url
 // virtualMachineName - virtual machine name
 // options - VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop
 // method.
-func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*armruntime.Poller[VirtualMachinesClientStopResponse], error) {
+func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*runtime.Poller[VirtualMachinesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, referer, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientStopResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Power off virtual machine, options: shutdown, poweroff, and suspend
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 func (client *VirtualMachinesClient) stop(ctx context.Context, resourceGroupName string, referer string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, referer, virtualMachineName, options)
 	if err != nil {
@@ -502,8 +513,8 @@ func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, reso
 	}
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Referer", referer)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Referer"] = []string{referer}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.M != nil {
 		return req, runtime.MarshalAsJSON(req, *options.M)
 	}
@@ -512,25 +523,27 @@ func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, reso
 
 // BeginUpdate - Patch virtual machine properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // virtualMachineName - virtual machine name
 // virtualMachineRequest - Patch virtual machine request
 // options - VirtualMachinesClientBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate
 // method.
-func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest PatchPayload, options *VirtualMachinesClientBeginUpdateOptions) (*armruntime.Poller[VirtualMachinesClientUpdateResponse], error) {
+func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest PatchPayload, options *VirtualMachinesClientBeginUpdateOptions) (*runtime.Poller[VirtualMachinesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, virtualMachineName, virtualMachineRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch virtual machine properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest PatchPayload, options *VirtualMachinesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualMachineName, virtualMachineRequest, options)
 	if err != nil {
@@ -568,6 +581,6 @@ func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, virtualMachineRequest)
 }

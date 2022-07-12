@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple"
@@ -26,7 +24,7 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -38,7 +36,6 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,11 +51,11 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		&armvmwarecloudsimple.VirtualMachinesClientListByResourceGroupOptions{Filter: nil,
 			Top:       nil,
 			SkipToken: nil,
@@ -67,7 +64,6 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -83,13 +79,13 @@ func ExampleVirtualMachinesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"myResourceGroup",
+		"myVirtualMachine",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,47 +101,47 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<referer>",
-		"<virtual-machine-name>",
+		"myResourceGroup",
+		"https://management.azure.com/",
+		"myVirtualMachine",
 		armvmwarecloudsimple.VirtualMachine{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus2"),
 			Properties: &armvmwarecloudsimple.VirtualMachineProperties{
 				AmountOfRAM: to.Ptr[int32](4096),
 				Disks: []*armvmwarecloudsimple.VirtualDisk{
 					{
-						ControllerID:     to.Ptr("<controller-id>"),
+						ControllerID:     to.Ptr("1000"),
 						IndependenceMode: to.Ptr(armvmwarecloudsimple.DiskIndependenceModePersistent),
 						TotalSize:        to.Ptr[int32](10485760),
-						VirtualDiskID:    to.Ptr("<virtual-disk-id>"),
+						VirtualDiskID:    to.Ptr("2000"),
 					}},
 				Nics: []*armvmwarecloudsimple.VirtualNic{
 					{
 						Network: &armvmwarecloudsimple.VirtualNetwork{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/{subscription-id}/providers/Microsoft.VMwareCloudSimple/locations/westus2/privateClouds/myPrivateCloud/virtualNetworks/dvportgroup-19"),
 						},
 						NicType:      to.Ptr(armvmwarecloudsimple.NICTypeE1000),
 						PowerOnBoot:  to.Ptr(true),
-						VirtualNicID: to.Ptr("<virtual-nic-id>"),
+						VirtualNicID: to.Ptr("4000"),
 					}},
 				NumberOfCores:  to.Ptr[int32](2),
-				PrivateCloudID: to.Ptr("<private-cloud-id>"),
+				PrivateCloudID: to.Ptr("/subscriptions/{subscription-id}/providers/Microsoft.VMwareCloudSimple/locations/westus2/privateClouds/myPrivateCloud"),
 				ResourcePool: &armvmwarecloudsimple.ResourcePool{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/{subscription-id}/providers/Microsoft.VMwareCloudSimple/locations/westus2/privateClouds/myPrivateCloud/resourcePools/resgroup-26"),
 				},
-				TemplateID: to.Ptr("<template-id>"),
+				TemplateID: to.Ptr("/subscriptions/{subscription-id}/providers/Microsoft.VMwareCloudSimple/locations/westus2/privateClouds/myPrivateCloud/virtualMachineTemplates/vm-34"),
 			},
 		},
-		&armvmwarecloudsimple.VirtualMachinesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -160,19 +156,19 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<referer>",
-		"<virtual-machine-name>",
-		&armvmwarecloudsimple.VirtualMachinesClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"https://management.azure.com/",
+		"myVirtualMachine",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -185,23 +181,23 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"myResourceGroup",
+		"myVirtualMachine",
 		armvmwarecloudsimple.PatchPayload{
 			Tags: map[string]*string{
 				"myTag": to.Ptr("tagValue"),
 			},
 		},
-		&armvmwarecloudsimple.VirtualMachinesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -216,19 +212,19 @@ func ExampleVirtualMachinesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<referer>",
-		"<virtual-machine-name>",
-		&armvmwarecloudsimple.VirtualMachinesClientBeginStartOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"https://management.azure.com/",
+		"myVirtualMachine",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -241,22 +237,21 @@ func ExampleVirtualMachinesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<referer>",
-		"<virtual-machine-name>",
+		"myResourceGroup",
+		"https://management.azure.com/",
+		"myVirtualMachine",
 		&armvmwarecloudsimple.VirtualMachinesClientBeginStopOptions{Mode: nil,
-			M:           &armvmwarecloudsimple.VirtualMachineStopMode{},
-			ResumeToken: "",
+			M: &armvmwarecloudsimple.VirtualMachineStopMode{},
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

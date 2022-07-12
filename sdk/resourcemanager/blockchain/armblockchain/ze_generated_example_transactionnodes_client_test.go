@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain"
@@ -26,14 +24,14 @@ func ExampleTransactionNodesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
+		"contosemember1",
+		"txnode2",
+		"mygroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,26 +47,25 @@ func ExampleTransactionNodesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
+		"contosemember1",
+		"txnode2",
+		"mygroup",
 		&armblockchain.TransactionNodesClientBeginCreateOptions{TransactionNode: &armblockchain.TransactionNode{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("southeastasia"),
 			Properties: &armblockchain.TransactionNodeProperties{
 				Password: to.Ptr("<password>"),
 			},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -83,19 +80,19 @@ func ExampleTransactionNodesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
-		&armblockchain.TransactionNodesClientBeginDeleteOptions{ResumeToken: ""})
+		"contosemember1",
+		"txNode2",
+		"mygroup",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -108,14 +105,14 @@ func ExampleTransactionNodesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
+		"contosemember1",
+		"txnode2",
+		"mygroup",
 		&armblockchain.TransactionNodesClientUpdateOptions{TransactionNode: &armblockchain.TransactionNodeUpdate{
 			Properties: &armblockchain.TransactionNodePropertiesUpdate{
 				Password: to.Ptr("<password>"),
@@ -136,18 +133,17 @@ func ExampleTransactionNodesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<blockchain-member-name>",
-		"<resource-group-name>",
+	pager := client.NewListPager("contosemember1",
+		"mygroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

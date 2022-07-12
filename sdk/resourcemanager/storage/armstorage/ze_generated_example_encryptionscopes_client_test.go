@@ -24,14 +24,14 @@ func ExampleEncryptionScopesClient_Put() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewEncryptionScopesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewEncryptionScopesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Put(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<encryption-scope-name>",
+		"resource-group-name",
+		"{storage-account-name}",
+		"{encryption-scope-name}",
 		armstorage.EncryptionScope{},
 		nil)
 	if err != nil {
@@ -48,18 +48,18 @@ func ExampleEncryptionScopesClient_Patch() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewEncryptionScopesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewEncryptionScopesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Patch(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<encryption-scope-name>",
+		"resource-group-name",
+		"{storage-account-name}",
+		"{encryption-scope-name}",
 		armstorage.EncryptionScope{
 			EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 				KeyVaultProperties: &armstorage.EncryptionScopeKeyVaultProperties{
-					KeyURI: to.Ptr("<key-uri>"),
+					KeyURI: to.Ptr("https://testvault.vault.core.windows.net/keys/key1/863425f1358359c"),
 				},
 				Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftKeyVault),
 			},
@@ -79,14 +79,14 @@ func ExampleEncryptionScopesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewEncryptionScopesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewEncryptionScopesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<encryption-scope-name>",
+		"resource-group-name",
+		"{storage-account-name}",
+		"{encryption-scope-name}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,18 +102,17 @@ func ExampleEncryptionScopesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewEncryptionScopesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewEncryptionScopesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("resource-group-name",
+		"{storage-account-name}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

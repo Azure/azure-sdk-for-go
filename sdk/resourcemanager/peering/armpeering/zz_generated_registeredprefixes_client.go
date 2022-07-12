@@ -38,7 +38,7 @@ func NewRegisteredPrefixesClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewRegisteredPrefixesClient(subscriptionID string, credential azcore.TokenC
 // CreateOrUpdate - Creates a new registered prefix with the specified name under the given subscription, resource group and
 // peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // registeredPrefixName - The name of the registered prefix.
@@ -104,7 +105,7 @@ func (client *RegisteredPrefixesClient) createOrUpdateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, registeredPrefix)
 }
 
@@ -120,6 +121,7 @@ func (client *RegisteredPrefixesClient) createOrUpdateHandleResponse(resp *http.
 // Delete - Deletes an existing registered prefix with the specified name under the given subscription, resource group and
 // peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // registeredPrefixName - The name of the registered prefix.
@@ -166,12 +168,13 @@ func (client *RegisteredPrefixesClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing registered prefix with the specified name under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // registeredPrefixName - The name of the registered prefix.
@@ -217,7 +220,7 @@ func (client *RegisteredPrefixesClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,12 +235,13 @@ func (client *RegisteredPrefixesClient) getHandleResponse(resp *http.Response) (
 
 // NewListByPeeringPager - Lists all registered prefixes under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // options - RegisteredPrefixesClientListByPeeringOptions contains the optional parameters for the RegisteredPrefixesClient.ListByPeering
 // method.
 func (client *RegisteredPrefixesClient) NewListByPeeringPager(resourceGroupName string, peeringName string, options *RegisteredPrefixesClientListByPeeringOptions) *runtime.Pager[RegisteredPrefixesClientListByPeeringResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegisteredPrefixesClientListByPeeringResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegisteredPrefixesClientListByPeeringResponse]{
 		More: func(page RegisteredPrefixesClientListByPeeringResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -286,7 +290,7 @@ func (client *RegisteredPrefixesClient) listByPeeringCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

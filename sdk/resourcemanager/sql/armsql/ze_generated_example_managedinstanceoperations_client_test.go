@@ -23,18 +23,17 @@ func ExampleManagedInstanceOperationsClient_NewListByManagedInstancePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceOperationsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceOperationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByManagedInstancePager("<resource-group-name>",
-		"<managed-instance-name>",
+	pager := client.NewListByManagedInstancePager("sqlcrudtest-7398",
+		"sqlcrudtest-4645",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleManagedInstanceOperationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceOperationsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceOperationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<operation-id>",
+		"sqlcrudtest-7398",
+		"sqlcrudtest-4645",
+		"00000000-1111-2222-3333-444444444444",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,14 +72,14 @@ func ExampleManagedInstanceOperationsClient_Cancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceOperationsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceOperationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Cancel(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<operation-id>",
+		"sqlcrudtest-7398",
+		"sqlcrudtest-4645",
+		"11111111-1111-1111-1111-111111111111",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

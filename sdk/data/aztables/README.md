@@ -41,18 +41,18 @@ az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryE
 Once you have the account URL, it can be used to create the service client:
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
-	cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
-	if err != nil {
-		panic(err)
-	}
-	client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+    if err != nil {
+        panic(err)
+    }
+    client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+    if err != nil {
+        panic(err)
+    }
 }
 ```
 
@@ -67,27 +67,27 @@ The aztables package supports any of the types that implement the `azcore.TokenC
 Use AAD authentication as the credential parameter to authenticate the client:
 ```go
 import (
-	"os"
+    "os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	serviceURL := accountName + ".table.core.windows.net"
+    accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+    if !ok {
+        panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+    }
+    serviceURL := accountName + ".table.core.windows.net"
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-	serviceClient, err := aztables.NewServiceClient(serviceURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
+    cred, err := azidentity.NewDefaultAzureCredential(nil)
+    if err != nil {
+        panic(err)
+    }
+    serviceClient, err := aztables.NewServiceClient(serviceURL, cred, nil)
+    if err != nil {
+        panic(err)
+    }
 }
 ```
 
@@ -100,18 +100,18 @@ az storage account keys list -g MyResourceGroup -n MyStorageAccount
 
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
-	cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
-	if err != nil {
-		panic(err)
-	}
-	serviceClient, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+    if err != nil {
+        panic(err)
+    }
+    serviceClient, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+    if err != nil {
+        panic(err)
+    }
 }
 ```
 
@@ -125,15 +125,15 @@ az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
 
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
-	connStr := "DefaultEndpointsProtocol=https;AccountName=<myAccountName>;AccountKey=<myAccountKey>;EndpointSuffix=core.windows.net"
+    connStr := "DefaultEndpointsProtocol=https;AccountName=<myAccountName>;AccountKey=<myAccountKey>;EndpointSuffix=core.windows.net"
     serviceClient, err := aztables.NewServiceClientFromConnectionString(connStr, nil)
-	if err != nil {
-		panic(err)
-	}
+    if err != nil {
+        panic(err)
+    }
 }
 ```
 
@@ -145,30 +145,30 @@ import (
     "fmt"
     "time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
-	cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
-	if err != nil {
-		panic(err)
-	}
-	service, err := aztables.NewServiceClientWithSharedKey("https://<myAccountName>.table.core.windows.net", cred, nil)
+    cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
+    if err != nil {
+        panic(err)
+    }
+    service, err := aztables.NewServiceClientWithSharedKey("https://<myAccountName>.table.core.windows.net", cred, nil)
 
-	resources := aztables.AccountSASResourceTypes{Service: true}
-	permission := aztables.AccountSASPermissions{Read: true}
-	start := time.Now()
-	expiry := start.AddDate(1, 0, 0)
-	sasURL, err := service.GetAccountSASToken(resources, permission, start, expiry)
-	if err != nil {
-		panic(err)
-	}
+    resources := aztables.AccountSASResourceTypes{Service: true}
+    permission := aztables.AccountSASPermissions{Read: true}
+    start := time.Now()
+    expiry := start.AddDate(1, 0, 0)
+    sasURL, err := service.GetAccountSASToken(resources, permission, start, expiry)
+    if err != nil {
+        panic(err)
+    }
 
-	serviceURL := fmt.Sprintf("https://<myAccountName>.table.core.windows.net/?%s", sasURL)
-	sasService, err := aztables.NewServiceClientWithNoCredential(serviceURL, nil)
-	if err != nil {
-		panic(err)
-	}
+    serviceURL := fmt.Sprintf("https://<myAccountName>.table.core.windows.net/?%s", sasURL)
+    sasService, err := aztables.NewServiceClientWithNoCredential(serviceURL, nil)
+    if err != nil {
+        panic(err)
+    }
 }
 ```
 
@@ -176,7 +176,7 @@ func main() {
 If you are using the [Azurite](https://github.com/Azure/Azurite) emulator you can authenticate a client with the default connection string:
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
@@ -252,35 +252,35 @@ Create a table in your account and get a `Client` to perform operations on the n
 
 ```golang
 import (
-	"context"
-	"fmt"
-	"os"
+    "context"
+    "fmt"
+    "os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net", accountName)
+    cred, err := azidentity.NewDefaultAzureCredential(nil)
+    if err != nil {
+        panic(err)
+    }
+    accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+    if !ok {
+        panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+    }
+    serviceURL := fmt.Sprintf("https://%s.table.core.windows.net", accountName)
 
-	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
+    service, err := aztables.NewServiceClient(serviceURL, cred, nil)
+    if err != nil {
+        panic(err)
+    }
 
-	// Create a table
-	_, err = service.CreateTable(context.TODO(), "fromServiceClient", nil)
-	if err != nil {
-		panic(err)
-	}
+    // Create a table
+    _, err = service.CreateTable(context.TODO(), "fromServiceClient", nil)
+    if err != nil {
+        panic(err)
+    }
 }
 ```
 
@@ -289,17 +289,17 @@ Create entities in the table:
 
 ```go
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"io/ioutil"
-	"os"
-	"time"
+    "context"
+    "encoding/json"
+    "errors"
+    "fmt"
+    "io/ioutil"
+    "os"
+    "time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
@@ -350,17 +350,18 @@ List entities in the table:
 
 ```go
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"io/ioutil"
-	"os"
-	"time"
+    "context"
+    "encoding/json"
+    "errors"
+    "fmt"
+    "io/ioutil"
+    "os"
+    "time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func main() {
@@ -377,18 +378,18 @@ func main() {
     options := &aztables.ListEntitiesOptions{
         Filter: &filter,
         Select: to.Ptr("RowKey,Value,Product,Available"),
-        Top: to.Ptr(int32(((15),
+        Top: to.Ptr(int32(15)),
     }
 
-	pager := client.List(options)
-	pageCount := 0
-	for pager.More() {
-		response, err := pager.NextPage(context.TODO())
-		if err != nil {
-			panic(err)
-		}
-		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
-		pageCount += 1
+    pager := client.NewListEntitiesPager(options)
+    pageCount := 0
+    for pager.More() {
+        response, err := pager.NextPage(context.TODO())
+        if err != nil {
+            panic(err)
+        }
+        fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
+        pageCount += 1
 
         for _, entity := range response.Entities {
             var myEntity aztables.EDMEntity
@@ -421,46 +422,46 @@ func main() {
 Query strings must wrap literal values in single quotes. Literal values containing single quote characters must be escaped with a double single quote. To search for a `LastName` property of "O'Connor" use the following syntax
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.Ptr("LastName eq 'O''Connor'"),
+    Filter: to.Ptr("LastName eq 'O''Connor'"),
 }
 ```
 
 ##### String Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.Ptr("LastName ge 'A' and LastName lt 'B'"),
+    Filter: to.Ptr("LastName ge 'A' and LastName lt 'B'"),
 }
 ```
 
 ##### Numeric Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.Ptr("Age gt 30"),
+    Filter: to.Ptr("Age gt 30"),
 }
 
 options := &aztables.ListEntitiesOptions{
-	Filter: to.Ptr("AmountDue le 100.25"),
+    Filter: to.Ptr("AmountDue le 100.25"),
 }
 ```
 
 ##### Boolean Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.Ptr("IsActive eq true"),
+    Filter: to.Ptr("IsActive eq true"),
 }
 ```
 
 ##### Datetime Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.Ptr("CustomerSince eq datetime'2008-07-10T00:00:00Z'"),
+    Filter: to.Ptr("CustomerSince eq datetime'2008-07-10T00:00:00Z'"),
 }
 ```
 
 ##### GUID Properties
 ```go
 options := &aztables.ListEntitiesOptions{
-	Filter: to.Ptr("GuidValue eq guid'a455c695-df98-5678-aaaa-81d3367e5a34'"),
+    Filter: to.Ptr("GuidValue eq guid'a455c695-df98-5678-aaaa-81d3367e5a34'"),
 }
 ```
 
@@ -468,17 +469,18 @@ options := &aztables.ListEntitiesOptions{
 The pager exposes continuation tokens that can be used by a new pager instance to begin listing entities from a specific point. For example:
 ```go
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"io/ioutil"
-	"os"
-	"time"
+    "context"
+    "encoding/json"
+    "errors"
+    "fmt"
+    "io/ioutil"
+    "os"
+    "time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 func main() {
     cred, err := aztables.NewSharedKeyCredential("<myAccountName>", "<myAccountKey>")
@@ -490,13 +492,13 @@ func main() {
         panic(err)
     }
 
-    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Ptr(int32(((10)})
+    pager := client.NewListEntitiesPager(&aztables.ListEntitiesOptions{Top: to.Ptr(int32(10))})
     count := 0
-	for pager.More() {
-		response, err := pager.NextPage(context.TODO())
-		if err != nil {
-			panic(err)
-		}
+    for pager.More() {
+        response, err := pager.NextPage(context.TODO())
+        if err != nil {
+            panic(err)
+        }
 
         count += len(response.Entities)
 
@@ -505,8 +507,8 @@ func main() {
         }
     }
 
-    newPager := client.List(&aztables.ListEntitiesOptions{
-        Top:          to.Ptr(int32(((10),
+    newPager := client.NewListEntitiesPager(&aztables.ListEntitiesOptions{
+        Top:          to.Ptr(int32(10)),
         PartitionKey: pager.NextPagePartitionKey(),
         RowKey:       pager.NextPageRowKey(),
     })
@@ -542,7 +544,7 @@ To obtain more detailed logging, including request/response bodies and header va
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
 log.SetListener(func(cls log.Classification, msg string) {
-	fmt.Println(msg) // printing log out to the console
+    fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs

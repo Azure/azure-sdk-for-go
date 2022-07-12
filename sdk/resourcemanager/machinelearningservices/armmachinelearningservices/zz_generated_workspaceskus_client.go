@@ -38,7 +38,7 @@ func NewWorkspaceSKUsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,9 +56,10 @@ func NewWorkspaceSKUsClient(subscriptionID string, credential azcore.TokenCreden
 
 // NewListPager - Lists all skus with associated features
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // options - WorkspaceSKUsClientListOptions contains the optional parameters for the WorkspaceSKUsClient.List method.
 func (client *WorkspaceSKUsClient) NewListPager(options *WorkspaceSKUsClientListOptions) *runtime.Pager[WorkspaceSKUsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspaceSKUsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspaceSKUsClientListResponse]{
 		More: func(page WorkspaceSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -99,7 +100,7 @@ func (client *WorkspaceSKUsClient) listCreateRequest(ctx context.Context, option
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -23,19 +23,18 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewPrivateLinkResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSupportedPager("<resource-group-name>",
-		"<search-service-name>",
+	pager := client.NewListSupportedPager("rg1",
+		"mysearchservice",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -39,7 +39,7 @@ func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.Toke
 
 // GetByResource - Gets current availability status for a single resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 // support not nested and one nesting level resource types :
 // /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
@@ -96,7 +97,7 @@ func (client *AvailabilityStatusesClient) getByResourceCreateRequest(ctx context
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,6 +112,7 @@ func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http
 
 // NewListPager - Lists all historical availability transitions and impacting events for a single resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 // support not nested and one nesting level resource types :
 // /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
@@ -119,7 +121,7 @@ func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http
 // options - AvailabilityStatusesClientListOptions contains the optional parameters for the AvailabilityStatusesClient.List
 // method.
 func (client *AvailabilityStatusesClient) NewListPager(resourceURI string, options *AvailabilityStatusesClientListOptions) *runtime.Pager[AvailabilityStatusesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailabilityStatusesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailabilityStatusesClientListResponse]{
 		More: func(page AvailabilityStatusesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -163,7 +165,7 @@ func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context,
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -178,11 +180,12 @@ func (client *AvailabilityStatusesClient) listHandleResponse(resp *http.Response
 
 // NewListByResourceGroupPager - Lists the current availability status for all the resources in the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // resourceGroupName - The name of the resource group.
 // options - AvailabilityStatusesClientListByResourceGroupOptions contains the optional parameters for the AvailabilityStatusesClient.ListByResourceGroup
 // method.
 func (client *AvailabilityStatusesClient) NewListByResourceGroupPager(resourceGroupName string, options *AvailabilityStatusesClientListByResourceGroupOptions) *runtime.Pager[AvailabilityStatusesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailabilityStatusesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailabilityStatusesClientListByResourceGroupResponse]{
 		More: func(page AvailabilityStatusesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -233,7 +236,7 @@ func (client *AvailabilityStatusesClient) listByResourceGroupCreateRequest(ctx c
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -248,10 +251,11 @@ func (client *AvailabilityStatusesClient) listByResourceGroupHandleResponse(resp
 
 // NewListBySubscriptionIDPager - Lists the current availability status for all the resources in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // options - AvailabilityStatusesClientListBySubscriptionIDOptions contains the optional parameters for the AvailabilityStatusesClient.ListBySubscriptionID
 // method.
 func (client *AvailabilityStatusesClient) NewListBySubscriptionIDPager(options *AvailabilityStatusesClientListBySubscriptionIDOptions) *runtime.Pager[AvailabilityStatusesClientListBySubscriptionIDResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailabilityStatusesClientListBySubscriptionIDResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailabilityStatusesClientListBySubscriptionIDResponse]{
 		More: func(page AvailabilityStatusesClientListBySubscriptionIDResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -298,7 +302,7 @@ func (client *AvailabilityStatusesClient) listBySubscriptionIDCreateRequest(ctx 
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

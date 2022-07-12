@@ -22,6 +22,15 @@ type AggregateFunctionProperties struct {
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
 
+// GetFunctionProperties implements the FunctionPropertiesClassification interface for type AggregateFunctionProperties.
+func (a *AggregateFunctionProperties) GetFunctionProperties() *FunctionProperties {
+	return &FunctionProperties{
+		Type:       a.Type,
+		Etag:       a.Etag,
+		Properties: a.Properties,
+	}
+}
+
 // AvroSerialization - Describes how data from an input is serialized or how data is serialized when written to an output
 // in Avro format.
 type AvroSerialization struct {
@@ -32,6 +41,13 @@ type AvroSerialization struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// GetSerialization implements the SerializationClassification interface for type AvroSerialization.
+func (a *AvroSerialization) GetSerialization() *Serialization {
+	return &Serialization{
+		Type: a.Type,
+	}
+}
+
 // AzureDataLakeStoreOutputDataSource - Describes an Azure Data Lake Store output data source.
 type AzureDataLakeStoreOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
@@ -39,6 +55,13 @@ type AzureDataLakeStoreOutputDataSource struct {
 
 	// The properties that are associated with an Azure Data Lake Store output. Required on PUT (CreateOrReplace) requests.
 	Properties *AzureDataLakeStoreOutputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureDataLakeStoreOutputDataSource.
+func (a *AzureDataLakeStoreOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: a.Type,
+	}
 }
 
 // AzureDataLakeStoreOutputDataSourceProperties - The properties that are associated with an Azure Data Lake Store.
@@ -86,6 +109,13 @@ type AzureFunctionOutputDataSource struct {
 	Properties *AzureFunctionOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureFunctionOutputDataSource.
+func (a *AzureFunctionOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: a.Type,
+	}
+}
+
 // AzureFunctionOutputDataSourceProperties - The properties that are associated with an Azure Function output.
 type AzureFunctionOutputDataSourceProperties struct {
 	// If you want to use an Azure Function from another subscription, you can do so by providing the key to access your function.
@@ -113,6 +143,13 @@ type AzureMachineLearningWebServiceFunctionBinding struct {
 
 	// The binding properties associated with an Azure Machine learning web service.
 	Properties *AzureMachineLearningWebServiceFunctionBindingProperties `json:"properties,omitempty"`
+}
+
+// GetFunctionBinding implements the FunctionBindingClassification interface for type AzureMachineLearningWebServiceFunctionBinding.
+func (a *AzureMachineLearningWebServiceFunctionBinding) GetFunctionBinding() *FunctionBinding {
+	return &FunctionBinding{
+		Type: a.Type,
+	}
 }
 
 // AzureMachineLearningWebServiceFunctionBindingProperties - The binding properties associated with an Azure Machine learning
@@ -154,6 +191,14 @@ type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters s
 
 	// The binding retrieval properties associated with an Azure Machine learning web service.
 	BindingRetrievalProperties *AzureMachineLearningWebServiceFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
+}
+
+// GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
+// interface for type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
+func (a *AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
+	return &FunctionRetrieveDefaultDefinitionParameters{
+		BindingType: a.BindingType,
+	}
 }
 
 // AzureMachineLearningWebServiceInputColumn - Describes an input column for the Azure Machine Learning web service endpoint.
@@ -224,6 +269,13 @@ type AzureSQLDatabaseOutputDataSource struct {
 	Properties *AzureSQLDatabaseOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureSQLDatabaseOutputDataSource.
+func (a *AzureSQLDatabaseOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: a.Type,
+	}
+}
+
 // AzureSQLDatabaseOutputDataSourceProperties - The properties that are associated with an Azure SQL database output.
 type AzureSQLDatabaseOutputDataSourceProperties struct {
 	// Authentication Mode.
@@ -258,6 +310,13 @@ type AzureSQLReferenceInputDataSource struct {
 
 	// The properties that are associated with SQL DB input containing reference data. Required on PUT (CreateOrReplace) requests.
 	Properties *AzureSQLReferenceInputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type AzureSQLReferenceInputDataSource.
+func (a *AzureSQLReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInputDataSource {
+	return &ReferenceInputDataSource{
+		Type: a.Type,
+	}
 }
 
 // AzureSQLReferenceInputDataSourceProperties - The properties that are associated with SQL DB input containing reference
@@ -324,6 +383,13 @@ type AzureSynapseOutputDataSource struct {
 	Properties *AzureSynapseOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureSynapseOutputDataSource.
+func (a *AzureSynapseOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: a.Type,
+	}
+}
+
 // AzureSynapseOutputDataSourceProperties - The properties that are associated with an Azure Synapse output.
 type AzureSynapseOutputDataSourceProperties struct {
 	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
@@ -349,6 +415,13 @@ type AzureTableOutputDataSource struct {
 
 	// The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests.
 	Properties *AzureTableOutputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureTableOutputDataSource.
+func (a *AzureTableOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: a.Type,
+	}
 }
 
 // AzureTableOutputDataSourceProperties - The properties that are associated with an Azure Table output.
@@ -412,6 +485,13 @@ type BlobOutputDataSource struct {
 	Properties *BlobOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type BlobOutputDataSource.
+func (b *BlobOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: b.Type,
+	}
+}
+
 // BlobOutputDataSourceProperties - The properties that are associated with a blob output.
 type BlobOutputDataSourceProperties struct {
 	// Authentication Mode.
@@ -447,6 +527,13 @@ type BlobReferenceInputDataSource struct {
 	Properties *BlobReferenceInputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type BlobReferenceInputDataSource.
+func (b *BlobReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInputDataSource {
+	return &ReferenceInputDataSource{
+		Type: b.Type,
+	}
+}
+
 // BlobReferenceInputDataSourceProperties - The properties that are associated with a blob input containing reference data.
 type BlobReferenceInputDataSourceProperties struct {
 	// Authentication Mode.
@@ -480,6 +567,13 @@ type BlobStreamInputDataSource struct {
 
 	// The properties that are associated with a blob input containing stream data. Required on PUT (CreateOrReplace) requests.
 	Properties *BlobStreamInputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type BlobStreamInputDataSource.
+func (b *BlobStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
+	return &StreamInputDataSource{
+		Type: b.Type,
+	}
 }
 
 // BlobStreamInputDataSourceProperties - The properties that are associated with a blob input containing stream data.
@@ -519,6 +613,13 @@ type CSVSerialization struct {
 
 	// The properties that are associated with the CSV serialization type. Required on PUT (CreateOrReplace) requests.
 	Properties *CSVSerializationProperties `json:"properties,omitempty"`
+}
+
+// GetSerialization implements the SerializationClassification interface for type CSVSerialization.
+func (c *CSVSerialization) GetSerialization() *Serialization {
+	return &Serialization{
+		Type: c.Type,
+	}
 }
 
 // CSVSerializationProperties - The properties that are associated with the CSV serialization type.
@@ -713,6 +814,13 @@ type DocumentDbOutputDataSource struct {
 	Properties *DocumentDbOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type DocumentDbOutputDataSource.
+func (d *DocumentDbOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: d.Type,
+	}
+}
+
 // DocumentDbOutputDataSourceProperties - The properties that are associated with a DocumentDB output.
 type DocumentDbOutputDataSourceProperties struct {
 	// The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
@@ -810,6 +918,13 @@ type EventHubOutputDataSource struct {
 	Properties *EventHubOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type EventHubOutputDataSource.
+func (e *EventHubOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: e.Type,
+	}
+}
+
 // EventHubOutputDataSourceProperties - The properties that are associated with an Event Hub output.
 type EventHubOutputDataSourceProperties struct {
 	// Authentication Mode.
@@ -843,6 +958,13 @@ type EventHubStreamInputDataSource struct {
 
 	// The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
 	Properties *EventHubStreamInputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type EventHubStreamInputDataSource.
+func (e *EventHubStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
+	return &StreamInputDataSource{
+		Type: e.Type,
+	}
 }
 
 // EventHubStreamInputDataSourceProperties - The properties that are associated with a Event Hub input containing stream data.
@@ -879,6 +1001,13 @@ type EventHubV2OutputDataSource struct {
 	Properties *EventHubOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type EventHubV2OutputDataSource.
+func (e *EventHubV2OutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: e.Type,
+	}
+}
+
 // EventHubV2StreamInputDataSource - Describes an Event Hub input data source that contains stream data.
 type EventHubV2StreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
@@ -886,6 +1015,13 @@ type EventHubV2StreamInputDataSource struct {
 
 	// The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
 	Properties *EventHubStreamInputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type EventHubV2StreamInputDataSource.
+func (e *EventHubV2StreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
+	return &StreamInputDataSource{
+		Type: e.Type,
+	}
 }
 
 // Function - A function object, containing all information associated with the named function. All functions are contained
@@ -919,6 +1055,9 @@ type FunctionBinding struct {
 	// REQUIRED; Indicates the function binding type.
 	Type *string `json:"type,omitempty"`
 }
+
+// GetFunctionBinding implements the FunctionBindingClassification interface for type FunctionBinding.
+func (f *FunctionBinding) GetFunctionBinding() *FunctionBinding { return f }
 
 type FunctionConfiguration struct {
 	// The physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the
@@ -979,6 +1118,9 @@ type FunctionProperties struct {
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
 
+// GetFunctionProperties implements the FunctionPropertiesClassification interface for type FunctionProperties.
+func (f *FunctionProperties) GetFunctionProperties() *FunctionProperties { return f }
+
 // FunctionRetrieveDefaultDefinitionParametersClassification provides polymorphic access to related types.
 // Call the interface's GetFunctionRetrieveDefaultDefinitionParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -994,6 +1136,12 @@ type FunctionRetrieveDefaultDefinitionParametersClassification interface {
 type FunctionRetrieveDefaultDefinitionParameters struct {
 	// REQUIRED; Indicates the function binding type.
 	BindingType *string `json:"bindingType,omitempty"`
+}
+
+// GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
+// interface for type FunctionRetrieveDefaultDefinitionParameters.
+func (f *FunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
+	return f
 }
 
 // FunctionsClientBeginTestOptions contains the optional parameters for the FunctionsClient.BeginTest method.
@@ -1120,6 +1268,9 @@ type InputProperties struct {
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
 
+// GetInputProperties implements the InputPropertiesClassification interface for type InputProperties.
+func (i *InputProperties) GetInputProperties() *InputProperties { return i }
+
 // InputsClientBeginTestOptions contains the optional parameters for the InputsClient.BeginTest method.
 type InputsClientBeginTestOptions struct {
 	// If the input specified does not already exist, this parameter must contain the full input definition intended to be tested.
@@ -1176,6 +1327,13 @@ type IoTHubStreamInputDataSource struct {
 	Properties *IoTHubStreamInputDataSourceProperties `json:"properties,omitempty"`
 }
 
+// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type IoTHubStreamInputDataSource.
+func (i *IoTHubStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
+	return &StreamInputDataSource{
+		Type: i.Type,
+	}
+}
+
 // IoTHubStreamInputDataSourceProperties - The properties that are associated with a IoT Hub input containing stream data.
 type IoTHubStreamInputDataSourceProperties struct {
 	// The name of an IoT Hub Consumer Group that should be used to read events from the IoT Hub. If not specified, the input
@@ -1206,6 +1364,13 @@ type JSONSerialization struct {
 	Properties *JSONSerializationProperties `json:"properties,omitempty"`
 }
 
+// GetSerialization implements the SerializationClassification interface for type JSONSerialization.
+func (j *JSONSerialization) GetSerialization() *Serialization {
+	return &Serialization{
+		Type: j.Type,
+	}
+}
+
 // JSONSerializationProperties - The properties that are associated with the JSON serialization type.
 type JSONSerializationProperties struct {
 	// Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output.
@@ -1227,6 +1392,13 @@ type JavaScriptFunctionBinding struct {
 
 	// The binding properties associated with a JavaScript function.
 	Properties *JavaScriptFunctionBindingProperties `json:"properties,omitempty"`
+}
+
+// GetFunctionBinding implements the FunctionBindingClassification interface for type JavaScriptFunctionBinding.
+func (j *JavaScriptFunctionBinding) GetFunctionBinding() *FunctionBinding {
+	return &FunctionBinding{
+		Type: j.Type,
+	}
 }
 
 // JavaScriptFunctionBindingProperties - The binding properties associated with a JavaScript function.
@@ -1252,6 +1424,14 @@ type JavaScriptFunctionRetrieveDefaultDefinitionParameters struct {
 
 	// The binding retrieval properties associated with a JavaScript function.
 	BindingRetrievalProperties *JavaScriptFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
+}
+
+// GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
+// interface for type JavaScriptFunctionRetrieveDefaultDefinitionParameters.
+func (j *JavaScriptFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
+	return &FunctionRetrieveDefaultDefinitionParameters{
+		BindingType: j.BindingType,
+	}
 }
 
 // JobStorageAccount - The properties that are associated with an Azure Storage account with MSI
@@ -1360,6 +1540,9 @@ type OutputDataSource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type OutputDataSource.
+func (o *OutputDataSource) GetOutputDataSource() *OutputDataSource { return o }
+
 // OutputListResult - Object containing a list of outputs under a streaming job.
 type OutputListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
@@ -1450,6 +1633,13 @@ type ParquetSerialization struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// GetSerialization implements the SerializationClassification interface for type ParquetSerialization.
+func (p *ParquetSerialization) GetSerialization() *Serialization {
+	return &Serialization{
+		Type: p.Type,
+	}
+}
+
 // PowerBIOutputDataSource - Describes a Power BI output data source.
 type PowerBIOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
@@ -1457,6 +1647,13 @@ type PowerBIOutputDataSource struct {
 
 	// The properties that are associated with a Power BI output. Required on PUT (CreateOrReplace) requests.
 	Properties *PowerBIOutputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type PowerBIOutputDataSource.
+func (p *PowerBIOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: p.Type,
+	}
 }
 
 // PowerBIOutputDataSourceProperties - The properties that are associated with a Power BI output.
@@ -1620,6 +1817,9 @@ type ReferenceInputDataSource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type ReferenceInputDataSource.
+func (r *ReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInputDataSource { return r }
+
 // ReferenceInputProperties - The properties that are associated with an input containing reference data.
 type ReferenceInputProperties struct {
 	// REQUIRED; Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests.
@@ -1645,6 +1845,18 @@ type ReferenceInputProperties struct {
 	// has changed between requests. You can also use it in the If-Match or If-None-Match headers
 	// for write operations for optimistic concurrency.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
+}
+
+// GetInputProperties implements the InputPropertiesClassification interface for type ReferenceInputProperties.
+func (r *ReferenceInputProperties) GetInputProperties() *InputProperties {
+	return &InputProperties{
+		Type:          r.Type,
+		Serialization: r.Serialization,
+		Diagnostics:   r.Diagnostics,
+		Etag:          r.Etag,
+		Compression:   r.Compression,
+		PartitionKey:  r.PartitionKey,
+	}
 }
 
 // Resource - The base resource definition
@@ -1686,6 +1898,15 @@ type ScalarFunctionProperties struct {
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
 
+// GetFunctionProperties implements the FunctionPropertiesClassification interface for type ScalarFunctionProperties.
+func (s *ScalarFunctionProperties) GetFunctionProperties() *FunctionProperties {
+	return &FunctionProperties{
+		Type:       s.Type,
+		Etag:       s.Etag,
+		Properties: s.Properties,
+	}
+}
+
 // ScaleStreamingJobParameters - Parameters supplied to the Scale Streaming Job operation.
 type ScaleStreamingJobParameters struct {
 	// Specifies the number of streaming units that the streaming job will scale to.
@@ -1706,6 +1927,9 @@ type Serialization struct {
 	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
 	Type *EventSerializationType `json:"type,omitempty"`
 }
+
+// GetSerialization implements the SerializationClassification interface for type Serialization.
+func (s *Serialization) GetSerialization() *Serialization { return s }
 
 // ServiceBusDataSourceProperties - The common properties that are associated with Service Bus data sources (Queues, Topics,
 // Event Hubs, etc.).
@@ -1732,6 +1956,13 @@ type ServiceBusQueueOutputDataSource struct {
 
 	// The properties that are associated with a Service Bus Queue output. Required on PUT (CreateOrReplace) requests.
 	Properties *ServiceBusQueueOutputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type ServiceBusQueueOutputDataSource.
+func (s *ServiceBusQueueOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: s.Type,
+	}
 }
 
 // ServiceBusQueueOutputDataSourceProperties - The properties that are associated with a Service Bus Queue output.
@@ -1769,6 +2000,13 @@ type ServiceBusTopicOutputDataSource struct {
 
 	// The properties that are associated with a Service Bus Topic output. Required on PUT (CreateOrReplace) requests.
 	Properties *ServiceBusTopicOutputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type ServiceBusTopicOutputDataSource.
+func (s *ServiceBusTopicOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: s.Type,
+	}
 }
 
 // ServiceBusTopicOutputDataSourceProperties - The properties that are associated with a Service Bus Topic output.
@@ -1837,6 +2075,9 @@ type StreamInputDataSource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type StreamInputDataSource.
+func (s *StreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource { return s }
+
 // StreamInputProperties - The properties that are associated with an input containing stream data.
 type StreamInputProperties struct {
 	// REQUIRED; Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests.
@@ -1862,6 +2103,18 @@ type StreamInputProperties struct {
 	// has changed between requests. You can also use it in the If-Match or If-None-Match headers
 	// for write operations for optimistic concurrency.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
+}
+
+// GetInputProperties implements the InputPropertiesClassification interface for type StreamInputProperties.
+func (s *StreamInputProperties) GetInputProperties() *InputProperties {
+	return &InputProperties{
+		Type:          s.Type,
+		Serialization: s.Serialization,
+		Diagnostics:   s.Diagnostics,
+		Etag:          s.Etag,
+		Compression:   s.Compression,
+		PartitionKey:  s.PartitionKey,
+	}
 }
 
 // StreamingJob - A streaming job object, containing all information associated with the named streaming job.

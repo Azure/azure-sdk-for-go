@@ -12,51 +12,49 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyDelete.json
 func ExampleFirewallPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<firewall-policy-name>",
-		&armnetwork.FirewallPoliciesClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"firewallPolicy",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyGet.json
 func ExampleFirewallPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<firewall-policy-name>",
+		"rg1",
+		"firewallPolicy",
 		&armnetwork.FirewallPoliciesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,22 +63,22 @@ func ExampleFirewallPoliciesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyPut.json
 func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<firewall-policy-name>",
+		"rg1",
+		"firewallPolicy",
 		armnetwork.FirewallPolicy{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
@@ -95,26 +93,26 @@ func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 					EnableExplicitProxy: to.Ptr(true),
 					HTTPPort:            to.Ptr[int32](8087),
 					HTTPSPort:           to.Ptr[int32](8087),
-					PacFile:             to.Ptr("<pac-file>"),
+					PacFile:             to.Ptr("https://tinawstorage.file.core.windows.net/?sv=2020-02-10&ss=bfqt&srt=sco&sp=rwdlacuptfx&se=2021-06-04T07:01:12Z&st=2021-06-03T23:01:12Z&sip=68.65.171.11&spr=https&sig=Plsa0RRVpGbY0IETZZOT6znOHcSro71LLTTbzquYPgs%3D"),
 					PacFilePort:         to.Ptr[int32](8087),
 				},
 				Insights: &armnetwork.FirewallPolicyInsights{
 					IsEnabled: to.Ptr(true),
 					LogAnalyticsResources: &armnetwork.FirewallPolicyLogAnalyticsResources{
 						DefaultWorkspaceID: &armnetwork.SubResource{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/defaultWorkspace"),
 						},
 						Workspaces: []*armnetwork.FirewallPolicyLogAnalyticsWorkspace{
 							{
-								Region: to.Ptr("<region>"),
+								Region: to.Ptr("westus"),
 								WorkspaceID: &armnetwork.SubResource{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/workspace1"),
 								},
 							},
 							{
-								Region: to.Ptr("<region>"),
+								Region: to.Ptr("eastus"),
 								WorkspaceID: &armnetwork.SubResource{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/workspace2"),
 								},
 							}},
 					},
@@ -124,8 +122,8 @@ func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 					Configuration: &armnetwork.FirewallPolicyIntrusionDetectionConfiguration{
 						BypassTrafficSettings: []*armnetwork.FirewallPolicyIntrusionDetectionBypassTrafficSpecifications{
 							{
-								Name:        to.Ptr("<name>"),
-								Description: to.Ptr("<description>"),
+								Name:        to.Ptr("bypassRule1"),
+								Description: to.Ptr("Rule 1"),
 								DestinationAddresses: []*string{
 									to.Ptr("5.6.7.8")},
 								DestinationPorts: []*string{
@@ -136,7 +134,7 @@ func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 							}},
 						SignatureOverrides: []*armnetwork.FirewallPolicyIntrusionDetectionSignatureSpecification{
 							{
-								ID:   to.Ptr("<id>"),
+								ID:   to.Ptr("2525004"),
 								Mode: to.Ptr(armnetwork.FirewallPolicyIntrusionDetectionStateTypeDeny),
 							}},
 					},
@@ -161,17 +159,17 @@ func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 				},
 				TransportSecurity: &armnetwork.FirewallPolicyTransportSecurity{
 					CertificateAuthority: &armnetwork.FirewallPolicyCertificateAuthority{
-						Name:             to.Ptr("<name>"),
-						KeyVaultSecretID: to.Ptr("<key-vault-secret-id>"),
+						Name:             to.Ptr("clientcert"),
+						KeyVaultSecretID: to.Ptr("https://kv/secret"),
 					},
 				},
 			},
 		},
-		&armnetwork.FirewallPoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -179,24 +177,51 @@ func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyPatch.json
+func ExampleFirewallPoliciesClient_UpdateTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armnetwork.NewFirewallPoliciesClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.UpdateTags(ctx,
+		"myResourceGroup",
+		"firewallPolicy",
+		armnetwork.TagsObject{
+			Tags: map[string]*string{
+				"key1": to.Ptr("value1"),
+				"key2": to.Ptr("value2"),
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyListByResourceGroup.json
 func ExampleFirewallPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("rg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -205,14 +230,14 @@ func ExampleFirewallPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyListBySubscription.json
 func ExampleFirewallPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -221,7 +246,6 @@ func ExampleFirewallPoliciesClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

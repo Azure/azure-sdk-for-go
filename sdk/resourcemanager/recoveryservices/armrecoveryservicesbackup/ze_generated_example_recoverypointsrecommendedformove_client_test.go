@@ -17,34 +17,33 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
 func ExampleRecoveryPointsRecommendedForMoveClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewRecoveryPointsRecommendedForMoveClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewRecoveryPointsRecommendedForMoveClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<vault-name>",
-		"<resource-group-name>",
-		"<fabric-name>",
-		"<container-name>",
-		"<protected-item-name>",
+	pager := client.NewListPager("rshvault",
+		"rshhtestmdvmrg",
+		"Azure",
+		"IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
+		"VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
 		armrecoveryservicesbackup.ListRecoveryPointsRecommendedForMoveRequest{
 			ExcludedRPList: []*string{
 				to.Ptr("348916168024334"),
 				to.Ptr("348916168024335")},
-			ObjectType: to.Ptr("<object-type>"),
+			ObjectType: to.Ptr("ListRecoveryPointsRecommendedForMoveRequest"),
 		},
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -24,14 +24,14 @@ func ExampleContainersClient_ListLogs() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListLogs(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
-		"<container-name>",
+		"demo",
+		"demo1",
+		"container1",
 		&armcontainerinstance.ContainersClientListLogsOptions{Tail: to.Ptr[int32](10),
 			Timestamps: nil,
 		})
@@ -49,16 +49,16 @@ func ExampleContainersClient_ExecuteCommand() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ExecuteCommand(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
-		"<container-name>",
+		"demo",
+		"demo1",
+		"container1",
 		armcontainerinstance.ContainerExecRequest{
-			Command: to.Ptr("<command>"),
+			Command: to.Ptr("/bin/bash"),
 			TerminalSize: &armcontainerinstance.ContainerExecRequestTerminalSize{
 				Cols: to.Ptr[int32](12),
 				Rows: to.Ptr[int32](12),
@@ -79,14 +79,14 @@ func ExampleContainersClient_Attach() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Attach(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
-		"<container-name>",
+		"demo",
+		"demo1",
+		"container1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

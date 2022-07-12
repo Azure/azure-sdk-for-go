@@ -39,7 +39,7 @@ func NewChangesClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,13 +58,14 @@ func NewChangesClient(subscriptionID string, credential azcore.TokenCredential, 
 // NewListChangesByResourceGroupPager - List the changes of a resource group within the specified time range. Customer data
 // will always be masked.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // startTime - Specifies the start time of the changes request.
 // endTime - Specifies the end time of the changes request.
 // options - ChangesClientListChangesByResourceGroupOptions contains the optional parameters for the ChangesClient.ListChangesByResourceGroup
 // method.
 func (client *ChangesClient) NewListChangesByResourceGroupPager(resourceGroupName string, startTime time.Time, endTime time.Time, options *ChangesClientListChangesByResourceGroupOptions) *runtime.Pager[ChangesClientListChangesByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ChangesClientListChangesByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ChangesClientListChangesByResourceGroupResponse]{
 		More: func(page ChangesClientListChangesByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -114,7 +115,7 @@ func (client *ChangesClient) listChangesByResourceGroupCreateRequest(ctx context
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -130,12 +131,13 @@ func (client *ChangesClient) listChangesByResourceGroupHandleResponse(resp *http
 // NewListChangesBySubscriptionPager - List the changes of a subscription within the specified time range. Customer data will
 // always be masked.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // startTime - Specifies the start time of the changes request.
 // endTime - Specifies the end time of the changes request.
 // options - ChangesClientListChangesBySubscriptionOptions contains the optional parameters for the ChangesClient.ListChangesBySubscription
 // method.
 func (client *ChangesClient) NewListChangesBySubscriptionPager(startTime time.Time, endTime time.Time, options *ChangesClientListChangesBySubscriptionOptions) *runtime.Pager[ChangesClientListChangesBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ChangesClientListChangesBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ChangesClientListChangesBySubscriptionResponse]{
 		More: func(page ChangesClientListChangesBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -181,7 +183,7 @@ func (client *ChangesClient) listChangesBySubscriptionCreateRequest(ctx context.
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

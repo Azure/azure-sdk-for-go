@@ -10,6 +10,7 @@ package armstorage
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
@@ -27,23 +28,23 @@ func (a AccessPolicy) MarshalJSON() ([]byte, error) {
 func (a *AccessPolicy) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "expiryTime":
-			err = unpopulateTimeRFC3339(val, &a.ExpiryTime)
+			err = unpopulateTimeRFC3339(val, "ExpiryTime", &a.ExpiryTime)
 			delete(rawMsg, key)
 		case "permission":
-			err = unpopulate(val, &a.Permission)
+			err = unpopulate(val, "Permission", &a.Permission)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -78,58 +79,33 @@ func (a AccountCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountKey.
-func (a AccountKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
-	populate(objectMap, "keyName", a.KeyName)
-	populate(objectMap, "permissions", a.Permissions)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type AccountKey.
 func (a *AccountKey) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			err = unpopulateTimeRFC3339(val, "CreationTime", &a.CreationTime)
 			delete(rawMsg, key)
 		case "keyName":
-			err = unpopulate(val, &a.KeyName)
+			err = unpopulate(val, "KeyName", &a.KeyName)
 			delete(rawMsg, key)
 		case "permissions":
-			err = unpopulate(val, &a.Permissions)
+			err = unpopulate(val, "Permissions", &a.Permissions)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, &a.Value)
+			err = unpopulate(val, "Value", &a.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountListKeysResult.
-func (a AccountListKeysResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "keys", a.Keys)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
-func (a AccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccountProperties.
@@ -180,128 +156,128 @@ func (a AccountProperties) MarshalJSON() ([]byte, error) {
 func (a *AccountProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "accessTier":
-			err = unpopulate(val, &a.AccessTier)
+			err = unpopulate(val, "AccessTier", &a.AccessTier)
 			delete(rawMsg, key)
 		case "allowBlobPublicAccess":
-			err = unpopulate(val, &a.AllowBlobPublicAccess)
+			err = unpopulate(val, "AllowBlobPublicAccess", &a.AllowBlobPublicAccess)
 			delete(rawMsg, key)
 		case "allowCrossTenantReplication":
-			err = unpopulate(val, &a.AllowCrossTenantReplication)
+			err = unpopulate(val, "AllowCrossTenantReplication", &a.AllowCrossTenantReplication)
 			delete(rawMsg, key)
 		case "allowSharedKeyAccess":
-			err = unpopulate(val, &a.AllowSharedKeyAccess)
+			err = unpopulate(val, "AllowSharedKeyAccess", &a.AllowSharedKeyAccess)
 			delete(rawMsg, key)
 		case "allowedCopyScope":
-			err = unpopulate(val, &a.AllowedCopyScope)
+			err = unpopulate(val, "AllowedCopyScope", &a.AllowedCopyScope)
 			delete(rawMsg, key)
 		case "azureFilesIdentityBasedAuthentication":
-			err = unpopulate(val, &a.AzureFilesIdentityBasedAuthentication)
+			err = unpopulate(val, "AzureFilesIdentityBasedAuthentication", &a.AzureFilesIdentityBasedAuthentication)
 			delete(rawMsg, key)
 		case "blobRestoreStatus":
-			err = unpopulate(val, &a.BlobRestoreStatus)
+			err = unpopulate(val, "BlobRestoreStatus", &a.BlobRestoreStatus)
 			delete(rawMsg, key)
 		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			err = unpopulateTimeRFC3339(val, "CreationTime", &a.CreationTime)
 			delete(rawMsg, key)
 		case "customDomain":
-			err = unpopulate(val, &a.CustomDomain)
+			err = unpopulate(val, "CustomDomain", &a.CustomDomain)
 			delete(rawMsg, key)
 		case "dnsEndpointType":
-			err = unpopulate(val, &a.DNSEndpointType)
+			err = unpopulate(val, "DNSEndpointType", &a.DNSEndpointType)
 			delete(rawMsg, key)
 		case "defaultToOAuthAuthentication":
-			err = unpopulate(val, &a.DefaultToOAuthAuthentication)
+			err = unpopulate(val, "DefaultToOAuthAuthentication", &a.DefaultToOAuthAuthentication)
 			delete(rawMsg, key)
 		case "supportsHttpsTrafficOnly":
-			err = unpopulate(val, &a.EnableHTTPSTrafficOnly)
+			err = unpopulate(val, "EnableHTTPSTrafficOnly", &a.EnableHTTPSTrafficOnly)
 			delete(rawMsg, key)
 		case "isNfsV3Enabled":
-			err = unpopulate(val, &a.EnableNfsV3)
+			err = unpopulate(val, "EnableNfsV3", &a.EnableNfsV3)
 			delete(rawMsg, key)
 		case "encryption":
-			err = unpopulate(val, &a.Encryption)
+			err = unpopulate(val, "Encryption", &a.Encryption)
 			delete(rawMsg, key)
 		case "failoverInProgress":
-			err = unpopulate(val, &a.FailoverInProgress)
+			err = unpopulate(val, "FailoverInProgress", &a.FailoverInProgress)
 			delete(rawMsg, key)
 		case "geoReplicationStats":
-			err = unpopulate(val, &a.GeoReplicationStats)
+			err = unpopulate(val, "GeoReplicationStats", &a.GeoReplicationStats)
 			delete(rawMsg, key)
 		case "immutableStorageWithVersioning":
-			err = unpopulate(val, &a.ImmutableStorageWithVersioning)
+			err = unpopulate(val, "ImmutableStorageWithVersioning", &a.ImmutableStorageWithVersioning)
 			delete(rawMsg, key)
 		case "isHnsEnabled":
-			err = unpopulate(val, &a.IsHnsEnabled)
+			err = unpopulate(val, "IsHnsEnabled", &a.IsHnsEnabled)
 			delete(rawMsg, key)
 		case "isLocalUserEnabled":
-			err = unpopulate(val, &a.IsLocalUserEnabled)
+			err = unpopulate(val, "IsLocalUserEnabled", &a.IsLocalUserEnabled)
 			delete(rawMsg, key)
 		case "isSftpEnabled":
-			err = unpopulate(val, &a.IsSftpEnabled)
+			err = unpopulate(val, "IsSftpEnabled", &a.IsSftpEnabled)
 			delete(rawMsg, key)
 		case "keyCreationTime":
-			err = unpopulate(val, &a.KeyCreationTime)
+			err = unpopulate(val, "KeyCreationTime", &a.KeyCreationTime)
 			delete(rawMsg, key)
 		case "keyPolicy":
-			err = unpopulate(val, &a.KeyPolicy)
+			err = unpopulate(val, "KeyPolicy", &a.KeyPolicy)
 			delete(rawMsg, key)
 		case "largeFileSharesState":
-			err = unpopulate(val, &a.LargeFileSharesState)
+			err = unpopulate(val, "LargeFileSharesState", &a.LargeFileSharesState)
 			delete(rawMsg, key)
 		case "lastGeoFailoverTime":
-			err = unpopulateTimeRFC3339(val, &a.LastGeoFailoverTime)
+			err = unpopulateTimeRFC3339(val, "LastGeoFailoverTime", &a.LastGeoFailoverTime)
 			delete(rawMsg, key)
 		case "minimumTlsVersion":
-			err = unpopulate(val, &a.MinimumTLSVersion)
+			err = unpopulate(val, "MinimumTLSVersion", &a.MinimumTLSVersion)
 			delete(rawMsg, key)
 		case "networkAcls":
-			err = unpopulate(val, &a.NetworkRuleSet)
+			err = unpopulate(val, "NetworkRuleSet", &a.NetworkRuleSet)
 			delete(rawMsg, key)
 		case "primaryEndpoints":
-			err = unpopulate(val, &a.PrimaryEndpoints)
+			err = unpopulate(val, "PrimaryEndpoints", &a.PrimaryEndpoints)
 			delete(rawMsg, key)
 		case "primaryLocation":
-			err = unpopulate(val, &a.PrimaryLocation)
+			err = unpopulate(val, "PrimaryLocation", &a.PrimaryLocation)
 			delete(rawMsg, key)
 		case "privateEndpointConnections":
-			err = unpopulate(val, &a.PrivateEndpointConnections)
+			err = unpopulate(val, "PrivateEndpointConnections", &a.PrivateEndpointConnections)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
 			delete(rawMsg, key)
 		case "publicNetworkAccess":
-			err = unpopulate(val, &a.PublicNetworkAccess)
+			err = unpopulate(val, "PublicNetworkAccess", &a.PublicNetworkAccess)
 			delete(rawMsg, key)
 		case "routingPreference":
-			err = unpopulate(val, &a.RoutingPreference)
+			err = unpopulate(val, "RoutingPreference", &a.RoutingPreference)
 			delete(rawMsg, key)
 		case "sasPolicy":
-			err = unpopulate(val, &a.SasPolicy)
+			err = unpopulate(val, "SasPolicy", &a.SasPolicy)
 			delete(rawMsg, key)
 		case "secondaryEndpoints":
-			err = unpopulate(val, &a.SecondaryEndpoints)
+			err = unpopulate(val, "SecondaryEndpoints", &a.SecondaryEndpoints)
 			delete(rawMsg, key)
 		case "secondaryLocation":
-			err = unpopulate(val, &a.SecondaryLocation)
+			err = unpopulate(val, "SecondaryLocation", &a.SecondaryLocation)
 			delete(rawMsg, key)
 		case "statusOfPrimary":
-			err = unpopulate(val, &a.StatusOfPrimary)
+			err = unpopulate(val, "StatusOfPrimary", &a.StatusOfPrimary)
 			delete(rawMsg, key)
 		case "statusOfSecondary":
-			err = unpopulate(val, &a.StatusOfSecondary)
+			err = unpopulate(val, "StatusOfSecondary", &a.StatusOfSecondary)
 			delete(rawMsg, key)
 		case "storageAccountSkuConversionStatus":
-			err = unpopulate(val, &a.StorageAccountSKUConversionStatus)
+			err = unpopulate(val, "StorageAccountSKUConversionStatus", &a.StorageAccountSKUConversionStatus)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -325,38 +301,38 @@ func (a AccountSasParameters) MarshalJSON() ([]byte, error) {
 func (a *AccountSasParameters) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "signedIp":
-			err = unpopulate(val, &a.IPAddressOrRange)
+			err = unpopulate(val, "IPAddressOrRange", &a.IPAddressOrRange)
 			delete(rawMsg, key)
 		case "keyToSign":
-			err = unpopulate(val, &a.KeyToSign)
+			err = unpopulate(val, "KeyToSign", &a.KeyToSign)
 			delete(rawMsg, key)
 		case "signedPermission":
-			err = unpopulate(val, &a.Permissions)
+			err = unpopulate(val, "Permissions", &a.Permissions)
 			delete(rawMsg, key)
 		case "signedProtocol":
-			err = unpopulate(val, &a.Protocols)
+			err = unpopulate(val, "Protocols", &a.Protocols)
 			delete(rawMsg, key)
 		case "signedResourceTypes":
-			err = unpopulate(val, &a.ResourceTypes)
+			err = unpopulate(val, "ResourceTypes", &a.ResourceTypes)
 			delete(rawMsg, key)
 		case "signedServices":
-			err = unpopulate(val, &a.Services)
+			err = unpopulate(val, "Services", &a.Services)
 			delete(rawMsg, key)
 		case "signedExpiry":
-			err = unpopulateTimeRFC3339(val, &a.SharedAccessExpiryTime)
+			err = unpopulateTimeRFC3339(val, "SharedAccessExpiryTime", &a.SharedAccessExpiryTime)
 			delete(rawMsg, key)
 		case "signedStart":
-			err = unpopulateTimeRFC3339(val, &a.SharedAccessStartTime)
+			err = unpopulateTimeRFC3339(val, "SharedAccessStartTime", &a.SharedAccessStartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -419,20 +395,20 @@ func (b BlobInventoryPolicyProperties) MarshalJSON() ([]byte, error) {
 func (b *BlobInventoryPolicyProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", b, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &b.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &b.LastModifiedTime)
 			delete(rawMsg, key)
 		case "policy":
-			err = unpopulate(val, &b.Policy)
+			err = unpopulate(val, "Policy", &b.Policy)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", b, err)
 		}
 	}
 	return nil
@@ -460,40 +436,23 @@ func (b BlobRestoreParameters) MarshalJSON() ([]byte, error) {
 func (b *BlobRestoreParameters) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", b, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "blobRanges":
-			err = unpopulate(val, &b.BlobRanges)
+			err = unpopulate(val, "BlobRanges", &b.BlobRanges)
 			delete(rawMsg, key)
 		case "timeToRestore":
-			err = unpopulateTimeRFC3339(val, &b.TimeToRestore)
+			err = unpopulateTimeRFC3339(val, "TimeToRestore", &b.TimeToRestore)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", b, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobServiceItems.
-func (b BlobServiceItems) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContainerProperties.
@@ -525,71 +484,71 @@ func (c ContainerProperties) MarshalJSON() ([]byte, error) {
 func (c *ContainerProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "defaultEncryptionScope":
-			err = unpopulate(val, &c.DefaultEncryptionScope)
+			err = unpopulate(val, "DefaultEncryptionScope", &c.DefaultEncryptionScope)
 			delete(rawMsg, key)
 		case "deleted":
-			err = unpopulate(val, &c.Deleted)
+			err = unpopulate(val, "Deleted", &c.Deleted)
 			delete(rawMsg, key)
 		case "deletedTime":
-			err = unpopulateTimeRFC3339(val, &c.DeletedTime)
+			err = unpopulateTimeRFC3339(val, "DeletedTime", &c.DeletedTime)
 			delete(rawMsg, key)
 		case "denyEncryptionScopeOverride":
-			err = unpopulate(val, &c.DenyEncryptionScopeOverride)
+			err = unpopulate(val, "DenyEncryptionScopeOverride", &c.DenyEncryptionScopeOverride)
 			delete(rawMsg, key)
 		case "enableNfsV3AllSquash":
-			err = unpopulate(val, &c.EnableNfsV3AllSquash)
+			err = unpopulate(val, "EnableNfsV3AllSquash", &c.EnableNfsV3AllSquash)
 			delete(rawMsg, key)
 		case "enableNfsV3RootSquash":
-			err = unpopulate(val, &c.EnableNfsV3RootSquash)
+			err = unpopulate(val, "EnableNfsV3RootSquash", &c.EnableNfsV3RootSquash)
 			delete(rawMsg, key)
 		case "hasImmutabilityPolicy":
-			err = unpopulate(val, &c.HasImmutabilityPolicy)
+			err = unpopulate(val, "HasImmutabilityPolicy", &c.HasImmutabilityPolicy)
 			delete(rawMsg, key)
 		case "hasLegalHold":
-			err = unpopulate(val, &c.HasLegalHold)
+			err = unpopulate(val, "HasLegalHold", &c.HasLegalHold)
 			delete(rawMsg, key)
 		case "immutabilityPolicy":
-			err = unpopulate(val, &c.ImmutabilityPolicy)
+			err = unpopulate(val, "ImmutabilityPolicy", &c.ImmutabilityPolicy)
 			delete(rawMsg, key)
 		case "immutableStorageWithVersioning":
-			err = unpopulate(val, &c.ImmutableStorageWithVersioning)
+			err = unpopulate(val, "ImmutableStorageWithVersioning", &c.ImmutableStorageWithVersioning)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &c.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &c.LastModifiedTime)
 			delete(rawMsg, key)
 		case "leaseDuration":
-			err = unpopulate(val, &c.LeaseDuration)
+			err = unpopulate(val, "LeaseDuration", &c.LeaseDuration)
 			delete(rawMsg, key)
 		case "leaseState":
-			err = unpopulate(val, &c.LeaseState)
+			err = unpopulate(val, "LeaseState", &c.LeaseState)
 			delete(rawMsg, key)
 		case "leaseStatus":
-			err = unpopulate(val, &c.LeaseStatus)
+			err = unpopulate(val, "LeaseStatus", &c.LeaseStatus)
 			delete(rawMsg, key)
 		case "legalHold":
-			err = unpopulate(val, &c.LegalHold)
+			err = unpopulate(val, "LegalHold", &c.LegalHold)
 			delete(rawMsg, key)
 		case "metadata":
-			err = unpopulate(val, &c.Metadata)
+			err = unpopulate(val, "Metadata", &c.Metadata)
 			delete(rawMsg, key)
 		case "publicAccess":
-			err = unpopulate(val, &c.PublicAccess)
+			err = unpopulate(val, "PublicAccess", &c.PublicAccess)
 			delete(rawMsg, key)
 		case "remainingRetentionDays":
-			err = unpopulate(val, &c.RemainingRetentionDays)
+			err = unpopulate(val, "RemainingRetentionDays", &c.RemainingRetentionDays)
 			delete(rawMsg, key)
 		case "version":
-			err = unpopulate(val, &c.Version)
+			err = unpopulate(val, "Version", &c.Version)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
@@ -610,14 +569,6 @@ func (c CorsRule) MarshalJSON() ([]byte, error) {
 func (c CorsRules) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "corsRules", c.CorsRules)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DeletedAccountListResult.
-func (d DeletedAccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -644,34 +595,26 @@ func (e EncryptionScopeKeyVaultProperties) MarshalJSON() ([]byte, error) {
 func (e *EncryptionScopeKeyVaultProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "currentVersionedKeyIdentifier":
-			err = unpopulate(val, &e.CurrentVersionedKeyIdentifier)
+			err = unpopulate(val, "CurrentVersionedKeyIdentifier", &e.CurrentVersionedKeyIdentifier)
 			delete(rawMsg, key)
 		case "keyUri":
-			err = unpopulate(val, &e.KeyURI)
+			err = unpopulate(val, "KeyURI", &e.KeyURI)
 			delete(rawMsg, key)
 		case "lastKeyRotationTimestamp":
-			err = unpopulateTimeRFC3339(val, &e.LastKeyRotationTimestamp)
+			err = unpopulateTimeRFC3339(val, "LastKeyRotationTimestamp", &e.LastKeyRotationTimestamp)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EncryptionScopeListResult.
-func (e EncryptionScopeListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EncryptionScopeProperties.
@@ -690,32 +633,32 @@ func (e EncryptionScopeProperties) MarshalJSON() ([]byte, error) {
 func (e *EncryptionScopeProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &e.CreationTime)
+			err = unpopulateTimeRFC3339(val, "CreationTime", &e.CreationTime)
 			delete(rawMsg, key)
 		case "keyVaultProperties":
-			err = unpopulate(val, &e.KeyVaultProperties)
+			err = unpopulate(val, "KeyVaultProperties", &e.KeyVaultProperties)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &e.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &e.LastModifiedTime)
 			delete(rawMsg, key)
 		case "requireInfrastructureEncryption":
-			err = unpopulate(val, &e.RequireInfrastructureEncryption)
+			err = unpopulate(val, "RequireInfrastructureEncryption", &e.RequireInfrastructureEncryption)
 			delete(rawMsg, key)
 		case "source":
-			err = unpopulate(val, &e.Source)
+			err = unpopulate(val, "Source", &e.Source)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &e.State)
+			err = unpopulate(val, "State", &e.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
 		}
 	}
 	return nil
@@ -734,33 +677,26 @@ func (e EncryptionService) MarshalJSON() ([]byte, error) {
 func (e *EncryptionService) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "enabled":
-			err = unpopulate(val, &e.Enabled)
+			err = unpopulate(val, "Enabled", &e.Enabled)
 			delete(rawMsg, key)
 		case "keyType":
-			err = unpopulate(val, &e.KeyType)
+			err = unpopulate(val, "KeyType", &e.KeyType)
 			delete(rawMsg, key)
 		case "lastEnabledTime":
-			err = unpopulateTimeRFC3339(val, &e.LastEnabledTime)
+			err = unpopulateTimeRFC3339(val, "LastEnabledTime", &e.LastEnabledTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileServiceItems.
-func (f FileServiceItems) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FileShare.
@@ -771,14 +707,6 @@ func (f FileShare) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", f.ID)
 	populate(objectMap, "name", f.Name)
 	populate(objectMap, "type", f.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileShareItems.
-func (f FileShareItems) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -810,68 +738,68 @@ func (f FileShareProperties) MarshalJSON() ([]byte, error) {
 func (f *FileShareProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "accessTier":
-			err = unpopulate(val, &f.AccessTier)
+			err = unpopulate(val, "AccessTier", &f.AccessTier)
 			delete(rawMsg, key)
 		case "accessTierChangeTime":
-			err = unpopulateTimeRFC3339(val, &f.AccessTierChangeTime)
+			err = unpopulateTimeRFC3339(val, "AccessTierChangeTime", &f.AccessTierChangeTime)
 			delete(rawMsg, key)
 		case "accessTierStatus":
-			err = unpopulate(val, &f.AccessTierStatus)
+			err = unpopulate(val, "AccessTierStatus", &f.AccessTierStatus)
 			delete(rawMsg, key)
 		case "deleted":
-			err = unpopulate(val, &f.Deleted)
+			err = unpopulate(val, "Deleted", &f.Deleted)
 			delete(rawMsg, key)
 		case "deletedTime":
-			err = unpopulateTimeRFC3339(val, &f.DeletedTime)
+			err = unpopulateTimeRFC3339(val, "DeletedTime", &f.DeletedTime)
 			delete(rawMsg, key)
 		case "enabledProtocols":
-			err = unpopulate(val, &f.EnabledProtocols)
+			err = unpopulate(val, "EnabledProtocols", &f.EnabledProtocols)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &f.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &f.LastModifiedTime)
 			delete(rawMsg, key)
 		case "leaseDuration":
-			err = unpopulate(val, &f.LeaseDuration)
+			err = unpopulate(val, "LeaseDuration", &f.LeaseDuration)
 			delete(rawMsg, key)
 		case "leaseState":
-			err = unpopulate(val, &f.LeaseState)
+			err = unpopulate(val, "LeaseState", &f.LeaseState)
 			delete(rawMsg, key)
 		case "leaseStatus":
-			err = unpopulate(val, &f.LeaseStatus)
+			err = unpopulate(val, "LeaseStatus", &f.LeaseStatus)
 			delete(rawMsg, key)
 		case "metadata":
-			err = unpopulate(val, &f.Metadata)
+			err = unpopulate(val, "Metadata", &f.Metadata)
 			delete(rawMsg, key)
 		case "remainingRetentionDays":
-			err = unpopulate(val, &f.RemainingRetentionDays)
+			err = unpopulate(val, "RemainingRetentionDays", &f.RemainingRetentionDays)
 			delete(rawMsg, key)
 		case "rootSquash":
-			err = unpopulate(val, &f.RootSquash)
+			err = unpopulate(val, "RootSquash", &f.RootSquash)
 			delete(rawMsg, key)
 		case "shareQuota":
-			err = unpopulate(val, &f.ShareQuota)
+			err = unpopulate(val, "ShareQuota", &f.ShareQuota)
 			delete(rawMsg, key)
 		case "shareUsageBytes":
-			err = unpopulate(val, &f.ShareUsageBytes)
+			err = unpopulate(val, "ShareUsageBytes", &f.ShareUsageBytes)
 			delete(rawMsg, key)
 		case "signedIdentifiers":
-			err = unpopulate(val, &f.SignedIdentifiers)
+			err = unpopulate(val, "SignedIdentifiers", &f.SignedIdentifiers)
 			delete(rawMsg, key)
 		case "snapshotTime":
-			err = unpopulateTimeRFC3339(val, &f.SnapshotTime)
+			err = unpopulateTimeRFC3339(val, "SnapshotTime", &f.SnapshotTime)
 			delete(rawMsg, key)
 		case "version":
-			err = unpopulate(val, &f.Version)
+			err = unpopulate(val, "Version", &f.Version)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
 		}
 	}
 	return nil
@@ -890,23 +818,23 @@ func (g GeoReplicationStats) MarshalJSON() ([]byte, error) {
 func (g *GeoReplicationStats) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "canFailover":
-			err = unpopulate(val, &g.CanFailover)
+			err = unpopulate(val, "CanFailover", &g.CanFailover)
 			delete(rawMsg, key)
 		case "lastSyncTime":
-			err = unpopulateTimeRFC3339(val, &g.LastSyncTime)
+			err = unpopulateTimeRFC3339(val, "LastSyncTime", &g.LastSyncTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &g.Status)
+			err = unpopulate(val, "Status", &g.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
 		}
 	}
 	return nil
@@ -944,23 +872,23 @@ func (i ImmutableStorageWithVersioning) MarshalJSON() ([]byte, error) {
 func (i *ImmutableStorageWithVersioning) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "enabled":
-			err = unpopulate(val, &i.Enabled)
+			err = unpopulate(val, "Enabled", &i.Enabled)
 			delete(rawMsg, key)
 		case "migrationState":
-			err = unpopulate(val, &i.MigrationState)
+			err = unpopulate(val, "MigrationState", &i.MigrationState)
 			delete(rawMsg, key)
 		case "timeStamp":
-			err = unpopulateTimeRFC3339(val, &i.TimeStamp)
+			err = unpopulateTimeRFC3339(val, "TimeStamp", &i.TimeStamp)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
 		}
 	}
 	return nil
@@ -978,20 +906,20 @@ func (k KeyCreationTime) MarshalJSON() ([]byte, error) {
 func (k *KeyCreationTime) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", k, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "key1":
-			err = unpopulateTimeRFC3339(val, &k.Key1)
+			err = unpopulateTimeRFC3339(val, "Key1", &k.Key1)
 			delete(rawMsg, key)
 		case "key2":
-			err = unpopulateTimeRFC3339(val, &k.Key2)
+			err = unpopulateTimeRFC3339(val, "Key2", &k.Key2)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", k, err)
 		}
 	}
 	return nil
@@ -1013,32 +941,32 @@ func (k KeyVaultProperties) MarshalJSON() ([]byte, error) {
 func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", k, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "currentVersionedKeyExpirationTimestamp":
-			err = unpopulateTimeRFC3339(val, &k.CurrentVersionedKeyExpirationTimestamp)
+			err = unpopulateTimeRFC3339(val, "CurrentVersionedKeyExpirationTimestamp", &k.CurrentVersionedKeyExpirationTimestamp)
 			delete(rawMsg, key)
 		case "currentVersionedKeyIdentifier":
-			err = unpopulate(val, &k.CurrentVersionedKeyIdentifier)
+			err = unpopulate(val, "CurrentVersionedKeyIdentifier", &k.CurrentVersionedKeyIdentifier)
 			delete(rawMsg, key)
 		case "keyname":
-			err = unpopulate(val, &k.KeyName)
+			err = unpopulate(val, "KeyName", &k.KeyName)
 			delete(rawMsg, key)
 		case "keyvaulturi":
-			err = unpopulate(val, &k.KeyVaultURI)
+			err = unpopulate(val, "KeyVaultURI", &k.KeyVaultURI)
 			delete(rawMsg, key)
 		case "keyversion":
-			err = unpopulate(val, &k.KeyVersion)
+			err = unpopulate(val, "KeyVersion", &k.KeyVersion)
 			delete(rawMsg, key)
 		case "lastKeyRotationTimestamp":
-			err = unpopulateTimeRFC3339(val, &k.LastKeyRotationTimestamp)
+			err = unpopulateTimeRFC3339(val, "LastKeyRotationTimestamp", &k.LastKeyRotationTimestamp)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", k, err)
 		}
 	}
 	return nil
@@ -1072,63 +1000,10 @@ func (l LegalHoldProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListBlobInventoryPolicy.
-func (l ListBlobInventoryPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListContainerItems.
-func (l ListContainerItems) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ListQueueProperties.
 func (l ListQueueProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "metadata", l.Metadata)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListQueueResource.
-func (l ListQueueResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListQueueServices.
-func (l ListQueueServices) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListTableResource.
-func (l ListTableResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListTableServices.
-func (l ListTableServices) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocalUserKeys.
-func (l LocalUserKeys) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "sshAuthorizedKeys", l.SSHAuthorizedKeys)
-	populate(objectMap, "sharedKey", l.SharedKey)
 	return json.Marshal(objectMap)
 }
 
@@ -1142,13 +1017,6 @@ func (l LocalUserProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "permissionScopes", l.PermissionScopes)
 	populate(objectMap, "sshAuthorizedKeys", l.SSHAuthorizedKeys)
 	populate(objectMap, "sid", l.Sid)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocalUsers.
-func (l LocalUsers) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -1173,20 +1041,20 @@ func (m ManagementPolicyProperties) MarshalJSON() ([]byte, error) {
 func (m *ManagementPolicyProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &m.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &m.LastModifiedTime)
 			delete(rawMsg, key)
 		case "policy":
-			err = unpopulate(val, &m.Policy)
+			err = unpopulate(val, "Policy", &m.Policy)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
@@ -1199,21 +1067,6 @@ func (m ManagementPolicySchema) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricSpecification.
-func (m MetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", m.AggregationType)
-	populate(objectMap, "category", m.Category)
-	populate(objectMap, "dimensions", m.Dimensions)
-	populate(objectMap, "displayDescription", m.DisplayDescription)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "fillGapWithZero", m.FillGapWithZero)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "resourceIdDimensionNameOverride", m.ResourceIDDimensionNameOverride)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type NetworkRuleSet.
 func (n NetworkRuleSet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1222,13 +1075,6 @@ func (n NetworkRuleSet) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ipRules", n.IPRules)
 	populate(objectMap, "resourceAccessRules", n.ResourceAccessRules)
 	populate(objectMap, "virtualNetworkRules", n.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ObjectReplicationPolicies.
-func (o ObjectReplicationPolicies) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -1255,53 +1101,32 @@ func (o ObjectReplicationPolicyProperties) MarshalJSON() ([]byte, error) {
 func (o *ObjectReplicationPolicyProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "destinationAccount":
-			err = unpopulate(val, &o.DestinationAccount)
+			err = unpopulate(val, "DestinationAccount", &o.DestinationAccount)
 			delete(rawMsg, key)
 		case "enabledTime":
-			err = unpopulateTimeRFC3339(val, &o.EnabledTime)
+			err = unpopulateTimeRFC3339(val, "EnabledTime", &o.EnabledTime)
 			delete(rawMsg, key)
 		case "policyId":
-			err = unpopulate(val, &o.PolicyID)
+			err = unpopulate(val, "PolicyID", &o.PolicyID)
 			delete(rawMsg, key)
 		case "rules":
-			err = unpopulate(val, &o.Rules)
+			err = unpopulate(val, "Rules", &o.Rules)
 			delete(rawMsg, key)
 		case "sourceAccount":
-			err = unpopulate(val, &o.SourceAccount)
+			err = unpopulate(val, "SourceAccount", &o.SourceAccount)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
@@ -1325,20 +1150,20 @@ func (p ProtectedAppendWritesHistory) MarshalJSON() ([]byte, error) {
 func (p *ProtectedAppendWritesHistory) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "allowProtectedAppendWritesAll":
-			err = unpopulate(val, &p.AllowProtectedAppendWritesAll)
+			err = unpopulate(val, "AllowProtectedAppendWritesAll", &p.AllowProtectedAppendWritesAll)
 			delete(rawMsg, key)
 		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &p.Timestamp)
+			err = unpopulateTimeRFC3339(val, "Timestamp", &p.Timestamp)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
 		}
 	}
 	return nil
@@ -1376,58 +1201,29 @@ func (r RestorePolicyProperties) MarshalJSON() ([]byte, error) {
 func (r *RestorePolicyProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "days":
-			err = unpopulate(val, &r.Days)
+			err = unpopulate(val, "Days", &r.Days)
 			delete(rawMsg, key)
 		case "enabled":
-			err = unpopulate(val, &r.Enabled)
+			err = unpopulate(val, "Enabled", &r.Enabled)
 			delete(rawMsg, key)
 		case "lastEnabledTime":
-			err = unpopulateTimeRFC3339(val, &r.LastEnabledTime)
+			err = unpopulateTimeRFC3339(val, "LastEnabledTime", &r.LastEnabledTime)
 			delete(rawMsg, key)
 		case "minRestoreTime":
-			err = unpopulateTimeRFC3339(val, &r.MinRestoreTime)
+			err = unpopulateTimeRFC3339(val, "MinRestoreTime", &r.MinRestoreTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Restriction.
-func (r Restriction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "reasonCode", r.ReasonCode)
-	populate(objectMap, "type", r.Type)
-	populate(objectMap, "values", r.Values)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SKUInformation.
-func (s SKUInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capabilities", s.Capabilities)
-	populate(objectMap, "kind", s.Kind)
-	populate(objectMap, "locations", s.Locations)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "resourceType", s.ResourceType)
-	populate(objectMap, "restrictions", s.Restrictions)
-	populate(objectMap, "tier", s.Tier)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SKUListResult.
-func (s SKUListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceSasParameters.
@@ -1458,78 +1254,71 @@ func (s ServiceSasParameters) MarshalJSON() ([]byte, error) {
 func (s *ServiceSasParameters) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "rscc":
-			err = unpopulate(val, &s.CacheControl)
+			err = unpopulate(val, "CacheControl", &s.CacheControl)
 			delete(rawMsg, key)
 		case "canonicalizedResource":
-			err = unpopulate(val, &s.CanonicalizedResource)
+			err = unpopulate(val, "CanonicalizedResource", &s.CanonicalizedResource)
 			delete(rawMsg, key)
 		case "rscd":
-			err = unpopulate(val, &s.ContentDisposition)
+			err = unpopulate(val, "ContentDisposition", &s.ContentDisposition)
 			delete(rawMsg, key)
 		case "rsce":
-			err = unpopulate(val, &s.ContentEncoding)
+			err = unpopulate(val, "ContentEncoding", &s.ContentEncoding)
 			delete(rawMsg, key)
 		case "rscl":
-			err = unpopulate(val, &s.ContentLanguage)
+			err = unpopulate(val, "ContentLanguage", &s.ContentLanguage)
 			delete(rawMsg, key)
 		case "rsct":
-			err = unpopulate(val, &s.ContentType)
+			err = unpopulate(val, "ContentType", &s.ContentType)
 			delete(rawMsg, key)
 		case "signedIp":
-			err = unpopulate(val, &s.IPAddressOrRange)
+			err = unpopulate(val, "IPAddressOrRange", &s.IPAddressOrRange)
 			delete(rawMsg, key)
 		case "signedIdentifier":
-			err = unpopulate(val, &s.Identifier)
+			err = unpopulate(val, "Identifier", &s.Identifier)
 			delete(rawMsg, key)
 		case "keyToSign":
-			err = unpopulate(val, &s.KeyToSign)
+			err = unpopulate(val, "KeyToSign", &s.KeyToSign)
 			delete(rawMsg, key)
 		case "endPk":
-			err = unpopulate(val, &s.PartitionKeyEnd)
+			err = unpopulate(val, "PartitionKeyEnd", &s.PartitionKeyEnd)
 			delete(rawMsg, key)
 		case "startPk":
-			err = unpopulate(val, &s.PartitionKeyStart)
+			err = unpopulate(val, "PartitionKeyStart", &s.PartitionKeyStart)
 			delete(rawMsg, key)
 		case "signedPermission":
-			err = unpopulate(val, &s.Permissions)
+			err = unpopulate(val, "Permissions", &s.Permissions)
 			delete(rawMsg, key)
 		case "signedProtocol":
-			err = unpopulate(val, &s.Protocols)
+			err = unpopulate(val, "Protocols", &s.Protocols)
 			delete(rawMsg, key)
 		case "signedResource":
-			err = unpopulate(val, &s.Resource)
+			err = unpopulate(val, "Resource", &s.Resource)
 			delete(rawMsg, key)
 		case "endRk":
-			err = unpopulate(val, &s.RowKeyEnd)
+			err = unpopulate(val, "RowKeyEnd", &s.RowKeyEnd)
 			delete(rawMsg, key)
 		case "startRk":
-			err = unpopulate(val, &s.RowKeyStart)
+			err = unpopulate(val, "RowKeyStart", &s.RowKeyStart)
 			delete(rawMsg, key)
 		case "signedExpiry":
-			err = unpopulateTimeRFC3339(val, &s.SharedAccessExpiryTime)
+			err = unpopulateTimeRFC3339(val, "SharedAccessExpiryTime", &s.SharedAccessExpiryTime)
 			delete(rawMsg, key)
 		case "signedStart":
-			err = unpopulateTimeRFC3339(val, &s.SharedAccessStartTime)
+			err = unpopulateTimeRFC3339(val, "SharedAccessStartTime", &s.SharedAccessStartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
-func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metricSpecifications", s.MetricSpecifications)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
@@ -1548,32 +1337,32 @@ func (s SystemData) MarshalJSON() ([]byte, error) {
 func (s *SystemData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
+			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
+			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
 			delete(rawMsg, key)
 		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
+			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
+			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
+			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
 			delete(rawMsg, key)
 		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
+			err = unpopulate(val, "LastModifiedByType", &s.LastModifiedByType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
@@ -1602,23 +1391,23 @@ func (t TableAccessPolicy) MarshalJSON() ([]byte, error) {
 func (t *TableAccessPolicy) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "expiryTime":
-			err = unpopulateTimeRFC3339(val, &t.ExpiryTime)
+			err = unpopulateTimeRFC3339(val, "ExpiryTime", &t.ExpiryTime)
 			delete(rawMsg, key)
 		case "permission":
-			err = unpopulate(val, &t.Permission)
+			err = unpopulate(val, "Permission", &t.Permission)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &t.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &t.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil
@@ -1647,29 +1436,29 @@ func (t TagProperty) MarshalJSON() ([]byte, error) {
 func (t *TagProperty) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "objectIdentifier":
-			err = unpopulate(val, &t.ObjectIdentifier)
+			err = unpopulate(val, "ObjectIdentifier", &t.ObjectIdentifier)
 			delete(rawMsg, key)
 		case "tag":
-			err = unpopulate(val, &t.Tag)
+			err = unpopulate(val, "Tag", &t.Tag)
 			delete(rawMsg, key)
 		case "tenantId":
-			err = unpopulate(val, &t.TenantID)
+			err = unpopulate(val, "TenantID", &t.TenantID)
 			delete(rawMsg, key)
 		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &t.Timestamp)
+			err = unpopulateTimeRFC3339(val, "Timestamp", &t.Timestamp)
 			delete(rawMsg, key)
 		case "upn":
-			err = unpopulate(val, &t.Upn)
+			err = unpopulate(val, "Upn", &t.Upn)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil
@@ -1704,48 +1493,41 @@ func (u UpdateHistoryProperty) MarshalJSON() ([]byte, error) {
 func (u *UpdateHistoryProperty) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "allowProtectedAppendWrites":
-			err = unpopulate(val, &u.AllowProtectedAppendWrites)
+			err = unpopulate(val, "AllowProtectedAppendWrites", &u.AllowProtectedAppendWrites)
 			delete(rawMsg, key)
 		case "allowProtectedAppendWritesAll":
-			err = unpopulate(val, &u.AllowProtectedAppendWritesAll)
+			err = unpopulate(val, "AllowProtectedAppendWritesAll", &u.AllowProtectedAppendWritesAll)
 			delete(rawMsg, key)
 		case "immutabilityPeriodSinceCreationInDays":
-			err = unpopulate(val, &u.ImmutabilityPeriodSinceCreationInDays)
+			err = unpopulate(val, "ImmutabilityPeriodSinceCreationInDays", &u.ImmutabilityPeriodSinceCreationInDays)
 			delete(rawMsg, key)
 		case "objectIdentifier":
-			err = unpopulate(val, &u.ObjectIdentifier)
+			err = unpopulate(val, "ObjectIdentifier", &u.ObjectIdentifier)
 			delete(rawMsg, key)
 		case "tenantId":
-			err = unpopulate(val, &u.TenantID)
+			err = unpopulate(val, "TenantID", &u.TenantID)
 			delete(rawMsg, key)
 		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &u.Timestamp)
+			err = unpopulateTimeRFC3339(val, "Timestamp", &u.Timestamp)
 			delete(rawMsg, key)
 		case "update":
-			err = unpopulate(val, &u.Update)
+			err = unpopulate(val, "Update", &u.Update)
 			delete(rawMsg, key)
 		case "upn":
-			err = unpopulate(val, &u.Upn)
+			err = unpopulate(val, "Upn", &u.Upn)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UsageListResult.
-func (u UsageListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {
@@ -1758,9 +1540,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

@@ -24,14 +24,14 @@ func ExampleTransparentDataEncryptionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewTransparentDataEncryptionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewTransparentDataEncryptionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"security-tde-resourcegroup",
+		"securitytde",
+		"testdb",
 		armsql.TransparentDataEncryptionNameCurrent,
 		nil)
 	if err != nil {
@@ -48,14 +48,14 @@ func ExampleTransparentDataEncryptionsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewTransparentDataEncryptionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewTransparentDataEncryptionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"securitytde-42-rg",
+		"securitytde-42",
+		"testdb",
 		armsql.TransparentDataEncryptionNameCurrent,
 		armsql.LogicalDatabaseTransparentDataEncryption{
 			Properties: &armsql.TransparentDataEncryptionProperties{
@@ -77,19 +77,18 @@ func ExampleTransparentDataEncryptionsClient_NewListByDatabasePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewTransparentDataEncryptionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewTransparentDataEncryptionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+	pager := client.NewListByDatabasePager("security-tde-resourcegroup",
+		"securitytde",
+		"testdb",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

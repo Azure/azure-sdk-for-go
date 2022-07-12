@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
@@ -26,14 +24,14 @@ func ExampleTaskRunsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTaskRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTaskRunsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-run-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myRun",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,22 +47,22 @@ func ExampleTaskRunsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTaskRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTaskRunsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-run-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myRun",
 		armcontainerregistry.TaskRun{
 			Properties: &armcontainerregistry.TaskRunProperties{
-				ForceUpdateTag: to.Ptr("<force-update-tag>"),
+				ForceUpdateTag: to.Ptr("test"),
 				RunRequest: &armcontainerregistry.EncodedTaskRunRequest{
-					Type:                 to.Ptr("<type>"),
+					Type:                 to.Ptr("EncodedTaskRunRequest"),
 					Credentials:          &armcontainerregistry.Credentials{},
-					EncodedTaskContent:   to.Ptr("<encoded-task-content>"),
-					EncodedValuesContent: to.Ptr("<encoded-values-content>"),
+					EncodedTaskContent:   to.Ptr("c3RlcHM6IAogIC0gY21kOiB7eyAuVmFsdWVzLmNvbW1hbmQgfX0K"),
+					EncodedValuesContent: to.Ptr("Y29tbWFuZDogYmFzaCBlY2hvIHt7LlJ1bi5SZWdpc3RyeX19Cg=="),
 					Platform: &armcontainerregistry.PlatformProperties{
 						Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
 						OS:           to.Ptr(armcontainerregistry.OSLinux),
@@ -73,11 +71,11 @@ func ExampleTaskRunsClient_BeginCreate() {
 				},
 			},
 		},
-		&armcontainerregistry.TaskRunsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -92,19 +90,19 @@ func ExampleTaskRunsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTaskRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTaskRunsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-run-name>",
-		&armcontainerregistry.TaskRunsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myRegistry",
+		"myRun",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,23 +115,23 @@ func ExampleTaskRunsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTaskRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTaskRunsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-run-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myRun",
 		armcontainerregistry.TaskRunUpdateParameters{
 			Properties: &armcontainerregistry.TaskRunPropertiesUpdateParameters{
-				ForceUpdateTag: to.Ptr("<force-update-tag>"),
+				ForceUpdateTag: to.Ptr("test"),
 				RunRequest: &armcontainerregistry.EncodedTaskRunRequest{
-					Type:                 to.Ptr("<type>"),
+					Type:                 to.Ptr("EncodedTaskRunRequest"),
 					IsArchiveEnabled:     to.Ptr(true),
 					Credentials:          &armcontainerregistry.Credentials{},
-					EncodedTaskContent:   to.Ptr("<encoded-task-content>"),
-					EncodedValuesContent: to.Ptr("<encoded-values-content>"),
+					EncodedTaskContent:   to.Ptr("c3RlcHM6IAogIC0gY21kOiB7eyAuVmFsdWVzLmNvbW1hbmQgfX0K"),
+					EncodedValuesContent: to.Ptr("Y29tbWFuZDogYmFzaCBlY2hvIHt7LlJ1bi5SZWdpc3RyeX19Cg=="),
 					Platform: &armcontainerregistry.PlatformProperties{
 						Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
 						OS:           to.Ptr(armcontainerregistry.OSLinux),
@@ -142,11 +140,11 @@ func ExampleTaskRunsClient_BeginUpdate() {
 				},
 			},
 		},
-		&armcontainerregistry.TaskRunsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -161,14 +159,14 @@ func ExampleTaskRunsClient_GetDetails() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTaskRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTaskRunsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDetails(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-run-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myRun",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -184,18 +182,17 @@ func ExampleTaskRunsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTaskRunsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTaskRunsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<registry-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myRegistry",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

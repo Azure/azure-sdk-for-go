@@ -38,7 +38,7 @@ func NewSchedulesClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSchedulesClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Operation to create or update a lab schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
@@ -103,7 +104,7 @@ func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -118,26 +119,28 @@ func (client *SchedulesClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // BeginDelete - Operation to delete a schedule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
 // options - SchedulesClientBeginDeleteOptions contains the optional parameters for the SchedulesClient.BeginDelete method.
-func (client *SchedulesClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*armruntime.Poller[SchedulesClientDeleteResponse], error) {
+func (client *SchedulesClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*runtime.Poller[SchedulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, scheduleName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SchedulesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SchedulesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SchedulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SchedulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Operation to delete a schedule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *SchedulesClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, scheduleName, options)
 	if err != nil {
@@ -179,12 +182,13 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns the properties of a lab Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
@@ -230,7 +234,7 @@ func (client *SchedulesClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -245,11 +249,12 @@ func (client *SchedulesClient) getHandleResponse(resp *http.Response) (Schedules
 
 // NewListByLabPager - Returns a list of all schedules for a lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // options - SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.ListByLab method.
 func (client *SchedulesClient) NewListByLabPager(resourceGroupName string, labName string, options *SchedulesClientListByLabOptions) *runtime.Pager[SchedulesClientListByLabResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SchedulesClientListByLabResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SchedulesClientListByLabResponse]{
 		More: func(page SchedulesClientListByLabResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -301,7 +306,7 @@ func (client *SchedulesClient) listByLabCreateRequest(ctx context.Context, resou
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -316,6 +321,7 @@ func (client *SchedulesClient) listByLabHandleResponse(resp *http.Response) (Sch
 
 // Update - Operation to update a lab schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
@@ -362,7 +368,7 @@ func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

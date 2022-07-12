@@ -24,13 +24,13 @@ func ExampleAPITagDescriptionClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPITagDescriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPITagDescriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f3",
 		&armapimanagement.APITagDescriptionClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -39,7 +39,6 @@ func ExampleAPITagDescriptionClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,15 +54,15 @@ func ExampleAPITagDescriptionClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPITagDescriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPITagDescriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<tag-description-id>",
+		"rg1",
+		"apimService1",
+		"59d6bb8f1f7fab13dc67ec9b",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,15 +76,15 @@ func ExampleAPITagDescriptionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPITagDescriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPITagDescriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<tag-description-id>",
+		"rg1",
+		"apimService1",
+		"59d6bb8f1f7fab13dc67ec9b",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,20 +100,20 @@ func ExampleAPITagDescriptionClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPITagDescriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPITagDescriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<tag-description-id>",
+		"rg1",
+		"apimService1",
+		"5931a75ae4bbd512a88c680b",
+		"tagId1",
 		armapimanagement.TagDescriptionCreateParameters{
 			Properties: &armapimanagement.TagDescriptionBaseProperties{
-				Description:             to.Ptr("<description>"),
-				ExternalDocsDescription: to.Ptr("<external-docs-description>"),
-				ExternalDocsURL:         to.Ptr("<external-docs-url>"),
+				Description:             to.Ptr("Some description that will be displayed for operation's tag if the tag is assigned to operation of the API"),
+				ExternalDocsDescription: to.Ptr("Description of the external docs resource"),
+				ExternalDocsURL:         to.Ptr("http://some.url/additionaldoc"),
 			},
 		},
 		&armapimanagement.APITagDescriptionClientCreateOrUpdateOptions{IfMatch: nil})
@@ -132,16 +131,16 @@ func ExampleAPITagDescriptionClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPITagDescriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPITagDescriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<tag-description-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"59d5b28d1f7fab116c282650",
+		"59d5b28e1f7fab116402044e",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

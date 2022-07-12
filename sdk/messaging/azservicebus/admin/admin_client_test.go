@@ -4,10 +4,15 @@
 package admin
 
 import (
+	"bytes"
 	"context"
+	cryptoRand "crypto/rand"
+	"encoding/hex"
+	"encoding/xml"
 	"fmt"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 	"sync"
 	"testing"
@@ -17,6 +22,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/stretchr/testify/require"
@@ -75,6 +82,8 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 
 	es := EntityStatusReceiveDisabled
 
+	authRules := createAuthorizationRulesForTest(t)
+
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
 	_, err = adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
@@ -94,6 +103,7 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 			Status:                              &es,
 			AutoDeleteOnIdle:                    MaxTimeSpanForTests,
 			UserMetadata:                        to.Ptr("some metadata"),
+			AuthorizationRules:                  authRules,
 		},
 	})
 	require.NoError(t, err)
@@ -118,6 +128,8 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 		Status:                              &es,
 		AutoDeleteOnIdle:                    MaxTimeSpanForTests,
 		UserMetadata:                        to.Ptr("some metadata"),
+		AuthorizationRules:                  authRules,
+		MaxMessageSizeInKilobytes:           to.Ptr(int64(256)), // the default size for standard.
 	}, resp.QueueProperties)
 
 	runtimeResp, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName, nil)
@@ -133,20 +145,33 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 	require.Zero(t, runtimeResp.TotalMessageCount)
 }
 
-func TestAdminClient_CreateQueue(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+func TestAdminClient_CreateQueue_Standard(t *testing.T) {
+	testCreateQueue(t, false)
+}
+
+func TestAdminClient_CreateQueue_Premium(t *testing.T) {
+	testCreateQueue(t, true)
+}
+
+func testCreateQueue(t *testing.T, isPremium bool) {
+	var cs string
+
+	if isPremium {
+		cs = test.GetConnectionStringForPremiumSB(t)
+	} else {
+		cs = test.GetConnectionString(t)
+	}
+
+	adminClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
 	es := EntityStatusReceiveDisabled
-	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
+
+	createQueueOptions := &CreateQueueOptions{
 		Properties: &QueueProperties{
-			LockDuration: to.Ptr("PT45S"),
-			// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
-			// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
-			EnablePartitioning:                  to.Ptr(true),
-			MaxSizeInMegabytes:                  to.Ptr(int32(4096)),
+			LockDuration:                        to.Ptr("PT45S"),
 			RequiresDuplicateDetection:          to.Ptr(true),
 			RequiresSession:                     to.Ptr(true),
 			DefaultMessageTimeToLive:            to.Ptr("PT6H"),
@@ -157,18 +182,32 @@ func TestAdminClient_CreateQueue(t *testing.T) {
 			Status:                              &es,
 			AutoDeleteOnIdle:                    to.Ptr("PT10M"),
 		},
-	})
+	}
+
+	if isPremium {
+		createQueueOptions.Properties.MaxMessageSizeInKilobytes = to.Ptr(int64(102400))
+
+		// no partitioning in premium
+		createQueueOptions.Properties.EnablePartitioning = to.Ptr(false)
+	} else {
+		// can't update message size in standard
+		createQueueOptions.Properties.MaxMessageSizeInKilobytes = nil
+
+		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
+		// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
+		createQueueOptions.Properties.EnablePartitioning = to.Ptr(true)
+		createQueueOptions.Properties.MaxSizeInMegabytes = to.Ptr(int32(4096))
+	}
+
+	createResp, err := adminClient.CreateQueue(context.Background(), queueName, createQueueOptions)
 	require.NoError(t, err)
 
 	defer func() {
 		deleteQueue(t, adminClient, queueName)
 	}()
 
-	require.EqualValues(t, QueueProperties{
-		LockDuration: to.Ptr("PT45S"),
-		// ie: this response was from a partitioned queue so the size is the original max size * # of partitions
-		EnablePartitioning:                  to.Ptr(true),
-		MaxSizeInMegabytes:                  to.Ptr(int32(16 * 4096)),
+	expectedQueueProperties := QueueProperties{
+		LockDuration:                        to.Ptr("PT45S"),
 		RequiresDuplicateDetection:          to.Ptr(true),
 		RequiresSession:                     to.Ptr(true),
 		DefaultMessageTimeToLive:            to.Ptr("PT6H"),
@@ -178,12 +217,33 @@ func TestAdminClient_CreateQueue(t *testing.T) {
 		EnableBatchedOperations:             to.Ptr(false),
 		Status:                              &es,
 		AutoDeleteOnIdle:                    to.Ptr("PT10M"),
-	}, createResp.QueueProperties)
+	}
+
+	if isPremium {
+		expectedQueueProperties.MaxMessageSizeInKilobytes = to.Ptr(int64(102400))
+
+		expectedQueueProperties.EnablePartitioning = to.Ptr(false)
+		expectedQueueProperties.MaxSizeInMegabytes = to.Ptr(int32(1024))
+	} else {
+		// (the message size for SB Standard)
+		expectedQueueProperties.MaxMessageSizeInKilobytes = to.Ptr(int64(256))
+
+		expectedQueueProperties.EnablePartitioning = to.Ptr(true)
+		expectedQueueProperties.MaxSizeInMegabytes = to.Ptr(int32(16 * 4096))
+	}
+
+	require.EqualValues(t, expectedQueueProperties, createResp.QueueProperties)
 
 	getResp, err := adminClient.GetQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, getResp.QueueProperties, createResp.QueueProperties)
+
+	// ensure we can round-trip
+	updateResp, err := adminClient.UpdateQueue(context.Background(), queueName, getResp.QueueProperties, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t, expectedQueueProperties, updateResp.QueueProperties)
 }
 
 func TestAdminClient_UpdateQueue(t *testing.T) {
@@ -199,10 +259,13 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 	}()
 
 	createdProps.MaxDeliveryCount = to.Ptr(int32(101))
+	createdProps.QueueProperties.AuthorizationRules = createAuthorizationRulesForTest(t)
+
 	updatedProps, err := adminClient.UpdateQueue(context.Background(), queueName, createdProps.QueueProperties, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, 101, *updatedProps.MaxDeliveryCount)
+	require.EqualValues(t, createdProps.QueueProperties.AuthorizationRules, updatedProps.AuthorizationRules)
 
 	// try changing a value that's not allowed
 	updatedProps.RequiresSession = to.Ptr(true)
@@ -240,7 +303,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 	}
 
 	// we skipped the first queue so it shouldn't come back in the results.
-	pager := adminClient.ListQueues(nil)
+	pager := adminClient.NewListQueuesPager(nil)
 	all := map[string]QueueItem{}
 
 	for pager.More() {
@@ -282,7 +345,7 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 	}
 
 	// we skipped the first queue so it shouldn't come back in the results.
-	pager := adminClient.ListQueuesRuntimeProperties(&ListQueuesRuntimePropertiesOptions{
+	pager := adminClient.NewListQueuesRuntimePropertiesPager(&ListQueuesRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]QueueRuntimePropertiesItem{}
@@ -359,26 +422,33 @@ func TestAdminClient_ISO8601StringToDuration(t *testing.T) {
 	require.EqualValues(t, utils.MaxTimeDuration, *duration)
 }
 
-func TestAdminClient_TopicAndSubscription(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+func TestAdminClient_TopicAndSubscription_Standard(t *testing.T) {
+	testTopicCreation(t, false)
+}
+
+func TestAdminClient_TopicAndSubscription_Premium(t *testing.T) {
+	testTopicCreation(t, true)
+}
+
+func testTopicCreation(t *testing.T, isPremium bool) {
+	var cs string
+
+	if isPremium {
+		cs = test.GetConnectionStringForPremiumSB(t)
+	} else {
+		cs = test.GetConnectionString(t)
+	}
+
+	adminClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
-	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
-
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
-	require.NoError(t, err)
-
-	defer deleteQueue(t, adminClient, forwardToQueueName)
 
 	status := EntityStatusActive
 
-	// check topic properties, existence
-	addResp, err := adminClient.CreateTopic(context.Background(), topicName, &CreateTopicOptions{
+	createTopicOptions := &CreateTopicOptions{
 		Properties: &TopicProperties{
-			EnablePartitioning:                  to.Ptr(true),
-			MaxSizeInMegabytes:                  to.Ptr(int32(2048)),
 			RequiresDuplicateDetection:          to.Ptr(true),
 			DefaultMessageTimeToLive:            to.Ptr("PT3M"),
 			DuplicateDetectionHistoryTimeWindow: to.Ptr("PT4M"),
@@ -387,14 +457,31 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 			AutoDeleteOnIdle:                    to.Ptr("PT7M"),
 			SupportOrdering:                     to.Ptr(true),
 			UserMetadata:                        to.Ptr("user metadata"),
-		}})
+		},
+	}
+
+	if isPremium {
+		// premium doesn't support partitioning.
+		createTopicOptions.Properties.EnablePartitioning = to.Ptr(false)
+
+		// premium allows you to update the max message size
+		createTopicOptions.Properties.MaxMessageSizeInKilobytes = to.Ptr(int64(102400))
+	} else {
+		createTopicOptions.Properties.EnablePartitioning = to.Ptr(true)
+		createTopicOptions.Properties.MaxSizeInMegabytes = to.Ptr(int32(2048))
+
+		// standard can't change MaxMessageSizeInKilobytes
+		createTopicOptions.Properties.MaxMessageSizeInKilobytes = nil
+	}
+
+	// check topic properties, existence
+	addResp, err := adminClient.CreateTopic(context.Background(), topicName, createTopicOptions)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
 
-	require.EqualValues(t, TopicProperties{
-		EnablePartitioning:                  to.Ptr(true),
-		MaxSizeInMegabytes:                  to.Ptr(int32(16 * 2048)), // enabling partitioning increases our max size because of the 16 partition),
+	expectedTopicProps := TopicProperties{
+		MaxSizeInMegabytes:                  to.Ptr(int32(1024)),
 		RequiresDuplicateDetection:          to.Ptr(true),
 		DefaultMessageTimeToLive:            to.Ptr("PT3M"),
 		DuplicateDetectionHistoryTimeWindow: to.Ptr("PT4M"),
@@ -403,23 +490,29 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		AutoDeleteOnIdle:                    to.Ptr("PT7M"),
 		SupportOrdering:                     to.Ptr(true),
 		UserMetadata:                        to.Ptr("user metadata"),
-	}, addResp.TopicProperties)
+	}
+
+	if isPremium {
+		expectedTopicProps.MaxMessageSizeInKilobytes = to.Ptr(int64(102400))
+
+		// no partitioning in premium.
+		expectedTopicProps.EnablePartitioning = to.Ptr(false)
+		expectedTopicProps.MaxSizeInMegabytes = to.Ptr(int32(1024))
+	} else {
+		expectedTopicProps.MaxMessageSizeInKilobytes = to.Ptr(int64(256))
+
+		// enabling partitioning increases our max size because of the 16 partition),
+		expectedTopicProps.EnablePartitioning = to.Ptr(true)
+		expectedTopicProps.MaxSizeInMegabytes = to.Ptr(int32(16 * 2048))
+
+	}
+
+	require.EqualValues(t, expectedTopicProps, addResp.TopicProperties)
 
 	getResp, err := adminClient.GetTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, TopicProperties{
-		EnablePartitioning:                  to.Ptr(true),
-		MaxSizeInMegabytes:                  to.Ptr(int32(16 * 2048)), // enabling partitioning increases our max size because of the 16 partition),
-		RequiresDuplicateDetection:          to.Ptr(true),
-		DefaultMessageTimeToLive:            to.Ptr("PT3M"),
-		DuplicateDetectionHistoryTimeWindow: to.Ptr("PT4M"),
-		EnableBatchedOperations:             to.Ptr(true),
-		Status:                              &status,
-		AutoDeleteOnIdle:                    to.Ptr("PT7M"),
-		SupportOrdering:                     to.Ptr(true),
-		UserMetadata:                        to.Ptr("user metadata"),
-	}, getResp.TopicProperties)
+	require.EqualValues(t, expectedTopicProps, getResp.TopicProperties)
 
 	runtimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
 	require.NoError(t, err)
@@ -440,11 +533,9 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 			EnableDeadLetteringOnFilterEvaluationExceptions: to.Ptr(false),
 			MaxDeliveryCount:                                to.Ptr(int32(11)),
 			Status:                                          &status,
-			// ForwardTo:                     &forwardToQueueName,
-			// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
-			EnableBatchedOperations: to.Ptr(false),
-			AutoDeleteOnIdle:        to.Ptr("PT11M"),
-			UserMetadata:            to.Ptr("user metadata"),
+			EnableBatchedOperations:                         to.Ptr(false),
+			AutoDeleteOnIdle:                                to.Ptr("PT11M"),
+			UserMetadata:                                    to.Ptr("user metadata"),
 		},
 	})
 	require.NoError(t, err)
@@ -459,12 +550,63 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		EnableDeadLetteringOnFilterEvaluationExceptions: to.Ptr(false),
 		MaxDeliveryCount:                                to.Ptr(int32(11)),
 		Status:                                          &status,
-		// ForwardTo:                     &forwardToQueueName,
-		// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
-		EnableBatchedOperations: to.Ptr(false),
-		AutoDeleteOnIdle:        to.Ptr("PT11M"),
-		UserMetadata:            to.Ptr("user metadata"),
+		EnableBatchedOperations:                         to.Ptr(false),
+		AutoDeleteOnIdle:                                to.Ptr("PT11M"),
+		UserMetadata:                                    to.Ptr("user metadata"),
 	}, addSubWithPropsResp.SubscriptionProperties)
+}
+
+func TestAdminClient_Forwarding(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
+	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
+	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
+
+	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
+	require.NoError(t, err)
+
+	defer deleteQueue(t, adminClient, forwardToQueueName)
+
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
+	require.NoError(t, err)
+
+	defer deleteTopic(t, adminClient, topicName)
+
+	parsed, err := conn.ParsedConnectionFromStr(test.GetConnectionString(t))
+	require.NoError(t, err)
+	forwardToName := to.Ptr(fmt.Sprintf("sb://%s/%s", parsed.Namespace, forwardToQueueName))
+
+	_, err = adminClient.CreateSubscription(context.Background(), topicName, "sub1", &CreateSubscriptionOptions{
+		Properties: &SubscriptionProperties{
+			ForwardTo:                     forwardToName,
+			ForwardDeadLetteredMessagesTo: forwardToName,
+		},
+	})
+	require.NoError(t, err)
+
+	sub, err := adminClient.GetSubscription(context.Background(), topicName, "sub1", nil)
+	require.NoError(t, err)
+
+	require.Equal(t, forwardToName, sub.ForwardTo)
+	require.Equal(t, forwardToName, sub.ForwardDeadLetteredMessagesTo)
+
+	_, err = adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
+		Properties: &QueueProperties{
+			ForwardTo:                     forwardToName,
+			ForwardDeadLetteredMessagesTo: forwardToName,
+		},
+	})
+	require.NoError(t, err)
+
+	_, err = adminClient.GetQueue(context.Background(), queueName, nil)
+	require.NoError(t, err)
+
+	defer deleteQueue(t, adminClient, queueName)
+
+	require.Equal(t, forwardToName, sub.ForwardTo)
+	require.Equal(t, forwardToName, sub.ForwardDeadLetteredMessagesTo)
 }
 
 func TestAdminClient_UpdateTopic(t *testing.T) {
@@ -478,10 +620,17 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 	defer deleteTopic(t, adminClient, topicName)
 
 	addResp.AutoDeleteOnIdle = to.Ptr("PT11M")
+	addResp.AuthorizationRules = createAuthorizationRulesForTest(t)
+
 	updateResp, err := adminClient.UpdateTopic(context.Background(), topicName, addResp.TopicProperties, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "PT11M", *updateResp.AutoDeleteOnIdle)
+	require.EqualValues(t, addResp.AuthorizationRules, updateResp.AuthorizationRules)
+
+	getResp, err := adminClient.GetTopic(context.Background(), topicName, nil)
+	require.NoError(t, err)
+	require.Equal(t, getResp.TopicProperties, updateResp.TopicProperties)
 
 	// try changing a value that's not allowed
 	updateResp.EnablePartitioning = to.Ptr(true)
@@ -527,7 +676,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 	wg.Wait()
 
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListTopics(&ListTopicsOptions{
+	pager := adminClient.NewListTopicsPager(&ListTopicsOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]TopicItem{}
@@ -580,7 +729,7 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 	times := 0
 
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListTopicsRuntimeProperties(&ListTopicsRuntimePropertiesOptions{
+	pager := adminClient.NewListTopicsRuntimePropertiesPager(&ListTopicsRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]TopicRuntimePropertiesItem{}
@@ -640,7 +789,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	}
 
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListSubscriptions(topicName, &ListSubscriptionsOptions{
+	pager := adminClient.NewListSubscriptionsPager(topicName, &ListSubscriptionsOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]SubscriptionPropertiesItem{}
@@ -696,7 +845,7 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 	}
 
 	// we skipped the first subscription so it shouldn't come back in the results.
-	pager := adminClient.ListSubscriptionsRuntimeProperties(topicName, &ListSubscriptionsRuntimePropertiesOptions{
+	pager := adminClient.NewListSubscriptionsRuntimePropertiesPager(topicName, &ListSubscriptionsRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]SubscriptionRuntimePropertiesItem{}
@@ -790,7 +939,7 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	require.ErrorAs(t, err, &re)
 	require.EqualValues(t, 401, re.StatusCode)
 
-	pager := testData.Client.ListQueues(nil)
+	pager := testData.Client.NewListQueuesPager(nil)
 	page, err := pager.NextPage(context.Background())
 	require.Empty(t, page.Queues)
 	require.Contains(t, err.Error(), "Manage,EntityRead claims required for this operation")
@@ -834,7 +983,7 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
-	pager := testData.Client.ListTopics(nil)
+	pager := testData.Client.NewListTopicsPager(nil)
 	_, err = pager.NextPage(context.Background())
 	require.Contains(t, err.Error(), ">Manage,EntityRead claims required for this operation")
 	require.ErrorAs(t, err, &asResponseErr)
@@ -915,7 +1064,7 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 	_, err = testData.Client.GetSubscription(ctx, testData.TopicName, testData.SubName, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
 
-	pager := testData.Client.ListSubscriptions(testData.TopicName, nil)
+	pager := testData.Client.NewListSubscriptionsPager(testData.TopicName, nil)
 	_, err = pager.NextPage(context.Background())
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
 
@@ -929,12 +1078,461 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'DeleteSubscription'")
 }
 
+func TestAdminClient_CreateRules(t *testing.T) {
+	adminClient, topicName := createTestSub(t)
+	defer func() {
+		_, err := adminClient.DeleteTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
+	}()
+
+	t.Run("ruleThatDoesNotExist", func(t *testing.T) {
+		getResp, err := adminClient.GetRule(context.Background(), topicName, "sub", "non-existent-rule", nil)
+		require.NoError(t, err)
+		require.Nil(t, getResp)
+	})
+
+	// (simple all in one - create the rule, update the rule, get the rule and make sure it
+	// all does the right stuff.
+	assertRuleCRUD := func(t *testing.T, rp RuleProperties) {
+		defer func() {
+			resp, err := adminClient.DeleteRule(context.Background(), topicName, "sub", rp.Name, nil)
+			require.NoError(t, err)
+			require.NotNil(t, resp)
+		}()
+
+		createdRule, err := adminClient.CreateRule(context.Background(), topicName, "sub", &CreateRuleOptions{
+			Name:   &rp.Name,
+			Filter: rp.Filter,
+			Action: rp.Action,
+		})
+		require.NoError(t, err, fmt.Sprintf("Created rule %s", rp.Name))
+
+		if rp.Filter == nil {
+			// Service Bus will automatically add in a 'TrueFilter' to our
+			// rule. We'll add it to our local copy just for assert purposes.
+			rp.Filter = &TrueFilter{}
+		}
+
+		require.Equal(t, createdRule, CreateRuleResponse{
+			RuleProperties: rp,
+		}, fmt.Sprintf("Created rule %s matches our rule", rp.Name))
+
+		updateResp, err := adminClient.UpdateRule(context.Background(), topicName, "sub", createdRule.RuleProperties)
+		require.NoError(t, err, fmt.Sprintf("Updated rule %s succeeds", rp.Name))
+
+		require.Equal(t, updateResp, UpdateRuleResponse{
+			RuleProperties: rp,
+		}, fmt.Sprintf("Updated rule %s matches our rule", rp.Name))
+
+		getResp, err := adminClient.GetRule(context.Background(), topicName, "sub", rp.Name, nil)
+		require.NoError(t, err, fmt.Sprintf("Get rule %s succeeds", rp.Name))
+
+		require.Equal(t, getResp, &GetRuleResponse{
+			RuleProperties: updateResp.RuleProperties,
+		}, fmt.Sprintf("Get rule %s matches our rule", rp.Name))
+	}
+
+	t.Run("ruleWithNoActionOrFilter", func(t *testing.T) {
+		assertRuleCRUD(t, RuleProperties{
+			Name: "ruleWithNoActionOrFilter",
+		})
+	})
+
+	t.Run("ruleWithFalseFilter", func(t *testing.T) {
+		assertRuleCRUD(t, RuleProperties{
+			Name:   "ruleWithFalseFilter",
+			Filter: &FalseFilter{},
+		})
+	})
+
+	t.Run("ruleWithTrueFilter", func(t *testing.T) {
+		assertRuleCRUD(t, RuleProperties{
+			Name:   "ruleWithTrueFilter",
+			Filter: &FalseFilter{},
+		})
+	})
+
+	t.Run("ruleWithSQLFilterNoParams", func(t *testing.T) {
+		assertRuleCRUD(t, RuleProperties{
+			Name: "ruleWithSQLFilterNoParams",
+			Filter: &SQLFilter{
+				Expression: "MessageID='hello'",
+			},
+		})
+	})
+
+	t.Run("ruleWithSQLFilterWithParams", func(t *testing.T) {
+		dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
+		require.NoError(t, err)
+
+		assertRuleCRUD(t, RuleProperties{
+			Name: "ruleWithSQLFilterWithParams",
+			Filter: &SQLFilter{
+				Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
+				Parameters: map[string]interface{}{
+					"@stringVar":   "hello world",
+					"@intVar":      int64(100),
+					"@floatVar":    float64(100.1),
+					"@dateTimeVar": dt,
+					"@boolVar":     true,
+				},
+			},
+		})
+	})
+
+	t.Run("ruleWithCorrelationFilter", func(t *testing.T) {
+		assertRuleCRUD(t, RuleProperties{
+			Name: "ruleWithCorrelationFilter",
+			Filter: &CorrelationFilter{
+				ContentType:      to.Ptr("application/xml"),
+				CorrelationID:    to.Ptr("correlationID"),
+				MessageID:        to.Ptr("messageID"),
+				ReplyTo:          to.Ptr("replyTo"),
+				ReplyToSessionID: to.Ptr("replyToSessionID"),
+				SessionID:        to.Ptr("sessionID"),
+				Subject:          to.Ptr("subject"),
+				To:               to.Ptr("to"),
+				ApplicationProperties: map[string]interface{}{
+					"CustomProp1": "hello",
+				},
+			},
+		})
+	})
+
+	t.Run("ruleWithAction", func(t *testing.T) {
+		dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
+		require.NoError(t, err)
+
+		assertRuleCRUD(t, RuleProperties{
+			Name: "ruleWithAction",
+			Action: &SQLAction{
+				Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
+				Parameters: map[string]interface{}{
+					"@stringVar":   "hello world",
+					"@intVar":      int64(100),
+					"@floatVar":    float64(100.1),
+					"@dateTimeVar": dt,
+					"@boolVar":     true,
+				},
+			},
+		})
+	})
+
+	t.Run("ruleWithFilterAndAction", func(t *testing.T) {
+		dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
+		require.NoError(t, err)
+
+		assertRuleCRUD(t, RuleProperties{
+			Name: "ruleWithFilterAndAction",
+			Filter: &SQLFilter{
+				Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
+				Parameters: map[string]interface{}{
+					"@stringVar":   "hello world",
+					"@intVar":      int64(100),
+					"@floatVar":    float64(100.1),
+					"@dateTimeVar": dt,
+					"@boolVar":     true,
+				},
+			},
+			Action: &SQLAction{
+				Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
+				Parameters: map[string]interface{}{
+					"@stringVar":   "hello world",
+					"@intVar":      int64(100),
+					"@floatVar":    float64(100.1),
+					"@dateTimeVar": dt,
+					"@boolVar":     true,
+				},
+			},
+		})
+	})
+}
+
+func TestAdminClient_ListRulesWithOnlyDefault(t *testing.T) {
+	adminClient, topicName := createTestSub(t)
+	defer func() {
+		_, err := adminClient.DeleteTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
+	}()
+
+	rulesPager := adminClient.NewListRulesPager(topicName, "sub", nil)
+	require.True(t, rulesPager.More())
+	resp, err := rulesPager.NextPage(context.Background())
+	require.NoError(t, err)
+
+	require.Equal(t, []RuleProperties{
+		{Name: "$Default", Filter: &TrueFilter{}},
+	}, resp.Rules)
+
+	// documenting this behavior - we let the service dictate the
+	// default page size so we don't know (yet) if there are any more results
+	// remaining.
+	require.True(t, rulesPager.More())
+
+	resp, err = rulesPager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.Empty(t, resp)
+
+	require.False(t, rulesPager.More())
+}
+
+func TestAdminClient_ListRules_MaxPageSize(t *testing.T) {
+	adminClient, topicName := createTestSub(t)
+	defer func() {
+		_, err := adminClient.DeleteTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
+	}()
+
+	for _, rule := range []string{"rule1", "rule2", "rule3"} {
+		_, err := adminClient.CreateRule(context.Background(), topicName, "sub", &CreateRuleOptions{
+			Name: to.Ptr(rule),
+			Filter: &SQLFilter{
+				Expression: fmt.Sprintf("MessageID=%s", rule),
+			},
+		})
+		require.NoError(t, err)
+
+		defer func(rule string) {
+			_, err := adminClient.DeleteRule(context.Background(), topicName, "sub", rule, nil)
+			require.NoError(t, err)
+		}(rule)
+	}
+
+	rulesPager := adminClient.NewListRulesPager(topicName, "sub", &ListRulesOptions{
+		// there are actually 4 rules on the subscription right now - the 3 I just added
+		// _and_ the $Default rule, which was auto-generated when the subscription
+		// was created.
+		MaxPageSize: 3,
+	})
+
+	var all []RuleProperties
+
+	// first page
+	require.True(t, rulesPager.More())
+	resp, err := rulesPager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, 3, len(resp.Rules))
+
+	all = append(all, resp.Rules...)
+
+	// second page
+	require.True(t, rulesPager.More())
+	resp, err = rulesPager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, 1, len(resp.Rules))
+
+	// since we explicitly configured a page size we know that this one came back
+	// light, so we know this is also the last page.
+	require.False(t, rulesPager.More())
+
+	all = append(all, resp.Rules...)
+
+	sort.Slice(all, func(i, j int) bool {
+		return strings.Compare(all[i].Name, all[j].Name) < 0
+	})
+
+	require.Equal(t, []RuleProperties{
+		{
+			Name:   "$Default",
+			Filter: &TrueFilter{},
+		},
+		{
+			Name: "rule1",
+			Filter: &SQLFilter{
+				Expression: "MessageID=rule1",
+			},
+		},
+		{
+			Name: "rule2",
+			Filter: &SQLFilter{
+				Expression: "MessageID=rule2",
+			},
+		},
+		{
+			Name: "rule3",
+			Filter: &SQLFilter{
+				Expression: "MessageID=rule3",
+			},
+		},
+	}, all)
+}
+
+func TestAdminClient_GetDefaultRule(t *testing.T) {
+	adminClient, topicName := createTestSub(t)
+	defer func() {
+		_, err := adminClient.DeleteTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
+	}()
+
+	getResp, err := adminClient.GetRule(context.Background(), topicName, "sub", "$Default", nil)
+	require.NoError(t, err)
+
+	// by default a subscription has a filter that lets every
+	// message through (ie, the TrueFilter)
+	require.Equal(t, getResp, &GetRuleResponse{
+		RuleProperties: RuleProperties{
+			Name:   "$Default",
+			Filter: &TrueFilter{},
+		},
+	})
+
+	// switch to a filter that _rejects_ every message instead
+	getResp.RuleProperties.Filter = &FalseFilter{}
+
+	updateRuleResp, err := adminClient.UpdateRule(context.Background(), topicName, "sub", getResp.RuleProperties)
+	require.NoError(t, err)
+
+	require.Equal(t, updateRuleResp.RuleProperties, getResp.RuleProperties)
+}
+
+type emwrap struct {
+	inner atom.EntityManager
+}
+
+func (em *emwrap) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, options *atom.ExecuteOptions) (*http.Response, error) {
+	resp, err := em.inner.Put(ctx, entityPath, body, respObj, options)
+
+	if err != nil {
+		return resp, err
+	}
+
+	em.makeFilterAndActionUnknown(respObj)
+	return resp, err
+}
+
+func (em *emwrap) Delete(ctx context.Context, entityPath string) (*http.Response, error) {
+	return em.inner.Delete(ctx, entityPath)
+}
+func (em *emwrap) TokenProvider() auth.TokenProvider { return em.inner.TokenProvider() }
+
+func (em *emwrap) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
+	resp, err := em.inner.Get(ctx, entityPath, respObj)
+
+	if err != nil {
+		return resp, err
+	}
+
+	em.makeFilterAndActionUnknown(respObj)
+	return resp, err
+}
+
+func (*emwrap) makeFilterAndActionUnknown(respObj interface{}) {
+	switch actual := respObj.(type) {
+	case **atom.RuleEnvelope:
+		f := (*actual).Content.RuleDescription.Filter
+		f.Type = "PurposefullyChangedFilterType_" + f.Type
+
+		a := (*actual).Content.RuleDescription.Action
+		a.Type = "PurposefullyChangedActionType_" + a.Type
+	}
+}
+
+func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
+	// NOTE: This test is a little weird - we basically override all "known" type handling for filters and
+	// actions and force them to go through our "unknown" filter handling.
+	//
+	// This allows the service to potentially upgrade in the future without breaking older clients. They get a
+	// relatively primitive object but they won't accidentally delete or slice filters when doing updates.
+	//
+	// Also, if they're willing to deserialize the XML themselves they can interact with filters until they
+	// update their azservicebus dependency.
+
+	adminClient, topicName := createTestSub(t)
+	defer func() {
+		_, err := adminClient.DeleteTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
+	}()
+
+	dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
+	require.NoError(t, err)
+
+	rp := RuleProperties{
+		Name: "ruleWithFilterAndAction",
+		Filter: &SQLFilter{
+			Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
+			Parameters: map[string]interface{}{
+				"@stringVar":   "hello world",
+				"@intVar":      int64(100),
+				"@floatVar":    float64(100.1),
+				"@dateTimeVar": dt,
+				"@boolVar":     true,
+			},
+		},
+		Action: &SQLAction{
+			Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
+			Parameters: map[string]interface{}{
+				"@stringVar":   "hello world",
+				"@intVar":      int64(100),
+				"@floatVar":    float64(100.1),
+				"@dateTimeVar": dt,
+				"@boolVar":     true,
+			},
+		},
+	}
+
+	origEM := adminClient.em
+
+	adminClient.em = &emwrap{
+		inner: origEM,
+	}
+
+	createdRule, err := adminClient.CreateRule(context.Background(), topicName, "sub", &CreateRuleOptions{
+		Name:   &rp.Name,
+		Filter: rp.Filter,
+		Action: rp.Action,
+	})
+	require.NoError(t, err, fmt.Sprintf("Created rule %s", rp.Name))
+
+	urf := createdRule.Filter.(*UnknownRuleFilter)
+	require.Regexp(t, "^<Filter.*", string(urf.RawXML))
+	require.Regexp(t, "PurposefullyChangedFilterType_SqlFilter", urf.Type)
+
+	ura := createdRule.Action.(*UnknownRuleAction)
+	require.Regexp(t, "^<Action.*", string(ura.RawXML))
+	require.Regexp(t, "PurposefullyChangedActionType_SqlRuleAction", ura.Type)
+
+	// now we'll change them to what they actually should be. We're still testing the
+	// UnknownRule(Action|Filter) logic on PUT, we just did it in a round-a-bout way.
+	urf.RawXML = bytes.Replace(urf.RawXML, []byte("PurposefullyChangedFilterType_SqlFilter"), []byte("SqlFilter"), 1)
+	ura.RawXML = bytes.Replace(ura.RawXML, []byte("PurposefullyChangedActionType_SqlRuleAction"), []byte("SqlRuleAction"), 1)
+
+	_, err = adminClient.UpdateRule(context.Background(), topicName, "sub", createdRule.RuleProperties)
+	require.NoError(t, err, fmt.Sprintf("Updated rule %s succeeds", rp.Name))
+
+	adminClient.em = origEM
+
+	getResp, err := adminClient.GetRule(context.Background(), topicName, "sub", rp.Name, nil)
+	require.NoError(t, err, fmt.Sprintf("Get rule %s succeeds", rp.Name))
+
+	require.Equal(t, getResp, &GetRuleResponse{
+		RuleProperties: rp,
+	}, fmt.Sprintf("Get rule %s matches our rule", rp.Name))
+}
+
+func createTestSub(t *testing.T) (*Client, string) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	topicName := fmt.Sprintf("rule-topic-%X", time.Now().UnixNano())
+	_, err = adminClient.CreateTopic(context.Background(), topicName, &CreateTopicOptions{
+		Properties: &TopicProperties{
+			AutoDeleteOnIdle: to.Ptr("PT5M"),
+		},
+	})
+	require.NoError(t, err)
+
+	_, err = adminClient.CreateSubscription(context.Background(), topicName, "sub", nil)
+	require.NoError(t, err)
+
+	return adminClient, topicName
+}
+
 type entityManagerForPagerTests struct {
 	atom.EntityManager
 	getPaths []string
 }
 
-func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...atom.MiddlewareFunc) (*http.Response, error) {
+func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
 	em.getPaths = append(em.getPaths, entityPath)
 
 	switch feedPtrPtr := respObj.(type) {
@@ -1068,6 +1666,80 @@ func TestAdminClient_pagerWithFullPage(t *testing.T) {
 	}, em.getPaths)
 }
 
+func TestAdminClient_unknownActionSerde(t *testing.T) {
+	ura, err := newUnknownRuleActionFromActionDescription(&atom.ActionDescription{
+		Type:   "SomeNewAction",
+		RawXML: []byte("<someNewActionXML></someNewActionXML>"),
+		RawAttrs: []xml.Attr{
+			{
+				Name: xml.Name{
+					Local: "some-custom-attribute",
+				},
+				Value: "some-custom-attribute-value",
+			},
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t,
+		`<Action some-custom-attribute="some-custom-attribute-value" i:type="SomeNewAction">`+
+			`<someNewActionXML></someNewActionXML>`+
+			`</Action>`, string(ura.RawXML))
+	require.Equal(t, "SomeNewAction", ura.Type)
+
+	// and now the inverse
+	ad, err := convertUnknownRuleActionToActionDescription(ura)
+	require.NoError(t, err)
+
+	require.Equal(t, "<someNewActionXML></someNewActionXML>", string(ad.RawXML))
+
+	require.Equal(t, []xml.Attr{
+		{Name: xml.Name{Local: "some-custom-attribute"}, Value: "some-custom-attribute-value"}}, ad.RawAttrs)
+	require.Equal(t, "SomeNewAction", string(ad.Type))
+
+	_, err = convertUnknownRuleActionToActionDescription(&UnknownRuleAction{
+		Type:   "something",
+		RawXML: []byte("invalid &xml"),
+	})
+	require.Error(t, err)
+}
+
+func TestAdminClient_unknownFilterSerde(t *testing.T) {
+	urf, err := newUnknownRuleFilterFromFilterDescription(&atom.FilterDescription{
+		Type:   "SomeNewFilter",
+		RawXML: []byte("<someNewFilterXML></someNewFilterXML>"),
+		RawAttrs: []xml.Attr{
+			{
+				Name: xml.Name{
+					Local: "some-custom-attribute",
+				},
+				Value: "some-custom-attribute-value",
+			},
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t,
+		`<Filter some-custom-attribute="some-custom-attribute-value" i:type="SomeNewFilter">`+
+			`<someNewFilterXML></someNewFilterXML>`+
+			`</Filter>`, string(urf.RawXML))
+	require.Equal(t, "SomeNewFilter", urf.Type)
+
+	// and now the inverse
+	ad, err := convertUnknownRuleFilterToFilterDescription(urf)
+	require.NoError(t, err)
+
+	require.Equal(t, "<someNewFilterXML></someNewFilterXML>", string(ad.RawXML))
+
+	require.Equal(t, []xml.Attr{
+		{Name: xml.Name{Local: "some-custom-attribute"}, Value: "some-custom-attribute-value"}}, ad.RawAttrs)
+	require.Equal(t, "SomeNewFilter", string(ad.Type))
+
+	_, err = convertUnknownRuleFilterToFilterDescription(&UnknownRuleFilter{
+		Type:   "something",
+		RawXML: []byte("invalid &xml"),
+	})
+	require.Error(t, err)
+}
+
 func deleteQueue(t *testing.T, ac *Client, queueName string) {
 	_, err := ac.DeleteQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
@@ -1139,4 +1811,41 @@ func setupLowPrivTest(t *testing.T) *struct {
 		SubName:   subName,
 		Cleanup:   cleanup,
 	}
+}
+
+func createRandomKeyForSB(t *testing.T) string {
+	tempPassword := make([]byte, 22)
+	n, err := cryptoRand.Read(tempPassword)
+	require.NoError(t, err)
+	require.Equal(t, cap(tempPassword), n)
+
+	return hex.EncodeToString(tempPassword)
+}
+
+func createAuthorizationRulesForTest(t *testing.T) []AuthorizationRule {
+	primary := createRandomKeyForSB(t)
+	secondary := createRandomKeyForSB(t)
+
+	return []AuthorizationRule{
+		{
+			AccessRights: []AccessRight{AccessRightSend},
+			KeyName:      to.Ptr("keyName1"),
+			PrimaryKey:   &primary,
+			SecondaryKey: &secondary,
+		},
+	}
+}
+
+func TestATOMNoCountDetails(t *testing.T) {
+	subRP, err := newSubscriptionRuntimePropertiesItem(&atom.SubscriptionEnvelope{Content: &atom.SubscriptionContent{}}, "topic")
+	require.Nil(t, subRP)
+	require.Error(t, err, "invalid subscription runtime properties: no CountDetails element")
+
+	qRP, err := newQueueRuntimePropertiesItem(&atom.QueueEnvelope{Content: &atom.QueueContent{}})
+	require.Nil(t, qRP)
+	require.Error(t, err, "invalid queue runtime properties: no CountDetails element")
+
+	tRP, err := newTopicRuntimePropertiesItem(&atom.TopicEnvelope{Content: &atom.TopicContent{}})
+	require.Nil(t, tRP)
+	require.Error(t, err, "invalid topic runtime properties: no CountDetails element")
 }

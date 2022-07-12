@@ -23,13 +23,13 @@ func ExamplePrivateLinkResourcesClient_ListByService() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByService(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"rgname",
+		"service1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<group-name>",
+		"rgname",
+		"service1",
+		"fhir",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -1,5 +1,5 @@
 apiVersion: v2
-name: go-sb-stress
+name: gosb
 description: Stress tests for Go
 version: 0.1.1
 appVersion: v0.1
@@ -10,5 +10,6 @@ annotations:
   dockerfile: './Dockerfile'
 dependencies:
 - name: stress-test-addons
-  version: 0.1.12
+  version: 0.1.16
   repository: https://stresstestcharts.blob.core.windows.net/helm/
+  

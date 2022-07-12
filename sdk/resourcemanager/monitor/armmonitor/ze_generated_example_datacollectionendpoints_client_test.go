@@ -24,17 +24,16 @@ func ExampleDataCollectionEndpointsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionEndpointsClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,7 +49,7 @@ func ExampleDataCollectionEndpointsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionEndpointsClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -59,7 +58,6 @@ func ExampleDataCollectionEndpointsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleDataCollectionEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionEndpointsClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<data-collection-endpoint-name>",
+		"myResourceGroup",
+		"myCollectionEndpoint",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,15 +95,15 @@ func ExampleDataCollectionEndpointsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionEndpointsClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<data-collection-endpoint-name>",
+		"myResourceGroup",
+		"myCollectionEndpoint",
 		&armmonitor.DataCollectionEndpointsClientCreateOptions{Body: &armmonitor.DataCollectionEndpointResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 				NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
 					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
@@ -127,13 +125,13 @@ func ExampleDataCollectionEndpointsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionEndpointsClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<data-collection-endpoint-name>",
+		"myResourceGroup",
+		"myCollectionEndpoint",
 		&armmonitor.DataCollectionEndpointsClientUpdateOptions{Body: &armmonitor.ResourceForUpdate{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("A"),
@@ -156,13 +154,13 @@ func ExampleDataCollectionEndpointsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionEndpointsClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<data-collection-endpoint-name>",
+		"myResourceGroup",
+		"myCollectionEndpoint",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

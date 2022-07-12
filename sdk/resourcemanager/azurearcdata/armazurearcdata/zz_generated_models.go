@@ -271,6 +271,13 @@ type DataControllersClientBeginDeleteDataControllerOptions struct {
 	ResumeToken string
 }
 
+// DataControllersClientBeginPatchDataControllerOptions contains the optional parameters for the DataControllersClient.BeginPatchDataController
+// method.
+type DataControllersClientBeginPatchDataControllerOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // DataControllersClientBeginPutDataControllerOptions contains the optional parameters for the DataControllersClient.BeginPutDataController
 // method.
 type DataControllersClientBeginPutDataControllerOptions struct {
@@ -292,12 +299,6 @@ type DataControllersClientListInGroupOptions struct {
 // DataControllersClientListInSubscriptionOptions contains the optional parameters for the DataControllersClient.ListInSubscription
 // method.
 type DataControllersClientListInSubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DataControllersClientPatchDataControllerOptions contains the optional parameters for the DataControllersClient.PatchDataController
-// method.
-type DataControllersClientPatchDataControllerOptions struct {
 	// placeholder for future optional parameters
 }
 

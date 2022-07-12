@@ -37,7 +37,7 @@ func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientO
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // NewByExternalCloudProviderTypePager - Lists the dimensions by the external cloud provider type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // externalCloudProviderType - The external cloud provider type associated with dimension/query operations. This includes
 // 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
 // externalCloudProviderID - This can be '{externalSubscriptionId}' for linked account or '{externalBillingAccountId}' for
@@ -61,7 +62,7 @@ func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientO
 // options - DimensionsClientByExternalCloudProviderTypeOptions contains the optional parameters for the DimensionsClient.ByExternalCloudProviderType
 // method.
 func (client *DimensionsClient) NewByExternalCloudProviderTypePager(externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *DimensionsClientByExternalCloudProviderTypeOptions) *runtime.Pager[DimensionsClientByExternalCloudProviderTypeResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DimensionsClientByExternalCloudProviderTypeResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DimensionsClientByExternalCloudProviderTypeResponse]{
 		More: func(page DimensionsClientByExternalCloudProviderTypeResponse) bool {
 			return false
 		},
@@ -112,7 +113,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx con
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -127,6 +128,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *
 
 // NewListPager - Lists the dimensions by the defined scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with dimension operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 // resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
@@ -139,7 +141,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
 // options - DimensionsClientListOptions contains the optional parameters for the DimensionsClient.List method.
 func (client *DimensionsClient) NewListPager(scope string, options *DimensionsClientListOptions) *runtime.Pager[DimensionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DimensionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DimensionsClientListResponse]{
 		More: func(page DimensionsClientListResponse) bool {
 			return false
 		},
@@ -183,7 +185,7 @@ func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope str
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

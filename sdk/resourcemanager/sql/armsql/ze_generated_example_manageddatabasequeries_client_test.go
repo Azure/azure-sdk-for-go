@@ -23,15 +23,15 @@ func ExampleManagedDatabaseQueriesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabaseQueriesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseQueriesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
-		"<query-id>",
+		"sqlcrudtest-7398",
+		"sqlcrudtest-4645",
+		"database_1",
+		"42",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleManagedDatabaseQueriesClient_NewListByQueryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabaseQueriesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseQueriesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByQueryPager("<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
-		"<query-id>",
+	pager := client.NewListByQueryPager("sqlcrudtest-7398",
+		"sqlcrudtest-4645",
+		"database_1",
+		"42",
 		&armsql.ManagedDatabaseQueriesClientListByQueryOptions{StartTime: nil,
 			EndTime:  nil,
 			Interval: nil,
@@ -63,7 +63,6 @@ func ExampleManagedDatabaseQueriesClient_NewListByQueryPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

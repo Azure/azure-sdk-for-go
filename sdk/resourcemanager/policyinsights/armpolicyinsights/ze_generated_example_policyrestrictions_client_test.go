@@ -24,7 +24,7 @@ func ExamplePolicyRestrictionsClient_CheckAtSubscriptionScope() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewPolicyRestrictionsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,12 +32,12 @@ func ExamplePolicyRestrictionsClient_CheckAtSubscriptionScope() {
 		armpolicyinsights.CheckRestrictionsRequest{
 			PendingFields: []*armpolicyinsights.PendingField{
 				{
-					Field: to.Ptr("<field>"),
+					Field: to.Ptr("name"),
 					Values: []*string{
 						to.Ptr("myVMName")},
 				},
 				{
-					Field: to.Ptr("<field>"),
+					Field: to.Ptr("location"),
 					Values: []*string{
 						to.Ptr("eastus"),
 						to.Ptr("westus"),
@@ -45,10 +45,10 @@ func ExamplePolicyRestrictionsClient_CheckAtSubscriptionScope() {
 						to.Ptr("westeurope")},
 				},
 				{
-					Field: to.Ptr("<field>"),
+					Field: to.Ptr("tags"),
 				}},
 			ResourceDetails: &armpolicyinsights.CheckRestrictionsResourceDetails{
-				APIVersion: to.Ptr("<apiversion>"),
+				APIVersion: to.Ptr("2019-12-01"),
 				ResourceContent: map[string]interface{}{
 					"type": "Microsoft.Compute/virtualMachines",
 					"properties": map[string]interface{}{
@@ -72,21 +72,21 @@ func ExamplePolicyRestrictionsClient_CheckAtResourceGroupScope() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewPolicyRestrictionsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckAtResourceGroupScope(ctx,
-		"<resource-group-name>",
+		"vmRg",
 		armpolicyinsights.CheckRestrictionsRequest{
 			PendingFields: []*armpolicyinsights.PendingField{
 				{
-					Field: to.Ptr("<field>"),
+					Field: to.Ptr("name"),
 					Values: []*string{
 						to.Ptr("myVMName")},
 				},
 				{
-					Field: to.Ptr("<field>"),
+					Field: to.Ptr("location"),
 					Values: []*string{
 						to.Ptr("eastus"),
 						to.Ptr("westus"),
@@ -94,10 +94,10 @@ func ExamplePolicyRestrictionsClient_CheckAtResourceGroupScope() {
 						to.Ptr("westeurope")},
 				},
 				{
-					Field: to.Ptr("<field>"),
+					Field: to.Ptr("tags"),
 				}},
 			ResourceDetails: &armpolicyinsights.CheckRestrictionsResourceDetails{
-				APIVersion: to.Ptr("<apiversion>"),
+				APIVersion: to.Ptr("2019-12-01"),
 				ResourceContent: map[string]interface{}{
 					"type": "Microsoft.Compute/virtualMachines",
 					"properties": map[string]interface{}{
@@ -126,11 +126,11 @@ func ExamplePolicyRestrictionsClient_CheckAtManagementGroupScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckAtManagementGroupScope(ctx,
-		"<management-group-id>",
+		"financeMg",
 		armpolicyinsights.CheckManagementGroupRestrictionsRequest{
 			PendingFields: []*armpolicyinsights.PendingField{
 				{
-					Field: to.Ptr("<field>"),
+					Field: to.Ptr("type"),
 				}},
 		},
 		nil)

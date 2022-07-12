@@ -39,7 +39,7 @@ func NewRulesEnginesClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,28 +57,30 @@ func NewRulesEnginesClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // frontDoorName - Name of the Front Door which is globally unique.
 // rulesEngineName - Name of the Rules Engine which is unique within the Front Door.
 // rulesEngineParameters - Rules Engine Configuration properties needed to create a new Rules Engine Configuration.
 // options - RulesEnginesClientBeginCreateOrUpdateOptions contains the optional parameters for the RulesEnginesClient.BeginCreateOrUpdate
 // method.
-func (client *RulesEnginesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, rulesEngineParameters RulesEngine, options *RulesEnginesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[RulesEnginesClientCreateOrUpdateResponse], error) {
+func (client *RulesEnginesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, rulesEngineParameters RulesEngine, options *RulesEnginesClientBeginCreateOrUpdateOptions) (*runtime.Poller[RulesEnginesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RulesEnginesClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RulesEnginesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RulesEnginesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RulesEnginesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *RulesEnginesClient) createOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, rulesEngineParameters RulesEngine, options *RulesEnginesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, options)
 	if err != nil {
@@ -120,33 +122,35 @@ func (client *RulesEnginesClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, rulesEngineParameters)
 }
 
 // BeginDelete - Deletes an existing Rules Engine Configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // frontDoorName - Name of the Front Door which is globally unique.
 // rulesEngineName - Name of the Rules Engine which is unique within the Front Door.
 // options - RulesEnginesClientBeginDeleteOptions contains the optional parameters for the RulesEnginesClient.BeginDelete
 // method.
-func (client *RulesEnginesClient) BeginDelete(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, options *RulesEnginesClientBeginDeleteOptions) (*armruntime.Poller[RulesEnginesClientDeleteResponse], error) {
+func (client *RulesEnginesClient) BeginDelete(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, options *RulesEnginesClientBeginDeleteOptions) (*runtime.Poller[RulesEnginesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, frontDoorName, rulesEngineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RulesEnginesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RulesEnginesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RulesEnginesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RulesEnginesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing Rules Engine Configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *RulesEnginesClient) deleteOperation(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, options *RulesEnginesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, frontDoorName, rulesEngineName, options)
 	if err != nil {
@@ -188,12 +192,13 @@ func (client *RulesEnginesClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a Rules Engine Configuration with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // frontDoorName - Name of the Front Door which is globally unique.
 // rulesEngineName - Name of the Rules Engine which is unique within the Front Door.
@@ -239,7 +244,7 @@ func (client *RulesEnginesClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -254,12 +259,13 @@ func (client *RulesEnginesClient) getHandleResponse(resp *http.Response) (RulesE
 
 // NewListByFrontDoorPager - Lists all of the Rules Engine Configurations within a Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // frontDoorName - Name of the Front Door which is globally unique.
 // options - RulesEnginesClientListByFrontDoorOptions contains the optional parameters for the RulesEnginesClient.ListByFrontDoor
 // method.
 func (client *RulesEnginesClient) NewListByFrontDoorPager(resourceGroupName string, frontDoorName string, options *RulesEnginesClientListByFrontDoorOptions) *runtime.Pager[RulesEnginesClientListByFrontDoorResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RulesEnginesClientListByFrontDoorResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RulesEnginesClientListByFrontDoorResponse]{
 		More: func(page RulesEnginesClientListByFrontDoorResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -308,7 +314,7 @@ func (client *RulesEnginesClient) listByFrontDoorCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

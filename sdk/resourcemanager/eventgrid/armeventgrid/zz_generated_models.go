@@ -35,24 +35,8 @@ type AdvancedFilter struct {
 	Key *string `json:"key,omitempty"`
 }
 
-// AzureADPartnerClientAuthentication - Azure Active Directory Partner Client Authentication
-type AzureADPartnerClientAuthentication struct {
-	// REQUIRED; Type of client authentication
-	ClientAuthenticationType *PartnerClientAuthenticationType `json:"clientAuthenticationType,omitempty"`
-
-	// AzureAD ClientAuthentication Properties
-	Properties *AzureADPartnerClientAuthenticationProperties `json:"properties,omitempty"`
-}
-
-// AzureADPartnerClientAuthenticationProperties - Properties of an Azure Active Directory Partner Client Authentication.
-type AzureADPartnerClientAuthenticationProperties struct {
-	// The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery
-	// requests.
-	AzureActiveDirectoryApplicationIDOrURI *string `json:"azureActiveDirectoryApplicationIdOrUri,omitempty"`
-
-	// The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in delivery requests.
-	AzureActiveDirectoryTenantID *string `json:"azureActiveDirectoryTenantId,omitempty"`
-}
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type AdvancedFilter.
+func (a *AdvancedFilter) GetAdvancedFilter() *AdvancedFilter { return a }
 
 // AzureFunctionEventSubscriptionDestination - Information about the azure function destination for an event subscription.
 type AzureFunctionEventSubscriptionDestination struct {
@@ -61,6 +45,13 @@ type AzureFunctionEventSubscriptionDestination struct {
 
 	// Azure Function Properties of the event subscription destination.
 	Properties *AzureFunctionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type AzureFunctionEventSubscriptionDestination.
+func (a *AzureFunctionEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: a.EndpointType,
+	}
 }
 
 // AzureFunctionEventSubscriptionDestinationProperties - The properties that represent the Azure Function destination of an
@@ -89,6 +80,14 @@ type BoolEqualsAdvancedFilter struct {
 
 	// The boolean filter value.
 	Value *bool `json:"value,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type BoolEqualsAdvancedFilter.
+func (b *BoolEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: b.OperatorType,
+		Key:          b.Key,
+	}
 }
 
 // Channel info.
@@ -121,10 +120,6 @@ type ChannelProperties struct {
 	// Context or helpful message that can be used during the approval process by the subscriber.
 	MessageForActivation *string `json:"messageForActivation,omitempty"`
 
-	// This property should be populated when channelType is PartnerDestination and represents information about the partner destination
-	// resource corresponding to the channel.
-	PartnerDestinationInfo PartnerDestinationInfoClassification `json:"partnerDestinationInfo,omitempty"`
-
 	// This property should be populated when channelType is PartnerTopic and represents information about the partner topic resource
 	// corresponding to the channel.
 	PartnerTopicInfo *PartnerTopicInfo `json:"partnerTopicInfo,omitempty"`
@@ -144,13 +139,10 @@ type ChannelUpdateParameters struct {
 
 // ChannelUpdateParametersProperties - Properties of the channel update parameters.
 type ChannelUpdateParametersProperties struct {
-	// Expiration time of the event channel. If this timer expires while the corresponding partner topic or partner destination
-	// is never activated, the channel and corresponding partner topic or partner
+	// Expiration time of the channel. If this timer expires while the corresponding partner topic or partner destination is never
+	// activated, the channel and corresponding partner topic or partner
 	// destination are deleted.
 	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
-
-	// Partner destination properties which can be updated if the channel is of type PartnerDestination.
-	PartnerDestinationInfo PartnerUpdateDestinationInfoClassification `json:"partnerDestinationInfo,omitempty"`
 
 	// Partner topic properties which can be updated if the channel is of type PartnerTopic.
 	PartnerTopicInfo *PartnerUpdateTopicInfo `json:"partnerTopicInfo,omitempty"`
@@ -235,6 +227,9 @@ type DeadLetterDestination struct {
 	EndpointType *DeadLetterEndPointType `json:"endpointType,omitempty"`
 }
 
+// GetDeadLetterDestination implements the DeadLetterDestinationClassification interface for type DeadLetterDestination.
+func (d *DeadLetterDestination) GetDeadLetterDestination() *DeadLetterDestination { return d }
+
 // DeadLetterWithResourceIdentity - Information about the deadletter destination with resource identity.
 type DeadLetterWithResourceIdentity struct {
 	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
@@ -270,6 +265,9 @@ type DeliveryAttributeMapping struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type DeliveryAttributeMapping.
+func (d *DeliveryAttributeMapping) GetDeliveryAttributeMapping() *DeliveryAttributeMapping { return d }
+
 // DeliveryWithResourceIdentity - Information about the delivery for an event subscription with resource identity.
 type DeliveryWithResourceIdentity struct {
 	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's
@@ -291,9 +289,6 @@ type Domain struct {
 
 	// Properties of the Event Grid Domain resource.
 	Properties *DomainProperties `json:"properties,omitempty"`
-
-	// The Sku pricing tier for the Event Grid Domain resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
 
 	// Tags of the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -352,7 +347,16 @@ type DomainEventSubscriptionsClientGetOptions struct {
 // DomainEventSubscriptionsClientListOptions contains the optional parameters for the DomainEventSubscriptionsClient.List
 // method.
 type DomainEventSubscriptionsClientListOptions struct {
-	// placeholder for future optional parameters
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
 }
 
 // DomainProperties - Properties of the Event Grid Domain Resource.
@@ -490,7 +494,16 @@ type DomainTopicEventSubscriptionsClientGetOptions struct {
 // DomainTopicEventSubscriptionsClientListOptions contains the optional parameters for the DomainTopicEventSubscriptionsClient.List
 // method.
 type DomainTopicEventSubscriptionsClientListOptions struct {
-	// placeholder for future optional parameters
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
 }
 
 // DomainTopicProperties - Properties of the Domain Topic.
@@ -590,9 +603,6 @@ type DomainUpdateParameters struct {
 	// Properties of the resource.
 	Properties *DomainUpdateParameterProperties `json:"properties,omitempty"`
 
-	// The Sku pricing tier for the domain.
-	SKU *ResourceSKU `json:"sku,omitempty"`
-
 	// Tags of the domains resource.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
@@ -658,12 +668,12 @@ type DomainsClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsListResult - Result of the List Domains operation
+// DomainsListResult - Result of the List Domains operation.
 type DomainsListResult struct {
-	// A link for the next page of domains
+	// A link for the next page of domains.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// A collection of Domains
+	// A collection of Domains.
 	Value []*Domain `json:"value,omitempty"`
 }
 
@@ -679,126 +689,18 @@ type DynamicDeliveryAttributeMapping struct {
 	Properties *DynamicDeliveryAttributeMappingProperties `json:"properties,omitempty"`
 }
 
+// GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type DynamicDeliveryAttributeMapping.
+func (d *DynamicDeliveryAttributeMapping) GetDeliveryAttributeMapping() *DeliveryAttributeMapping {
+	return &DeliveryAttributeMapping{
+		Name: d.Name,
+		Type: d.Type,
+	}
+}
+
 // DynamicDeliveryAttributeMappingProperties - Properties of dynamic delivery attribute mapping.
 type DynamicDeliveryAttributeMappingProperties struct {
 	// JSON path in the event which contains attribute value.
 	SourceField *string `json:"sourceField,omitempty"`
-}
-
-// EventChannel - Event Channel.
-type EventChannel struct {
-	// Properties of the EventChannel.
-	Properties *EventChannelProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system metadata relating to Event Channel resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// EventChannelDestination - Properties of the destination of an event channel.
-type EventChannelDestination struct {
-	// Azure subscription ID of the customer creating the event channel. The partner topic associated with the event channel will
-	// be created under this Azure subscription.
-	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
-
-	// Name of the partner topic associated with the event channel.
-	PartnerTopicName *string `json:"partnerTopicName,omitempty"`
-
-	// Azure Resource Group of the customer creating the event channel. The partner topic associated with the event channel will
-	// be created under this resource group.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
-}
-
-// EventChannelFilter - Filter for the Event Channel.
-type EventChannelFilter struct {
-	// An array of advanced filters that are used for filtering event channels.
-	AdvancedFilters []AdvancedFilterClassification `json:"advancedFilters,omitempty"`
-
-	// Allows advanced filters to be evaluated against an array of values instead of expecting a singular value. The default value
-	// is either false or null.
-	EnableAdvancedFilteringOnArrays *bool `json:"enableAdvancedFilteringOnArrays,omitempty"`
-}
-
-// EventChannelProperties - Properties of the Event Channel.
-type EventChannelProperties struct {
-	// Represents the destination of an event channel.
-	Destination *EventChannelDestination `json:"destination,omitempty"`
-
-	// Expiration time of the event channel. If this timer expires while the corresponding partner topic is never activated, the
-	// event channel and corresponding partner topic are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
-
-	// Information about the filter for the event channel.
-	Filter *EventChannelFilter `json:"filter,omitempty"`
-
-	// Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer
-	// partner topic. This will be helpful to remove any ambiguity of the origin of
-	// creation of the partner topic for the customer.
-	PartnerTopicFriendlyDescription *string `json:"partnerTopicFriendlyDescription,omitempty"`
-
-	// Source of the event channel. This represents a unique resource in the partner's resource model.
-	Source *EventChannelSource `json:"source,omitempty"`
-
-	// READ-ONLY; The readiness state of the corresponding partner topic.
-	PartnerTopicReadinessState *PartnerTopicReadinessState `json:"partnerTopicReadinessState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the event channel.
-	ProvisioningState *EventChannelProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// EventChannelSource - Properties of the source of an event channel.
-type EventChannelSource struct {
-	// The identifier of the resource that's the source of the events. This represents a unique resource in the partner's resource
-	// model.
-	Source *string `json:"source,omitempty"`
-}
-
-// EventChannelsClientBeginDeleteOptions contains the optional parameters for the EventChannelsClient.BeginDelete method.
-type EventChannelsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// EventChannelsClientCreateOrUpdateOptions contains the optional parameters for the EventChannelsClient.CreateOrUpdate method.
-type EventChannelsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventChannelsClientGetOptions contains the optional parameters for the EventChannelsClient.Get method.
-type EventChannelsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventChannelsClientListByPartnerNamespaceOptions contains the optional parameters for the EventChannelsClient.ListByPartnerNamespace
-// method.
-type EventChannelsClientListByPartnerNamespaceOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
-	// with limited number of OData operations. These operations are: the 'contains'
-	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example:
-	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
-	// eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
-	// the default number of results to be returned is 20 items per page.
-	Top *int32
-}
-
-// EventChannelsListResult - Result of the List Event Channels operation
-type EventChannelsListResult struct {
-	// A link for the next page of event channels
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of Event Channels
-	Value []*EventChannel `json:"value,omitempty"`
 }
 
 // EventHubEventSubscriptionDestination - Information about the event hub destination for an event subscription.
@@ -808,6 +710,13 @@ type EventHubEventSubscriptionDestination struct {
 
 	// Event Hub Properties of the event subscription destination.
 	Properties *EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type EventHubEventSubscriptionDestination.
+func (e *EventHubEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: e.EndpointType,
+	}
 }
 
 // EventHubEventSubscriptionDestinationProperties - The properties for a event hub destination.
@@ -841,8 +750,8 @@ type EventSubscription struct {
 // Call the interface's GetEventSubscriptionDestination() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureFunctionEventSubscriptionDestination, *EventHubEventSubscriptionDestination, *EventSubscriptionDestination, *HybridConnectionEventSubscriptionDestination,
-// - *PartnerEventSubscriptionDestination, *ServiceBusQueueEventSubscriptionDestination, *ServiceBusTopicEventSubscriptionDestination,
-// - *StorageQueueEventSubscriptionDestination, *WebHookEventSubscriptionDestination
+// - *ServiceBusQueueEventSubscriptionDestination, *ServiceBusTopicEventSubscriptionDestination, *StorageQueueEventSubscriptionDestination,
+// - *WebHookEventSubscriptionDestination
 type EventSubscriptionDestinationClassification interface {
 	// GetEventSubscriptionDestination returns the EventSubscriptionDestination content of the underlying type.
 	GetEventSubscriptionDestination() *EventSubscriptionDestination
@@ -852,6 +761,11 @@ type EventSubscriptionDestinationClassification interface {
 type EventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
 	EndpointType *EndpointType `json:"endpointType,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type EventSubscriptionDestination.
+func (e *EventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return e
 }
 
 // EventSubscriptionFilter - Filter for the Event Subscription.
@@ -1223,15 +1137,6 @@ type EventTypesListResult struct {
 	Value []*EventType `json:"value,omitempty"`
 }
 
-// ExtendedLocation - Definition of an Extended Location
-type ExtendedLocation struct {
-	// Fully qualified name of the extended location.
-	Name *string `json:"name,omitempty"`
-
-	// Type of the extended location.
-	Type *string `json:"type,omitempty"`
-}
-
 // ExtensionTopic - Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources.
 type ExtensionTopic struct {
 	// Properties of the extension topic
@@ -1271,6 +1176,13 @@ type HybridConnectionEventSubscriptionDestination struct {
 
 	// Hybrid connection Properties of the event subscription destination.
 	Properties *HybridConnectionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type HybridConnectionEventSubscriptionDestination.
+func (h *HybridConnectionEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: h.EndpointType,
+	}
 }
 
 // HybridConnectionEventSubscriptionDestinationProperties - The properties for a hybrid connection destination.
@@ -1318,6 +1230,9 @@ type InlineEventProperties struct {
 	// The description for the inline event.
 	Description *string `json:"description,omitempty"`
 
+	// The displayName for the inline event.
+	DisplayName *string `json:"displayName,omitempty"`
+
 	// The documentationUrl for the inline event.
 	DocumentationURL *string `json:"documentationUrl,omitempty"`
 }
@@ -1339,6 +1254,9 @@ type InputSchemaMapping struct {
 	InputSchemaMappingType *InputSchemaMappingType `json:"inputSchemaMappingType,omitempty"`
 }
 
+// GetInputSchemaMapping implements the InputSchemaMappingClassification interface for type InputSchemaMapping.
+func (i *InputSchemaMapping) GetInputSchemaMapping() *InputSchemaMapping { return i }
+
 // IsNotNullAdvancedFilter - IsNotNull Advanced Filter.
 type IsNotNullAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1348,6 +1266,14 @@ type IsNotNullAdvancedFilter struct {
 	Key *string `json:"key,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type IsNotNullAdvancedFilter.
+func (i *IsNotNullAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: i.OperatorType,
+		Key:          i.Key,
+	}
+}
+
 // IsNullOrUndefinedAdvancedFilter - IsNullOrUndefined Advanced Filter.
 type IsNullOrUndefinedAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1355,6 +1281,14 @@ type IsNullOrUndefinedAdvancedFilter struct {
 
 	// The field/property in the event based on which you want to filter.
 	Key *string `json:"key,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type IsNullOrUndefinedAdvancedFilter.
+func (i *IsNullOrUndefinedAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: i.OperatorType,
+		Key:          i.Key,
+	}
 }
 
 // JSONField - This is used to express the source of an input schema mapping for a single target field in the Event Grid Event
@@ -1386,6 +1320,13 @@ type JSONInputSchemaMapping struct {
 
 	// JSON Properties of the input schema mapping
 	Properties *JSONInputSchemaMappingProperties `json:"properties,omitempty"`
+}
+
+// GetInputSchemaMapping implements the InputSchemaMappingClassification interface for type JSONInputSchemaMapping.
+func (j *JSONInputSchemaMapping) GetInputSchemaMapping() *InputSchemaMapping {
+	return &InputSchemaMapping{
+		InputSchemaMappingType: j.InputSchemaMappingType,
+	}
 }
 
 // JSONInputSchemaMappingProperties - This can be used to map properties of a source schema (or default values, for certain
@@ -1422,6 +1363,14 @@ type NumberGreaterThanAdvancedFilter struct {
 	Value *float64 `json:"value,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberGreaterThanAdvancedFilter.
+func (n *NumberGreaterThanAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
 // NumberGreaterThanOrEqualsAdvancedFilter - NumberGreaterThanOrEquals Advanced Filter.
 type NumberGreaterThanOrEqualsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1432,6 +1381,14 @@ type NumberGreaterThanOrEqualsAdvancedFilter struct {
 
 	// The filter value.
 	Value *float64 `json:"value,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberGreaterThanOrEqualsAdvancedFilter.
+func (n *NumberGreaterThanOrEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // NumberInAdvancedFilter - NumberIn Advanced Filter.
@@ -1446,6 +1403,14 @@ type NumberInAdvancedFilter struct {
 	Values []*float64 `json:"values,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberInAdvancedFilter.
+func (n *NumberInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
 // NumberInRangeAdvancedFilter - NumberInRange Advanced Filter.
 type NumberInRangeAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1456,6 +1421,14 @@ type NumberInRangeAdvancedFilter struct {
 
 	// The set of filter values.
 	Values [][]*float64 `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberInRangeAdvancedFilter.
+func (n *NumberInRangeAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // NumberLessThanAdvancedFilter - NumberLessThan Advanced Filter.
@@ -1470,6 +1443,14 @@ type NumberLessThanAdvancedFilter struct {
 	Value *float64 `json:"value,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberLessThanAdvancedFilter.
+func (n *NumberLessThanAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
 // NumberLessThanOrEqualsAdvancedFilter - NumberLessThanOrEquals Advanced Filter.
 type NumberLessThanOrEqualsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1480,6 +1461,14 @@ type NumberLessThanOrEqualsAdvancedFilter struct {
 
 	// The filter value.
 	Value *float64 `json:"value,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberLessThanOrEqualsAdvancedFilter.
+func (n *NumberLessThanOrEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // NumberNotInAdvancedFilter - NumberNotIn Advanced Filter.
@@ -1494,6 +1483,14 @@ type NumberNotInAdvancedFilter struct {
 	Values []*float64 `json:"values,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberNotInAdvancedFilter.
+func (n *NumberNotInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
 // NumberNotInRangeAdvancedFilter - NumberNotInRange Advanced Filter.
 type NumberNotInRangeAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1504,6 +1501,14 @@ type NumberNotInRangeAdvancedFilter struct {
 
 	// The set of filter values.
 	Values [][]*float64 `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberNotInRangeAdvancedFilter.
+func (n *NumberNotInRangeAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
 }
 
 // Operation - Represents an operation returned by the GetOperations request.
@@ -1575,21 +1580,6 @@ type PartnerAuthorization struct {
 	// is not specified, the default is 7 days. Otherwise, allowed values are
 	// between 1 and 365 days.
 	DefaultMaximumExpirationTimeInDays *int32 `json:"defaultMaximumExpirationTimeInDays,omitempty"`
-}
-
-// PartnerClientAuthenticationClassification provides polymorphic access to related types.
-// Call the interface's GetPartnerClientAuthentication() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureADPartnerClientAuthentication, *PartnerClientAuthentication
-type PartnerClientAuthenticationClassification interface {
-	// GetPartnerClientAuthentication returns the PartnerClientAuthentication content of the underlying type.
-	GetPartnerClientAuthentication() *PartnerClientAuthentication
-}
-
-// PartnerClientAuthentication - Partner client authentication
-type PartnerClientAuthentication struct {
-	// REQUIRED; Type of client authentication
-	ClientAuthenticationType *PartnerClientAuthenticationType `json:"clientAuthenticationType,omitempty"`
 }
 
 // PartnerConfiguration - Partner configuration information
@@ -1709,160 +1699,6 @@ type PartnerConfigurationsListResult struct {
 	Value []*PartnerConfiguration `json:"value,omitempty"`
 }
 
-// PartnerDestination - Event Grid Partner Destination.
-type PartnerDestination struct {
-	// REQUIRED; Location of the resource.
-	Location *string `json:"location,omitempty"`
-
-	// Properties of the Partner Destination.
-	Properties *PartnerDestinationProperties `json:"properties,omitempty"`
-
-	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system metadata relating to Partner Destination resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// PartnerDestinationInfoClassification provides polymorphic access to related types.
-// Call the interface's GetPartnerDestinationInfo() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *PartnerDestinationInfo, *WebhookPartnerDestinationInfo
-type PartnerDestinationInfoClassification interface {
-	// GetPartnerDestinationInfo returns the PartnerDestinationInfo content of the underlying type.
-	GetPartnerDestinationInfo() *PartnerDestinationInfo
-}
-
-// PartnerDestinationInfo - Properties of the corresponding partner destination of a Channel.
-type PartnerDestinationInfo struct {
-	// REQUIRED; Type of the endpoint for the partner destination
-	EndpointType *PartnerEndpointType `json:"endpointType,omitempty"`
-
-	// Azure subscription ID of the subscriber. The partner destination associated with the channel will be created under this
-	// Azure subscription.
-	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
-
-	// Additional context of the partner destination endpoint.
-	EndpointServiceContext *string `json:"endpointServiceContext,omitempty"`
-
-	// Name of the partner destination associated with the channel.
-	Name *string `json:"name,omitempty"`
-
-	// Azure Resource Group of the subscriber. The partner destination associated with the channel will be created under this
-	// resource group.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-
-	// Change history of the resource move.
-	ResourceMoveChangeHistory []*ResourceMoveChangeHistory `json:"resourceMoveChangeHistory,omitempty"`
-}
-
-// PartnerDestinationProperties - Properties of the Partner Destination.
-type PartnerDestinationProperties struct {
-	// Activation state of the partner destination.
-	ActivationState *PartnerDestinationActivationState `json:"activationState,omitempty"`
-
-	// Endpoint Base URL of the partner destination
-	EndpointBaseURL *string `json:"endpointBaseUrl,omitempty"`
-
-	// Endpoint context associated with this partner destination.
-	EndpointServiceContext *string `json:"endpointServiceContext,omitempty"`
-
-	// Expiration time of the partner destination. If this timer expires and the partner destination was never activated, the
-	// partner destination and corresponding channel are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
-
-	// Context or helpful message that can be used during the approval process.
-	MessageForActivation *string `json:"messageForActivation,omitempty"`
-
-	// The immutable Id of the corresponding partner registration.
-	PartnerRegistrationImmutableID *string `json:"partnerRegistrationImmutableId,omitempty"`
-
-	// Provisioning state of the partner destination.
-	ProvisioningState *PartnerDestinationProvisioningState `json:"provisioningState,omitempty"`
-}
-
-// PartnerDestinationUpdateParameters - Properties of the Partner Destination that can be updated.
-type PartnerDestinationUpdateParameters struct {
-	// Tags of the Partner Destination resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// PartnerDestinationsClientActivateOptions contains the optional parameters for the PartnerDestinationsClient.Activate method.
-type PartnerDestinationsClientActivateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerDestinationsClientBeginDeleteOptions contains the optional parameters for the PartnerDestinationsClient.BeginDelete
-// method.
-type PartnerDestinationsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PartnerDestinationsClientCreateOrUpdateOptions contains the optional parameters for the PartnerDestinationsClient.CreateOrUpdate
-// method.
-type PartnerDestinationsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerDestinationsClientGetOptions contains the optional parameters for the PartnerDestinationsClient.Get method.
-type PartnerDestinationsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerDestinationsClientListByResourceGroupOptions contains the optional parameters for the PartnerDestinationsClient.ListByResourceGroup
-// method.
-type PartnerDestinationsClientListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
-	// with limited number of OData operations. These operations are: the 'contains'
-	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example:
-	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
-	// eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
-	// the default number of results to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerDestinationsClientListBySubscriptionOptions contains the optional parameters for the PartnerDestinationsClient.ListBySubscription
-// method.
-type PartnerDestinationsClientListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
-	// with limited number of OData operations. These operations are: the 'contains'
-	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example:
-	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
-	// eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
-	// the default number of results to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerDestinationsClientUpdateOptions contains the optional parameters for the PartnerDestinationsClient.Update method.
-type PartnerDestinationsClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerDestinationsListResult - Result of the List Partner Destinations operation.
-type PartnerDestinationsListResult struct {
-	// A link for the next page of partner destinations.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of partner destinations.
-	Value []*PartnerDestination `json:"value,omitempty"`
-}
-
 // PartnerDetails - Information about the partner.
 type PartnerDetails struct {
 	// This is short description about the partner. The length of this description should not exceed 256 characters.
@@ -1873,19 +1709,6 @@ type PartnerDetails struct {
 
 	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
 	SetupURI *string `json:"setupUri,omitempty"`
-}
-
-type PartnerEventSubscriptionDestination struct {
-	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
-
-	// Partner Destination Properties of the event subscription destination.
-	Properties *PartnerEventSubscriptionDestinationProperties `json:"properties,omitempty"`
-}
-
-type PartnerEventSubscriptionDestinationProperties struct {
-	// The Azure Resource Id that represents the endpoint of a Partner Destination of an event subscription.
-	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // PartnerNamespace - EventGrid Partner Namespace.
@@ -2090,52 +1913,9 @@ type PartnerRegistration struct {
 
 // PartnerRegistrationProperties - Properties of the partner registration.
 type PartnerRegistrationProperties struct {
-	// List of Azure subscription Ids that are authorized to create a partner namespace associated with this partner registration.
-	// This is an optional property. Creating partner namespaces is always
-	// permitted under the same Azure subscription as the one used for creating the partner registration.
-	AuthorizedAzureSubscriptionIDs []*string `json:"authorizedAzureSubscriptionIds,omitempty"`
-
-	// The extension of the customer service URI of the publisher.
-	CustomerServiceURI *string `json:"customerServiceUri,omitempty"`
-
-	// URI of the logo.
-	LogoURI *string `json:"logoUri,omitempty"`
-
-	// Long description for the custom scenarios and integration to be displayed in the portal if needed. Length of this description
-	// should not exceed 2048 characters.
-	LongDescription *string `json:"longDescription,omitempty"`
-
-	// The extension of the customer service number of the publisher. Only digits are allowed and number of digits should not
-	// exceed 10.
-	PartnerCustomerServiceExtension *string `json:"partnerCustomerServiceExtension,omitempty"`
-
-	// The customer service number of the publisher. The expected phone format should start with a '+' sign followed by the country
-	// code. The remaining digits are then followed. Only digits and spaces are
-	// allowed and its length cannot exceed 16 digits including country code. Examples of valid phone numbers are: +1 515 123
-	// 4567 and +966 7 5115 2471. Examples of invalid phone numbers are: +1 (515)
-	// 123-4567, 1 515 123 4567 and +966 121 5115 24 7 551 1234 43
-	PartnerCustomerServiceNumber *string `json:"partnerCustomerServiceNumber,omitempty"`
-
-	// Official name of the partner name. For example: "Contoso".
-	PartnerName *string `json:"partnerName,omitempty"`
-
-	// The immutableId of the corresponding partner registration.
+	// The immutableId of the corresponding partner registration. Note: This property is marked for deprecation and is not supported
+	// in any future GA API version
 	PartnerRegistrationImmutableID *string `json:"partnerRegistrationImmutableId,omitempty"`
-
-	// Short description of the partner resource type. The length of this description should not exceed 256 characters.
-	PartnerResourceTypeDescription *string `json:"partnerResourceTypeDescription,omitempty"`
-
-	// Display name of the partner resource type.
-	PartnerResourceTypeDisplayName *string `json:"partnerResourceTypeDisplayName,omitempty"`
-
-	// Name of the partner resource type.
-	PartnerResourceTypeName *string `json:"partnerResourceTypeName,omitempty"`
-
-	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
-	SetupURI *string `json:"setupUri,omitempty"`
-
-	// Visibility state of the partner registration.
-	VisibilityState *PartnerRegistrationVisibilityState `json:"visibilityState,omitempty"`
 
 	// READ-ONLY; Provisioning state of the partner registration.
 	ProvisioningState *PartnerRegistrationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -2143,26 +1923,6 @@ type PartnerRegistrationProperties struct {
 
 // PartnerRegistrationUpdateParameters - Properties of the Partner Registration update.
 type PartnerRegistrationUpdateParameters struct {
-	// List of IDs of Azure AD applications that are authorized to create a partner namespace associated with this partner registration.
-	// This is an optional property. Creating partner namespaces is always
-	// permitted under the same Azure subscription as the one used for creating the partner registration.
-	AuthorizedAzureSubscriptionIDs []*string `json:"authorizedAzureSubscriptionIds,omitempty"`
-
-	// URI of the partner logo.
-	LogoURI *string `json:"logoUri,omitempty"`
-
-	// Description of the partner topic type.
-	PartnerTopicTypeDescription *string `json:"partnerTopicTypeDescription,omitempty"`
-
-	// Display name of the partner topic type.
-	PartnerTopicTypeDisplayName *string `json:"partnerTopicTypeDisplayName,omitempty"`
-
-	// Name of the partner topic type.
-	PartnerTopicTypeName *string `json:"partnerTopicTypeName,omitempty"`
-
-	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
-	SetupURI *string `json:"setupUri,omitempty"`
-
 	// Tags of the partner registration resource.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
@@ -2445,21 +2205,6 @@ type PartnerTopicsListResult struct {
 	Value []*PartnerTopic `json:"value,omitempty"`
 }
 
-// PartnerUpdateDestinationInfoClassification provides polymorphic access to related types.
-// Call the interface's GetPartnerUpdateDestinationInfo() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *PartnerUpdateDestinationInfo, *WebhookUpdatePartnerDestinationInfo
-type PartnerUpdateDestinationInfoClassification interface {
-	// GetPartnerUpdateDestinationInfo returns the PartnerUpdateDestinationInfo content of the underlying type.
-	GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo
-}
-
-// PartnerUpdateDestinationInfo - Properties of the corresponding partner destination of a Channel.
-type PartnerUpdateDestinationInfo struct {
-	// REQUIRED; Type of the endpoint for the partner destination
-	EndpointType *PartnerEndpointType `json:"endpointType,omitempty"`
-}
-
 // PartnerUpdateTopicInfo - Update properties for the corresponding partner topic of a channel.
 type PartnerUpdateTopicInfo struct {
 	// Event type info for the partner topic
@@ -2596,7 +2341,7 @@ type PrivateLinkResourcesListResult struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// Resource - Definition of a Resource
+// Resource - Definition of a Resource.
 type Resource struct {
 	// READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -2606,24 +2351,6 @@ type Resource struct {
 
 	// READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ResourceMoveChangeHistory - The change history of the resource move.
-type ResourceMoveChangeHistory struct {
-	// Azure subscription ID of the resource.
-	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
-
-	// UTC timestamp of when the resource was changed.
-	ChangedTimeUTC *time.Time `json:"changedTimeUtc,omitempty"`
-
-	// Azure Resource Group of the resource.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-}
-
-// ResourceSKU - Describes an EventGrid Resource Sku.
-type ResourceSKU struct {
-	// The Sku name of the resource. The possible values are: Basic or Premium.
-	Name *SKU `json:"name,omitempty"`
 }
 
 // RetryPolicy - Information about the retry policy for an event subscription.
@@ -2644,6 +2371,13 @@ type ServiceBusQueueEventSubscriptionDestination struct {
 	Properties *ServiceBusQueueEventSubscriptionDestinationProperties `json:"properties,omitempty"`
 }
 
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type ServiceBusQueueEventSubscriptionDestination.
+func (s *ServiceBusQueueEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: s.EndpointType,
+	}
+}
+
 // ServiceBusQueueEventSubscriptionDestinationProperties - The properties that represent the Service Bus destination of an
 // event subscription.
 type ServiceBusQueueEventSubscriptionDestinationProperties struct {
@@ -2661,6 +2395,13 @@ type ServiceBusTopicEventSubscriptionDestination struct {
 
 	// Service Bus Topic Properties of the event subscription destination.
 	Properties *ServiceBusTopicEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type ServiceBusTopicEventSubscriptionDestination.
+func (s *ServiceBusTopicEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: s.EndpointType,
+	}
 }
 
 // ServiceBusTopicEventSubscriptionDestinationProperties - The properties that represent the Service Bus Topic destination
@@ -2685,6 +2426,14 @@ type StaticDeliveryAttributeMapping struct {
 	Properties *StaticDeliveryAttributeMappingProperties `json:"properties,omitempty"`
 }
 
+// GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type StaticDeliveryAttributeMapping.
+func (s *StaticDeliveryAttributeMapping) GetDeliveryAttributeMapping() *DeliveryAttributeMapping {
+	return &DeliveryAttributeMapping{
+		Name: s.Name,
+		Type: s.Type,
+	}
+}
+
 // StaticDeliveryAttributeMappingProperties - Properties of static delivery attribute mapping.
 type StaticDeliveryAttributeMappingProperties struct {
 	// Boolean flag to tell if the attribute contains sensitive information .
@@ -2703,6 +2452,13 @@ type StorageBlobDeadLetterDestination struct {
 	Properties *StorageBlobDeadLetterDestinationProperties `json:"properties,omitempty"`
 }
 
+// GetDeadLetterDestination implements the DeadLetterDestinationClassification interface for type StorageBlobDeadLetterDestination.
+func (s *StorageBlobDeadLetterDestination) GetDeadLetterDestination() *DeadLetterDestination {
+	return &DeadLetterDestination{
+		EndpointType: s.EndpointType,
+	}
+}
+
 // StorageBlobDeadLetterDestinationProperties - Properties of the storage blob based dead letter destination.
 type StorageBlobDeadLetterDestinationProperties struct {
 	// The name of the Storage blob container that is the destination of the deadletter events
@@ -2719,6 +2475,13 @@ type StorageQueueEventSubscriptionDestination struct {
 
 	// Storage Queue Properties of the event subscription destination.
 	Properties *StorageQueueEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type StorageQueueEventSubscriptionDestination.
+func (s *StorageQueueEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: s.EndpointType,
+	}
 }
 
 // StorageQueueEventSubscriptionDestinationProperties - The properties for a storage queue destination.
@@ -2745,6 +2508,14 @@ type StringBeginsWithAdvancedFilter struct {
 	Values []*string `json:"values,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringBeginsWithAdvancedFilter.
+func (s *StringBeginsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
 // StringContainsAdvancedFilter - StringContains Advanced Filter.
 type StringContainsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -2755,6 +2526,14 @@ type StringContainsAdvancedFilter struct {
 
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringContainsAdvancedFilter.
+func (s *StringContainsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // StringEndsWithAdvancedFilter - StringEndsWith Advanced Filter.
@@ -2769,6 +2548,14 @@ type StringEndsWithAdvancedFilter struct {
 	Values []*string `json:"values,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringEndsWithAdvancedFilter.
+func (s *StringEndsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
 // StringInAdvancedFilter - StringIn Advanced Filter.
 type StringInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -2779,6 +2566,14 @@ type StringInAdvancedFilter struct {
 
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringInAdvancedFilter.
+func (s *StringInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // StringNotBeginsWithAdvancedFilter - StringNotBeginsWith Advanced Filter.
@@ -2793,6 +2588,14 @@ type StringNotBeginsWithAdvancedFilter struct {
 	Values []*string `json:"values,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotBeginsWithAdvancedFilter.
+func (s *StringNotBeginsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
 // StringNotContainsAdvancedFilter - StringNotContains Advanced Filter.
 type StringNotContainsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -2803,6 +2606,14 @@ type StringNotContainsAdvancedFilter struct {
 
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotContainsAdvancedFilter.
+func (s *StringNotContainsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // StringNotEndsWithAdvancedFilter - StringNotEndsWith Advanced Filter.
@@ -2817,6 +2628,14 @@ type StringNotEndsWithAdvancedFilter struct {
 	Values []*string `json:"values,omitempty"`
 }
 
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotEndsWithAdvancedFilter.
+func (s *StringNotEndsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
 // StringNotInAdvancedFilter - StringNotIn Advanced Filter.
 type StringNotInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -2827,6 +2646,14 @@ type StringNotInAdvancedFilter struct {
 
 	// The set of filter values.
 	Values []*string `json:"values,omitempty"`
+}
+
+// GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotInAdvancedFilter.
+func (s *StringNotInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
+	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -3023,20 +2850,11 @@ type Topic struct {
 	// REQUIRED; Location of the resource.
 	Location *string `json:"location,omitempty"`
 
-	// Extended location of the resource.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
-
 	// Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
 
-	// Kind of the resource.
-	Kind *ResourceKind `json:"kind,omitempty"`
-
 	// Properties of the topic.
 	Properties *TopicProperties `json:"properties,omitempty"`
-
-	// The Sku pricing tier for the topic.
-	SKU *ResourceSKU `json:"sku,omitempty"`
 
 	// Tags of the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -3094,7 +2912,16 @@ type TopicEventSubscriptionsClientGetOptions struct {
 
 // TopicEventSubscriptionsClientListOptions contains the optional parameters for the TopicEventSubscriptionsClient.List method.
 type TopicEventSubscriptionsClientListOptions struct {
-	// placeholder for future optional parameters
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
 }
 
 // TopicProperties - Properties of the Topic.
@@ -3188,7 +3015,7 @@ type TopicTypeProperties struct {
 	SupportedLocations []*string `json:"supportedLocations,omitempty"`
 
 	// Supported source scopes.
-	SupportedScopesForSource []*TopicTypePropertiesSupportedScopesForSourceItem `json:"supportedScopesForSource,omitempty"`
+	SupportedScopesForSource []*TopicTypeSourceScope `json:"supportedScopesForSource,omitempty"`
 }
 
 // TopicTypesClientGetOptions contains the optional parameters for the TopicTypesClient.Get method.
@@ -3237,9 +3064,6 @@ type TopicUpdateParameters struct {
 
 	// Properties of the Topic resource.
 	Properties *TopicUpdateParameterProperties `json:"properties,omitempty"`
-
-	// The Sku pricing tier for the topic.
-	SKU *ResourceSKU `json:"sku,omitempty"`
 
 	// Tags of the Topic resource.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -3371,9 +3195,6 @@ type VerifiedPartnerProperties struct {
 	// Official name of the Partner.
 	OrganizationName *string `json:"organizationName,omitempty"`
 
-	// Details of the partner destination scenario.
-	PartnerDestinationDetails *PartnerDetails `json:"partnerDestinationDetails,omitempty"`
-
 	// Display name of the verified partner.
 	PartnerDisplayName *string `json:"partnerDisplayName,omitempty"`
 
@@ -3424,6 +3245,13 @@ type WebHookEventSubscriptionDestination struct {
 	Properties *WebHookEventSubscriptionDestinationProperties `json:"properties,omitempty"`
 }
 
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type WebHookEventSubscriptionDestination.
+func (w *WebHookEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: w.EndpointType,
+	}
+}
+
 // WebHookEventSubscriptionDestinationProperties - Information about the webhook destination properties for an event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
 	// The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery
@@ -3447,51 +3275,4 @@ type WebHookEventSubscriptionDestinationProperties struct {
 
 	// READ-ONLY; The base URL that represents the endpoint of the destination of an event subscription.
 	EndpointBaseURL *string `json:"endpointBaseUrl,omitempty" azure:"ro"`
-}
-
-// WebhookPartnerDestinationInfo - Information about the WebHook of the partner destination.
-type WebhookPartnerDestinationInfo struct {
-	// REQUIRED; Type of the endpoint for the partner destination
-	EndpointType *PartnerEndpointType `json:"endpointType,omitempty"`
-
-	// Azure subscription ID of the subscriber. The partner destination associated with the channel will be created under this
-	// Azure subscription.
-	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
-
-	// Additional context of the partner destination endpoint.
-	EndpointServiceContext *string `json:"endpointServiceContext,omitempty"`
-
-	// Name of the partner destination associated with the channel.
-	Name *string `json:"name,omitempty"`
-
-	// WebHook Properties of the partner destination.
-	Properties *WebhookPartnerDestinationProperties `json:"properties,omitempty"`
-
-	// Azure Resource Group of the subscriber. The partner destination associated with the channel will be created under this
-	// resource group.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-
-	// Change history of the resource move.
-	ResourceMoveChangeHistory []*ResourceMoveChangeHistory `json:"resourceMoveChangeHistory,omitempty"`
-}
-
-// WebhookPartnerDestinationProperties - Properties of a partner destination webhook.
-type WebhookPartnerDestinationProperties struct {
-	// Partner client authentication
-	ClientAuthentication PartnerClientAuthenticationClassification `json:"clientAuthentication,omitempty"`
-
-	// The base URL that represents the endpoint of the partner destination.
-	EndpointBaseURL *string `json:"endpointBaseUrl,omitempty"`
-
-	// The URL that represents the endpoint of the partner destination.
-	EndpointURL *string `json:"endpointUrl,omitempty"`
-}
-
-// WebhookUpdatePartnerDestinationInfo - Information about the update of the WebHook of the partner destination.
-type WebhookUpdatePartnerDestinationInfo struct {
-	// REQUIRED; Type of the endpoint for the partner destination
-	EndpointType *PartnerEndpointType `json:"endpointType,omitempty"`
-
-	// WebHook Properties of the partner destination.
-	Properties *WebhookPartnerDestinationProperties `json:"properties,omitempty"`
 }

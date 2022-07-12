@@ -26,13 +26,13 @@ func ExampleJitRequestsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewJitRequestsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewJitRequestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<jit-request-name>",
+		"rg",
+		"myJitRequest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,33 +48,33 @@ func ExampleJitRequestsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewJitRequestsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewJitRequestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<jit-request-name>",
+		"rg",
+		"myJitRequest",
 		armmanagedapplications.JitRequestDefinition{
 			Properties: &armmanagedapplications.JitRequestProperties{
-				ApplicationResourceID: to.Ptr("<application-resource-id>"),
+				ApplicationResourceID: to.Ptr("/subscriptions/00c76877-e316-48a7-af60-4a09fec9d43f/resourceGroups/52F30DB2/providers/Microsoft.Solutions/applications/7E193158"),
 				JitAuthorizationPolicies: []*armmanagedapplications.JitAuthorizationPolicies{
 					{
-						PrincipalID:      to.Ptr("<principal-id>"),
-						RoleDefinitionID: to.Ptr("<role-definition-id>"),
+						PrincipalID:      to.Ptr("1db8e132e2934dbcb8e1178a61319491"),
+						RoleDefinitionID: to.Ptr("ecd05a23-931a-4c38-a52b-ac7c4c583334"),
 					}},
 				JitSchedulingPolicy: &armmanagedapplications.JitSchedulingPolicy{
 					Type:      to.Ptr(armmanagedapplications.JitSchedulingTypeOnce),
-					Duration:  to.Ptr("<duration>"),
+					Duration:  to.Ptr("PT8H"),
 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.6661804Z"); return t }()),
 				},
 			},
 		},
-		&armmanagedapplications.JitRequestsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -89,13 +89,13 @@ func ExampleJitRequestsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewJitRequestsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewJitRequestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<jit-request-name>",
+		"rg",
+		"myJitRequest",
 		armmanagedapplications.JitRequestPatchable{
 			Tags: map[string]*string{
 				"department": to.Ptr("Finance"),
@@ -116,13 +116,13 @@ func ExampleJitRequestsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewJitRequestsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewJitRequestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<jit-request-name>",
+		"rg",
+		"myJitRequest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -136,7 +136,7 @@ func ExampleJitRequestsClient_ListBySubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewJitRequestsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewJitRequestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -156,12 +156,12 @@ func ExampleJitRequestsClient_ListByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmanagedapplications.NewJitRequestsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewJitRequestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
+		"rg",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

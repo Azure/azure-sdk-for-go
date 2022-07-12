@@ -24,20 +24,20 @@ func ExampleSecretClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<secret-resource-name>",
+		"sbz_demo",
+		"dbConnectionString",
 		armservicefabricmesh.SecretResourceDescription{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("EastUS"),
 			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.InlinedValueSecretResourceProperties{
 				Kind:        to.Ptr(armservicefabricmesh.SecretKindInlinedValue),
-				Description: to.Ptr("<description>"),
-				ContentType: to.Ptr("<content-type>"),
+				Description: to.Ptr("Mongo DB connection string for backend database!"),
+				ContentType: to.Ptr("text/plain"),
 			},
 		},
 		nil)
@@ -55,13 +55,13 @@ func ExampleSecretClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<secret-resource-name>",
+		"sbz_demo",
+		"dbConnectionString",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,13 +77,13 @@ func ExampleSecretClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<secret-resource-name>",
+		"sbz_demo",
+		"dbConnectionString",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,17 +97,16 @@ func ExampleSecretClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("sbz_demo",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -123,7 +122,7 @@ func ExampleSecretClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -132,7 +131,6 @@ func ExampleSecretClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -12,21 +12,19 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2022-04-01/examples/OpenShiftClusters_List.json
 func ExampleOpenShiftClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
+	client, err := armredhatopenshift.NewOpenShiftClustersClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleOpenShiftClustersClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -44,24 +41,23 @@ func ExampleOpenShiftClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2022-04-01/examples/OpenShiftClusters_ListByResourceGroup.json
 func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
+	client, err := armredhatopenshift.NewOpenShiftClustersClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("resourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -70,20 +66,20 @@ func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2022-04-01/examples/OpenShiftClusters_Get.json
 func ExampleOpenShiftClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
+	client, err := armredhatopenshift.NewOpenShiftClustersClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"resourceGroup",
+		"resourceName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -92,22 +88,22 @@ func ExampleOpenShiftClustersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2022-04-01/examples/OpenShiftClusters_CreateOrUpdate.json
 func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
+	client, err := armredhatopenshift.NewOpenShiftClustersClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"resourceGroup",
+		"resourceName",
 		armredhatopenshift.OpenShiftCluster{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("location"),
 			Tags: map[string]*string{
 				"key": to.Ptr("value"),
 			},
@@ -116,43 +112,45 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 					Visibility: to.Ptr(armredhatopenshift.VisibilityPublic),
 				},
 				ClusterProfile: &armredhatopenshift.ClusterProfile{
-					Domain:          to.Ptr("<domain>"),
-					PullSecret:      to.Ptr("<pull-secret>"),
-					ResourceGroupID: to.Ptr("<resource-group-id>"),
+					Domain:               to.Ptr("cluster.location.aroapp.io"),
+					FipsValidatedModules: to.Ptr(armredhatopenshift.FipsValidatedModulesEnabled),
+					PullSecret:           to.Ptr("{\"auths\":{\"registry.connect.redhat.com\":{\"auth\":\"\"},\"registry.redhat.io\":{\"auth\":\"\"}}}"),
+					ResourceGroupID:      to.Ptr("/subscriptions/subscriptionId/resourceGroups/clusterResourceGroup"),
 				},
 				ConsoleProfile: &armredhatopenshift.ConsoleProfile{},
 				IngressProfiles: []*armredhatopenshift.IngressProfile{
 					{
-						Name:       to.Ptr("<name>"),
+						Name:       to.Ptr("default"),
 						Visibility: to.Ptr(armredhatopenshift.VisibilityPublic),
 					}},
 				MasterProfile: &armredhatopenshift.MasterProfile{
-					SubnetID: to.Ptr("<subnet-id>"),
-					VMSize:   to.Ptr(armredhatopenshift.VMSizeStandardD8SV3),
+					EncryptionAtHost: to.Ptr(armredhatopenshift.EncryptionAtHostEnabled),
+					SubnetID:         to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/master"),
+					VMSize:           to.Ptr("Standard_D8s_v3"),
 				},
 				NetworkProfile: &armredhatopenshift.NetworkProfile{
-					PodCidr:     to.Ptr("<pod-cidr>"),
-					ServiceCidr: to.Ptr("<service-cidr>"),
+					PodCidr:     to.Ptr("10.128.0.0/14"),
+					ServiceCidr: to.Ptr("172.30.0.0/16"),
 				},
 				ServicePrincipalProfile: &armredhatopenshift.ServicePrincipalProfile{
-					ClientID:     to.Ptr("<client-id>"),
-					ClientSecret: to.Ptr("<client-secret>"),
+					ClientID:     to.Ptr("clientId"),
+					ClientSecret: to.Ptr("clientSecret"),
 				},
 				WorkerProfiles: []*armredhatopenshift.WorkerProfile{
 					{
-						Name:       to.Ptr("<name>"),
+						Name:       to.Ptr("worker"),
 						Count:      to.Ptr[int32](3),
 						DiskSizeGB: to.Ptr[int32](128),
-						SubnetID:   to.Ptr("<subnet-id>"),
-						VMSize:     to.Ptr(armredhatopenshift.VMSizeStandardD2SV3),
+						SubnetID:   to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+						VMSize:     to.Ptr("Standard_D2s_v3"),
 					}},
 			},
 		},
-		&armredhatopenshift.OpenShiftClustersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -160,90 +158,92 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2022-04-01/examples/OpenShiftClusters_Delete.json
 func ExampleOpenShiftClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
+	client, err := armredhatopenshift.NewOpenShiftClustersClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armredhatopenshift.OpenShiftClustersClientBeginDeleteOptions{ResumeToken: ""})
+		"resourceGroup",
+		"resourceName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2022-04-01/examples/OpenShiftClusters_Update.json
 func ExampleOpenShiftClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
+	client, err := armredhatopenshift.NewOpenShiftClustersClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"resourceGroup",
+		"resourceName",
 		armredhatopenshift.OpenShiftClusterUpdate{
 			Properties: &armredhatopenshift.OpenShiftClusterProperties{
 				ApiserverProfile: &armredhatopenshift.APIServerProfile{
 					Visibility: to.Ptr(armredhatopenshift.VisibilityPublic),
 				},
 				ClusterProfile: &armredhatopenshift.ClusterProfile{
-					Domain:          to.Ptr("<domain>"),
-					PullSecret:      to.Ptr("<pull-secret>"),
-					ResourceGroupID: to.Ptr("<resource-group-id>"),
+					Domain:               to.Ptr("cluster.location.aroapp.io"),
+					FipsValidatedModules: to.Ptr(armredhatopenshift.FipsValidatedModulesEnabled),
+					PullSecret:           to.Ptr("{\"auths\":{\"registry.connect.redhat.com\":{\"auth\":\"\"},\"registry.redhat.io\":{\"auth\":\"\"}}}"),
+					ResourceGroupID:      to.Ptr("/subscriptions/subscriptionId/resourceGroups/clusterResourceGroup"),
 				},
 				ConsoleProfile: &armredhatopenshift.ConsoleProfile{},
 				IngressProfiles: []*armredhatopenshift.IngressProfile{
 					{
-						Name:       to.Ptr("<name>"),
+						Name:       to.Ptr("default"),
 						Visibility: to.Ptr(armredhatopenshift.VisibilityPublic),
 					}},
 				MasterProfile: &armredhatopenshift.MasterProfile{
-					SubnetID: to.Ptr("<subnet-id>"),
-					VMSize:   to.Ptr(armredhatopenshift.VMSizeStandardD8SV3),
+					EncryptionAtHost: to.Ptr(armredhatopenshift.EncryptionAtHostEnabled),
+					SubnetID:         to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/master"),
+					VMSize:           to.Ptr("Standard_D8s_v3"),
 				},
 				NetworkProfile: &armredhatopenshift.NetworkProfile{
-					PodCidr:     to.Ptr("<pod-cidr>"),
-					ServiceCidr: to.Ptr("<service-cidr>"),
+					PodCidr:     to.Ptr("10.128.0.0/14"),
+					ServiceCidr: to.Ptr("172.30.0.0/16"),
 				},
 				ServicePrincipalProfile: &armredhatopenshift.ServicePrincipalProfile{
-					ClientID:     to.Ptr("<client-id>"),
-					ClientSecret: to.Ptr("<client-secret>"),
+					ClientID:     to.Ptr("clientId"),
+					ClientSecret: to.Ptr("clientSecret"),
 				},
 				WorkerProfiles: []*armredhatopenshift.WorkerProfile{
 					{
-						Name:       to.Ptr("<name>"),
+						Name:       to.Ptr("worker"),
 						Count:      to.Ptr[int32](3),
 						DiskSizeGB: to.Ptr[int32](128),
-						SubnetID:   to.Ptr("<subnet-id>"),
-						VMSize:     to.Ptr(armredhatopenshift.VMSizeStandardD2SV3),
+						SubnetID:   to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+						VMSize:     to.Ptr("Standard_D2s_v3"),
 					}},
 			},
 			Tags: map[string]*string{
 				"key": to.Ptr("value"),
 			},
 		},
-		&armredhatopenshift.OpenShiftClustersClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -251,20 +251,42 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_ListCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2022-04-01/examples/OpenShiftClusters_ListAdminCredentials.json
+func ExampleOpenShiftClustersClient_ListAdminCredentials() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armredhatopenshift.NewOpenShiftClustersClient("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListAdminCredentials(ctx,
+		"resourceGroup",
+		"resourceName",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2022-04-01/examples/OpenShiftClusters_ListCredentials.json
 func ExampleOpenShiftClustersClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
+	client, err := armredhatopenshift.NewOpenShiftClustersClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListCredentials(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"resourceGroup",
+		"resourceName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

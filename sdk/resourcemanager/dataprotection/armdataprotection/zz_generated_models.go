@@ -19,6 +19,14 @@ type AbsoluteDeleteOption struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetDeleteOption implements the DeleteOptionClassification interface for type AbsoluteDeleteOption.
+func (a *AbsoluteDeleteOption) GetDeleteOption() *DeleteOption {
+	return &DeleteOption{
+		Duration:   a.Duration,
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AdHocBackupRuleOptions - Adhoc backup rules
 type AdHocBackupRuleOptions struct {
 	// REQUIRED
@@ -48,6 +56,13 @@ type AdhocBasedTriggerContext struct {
 	TaggingCriteria *AdhocBasedTaggingCriteria `json:"taggingCriteria,omitempty"`
 }
 
+// GetTriggerContext implements the TriggerContextClassification interface for type AdhocBasedTriggerContext.
+func (a *AdhocBasedTriggerContext) GetTriggerContext() *TriggerContext {
+	return &TriggerContext{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AuthCredentialsClassification provides polymorphic access to related types.
 // Call the interface's GetAuthCredentials() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -62,6 +77,9 @@ type AuthCredentials struct {
 	// REQUIRED; Type of the specific object - used for deserializing
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetAuthCredentials implements the AuthCredentialsClassification interface for type AuthCredentials.
+func (a *AuthCredentials) GetAuthCredentials() *AuthCredentials { return a }
 
 // AzureBackupDiscreteRecoveryPoint - Azure backup discrete RecoveryPoint
 type AzureBackupDiscreteRecoveryPoint struct {
@@ -78,6 +96,13 @@ type AzureBackupDiscreteRecoveryPoint struct {
 	RecoveryPointType              *string                          `json:"recoveryPointType,omitempty"`
 	RetentionTagName               *string                          `json:"retentionTagName,omitempty"`
 	RetentionTagVersion            *string                          `json:"retentionTagVersion,omitempty"`
+}
+
+// GetAzureBackupRecoveryPoint implements the AzureBackupRecoveryPointClassification interface for type AzureBackupDiscreteRecoveryPoint.
+func (a *AzureBackupDiscreteRecoveryPoint) GetAzureBackupRecoveryPoint() *AzureBackupRecoveryPoint {
+	return &AzureBackupRecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureBackupFindRestorableTimeRangesRequest - List Restore Ranges Request
@@ -258,6 +283,13 @@ type AzureBackupParams struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetBackupParameters implements the BackupParametersClassification interface for type AzureBackupParams.
+func (a *AzureBackupParams) GetBackupParameters() *BackupParameters {
+	return &BackupParameters{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // AzureBackupRecoveryPointClassification provides polymorphic access to related types.
 // Call the interface's GetAzureBackupRecoveryPoint() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -272,6 +304,9 @@ type AzureBackupRecoveryPoint struct {
 	// REQUIRED
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetAzureBackupRecoveryPoint implements the AzureBackupRecoveryPointClassification interface for type AzureBackupRecoveryPoint.
+func (a *AzureBackupRecoveryPoint) GetAzureBackupRecoveryPoint() *AzureBackupRecoveryPoint { return a }
 
 // AzureBackupRecoveryPointBasedRestoreRequestClassification provides polymorphic access to related types.
 // Call the interface's GetAzureBackupRecoveryPointBasedRestoreRequest() method to access the common type.
@@ -299,6 +334,22 @@ type AzureBackupRecoveryPointBasedRestoreRequest struct {
 
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// GetAzureBackupRecoveryPointBasedRestoreRequest implements the AzureBackupRecoveryPointBasedRestoreRequestClassification
+// interface for type AzureBackupRecoveryPointBasedRestoreRequest.
+func (a *AzureBackupRecoveryPointBasedRestoreRequest) GetAzureBackupRecoveryPointBasedRestoreRequest() *AzureBackupRecoveryPointBasedRestoreRequest {
+	return a
+}
+
+// GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRecoveryPointBasedRestoreRequest.
+func (a *AzureBackupRecoveryPointBasedRestoreRequest) GetAzureBackupRestoreRequest() *AzureBackupRestoreRequest {
+	return &AzureBackupRestoreRequest{
+		ObjectType:          a.ObjectType,
+		RestoreTargetInfo:   a.RestoreTargetInfo,
+		SourceDataStoreType: a.SourceDataStoreType,
+		SourceResourceID:    a.SourceResourceID,
+	}
 }
 
 // AzureBackupRecoveryPointResource - Azure backup recoveryPoint resource
@@ -346,6 +397,16 @@ type AzureBackupRecoveryTimeBasedRestoreRequest struct {
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
+// GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRecoveryTimeBasedRestoreRequest.
+func (a *AzureBackupRecoveryTimeBasedRestoreRequest) GetAzureBackupRestoreRequest() *AzureBackupRestoreRequest {
+	return &AzureBackupRestoreRequest{
+		ObjectType:          a.ObjectType,
+		RestoreTargetInfo:   a.RestoreTargetInfo,
+		SourceDataStoreType: a.SourceDataStoreType,
+		SourceResourceID:    a.SourceResourceID,
+	}
+}
+
 // AzureBackupRehydrationRequest - Azure Backup Rehydrate Request
 type AzureBackupRehydrationRequest struct {
 	// REQUIRED; Id of the recovery point to be recovered
@@ -383,6 +444,11 @@ type AzureBackupRestoreRequest struct {
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
+// GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRestoreRequest.
+func (a *AzureBackupRestoreRequest) GetAzureBackupRestoreRequest() *AzureBackupRestoreRequest {
+	return a
+}
+
 // AzureBackupRestoreWithRehydrationRequest - AzureBackup Restore with Rehydration Request
 type AzureBackupRestoreWithRehydrationRequest struct {
 	// REQUIRED
@@ -407,6 +473,28 @@ type AzureBackupRestoreWithRehydrationRequest struct {
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
+// GetAzureBackupRecoveryPointBasedRestoreRequest implements the AzureBackupRecoveryPointBasedRestoreRequestClassification
+// interface for type AzureBackupRestoreWithRehydrationRequest.
+func (a *AzureBackupRestoreWithRehydrationRequest) GetAzureBackupRecoveryPointBasedRestoreRequest() *AzureBackupRecoveryPointBasedRestoreRequest {
+	return &AzureBackupRecoveryPointBasedRestoreRequest{
+		RecoveryPointID:     a.RecoveryPointID,
+		ObjectType:          a.ObjectType,
+		RestoreTargetInfo:   a.RestoreTargetInfo,
+		SourceDataStoreType: a.SourceDataStoreType,
+		SourceResourceID:    a.SourceResourceID,
+	}
+}
+
+// GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRestoreWithRehydrationRequest.
+func (a *AzureBackupRestoreWithRehydrationRequest) GetAzureBackupRestoreRequest() *AzureBackupRestoreRequest {
+	return &AzureBackupRestoreRequest{
+		ObjectType:          a.ObjectType,
+		RestoreTargetInfo:   a.RestoreTargetInfo,
+		SourceDataStoreType: a.SourceDataStoreType,
+		SourceResourceID:    a.SourceResourceID,
+	}
+}
+
 // AzureBackupRule - Azure backup rule
 type AzureBackupRule struct {
 	// REQUIRED; DataStoreInfo base
@@ -423,6 +511,14 @@ type AzureBackupRule struct {
 
 	// BackupParameters base
 	BackupParameters BackupParametersClassification `json:"backupParameters,omitempty"`
+}
+
+// GetBasePolicyRule implements the BasePolicyRuleClassification interface for type AzureBackupRule.
+func (a *AzureBackupRule) GetBasePolicyRule() *BasePolicyRule {
+	return &BasePolicyRule{
+		Name:       a.Name,
+		ObjectType: a.ObjectType,
+	}
 }
 
 // AzureMonitorAlertSettings - Settings for Azure Monitor based alerts
@@ -442,6 +538,14 @@ type AzureOperationalStoreParameters struct {
 	ResourceGroupID *string `json:"resourceGroupId,omitempty"`
 }
 
+// GetDataStoreParameters implements the DataStoreParametersClassification interface for type AzureOperationalStoreParameters.
+func (a *AzureOperationalStoreParameters) GetDataStoreParameters() *DataStoreParameters {
+	return &DataStoreParameters{
+		ObjectType:    a.ObjectType,
+		DataStoreType: a.DataStoreType,
+	}
+}
+
 // AzureRetentionRule - Azure retention rule
 type AzureRetentionRule struct {
 	// REQUIRED
@@ -453,6 +557,14 @@ type AzureRetentionRule struct {
 	// REQUIRED
 	ObjectType *string `json:"objectType,omitempty"`
 	IsDefault  *bool   `json:"isDefault,omitempty"`
+}
+
+// GetBasePolicyRule implements the BasePolicyRuleClassification interface for type AzureRetentionRule.
+func (a *AzureRetentionRule) GetBasePolicyRule() *BasePolicyRule {
+	return &BasePolicyRule{
+		Name:       a.Name,
+		ObjectType: a.ObjectType,
+	}
 }
 
 // BackupCriteriaClassification provides polymorphic access to related types.
@@ -469,6 +581,9 @@ type BackupCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetBackupCriteria implements the BackupCriteriaClassification interface for type BackupCriteria.
+func (b *BackupCriteria) GetBackupCriteria() *BackupCriteria { return b }
 
 // BackupInstance - Backup Instance
 type BackupInstance struct {
@@ -647,6 +762,9 @@ type BackupParameters struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetBackupParameters implements the BackupParametersClassification interface for type BackupParameters.
+func (b *BackupParameters) GetBackupParameters() *BackupParameters { return b }
+
 // BackupPoliciesClientCreateOrUpdateOptions contains the optional parameters for the BackupPoliciesClient.CreateOrUpdate
 // method.
 type BackupPoliciesClientCreateOrUpdateOptions struct {
@@ -678,6 +796,14 @@ type BackupPolicy struct {
 
 	// REQUIRED; Policy rule dictionary that contains rules for each backuptype i.e Full/Incremental/Logs etc
 	PolicyRules []BasePolicyRuleClassification `json:"policyRules,omitempty"`
+}
+
+// GetBaseBackupPolicy implements the BaseBackupPolicyClassification interface for type BackupPolicy.
+func (b *BackupPolicy) GetBaseBackupPolicy() *BaseBackupPolicy {
+	return &BaseBackupPolicy{
+		DatasourceTypes: b.DatasourceTypes,
+		ObjectType:      b.ObjectType,
+	}
 }
 
 // BackupSchedule - Schedule for backup
@@ -811,6 +937,9 @@ type BaseBackupPolicy struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetBaseBackupPolicy implements the BaseBackupPolicyClassification interface for type BaseBackupPolicy.
+func (b *BaseBackupPolicy) GetBaseBackupPolicy() *BaseBackupPolicy { return b }
+
 // BaseBackupPolicyResource - BaseBackupPolicy resource
 type BaseBackupPolicyResource struct {
 	// BaseBackupPolicyResource properties
@@ -855,6 +984,9 @@ type BasePolicyRule struct {
 	// REQUIRED
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetBasePolicyRule implements the BasePolicyRuleClassification interface for type BasePolicyRule.
+func (b *BasePolicyRule) GetBasePolicyRule() *BasePolicyRule { return b }
 
 // CheckNameAvailabilityRequest - CheckNameAvailability Request
 type CheckNameAvailabilityRequest struct {
@@ -960,6 +1092,13 @@ type CopyOnExpiryOption struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetCopyOption implements the CopyOptionClassification interface for type CopyOnExpiryOption.
+func (c *CopyOnExpiryOption) GetCopyOption() *CopyOption {
+	return &CopyOption{
+		ObjectType: c.ObjectType,
+	}
+}
+
 // CopyOptionClassification provides polymorphic access to related types.
 // Call the interface's GetCopyOption() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -975,6 +1114,9 @@ type CopyOption struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetCopyOption implements the CopyOptionClassification interface for type CopyOption.
+func (c *CopyOption) GetCopyOption() *CopyOption { return c }
+
 // CustomCopyOption - Duration based custom options to copy
 type CustomCopyOption struct {
 	// REQUIRED; Type of the specific object - used for deserializing
@@ -982,6 +1124,13 @@ type CustomCopyOption struct {
 
 	// Data copied after given timespan
 	Duration *string `json:"duration,omitempty"`
+}
+
+// GetCopyOption implements the CopyOptionClassification interface for type CustomCopyOption.
+func (c *CustomCopyOption) GetCopyOption() *CopyOption {
+	return &CopyOption{
+		ObjectType: c.ObjectType,
+	}
 }
 
 // DataStoreInfoBase - DataStoreInfo base
@@ -1010,6 +1159,9 @@ type DataStoreParameters struct {
 	// REQUIRED; Type of the specific object - used for deserializing
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetDataStoreParameters implements the DataStoreParametersClassification interface for type DataStoreParameters.
+func (d *DataStoreParameters) GetDataStoreParameters() *DataStoreParameters { return d }
 
 // Datasource to be backed up
 type Datasource struct {
@@ -1087,6 +1239,9 @@ type DeleteOption struct {
 	// REQUIRED; Type of the specific object - used for deserializing
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetDeleteOption implements the DeleteOptionClassification interface for type DeleteOption.
+func (d *DeleteOption) GetDeleteOption() *DeleteOption { return d }
 
 // DppBaseResource - Base resource under Microsoft.DataProtection provider namespace
 type DppBaseResource struct {
@@ -1254,6 +1409,13 @@ type FeatureValidationRequest struct {
 	FeatureType *FeatureType `json:"featureType,omitempty"`
 }
 
+// GetFeatureValidationRequestBase implements the FeatureValidationRequestBaseClassification interface for type FeatureValidationRequest.
+func (f *FeatureValidationRequest) GetFeatureValidationRequestBase() *FeatureValidationRequestBase {
+	return &FeatureValidationRequestBase{
+		ObjectType: f.ObjectType,
+	}
+}
+
 // FeatureValidationRequestBaseClassification provides polymorphic access to related types.
 // Call the interface's GetFeatureValidationRequestBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1269,6 +1431,11 @@ type FeatureValidationRequestBase struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetFeatureValidationRequestBase implements the FeatureValidationRequestBaseClassification interface for type FeatureValidationRequestBase.
+func (f *FeatureValidationRequestBase) GetFeatureValidationRequestBase() *FeatureValidationRequestBase {
+	return f
+}
+
 // FeatureValidationResponse - Feature Validation Response
 type FeatureValidationResponse struct {
 	// REQUIRED; Type of the specific object - used for deserializing
@@ -1279,6 +1446,13 @@ type FeatureValidationResponse struct {
 
 	// Response features
 	Features []*SupportedFeature `json:"features,omitempty"`
+}
+
+// GetFeatureValidationResponseBase implements the FeatureValidationResponseBaseClassification interface for type FeatureValidationResponse.
+func (f *FeatureValidationResponse) GetFeatureValidationResponseBase() *FeatureValidationResponseBase {
+	return &FeatureValidationResponseBase{
+		ObjectType: f.ObjectType,
+	}
 }
 
 // FeatureValidationResponseBaseClassification provides polymorphic access to related types.
@@ -1296,10 +1470,22 @@ type FeatureValidationResponseBase struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetFeatureValidationResponseBase implements the FeatureValidationResponseBaseClassification interface for type FeatureValidationResponseBase.
+func (f *FeatureValidationResponseBase) GetFeatureValidationResponseBase() *FeatureValidationResponseBase {
+	return f
+}
+
 // ImmediateCopyOption - Immediate copy Option
 type ImmediateCopyOption struct {
 	// REQUIRED; Type of the specific object - used for deserializing
 	ObjectType *string `json:"objectType,omitempty"`
+}
+
+// GetCopyOption implements the CopyOptionClassification interface for type ImmediateCopyOption.
+func (i *ImmediateCopyOption) GetCopyOption() *CopyOption {
+	return &CopyOption{
+		ObjectType: i.ObjectType,
+	}
 }
 
 // InnerError - Inner Error
@@ -1317,7 +1503,7 @@ type InnerError struct {
 // ItemLevelRestoreCriteriaClassification provides polymorphic access to related types.
 // Call the interface's GetItemLevelRestoreCriteria() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ItemLevelRestoreCriteria, *RangeBasedItemLevelRestoreCriteria
+// - *ItemLevelRestoreCriteria, *KubernetesPVRestoreCriteria, *KubernetesStorageClassRestoreCriteria, *RangeBasedItemLevelRestoreCriteria
 type ItemLevelRestoreCriteriaClassification interface {
 	// GetItemLevelRestoreCriteria returns the ItemLevelRestoreCriteria content of the underlying type.
 	GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria
@@ -1328,6 +1514,9 @@ type ItemLevelRestoreCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type ItemLevelRestoreCriteria.
+func (i *ItemLevelRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria { return i }
 
 // ItemLevelRestoreTargetInfo - Restore target info for Item level restore operation
 type ItemLevelRestoreTargetInfo struct {
@@ -1351,6 +1540,15 @@ type ItemLevelRestoreTargetInfo struct {
 
 	// Target Restore region
 	RestoreLocation *string `json:"restoreLocation,omitempty"`
+}
+
+// GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type ItemLevelRestoreTargetInfo.
+func (i *ItemLevelRestoreTargetInfo) GetRestoreTargetInfoBase() *RestoreTargetInfoBase {
+	return &RestoreTargetInfoBase{
+		ObjectType:      i.ObjectType,
+		RecoveryOption:  i.RecoveryOption,
+		RestoreLocation: i.RestoreLocation,
+	}
 }
 
 // JobExtendedInfo - Extended Information about the job
@@ -1405,6 +1603,44 @@ type JobsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// KubernetesPVRestoreCriteria - Item Level kubernetes persistent volume target info for restore operation
+type KubernetesPVRestoreCriteria struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Selected persistent volume claim name
+	Name *string `json:"name,omitempty"`
+
+	// Selected storage class name for restore operation
+	StorageClassName *string `json:"storageClassName,omitempty"`
+}
+
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesPVRestoreCriteria.
+func (k *KubernetesPVRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria {
+	return &ItemLevelRestoreCriteria{
+		ObjectType: k.ObjectType,
+	}
+}
+
+// KubernetesStorageClassRestoreCriteria - Item Level kubernetes storage class target info for restore operation
+type KubernetesStorageClassRestoreCriteria struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Provisioner of the storage class
+	Provisioner *string `json:"provisioner,omitempty"`
+
+	// Selected storage class name
+	SelectedStorageClassName *string `json:"selectedStorageClassName,omitempty"`
+}
+
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesStorageClassRestoreCriteria.
+func (k *KubernetesStorageClassRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria {
+	return &ItemLevelRestoreCriteria{
+		ObjectType: k.ObjectType,
+	}
+}
+
 // MonitoringSettings - Monitoring Settings
 type MonitoringSettings struct {
 	// Settings for Azure Monitor based alerts
@@ -1426,6 +1662,9 @@ type OperationExtendedInfo struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+// GetOperationExtendedInfo implements the OperationExtendedInfoClassification interface for type OperationExtendedInfo.
+func (o *OperationExtendedInfo) GetOperationExtendedInfo() *OperationExtendedInfo { return o }
+
 // OperationJobExtendedInfo - Operation Job Extended Info
 type OperationJobExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -1433,6 +1672,13 @@ type OperationJobExtendedInfo struct {
 
 	// Arm Id of the job created for this operation.
 	JobID *string `json:"jobId,omitempty"`
+}
+
+// GetOperationExtendedInfo implements the OperationExtendedInfoClassification interface for type OperationJobExtendedInfo.
+func (o *OperationJobExtendedInfo) GetOperationExtendedInfo() *OperationExtendedInfo {
+	return &OperationExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
 }
 
 // OperationResource - Operation Resource
@@ -1543,6 +1789,13 @@ type RangeBasedItemLevelRestoreCriteria struct {
 	MinMatchingValue *string `json:"minMatchingValue,omitempty"`
 }
 
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type RangeBasedItemLevelRestoreCriteria.
+func (r *RangeBasedItemLevelRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria {
+	return &ItemLevelRestoreCriteria{
+		ObjectType: r.ObjectType,
+	}
+}
+
 // RecoveryPointDataStoreDetails - RecoveryPoint datastore details
 type RecoveryPointDataStoreDetails struct {
 	CreationTime *time.Time `json:"creationTime,omitempty"`
@@ -1583,6 +1836,9 @@ type RecoveryPointsFilters struct {
 }
 
 type ResourceGuard struct {
+	// List of critical operations which are not protected by this resourceGuard
+	VaultCriticalOperationExclusionList []*string `json:"vaultCriticalOperationExclusionList,omitempty"`
+
 	// READ-ONLY; This flag indicates whether auto approval is allowed or not.
 	AllowAutoApprovals *bool `json:"allowAutoApprovals,omitempty" azure:"ro"`
 
@@ -1594,9 +1850,6 @@ type ResourceGuard struct {
 
 	// READ-ONLY; {readonly} List of operation details those are protected by the ResourceGuard resource
 	ResourceGuardOperations []*ResourceGuardOperation `json:"resourceGuardOperations,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of critical operations which are not protected by this resourceGuard
-	VaultCriticalOperationExclusionList []*string `json:"vaultCriticalOperationExclusionList,omitempty" azure:"ro"`
 }
 
 // ResourceGuardOperation - This class contains all the details about a critical operation.
@@ -1797,6 +2050,15 @@ type RestoreFilesTargetInfo struct {
 	RestoreLocation *string `json:"restoreLocation,omitempty"`
 }
 
+// GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type RestoreFilesTargetInfo.
+func (r *RestoreFilesTargetInfo) GetRestoreTargetInfoBase() *RestoreTargetInfoBase {
+	return &RestoreTargetInfoBase{
+		ObjectType:      r.ObjectType,
+		RecoveryOption:  r.RecoveryOption,
+		RestoreLocation: r.RestoreLocation,
+	}
+}
+
 type RestoreJobRecoveryPointDetails struct {
 	RecoveryPointID   *string    `json:"recoveryPointID,omitempty"`
 	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty"`
@@ -1823,6 +2085,15 @@ type RestoreTargetInfo struct {
 	RestoreLocation *string `json:"restoreLocation,omitempty"`
 }
 
+// GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type RestoreTargetInfo.
+func (r *RestoreTargetInfo) GetRestoreTargetInfoBase() *RestoreTargetInfoBase {
+	return &RestoreTargetInfoBase{
+		ObjectType:      r.ObjectType,
+		RecoveryOption:  r.RecoveryOption,
+		RestoreLocation: r.RestoreLocation,
+	}
+}
+
 // RestoreTargetInfoBaseClassification provides polymorphic access to related types.
 // Call the interface's GetRestoreTargetInfoBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1843,6 +2114,9 @@ type RestoreTargetInfoBase struct {
 	// Target Restore region
 	RestoreLocation *string `json:"restoreLocation,omitempty"`
 }
+
+// GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type RestoreTargetInfoBase.
+func (r *RestoreTargetInfoBase) GetRestoreTargetInfoBase() *RestoreTargetInfoBase { return r }
 
 // RetentionTag - Retention tag
 type RetentionTag struct {
@@ -1881,6 +2155,13 @@ type ScheduleBasedBackupCriteria struct {
 	WeeksOfTheMonth []*WeekNumber `json:"weeksOfTheMonth,omitempty"`
 }
 
+// GetBackupCriteria implements the BackupCriteriaClassification interface for type ScheduleBasedBackupCriteria.
+func (s *ScheduleBasedBackupCriteria) GetBackupCriteria() *BackupCriteria {
+	return &BackupCriteria{
+		ObjectType: s.ObjectType,
+	}
+}
+
 // ScheduleBasedTriggerContext - Schedule based trigger context
 type ScheduleBasedTriggerContext struct {
 	// REQUIRED; Type of the specific object - used for deserializing
@@ -1893,6 +2174,13 @@ type ScheduleBasedTriggerContext struct {
 	TaggingCriteria []*TaggingCriteria `json:"taggingCriteria,omitempty"`
 }
 
+// GetTriggerContext implements the TriggerContextClassification interface for type ScheduleBasedTriggerContext.
+func (s *ScheduleBasedTriggerContext) GetTriggerContext() *TriggerContext {
+	return &TriggerContext{
+		ObjectType: s.ObjectType,
+	}
+}
+
 // SecretStoreBasedAuthCredentials - Secret store based authentication credentials.
 type SecretStoreBasedAuthCredentials struct {
 	// REQUIRED; Type of the specific object - used for deserializing
@@ -1900,6 +2188,13 @@ type SecretStoreBasedAuthCredentials struct {
 
 	// Secret store resource
 	SecretStoreResource *SecretStoreResource `json:"secretStoreResource,omitempty"`
+}
+
+// GetAuthCredentials implements the AuthCredentialsClassification interface for type SecretStoreBasedAuthCredentials.
+func (s *SecretStoreBasedAuthCredentials) GetAuthCredentials() *AuthCredentials {
+	return &AuthCredentials{
+		ObjectType: s.ObjectType,
+	}
 }
 
 // SecretStoreResource - Class representing a secret store resource.
@@ -2029,6 +2324,9 @@ type TriggerContext struct {
 	// REQUIRED; Type of the specific object - used for deserializing
 	ObjectType *string `json:"objectType,omitempty"`
 }
+
+// GetTriggerContext implements the TriggerContextClassification interface for type TriggerContext.
+func (t *TriggerContext) GetTriggerContext() *TriggerContext { return t }
 
 // UserFacingError - Error object used by layers that have access to localized content, and propagate that to user
 type UserFacingError struct {

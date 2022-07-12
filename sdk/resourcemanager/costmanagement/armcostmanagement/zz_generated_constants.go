@@ -10,7 +10,7 @@ package armcostmanagement
 
 const (
 	moduleName    = "armcostmanagement"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AccumulatedType - Show costs accumulated over time.
@@ -643,6 +643,41 @@ const (
 func PossibleReportTypeValues() []ReportType {
 	return []ReportType{
 		ReportTypeUsage,
+	}
+}
+
+// ReservationReportSchema - The CSV file from the reportUrl blob link consists of reservation usage data with the following
+// schema at daily granularity
+type ReservationReportSchema string
+
+const (
+	ReservationReportSchemaInstanceFlexibilityGroup ReservationReportSchema = "InstanceFlexibilityGroup"
+	ReservationReportSchemaInstanceFlexibilityRatio ReservationReportSchema = "InstanceFlexibilityRatio"
+	ReservationReportSchemaInstanceID               ReservationReportSchema = "InstanceId"
+	ReservationReportSchemaKind                     ReservationReportSchema = "Kind"
+	ReservationReportSchemaReservationID            ReservationReportSchema = "ReservationId"
+	ReservationReportSchemaReservationOrderID       ReservationReportSchema = "ReservationOrderId"
+	ReservationReportSchemaReservedHours            ReservationReportSchema = "ReservedHours"
+	ReservationReportSchemaSKUName                  ReservationReportSchema = "SkuName"
+	ReservationReportSchemaTotalReservedQuantity    ReservationReportSchema = "TotalReservedQuantity"
+	ReservationReportSchemaUsageDate                ReservationReportSchema = "UsageDate"
+	ReservationReportSchemaUsedHours                ReservationReportSchema = "UsedHours"
+)
+
+// PossibleReservationReportSchemaValues returns the possible values for the ReservationReportSchema const type.
+func PossibleReservationReportSchemaValues() []ReservationReportSchema {
+	return []ReservationReportSchema{
+		ReservationReportSchemaInstanceFlexibilityGroup,
+		ReservationReportSchemaInstanceFlexibilityRatio,
+		ReservationReportSchemaInstanceID,
+		ReservationReportSchemaKind,
+		ReservationReportSchemaReservationID,
+		ReservationReportSchemaReservationOrderID,
+		ReservationReportSchemaReservedHours,
+		ReservationReportSchemaSKUName,
+		ReservationReportSchemaTotalReservedQuantity,
+		ReservationReportSchemaUsageDate,
+		ReservationReportSchemaUsedHours,
 	}
 }
 

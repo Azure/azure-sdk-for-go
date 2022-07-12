@@ -38,7 +38,7 @@ func NewSecureScoreControlsClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,10 +56,11 @@ func NewSecureScoreControlsClient(subscriptionID string, credential azcore.Token
 
 // NewListPager - Get all security controls within a scope
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - SecureScoreControlsClientListOptions contains the optional parameters for the SecureScoreControlsClient.List
 // method.
 func (client *SecureScoreControlsClient) NewListPager(options *SecureScoreControlsClientListOptions) *runtime.Pager[SecureScoreControlsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecureScoreControlsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecureScoreControlsClientListResponse]{
 		More: func(page SecureScoreControlsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -103,7 +104,7 @@ func (client *SecureScoreControlsClient) listCreateRequest(ctx context.Context, 
 		reqQP.Set("$expand", string(*options.Expand))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,11 +119,12 @@ func (client *SecureScoreControlsClient) listHandleResponse(resp *http.Response)
 
 // NewListBySecureScorePager - Get all security controls for a specific initiative within a scope
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
 // options - SecureScoreControlsClientListBySecureScoreOptions contains the optional parameters for the SecureScoreControlsClient.ListBySecureScore
 // method.
 func (client *SecureScoreControlsClient) NewListBySecureScorePager(secureScoreName string, options *SecureScoreControlsClientListBySecureScoreOptions) *runtime.Pager[SecureScoreControlsClientListBySecureScoreResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecureScoreControlsClientListBySecureScoreResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecureScoreControlsClientListBySecureScoreResponse]{
 		More: func(page SecureScoreControlsClientListBySecureScoreResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -170,7 +172,7 @@ func (client *SecureScoreControlsClient) listBySecureScoreCreateRequest(ctx cont
 		reqQP.Set("$expand", string(*options.Expand))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

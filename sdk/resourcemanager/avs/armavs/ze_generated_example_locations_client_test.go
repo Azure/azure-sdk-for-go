@@ -23,12 +23,12 @@ func ExampleLocationsClient_CheckTrialAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewLocationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckTrialAvailability(ctx,
-		"<location>",
+		"eastus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,12 +44,12 @@ func ExampleLocationsClient_CheckQuotaAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewLocationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckQuotaAvailability(ctx,
-		"<location>",
+		"eastus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

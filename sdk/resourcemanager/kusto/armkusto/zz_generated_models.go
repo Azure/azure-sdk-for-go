@@ -584,6 +584,9 @@ type DataConnection struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnection implements the DataConnectionClassification interface for type DataConnection.
+func (d *DataConnection) GetDataConnection() *DataConnection { return d }
+
 // DataConnectionCheckNameRequest - A data connection check name availability request.
 type DataConnectionCheckNameRequest struct {
 	// REQUIRED; Data Connection name.
@@ -689,6 +692,9 @@ type Database struct {
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetDatabase implements the DatabaseClassification interface for type Database.
+func (d *Database) GetDatabase() *Database { return d }
 
 // DatabaseListResult - The list Kusto databases operation response.
 type DatabaseListResult struct {
@@ -962,6 +968,17 @@ type EventGridDataConnection struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnection implements the DataConnectionClassification interface for type EventGridDataConnection.
+func (e *EventGridDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location: e.Location,
+		Kind:     e.Kind,
+		ID:       e.ID,
+		Name:     e.Name,
+		Type:     e.Type,
+	}
+}
+
 // EventHubConnectionProperties - Class representing the Kusto event hub connection properties.
 type EventHubConnectionProperties struct {
 	// REQUIRED; The event hub consumer group.
@@ -1018,6 +1035,17 @@ type EventHubDataConnection struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type EventHubDataConnection.
+func (e *EventHubDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location: e.Location,
+		Kind:     e.Kind,
+		ID:       e.ID,
+		Name:     e.Name,
+		Type:     e.Type,
+	}
 }
 
 // FollowerDatabaseDefinition - A class representing follower database request.
@@ -1106,6 +1134,17 @@ type IotHubDataConnection struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type IotHubDataConnection.
+func (i *IotHubDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location: i.Location,
+		Kind:     i.Kind,
+		ID:       i.ID,
+		Name:     i.Name,
+		Type:     i.Type,
+	}
 }
 
 // KeyVaultProperties - Properties of the key vault.
@@ -1553,6 +1592,17 @@ type ReadOnlyFollowingDatabase struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDatabase implements the DatabaseClassification interface for type ReadOnlyFollowingDatabase.
+func (r *ReadOnlyFollowingDatabase) GetDatabase() *Database {
+	return &Database{
+		Location: r.Location,
+		Kind:     r.Kind,
+		ID:       r.ID,
+		Name:     r.Name,
+		Type:     r.Type,
+	}
+}
+
 // ReadOnlyFollowingDatabaseProperties - Class representing the Kusto database properties.
 type ReadOnlyFollowingDatabaseProperties struct {
 	// The time the data should be kept in cache for fast queries in TimeSpan.
@@ -1596,6 +1646,17 @@ type ReadWriteDatabase struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDatabase implements the DatabaseClassification interface for type ReadWriteDatabase.
+func (r *ReadWriteDatabase) GetDatabase() *Database {
+	return &Database{
+		Location: r.Location,
+		Kind:     r.Kind,
+		ID:       r.ID,
+		Name:     r.Name,
+		Type:     r.Type,
+	}
 }
 
 // ReadWriteDatabaseProperties - Class representing the Kusto database properties.

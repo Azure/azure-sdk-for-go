@@ -40,7 +40,7 @@ func NewBitLockerKeysClient(subscriptionID string, acceptLanguage *string, crede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,11 +59,12 @@ func NewBitLockerKeysClient(subscriptionID string, acceptLanguage *string, crede
 
 // NewListPager - Returns the BitLocker Keys for all drives in the specified job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // jobName - The name of the import/export job.
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // options - BitLockerKeysClientListOptions contains the optional parameters for the BitLockerKeysClient.List method.
 func (client *BitLockerKeysClient) NewListPager(jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) *runtime.Pager[BitLockerKeysClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BitLockerKeysClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BitLockerKeysClientListResponse]{
 		More: func(page BitLockerKeysClientListResponse) bool {
 			return false
 		},
@@ -107,9 +108,9 @@ func (client *BitLockerKeysClient) listCreateRequest(ctx context.Context, jobNam
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

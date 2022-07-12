@@ -13,7 +13,7 @@ import "time"
 // AsyncOperationResult - Result of a long running operation.
 type AsyncOperationResult struct {
 	// Error message containing code, description and details
-	Error *ErrorMesssage `json:"error,omitempty"`
+	Error *ErrorMessage `json:"error,omitempty"`
 
 	// current status of a long running operation.
 	Status *string `json:"status,omitempty"`
@@ -36,17 +36,17 @@ type CertificateListDescription struct {
 
 // CertificateProperties - The description of an X509 CA Certificate.
 type CertificateProperties struct {
-	// READ-ONLY; base-64 representation of X509 certificate .cer file or just .pem file content.
-	Certificate []byte `json:"certificate,omitempty" azure:"ro"`
+	// base-64 representation of X509 certificate .cer file or just .pem file content.
+	Certificate []byte `json:"certificate,omitempty"`
+
+	// Determines whether certificate has been verified.
+	IsVerified *bool `json:"isVerified,omitempty"`
 
 	// READ-ONLY; The certificate's creation date and time.
 	Created *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; The certificate's expiration date and time.
 	Expiry *time.Time `json:"expiry,omitempty" azure:"ro"`
-
-	// READ-ONLY; Determines whether certificate has been verified.
-	IsVerified *bool `json:"isVerified,omitempty" azure:"ro"`
 
 	// READ-ONLY; The certificate's subject name.
 	Subject *string `json:"subject,omitempty" azure:"ro"`
@@ -174,8 +174,8 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// ErrorMesssage - Error response containing message and code.
-type ErrorMesssage struct {
+// ErrorMessage - Error response containing message and code.
+type ErrorMessage struct {
 	// standard error code
 	Code *string `json:"code,omitempty"`
 

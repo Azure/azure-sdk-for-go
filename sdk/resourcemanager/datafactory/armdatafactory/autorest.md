@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/cc26f1d28c939bbcde00a29aa8958b3eebb10cea/specification/datafactory/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/cc26f1d28c939bbcde00a29aa8958b3eebb10cea/specification/datafactory/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/6dc6ded9bad45a876f4a6e96df2d4f4eb5c26b12/specification/datafactory/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/6dc6ded9bad45a876f4a6e96df2d4f4eb5c26b12/specification/datafactory/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.5.0
+module-version: 1.2.0
 
 ```

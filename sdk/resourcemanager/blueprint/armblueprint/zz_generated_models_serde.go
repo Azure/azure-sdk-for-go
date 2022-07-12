@@ -10,39 +10,29 @@ package armblueprint
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// GetArtifact implements the ArtifactClassification interface for type Artifact.
-func (a *Artifact) GetArtifact() *Artifact { return a }
-
-// MarshalJSON implements the json.Marshaller interface for type ArtifactList.
-func (a ArtifactList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactList.
 func (a *ArtifactList) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, &a.NextLink)
+			err = unpopulate(val, "NextLink", &a.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			a.Value, err = unmarshalArtifactClassificationArray(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -86,28 +76,12 @@ func (a AssignmentJobCreatedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssignmentList.
-func (a AssignmentList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type AssignmentLockSettings.
 func (a AssignmentLockSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "excludedActions", a.ExcludedActions)
 	populate(objectMap, "excludedPrincipals", a.ExcludedPrincipals)
 	populate(objectMap, "mode", a.Mode)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentOperationList.
-func (a AssignmentOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -151,45 +125,26 @@ func (a AssignmentStatus) MarshalJSON() ([]byte, error) {
 func (a *AssignmentStatus) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &a.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &a.LastModified)
 			delete(rawMsg, key)
 		case "managedResources":
-			err = unpopulate(val, &a.ManagedResources)
+			err = unpopulate(val, "ManagedResources", &a.ManagedResources)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, &a.TimeCreated)
+			err = unpopulateTimeRFC3339(val, "TimeCreated", &a.TimeCreated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (e ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type List.
-func (l List) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
@@ -212,16 +167,6 @@ func (p ParameterDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetArtifact implements the ArtifactClassification interface for type PolicyAssignmentArtifact.
-func (p *PolicyAssignmentArtifact) GetArtifact() *Artifact {
-	return &Artifact{
-		Kind: p.Kind,
-		ID:   p.ID,
-		Type: p.Type,
-		Name: p.Name,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type PolicyAssignmentArtifact.
 func (p PolicyAssignmentArtifact) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -237,29 +182,29 @@ func (p PolicyAssignmentArtifact) MarshalJSON() ([]byte, error) {
 func (p *PolicyAssignmentArtifact) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, &p.ID)
+			err = unpopulate(val, "ID", &p.ID)
 			delete(rawMsg, key)
 		case "kind":
-			err = unpopulate(val, &p.Kind)
+			err = unpopulate(val, "Kind", &p.Kind)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &p.Name)
+			err = unpopulate(val, "Name", &p.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &p.Properties)
+			err = unpopulate(val, "Properties", &p.Properties)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &p.Type)
+			err = unpopulate(val, "Type", &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
 		}
 	}
 	return nil
@@ -291,14 +236,6 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PublishedBlueprintList.
-func (p PublishedBlueprintList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type PublishedBlueprintProperties.
 func (p PublishedBlueprintProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -324,13 +261,6 @@ func (r ResourceGroupDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationList.
-func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ResourceStatusBase.
 func (r ResourceStatusBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -343,33 +273,23 @@ func (r ResourceStatusBase) MarshalJSON() ([]byte, error) {
 func (r *ResourceStatusBase) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &r.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &r.LastModified)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, &r.TimeCreated)
+			err = unpopulateTimeRFC3339(val, "TimeCreated", &r.TimeCreated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
 		}
 	}
 	return nil
-}
-
-// GetArtifact implements the ArtifactClassification interface for type RoleAssignmentArtifact.
-func (r *RoleAssignmentArtifact) GetArtifact() *Artifact {
-	return &Artifact{
-		Kind: r.Kind,
-		ID:   r.ID,
-		Type: r.Type,
-		Name: r.Name,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RoleAssignmentArtifact.
@@ -387,29 +307,29 @@ func (r RoleAssignmentArtifact) MarshalJSON() ([]byte, error) {
 func (r *RoleAssignmentArtifact) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, &r.ID)
+			err = unpopulate(val, "ID", &r.ID)
 			delete(rawMsg, key)
 		case "kind":
-			err = unpopulate(val, &r.Kind)
+			err = unpopulate(val, "Kind", &r.Kind)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &r.Name)
+			err = unpopulate(val, "Name", &r.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &r.Properties)
+			err = unpopulate(val, "Properties", &r.Properties)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &r.Type)
+			err = unpopulate(val, "Type", &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
 		}
 	}
 	return nil
@@ -451,33 +371,23 @@ func (s Status) MarshalJSON() ([]byte, error) {
 func (s *Status) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &s.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &s.LastModified)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, &s.TimeCreated)
+			err = unpopulateTimeRFC3339(val, "TimeCreated", &s.TimeCreated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetArtifact implements the ArtifactClassification interface for type TemplateArtifact.
-func (t *TemplateArtifact) GetArtifact() *Artifact {
-	return &Artifact{
-		Kind: t.Kind,
-		ID:   t.ID,
-		Type: t.Type,
-		Name: t.Name,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TemplateArtifact.
@@ -495,29 +405,29 @@ func (t TemplateArtifact) MarshalJSON() ([]byte, error) {
 func (t *TemplateArtifact) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, &t.ID)
+			err = unpopulate(val, "ID", &t.ID)
 			delete(rawMsg, key)
 		case "kind":
-			err = unpopulate(val, &t.Kind)
+			err = unpopulate(val, "Kind", &t.Kind)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &t.Name)
+			err = unpopulate(val, "Name", &t.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, &t.Properties)
+			err = unpopulate(val, "Properties", &t.Properties)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &t.Type)
+			err = unpopulate(val, "Type", &t.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil
@@ -545,9 +455,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

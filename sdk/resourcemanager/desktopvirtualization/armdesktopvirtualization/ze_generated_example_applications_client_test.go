@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Application_Get.json
@@ -24,14 +24,14 @@ func ExampleApplicationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		"<application-name>",
+		"resourceGroup1",
+		"applicationGroup1",
+		"application1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,23 +47,23 @@ func ExampleApplicationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		"<application-name>",
+		"resourceGroup1",
+		"applicationGroup1",
+		"application1",
 		armdesktopvirtualization.Application{
 			Properties: &armdesktopvirtualization.ApplicationProperties{
-				Description:          to.Ptr("<description>"),
-				CommandLineArguments: to.Ptr("<command-line-arguments>"),
+				Description:          to.Ptr("des1"),
+				CommandLineArguments: to.Ptr("arguments"),
 				CommandLineSetting:   to.Ptr(armdesktopvirtualization.CommandLineSettingAllow),
-				FilePath:             to.Ptr("<file-path>"),
-				FriendlyName:         to.Ptr("<friendly-name>"),
+				FilePath:             to.Ptr("path"),
+				FriendlyName:         to.Ptr("friendly"),
 				IconIndex:            to.Ptr[int32](1),
-				IconPath:             to.Ptr("<icon-path>"),
+				IconPath:             to.Ptr("icon"),
 				ShowInPortal:         to.Ptr(true),
 			},
 		},
@@ -82,14 +82,14 @@ func ExampleApplicationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		"<application-name>",
+		"resourceGroup1",
+		"applicationGroup1",
+		"application1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -103,24 +103,24 @@ func ExampleApplicationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		"<application-name>",
+		"resourceGroup1",
+		"applicationGroup1",
+		"application1",
 		&armdesktopvirtualization.ApplicationsClientUpdateOptions{Application: &armdesktopvirtualization.ApplicationPatch{
 			Properties: &armdesktopvirtualization.ApplicationPatchProperties{
-				Description:          to.Ptr("<description>"),
+				Description:          to.Ptr("des1"),
 				ApplicationType:      to.Ptr(armdesktopvirtualization.RemoteApplicationTypeInBuilt),
-				CommandLineArguments: to.Ptr("<command-line-arguments>"),
+				CommandLineArguments: to.Ptr("arguments"),
 				CommandLineSetting:   to.Ptr(armdesktopvirtualization.CommandLineSettingAllow),
-				FilePath:             to.Ptr("<file-path>"),
-				FriendlyName:         to.Ptr("<friendly-name>"),
+				FilePath:             to.Ptr("path"),
+				FriendlyName:         to.Ptr("friendly"),
 				IconIndex:            to.Ptr[int32](1),
-				IconPath:             to.Ptr("<icon-path>"),
+				IconPath:             to.Ptr("icon"),
 				ShowInPortal:         to.Ptr(true),
 			},
 		},
@@ -139,18 +139,17 @@ func ExampleApplicationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<application-group-name>",
+	pager := client.NewListPager("resourceGroup1",
+		"applicationGroup1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

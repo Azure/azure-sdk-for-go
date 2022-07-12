@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine"
@@ -26,14 +24,14 @@ func ExampleAvailabilityGroupListenersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewAvailabilityGroupListenersClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewAvailabilityGroupListenersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-group-name>",
-		"<availability-group-listener-name>",
+		"testrg",
+		"testvmgroup",
+		"agl-test",
 		&armsqlvirtualmachine.AvailabilityGroupListenersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,23 +47,23 @@ func ExampleAvailabilityGroupListenersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewAvailabilityGroupListenersClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewAvailabilityGroupListenersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-group-name>",
-		"<availability-group-listener-name>",
+		"testrg",
+		"testvmgroup",
+		"agl-test",
 		armsqlvirtualmachine.AvailabilityGroupListener{
 			Properties: &armsqlvirtualmachine.AvailabilityGroupListenerProperties{
-				AvailabilityGroupName: to.Ptr("<availability-group-name>"),
+				AvailabilityGroupName: to.Ptr("ag-test"),
 				LoadBalancerConfigurations: []*armsqlvirtualmachine.LoadBalancerConfiguration{
 					{
-						LoadBalancerResourceID: to.Ptr("<load-balancer-resource-id>"),
+						LoadBalancerResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/loadBalancers/lb-test"),
 						PrivateIPAddress: &armsqlvirtualmachine.PrivateIPAddress{
-							IPAddress:        to.Ptr("<ipaddress>"),
-							SubnetResourceID: to.Ptr("<subnet-resource-id>"),
+							IPAddress:        to.Ptr("10.1.0.112"),
+							SubnetResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"),
 						},
 						ProbePort: to.Ptr[int32](59983),
 						SQLVirtualMachineInstances: []*string{
@@ -75,11 +73,11 @@ func ExampleAvailabilityGroupListenersClient_BeginCreateOrUpdate() {
 				Port: to.Ptr[int32](1433),
 			},
 		},
-		&armsqlvirtualmachine.AvailabilityGroupListenersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -94,19 +92,19 @@ func ExampleAvailabilityGroupListenersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewAvailabilityGroupListenersClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewAvailabilityGroupListenersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-group-name>",
-		"<availability-group-listener-name>",
-		&armsqlvirtualmachine.AvailabilityGroupListenersClientBeginDeleteOptions{ResumeToken: ""})
+		"testrg",
+		"testvmgroup",
+		"agl-test",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -119,18 +117,17 @@ func ExampleAvailabilityGroupListenersClient_NewListByGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewAvailabilityGroupListenersClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewAvailabilityGroupListenersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByGroupPager("<resource-group-name>",
-		"<sql-virtual-machine-group-name>",
+	pager := client.NewListByGroupPager("testrg",
+		"testvmgroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

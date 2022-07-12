@@ -38,7 +38,7 @@ func NewElasticPoolActivitiesClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewElasticPoolActivitiesClient(subscriptionID string, credential azcore.Tok
 
 // NewListByElasticPoolPager - Returns elastic pool activities.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -63,7 +64,7 @@ func NewElasticPoolActivitiesClient(subscriptionID string, credential azcore.Tok
 // options - ElasticPoolActivitiesClientListByElasticPoolOptions contains the optional parameters for the ElasticPoolActivitiesClient.ListByElasticPool
 // method.
 func (client *ElasticPoolActivitiesClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolActivitiesClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolActivitiesClientListByElasticPoolResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ElasticPoolActivitiesClientListByElasticPoolResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ElasticPoolActivitiesClientListByElasticPoolResponse]{
 		More: func(page ElasticPoolActivitiesClientListByElasticPoolResponse) bool {
 			return false
 		},
@@ -110,7 +111,7 @@ func (client *ElasticPoolActivitiesClient) listByElasticPoolCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

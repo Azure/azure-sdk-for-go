@@ -38,7 +38,7 @@ func NewVirtualNetworksClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewVirtualNetworksClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Return virtual network by its name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // virtualNetworkName - virtual network id (vsphereId)
@@ -101,7 +102,7 @@ func (client *VirtualNetworksClient) getCreateRequest(ctx context.Context, regio
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,12 +117,13 @@ func (client *VirtualNetworksClient) getHandleResponse(resp *http.Response) (Vir
 
 // NewListPager - Return list of virtual networks in location for private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // resourcePoolName - Resource pool used to derive vSphere cluster which contains virtual networks
 // options - VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.List method.
 func (client *VirtualNetworksClient) NewListPager(regionID string, pcName string, resourcePoolName string, options *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualNetworksClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListResponse]{
 		More: func(page VirtualNetworksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -171,7 +173,7 @@ func (client *VirtualNetworksClient) listCreateRequest(ctx context.Context, regi
 	reqQP.Set("api-version", "2019-04-01")
 	reqQP.Set("resourcePoolName", resourcePoolName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

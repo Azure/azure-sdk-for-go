@@ -24,18 +24,17 @@ func ExampleFirewallRulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewFirewallRulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<cache-name>",
+	pager := client.NewListPager("rg1",
+		"cache1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,18 +50,18 @@ func ExampleFirewallRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewFirewallRulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<rule-name>",
+		"rg1",
+		"cache1",
+		"rule1",
 		armredis.FirewallRule{
 			Properties: &armredis.FirewallRuleProperties{
-				EndIP:   to.Ptr("<end-ip>"),
-				StartIP: to.Ptr("<start-ip>"),
+				EndIP:   to.Ptr("192.168.1.4"),
+				StartIP: to.Ptr("192.168.1.1"),
 			},
 		},
 		nil)
@@ -80,14 +79,14 @@ func ExampleFirewallRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewFirewallRulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<rule-name>",
+		"rg1",
+		"cache1",
+		"rule1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -103,14 +102,14 @@ func ExampleFirewallRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewFirewallRulesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewFirewallRulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<rule-name>",
+		"rg1",
+		"cache1",
+		"rule1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

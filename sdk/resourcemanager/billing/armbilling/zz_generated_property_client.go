@@ -38,7 +38,7 @@ func NewPropertyClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPropertyClient(subscriptionID string, credential azcore.TokenCredential,
 // Get - Get the billing properties for a subscription. This operation is not supported for billing accounts with agreement
 // type Enterprise Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // options - PropertyClientGetOptions contains the optional parameters for the PropertyClient.Get method.
 func (client *PropertyClient) Get(ctx context.Context, options *PropertyClientGetOptions) (PropertyClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
@@ -87,7 +88,7 @@ func (client *PropertyClient) getCreateRequest(ctx context.Context, options *Pro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -103,6 +104,7 @@ func (client *PropertyClient) getHandleResponse(resp *http.Response) (PropertyCl
 // Update - Updates the billing property of a subscription. Currently, cost center can be updated. The operation is supported
 // only for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // parameters - Request parameters that are provided to the update billing property operation.
 // options - PropertyClientUpdateOptions contains the optional parameters for the PropertyClient.Update method.
 func (client *PropertyClient) Update(ctx context.Context, parameters Property, options *PropertyClientUpdateOptions) (PropertyClientUpdateResponse, error) {
@@ -134,7 +136,7 @@ func (client *PropertyClient) updateCreateRequest(ctx context.Context, parameter
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -38,7 +38,7 @@ func NewProviderResourceTypesClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewProviderResourceTypesClient(subscriptionID string, credential azcore.Tok
 
 // List - List the resource types for a specified resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceProviderNamespace - The namespace of the resource provider.
 // options - ProviderResourceTypesClientListOptions contains the optional parameters for the ProviderResourceTypesClient.List
 // method.
@@ -95,7 +96,7 @@ func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

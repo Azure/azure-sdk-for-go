@@ -40,7 +40,7 @@ func NewJobStepExecutionsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewJobStepExecutionsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Gets a step execution of a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -116,7 +117,7 @@ func (client *JobStepExecutionsClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -131,6 +132,7 @@ func (client *JobStepExecutionsClient) getHandleResponse(resp *http.Response) (J
 
 // NewListByJobExecutionPager - Lists the step executions of a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -140,7 +142,7 @@ func (client *JobStepExecutionsClient) getHandleResponse(resp *http.Response) (J
 // options - JobStepExecutionsClientListByJobExecutionOptions contains the optional parameters for the JobStepExecutionsClient.ListByJobExecution
 // method.
 func (client *JobStepExecutionsClient) NewListByJobExecutionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobStepExecutionsClientListByJobExecutionOptions) *runtime.Pager[JobStepExecutionsClientListByJobExecutionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobStepExecutionsClientListByJobExecutionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobStepExecutionsClientListByJobExecutionResponse]{
 		More: func(page JobStepExecutionsClientListByJobExecutionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -219,7 +221,7 @@ func (client *JobStepExecutionsClient) listByJobExecutionCreateRequest(ctx conte
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

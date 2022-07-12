@@ -38,7 +38,7 @@ func NewDefenderSettingsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDefenderSettingsClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Create or update IoT Defender settings
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // defenderSettingsModel - The IoT defender settings model
 // options - DefenderSettingsClientCreateOrUpdateOptions contains the optional parameters for the DefenderSettingsClient.CreateOrUpdate
 // method.
@@ -88,7 +89,7 @@ func (client *DefenderSettingsClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, defenderSettingsModel)
 }
 
@@ -103,6 +104,7 @@ func (client *DefenderSettingsClient) createOrUpdateHandleResponse(resp *http.Re
 
 // Delete - Delete IoT Defender settings
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - DefenderSettingsClientDeleteOptions contains the optional parameters for the DefenderSettingsClient.Delete method.
 func (client *DefenderSettingsClient) Delete(ctx context.Context, options *DefenderSettingsClientDeleteOptions) (DefenderSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
@@ -133,12 +135,13 @@ func (client *DefenderSettingsClient) deleteCreateRequest(ctx context.Context, o
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DownloadManagerActivation - Download manager activation data defined for this subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - DefenderSettingsClientDownloadManagerActivationOptions contains the optional parameters for the DefenderSettingsClient.DownloadManagerActivation
 // method.
 func (client *DefenderSettingsClient) DownloadManagerActivation(ctx context.Context, options *DefenderSettingsClientDownloadManagerActivationOptions) (DefenderSettingsClientDownloadManagerActivationResponse, error) {
@@ -171,12 +174,13 @@ func (client *DefenderSettingsClient) downloadManagerActivationCreateRequest(ctx
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
-	req.Raw().Header.Set("Accept", "application/zip")
+	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, nil
 }
 
 // Get - Get IoT Defender Settings
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - DefenderSettingsClientGetOptions contains the optional parameters for the DefenderSettingsClient.Get method.
 func (client *DefenderSettingsClient) Get(ctx context.Context, options *DefenderSettingsClientGetOptions) (DefenderSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
@@ -207,7 +211,7 @@ func (client *DefenderSettingsClient) getCreateRequest(ctx context.Context, opti
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -222,6 +226,7 @@ func (client *DefenderSettingsClient) getHandleResponse(resp *http.Response) (De
 
 // List - List IoT Defender Settings
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - DefenderSettingsClientListOptions contains the optional parameters for the DefenderSettingsClient.List method.
 func (client *DefenderSettingsClient) List(ctx context.Context, options *DefenderSettingsClientListOptions) (DefenderSettingsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
@@ -252,7 +257,7 @@ func (client *DefenderSettingsClient) listCreateRequest(ctx context.Context, opt
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -267,6 +272,7 @@ func (client *DefenderSettingsClient) listHandleResponse(resp *http.Response) (D
 
 // PackageDownloads - Information about downloadable packages
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - DefenderSettingsClientPackageDownloadsOptions contains the optional parameters for the DefenderSettingsClient.PackageDownloads
 // method.
 func (client *DefenderSettingsClient) PackageDownloads(ctx context.Context, options *DefenderSettingsClientPackageDownloadsOptions) (DefenderSettingsClientPackageDownloadsResponse, error) {
@@ -298,7 +304,7 @@ func (client *DefenderSettingsClient) packageDownloadsCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

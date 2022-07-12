@@ -37,7 +37,7 @@ func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.Clie
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.Clie
 // location. The quota request ID id is returned in the response of the PUT
 // operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-15-preview
 // id - Quota request ID.
 // scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 // This is the target Azure
@@ -92,7 +93,7 @@ func (client *RequestStatusClient) getCreateRequest(ctx context.Context, id stri
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,13 +109,14 @@ func (client *RequestStatusClient) getHandleResponse(resp *http.Response) (Reque
 // NewListPager - For the specified scope, get the current quota requests for a one year period ending at the time is made.
 // Use the oData filter to select quota requests.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-15-preview
 // scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 // This is the target Azure
 // resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
 // URI in the GET operation for the specific resource.
 // options - RequestStatusClientListOptions contains the optional parameters for the RequestStatusClient.List method.
 func (client *RequestStatusClient) NewListPager(scope string, options *RequestStatusClientListOptions) *runtime.Pager[RequestStatusClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RequestStatusClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RequestStatusClientListResponse]{
 		More: func(page RequestStatusClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -161,7 +163,7 @@ func (client *RequestStatusClient) listCreateRequest(ctx context.Context, scope 
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -194,7 +194,7 @@ func TestSinglePartitionQueryWithParameters(t *testing.T) {
 	receivedIds := []string{}
 	opt := QueryOptions{
 		QueryParameters: []QueryParameter{
-			NewQueryParameter("@prop", "2"),
+			{"@prop", "2"},
 		},
 	}
 	queryPager := container.NewQueryItemsPager("select * from c where c.someProp = @prop", NewPartitionKeyString("1"), &opt)

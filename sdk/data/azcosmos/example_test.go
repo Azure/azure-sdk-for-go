@@ -645,7 +645,7 @@ func ExampleContainerClient_NewQueryItemsPager_parametrizedQueries() {
 
 	opt := &azcosmos.QueryOptions{
 		QueryParameters: []azcosmos.QueryParameter{
-			azcosmos.NewQueryParameter("@value", "2"),
+			{"@value", "2"},
 		},
 	}
 

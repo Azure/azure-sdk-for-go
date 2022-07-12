@@ -11,14 +11,6 @@ type QueryParameter struct {
 	Value any `json:"value"`
 }
 
-// NewQueryParameter creates a new parameter for a parametrized query.
-// name - The name of the parameter.
-// value - The value of the parameter.
-// See https://docs.microsoft.com/azure/cosmos-db/sql/sql-query-parameterized-queries
-func NewQueryParameter(name string, value any) QueryParameter {
-	return QueryParameter{name, value}
-}
-
 type queryBody struct {
 	Query      string           `json:"query"`
 	Parameters []QueryParameter `json:"parameters,omitempty"`

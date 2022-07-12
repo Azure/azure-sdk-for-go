@@ -424,8 +424,8 @@ func TestSendQueryWithParameters(t *testing.T) {
 	}
 
 	parameters := []QueryParameter{
-		NewQueryParameter("@id", "1"),
-		NewQueryParameter("@status", "enabled"),
+		{"@id", "1"},
+		{"@status", "enabled"},
 	}
 
 	_, err := client.sendQueryRequest("/", context.Background(), "SELECT * FROM c WHERE c.id = @id and c.status = @status", parameters, operationContext, &DeleteDatabaseOptions{}, nil)

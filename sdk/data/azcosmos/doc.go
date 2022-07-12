@@ -147,7 +147,7 @@ Querying items
 Querying items with parametrized queries
 	&opt := azcosmos.QueryOptions{
 		azcosmos.QueryParameters: []QueryParameter{
-			azcosmos.NewQueryParameter("@value", "2"),
+			{"@value", "2"},
 		},
 	}
 	pk := azcosmos.NewPartitionKeyString("myPartitionKeyValue")

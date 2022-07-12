@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azkeys
+package azkeys_test
 
 import (
 	"context"
@@ -15,75 +15,91 @@ import (
 	"hash/fnv"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
 
 const (
 	fakeAttestationUrl = "https://fakeattestation"
-	fakeVaultURL       = "https://fakekvurl.vault.azure.net"
-	fakeMHSMURL        = "https://fakekvurl.managedhsm.azure.net"
+	fakeMHSMURL        = "https://fakemhsm"
+	fakeVaultURL       = "https://fakevault"
 )
 
 var (
-	enableHSM          bool
-	testAttestationURL string
-	testMHSMURL        string
-	testVaultURL       string
-	pathToPackage      = "sdk/keyvault/azkeys/testdata"
+	keysToPurge = struct {
+		mut   sync.Mutex
+		names map[string][]string // maps vault URL to key names
+	}{sync.Mutex{}, map[string][]string{}}
+
+	credential     azcore.TokenCredential
+	enableHSM      bool
+	attestationURL string
+	mhsmURL        string
+	vaultURL       string
 )
 
 func TestMain(m *testing.M) {
-	testAttestationURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl), "/")
-	testVaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
-	testMHSMURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL), "/")
-	enableHSM = testMHSMURL != fakeMHSMURL
-
-	if testVaultURL == fakeVaultURL && recording.GetRecordMode() != recording.PlaybackMode {
-		panic("no value for AZURE_KEYVAULT_URL")
+	attestationURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl), "/")
+	mhsmURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL), "/")
+	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
+	if vaultURL == "" {
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			panic("no value for AZURE_KEYVAULT_URL")
+		}
+		vaultURL = fakeVaultURL
 	}
+	enableHSM = mhsmURL != fakeMHSMURL
 	err := recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
 	}
-	switch recording.GetRecordMode() {
-	case recording.PlaybackMode:
-		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
-			ExcludedHeaders: []string{":path", ":authority", ":method", ":scheme"},
-		})
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		credential = &FakeCredential{}
+	} else {
+		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
+		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
+		secret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
+		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
 		if err != nil {
 			panic(err)
 		}
-	case recording.RecordingMode:
+	}
+	if recording.GetRecordMode() == recording.RecordingMode {
 		defer func() {
 			err := recording.ResetProxy(nil)
 			if err != nil {
 				panic(err)
 			}
 		}()
-		err := recording.AddURISanitizer(fakeVaultURL, testVaultURL, nil)
-		if err != nil {
-			panic(err)
+		for _, URI := range []struct{ real, fake string }{
+			{attestationURL, fakeAttestationUrl},
+			{mhsmURL, fakeMHSMURL},
+			{vaultURL, fakeVaultURL},
+		} {
+			err := recording.AddURISanitizer(URI.fake, URI.real, nil)
+			if err != nil {
+				panic(err)
+			}
+			err = recording.AddBodyRegexSanitizer(URI.fake, URI.real, nil)
+			if err != nil {
+				panic(err)
+			}
 		}
-		err = recording.AddURISanitizer(fakeAttestationUrl, testAttestationURL, nil)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddRemoveHeaderSanitizer([]string{"Set-Cookie"}, nil)
-		if err != nil {
-			panic(err)
-		}
-
-		keyIDPaths := []string{"$.error.message", "$.key.kid", "$.recoveryId"}
-		for _, path := range keyIDPaths {
-			err = recording.AddBodyKeySanitizer(path, fakeVaultURL, testVaultURL, nil)
+		for _, path := range []string{"$.error.message", "$.key.kid", "$.recoveryId"} {
+			err = recording.AddBodyKeySanitizer(path, fakeVaultURL, vaultURL, nil)
+			if err != nil {
+				panic(err)
+			}
+			err = recording.AddBodyKeySanitizer(path, fakeMHSMURL, mhsmURL, nil)
 			if err != nil {
 				panic(err)
 			}
@@ -98,45 +114,69 @@ func TestMain(m *testing.M) {
 		}
 		// we need to replace release policy data because it has the attestation service URL encoded
 		// into it and therefore won't match in playback, when we don't have the URL used while recording
-		realPolicyData := base64.StdEncoding.EncodeToString(getMarshalledReleasePolicy(testAttestationURL))
+		realPolicyData := base64.StdEncoding.EncodeToString(getMarshalledReleasePolicy(attestationURL))
 		fakePolicyData := base64.RawStdEncoding.EncodeToString(getMarshalledReleasePolicy(fakeAttestationUrl))
 		err = recording.AddBodyKeySanitizer("$.release_policy.data", fakePolicyData, realPolicyData, nil)
 		if err != nil {
 			panic(err)
 		}
-		if enableHSM {
-			err = recording.AddURISanitizer(fakeMHSMURL, testMHSMURL, nil)
-			if err != nil {
-				panic(err)
-			}
-			for _, path := range keyIDPaths {
-				err = recording.AddBodyKeySanitizer(path, fakeMHSMURL, testMHSMURL, nil)
-				if err != nil {
-					panic(err)
+		err = recording.AddRemoveHeaderSanitizer([]string{"Set-Cookie"}, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+	code := m.Run()
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		// Purge test keys using a client whose requests aren't recorded. This
+		// will be fast because the tests which created these keys requested their
+		// deletion. Now, at the end of the run, Key Vault will have finished deleting
+		// most of them...
+		for URL, names := range keysToPurge.names {
+			client := azkeys.NewClient(URL, credential, nil)
+			for _, name := range names {
+				// ...but we need a retry loop for the others. Note this wouldn't benefit
+				// from client-side parallelization because Key Vault's delete operations
+				// are running in parallel. When the client waits on one deletion, it
+				// effectively waits on all of them.
+				for i := 0; i < 12; i++ {
+					_, err := client.PurgeDeletedKey(context.Background(), name, nil)
+					if err == nil {
+						break
+					}
+					if i < 11 {
+						recording.Sleep(10 * time.Second)
+					}
 				}
 			}
 		}
 	}
-
-	os.Exit(m.Run())
+	os.Exit(code)
 }
 
-func startTest(t *testing.T, testType string) {
-	if recording.GetRecordMode() != recording.PlaybackMode && testType == HSMTEST && !enableHSM {
+func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {
+	if recording.GetRecordMode() != recording.PlaybackMode && MHSMtest && !enableHSM {
 		t.Skip("set AZURE_MANAGEDHSM_URL to run this test")
 	}
-	err := recording.Start(t, pathToPackage, nil)
+	err := recording.Start(t, "sdk/keyvault/azkeys/testdata", nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)
 		require.NoError(t, err)
 	})
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	URL := vaultURL
+	if MHSMtest {
+		URL = mhsmURL
+	}
+	return azkeys.NewClient(URL, credential, &azcore.ClientOptions{Transport: transport})
 }
 
-func createRandomName(t *testing.T, prefix string) (string, error) {
+func createRandomName(t *testing.T, prefix string) string {
 	h := fnv.New32a()
 	_, err := h.Write([]byte(t.Name()))
-	return prefix + fmt.Sprint(h.Sum32()), err
+	require.NoError(t, err)
+	return prefix + fmt.Sprint(h.Sum32())
 }
 
 func lookupEnvVar(s string) string {
@@ -147,53 +187,18 @@ func lookupEnvVar(s string) string {
 	return ret
 }
 
-func createClient(t *testing.T, testType string) (*Client, error) {
-	vaultUrl := testVaultURL
-	if testType == HSMTEST {
-		vaultUrl = testMHSMURL
-	}
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
-
-	options := &ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: transport,
-		},
-	}
-
-	var cred azcore.TokenCredential
-	if recording.GetRecordMode() != "playback" {
-		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
-		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
-		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
-		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
-		require.NoError(t, err)
-	} else {
-		cred = NewFakeCredential("fake", "fake")
-	}
-
-	return NewClient(vaultUrl, cred, options)
-}
-
-func delay() *runtime.PollUntilDoneOptions {
-	return &runtime.PollUntilDoneOptions{Frequency: time.Second}
-}
-
-func cleanUpKey(t *testing.T, client *Client, key string) {
+func cleanUpKey(t *testing.T, client *azkeys.Client, ID *azkeys.ID) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		return
 	}
-
-	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
-	if err != nil {
-		return
+	URL, name, _ := internal.ParseID((*string)(ID))
+	if _, err := client.DeleteKey(context.Background(), *name, nil); err == nil {
+		keysToPurge.mut.Lock()
+		defer keysToPurge.mut.Unlock()
+		keysToPurge.names[*URL] = append(keysToPurge.names[*URL], *name)
+	} else {
+		t.Logf(`cleanUpKey failed for "%s": %v`, *name, err)
 	}
-
-	_, err = resp.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	_, err = client.PurgeDeletedKey(context.Background(), key, nil)
-	require.NoError(t, err)
 }
 
 type FakeCredential struct{}
@@ -203,10 +208,7 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 }
 
 func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{
-		Token:     "faketoken",
-		ExpiresOn: time.Now().UTC().Add(time.Hour),
-	}, nil
+	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().UTC().Add(time.Hour)}, nil
 }
 
 func toBytes(s string, t *testing.T) []byte {
@@ -216,46 +218,6 @@ func toBytes(s string, t *testing.T) []byte {
 	ret, err := hex.DecodeString(s)
 	require.NoError(t, err)
 	return ret
-}
-
-func validateKey(t *testing.T, key *Key) {
-	require.NotNil(t, key)
-	require.NotNil(t, key.Properties)
-	validateProperties(t, key.Properties)
-	require.NotNil(t, key.JSONWebKey)
-	require.NotNil(t, key.ID)
-	require.NotNil(t, key.Name)
-}
-
-func validateProperties(t *testing.T, props *Properties) {
-	require.NotNil(t, props)
-	if props.CreatedOn == nil {
-		t.Fatalf("expected CreatedOn to be not nil")
-	}
-	if props.Enabled == nil {
-		t.Fatalf("expected Enabled to be not nil")
-	}
-	if props.ID == nil {
-		t.Fatalf("expected ID to be not nil")
-	}
-	if props.Name == nil {
-		t.Fatalf("expected Name to be not nil")
-	}
-	if props.RecoverableDays == nil {
-		t.Fatalf("expected RecoverableDays to be not nil")
-	}
-	if props.RecoveryLevel == nil {
-		t.Fatalf("expected RecoveryLevel to be not nil")
-	}
-	if props.UpdatedOn == nil {
-		t.Fatalf("expected UpdatedOn to be not nil")
-	}
-	if props.VaultURL == nil {
-		t.Fatalf("expected VaultURL to be not nil")
-	}
-	if props.Version == nil {
-		t.Fatalf("expected Version to be not nil")
-	}
 }
 
 func getMarshalledReleasePolicy(attestationURL string) []byte {

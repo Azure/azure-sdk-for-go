@@ -159,22 +159,20 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 }
 
 func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, error) {
-	defaultConnOptions := []amqp.ConnOption{
-		amqp.ConnSASLAnonymous(),
-		amqp.ConnMaxSessions(65535),
-		amqp.ConnProperty("product", "MSGolangClient"),
-		amqp.ConnProperty("version", Version),
-		amqp.ConnProperty("platform", runtime.GOOS),
-		amqp.ConnProperty("framework", runtime.Version()),
-		amqp.ConnProperty("user-agent", ns.getUserAgent()),
+	connOptions := amqp.ConnOptions{
+		SASLType:    amqp.SASLTypeAnonymous(),
+		MaxSessions: 65535,
+		Properties: map[string]interface{}{
+			"product":    "MSGolangClient",
+			"version":    Version,
+			"platform":   runtime.GOOS,
+			"framework":  runtime.Version(),
+			"user-agent": ns.getUserAgent(),
+		},
 	}
 
 	if ns.tlsConfig != nil {
-		defaultConnOptions = append(
-			defaultConnOptions,
-			amqp.ConnTLS(true),
-			amqp.ConnTLSConfig(ns.tlsConfig),
-		)
+		connOptions.TLSConfig = ns.tlsConfig
 	}
 
 	if ns.newWebSocketConn != nil {
@@ -186,11 +184,12 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 			return nil, err
 		}
 
-		client, err := amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.FQDN))...)
+		connOptions.HostName = ns.FQDN
+		client, err := amqp.New(nConn, &connOptions)
 		return &amqpwrap.AMQPClientWrapper{Inner: client}, err
 	}
 
-	client, err := amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)
+	client, err := amqp.Dial(ns.getAMQPHostURI(), &connOptions)
 	return &amqpwrap.AMQPClientWrapper{Inner: client}, err
 }
 
@@ -203,7 +202,7 @@ func (ns *Namespace) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, 
 		return nil, 0, err
 	}
 
-	session, err := client.NewSession()
+	session, err := client.NewSession(ctx, nil)
 
 	if err != nil {
 		return nil, 0, err
@@ -220,7 +219,7 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (RPC
 		return nil, err
 	}
 
-	return NewRPCLink(RPCLinkArgs{
+	return NewRPCLink(ctx, RPCLinkArgs{
 		Client:   client,
 		Address:  managementPath,
 		LogEvent: exported.EventReceiver,

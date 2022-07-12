@@ -3,6 +3,7 @@
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos)
 
 The `armchaos` module provides operations for working with Azure Chaos.
+This package is currently in Beta and is not yet fully supported.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/chaos/armchaos)
 

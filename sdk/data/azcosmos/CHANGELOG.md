@@ -3,6 +3,7 @@
 ## 0.3.2 (Unreleased)
 
 ### Features Added
+* Added `NewClientFromConnectionString` function to create client from connection string
 
 ### Breaking Changes
 

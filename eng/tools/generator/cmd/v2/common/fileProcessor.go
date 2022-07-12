@@ -175,6 +175,25 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
+// RemoveTagSet delete tag set in config file
+func RemoveTagSet(path string) error {
+	log.Printf("Removing tag set in autorest.md ...")
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for i, line := range lines {
+		if strings.Contains(line, "tag:") {
+			lines = append(lines[:i], lines[i+1:]...)
+			break
+		}
+	}
+
+	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+}
+
 // get swagger rp folder name from autorest.md file
 func GetSpecRpName(packageRootPath string) (string, error) {
 	b, err := ioutil.ReadFile(path.Join(packageRootPath, "autorest.md"))
@@ -307,6 +326,7 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 
 	for _, matchResult := range matchResults {
 		newChangelog = newChangelog + "## " + version.String() + " (" + releaseDate + ")\r\n" + additionalChangelog + "\r\n\r\n" + oldChangelog[matchResult[0]:]
+		break
 	}
 
 	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)

@@ -90,25 +90,15 @@ func CreateDeployment(ctx context.Context, subscriptionId string, cred azcore.To
 // Playback: customer poll loop until get result
 // Others: use original poll until done
 func PollForTest[T any](ctx context.Context, poller *runtime.Poller[T]) (*T, error) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		for {
-			_, err := poller.Poll(ctx)
-			if err != nil {
-				return nil, err
-			}
-			if poller.Done() {
-				res, err := poller.Result(ctx)
-				if err != nil {
-					return nil, err
-				}
-				return &res, nil
-			}
-		}
-	} else {
-		res, err := poller.PollUntilDone(ctx, nil)
-		if err != nil {
-			return nil, err
-		}
-		return &res, nil
+	pollOptions := runtime.PollUntilDoneOptions{
+		Frequency: 0, // Pass zero to accept the default value (30s).
 	}
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		pollOptions.Frequency = time.Millisecond // If playback, do not wait
+	}
+	res, err := poller.PollUntilDone(ctx, &pollOptions)
+	if err != nil {
+		return nil, err
+	}
+	return &res, nil
 }

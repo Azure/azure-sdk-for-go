@@ -1,5 +1,11 @@
 # Release History
 
+## 0.2.0 (2022-07-04)
+### Features Added
+
+- New const `LabStatusPending`
+
+
 ## 0.1.0 (2022-05-24)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 0.1.0, which contains breaking changes.

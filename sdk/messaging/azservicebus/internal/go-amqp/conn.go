@@ -18,154 +18,79 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/buffer"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/encoding"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/frames"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/log"
 )
 
 // Default connection options
 const (
-	DefaultIdleTimeout  = 1 * time.Minute
-	DefaultMaxFrameSize = 65536
-	DefaultMaxSessions  = 65536
+	defaultIdleTimeout  = 1 * time.Minute
+	defaultMaxFrameSize = 65536
+	defaultMaxSessions  = 65536
 )
 
-// ConnOption is a function for configuring an AMQP connection.
-type ConnOption func(*conn) error
+// ConnOptions contains the optional settings for configuring an AMQP connection.
+type ConnOptions struct {
+	// ContainerID sets the container-id to use when opening the connection.
+	//
+	// A container ID will be randomly generated if this option is not used.
+	ContainerID string
 
-// ConnServerHostname sets the hostname sent in the AMQP
-// Open frame and TLS ServerName (if not otherwise set).
-//
-// This is useful when the AMQP connection will be established
-// via a pre-established TLS connection as the server may not
-// know which hostname the client is attempting to connect to.
-func ConnServerHostname(hostname string) ConnOption {
-	return func(c *conn) error {
-		c.hostname = hostname
-		return nil
-	}
-}
+	// HostName sets the hostname sent in the AMQP
+	// Open frame and TLS ServerName (if not otherwise set).
+	HostName string
 
-// ConnTLS toggles TLS negotiation.
-//
-// Default: false.
-func ConnTLS(enable bool) ConnOption {
-	return func(c *conn) error {
-		c.tlsNegotiation = enable
-		return nil
-	}
-}
+	// IdleTimeout specifies the maximum period in milliseconds between
+	// receiving frames from the peer.
+	//
+	// Specify a value less than zero to disable idle timeout.
+	//
+	// Default: 1 minute.
+	IdleTimeout time.Duration
 
-// ConnTLSConfig sets the tls.Config to be used during
-// TLS negotiation.
-//
-// This option is for advanced usage, in most scenarios
-// providing a URL scheme of "amqps://" or ConnTLS(true)
-// is sufficient.
-func ConnTLSConfig(tc *tls.Config) ConnOption {
-	return func(c *conn) error {
-		c.tlsConfig = tc
-		c.tlsNegotiation = true
-		return nil
-	}
-}
+	// MaxFrameSize sets the maximum frame size that
+	// the connection will accept.
+	//
+	// Must be 512 or greater.
+	//
+	// Default: 512.
+	MaxFrameSize uint32
 
-// ConnIdleTimeout specifies the maximum period between receiving
-// frames from the peer.
-//
-// Resolution is milliseconds. A value of zero indicates no timeout.
-// This setting is in addition to TCP keepalives.
-//
-// Default: 1 minute.
-func ConnIdleTimeout(d time.Duration) ConnOption {
-	return func(c *conn) error {
-		if d < 0 {
-			return errors.New("idle timeout cannot be negative")
-		}
-		c.idleTimeout = d
-		return nil
-	}
-}
+	// MaxSessions sets the maximum number of channels.
+	// The value must be greater than zero.
+	//
+	// Default: 65535.
+	MaxSessions uint16
 
-// ConnMaxFrameSize sets the maximum frame size that
-// the connection will accept.
-//
-// Must be 512 or greater.
-//
-// Default: 512.
-func ConnMaxFrameSize(n uint32) ConnOption {
-	return func(c *conn) error {
-		if n < 512 {
-			return errors.New("max frame size must be 512 or greater")
-		}
-		c.maxFrameSize = n
-		return nil
-	}
-}
+	// Properties sets an entry in the connection properties map sent to the server.
+	Properties map[string]interface{}
 
-// ConnConnectTimeout configures how long to wait for the
-// server during connection establishment.
-//
-// Once the connection has been established, ConnIdleTimeout
-// applies. If duration is zero, no timeout will be applied.
-//
-// Default: 0.
-func ConnConnectTimeout(d time.Duration) ConnOption {
-	return func(c *conn) error { c.connectTimeout = d; return nil }
-}
+	// SASLType contains the specified SASL authentication mechanism.
+	SASLType SASLType
 
-// ConnMaxSessions sets the maximum number of channels.
-//
-// n must be in the range 1 to 65536.
-//
-// Default: 65536.
-func ConnMaxSessions(n int) ConnOption {
-	return func(c *conn) error {
-		if n < 1 {
-			return errors.New("max sessions cannot be less than 1")
-		}
-		if n > 65536 {
-			return errors.New("max sessions cannot be greater than 65536")
-		}
-		c.channelMax = uint16(n - 1)
-		return nil
-	}
-}
+	// Timeout configures how long to wait for the
+	// server during connection establishment.
+	//
+	// Once the connection has been established, IdleTimeout
+	// applies. If duration is zero, no timeout will be applied.
+	//
+	// Default: 0.
+	Timeout time.Duration
 
-// ConnProperty sets an entry in the connection properties map sent to the server.
-//
-// This option can be used multiple times.
-func ConnProperty(key, value string) ConnOption {
-	return func(c *conn) error {
-		if key == "" {
-			return errors.New("connection property key must not be empty")
-		}
-		if c.properties == nil {
-			c.properties = make(map[encoding.Symbol]interface{})
-		}
-		c.properties[encoding.Symbol(key)] = value
-		return nil
-	}
-}
+	// TLSConfig sets the tls.Config to be used during
+	// TLS negotiation.
+	//
+	// This option is for advanced usage, in most scenarios
+	// providing a URL scheme of "amqps://" is sufficient.
+	TLSConfig *tls.Config
 
-// ConnContainerID sets the container-id to use when opening the connection.
-//
-// A container ID will be randomly generated if this option is not used.
-func ConnContainerID(id string) ConnOption {
-	return func(c *conn) error {
-		c.containerID = id
-		return nil
-	}
+	// test hook
+	dialer dialer
 }
 
 // used to abstract the underlying dialer for testing purposes
 type dialer interface {
 	NetDialerDial(c *conn, host, port string) error
 	TLSDialWithDialer(c *conn, host, port string) error
-}
-
-func connDialer(d dialer) ConnOption {
-	return func(c *conn) error {
-		c.dialer = d
-		return nil
-	}
 }
 
 // conn is an AMQP connection.
@@ -199,7 +124,7 @@ type conn struct {
 
 	// conn state
 	errMu sync.Mutex    // mux holds errMu from start until shutdown completes; operations are sequential before mux is started
-	err   error         // error to be returned to client; internal *except* for SASL auth methods
+	err   error         // error to be returned to client
 	Done  chan struct{} // indicates the connection is done
 
 	// mux
@@ -241,7 +166,7 @@ func (defaultDialer) TLSDialWithDialer(c *conn, host, port string) (err error) {
 	return
 }
 
-func dialConn(addr string, opts ...ConnOption) (*conn, error) {
+func dialConn(addr string, opts *ConnOptions) (*conn, error) {
 	u, err := url.Parse(addr)
 	if err != nil {
 		return nil, err
@@ -254,21 +179,22 @@ func dialConn(addr string, opts ...ConnOption) (*conn, error) {
 		}
 	}
 
+	var cp ConnOptions
+	if opts != nil {
+		cp = *opts
+	}
+
 	// prepend SASL credentials when the user/pass segment is not empty
 	if u.User != nil {
 		pass, _ := u.User.Password()
-		opts = append([]ConnOption{
-			ConnSASLPlain(u.User.Username(), pass),
-		}, opts...)
+		cp.SASLType = SASLTypePlain(u.User.Username(), pass)
 	}
 
-	// append default options so user specified can overwrite
-	opts = append([]ConnOption{
-		connDialer(defaultDialer{}),
-		ConnServerHostname(host),
-	}, opts...)
+	if cp.HostName == "" {
+		cp.HostName = host
+	}
 
-	c, err := newConn(nil, opts...)
+	c, err := newConn(nil, &cp)
 	if err != nil {
 		return nil, err
 	}
@@ -290,13 +216,14 @@ func dialConn(addr string, opts ...ConnOption) (*conn, error) {
 	return c, nil
 }
 
-func newConn(netConn net.Conn, opts ...ConnOption) (*conn, error) {
+func newConn(netConn net.Conn, opts *ConnOptions) (*conn, error) {
 	c := &conn{
+		dialer:           defaultDialer{},
 		net:              netConn,
-		maxFrameSize:     DefaultMaxFrameSize,
-		PeerMaxFrameSize: DefaultMaxFrameSize,
-		channelMax:       DefaultMaxSessions - 1, // -1 because channel-max starts at zero
-		idleTimeout:      DefaultIdleTimeout,
+		maxFrameSize:     defaultMaxFrameSize,
+		PeerMaxFrameSize: defaultMaxFrameSize,
+		channelMax:       defaultMaxSessions - 1, // -1 because channel-max starts at zero
+		idleTimeout:      defaultIdleTimeout,
 		containerID:      randString(40),
 		Done:             make(chan struct{}),
 		connErr:          make(chan error, 2), // buffered to ensure connReader/Writer won't leak
@@ -312,11 +239,50 @@ func newConn(netConn net.Conn, opts ...ConnOption) (*conn, error) {
 	}
 
 	// apply options
-	for _, opt := range opts {
-		if err := opt(c); err != nil {
+	if opts == nil {
+		opts = &ConnOptions{}
+	}
+
+	if opts.ContainerID != "" {
+		c.containerID = opts.ContainerID
+	}
+	if opts.HostName != "" {
+		c.hostname = opts.HostName
+	}
+	if opts.IdleTimeout > 0 {
+		c.idleTimeout = opts.IdleTimeout
+	} else if opts.IdleTimeout < 0 {
+		c.idleTimeout = 0
+	}
+	if opts.MaxFrameSize > 0 && opts.MaxFrameSize < 512 {
+		return nil, fmt.Errorf("invalid MaxFrameSize value %d", opts.MaxFrameSize)
+	} else if opts.MaxFrameSize > 512 {
+		c.maxFrameSize = opts.MaxFrameSize
+	}
+	if opts.MaxSessions > 0 {
+		c.channelMax = opts.MaxSessions
+	}
+	if opts.SASLType != nil {
+		if err := opts.SASLType(c); err != nil {
 			return nil, err
 		}
 	}
+	if opts.Timeout > 0 {
+		c.connectTimeout = opts.Timeout
+	}
+	if opts.Properties != nil {
+		c.properties = make(map[encoding.Symbol]interface{})
+		for key, val := range opts.Properties {
+			c.properties[encoding.Symbol(key)] = val
+		}
+	}
+	if opts.TLSConfig != nil {
+		c.tlsConfig = opts.TLSConfig.Clone()
+	}
+	if opts.dialer != nil {
+		c.dialer = opts.dialer
+	}
+
 	return c, nil
 }
 
@@ -340,14 +306,14 @@ func (c *conn) Start() error {
 
 	// run connection establishment state machine
 	for state := c.negotiateProto; state != nil; {
-		state = state()
-	}
-
-	// check if err occurred
-	if c.err != nil {
-		close(c.txDone) // close here since connWriter hasn't been started yet
-		_ = c.Close()
-		return c.err
+		var err error
+		state, err = state()
+		// check if err occurred
+		if err != nil {
+			close(c.txDone) // close here since connWriter hasn't been started yet
+			_ = c.Close()
+			return err
+		}
 	}
 
 	// start multiplexor and writer
@@ -577,7 +543,7 @@ func (c *conn) connReader() {
 			}
 			err := buf.ReadFromOnce(c.net)
 			if err != nil {
-				debug(1, "connReader error: %v", err)
+				log.Debug(1, "connReader error: %v", err)
 				select {
 				// check if error was due to close in progress
 				case <-c.Done:
@@ -703,7 +669,7 @@ func (c *conn) connWriter() {
 	var err error
 	for {
 		if err != nil {
-			debug(1, "connWriter error: %v", err)
+			log.Debug(1, "connWriter error: %v", err)
 			c.connErr <- err
 			return
 		}
@@ -718,7 +684,7 @@ func (c *conn) connWriter() {
 
 		// keepalive timer
 		case <-keepalive:
-			debug(3, "sending keep-alive frame")
+			log.Debug(3, "sending keep-alive frame")
 			_, err = c.net.Write(keepaliveFrame)
 			// It would be slightly more efficient in terms of network
 			// resources to reset the timer each time a frame is sent.
@@ -732,7 +698,7 @@ func (c *conn) connWriter() {
 		case <-c.Done:
 			// send close
 			cls := &frames.PerformClose{}
-			debug(1, "TX (connWriter): %s", cls)
+			log.Debug(1, "TX (connWriter): %s", cls)
 			_ = c.writeFrame(frames.Frame{
 				Type: frameTypeAMQP,
 				Body: cls,
@@ -794,11 +760,11 @@ func (c *conn) SendFrame(fr frames.Frame) error {
 //
 // The state is advanced by returning the next state.
 // The state machine concludes when nil is returned.
-type stateFunc func() stateFunc
+type stateFunc func() (stateFunc, error)
 
 // negotiateProto determines which proto to negotiate next.
 // used externally by SASL only.
-func (c *conn) negotiateProto() stateFunc {
+func (c *conn) negotiateProto() (stateFunc, error) {
 	// in the order each must be negotiated
 	switch {
 	case c.tlsNegotiation && !c.tlsComplete:
@@ -821,36 +787,32 @@ const (
 
 // exchangeProtoHeader performs the round trip exchange of protocol
 // headers, validation, and returns the protoID specific next state.
-func (c *conn) exchangeProtoHeader(pID protoID) stateFunc {
+func (c *conn) exchangeProtoHeader(pID protoID) (stateFunc, error) {
 	// write the proto header
-	c.err = c.writeProtoHeader(pID)
-	if c.err != nil {
-		return nil
+	if err := c.writeProtoHeader(pID); err != nil {
+		return nil, err
 	}
 
 	// read response header
 	p, err := c.readProtoHeader()
 	if err != nil {
-		c.err = err
-		return nil
+		return nil, err
 	}
 
 	if pID != p.ProtoID {
-		c.err = fmt.Errorf("unexpected protocol header %#00x, expected %#00x", p.ProtoID, pID)
-		return nil
+		return nil, fmt.Errorf("unexpected protocol header %#00x, expected %#00x", p.ProtoID, pID)
 	}
 
 	// go to the proto specific state
 	switch pID {
 	case protoAMQP:
-		return c.openAMQP
+		return c.openAMQP, nil
 	case protoTLS:
-		return c.startTLS
+		return c.startTLS, nil
 	case protoSASL:
-		return c.negotiateSASL
+		return c.negotiateSASL, nil
 	default:
-		c.err = fmt.Errorf("unknown protocol ID %#02x", p.ProtoID)
-		return nil
+		return nil, fmt.Errorf("unknown protocol ID %#02x", p.ProtoID)
 	}
 }
 
@@ -874,13 +836,15 @@ func (c *conn) readProtoHeader() (protoHeader, error) {
 }
 
 // startTLS wraps the conn with TLS and returns to Client.negotiateProto
-func (c *conn) startTLS() stateFunc {
+func (c *conn) startTLS() (stateFunc, error) {
 	c.initTLSConfig()
 
-	done := make(chan struct{})
+	// buffered so connReaderRun won't block
+	done := make(chan error, 1)
 
 	// this function will be executed by connReader
 	c.connReaderRun <- func() {
+		defer close(done)
 		_ = c.net.SetReadDeadline(time.Time{}) // clear timeout
 
 		// wrap existing net.Conn and perform TLS handshake
@@ -888,30 +852,27 @@ func (c *conn) startTLS() stateFunc {
 		if c.connectTimeout != 0 {
 			_ = tlsConn.SetWriteDeadline(time.Now().Add(c.connectTimeout))
 		}
-		c.err = tlsConn.Handshake()
+		done <- tlsConn.Handshake()
+		// TODO: return?
 
 		// swap net.Conn
 		c.net = tlsConn
 		c.tlsComplete = true
-
-		close(done)
 	}
 
 	// set deadline to interrupt connReader
 	_ = c.net.SetReadDeadline(time.Time{}.Add(1))
 
-	<-done
-
-	if c.err != nil {
-		return nil
+	if err := <-done; err != nil {
+		return nil, err
 	}
 
 	// go to next protocol
-	return c.negotiateProto
+	return c.negotiateProto, nil
 }
 
 // openAMQP round trips the AMQP open performative
-func (c *conn) openAMQP() stateFunc {
+func (c *conn) openAMQP() (stateFunc, error) {
 	// send open frame
 	open := &frames.PerformOpen{
 		ContainerID:  c.containerID,
@@ -921,28 +882,26 @@ func (c *conn) openAMQP() stateFunc {
 		IdleTimeout:  c.idleTimeout / 2, // per spec, advertise half our idle timeout
 		Properties:   c.properties,
 	}
-	debug(1, "TX (openAMQP): %s", open)
-	c.err = c.writeFrame(frames.Frame{
+	log.Debug(1, "TX (openAMQP): %s", open)
+	err := c.writeFrame(frames.Frame{
 		Type:    frameTypeAMQP,
 		Body:    open,
 		Channel: 0,
 	})
-	if c.err != nil {
-		return nil
+	if err != nil {
+		return nil, err
 	}
 
 	// get the response
 	fr, err := c.readFrame()
 	if err != nil {
-		c.err = err
-		return nil
+		return nil, err
 	}
 	o, ok := fr.Body.(*frames.PerformOpen)
 	if !ok {
-		c.err = fmt.Errorf("openAMQP: unexpected frame type %T", fr.Body)
-		return nil
+		return nil, fmt.Errorf("openAMQP: unexpected frame type %T", fr.Body)
 	}
-	debug(1, "RX (openAMQP): %s", o)
+	log.Debug(1, "RX (openAMQP): %s", o)
 
 	// update peer settings
 	if o.MaxFrameSize > 0 {
@@ -957,35 +916,32 @@ func (c *conn) openAMQP() stateFunc {
 	}
 
 	// connection established, exit state machine
-	return nil
+	return nil, nil
 }
 
 // negotiateSASL returns the SASL handler for the first matched
 // mechanism specified by the server
-func (c *conn) negotiateSASL() stateFunc {
+func (c *conn) negotiateSASL() (stateFunc, error) {
 	// read mechanisms frame
 	fr, err := c.readFrame()
 	if err != nil {
-		c.err = err
-		return nil
+		return nil, err
 	}
 	sm, ok := fr.Body.(*frames.SASLMechanisms)
 	if !ok {
-		c.err = fmt.Errorf("negotiateSASL: unexpected frame type %T", fr.Body)
-		return nil
+		return nil, fmt.Errorf("negotiateSASL: unexpected frame type %T", fr.Body)
 	}
-	debug(1, "RX (negotiateSASL): %s", sm)
+	log.Debug(1, "RX (negotiateSASL): %s", sm)
 
 	// return first match in c.saslHandlers based on order received
 	for _, mech := range sm.Mechanisms {
 		if state, ok := c.saslHandlers[mech]; ok {
-			return state
+			return state, nil
 		}
 	}
 
 	// no match
-	c.err = fmt.Errorf("no supported auth mechanism (%v)", sm.Mechanisms) // TODO: send "auth not supported" frame?
-	return nil
+	return nil, fmt.Errorf("no supported auth mechanism (%v)", sm.Mechanisms) // TODO: send "auth not supported" frame?
 }
 
 // saslOutcome processes the SASL outcome frame and return Client.negotiateProto
@@ -994,29 +950,26 @@ func (c *conn) negotiateSASL() stateFunc {
 // SASL handlers return this stateFunc when the mechanism specific negotiation
 // has completed.
 // used externally by SASL only.
-func (c *conn) saslOutcome() stateFunc {
+func (c *conn) saslOutcome() (stateFunc, error) {
 	// read outcome frame
 	fr, err := c.readFrame()
 	if err != nil {
-		c.err = err
-		return nil
+		return nil, err
 	}
 	so, ok := fr.Body.(*frames.SASLOutcome)
 	if !ok {
-		c.err = fmt.Errorf("saslOutcome: unexpected frame type %T", fr.Body)
-		return nil
+		return nil, fmt.Errorf("saslOutcome: unexpected frame type %T", fr.Body)
 	}
-	debug(1, "RX (saslOutcome): %s", so)
+	log.Debug(1, "RX (saslOutcome): %s", so)
 
 	// check if auth succeeded
 	if so.Code != encoding.CodeSASLOK {
-		c.err = fmt.Errorf("SASL PLAIN auth failed with code %#00x: %s", so.Code, so.AdditionalData) // implement Stringer for so.Code
-		return nil
+		return nil, fmt.Errorf("SASL PLAIN auth failed with code %#00x: %s", so.Code, so.AdditionalData) // implement Stringer for so.Code
 	}
 
 	// return to c.negotiateProto
 	c.saslComplete = true
-	return c.negotiateProto
+	return c.negotiateProto, nil
 }
 
 // readFrame is used during connection establishment to read a single frame.

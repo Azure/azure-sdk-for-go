@@ -107,6 +107,12 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 		return nil, err
 	}
 
+	// add package change
+	err = sdkRepo.Add(packagePath)
+	if err != nil {
+		return nil, err
+	}
+
 	// stash current change
 	err = sdkRepo.Stash()
 	if err != nil {
@@ -170,7 +176,7 @@ func FilterChangelog(changelog *model.Changelog) {
 		if changelog.Modified.AdditiveChanges != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
 		}
-		if changelog.Modified.BreakingChanges != nil {
+		if changelog.Modified.BreakingChanges != nil && changelog.Modified.BreakingChanges.Removed != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.BreakingChanges.Removed.Funcs)
 		}
 	}

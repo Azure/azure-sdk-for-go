@@ -99,8 +99,8 @@ type RPCLinkArgs struct {
 }
 
 // NewRPCLink will build a new request response link
-func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
-	session, err := args.Client.NewSession()
+func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
+	session, err := args.Client.NewSession(ctx, nil)
 
 	if err != nil {
 		return nil, err
@@ -124,29 +124,30 @@ func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
 	}
 
 	sender, err := session.NewSender(
-		amqp.LinkTargetAddress(args.Address),
+		ctx,
+		args.Address,
+		nil,
 	)
 	if err != nil {
 		return nil, err
 	}
 
-	receiverOpts := []amqp.LinkOption{
-		amqp.LinkSourceAddress(args.Address),
-		amqp.LinkTargetAddress(link.clientAddress),
-		amqp.LinkCredit(defaultReceiverCredits),
+	receiverOpts := &amqp.ReceiverOptions{
+		TargetAddress: link.clientAddress,
+		Credit:        defaultReceiverCredits,
 	}
 
 	if link.sessionID != nil {
 		const name = "com.microsoft:session-filter"
 		const code = uint64(0x00000137000000C)
 		if link.sessionID == nil {
-			receiverOpts = append(receiverOpts, amqp.LinkSourceFilter(name, code, nil))
+			receiverOpts.Filters = append(receiverOpts.Filters, amqp.LinkFilterSource(name, code, nil))
 		} else {
-			receiverOpts = append(receiverOpts, amqp.LinkSourceFilter(name, code, link.sessionID))
+			receiverOpts.Filters = append(receiverOpts.Filters, amqp.LinkFilterSource(name, code, link.sessionID))
 		}
 	}
 
-	receiver, err := session.NewReceiver(receiverOpts...)
+	receiver, err := session.NewReceiver(ctx, args.Address, receiverOpts)
 	if err != nil {
 		// make sure we close the sender
 		clsCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

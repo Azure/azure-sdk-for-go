@@ -716,25 +716,25 @@ func TestAMQPLinks_Logging(t *testing.T) {
 }
 
 func newLinksForAMQPLinksTest(entityPath string, session amqpwrap.AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
-	receiveMode := amqp.ModeSecond
-
-	opts := []amqp.LinkOption{
-		amqp.LinkSourceAddress(entityPath),
-		amqp.LinkReceiverSettle(receiveMode),
-		amqp.LinkWithManualCredits(),
-		amqp.LinkCredit(1000),
+	receiverOpts := &amqp.ReceiverOptions{
+		SettlementMode: amqp.ModeSecond.Ptr(),
+		ManualCredits:  true,
+		Credit:         1000,
 	}
 
-	receiver, err := session.NewReceiver(opts...)
+	receiver, err := session.NewReceiver(context.Background(), entityPath, receiverOpts)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
 	sender, err := session.NewSender(
-		amqp.LinkSenderSettle(amqp.ModeMixed),
-		amqp.LinkReceiverSettle(amqp.ModeFirst),
-		amqp.LinkTargetAddress(entityPath))
+		context.Background(),
+		entityPath,
+		&amqp.SenderOptions{
+			SettlementMode:              amqp.ModeMixed.Ptr(),
+			RequestedReceiverSettleMode: amqp.ModeFirst.Ptr(),
+		})
 
 	if err != nil {
 		_ = receiver.Close(context.Background())

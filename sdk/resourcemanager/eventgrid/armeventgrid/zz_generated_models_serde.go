@@ -120,6 +120,91 @@ func (b *BoolEqualsAdvancedFilter) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ChannelProperties.
+func (c ChannelProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "channelType", c.ChannelType)
+	populateTimeRFC3339(objectMap, "expirationTimeIfNotActivatedUtc", c.ExpirationTimeIfNotActivatedUTC)
+	populate(objectMap, "messageForActivation", c.MessageForActivation)
+	populate(objectMap, "partnerTopicInfo", c.PartnerTopicInfo)
+	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "readinessState", c.ReadinessState)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChannelProperties.
+func (c *ChannelProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "channelType":
+			err = unpopulate(val, "ChannelType", &c.ChannelType)
+			delete(rawMsg, key)
+		case "expirationTimeIfNotActivatedUtc":
+			err = unpopulateTimeRFC3339(val, "ExpirationTimeIfNotActivatedUTC", &c.ExpirationTimeIfNotActivatedUTC)
+			delete(rawMsg, key)
+		case "messageForActivation":
+			err = unpopulate(val, "MessageForActivation", &c.MessageForActivation)
+			delete(rawMsg, key)
+		case "partnerTopicInfo":
+			err = unpopulate(val, "PartnerTopicInfo", &c.PartnerTopicInfo)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
+			delete(rawMsg, key)
+		case "readinessState":
+			err = unpopulate(val, "ReadinessState", &c.ReadinessState)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChannelUpdateParameters.
+func (c ChannelUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", c.Properties)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChannelUpdateParametersProperties.
+func (c ChannelUpdateParametersProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "expirationTimeIfNotActivatedUtc", c.ExpirationTimeIfNotActivatedUTC)
+	populate(objectMap, "partnerTopicInfo", c.PartnerTopicInfo)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChannelUpdateParametersProperties.
+func (c *ChannelUpdateParametersProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "expirationTimeIfNotActivatedUtc":
+			err = unpopulateTimeRFC3339(val, "ExpirationTimeIfNotActivatedUTC", &c.ExpirationTimeIfNotActivatedUTC)
+			delete(rawMsg, key)
+		case "partnerTopicInfo":
+			err = unpopulate(val, "PartnerTopicInfo", &c.PartnerTopicInfo)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DeadLetterWithResourceIdentity.
 func (d DeadLetterWithResourceIdentity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -221,6 +306,7 @@ func (d DomainProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "autoCreateTopicWithFirstSubscription", d.AutoCreateTopicWithFirstSubscription)
 	populate(objectMap, "autoDeleteTopicWithLastSubscription", d.AutoDeleteTopicWithLastSubscription)
+	populate(objectMap, "dataResidencyBoundary", d.DataResidencyBoundary)
 	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
 	populate(objectMap, "endpoint", d.Endpoint)
 	populate(objectMap, "inboundIpRules", d.InboundIPRules)
@@ -247,6 +333,9 @@ func (d *DomainProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "autoDeleteTopicWithLastSubscription":
 			err = unpopulate(val, "AutoDeleteTopicWithLastSubscription", &d.AutoDeleteTopicWithLastSubscription)
+			delete(rawMsg, key)
+		case "dataResidencyBoundary":
+			err = unpopulate(val, "DataResidencyBoundary", &d.DataResidencyBoundary)
 			delete(rawMsg, key)
 		case "disableLocalAuth":
 			err = unpopulate(val, "DisableLocalAuth", &d.DisableLocalAuth)
@@ -288,6 +377,7 @@ func (d DomainUpdateParameterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "autoCreateTopicWithFirstSubscription", d.AutoCreateTopicWithFirstSubscription)
 	populate(objectMap, "autoDeleteTopicWithLastSubscription", d.AutoDeleteTopicWithLastSubscription)
+	populate(objectMap, "dataResidencyBoundary", d.DataResidencyBoundary)
 	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
 	populate(objectMap, "inboundIpRules", d.InboundIPRules)
 	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
@@ -571,6 +661,14 @@ func (e *EventSubscriptionUpdateParameters) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EventTypeInfo.
+func (e EventTypeInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "inlineEventTypes", e.InlineEventTypes)
+	populate(objectMap, "kind", e.Kind)
+	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type HybridConnectionEventSubscriptionDestination.
@@ -1016,6 +1114,211 @@ func (n *NumberNotInRangeAdvancedFilter) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Partner.
+func (p Partner) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "authorizationExpirationTimeInUtc", p.AuthorizationExpirationTimeInUTC)
+	populate(objectMap, "partnerName", p.PartnerName)
+	populate(objectMap, "partnerRegistrationImmutableId", p.PartnerRegistrationImmutableID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Partner.
+func (p *Partner) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "authorizationExpirationTimeInUtc":
+			err = unpopulateTimeRFC3339(val, "AuthorizationExpirationTimeInUTC", &p.AuthorizationExpirationTimeInUTC)
+			delete(rawMsg, key)
+		case "partnerName":
+			err = unpopulate(val, "PartnerName", &p.PartnerName)
+			delete(rawMsg, key)
+		case "partnerRegistrationImmutableId":
+			err = unpopulate(val, "PartnerRegistrationImmutableID", &p.PartnerRegistrationImmutableID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerAuthorization.
+func (p PartnerAuthorization) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "authorizedPartnersList", p.AuthorizedPartnersList)
+	populate(objectMap, "defaultMaximumExpirationTimeInDays", p.DefaultMaximumExpirationTimeInDays)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerConfiguration.
+func (p PartnerConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "systemData", p.SystemData)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerConfigurationUpdateParameters.
+func (p PartnerConfigurationUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerNamespace.
+func (p PartnerNamespace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "systemData", p.SystemData)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceProperties.
+func (p PartnerNamespaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "disableLocalAuth", p.DisableLocalAuth)
+	populate(objectMap, "endpoint", p.Endpoint)
+	populate(objectMap, "inboundIpRules", p.InboundIPRules)
+	populate(objectMap, "partnerRegistrationFullyQualifiedId", p.PartnerRegistrationFullyQualifiedID)
+	populate(objectMap, "partnerTopicRoutingMode", p.PartnerTopicRoutingMode)
+	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
+	populate(objectMap, "provisioningState", p.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceUpdateParameterProperties.
+func (p PartnerNamespaceUpdateParameterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "disableLocalAuth", p.DisableLocalAuth)
+	populate(objectMap, "inboundIpRules", p.InboundIPRules)
+	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceUpdateParameters.
+func (p PartnerNamespaceUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerRegistration.
+func (p PartnerRegistration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "systemData", p.SystemData)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerRegistrationUpdateParameters.
+func (p PartnerRegistrationUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "tags", p.Tags)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerTopic.
+func (p PartnerTopic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "identity", p.Identity)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "systemData", p.SystemData)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerTopicProperties.
+func (p PartnerTopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "activationState", p.ActivationState)
+	populate(objectMap, "eventTypeInfo", p.EventTypeInfo)
+	populateTimeRFC3339(objectMap, "expirationTimeIfNotActivatedUtc", p.ExpirationTimeIfNotActivatedUTC)
+	populate(objectMap, "messageForActivation", p.MessageForActivation)
+	populate(objectMap, "partnerRegistrationImmutableId", p.PartnerRegistrationImmutableID)
+	populate(objectMap, "partnerTopicFriendlyDescription", p.PartnerTopicFriendlyDescription)
+	populate(objectMap, "provisioningState", p.ProvisioningState)
+	populate(objectMap, "source", p.Source)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PartnerTopicProperties.
+func (p *PartnerTopicProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "activationState":
+			err = unpopulate(val, "ActivationState", &p.ActivationState)
+			delete(rawMsg, key)
+		case "eventTypeInfo":
+			err = unpopulate(val, "EventTypeInfo", &p.EventTypeInfo)
+			delete(rawMsg, key)
+		case "expirationTimeIfNotActivatedUtc":
+			err = unpopulateTimeRFC3339(val, "ExpirationTimeIfNotActivatedUTC", &p.ExpirationTimeIfNotActivatedUTC)
+			delete(rawMsg, key)
+		case "messageForActivation":
+			err = unpopulate(val, "MessageForActivation", &p.MessageForActivation)
+			delete(rawMsg, key)
+		case "partnerRegistrationImmutableId":
+			err = unpopulate(val, "PartnerRegistrationImmutableID", &p.PartnerRegistrationImmutableID)
+			delete(rawMsg, key)
+		case "partnerTopicFriendlyDescription":
+			err = unpopulate(val, "PartnerTopicFriendlyDescription", &p.PartnerTopicFriendlyDescription)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &p.ProvisioningState)
+			delete(rawMsg, key)
+		case "source":
+			err = unpopulate(val, "Source", &p.Source)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PartnerTopicUpdateParameters.
+func (p PartnerTopicUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", p.Identity)
+	populate(objectMap, "tags", p.Tags)
+	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProperties.
@@ -1615,6 +1918,7 @@ func (t Topic) MarshalJSON() ([]byte, error) {
 // MarshalJSON implements the json.Marshaller interface for type TopicProperties.
 func (t TopicProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "dataResidencyBoundary", t.DataResidencyBoundary)
 	populate(objectMap, "disableLocalAuth", t.DisableLocalAuth)
 	populate(objectMap, "endpoint", t.Endpoint)
 	populate(objectMap, "inboundIpRules", t.InboundIPRules)
@@ -1636,6 +1940,9 @@ func (t *TopicProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "dataResidencyBoundary":
+			err = unpopulate(val, "DataResidencyBoundary", &t.DataResidencyBoundary)
+			delete(rawMsg, key)
 		case "disableLocalAuth":
 			err = unpopulate(val, "DisableLocalAuth", &t.DisableLocalAuth)
 			delete(rawMsg, key)
@@ -1688,6 +1995,7 @@ func (t TopicTypeProperties) MarshalJSON() ([]byte, error) {
 // MarshalJSON implements the json.Marshaller interface for type TopicUpdateParameterProperties.
 func (t TopicUpdateParameterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "dataResidencyBoundary", t.DataResidencyBoundary)
 	populate(objectMap, "disableLocalAuth", t.DisableLocalAuth)
 	populate(objectMap, "inboundIpRules", t.InboundIPRules)
 	populate(objectMap, "publicNetworkAccess", t.PublicNetworkAccess)

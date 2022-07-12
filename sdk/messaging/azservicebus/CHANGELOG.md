@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.0.2-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.2-beta.0 (2022-07-07)
+
+### Features Added
+
+- Full access to send and receive all AMQP message properties. (#18413) 
+  - Send AMQP messages using the new `AMQPAnnotatedMessage` type and `Sender.SendAMQPAnnotatedMessage()`.
+  - AMQP messages can be added to MessageBatch's as well using `MessageBatch.AddAMQPAnnotatedMessage()`.
+  - AMQP messages can be scheduled using `Sender.ScheduleAMQPAnnotatedMessages`.
+  - Access the full set of AMQP message properties when receiving using the `ReceivedMessage.RawAMQPMessage` property. 
+
+### Bugs Fixed
+
+- Settlement of a message could hang if the link had been detached/closed. (#18532)
 
 ## 1.0.1 (2022-06-07)
 

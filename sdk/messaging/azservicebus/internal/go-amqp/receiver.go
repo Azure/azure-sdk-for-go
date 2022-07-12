@@ -5,11 +5,11 @@ package amqp
 import (
 	"context"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/encoding"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/frames"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/log"
 )
 
 type messageDisposition struct {
@@ -48,26 +48,22 @@ func (r *Receiver) DrainCredit(ctx context.Context) error {
 // When using ModeSecond, you *must* take an action on the message by calling
 // one of the following: AcceptMessage, RejectMessage, ReleaseMessage, ModifyMessage.
 // When using ModeFirst, the message is spontaneously Accepted at reception.
-func (r *Receiver) Prefetched(ctx context.Context) (*Message, error) {
-	if atomic.LoadUint32(&r.link.Paused) == 1 {
-		select {
-		case r.link.ReceiverReady <- struct{}{}:
-		default:
-		}
+func (r *Receiver) Prefetched() *Message {
+	select {
+	case r.link.ReceiverReady <- struct{}{}:
+	default:
 	}
 
 	// non-blocking receive to ensure buffered messages are
 	// delivered regardless of whether the link has been closed.
 	select {
 	case msg := <-r.link.Messages:
-		debug(3, "Receive() non blocking %d", msg.deliveryID)
+		log.Debug(3, "Receive() non blocking %d", msg.deliveryID)
 		msg.link = r.link
-		return &msg, nil
-	case <-ctx.Done():
-		return nil, ctx.Err()
+		return &msg
 	default:
 		// done draining messages
-		return nil, nil
+		return nil
 	}
 }
 
@@ -78,16 +74,14 @@ func (r *Receiver) Prefetched(ctx context.Context) (*Message, error) {
 // one of the following: AcceptMessage, RejectMessage, ReleaseMessage, ModifyMessage.
 // When using ModeFirst, the message is spontaneously Accepted at reception.
 func (r *Receiver) Receive(ctx context.Context) (*Message, error) {
-	msg, err := r.Prefetched(ctx)
-
-	if err != nil || msg != nil {
-		return msg, err
+	if msg := r.Prefetched(); msg != nil {
+		return msg, nil
 	}
 
 	// wait for the next message
 	select {
 	case msg := <-r.link.Messages:
-		debug(3, "Receive() blocking %d", msg.deliveryID)
+		log.Debug(3, "Receive() blocking %d", msg.deliveryID)
 		msg.link = r.link
 		return &msg, nil
 	case <-r.link.Detached:
@@ -125,28 +119,36 @@ func (r *Receiver) ReleaseMessage(ctx context.Context, msg *Message) error {
 	return r.messageDisposition(ctx, msg, &encoding.StateReleased{})
 }
 
-// Modify notifies the server that the message was not acted upon
-// and should be modifed.
-//
-// deliveryFailed indicates that the server must consider this and
-// unsuccessful delivery attempt and increment the delivery count.
-//
-// undeliverableHere indicates that the server must not redeliver
-// the message to this link.
-//
-// messageAnnotations is an optional annotation map to be merged
-// with the existing message annotations, overwriting existing keys
-// if necessary.
-func (r *Receiver) ModifyMessage(ctx context.Context, msg *Message, deliveryFailed, undeliverableHere bool, messageAnnotations Annotations) error {
+// Modify notifies the server that the message was not acted upon and should be modifed.
+func (r *Receiver) ModifyMessage(ctx context.Context, msg *Message, options *ModifyMessageOptions) error {
 	if !msg.shouldSendDisposition() {
 		return nil
 	}
+	if options == nil {
+		options = &ModifyMessageOptions{}
+	}
 	return r.messageDisposition(ctx,
 		msg, &encoding.StateModified{
-			DeliveryFailed:     deliveryFailed,
-			UndeliverableHere:  undeliverableHere,
-			MessageAnnotations: messageAnnotations,
+			DeliveryFailed:     options.DeliveryFailed,
+			UndeliverableHere:  options.UndeliverableHere,
+			MessageAnnotations: options.Annotations,
 		})
+}
+
+// ModifyMessageOptions contains the optional parameters to ModifyMessage.
+type ModifyMessageOptions struct {
+	// DeliveryFailed indicates that the server must consider this an
+	// unsuccessful delivery attempt and increment the delivery count.
+	DeliveryFailed bool
+
+	// UndeliverableHere indicates that the server must not redeliver
+	// the message to this link.
+	UndeliverableHere bool
+
+	// Annotations is an optional annotation map to be merged
+	// with the existing message annotations, overwriting existing keys
+	// if necessary.
+	Annotations Annotations
 }
 
 // Address returns the link's address.
@@ -277,14 +279,19 @@ func (r *Receiver) sendDisposition(first uint32, last *uint32, state encoding.De
 		State:   state,
 	}
 
-	debug(1, "TX (sendDisposition): %s", fr)
-	return r.link.Session.txFrame(fr, nil)
+	select {
+	case <-r.link.Detached:
+		return r.link.err
+	default:
+		log.Debug(1, "TX (sendDisposition): %s", fr)
+		return r.link.Session.txFrame(fr, nil)
+	}
 }
 
 func (r *Receiver) messageDisposition(ctx context.Context, msg *Message, state encoding.DeliveryState) error {
 	var wait chan error
 	if r.link.ReceiverSettleMode != nil && *r.link.ReceiverSettleMode == ModeSecond {
-		debug(3, "RX (messageDisposition): add %d to inflight", msg.deliveryID)
+		log.Debug(3, "RX (messageDisposition): add %d to inflight", msg.deliveryID)
 		wait = r.inFlight.add(msg.deliveryID)
 	}
 

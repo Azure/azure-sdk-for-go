@@ -428,7 +428,10 @@ func ScheduleMessages(ctx context.Context, rpcLink RPCLink, linkName string, enq
 	enqueueTimeAsUTC := enqueueTime.UTC()
 
 	for i := range messages {
-		// TODO: don't like that we're modifying the underlying message here
+		if messages[i].Annotations == nil {
+			return nil, errors.New("message does not have an initialized Annotations property")
+		}
+
 		messages[i].Annotations["x-opt-scheduled-enqueue-time"] = &enqueueTimeAsUTC
 
 		if messages[i].Properties == nil {

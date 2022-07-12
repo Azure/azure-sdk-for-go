@@ -299,49 +299,6 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 	require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled, "prefetch is called")
 }
 
-func TestReceiver_CanCancelLinkCreation(t *testing.T) {
-	ctx, cancel := context.WithCancel(context.Background())
-
-	receiverWasClosedCh := make(chan struct{})
-
-	fakeReceiver := &internal.FakeAMQPReceiver{
-		CloseFn: func(ctx context.Context) error {
-			close(receiverWasClosedCh)
-			return nil
-		},
-	}
-
-	done := make(chan struct{})
-
-	session := &internal.FakeAMQPSession{
-		NewReceiverFn: func(opts ...amqp.LinkOption) (internal.AMQPReceiverCloser, error) {
-			// simulate the client cancelling while we're stuck attempting to get the
-			// session receiver link.
-			cancel()
-
-			// "block" here. Basically what we're trying to simulate is that there's an
-			// active NewReceiver() and then we cancel.
-			select {
-			case <-done:
-			case <-time.After(5 * time.Second):
-				require.Fail(t, "Timed out waiting for the cancellation token to be respected.")
-			}
-			return fakeReceiver, nil
-		},
-	}
-
-	receiver, err := createReceiverLink(ctx, session, []amqp.LinkOption{})
-	require.Nil(t, receiver)
-	require.NotNil(t, err)
-	require.ErrorIs(t, err, context.Canceled, fmt.Sprintf("%s is context.Cancelled", err.Error()))
-
-	close(done)
-
-	// also, the receiver we returned should be closed as part of the gourtine
-	// unwinding.
-	<-receiverWasClosedCh
-}
-
 func TestReceiverCancellationUnitTests(t *testing.T) {
 	t.Run("ImmediatelyCancelled", func(t *testing.T) {
 		r := &Receiver{

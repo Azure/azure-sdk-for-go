@@ -17,6 +17,62 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
+func TestNewClientFromConnStrReturnErrorOnWrongDelimiter(t *testing.T) {
+	invalidStr := "invalid_connection_string"
+	_, err := NewClientFromConnectionString(invalidStr, nil)
+	if err == nil {
+		t.Fatal("Expected error")
+	}
+
+	expected := "failed parsing connection string due to it not consist of two parts separated by ';'"
+	actual := err.Error()
+	if actual != expected {
+		t.Errorf("Expected %v, but got %v", expected, actual)
+	}
+}
+
+func TestNewClientFromConnStrReturnErrorOnWrongAccEnpoint(t *testing.T) {
+	invalidStr := "invalid_str;AccountKey=dG9fYmFzZV82NA=="
+	_, err := NewClientFromConnectionString(invalidStr, nil)
+	if err == nil {
+		t.Fatal("Expected error")
+	}
+
+	expected := "failed parsing connection string due to unmatched key value separated by '='"
+	actual := err.Error()
+	if actual != expected {
+		t.Errorf("Expected %v, but got %v", expected, actual)
+	}
+}
+
+func TestNewClientFromConnStrReturnErrorOnWrongAccKey(t *testing.T) {
+	invalidStr := "AccountEndpoint=http://127.0.0.1:80;invalid_str"
+	_, err := NewClientFromConnectionString(invalidStr, nil)
+	if err == nil {
+		t.Fatal("Expected error")
+	}
+
+	expected := "failed parsing connection string due to unmatched key value separated by '='"
+	actual := err.Error()
+	if actual != expected {
+		t.Errorf("Expected %v, but got %v", expected, actual)
+	}
+}
+
+func TestNewClientFromConnStrSuccess(t *testing.T) {
+	connStr := "AccountEndpoint=http://127.0.0.1:80;AccountKey=dG9fYmFzZV82NA==;"
+	client, err := NewClientFromConnectionString(connStr, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	actualEnpoint := client.endpoint
+	expectedEndpoint := "http://127.0.0.1:80"
+	if actualEnpoint != expectedEndpoint {
+		t.Errorf("Expected %v, but got %v", expectedEndpoint, actualEnpoint)
+	}
+}
+
 func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 	someError := &cosmosErrorResponse{
 		Code: "SomeCode",

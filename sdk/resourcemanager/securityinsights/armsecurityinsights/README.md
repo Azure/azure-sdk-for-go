@@ -1,6 +1,6 @@
 # Azure Security Insight Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights)
 
 The `armsecurityinsights` module provides operations for working with Azure Security Insight.
 

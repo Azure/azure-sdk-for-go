@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -47,6 +48,42 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		return nil, err
 	}
 	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o)}, nil
+}
+
+// NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
+// connectionString - The cosmos service connection string.
+// options - Optional Cosmos client options.  Pass nil to accept default values.
+func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*Client, error) {
+	const (
+		accountEndpoint = "AccountEndpoint"
+		accountKey      = "AccountKey"
+	)
+
+	splits := strings.SplitN(connectionString, ";", 2)
+	if len(splits) < 2 {
+		return nil, errors.New("failed parsing connection string due to it not consist of two parts separated by ';'")
+	}
+
+	var endpoint string
+	var cred KeyCredential
+	for _, split := range splits {
+		keyVal := strings.SplitN(split, "=", 2)
+		if len(keyVal) < 2 {
+			return nil, fmt.Errorf("failed parsing connection string due to unmatched key value separated by '='")
+		}
+		switch {
+		case strings.EqualFold(accountEndpoint, keyVal[0]):
+			endpoint = keyVal[1]
+		case strings.EqualFold(accountKey, keyVal[0]):
+			c, err := NewKeyCredential(strings.TrimSuffix(keyVal[1], ";"))
+			if err != nil {
+				return nil, err
+			}
+			cred = c
+		}
+	}
+
+	return NewClientWithKey(endpoint, cred, o)
 }
 
 func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {

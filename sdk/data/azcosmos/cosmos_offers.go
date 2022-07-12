@@ -38,7 +38,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		path,
 		ctx,
 		fmt.Sprintf(`SELECT * FROM c WHERE c.offerResourceId = '%s'`, targetRID),
-		[]QueryParameter{},
+		nil,
 		operationContext,
 		requestOptions,
 		nil)

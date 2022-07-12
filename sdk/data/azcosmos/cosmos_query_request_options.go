@@ -3,7 +3,9 @@
 
 package azcosmos
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // QueryOptions includes options for query operations on items.
 type QueryOptions struct {
@@ -31,6 +33,9 @@ type QueryOptions struct {
 	// ContinuationToken to be used to continue a previous query execution.
 	// Obtained from QueryItemsResponse.ContinuationToken.
 	ContinuationToken string
+	// QueryParameters allows execution of parametrized queries.
+	// See https://docs.microsoft.com/azure/cosmos-db/sql/sql-query-parameterized-queries
+	QueryParameters []QueryParameter
 }
 
 func (options *QueryOptions) toHeaders() *map[string]string {

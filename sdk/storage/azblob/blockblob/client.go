@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"io"
 	"os"
 	"sync"
@@ -135,28 +134,9 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 		return UploadResponse{}, err
 	}
 
-	var basics *generated.BlockBlobClientUploadOptions
-	var httpHeaders *generated.BlobHTTPHeaders
-	var leaseInfo *lease.AccessConditions
-	var cpkInfo *generated.CpkInfo
-	var cpkScopeInfo *generated.CpkScopeInfo
-	var accessConditions *generated.ModifiedAccessConditions
+	opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.format()
 
-	if options != nil {
-		basics = &generated.BlockBlobClientUploadOptions{
-			BlobTagsString:          shared.SerializeBlobTagsToStrPtr(options.Tags),
-			Metadata:                options.Metadata,
-			Tier:                    options.Tier,
-			TransactionalContentMD5: options.TransactionalContentMD5,
-		}
-
-		httpHeaders = options.HTTPHeaders
-		leaseInfo, accessConditions = exported.FormatBlobAccessConditions(options.AccessConditions)
-		cpkInfo = options.CpkInfo
-		cpkScopeInfo = options.CpkScopeInfo
-	}
-
-	resp, err := bb.generated().Upload(ctx, count, body, basics, httpHeaders, leaseInfo, cpkInfo, cpkScopeInfo, accessConditions)
+	resp, err := bb.generated().Upload(ctx, count, body, opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
 	return resp, err
 }
 
@@ -169,22 +149,9 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 		return StageBlockResponse{}, err
 	}
 
-	var stageBlockOptions *generated.BlockBlobClientStageBlockOptions
-	var accessConditions *lease.AccessConditions
-	var cpkInfo *generated.CpkInfo
-	var cpkScopeInfo *generated.CpkScopeInfo
+	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
 
-	if options != nil {
-		stageBlockOptions = &generated.BlockBlobClientStageBlockOptions{
-			TransactionalContentCRC64: options.TransactionalContentCRC64,
-			TransactionalContentMD5:   options.TransactionalContentMD5,
-		}
-		accessConditions = options.LeaseAccessConditions
-		cpkInfo = options.CpkInfo
-		cpkScopeInfo = options.CpkScopeInfo
-	}
-
-	resp, err := bb.generated().StageBlock(ctx, base64BlockID, count, body, stageBlockOptions, accessConditions, cpkInfo, cpkScopeInfo)
+	resp, err := bb.generated().StageBlock(ctx, base64BlockID, count, body, opts, leaseAccessConditions, cpkInfo, cpkScopeInfo)
 	return resp, err
 }
 
@@ -219,7 +186,7 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 
 	var commitOptions *generated.BlockBlobClientCommitBlockListOptions
 	var headers *generated.BlobHTTPHeaders
-	var leaseAccess *lease.AccessConditions
+	var leaseAccess *blob.LeaseAccessConditions
 	var cpkInfo *generated.CpkInfo
 	var cpkScope *generated.CpkScopeInfo
 	var modifiedAccess *generated.ModifiedAccessConditions

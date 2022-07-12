@@ -21,6 +21,10 @@ func InnerClient[T any](client *Client[T]) *T {
 	return client.inner
 }
 
+func SharedKey[T any](client *Client[T]) *exported.SharedKeyCredential {
+	return client.sharedKey
+}
+
 func NewClient[T any](inner *T) *Client[T] {
 	return &Client[T]{inner: inner}
 }

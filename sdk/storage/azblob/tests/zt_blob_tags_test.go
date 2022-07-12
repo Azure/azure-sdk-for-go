@@ -592,15 +592,15 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //	_require.Nil(err)
 //
 //	blobURL21 := getBlockBlobClient(generateBlobName(testName) + "21", containerClient2)
-//	_, err = blobURL21.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, AccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	_, err = blobURL21.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //
 //	blobURL22 := getBlockBlobClient(generateBlobName(testName) + "22", containerClient2)
-//	_, err = blobURL22.Upload(ctx, bytes.NewReader([]byte("another random data")), HTTPHeaders{}, basicMetadata, AccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
+//	_, err = blobURL22.Upload(ctx, bytes.NewReader([]byte("another random data")), HTTPHeaders{}, basicMetadata, LeaseAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //
 //	blobURL31 := getBlockBlobClient(generateBlobName(testName) + "31", containerClient3)
-//	_, err = blobURL31.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, AccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	_, err = blobURL31.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //
 //	where := "\"tag4\"='fourthtag'"
@@ -647,13 +647,13 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //	containerName := generateContainerName()
 //	containerClient := serviceURL.NewcontainerClient(containerName)
 //	_, err = containerClient.Create(ctx, Metadata{}, PublicAccessNone)
-//	defer containerClient.Delete(ctx, AccessConditions{})
+//	defer containerClient.Delete(ctx, LeaseAccessConditions{})
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
 //
 //	blobClient := containerClient.NewBlockBlobURL("temp")
-//	_, err = blobClient.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, AccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	_, err = blobClient.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	if err != nil {
 //		s.T().Fail()
 //	}

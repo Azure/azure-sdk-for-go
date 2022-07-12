@@ -768,8 +768,10 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	options := blob.StartCopyFromURLOptions{
-		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 	destBlobClient := createNewBlockBlob(_require, "dst"+bbName, containerClient) // The blob must exist to have a last-modified time
@@ -804,8 +806,10 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 	options := blob.StartCopyFromURLOptions{
-		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
@@ -837,8 +841,10 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
 	destBlobClient := createNewBlockBlob(_require, "dst"+bbName, containerClient)
 
 	options := blob.StartCopyFromURLOptions{
-		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfUnmodifiedSince: &currentTime,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
@@ -872,8 +878,10 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceFalse() {
 
 	destBlobClient := createNewBlockBlob(_require, "dst"+bbName, containerClient)
 	options := blob.StartCopyFromURLOptions{
-		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfUnmodifiedSince: &currentTime,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
 		},
 	}
 
@@ -903,8 +911,10 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchTrue() {
 	_require.Nil(err)
 
 	options := blob.StartCopyFromURLOptions{
-		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfMatch: resp.ETag,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
 		},
 	}
 
@@ -937,8 +947,10 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchFalse() {
 	_require.Nil(err)
 
 	options := blob.StartCopyFromURLOptions{
-		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfMatch: resp.ETag,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
 		},
 	}
 	metadata := make(map[string]string)
@@ -973,8 +985,10 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
 	_require.Nil(err)
 
 	options := blob.StartCopyFromURLOptions{
-		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfNoneMatch: resp.ETag,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
 		},
 	}
 
@@ -1010,8 +1024,10 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	_require.Nil(err)
 
 	options := blob.StartCopyFromURLOptions{
-		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfNoneMatch: resp.ETag,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
 		},
 	}
 
@@ -2714,7 +2730,11 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
-		&blob.SetHTTPHeadersOptions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime}})
+		&blob.SetHTTPHeadersOptions{
+			AccessConditions: &blob.AccessConditions{
+				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+			},
+		})
 	_require.Nil(err)
 
 	validatePropertiesSet(_require, bbClient, "my_disposition")
@@ -2743,7 +2763,10 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
-		&blob.SetHTTPHeadersOptions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime}})
+		&blob.SetHTTPHeadersOptions{
+			AccessConditions: &blob.AccessConditions{
+				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+			}})
 	_require.NotNil(err)
 }
 
@@ -2770,7 +2793,9 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
-		&blob.SetHTTPHeadersOptions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		}})
 	_require.Nil(err)
 
 	validatePropertiesSet(_require, bbClient, "my_disposition")
@@ -2799,7 +2824,9 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
-		&blob.SetHTTPHeadersOptions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		}})
 	_require.NotNil(err)
 }
 
@@ -2823,7 +2850,9 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchTrue() {
 	_require.Nil(err)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
-		&blob.SetHTTPHeadersOptions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag}})
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag},
+		}})
 	_require.Nil(err)
 
 	validatePropertiesSet(_require, bbClient, "my_disposition")
@@ -2846,7 +2875,9 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchFalse() {
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
-		&blob.SetHTTPHeadersOptions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr("garbage")}})
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr("garbage")},
+		}})
 	_require.NotNil(err)
 }
 
@@ -2867,7 +2898,9 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
-		&blob.SetHTTPHeadersOptions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")}})
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")},
+		}})
 	_require.Nil(err)
 
 	validatePropertiesSet(_require, bbClient, "my_disposition")
@@ -2893,7 +2926,9 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchFalse() {
 	_require.Nil(err)
 
 	_, err = bbClient.SetHTTPHeaders(ctx, blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
-		&blob.SetHTTPHeadersOptions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag}})
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag},
+		}})
 	_require.NotNil(err)
 }
 
@@ -3258,7 +3293,7 @@ func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *service.Client) e
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.NotNil)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTier, chk.Not(chk.Equals), "")
 ////
-////	_, err = bbClient.SetTier(ctx, AccessTierP4, AccessConditions{})
+////	_, err = bbClient.SetTier(ctx, AccessTierP4, LeaseAccessConditions{})
 ////	_require.Nil(err)
 ////
 ////	resp, err = bbClient.GetProperties(ctx, nil)
@@ -3280,9 +3315,9 @@ func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *service.Client) e
 ////	defer deleteContainer(_require, containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
-////	_, err = bbClient.SetTier(ctx, AccessTierArchive, AccessConditions{})
+////	_, err = bbClient.SetTier(ctx, AccessTierArchive, LeaseAccessConditions{})
 ////	_require.Nil(err)
-////	_, err = bbClient.SetTier(ctx, AccessTierCool, AccessConditions{})
+////	_, err = bbClient.SetTier(ctx, AccessTierCool, LeaseAccessConditions{})
 ////	_require.Nil(err)
 ////
 ////	resp, err := bbClient.GetProperties(ctx, nil)
@@ -3299,9 +3334,9 @@ func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *service.Client) e
 ////
 ////	bbClient, _ = createNewBlockBlob(c, containerClient)
 ////
-////	_, err = bbClient.SetTier(ctx, AccessTierArchive, AccessConditions{})
+////	_, err = bbClient.SetTier(ctx, AccessTierArchive, LeaseAccessConditions{})
 ////	_require.Nil(err)
-////	_, err = bbClient.SetTier(ctx, AccessTierHot, AccessConditions{})
+////	_, err = bbClient.SetTier(ctx, AccessTierHot, LeaseAccessConditions{})
 ////	_require.Nil(err)
 ////
 ////	resp, err = bbClient.GetProperties(ctx, nil)
@@ -3323,7 +3358,7 @@ func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *service.Client) e
 ////	defer deleteContainer(_require, containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
-////	_, err = bbClient.SetTier(ctx, AccessTierType("garbage"), AccessConditions{})
+////	_, err = bbClient.SetTier(ctx, AccessTierType("garbage"), LeaseAccessConditions{})
 ////	validateBlobErrorCode(c, err, bloberror.InvalidHeaderValue)
 ////}
 ////

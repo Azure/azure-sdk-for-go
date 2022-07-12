@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"io"
 	"os"
 	"sync"
@@ -105,16 +104,16 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 }
 
 // NewLeaseClient generates blob lease.Client from the blob.Client
-func (b *Client) NewLeaseClient() *lease.Client {
-	return (*lease.Client)(base.NewBlobClient(b.URL(), b.generated().Pipeline()))
+func (b *Client) NewLeaseClient() *Client {
+	return (*Client)(base.NewBlobClient(b.URL(), b.generated().Pipeline()))
 }
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (b *Client) Download(ctx context.Context, o *DownloadOptions) (DownloadResponse, error) {
-	downloadOptions, leaseAccessCondition, cpkInfo, modifiedAccessConditions := o.format()
+	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
 
-	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessCondition, cpkInfo, modifiedAccessConditions)
+	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
 		return DownloadResponse{}, err
 	}

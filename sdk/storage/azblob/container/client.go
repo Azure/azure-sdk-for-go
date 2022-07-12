@@ -18,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"net/http"
 )
@@ -147,13 +146,8 @@ func (c *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 // Delete marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container.
 func (c *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
-	var leaseInfo *lease.AccessConditions
-	var accessConditions *generated.ModifiedAccessConditions
-	if options != nil {
-		leaseInfo = options.LeaseAccessConditions
-		accessConditions = options.ModifiedAccessConditions
-	}
-	resp, err := c.generated().Delete(ctx, nil, leaseInfo, accessConditions)
+	opts, leaseAccessConditions, modifiedAccessConditions := options.format()
+	resp, err := c.generated().Delete(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
 
 	return resp, err
 }
@@ -164,12 +158,9 @@ func (c *Client) GetProperties(ctx context.Context, o *GetPropertiesOptions) (Ge
 	// NOTE: GetMetadata actually calls GetProperties internally because GetProperties returns the metadata AND the properties.
 	// This allows us to not expose a GetProperties method at all simplifying the API.
 	// The optionals are nil, like they were in track 1.5
-	var leaseConditions *lease.AccessConditions
-	if o != nil {
-		leaseConditions = o.LeaseAccessConditions
-	}
+	opts, leaseAccessConditions := o.format()
 
-	resp, err := c.generated().GetProperties(ctx, nil, leaseConditions)
+	resp, err := c.generated().GetProperties(ctx, opts, leaseAccessConditions)
 	return resp, err
 }
 

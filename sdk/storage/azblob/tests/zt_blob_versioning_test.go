@@ -225,7 +225,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	_require.Len(count, 2)
 //
 //	// Deleting previous version snapshot.
-//	deleteResp, err := blobURL.WithVersionID(versionID1).Delete(ctx, DeleteSnapshotsOptionNone, AccessConditions{})
+//	deleteResp, err := blobURL.WithVersionID(versionID1).Delete(ctx, DeleteSnapshotsOptionNone, LeaseAccessConditions{})
 //	_require.Nil(err)
 //	_assert(deleteResp.StatusCode(), chk.Equals, 202)
 //
@@ -252,12 +252,12 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	defer deleteContainer(_require, containerClient)
 //	blobURL, blobName := getBlockBlobClient(c, containerClient)
 //
-//	resp, err := blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, AccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	resp, err := blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //	versionId := resp.VersionID
 //	_assert(versionId, chk.NotNil)
 //
-//	resp, err = blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, AccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	resp, err = blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //	_assert(resp.VersionID, chk.NotNil)
 //
@@ -275,7 +275,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	}
 //
 //	sbURL := NewBlockBlobClient(blobParts.URL(), containerClient.client.p)
-//	deleteResp, err := sbURL.Delete(ctx, DeleteSnapshotsOptionNone, AccessConditions{})
+//	deleteResp, err := sbURL.Delete(ctx, DeleteSnapshotsOptionNone, LeaseAccessConditions{})
 //	_assert(deleteResp, chk.IsNil)
 //
 //	listBlobResp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true}})
@@ -380,7 +380,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //	srcBlob := container.NewBlockBlobClient(generateBlobName())
 //	destBlob := container.NewBlockBlobClient(generateBlobName())
 //
-//	uploadSrcResp, err := srcBlob.Upload(ctx, r, HTTPHeaders{}, Metadata{}, AccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	uploadSrcResp, err := srcBlob.Upload(ctx, r, HTTPHeaders{}, Metadata{}, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //	_assert(uploadSrcResp.Response().StatusCode, chk.Equals, 201)
 //	_assert(uploadSrcResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
@@ -400,7 +400,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //
 //	srcBlobURLWithSAS := srcBlobParts.URL()
 //
-//	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{"foo": "bar"}, ModifiedAccessConditions{}, AccessConditions{}, sourceDataMD5Value[:], DefaultAccessTier, nil)
+//	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{"foo": "bar"}, ModifiedAccessConditions{}, LeaseAccessConditions{}, sourceDataMD5Value[:], DefaultAccessTier, nil)
 //	_require.Nil(err)
 //	_assert(resp.Response().StatusCode, chk.Equals, 202)
 //	_assert(resp.Version(), chk.Not(chk.Equals), "")
@@ -408,7 +408,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //	_assert(string(resp.CopyStatus()), chk.DeepEquals, "success")
 //	_assert(resp.VersionID, chk.NotNil)
 //
-//	downloadResp, err := destBlob.ServiceURL.Download(ctx, 0, CountToEnd, AccessConditions{}, false, ClientProvidedKeyOptions{})
+//	downloadResp, err := destBlob.ServiceURL.Download(ctx, 0, CountToEnd, LeaseAccessConditions{}, false, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
@@ -416,10 +416,10 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //	_assert(downloadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //	_assert(len(downloadResp.NewMetadata()), chk.Equals, 1)
 //	_, badMD5 := getRandomDataAndReader(16)
-//	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, AccessConditions{}, badMD5, DefaultAccessTier, nil)
+//	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, badMD5, DefaultAccessTier, nil)
 //	_require.NotNil(err)
 //
-//	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, AccessConditions{}, nil, DefaultAccessTier, nil)
+//	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, nil, DefaultAccessTier, nil)
 //	_require.Nil(err)
 //	_assert(resp.Response().StatusCode, chk.Equals, 202)
 //	_assert(resp.XMsContentCRC64(), chk.Not(chk.Equals), "")
@@ -447,13 +447,13 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //	blobURL := containerClient.NewBlockBlobClient(generateBlobName())
 //
 //	// Prepare source blob for copy.
-//	uploadResp, err := blobURL.Upload(ctx, r, HTTPHeaders{}, Metadata{}, AccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	uploadResp, err := blobURL.Upload(ctx, r, HTTPHeaders{}, Metadata{}, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //	_assert(uploadResp.Response().StatusCode, chk.Equals, 201)
 //	_assert(uploadResp.rawResponse.Header.Get("x-ms-version"), chk.Equals, ServiceVersion)
 //	_assert(uploadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //
-//	csResp, err := blobURL.CreateSnapshot(ctx, Metadata{}, AccessConditions{}, ClientProvidedKeyOptions{})
+//	csResp, err := blobURL.CreateSnapshot(ctx, Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //	_assert(csResp.Response().StatusCode, chk.Equals, 201)
 //	_assert(csResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
@@ -465,7 +465,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //		s.T().Fail()
 //	}
 //
-//	deleteResp, err := blobURL.Delete(ctx, DeleteSnapshotsOptionOnly, AccessConditions{})
+//	deleteResp, err := blobURL.Delete(ctx, DeleteSnapshotsOptionOnly, LeaseAccessConditions{})
 //	_require.Nil(err)
 //	_assert(deleteResp.Response().StatusCode, chk.Equals, 202)
 //	_assert(deleteResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)

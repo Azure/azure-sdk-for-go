@@ -10,7 +10,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"time"
 )
 
@@ -18,6 +17,10 @@ import (
 
 // AccessConditions identifies blob-specific access conditions which you optionally set.
 type AccessConditions = exported.BlobAccessConditions
+
+type LeaseAccessConditions = exported.LeaseAccessConditions
+
+type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
 type AccessTier = generated.AccessTier
 
@@ -36,9 +39,6 @@ type DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionType
 type HTTPHeaders = generated.BlobHTTPHeaders
 
 type ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyMode
-
-// ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-type ModifiedAccessConditions = generated.ModifiedAccessConditions
 
 // RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate.
 // Valid values are High and Standard.
@@ -186,8 +186,7 @@ type SetTierOptions struct {
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 
-	LeaseAccessConditions    *lease.AccessConditions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	AccessConditions *AccessConditions
 }
 
 func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -195,7 +194,8 @@ func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generat
 		return nil, nil, nil
 	}
 
-	return &generated.BlobClientSetTierOptions{RehydratePriority: o.RehydratePriority}, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return &generated.BlobClientSetTierOptions{RehydratePriority: o.RehydratePriority}, leaseAccessConditions, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -219,8 +219,7 @@ func (o *GetPropertiesOptions) format() (*generated.BlobClientGetPropertiesOptio
 
 // SetHTTPHeadersOptions provides set of configurations for SetHTTPHeaders on blob operation
 type SetHTTPHeadersOptions struct {
-	LeaseAccessConditions    *lease.AccessConditions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	AccessConditions *AccessConditions
 }
 
 func (o *SetHTTPHeadersOptions) format() (*generated.BlobClientSetHTTPHeadersOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -228,7 +227,8 @@ func (o *SetHTTPHeadersOptions) format() (*generated.BlobClientSetHTTPHeadersOpt
 		return nil, nil, nil
 	}
 
-	return nil, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return nil, leaseAccessConditions, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -300,9 +300,7 @@ type StartCopyFromURLOptions struct {
 
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 
-	ModifiedAccessConditions *ModifiedAccessConditions
-
-	LeaseAccessConditions *lease.AccessConditions
+	AccessConditions *AccessConditions
 }
 
 func (o *StartCopyFromURLOptions) format() (*generated.BlobClientStartCopyFromURLOptions,
@@ -322,14 +320,15 @@ func (o *StartCopyFromURLOptions) format() (*generated.BlobClientStartCopyFromUR
 		LegalHold:                o.LegalHold,
 	}
 
-	return &basics, o.SourceModifiedAccessConditions, o.ModifiedAccessConditions, o.LeaseAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return &basics, o.SourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 // AbortCopyFromURLOptions provides set of configurations for AbortCopyFromURL operation
 type AbortCopyFromURLOptions struct {
-	LeaseAccessConditions *lease.AccessConditions
+	LeaseAccessConditions *LeaseAccessConditions
 }
 
 func (o *AbortCopyFromURLOptions) format() (*generated.BlobClientAbortCopyFromURLOptions, *generated.LeaseAccessConditions) {
@@ -353,8 +352,7 @@ type SetTagsOptions struct {
 
 	Tags map[string]string
 
-	ModifiedAccessConditions *ModifiedAccessConditions
-	LeaseAccessConditions    *lease.AccessConditions
+	AccessConditions *AccessConditions
 }
 
 func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *ModifiedAccessConditions, *generated.LeaseAccessConditions) {
@@ -369,7 +367,8 @@ func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *Modifie
 		VersionID:                 o.VersionID,
 	}
 
-	return options, o.ModifiedAccessConditions, o.LeaseAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return options, modifiedAccessConditions, leaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

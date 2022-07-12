@@ -12,7 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 )
 
 type UploadOptions struct {
@@ -34,18 +33,46 @@ type UploadOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
+func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions,
+	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil, nil, nil, nil
+	}
+
+	basics := generated.BlockBlobClientUploadOptions{
+		BlobTagsString:          shared.SerializeBlobTagsToStrPtr(o.Tags),
+		Metadata:                o.Metadata,
+		Tier:                    o.Tier,
+		TransactionalContentMD5: o.TransactionalContentMD5,
+	}
+
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
+}
+
 type StageBlockOptions struct {
 	CpkInfo *blob.CpkInfo
 
 	CpkScopeInfo *blob.CpkScopeInfo
 
-	LeaseAccessConditions *lease.AccessConditions
+	LeaseAccessConditions *blob.LeaseAccessConditions
 
 	// Specify the transactional crc64 for the body, to be validated by the service.
 	TransactionalContentCRC64 []byte
 
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
+}
+
+func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.CpkScopeInfo) {
+	if o == nil {
+		return nil, nil, nil, nil
+	}
+
+	return &generated.BlockBlobClientStageBlockOptions{
+		TransactionalContentCRC64: o.TransactionalContentCRC64,
+		TransactionalContentMD5:   o.TransactionalContentMD5,
+	}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
 }
 
 type SourceModifiedAccessConditions = blob.SourceModifiedAccessConditions
@@ -55,7 +82,7 @@ type StageBlockFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
 
-	LeaseAccessConditions *lease.AccessConditions
+	LeaseAccessConditions *blob.LeaseAccessConditions
 
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.

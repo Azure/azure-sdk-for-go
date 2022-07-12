@@ -9,7 +9,6 @@ package container
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 )
 
 type CreateOptions struct {
@@ -23,13 +22,33 @@ type CreateOptions struct {
 	CpkScope *ContainerCpkScopeInfo
 }
 
+type AccessConditions = exported.ContainerAccessConditions
+type LeaseAccessConditions = exported.LeaseAccessConditions
+type ModifiedAccessConditions = exported.ModifiedAccessConditions
+
 type DeleteOptions struct {
-	LeaseAccessConditions    *lease.AccessConditions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	AccessConditions *AccessConditions
+}
+
+func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil
+	}
+
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatContainerAccessConditions(o.AccessConditions)
+	return nil, leaseAccessConditions, modifiedAccessConditions
 }
 
 type GetPropertiesOptions struct {
-	LeaseAccessConditions *lease.AccessConditions
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *GetPropertiesOptions) format() (*generated.ContainerClientGetPropertiesOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return nil, o.LeaseAccessConditions
 }
 
 type ListBlobsFlatOptions struct {
@@ -86,13 +105,9 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 
 type ContainerCpkScopeInfo = generated.ContainerCpkScopeInfo
 
-type ModifiedAccessConditions = generated.ModifiedAccessConditions
-
 type PublicAccessType = generated.PublicAccessType
 
 type BlobItem = generated.BlobItemInternal
-
-type LeaseAccessConditions = generated.LeaseAccessConditions
 
 // SetMetadataOptions provides set of configurations for SetMetadataContainer operation
 type SetMetadataOptions struct {
@@ -121,8 +136,6 @@ func (o *GetAccessPolicyOptions) format() (*generated.ContainerClientGetAccessPo
 
 	return nil, o.LeaseAccessConditions
 }
-
-type AccessConditions = exported.ContainerAccessConditions
 
 type SignedIdentifier = generated.SignedIdentifier
 

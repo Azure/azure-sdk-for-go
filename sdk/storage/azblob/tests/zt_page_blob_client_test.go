@@ -2676,7 +2676,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 //
 //	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		Snapshot: to.Ptr(snapshot),
-//		AccessConditions: &blob.AccessConditions{
+//		LeaseAccessConditions: &blob.LeaseAccessConditions{
 //			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: resp.ETag,
 //			},

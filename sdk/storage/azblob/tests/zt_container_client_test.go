@@ -492,8 +492,10 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	deleteContainerOptions := container.DeleteOptions{
-		ModifiedAccessConditions: &container.ModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		AccessConditions: &container.AccessConditions{
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
@@ -521,8 +523,10 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	deleteContainerOptions := container.DeleteOptions{
-		ModifiedAccessConditions: &container.ModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		AccessConditions: &container.AccessConditions{
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
@@ -550,8 +554,10 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	deleteContainerOptions := container.DeleteOptions{
-		ModifiedAccessConditions: &container.ModifiedAccessConditions{
-			IfUnmodifiedSince: &currentTime,
+		AccessConditions: &container.AccessConditions{
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
@@ -580,8 +586,10 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	deleteContainerOptions := container.DeleteOptions{
-		ModifiedAccessConditions: &container.ModifiedAccessConditions{
-			IfUnmodifiedSince: &currentTime,
+		AccessConditions: &container.AccessConditions{
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
@@ -765,7 +773,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer deleteContainer(container)
 ////	_, blobNameNoMetadata := createNewBlockBlobWithPrefix(c, container, "a")
 ////	blobMetadata, blobNameMetadata := createNewBlockBlobWithPrefix(c, container, "b")
-////	_, err := blobMetadata.SetMetadata(ctx, Metadata{"field": "value"}, AccessConditions{}, ClientProvidedKeyOptions{})
+////	_, err := blobMetadata.SetMetadata(ctx, Metadata{"field": "value"}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////
 ////	resp, err := container.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
@@ -782,7 +790,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	containerClient, _ := createNewContainer(c, svcClient)
 ////	defer deleteContainer(_require, containerClient)
 ////	blob, blobName := createNewBlockBlob(c, containerClient)
-////	_, err := blob.CreateSnapshot(ctx, Metadata{}, AccessConditions{}, ClientProvidedKeyOptions{})
+////	_, err := blob.CreateSnapshot(ctx, Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////
 ////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
@@ -802,7 +810,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer deleteContainer(_require, containerClient)
 ////	bbClient, blobName := createNewBlockBlob(c, containerClient)
 ////	blobCopyURL, blobCopyName := createNewBlockBlobWithPrefix(c, containerClient, "copy")
-////	_, err := blobCopyURL.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, AccessConditions{}, DefaultAccessTier, nil)
+////	_, err := blobCopyURL.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, DefaultAccessTier, nil)
 ////	_require.Nil(err)
 ////
 ////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
@@ -824,7 +832,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	containerClient, _ := createNewContainer(c, svcClient)
 ////	defer deleteContainer(_require, containerClient)
 ////	bbClient, blobName := getBlockBlobURL(c, containerClient)
-////	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), AccessConditions{}, nil, ClientProvidedKeyOptions{})
+////	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////
 ////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
@@ -845,7 +853,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_require.Nil(err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
 ////
-////	_, err = bbClient.Delete(ctx, DeleteSnapshotsOptionInclude, AccessConditions{})
+////	_, err = bbClient.Delete(ctx, DeleteSnapshotsOptionInclude, LeaseAccessConditions{})
 ////	_require.Nil(err)
 ////
 ////	resp, err = containerClient.NewListBlobsFlatPager(ctx, Marker{},
@@ -872,15 +880,15 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer deleteContainer(_require, containerClient)
 ////
 ////	bbClient, _ := createNewBlockBlobWithPrefix(c, containerClient, "z")
-////	_, err := bbClient.CreateSnapshot(ctx, Metadata{}, AccessConditions{}, ClientProvidedKeyOptions{})
+////	_, err := bbClient.CreateSnapshot(ctx, Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////	blobURL2, _ := createNewBlockBlobWithPrefix(c, containerClient, "copy")
-////	resp2, err := blobURL2.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, AccessConditions{}, DefaultAccessTier, nil)
+////	resp2, err := blobURL2.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, DefaultAccessTier, nil)
 ////	_require.Nil(err)
 ////	waitForCopy(c, blobURL2, resp2)
 ////	blobURL3, _ := createNewBlockBlobWithPrefix(c, containerClient, "deleted")
 ////
-////	_, err = blobURL3.Delete(ctx, DeleteSnapshotsOptionNone, AccessConditions{})
+////	_, err = blobURL3.Delete(ctx, DeleteSnapshotsOptionNone, LeaseAccessConditions{})
 ////
 ////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true, Copy: true, Deleted: true, Versions: true}})

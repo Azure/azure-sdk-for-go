@@ -26,12 +26,9 @@ type LeaseClient struct {
 
 // NewLeaseClient creates a Client object using the specified URL, Azure AD credential, and options.
 func NewLeaseClient(containerURL string, cred azcore.TokenCredential, leaseID *string, options *ClientOptions) (*LeaseClient, error) {
-	if leaseID == nil {
-		generatedUuid, err := uuid.New()
-		if err != nil {
-			return nil, err
-		}
-		leaseID = to.Ptr(generatedUuid.String())
+	leaseID, err := shared.GenerateLeaseID(leaseID)
+	if err != nil {
+		return nil, err
 	}
 	containerClient, err := NewClient(containerURL, cred, options)
 	return &LeaseClient{
@@ -42,12 +39,9 @@ func NewLeaseClient(containerURL string, cred azcore.TokenCredential, leaseID *s
 
 // NewLeaseClientWithNoCredential creates a Client object using the specified URL and options.
 func NewLeaseClientWithNoCredential(containerURL string, leaseID *string, options *ClientOptions) (*LeaseClient, error) {
-	if leaseID == nil {
-		generatedUuid, err := uuid.New()
-		if err != nil {
-			return nil, err
-		}
-		leaseID = to.Ptr(generatedUuid.String())
+	leaseID, err := shared.GenerateLeaseID(leaseID)
+	if err != nil {
+		return nil, err
 	}
 	containerClient, err := NewClientWithNoCredential(containerURL, options)
 	return &LeaseClient{
@@ -58,12 +52,9 @@ func NewLeaseClientWithNoCredential(containerURL string, leaseID *string, option
 
 // NewLeaseClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
 func NewLeaseClientWithSharedKey(containerURL string, cred *SharedKeyCredential, leaseID *string, options *ClientOptions) (*LeaseClient, error) {
-	if leaseID == nil {
-		generatedUuid, err := uuid.New()
-		if err != nil {
-			return nil, err
-		}
-		leaseID = to.Ptr(generatedUuid.String())
+	leaseID, err := shared.GenerateLeaseID(leaseID)
+	if err != nil {
+		return nil, err
 	}
 	containerClient, err := NewClientWithSharedKey(containerURL, cred, options)
 	return &LeaseClient{

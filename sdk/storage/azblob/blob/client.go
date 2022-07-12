@@ -2,7 +2,7 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package blob
 
@@ -70,6 +70,18 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
+// NewLeaseClient generates blob lease.Client from the blob.Client
+func (b *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
+	leaseID, err := shared.GenerateLeaseID(leaseID)
+	if err != nil {
+		return nil, err
+	}
+	return &LeaseClient{
+		blobClient: (*Client)(base.NewBlobClient(b.URL(), b.generated().Pipeline())),
+		leaseID:    leaseID,
+	}, nil
+}
+
 func (b *Client) generated() *generated.BlobClient {
 	return base.InnerClient((*base.Client[generated.BlobClient])(b))
 }
@@ -101,11 +113,6 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 	p.VersionID = versionID
 
 	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline())), nil
-}
-
-// NewLeaseClient generates blob lease.Client from the blob.Client
-func (b *Client) NewLeaseClient() *Client {
-	return (*Client)(base.NewBlobClient(b.URL(), b.generated().Pipeline()))
 }
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.

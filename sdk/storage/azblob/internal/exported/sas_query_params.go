@@ -2,7 +2,7 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package exported
 
@@ -14,23 +14,78 @@ import (
 	"time"
 )
 
-var SASVersion = "2019-12-12"
+var (
+	SASVersion = "2019-12-12"
+
+	// SASTimeFormats ISO 8601 format.
+	// Please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
+	SASTimeFormats = []string{"2006-01-02T15:04:05.0000000Z", SASTimeFormat, "2006-01-02T15:04Z", "2006-01-02"}
+)
 
 // SASTimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
 // TODO: do these need to be exported?
-const SASTimeFormat = "2006-01-02T15:04:05Z"                                                                    //"2017-07-27T00:00:00Z" // ISO 8601
-var SASTimeFormats = []string{"2006-01-02T15:04:05.0000000Z", SASTimeFormat, "2006-01-02T15:04Z", "2006-01-02"} // ISO 8601 formats, please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
-
-// SASProtocol indicates the http/https.
-type SASProtocol string
+const (
+	SASTimeFormat = "2006-01-02T15:04:05Z" //"2017-07-27T00:00:00Z" // ISO 8601
+)
 
 const (
 	// SASProtocolHTTPS can be specified for a SAS protocol
 	SASProtocolHTTPS SASProtocol = "https"
 
 	// SASProtocolHTTPSandHTTP can be specified for a SAS protocol
-	//SASProtocolHTTPSandHTTP SASProtocol = "https,http"
+	SASProtocolHTTPSandHTTP SASProtocol = "https,http"
 )
+
+// SASProtocol indicates the http/https.
+type SASProtocol string
+
+// FormatTimesForSASSigning converts a time.Time to a snapshotTimeFormat string suitable for a
+// SASField's StartTime or ExpiryTime fields. Returns "" if value.IsZero().
+func FormatTimesForSASSigning(startTime, expiryTime, snapshotTime time.Time) (string, string, string) {
+	ss := ""
+	if !startTime.IsZero() {
+		ss = formatSASTimeWithDefaultFormat(&startTime)
+	}
+	se := ""
+	if !expiryTime.IsZero() {
+		se = formatSASTimeWithDefaultFormat(&expiryTime)
+	}
+	sh := ""
+	if !snapshotTime.IsZero() {
+		sh = snapshotTime.Format(SnapshotTimeFormat)
+	}
+	return ss, se, sh
+}
+
+// formatSASTimeWithDefaultFormat format time with ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ".
+func formatSASTimeWithDefaultFormat(t *time.Time) string {
+	return formatSASTime(t, SASTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+}
+
+// formatSASTime format time with given format, use ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ" by default.
+func formatSASTime(t *time.Time, format string) string {
+	if format != "" {
+		return t.Format(format)
+	}
+	return t.Format(SASTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+}
+
+// parseSASTimeString try to parse sas time string.
+func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) {
+	for _, sasTimeFormat := range SASTimeFormats {
+		t, err = time.Parse(sasTimeFormat, val)
+		if err == nil {
+			timeFormat = sasTimeFormat
+			break
+		}
+	}
+
+	if err != nil {
+		err = errors.New("fail to parse time with IOS 8601 formats, please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details")
+	}
+
+	return
+}
 
 // IPRange represents a SAS IP range's start IP and (optionally) end IP.
 type IPRange struct {
@@ -379,29 +434,4 @@ func NewSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 		}
 	}
 	return p
-}
-
-// formatSASTime format time with given format, use ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ" by default.
-func formatSASTime(t *time.Time, format string) string {
-	if format != "" {
-		return t.Format(format)
-	}
-	return t.Format(SASTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
-}
-
-// parseSASTimeString try to parse sas time string.
-func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) {
-	for _, sasTimeFormat := range SASTimeFormats {
-		t, err = time.Parse(sasTimeFormat, val)
-		if err == nil {
-			timeFormat = sasTimeFormat
-			break
-		}
-	}
-
-	if err != nil {
-		err = errors.New("fail to parse time with IOS 8601 formats, please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details")
-	}
-
-	return
 }

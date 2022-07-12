@@ -2,7 +2,7 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package azblob_test
 
@@ -10,10 +10,12 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"io"
+	"io/ioutil"
 	"log"
 	"strconv"
 	"strings"
@@ -39,8 +41,8 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Live})
-	suite.Run(t, &azblobUnrecordedTestSuite{})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
+	//suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {
@@ -160,13 +162,13 @@ func disableSoftDelete(_require *require.Assertions, client *service.Client) {
 	_require.Nil(err)
 }
 
-//func validateUpload(_require *require.Assertions, blobClient *blob.Client) {
-//	resp, err := blobClient.Download(ctx, nil)
-//	_require.Nil(err)
-//	data, err := ioutil.ReadAll(resp.BodyReader(nil))
-//	_require.Nil(err)
-//	_require.Len(data, 0)
-//}
+func validateUpload(_require *require.Assertions, blobClient *blob.Client) {
+	resp, err := blobClient.Download(ctx, nil)
+	_require.Nil(err)
+	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	_require.Nil(err)
+	_require.Len(data, 0)
+}
 
 func validateHTTPErrorCode(_require *require.Assertions, err error, code int) {
 	_require.NotNil(err)

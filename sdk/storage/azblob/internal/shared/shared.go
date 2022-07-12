@@ -2,13 +2,15 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package shared
 
 import (
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"io"
 	"net/url"
@@ -232,4 +234,15 @@ func (n nopCloser) Close() error {
 // NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
 func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
 	return nopCloser{rs}
+}
+
+func GenerateLeaseID(leaseID *string) (*string, error) {
+	if leaseID == nil {
+		generatedUuid, err := uuid.New()
+		if err != nil {
+			return nil, err
+		}
+		leaseID = to.Ptr(generatedUuid.String())
+	}
+	return leaseID, nil
 }

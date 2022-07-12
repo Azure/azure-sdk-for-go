@@ -2,12 +2,13 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package service
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -17,6 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"net/http"
+	"strings"
+	"time"
 )
 
 // ClientOptions adds additional client options while constructing connection
@@ -80,6 +83,10 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 func (s *Client) generated() *generated.ServiceClient {
 	return base.InnerClient((*base.Client[generated.ServiceClient])(s))
+}
+
+func (s *Client) sharedKey() *SharedKeyCredential {
+	return base.SharedKey((*base.Client[generated.ServiceClient])(s))
 }
 
 // URL returns the URL endpoint used by the Client object.
@@ -203,42 +210,40 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 	return resp, err
 }
 
-//
-//// CanGetAccountSASToken checks if shared key in Client is nil
-//func (s *Client) CanGetAccountSASToken() bool {
-//	return s.sharedKey != nil
-//}
-//
-//// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
-//// It can only be used if the credential supplied during creation was a SharedKeyCredential.
-//// This validity can be checked with CanGetAccountSASToken().
-//func (s *Client) GetSASURL(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
-//	if s.sharedKey == nil {
-//		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
-//	}
-//
-//	qps, err := AccountSASSignatureValues{
-//		Version:       SASVersion,
-//		Protocol:      SASProtocolHTTPS,
-//		Permissions:   permissions.String(),
-//		Services:      "b",
-//		ResourceTypes: resources.String(),
-//		StartTime:     start.UTC(),
-//		ExpiryTime:    expiry.UTC(),
-//	}.Sign(s.sharedKey)
-//	if err != nil {
-//		return "", err
-//	}
-//
-//	endpoint := s.URL()
-//	if !strings.HasSuffix(endpoint, "/") {
-//		endpoint += "/"
-//	}
-//	endpoint += "?" + qps.Encode()
-//
-//	return endpoint, nil
-//}
-//
+type SASResourceTypes = exported.AccountSASResourceTypes
+
+type SASPermissions = exported.AccountSASPermissions
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+	if s.sharedKey() == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+	}
+
+	qps, err := exported.AccountSASSignatureValues{
+		Version:       exported.SASVersion,
+		Protocol:      exported.SASProtocolHTTPS,
+		Permissions:   permissions.String(),
+		Services:      "b",
+		ResourceTypes: resources.String(),
+		StartTime:     start.UTC(),
+		ExpiryTime:    expiry.UTC(),
+	}.Sign(s.sharedKey())
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := s.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
+}
+
 //// FindBlobsByTags operation finds all blobs in the storage account whose tags match a given search expression.
 //// Filter blobs searches across all containers within a storage account but can be scoped within the expression to a single container.
 //// https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags

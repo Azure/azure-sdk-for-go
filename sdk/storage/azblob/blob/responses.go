@@ -2,7 +2,7 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package blob
 
@@ -109,3 +109,13 @@ type SetTagsResponse = generated.BlobClientSetTagsResponse
 type GetTagsResponse = generated.BlobClientGetTagsResponse
 
 type CopyFromURLResponse = generated.BlobClientCopyFromURLResponse
+
+type AcquireResponse = generated.BlobClientAcquireLeaseResponse
+
+type BreakResponse = generated.BlobClientBreakLeaseResponse
+
+type ChangeResponse = generated.BlobClientChangeLeaseResponse
+
+type ReleaseResponse = generated.BlobClientReleaseLeaseResponse
+
+type RenewResponse = generated.BlobClientRenewLeaseResponse

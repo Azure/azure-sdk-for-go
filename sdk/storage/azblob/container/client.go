@@ -2,12 +2,13 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package container
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -20,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"net/http"
+	"time"
 )
 
 // ClientOptions adds additional client options while constructing connection
@@ -78,8 +80,24 @@ func NewClientFromConnectionString(connectionString string, containerName string
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
+// NewLeaseClient generates blob lease.Client from the blob.Client
+func (c *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
+	leaseID, err := shared.GenerateLeaseID(leaseID)
+	if err != nil {
+		return nil, err
+	}
+	return &LeaseClient{
+		containerClient: (*Client)(base.NewContainerClient(c.URL(), c.generated().Pipeline())),
+		leaseID:         leaseID,
+	}, nil
+}
+
 func (c *Client) generated() *generated.ContainerClient {
 	return base.InnerClient((*base.Client[generated.ContainerClient])(c))
+}
+
+func (c *Client) sharedKey() *SharedKeyCredential {
+	return base.SharedKey((*base.Client[generated.ContainerClient])(c))
 }
 
 // URL returns the URL endpoint used by the Client object.
@@ -229,7 +247,7 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 	})
 }
 
-// ListBlobsHierarchy returns a channel of blobs starting from the specified Marker. Use an empty
+// NewListBlobsHierarchyPager returns a channel of blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // After getting a segment, process it, and then call ListBlobsHierarchicalSegment again (passing the the
 // previously-returned Marker) to get the next segment.
@@ -267,27 +285,27 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 	})
 }
 
-/*
+type SASPermissions = exported.ContainerSASPermissions
+
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c *Client) GetSASURL(permissions ContainerSASPermissions, start time.Time, expiry time.Time) (string, error) {
-	if c.sharedKey == nil {
+func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+	if c.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
-	urlParts, err := NewBlobURLParts(c.URL())
+	urlParts, err := exported.ParseBlobURL(c.URL())
 	if err != nil {
 		return "", err
 	}
 
 	// Containers do not have snapshots, nor versions.
-	urlParts.SAS, err = BlobSASSignatureValues{
+	urlParts.SAS, err = exported.BlobSASSignatureValues{
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.NewSASQueryParameters(c.sharedKey)
+	}.NewSASQueryParameters(c.sharedKey())
 
 	return urlParts.URL(), err
 }
-*/

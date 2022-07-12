@@ -832,116 +832,6 @@ func PossibleEnterpriseGradeCdnStatusValues() []EnterpriseGradeCdnStatus {
 	}
 }
 
-type Enum14 string
-
-const (
-	Enum14All              Enum14 = "All"
-	Enum14Linux            Enum14 = "Linux"
-	Enum14LinuxFunctions   Enum14 = "LinuxFunctions"
-	Enum14Windows          Enum14 = "Windows"
-	Enum14WindowsFunctions Enum14 = "WindowsFunctions"
-)
-
-// PossibleEnum14Values returns the possible values for the Enum14 const type.
-func PossibleEnum14Values() []Enum14 {
-	return []Enum14{
-		Enum14All,
-		Enum14Linux,
-		Enum14LinuxFunctions,
-		Enum14Windows,
-		Enum14WindowsFunctions,
-	}
-}
-
-type Enum15 string
-
-const (
-	Enum15All     Enum15 = "All"
-	Enum15Linux   Enum15 = "Linux"
-	Enum15Windows Enum15 = "Windows"
-)
-
-// PossibleEnum15Values returns the possible values for the Enum15 const type.
-func PossibleEnum15Values() []Enum15 {
-	return []Enum15{
-		Enum15All,
-		Enum15Linux,
-		Enum15Windows,
-	}
-}
-
-type Enum16 string
-
-const (
-	Enum16All     Enum16 = "All"
-	Enum16Linux   Enum16 = "Linux"
-	Enum16Windows Enum16 = "Windows"
-)
-
-// PossibleEnum16Values returns the possible values for the Enum16 const type.
-func PossibleEnum16Values() []Enum16 {
-	return []Enum16{
-		Enum16All,
-		Enum16Linux,
-		Enum16Windows,
-	}
-}
-
-type Enum17 string
-
-const (
-	Enum17All     Enum17 = "All"
-	Enum17Linux   Enum17 = "Linux"
-	Enum17Windows Enum17 = "Windows"
-)
-
-// PossibleEnum17Values returns the possible values for the Enum17 const type.
-func PossibleEnum17Values() []Enum17 {
-	return []Enum17{
-		Enum17All,
-		Enum17Linux,
-		Enum17Windows,
-	}
-}
-
-type Enum18 string
-
-const (
-	Enum18All     Enum18 = "All"
-	Enum18Linux   Enum18 = "Linux"
-	Enum18Windows Enum18 = "Windows"
-)
-
-// PossibleEnum18Values returns the possible values for the Enum18 const type.
-func PossibleEnum18Values() []Enum18 {
-	return []Enum18{
-		Enum18All,
-		Enum18Linux,
-		Enum18Windows,
-	}
-}
-
-type Enum19 string
-
-const (
-	Enum19All              Enum19 = "All"
-	Enum19Linux            Enum19 = "Linux"
-	Enum19LinuxFunctions   Enum19 = "LinuxFunctions"
-	Enum19Windows          Enum19 = "Windows"
-	Enum19WindowsFunctions Enum19 = "WindowsFunctions"
-)
-
-// PossibleEnum19Values returns the possible values for the Enum19 const type.
-func PossibleEnum19Values() []Enum19 {
-	return []Enum19{
-		Enum19All,
-		Enum19Linux,
-		Enum19LinuxFunctions,
-		Enum19Windows,
-		Enum19WindowsFunctions,
-	}
-}
-
 // ForwardProxyConvention - The convention used to determine the url of the request made.
 type ForwardProxyConvention string
 
@@ -1482,6 +1372,44 @@ func PossibleParameterTypeValues() []ParameterType {
 		ParameterTypeSecureObject,
 		ParameterTypeSecureString,
 		ParameterTypeString,
+	}
+}
+
+type ProviderOsTypeSelected string
+
+const (
+	ProviderOsTypeSelectedAll              ProviderOsTypeSelected = "All"
+	ProviderOsTypeSelectedLinux            ProviderOsTypeSelected = "Linux"
+	ProviderOsTypeSelectedLinuxFunctions   ProviderOsTypeSelected = "LinuxFunctions"
+	ProviderOsTypeSelectedWindows          ProviderOsTypeSelected = "Windows"
+	ProviderOsTypeSelectedWindowsFunctions ProviderOsTypeSelected = "WindowsFunctions"
+)
+
+// PossibleProviderOsTypeSelectedValues returns the possible values for the ProviderOsTypeSelected const type.
+func PossibleProviderOsTypeSelectedValues() []ProviderOsTypeSelected {
+	return []ProviderOsTypeSelected{
+		ProviderOsTypeSelectedAll,
+		ProviderOsTypeSelectedLinux,
+		ProviderOsTypeSelectedLinuxFunctions,
+		ProviderOsTypeSelectedWindows,
+		ProviderOsTypeSelectedWindowsFunctions,
+	}
+}
+
+type ProviderStackOsType string
+
+const (
+	ProviderStackOsTypeAll     ProviderStackOsType = "All"
+	ProviderStackOsTypeLinux   ProviderStackOsType = "Linux"
+	ProviderStackOsTypeWindows ProviderStackOsType = "Windows"
+)
+
+// PossibleProviderStackOsTypeValues returns the possible values for the ProviderStackOsType const type.
+func PossibleProviderStackOsTypeValues() []ProviderStackOsType {
+	return []ProviderStackOsType{
+		ProviderStackOsTypeAll,
+		ProviderStackOsTypeLinux,
+		ProviderStackOsTypeWindows,
 	}
 }
 

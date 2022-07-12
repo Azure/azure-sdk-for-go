@@ -6666,39 +6666,39 @@ type ProcessThreadInfoProperties struct {
 // ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
 // method.
 type ProviderClientGetAvailableStacksOnPremOptions struct {
-	OSTypeSelected *Enum19
+	OSTypeSelected *ProviderOsTypeSelected
 }
 
 // ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks method.
 type ProviderClientGetAvailableStacksOptions struct {
-	OSTypeSelected *Enum14
+	OSTypeSelected *ProviderOsTypeSelected
 }
 
 // ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacksForLocation
 // method.
 type ProviderClientGetFunctionAppStacksForLocationOptions struct {
 	// Stack OS Type
-	StackOsType *Enum16
+	StackOsType *ProviderStackOsType
 }
 
 // ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacks
 // method.
 type ProviderClientGetFunctionAppStacksOptions struct {
 	// Stack OS Type
-	StackOsType *Enum15
+	StackOsType *ProviderStackOsType
 }
 
 // ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetWebAppStacksForLocation
 // method.
 type ProviderClientGetWebAppStacksForLocationOptions struct {
 	// Stack OS Type
-	StackOsType *Enum17
+	StackOsType *ProviderStackOsType
 }
 
 // ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.GetWebAppStacks method.
 type ProviderClientGetWebAppStacksOptions struct {
 	// Stack OS Type
-	StackOsType *Enum18
+	StackOsType *ProviderStackOsType
 }
 
 // ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.

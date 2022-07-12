@@ -3,9 +3,7 @@
 
 package azcosmos
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // QueryOptions includes options for query operations on items.
 type QueryOptions struct {

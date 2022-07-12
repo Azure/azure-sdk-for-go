@@ -189,7 +189,7 @@ func ExampleReceiver_DeadLetterMessage() {
 	}
 }
 
-func ExampleReceiver_GetDeadLetterMessage() {
+func ExampleReceiver_ReceiveMessages_second() {
 	// Create a dead letter receiver
 	deadLetterReceiver, err := client.NewReceiverForQueue(
 		"myqueue",

@@ -162,22 +162,23 @@ func TestItemIdEncoding(t *testing.T) {
 
 	container, _ := database.NewContainer("aContainer")
 
-	verifyEncodingScenario(t, container, "PlainVanillaId", "Test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent);
-	verifyEncodingScenario(t, container, "IdWithWhitespaces", "This is a test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent);
-	verifyEncodingScenario(t, container, "IdStartingWithWhitespaces", " Test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent);
-	verifyEncodingScenario(t, container, "IdEndingWithWhitespace", "Test ", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized);
-	verifyEncodingScenario(t, container, "IdEndingWithWhitespaces", "Test  ", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized);
-	verifyEncodingScenario(t, container, "IdWithAllowedSpecialCharacters", "WithAllowedSpecial,=.:~+-@()^${}[]!_Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent);
-	verifyEncodingScenario(t, container, "IdWithBase64EncodedIdCharacters", strings.Replace("BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=", "/", "-", -1), http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent);
-	verifyEncodingScenario(t, container, "IdEndingWithPercentEncodedWhitespace", "IdEndingWithPercentEncodedWhitespace%20", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized);
-	verifyEncodingScenario(t, container, "IdWithPercentEncodedSpecialChar", "WithPercentEncodedSpecialChar%E9%B1%80", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized);
-	verifyEncodingScenario(t, container, "IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent);
-	verifyEncodingScenario(t, container, "IdWithDisallowedCharForwardSlash", "Disallowed/Chars", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest);
-	verifyEncodingScenario(t, container, "IdWithDisallowedCharBackSlash", "Disallowed\\Chars", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest);
-	verifyEncodingScenario(t, container, "IdWithDisallowedCharPoundSign", "Disallowed#Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized);
-	verifyEncodingScenario(t, container, "IdWithCarriageReturn", "With\rCarriageReturn", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest);
-	verifyEncodingScenario(t, container, "IdWithTab", "With\tTab", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest);
-	verifyEncodingScenario(t, container, "IdWithLineFeed", "With\nLineFeed", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest);
+	verifyEncodingScenario(t, container, "PlainVanillaId", "Test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, container, "IdWithWhitespaces", "This is a test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, container, "IdStartingWithWhitespaces", " Test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, container, "IdEndingWithWhitespace", "Test ", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, container, "IdEndingWithWhitespaces", "Test  ", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, container, "IdWithAllowedSpecialCharacters", "WithAllowedSpecial,=.:~+-@()^${}[]!_Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, container, "IdWithBase64EncodedIdCharacters", strings.Replace("BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=", "/", "-", -1), http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, container, "IdEndingWithPercentEncodedWhitespace", "IdEndingWithPercentEncodedWhitespace%20", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, container, "IdWithPercentEncodedSpecialChar", "WithPercentEncodedSpecialChar%E9%B1%80", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, container, "IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, container, "IdWithDisallowedCharForwardSlash", "Disallowed/Chars", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
+	verifyEncodingScenario(t, container, "IdWithDisallowedCharBackSlash", "Disallowed\\Chars", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
+	verifyEncodingScenario(t, container, "IdWithDisallowedCharPoundSign", "Disallowed#Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, container, "IdWithCarriageReturn", "With\rCarriageReturn", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
+	verifyEncodingScenario(t, container, "IdWithTab", "With\tTab", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
+	verifyEncodingScenario(t, container, "IdWithLineFeed", "With\nLineFeed", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
+	verifyEncodingScenario(t, container, "IdWithUnicodeCharacters", "WithUnicode鱀", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 }
 
 func verifyEncodingScenario(t *testing.T, container *ContainerClient, name string, id string, expectedCreate int, expectedRead int, expectedReplace int, expectedDelete int) {
@@ -208,7 +209,7 @@ func verifyEncodingScenarioResponse(t *testing.T, name string, itemResponse Item
 		var responseErr *azcore.ResponseError
 		errors.As(err, &responseErr)
 		if responseErr.StatusCode != expectedStatus {
-			t.Fatalf("[%s] Expected status code %d, got %d", name, expectedStatus, responseErr.StatusCode)
+			t.Fatalf("[%s] Expected status code %d, got %d, %s", name, expectedStatus, responseErr.StatusCode, err)
 		}
 	} else {
 		if itemResponse.RawResponse.StatusCode != expectedStatus {

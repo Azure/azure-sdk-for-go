@@ -4,6 +4,7 @@
 
 ### Features Added
 * Added `NewClientFromConnectionString` function to create client from connection string
+* Added support for parametrized queries thorough `QueryOptions.QueryParameters`
 
 ### Breaking Changes
 

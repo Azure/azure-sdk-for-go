@@ -208,7 +208,7 @@ func ExampleReceiver_GetDeadLetterMessage() {
 	}
 	// Make messages in the dead letter queue as complete
 	for _, deadLetterMessage := range deadLetterMessages {
-		fmt.Printf("DeadLetter Reason: %s\nDeadLetter Description: %s\n", *deadLetterMessage.DeadLetterReason, *deadLetter.DeadLetterErrorDescription)
+		fmt.Printf("DeadLetter Reason: %s\nDeadLetter Description: %s\n", *deadLetterMessage.DeadLetterReason, *deadLetterMessage.DeadLetterErrorDescription)
 		err := deadLetterReceiver.CompleteMessage(context.TODO(), deadLetterMessage, nil)
 		if err != nil {
 			panic(err)

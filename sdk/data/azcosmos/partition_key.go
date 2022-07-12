@@ -5,6 +5,8 @@ package azcosmos
 
 import (
 	"encoding/json"
+	"strconv"
+	"strings"
 )
 
 // PartitionKey represents a logical partition key value.
@@ -37,9 +39,28 @@ func NewPartitionKeyNumber(value float64) PartitionKey {
 }
 
 func (pk *PartitionKey) toJsonString() (string, error) {
-	res, err := json.Marshal(pk.values)
-	if err != nil {
-		return "", err
+	var completeJson strings.Builder
+	completeJson.Grow(256)
+	completeJson.WriteString("[")
+	for index, i := range pk.values {
+		switch v := i.(type) {
+		case string:
+			// json marshall does not support escaping ASCII as an option
+			escaped := strconv.QuoteToASCII(v)
+			completeJson.WriteString(escaped)
+		default:
+			res, err := json.Marshal(v)
+			if err != nil {
+				return "", err
+			}
+			completeJson.WriteString(string(res))
+		}
+
+		if index < len(pk.values)-1 {
+			completeJson.WriteString(",")
+		}
 	}
-	return string(res), nil
+
+	completeJson.WriteString("]")
+	return completeJson.String(), nil
 }

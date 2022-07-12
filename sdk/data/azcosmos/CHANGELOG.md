@@ -1,16 +1,13 @@
 # Release History
 
-## 0.3.2 (Unreleased)
+## 0.3.2 (2022-08-09)
 
 ### Features Added
 * Added `NewClientFromConnectionString` function to create client from connection string
 * Added support for parametrized queries through `QueryOptions.QueryParameters`
 
-### Breaking Changes
-
 ### Bugs Fixed
-
-### Other Changes
+* Fixed handling of ids with whitespaces and special supported characters
 
 ## 0.3.1 (2022-05-12)
 

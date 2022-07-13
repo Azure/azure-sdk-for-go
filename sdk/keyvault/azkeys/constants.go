@@ -251,6 +251,26 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	}
 }
 
+// IsRSAKey returns true if the key is an RSA key (RSA or RSA-HSM).
+func (kt JSONWebKeyType) IsRSAKey() bool {
+	return kt == JSONWebKeyTypeRSA || kt == JSONWebKeyTypeRSAHSM
+}
+
+// IsECKey returns true if the key is an EC key (EC or EC-HSM).
+func (kt JSONWebKeyType) IsECKey() bool {
+	return kt == JSONWebKeyTypeEC || kt == JSONWebKeyTypeECHSM
+}
+
+// IsSymmetricKey returns true if the key is a symmetric key (Oct or OctHSM).
+func (kt JSONWebKeyType) IsSymmetricKey() bool {
+	return kt == JSONWebKeyTypeOct || kt == JSONWebKeyTypeOctHSM
+}
+
+// IsAsymmetric returns true if the key type is asymmetric.
+func (kt JSONWebKeyType) IsAsymmetric() bool {
+	return kt.IsECKey() || kt.IsRSAKey()
+}
+
 // KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
 type KeyEncryptionAlgorithm string
 

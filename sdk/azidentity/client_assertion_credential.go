@@ -9,6 +9,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -18,13 +19,15 @@ import (
 const credNameAssertion = "ClientAssertionCredential"
 
 // ClientAssertionCredential authenticates an application with assertions provided by a callback function.
-// This credential is for advanced scenarios. ClientCertificateCredential has a more convenient API for
+// This credential is for advanced scenarios. [ClientCertificateCredential] has a more convenient API for
 // the most common assertion scenario, authenticating a service principal with a certificate. See
 // [Azure AD documentation] for details of the assertion format.
 //
 // [Azure AD documentation]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials#assertion-format
 type ClientAssertionCredential struct {
 	client confidentialClient
+	// name enables replacing "ClientAssertionCredential" with "WorkloadIdentityCredential" in log messages
+	name string
 }
 
 // ClientAssertionCredentialOptions contains optional parameters for ClientAssertionCredential.
@@ -49,7 +52,9 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 	if err != nil {
 		return nil, err
 	}
-	return &ClientAssertionCredential{client: c}, nil
+	cac := ClientAssertionCredential{client: c}
+	cac.name = fmt.Sprintf("%T", cac)
+	return &cac, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
@@ -59,7 +64,7 @@ func (c *ClientAssertionCredential) GetToken(ctx context.Context, opts policy.To
 	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	if err == nil {
-		logGetTokenSuccess(c, opts)
+		logGetTokenSuccessImpl(c.name, opts)
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
@@ -67,7 +72,7 @@ func (c *ClientAssertionCredential) GetToken(ctx context.Context, opts policy.To
 	if err != nil {
 		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameAssertion, err)
 	}
-	logGetTokenSuccess(c, opts)
+	logGetTokenSuccessImpl(c.name, opts)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

@@ -142,7 +142,7 @@ func ExampleGetConfigurationSetting() {
     // Get configuration setting
     resp, err := client.GetSetting(
         context.TODO(),
-        "key"
+        "key",
         &azappconfig.GetSettingOptions{
             Label: to.Ptr("label")
         })

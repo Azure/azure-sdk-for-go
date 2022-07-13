@@ -1,4 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package azkeys
+
+// this file contains handwritten additions to the generated code
 
 import (
 	"crypto"

@@ -109,12 +109,9 @@ func (signer *signer) Sign(_ io.Reader, value []byte, opts crypto.SignerOpts) ([
 		// If we have an opts object and that is of type *rsa.PSSOptions, then use RSA-PSS
 		// (however, we are ignoring the SaltLength property of the object as it's not supported by Key Vault).
 		// Otherwise, use RSA in PKCS #1 v1.5 mode.
-		if opts != nil {
-			if _, ok := opts.(*rsa.PSSOptions); ok {
-				signAlg = "PS"
-			}
-		}
-		if signAlg == "" {
+		if _, ok := opts.(*rsa.PSSOptions); ok {
+			signAlg = "PS"
+		} else {
 			signAlg = "RS"
 		}
 	case *ecdsa.PublicKey:

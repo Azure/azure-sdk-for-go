@@ -16,19 +16,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ReplicasListByServer.json
-func ExampleReplicasClient_NewListByServerPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/LogFilesListByServer.json
+func ExampleLogFilesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysqlflexibleservers.NewReplicasClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	client, err := armmysqlflexibleservers.NewLogFilesClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("TestGroup",
-		"mysqltestserver",
+	pager := client.NewListByServerPager("testrg",
+		"mysqltestsvc1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

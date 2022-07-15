@@ -112,9 +112,11 @@ func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 		armresources.ScopedDeploymentWhatIf{
 			Location: to.Ptr("eastus"),
 			Properties: &armresources.DeploymentWhatIfProperties{
-				Mode:         to.Ptr(armresources.DeploymentModeIncremental),
-				Parameters:   map[string]interface{}{},
-				TemplateLink: &armresources.TemplateLink{},
+				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+				Parameters: map[string]interface{}{},
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.Ptr("https://example.com/exampleTemplate.json"),
+				},
 			},
 		},
 		nil)
@@ -182,9 +184,11 @@ func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 		armresources.ScopedDeploymentWhatIf{
 			Location: to.Ptr("eastus"),
 			Properties: &armresources.DeploymentWhatIfProperties{
-				Mode:         to.Ptr(armresources.DeploymentModeIncremental),
-				Parameters:   map[string]interface{}{},
-				TemplateLink: &armresources.TemplateLink{},
+				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+				Parameters: map[string]interface{}{},
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.Ptr("https://example.com/exampleTemplate.json"),
+				},
 			},
 		},
 		nil)
@@ -250,9 +254,11 @@ func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 		armresources.DeploymentWhatIf{
 			Location: to.Ptr("westus"),
 			Properties: &armresources.DeploymentWhatIfProperties{
-				Mode:         to.Ptr(armresources.DeploymentModeIncremental),
-				Parameters:   map[string]interface{}{},
-				TemplateLink: &armresources.TemplateLink{},
+				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+				Parameters: map[string]interface{}{},
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.Ptr("https://example.com/exampleTemplate.json"),
+				},
 			},
 		},
 		nil)
@@ -319,9 +325,11 @@ func ExampleDeploymentsClient_BeginWhatIf() {
 		"my-deployment",
 		armresources.DeploymentWhatIf{
 			Properties: &armresources.DeploymentWhatIfProperties{
-				Mode:         to.Ptr(armresources.DeploymentModeIncremental),
-				Parameters:   map[string]interface{}{},
-				TemplateLink: &armresources.TemplateLink{},
+				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+				Parameters: map[string]interface{}{},
+				TemplateLink: &armresources.TemplateLink{
+					URI: to.Ptr("https://example.com/exampleTemplate.json"),
+				},
 			},
 		},
 		nil)

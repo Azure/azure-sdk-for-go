@@ -36,6 +36,7 @@ steps:
       displayName: 'Configure Kestrel and PROXY_MANUAL_START Variables'
 
     - pwsh: |
+        Write-Host $env:ASPNETCORE_Kestrel__Certificates__Default__Path
         Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe `
           -ArgumentList "--storage-location ${{ parameters.rootFolder }}" `
           -NoNewWindow -PassThru -RedirectStandardOutput ${{ parameters.templateRoot }}/test-proxy.log
@@ -44,6 +45,7 @@ steps:
 
     # nohup does NOT continue beyond the current session if you use it within powershell
     - bash: |
+        echo $ASPNETCORE_Kestrel__Certificates__Default__Path
         nohup $(Build.BinariesDirectory)/test-proxy/test-proxy > ${{ parameters.templateRoot }}/test-proxy.log &
       displayName: "Run the testproxy - linux/mac"
       condition: and(succeeded(), ne(variables['Agent.OS'],'Windows_NT'))

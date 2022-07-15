@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ConfigurationUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ConfigurationUpdate.json
 func ExampleConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleConfigurationsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ConfigurationGet.json
 func ExampleConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ConfigurationsBatchUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ConfigurationsBatchUpdate.json
 func ExampleConfigurationsClient_BeginBatchUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,6 +88,7 @@ func ExampleConfigurationsClient_BeginBatchUpdate() {
 		"testrg",
 		"mysqltestserver",
 		armmysqlflexibleservers.ConfigurationListForBatchUpdate{
+			ResetAllToDefault: to.Ptr(armmysqlflexibleservers.ResetAllToDefaultFalse),
 			Value: []*armmysqlflexibleservers.ConfigurationForBatchUpdate{
 				{
 					Name: to.Ptr("event_scheduler"),
@@ -114,7 +115,7 @@ func ExampleConfigurationsClient_BeginBatchUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ConfigurationsListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ConfigurationsListByServer.json
 func ExampleConfigurationsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +128,11 @@ func ExampleConfigurationsClient_NewListByServerPager() {
 	}
 	pager := client.NewListByServerPager("testrg",
 		"mysqltestserver",
-		nil)
+		&armmysqlflexibleservers.ConfigurationsClientListByServerOptions{Tags: nil,
+			Keyword:  nil,
+			Page:     to.Ptr[int32](1),
+			PageSize: to.Ptr[int32](8),
+		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

@@ -708,8 +708,8 @@ func (l *link) muxReceive(fr frames.PerformTransfer) error {
 	select {
 	case l.Messages <- l.msg:
 		// message received
-	case <-l.close:
-		// link is being closed
+	case <-l.Detached:
+		// link has been detached
 		return l.err
 	}
 
@@ -988,9 +988,14 @@ Loop:
 			// after sending the detach frame, break the read loop
 			break Loop
 		case fr := <-l.RX:
-			// discard incoming frames to avoid blocking session.mux
-			if fr, ok := fr.(*frames.PerformDetach); ok && fr.Closed {
-				l.detachReceived = true
+			// read from link to avoid blocking session.mux
+			switch fr := fr.(type) {
+			case *frames.PerformDetach:
+				if fr.Closed {
+					l.detachReceived = true
+				}
+			case *frames.PerformTransfer:
+				_ = l.muxReceive(*fr)
 			}
 		case <-l.Session.done:
 			if l.err == nil {
@@ -1008,11 +1013,15 @@ Loop:
 
 	for {
 		select {
-		// read from link until detach with Close == true is received,
-		// other frames are discarded.
+		// read from link until detach with Close == true is received
 		case fr := <-l.RX:
-			if fr, ok := fr.(*frames.PerformDetach); ok && fr.Closed {
-				return
+			switch fr := fr.(type) {
+			case *frames.PerformDetach:
+				if fr.Closed {
+					return
+				}
+			case *frames.PerformTransfer:
+				_ = l.muxReceive(*fr)
 			}
 
 		// connection has ended

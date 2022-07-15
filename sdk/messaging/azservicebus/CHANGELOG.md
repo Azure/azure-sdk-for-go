@@ -7,6 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Ported the following fixes from go-amqp.
+  * Don't drop incoming transfer frames during link detach.
+  * Increase session window size to accommodate a larger number of link credits.
+  * Don't flood peer with flow frames when half the incoming window has been consumed.
 
 ### Other Changes
 

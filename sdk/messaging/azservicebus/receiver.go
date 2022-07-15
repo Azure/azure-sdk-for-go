@@ -7,6 +7,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	stdlog "log"
+	"os"
 	"sync"
 	"time"
 
@@ -17,6 +19,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 )
+
+var Log = stdlog.New(os.Stderr, "", stdlog.Ldate|stdlog.Lmicroseconds)
 
 // ReceiveMode represents the lock style to use for a receiver - either
 // `PeekLock` or `ReceiveAndDelete`
@@ -418,9 +422,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		if err := linksWithID.Receiver.DrainCredit(drainCtx); err != nil {
 			// Cancelling a DrainCredit means we're in an indeterminate state
 			// so we treat that as a "must recover" error.
-			cleanup(err)
+			//cleanup(err)
 
 			if internal.IsCancelError(err) {
+				Log.Println("*** drain timed out")
 				log.Writef(EventReceiver, "Drain didn't complete in %s, link was recreated", r.defaultDrainTimeout)
 
 				// this cancellation is entirely on us - we cleaned up as best we can

@@ -255,7 +255,14 @@ func ReleaseTitle(branchName string) string {
 	t1 = strings.Title(t1)
 	title := fmt.Sprintf("[%v] ", t1)
 	t := []string{"sdk", "resourcemanager"}
-	t = append(t, s[1:len(s)-1]...)
+	if len(s) == 5 {
+		t = append(t, s[1:len(s)-1]...)
+	} else if len(s) == 6 { // beta
+		t = append(t, s[1:len(s)-2]...)
+		t[len(t)-1] = fmt.Sprintf("%s-%s", t[len(t)-1], s[len(s)-2])
+	} else {
+		return ""
+	}
 	t2 := strings.Join(t, "/")
 	return title + t2
 }

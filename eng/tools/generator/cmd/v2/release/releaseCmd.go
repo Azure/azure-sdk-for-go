@@ -193,37 +193,36 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 	if err != nil {
 		return err
 	}
-	for readme, arm := range armServices {
-		if len(arm) == 0 {
-			continue
-		}
-		originalHead, err := sdkRepo.Head()
-		if err != nil {
-			return err
-		}
+	for arm, packageInfos := range armServices {
+		for _, info := range packageInfos {
+			originalHead, err := sdkRepo.Head()
+			if err != nil {
+				return err
+			}
 
-		// run generator
-		c.rpName = arm[0]
-		c.namespaceName = arm[1]
-		c.flags.SpecRPName = arm[2]
-		err = c.generate(sdkRepo, specCommitHash)
-		if err != nil {
-			return err
-		}
+			// run generator
+			c.rpName = arm
+			c.namespaceName = info.Name
+			c.flags.SpecRPName = info.SpecName
+			err = c.generate(sdkRepo, specCommitHash)
+			if err != nil {
+				return err
+			}
 
-		// get current branch name
-		generateHead, err := sdkRepo.Head()
-		if err != nil {
-			return err
-		}
-		pushBranch[generateHead.Name().Short()] = cfg.Track2Requests[readme][0].RequestLink
+			// get current branch name
+			generateHead, err := sdkRepo.Head()
+			if err != nil {
+				return err
+			}
+			pushBranch[generateHead.Name().Short()] = info.RequestLink
 
-		log.Printf("git checkout %v", originalHead.Name().Short())
-		if err := sdkRepo.Checkout(&repo.CheckoutOptions{
-			Branch: plumbing.ReferenceName(originalHead.Name().Short()),
-			Force:  true,
-		}); err != nil {
-			return err
+			log.Printf("git checkout %v", originalHead.Name().Short())
+			if err := sdkRepo.Checkout(&repo.CheckoutOptions{
+				Branch: plumbing.ReferenceName(originalHead.Name().Short()),
+				Force:  true,
+			}); err != nil {
+				return err
+			}
 		}
 	}
 

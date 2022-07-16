@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
@@ -32,7 +34,7 @@ func SendAndReceiveDrain(remainingArgs []string) {
 	// https://github.com/Azure/azure-sdk-for-go/issues/17853
 	lockDuration := "PT5M"
 
-	shared.MustCreateAutoDeletingQueue(sc, queueName, &admin.QueueProperties{
+	adminClient := shared.MustCreateAutoDeletingQueue(sc, queueName, &admin.QueueProperties{
 		LockDuration: &lockDuration,
 	})
 
@@ -52,7 +54,8 @@ func SendAndReceiveDrain(remainingArgs []string) {
 		const bodyLen = 4096
 		shared.MustGenerateMessages(sc, sender, numToSend, bodyLen, nil)
 
-		totalCompleted := 0
+		receivedIds := sync.Map{}
+		var totalCompleted int64
 
 		for totalCompleted < numToSend {
 			log.Printf("Receiving messages [%d/%d]...", totalCompleted, numToSend)
@@ -76,22 +79,42 @@ func SendAndReceiveDrain(remainingArgs []string) {
 
 			log.Printf("Got %d messages, completing...", len(messages))
 
+			wg := sync.WaitGroup{}
+
 			for _, m := range messages {
-				if len(m.Body) != bodyLen {
-					sc.PanicOnError("Body length issue", fmt.Errorf("Invalid body length - expected %d, got %d", bodyLen, len(m.Body)))
-				}
+				wg.Add(1)
+				go func(m *azservicebus.ReceivedMessage) {
+					defer wg.Done()
 
-				if err := receiver.CompleteMessage(sc.Context, m, nil); err != nil {
-					sc.PanicOnError("Failed to complete message", err)
-				}
-				totalCompleted++
+					if len(m.Body) != bodyLen {
+						sc.PanicOnError("Body length issue", fmt.Errorf("Invalid body length - expected %d, got %d", bodyLen, len(m.Body)))
+					}
+
+					if err := receiver.CompleteMessage(sc.Context, m, nil); err != nil {
+						sc.PanicOnError("Failed to complete message", err)
+					}
+
+					atomic.AddInt64(&totalCompleted, 1)
+
+					num := int(m.ApplicationProperties["Number"].(int64))
+
+					if _, exists := receivedIds.LoadOrStore(num, true); exists {
+						sc.Failf("Duplicate message received with Number %d", num)
+					}
+				}(m)
 			}
 
-			if err != nil {
-				panic(err)
-			}
+			wg.Wait()
 		}
 
 		log.Printf("[end] Receiving messages (all received)")
+
+		// some sanity checking
+		rtp, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName, nil)
+		sc.PanicOnError("Failed to get runtime propeties for queue", err)
+
+		if rtp.ActiveMessageCount != 0 {
+			sc.PanicOnError(fmt.Sprintf("No messages should be active in the queue, but actually still had %d", rtp.ActiveMessageCount), errors.New("Messages still left in queue"))
+		}
 	}
 }

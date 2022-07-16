@@ -50,7 +50,7 @@ func MustGenerateMessages(sc *StressContext, sender *azservicebus.Sender, messag
 }
 
 // MustCreateAutoDeletingQueue creates a queue that will auto-delete 10 minutes after activity has ceased.
-func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.QueueProperties) {
+func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.QueueProperties) *admin.Client {
 	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create adminClient", err)
 
@@ -70,6 +70,8 @@ func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.
 		Properties: &newQP,
 	})
 	sc.PanicOnError("failed to create queue", err)
+
+	return adminClient
 }
 
 func MustCreateSubscriptions(sc *StressContext, topicName string, subscriptionNames []string) func() {

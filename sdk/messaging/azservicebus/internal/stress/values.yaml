@@ -12,3 +12,5 @@ scenarios:
 - "mostlyIdleReceiver"
 - "rapidOpenClose"
 - "receiveCancellation"
+- "sendAndReceiveDrain"
+debugFileShareName: "nothing"

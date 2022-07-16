@@ -152,6 +152,12 @@ func (tracker *StressContext) PanicOnError(message string, err error) {
 	}
 }
 
+func (tracker *StressContext) Failf(format string, args ...any) {
+	err := fmt.Errorf(format, args...)
+	tracker.LogIfFailed(err.Error(), err, nil)
+	panic(err)
+}
+
 func (tracker *StressContext) Assert(condition bool, message string) {
 	tracker.LogIfFailed(message, nil, nil)
 

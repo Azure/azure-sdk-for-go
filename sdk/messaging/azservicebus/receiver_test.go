@@ -13,7 +13,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
@@ -95,38 +94,6 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 		getSortedBodies(messages))
 
 	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0], nil))
-}
-
-func TestReceiverDrainHasError(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
-	defer cleanup()
-
-	sender, err := serviceBusClient.NewSender(queueName, nil)
-	require.NoError(t, err)
-	defer sender.Close(context.Background())
-
-	err = sender.SendMessage(context.Background(), &Message{
-		Body: []byte("hello"),
-	}, nil)
-	require.NoError(t, err)
-
-	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
-	require.NoError(t, err)
-
-	// close the link _just_ before the drain credit to simulate connection loss.
-	stubReceiver := &StubAMQPReceiver{
-		stubDrainCredit: func(inner internal.AMQPReceiverCloser, ctx context.Context) error {
-			require.NoError(t, inner.Close(context.Background()))
-			return inner.DrainCredit(ctx)
-		},
-	}
-
-	addStub(t, receiver, stubReceiver)
-
-	// there's only one message, requesting more messages will time out.
-	messages, err := receiver.ReceiveMessages(context.Background(), 1+1, nil)
-	require.NoError(t, err)
-	require.Equal(t, []string{"hello"}, getSortedBodies(messages))
 }
 
 func TestReceiverAbandon(t *testing.T) {

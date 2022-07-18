@@ -24,6 +24,7 @@ import (
 
 var (
 	releaseBranchNamePattern = "release-%s-%s-%s-%v"
+	confirmComment           = "Hi author, the release [PR](%s) is ready. Please check whether the package works well. If you are not a Golang User, you can mainly check whether the changelog meets your requirements."
 )
 
 // Release command
@@ -274,5 +275,3 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 
 	return nil
 }
-
-var confirmComment = "Hi author, the release [PR](%s) is ready. Please check whether the package works well. If you are not a Golang User, you can mainly check whether the changelog meets your requirements."

@@ -55,6 +55,7 @@ func PRIsReady(issue github.Issue) bool {
 	for _, l := range issue.Labels {
 		if strings.Contains(l.GetName(), "PRready") {
 			flag = true
+			break
 		}
 	}
 	return flag

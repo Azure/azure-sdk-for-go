@@ -24,7 +24,7 @@ import (
 
 var (
 	releaseBranchNamePattern = "release-%s-%s-%s-%v"
-	confirmComment           = "Hi author, the release [PR](%s) is ready. Please check whether the package works well. If you are not a Golang User, you can mainly check whether the changelog meets your requirements."
+	confirmComment           = "Release [PR](%s) is ready. Please check whether the package works well ([doc for testing with the generated Go SDK](https://github.com/Azure/azure-rest-api-specs/blob/main/documentation/code-gen/configure-go-sdk.md#test-with-the-generated-go-sdk)). If you are not a Golang user, you can mainly check whether the changelog meets your requirements."
 )
 
 // Release command

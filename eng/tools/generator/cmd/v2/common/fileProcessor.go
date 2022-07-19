@@ -80,8 +80,9 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 		return nil, fmt.Errorf("last `track2` section does not properly end")
 	}
 
-	s := strings.Split(path, "\\")
-	specName := s[len(s)-3]
+	s := strings.ReplaceAll(path, "\\", "/")
+	s1 := strings.Split(s, "/")
+	specName := s1[len(s1)-3]
 
 	for i := range start {
 		// get the content of the `track2` section

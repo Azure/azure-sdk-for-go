@@ -42,11 +42,11 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 				continue
 			}
 
-			multiService := make([]string, 0)
+			var subService string
 			_, after, _ := strings.Cut(request.PackageFlag, "package-")
 			s := strings.Split(after, "-")
 			if _, err = strconv.Atoi(s[0]); err != nil && s[0] != "preview" {
-				multiService = append(multiService, s[0])
+				subService = s[0]
 			}
 
 			for _, packageInfos := range service {
@@ -57,20 +57,19 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 
 			for arm, packageInfos := range service {
 				armServices[arm] = make([]common.PackageInfo, 0)
-				if len(multiService) == 0 {
+				if subService == "" {
 					armServices[arm] = service[arm]
 				} else {
-					for _, multi := range multiService {
-						for _, info := range packageInfos {
-							if strings.Contains(info.Config, multi) {
-								armServices[arm] = append(armServices[arm], info)
-							}
+					for _, info := range packageInfos {
+						if strings.Contains(info.Config, subService) {
+							armServices[arm] = append(armServices[arm], info)
+							break
 						}
 					}
 				}
 			}
 		}
-
 	}
+
 	return armServices, errResult
 }

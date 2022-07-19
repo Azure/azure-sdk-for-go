@@ -55,9 +55,9 @@ func ExecuteGoimports(path string) error {
 
 func ExecuteGitPush(path, remoteName, branchName string) (string, error) {
 	refName := fmt.Sprintf(branchName + ":" + branchName)
-	push := exec.Command("git", "push", remoteName, refName)
-	push.Dir = path
-	msg, err := push.CombinedOutput()
+	cmd := exec.Command("git", "push", remoteName, refName)
+	cmd.Dir = path
+	msg, err := cmd.CombinedOutput()
 	if err != nil {
 		return string(msg), err
 	}

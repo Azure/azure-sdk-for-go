@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
 
@@ -152,5 +153,65 @@ func ExampleReceiver_ReceiveMessages_amqpMessage() {
 
 	if err != nil {
 		panic(err)
+	}
+}
+
+func ExampleReceiver_DeadLetterMessage() {
+	// Send a message to a queue
+	sbMessage := &azservicebus.Message{
+		Body: []byte("body of message"),
+	}
+	err = sender.SendMessage(context.TODO(), sbMessage, nil)
+	if err != nil {
+		panic(err)
+	}
+	// Create a receiver
+	receiver, err := client.NewReceiverForQueue("myqueue", nil)
+	if err != nil {
+		panic(err)
+	}
+	defer receiver.Close(context.TODO())
+	// Get the message from a queue
+	messages, err := receiver.ReceiveMessages(context.TODO(), 1, nil)
+	if err != nil {
+		panic(err)
+	}
+	// Send a message to the dead letter queue
+	for _, message := range messages {
+		deadLetterOptions := &azservicebus.DeadLetterOptions{
+			ErrorDescription: to.Ptr("exampleErrorDescription"),
+			Reason:           to.Ptr("exampleReason"),
+		}
+		err := receiver.DeadLetterMessage(context.TODO(), message, deadLetterOptions)
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
+func ExampleReceiver_ReceiveMessages_second() {
+	// Create a dead letter receiver
+	deadLetterReceiver, err := client.NewReceiverForQueue(
+		"myqueue",
+		&azservicebus.ReceiverOptions{
+			SubQueue: azservicebus.SubQueueDeadLetter,
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
+	defer deadLetterReceiver.Close(context.TODO())
+	// Get messages from the dead letter queue
+	deadLetterMessages, err := deadLetterReceiver.ReceiveMessages(context.TODO(), 1, nil)
+	if err != nil {
+		panic(err)
+	}
+	// Make messages in the dead letter queue as complete
+	for _, deadLetterMessage := range deadLetterMessages {
+		fmt.Printf("DeadLetter Reason: %s\nDeadLetter Description: %s\n", *deadLetterMessage.DeadLetterReason, *deadLetterMessage.DeadLetterErrorDescription)
+		err := deadLetterReceiver.CompleteMessage(context.TODO(), deadLetterMessage, nil)
+		if err != nil {
+			panic(err)
+		}
 	}
 }

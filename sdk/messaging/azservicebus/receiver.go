@@ -623,10 +623,10 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 			}
 
 			if internal.IsCancelError(err) {
-				log.Writef(exported.EventConn, "[%s] Message releaser pausing. Released %d messages", receiver.LinkName(), released)
+				log.Writef(exported.EventReceiver, "[%s] Message releaser pausing. Released %d messages", receiver.LinkName(), released)
 				break
 			} else if internal.GetRecoveryKind(err) != internal.RecoveryKindNone {
-				log.Writef(exported.EventConn, "[%s] Message releaser stopping because of link failure. Released %d messages. Will start again after next receive: %s", receiver.LinkName(), released, err)
+				log.Writef(exported.EventReceiver, "[%s] Message releaser stopping because of link failure. Released %d messages. Will start again after next receive: %s", receiver.LinkName(), released, err)
 				break
 			}
 		}

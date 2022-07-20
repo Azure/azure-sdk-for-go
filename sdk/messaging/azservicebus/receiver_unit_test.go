@@ -364,9 +364,10 @@ func TestReceiver_releaserFunc(t *testing.T) {
 	require.LessOrEqual(t, 1, amqpReceiver.ReceiveCalled)
 	require.LessOrEqual(t, 1, amqpReceiver.ReleaseMessageCalled)
 
-	require.Equal(t, []string{
-		fmt.Sprintf("[azsb.Conn] Message releaser pausing. Released %d messages", successfulReleases),
-	}, logsFn())
+	require.Contains(t,
+		logsFn(),
+		fmt.Sprintf("[azsb.Receiver] [fakelink] Message releaser pausing. Released %d messages", successfulReleases),
+	)
 }
 
 func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
@@ -400,9 +401,9 @@ func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 	// we got called a few times, but none of them succeeded.
 	require.Equal(t, 2+1, amqpReceiver.ReceiveCalled)
 
-	require.Equal(t, []string{
-		fmt.Sprintf("[azsb.Conn] Message releaser stopping because of link failure. Released 0 messages. Will start again after next receive: %s", amqp.ErrLinkClosed),
-	}, logsFn())
+	require.Contains(t,
+		logsFn(),
+		fmt.Sprintf("[azsb.Receiver] [fakelink] Message releaser stopping because of link failure. Released 0 messages. Will start again after next receive: %s", amqp.ErrLinkClosed))
 }
 
 func TestReceiver_releaserFunc_receiveAndDeleteIsNoop(t *testing.T) {

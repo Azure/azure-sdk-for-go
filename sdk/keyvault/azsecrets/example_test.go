@@ -135,7 +135,7 @@ func ExampleClient_UpdateSecret() {
 			Expires: to.Ptr(time.Now().Add(48 * time.Hour)),
 		},
 		// Key Vault doesn't interpret tags. The keys and values are up to your application.
-		Tags: map[string]*string{"expiraton-extended": to.Ptr("true")},
+		Tags: map[string]*string{"expiration-extended": to.Ptr("true")},
 	}
 	// an empty version updates the latest version of the secret
 	version := ""

@@ -390,26 +390,14 @@ func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, versi
 }
 
 func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error {
-	path := filepath.Join(packageRootPath, common.ChangelogFilename)
-	b, err := ioutil.ReadFile(path)
+	changelogPath := filepath.Join(packageRootPath, common.ChangelogFilename)
+	b, err := ioutil.ReadFile(changelogPath)
 	if err != nil {
 		return err
 	}
 
-	var oldVersion string
-	oldChangelog := string(b)
-	lines := strings.Split(string(b), "\n")
-	for _, line := range lines {
-		if strings.HasPrefix(line, "##") {
-			s := strings.Split(line, " ")
-			oldVersion = s[1]
-			break
-		}
-	}
-
-	newChangelog := strings.ReplaceAll(oldChangelog, oldVersion, versionNumber)
-
-	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)
+	newChangelog := regexp.MustCompile("\\d\\.\\d\\.\\d").ReplaceAllString(string(b), versionNumber)
+	err = ioutil.WriteFile(changelogPath, []byte(newChangelog), 0644)
 	if err != nil {
 		return err
 	}

@@ -380,7 +380,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	log.Writef(EventReceiver, "Asking for %d credits", maxMessages)
 
 	if creditsToIssue > 0 {
-		log.Writef(EventReceiver, "Only need to issue %d additional credits", maxMessages)
+		log.Writef(EventReceiver, "Only need to issue %d additional credits", creditsToIssue)
 
 		if err := linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
 			return nil, err

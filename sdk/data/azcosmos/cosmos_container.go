@@ -444,6 +444,7 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 				path,
 				ctx,
 				query,
+				queryOptions.QueryParameters,
 				operationContext,
 				queryOptions,
 				nil)

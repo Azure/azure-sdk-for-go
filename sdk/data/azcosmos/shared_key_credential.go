@@ -81,6 +81,8 @@ func (c *KeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resou
 		return ""
 	}
 
+	resourceAddress, _ = url.PathUnescape(resourceAddress)
+
 	// https://docs.microsoft.com/en-us/rest/api/cosmos-db/access-control-on-cosmosdb-resources#constructkeytoken
 	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceAddress, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
 	signature := c.computeHMACSHA256(stringToSign)

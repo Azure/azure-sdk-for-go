@@ -108,3 +108,36 @@ func Test_buildCanonicalizedAuthHeaderFromRequestWithRid(t *testing.T) {
 
 	assert.Equal(t, expected, authHeader)
 }
+
+func Test_buildCanonicalizedAuthHeaderFromRequestWithEscapedCharacters(t *testing.T) {
+	key := "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+
+	cred, err := NewKeyCredential(key)
+
+	assert.NoError(t, err)
+
+	method := "GET"
+	resourceType := "dbs"
+	originalResourceId := "dbs/name with spaces"
+	resourceId := url.PathEscape(originalResourceId)
+	xmsDate := "Thu, 27 Apr 2017 00:51:12 GMT"
+	tokenType := "master"
+	version := "1.0"
+
+	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", originalResourceId, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
+	signature := cred.computeHMACSHA256(stringToSign)
+	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
+
+	req, _ := azruntime.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: resourceId,
+	}
+
+	req.Raw().Header.Set(headerXmsDate, xmsDate)
+	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
+	req.SetOperationValue(operationContext)
+	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
+
+	assert.Equal(t, expected, authHeader)
+}

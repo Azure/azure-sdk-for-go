@@ -21,8 +21,8 @@ func TestPathCreateLink(t *testing.T) {
 		t.Errorf("Expected %s, got %s", expected, actual)
 	}
 
-	expected = "dbs/esc%40ped"
-	actual = createLink("", pathSegmentDatabase, "esc@ped")
+	expected = "dbs/with%20space"
+	actual = createLink("", pathSegmentDatabase, "with space")
 	if actual != expected {
 		t.Errorf("Expected %s, got %s", expected, actual)
 	}

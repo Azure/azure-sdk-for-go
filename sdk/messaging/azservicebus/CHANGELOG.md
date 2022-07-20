@@ -1,12 +1,24 @@
 # Release History
 
-## 1.0.2-beta.1 (Unreleased)
+## 1.1.0 (Unreleased)
 
 ### Features Added
+
+- Full access to send and receive all AMQP message properties. (#18413) 
+  - Send AMQP messages using the new `AMQPAnnotatedMessage` type and `Sender.SendAMQPAnnotatedMessage()`.
+  - AMQP messages can be added to MessageBatch's as well using `MessageBatch.AddAMQPAnnotatedMessage()`.
+  - AMQP messages can be scheduled using `Sender.ScheduleAMQPAnnotatedMessages`.
+  - Access the full set of AMQP message properties when receiving using the `ReceivedMessage.RawAMQPMessage` property. 
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+Updating to the latest go-amqp (TBD:), which fixes several bugs related to incorrect message locking (PR#18599)
+  - Requesting large quantities of messages in a single ReceiveMessages() call  could result in messages 
+    not being delivered, but still incrementing their delivery count and requiring the message lock 
+    timeout to expire.
+  - Link detach could result in messages being ignored, requiring the message lock timeout to expire.
 
 ### Other Changes
 

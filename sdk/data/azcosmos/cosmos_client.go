@@ -203,6 +203,7 @@ func (c *Client) sendQueryRequest(
 	path string,
 	ctx context.Context,
 	query string,
+	parameters []QueryParameter,
 	operationContext pipelineRequestOptions,
 	requestOptions cosmosRequestOptions,
 	requestEnricher func(*policy.Request)) (*http.Response, error) {
@@ -211,13 +212,11 @@ func (c *Client) sendQueryRequest(
 		return nil, err
 	}
 
-	type queryBody struct {
-		Query string `json:"query"`
-	}
-
 	err = azruntime.MarshalAsJSON(req, queryBody{
-		Query: query,
+		Query:      query,
+		Parameters: parameters,
 	})
+
 	if err != nil {
 		return nil, err
 	}

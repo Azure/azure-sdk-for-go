@@ -169,6 +169,56 @@ func TestSinglePartitionQuery(t *testing.T) {
 	}
 }
 
+func TestSinglePartitionQueryWithParameters(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+	documentsPerPk := 1
+	createSampleItems(t, container, documentsPerPk)
+
+	receivedIds := []string{}
+	opt := QueryOptions{
+		QueryParameters: []QueryParameter{
+			{"@prop", "2"},
+		},
+	}
+	queryPager := container.NewQueryItemsPager("select * from c where c.someProp = @prop", NewPartitionKeyString("1"), &opt)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to query items: %v", err)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
+			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
+		}
+	}
+
+	if len(receivedIds) != 1 {
+		t.Fatalf("Expected 1 document, got %d", len(receivedIds))
+	}
+}
+
 func createSampleItems(t *testing.T, container *ContainerClient, documentsPerPk int) {
 	for i := 0; i < documentsPerPk; i++ {
 		item := map[string]string{

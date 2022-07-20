@@ -197,6 +197,10 @@ func isGoReleaseRequest(issue *github.Issue) bool {
 	return issueHasLabel(issue, "Go")
 }
 
+func isPRReady(issue *github.Issue) bool {
+	return issueHasLabel(issue, "PRready")
+}
+
 func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request, error) {
 	var requests []request.Request
 	var errResult error
@@ -204,7 +208,7 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		if issue == nil {
 			continue
 		}
-		if request.PRIsReady(*issue) {
+		if isPRReady(issue) {
 			continue
 		}
 		log.Printf("Parsing issue %s (%s)", issue.GetHTMLURL(), issue.GetTitle())

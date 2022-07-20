@@ -98,7 +98,7 @@ func ExampleClient_UpdateKey() {
 			Expires: to.Ptr(time.Now().Add(48 * time.Hour)),
 		},
 		// Key Vault doesn't interpret tags. The keys and values are up to your application.
-		Tags: map[string]*string{"expiraton-extended": to.Ptr("true")},
+		Tags: map[string]*string{"expiration-extended": to.Ptr("true")},
 	}
 	// passing an empty string for the version parameter updates the latest version of the key
 	updateResp, err := client.UpdateKey(context.TODO(), "key-name", "", params, nil)

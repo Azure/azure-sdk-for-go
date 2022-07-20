@@ -22,7 +22,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	// fix with stable
 	newVersion, err := CalculateNewVersion(fixChange, "0.5.0", false)
 	assert.NoError(t, err)
-	assert.Equal(t, newVersion.String(), "0.5.1")
+	assert.Equal(t, newVersion.String(), "1.0.0")
 
 	// fix with beat
 	newVersion, err = CalculateNewVersion(fixChange, "0.5.0", true)
@@ -32,7 +32,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	// breaking with stable
 	newVersion, err = CalculateNewVersion(breakingChange, "0.5.0", false)
 	assert.NoError(t, err)
-	assert.Equal(t, newVersion.String(), "0.6.0")
+	assert.Equal(t, newVersion.String(), "1.0.0")
 
 	// breaking with beta
 	newVersion, err = CalculateNewVersion(breakingChange, "0.5.0", true)
@@ -42,7 +42,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	// additive with stable
 	newVersion, err = CalculateNewVersion(additiveChange, "0.5.0", false)
 	assert.NoError(t, err)
-	assert.Equal(t, newVersion.String(), "0.6.0")
+	assert.Equal(t, newVersion.String(), "1.0.0")
 
 	// additive with beta
 	newVersion, err = CalculateNewVersion(additiveChange, "0.5.0", true)

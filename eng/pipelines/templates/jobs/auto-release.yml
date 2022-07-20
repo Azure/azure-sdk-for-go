@@ -1,0 +1,61 @@
+trigger:
+  branches:
+    exclude:
+      - '*'
+
+# avoid being triggered as part of CI check
+pr:
+  branches:
+    exclude:
+      - '*'
+
+schedules:
+  - cron: "0,30 1-9 * * *"
+    displayName: Daily release
+    branches:
+      include:
+        - main
+    always: true
+
+variables:
+  - group: Release Secrets for GitHub
+
+stages:
+  - stage:
+    jobs:
+      - job:
+        displayName: Go Auto Release
+        steps:
+          - task: GoTool@0
+            inputs:
+              version: '1.18.2'
+
+          - template: /eng/pipelines/templates/steps/create-go-workspace.yml
+
+          - script: |
+              echo $GO_WORKSPACE_PATH
+              echo $GO_PATH
+              
+              rm -rf $GO_WORKSPACE_PATH
+              cd $GO_WORKSPACE_PATH../
+              git clone https://github.com/Azure/azure-sdk-for-go.git
+              git clone https://github.com/Azure/azure-rest-api-specs.git
+              
+              cd azure-sdk-for-go
+              git remote add fork https://github.com/Azure/azure-sdk-for-go.git
+              git remote -v
+              cd ../
+              
+              go install github.com/Azure/azure-sdk-for-go/eng/tools/generator@latest
+              
+              generator issue -t $(azuresdk-github-pat) > sdk-release.json
+              cat sdk-release.json
+              
+              file_size=`du -b ./sdk-release.json |awk '{print $1}'`
+              echo "file size:" ${file_size}
+              if [ ${file_size} -le 70 ]; then
+                echo "There are no services that need to be released"
+              else
+                echo "run generator release-v2..."
+                generator release-v2 ./azure-sdk-for-go ./azure-rest-api-specs ./sdk-release.json -t $(azuresdk-github-pat)
+              fi

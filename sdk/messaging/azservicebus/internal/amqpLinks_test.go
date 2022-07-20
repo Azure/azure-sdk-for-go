@@ -751,65 +751,71 @@ func TestAMQPLinksCreditTracking(t *testing.T) {
 	lwr, err := links.Get(context.Background())
 	require.NoError(t, err)
 
-	err = lwr.Sender.Send(context.Background(), &amqp.Message{
-		Data: [][]byte{[]byte("Received")},
+	t.Run("credits are decremented when messages are amqpReceiver.Receive()'d", func(t *testing.T) {
+		err = lwr.Sender.Send(context.Background(), &amqp.Message{
+			Data: [][]byte{[]byte("Received")},
+		})
+		require.NoError(t, err)
+
+		err = lwr.Receiver.IssueCredit(1)
+		require.NoError(t, err)
+		require.Equal(t, uint32(1), lwr.Receiver.Credits())
+
+		message, err := lwr.Receiver.Receive(context.Background())
+		require.NoError(t, err)
+		require.Equal(t, [][]byte{[]byte("Received")}, message.Data)
+		require.Equal(t, uint32(0), lwr.Receiver.Credits())
+
+		err = lwr.Receiver.AcceptMessage(context.Background(), message)
+		require.NoError(t, err)
 	})
-	require.NoError(t, err)
 
-	err = lwr.Receiver.IssueCredit(1)
-	require.NoError(t, err)
-	require.Equal(t, uint32(1), lwr.Receiver.Credits())
+	t.Run("credits are decremented when messages are amqpReceiver.Prefetched()", func(t *testing.T) {
+		err = lwr.Sender.Send(context.Background(), &amqp.Message{
+			Data: [][]byte{[]byte("Received")},
+		})
+		require.NoError(t, err)
 
-	message, err := lwr.Receiver.Receive(context.Background())
-	require.NoError(t, err)
-	require.Equal(t, [][]byte{[]byte("Received")}, message.Data)
-	require.Equal(t, uint32(0), lwr.Receiver.Credits())
+		err = lwr.Receiver.IssueCredit(1)
+		require.NoError(t, err)
+		require.Equal(t, uint32(1), lwr.Receiver.Credits())
 
-	err = lwr.Receiver.AcceptMessage(context.Background(), message)
-	require.NoError(t, err)
+		// prefetched messages arrive, but we don't block in Prefetched() so
+		// we'll have to poll our receiver for this part.
+		deadline := time.Now().Add(time.Minute)
 
-	err = lwr.Sender.Send(context.Background(), &amqp.Message{
-		Data: [][]byte{[]byte("Received")},
-	})
-	require.NoError(t, err)
+		for time.Until(deadline) > 0 {
+			message := lwr.Receiver.Prefetched()
 
-	err = lwr.Receiver.IssueCredit(1)
-	require.NoError(t, err)
-	require.Equal(t, uint32(1), lwr.Receiver.Credits())
+			if message != nil {
+				require.Equal(t, [][]byte{[]byte("Received")}, message.Data)
+				require.Equal(t, uint32(0), lwr.Receiver.Credits())
 
-	// prefetched messages arrive, but we don't block in Prefetched() so
-	// we'll have to poll our receiver for this part.
-	deadline := time.Now().Add(time.Minute)
+				err = lwr.Receiver.AcceptMessage(context.Background(), message)
+				require.NoError(t, err)
+				break
+			}
 
-	for time.Until(deadline) > 0 {
-		message := lwr.Receiver.Prefetched()
-
-		if message != nil {
-			require.Equal(t, [][]byte{[]byte("Received")}, message.Data)
-			require.Equal(t, uint32(0), lwr.Receiver.Credits())
-
-			err = lwr.Receiver.AcceptMessage(context.Background(), message)
-			require.NoError(t, err)
-			break
+			time.Sleep(time.Second)
 		}
+	})
 
-		time.Sleep(time.Second)
-	}
+	t.Run("credits are not altered if an error comes back from Prefetched() or Receive()", func(t *testing.T) {
+		// now that the link is empty, let's test:
 
-	// now that the link is empty, let's test:
+		// A receive where an error happens (cancellation, in this case)
+		// this won't touch the credit since nothing is actually received.
+		ctx, cancel := context.WithCancel(context.Background())
+		cancel()
+		_, err = lwr.Receiver.Receive(ctx)
+		require.ErrorIs(t, err, context.Canceled)
+		require.Equal(t, uint32(0), lwr.Receiver.Credits())
 
-	// A receive where an error happens (cancellation, in this case)
-	// this won't touch the credit since nothing is actually received.
-	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
-	_, err = lwr.Receiver.Receive(ctx)
-	require.ErrorIs(t, err, context.Canceled)
-	require.Equal(t, uint32(0), lwr.Receiver.Credits())
-
-	// a prefetch where there isn't anything.
-	message = lwr.Receiver.Prefetched()
-	require.Nil(t, message)
-	require.Equal(t, uint32(0), lwr.Receiver.Credits())
+		// a prefetch where there isn't anything.
+		message := lwr.Receiver.Prefetched()
+		require.Nil(t, message)
+		require.Equal(t, uint32(0), lwr.Receiver.Credits())
+	})
 }
 
 // newLinksForAMQPLinksTest creates a AMQPSenderCloser and a AMQPReceiverCloser linkwith the same options

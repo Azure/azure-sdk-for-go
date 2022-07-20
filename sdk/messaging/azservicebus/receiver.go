@@ -372,7 +372,11 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		return nil, err
 	}
 
-	creditsToIssue := int64(maxMessages) - int64(linksWithID.Receiver.Credits())
+	// request just the right amount of credits, taking into account the credits
+	// that are already active on the link from prior ReceiveMessages() calls that
+	// might have exited before all credits were used up.
+	currentReceiverCredits := int64(linksWithID.Receiver.Credits())
+	creditsToIssue := int64(maxMessages) - currentReceiverCredits
 	log.Writef(EventReceiver, "Asking for %d credits", maxMessages)
 
 	if creditsToIssue > 0 {
@@ -381,6 +385,8 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		if err := linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
 			return nil, err
 		}
+	} else {
+		log.Writef(EventReceiver, "No additional credits needed, still have %d credits active", currentReceiverCredits)
 	}
 
 	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, r.defaultTimeAfterFirstMsg)
@@ -394,23 +400,27 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	rk := r.amqpLinks.CloseIfNeeded(context.Background(), result.Error)
 
 	if rk == internal.RecoveryKindNone {
-		// The link is still alive, so we'll just start up a listener that'll keep
-		// releasing any messages that arrive between this call and the next call
-		// to ReceiveMessages().
+		// The link is still alive - we'll start the releaser which will releasing any messages
+		// that arrive between this call and the next call to ReceiveMessages().
+		//
 		// This prevents us from holding onto messages for a long period of time in our
-		// internal cache, where they'll just keep expiring.
+		// internal cache where they'll just keep expiring.
 		releaserFunc := r.newReleaserFunc(linksWithID.Receiver)
 		go releaserFunc()
 	} else {
 		log.Writef(EventReceiver, "Failure when receiving messages: %s", result.Error)
 	}
 
+	// If the user does get some messages we ignore 'error' and return only the messages.
+	//
+	// Doing otherwise would break the idiom that people are used to where people expected
+	// a non-nil error to mean any other values in the return are nil or not useful (ie,
+	// partial success is not idiomatic).
+	//
+	// This is mostly safe because the next call to ReceiveMessages() (or any other
+	// function on Receiver).will have the same issue and will return the relevant error
+	// at that time
 	if len(result.Messages) == 0 {
-		// If we didn't receive any messages then we don't need to do anything special
-		// here - they can just have the error.
-		// We do this to avoid the situation where we return both an error _and_ messages,
-		// which would be non-iodmatic since most people will just bail out when they see
-		// that 'err != nil'.
 		if internal.IsCancelError(result.Error) || rk == internal.RecoveryKindFatal {
 			return nil, result.Error
 		}
@@ -494,7 +504,8 @@ func checkReceiverMode(receiveMode ReceiveMode) error {
 }
 
 // fetchMessagesResult is the result from a fetchMessages
-// call. Note that you can get both an error and messages!
+// call.
+// NOTE: that you can get both an error and messages!
 type fetchMessagesResult struct {
 	Messages []*amqp.Message
 	Error    error
@@ -507,6 +518,10 @@ type fetchMessagesResult struct {
 // Note, if you want to only receive prefetched messages send the parentCtx in
 // pre-cancelled. This will cause us to only flush the prefetch buffer.
 func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AMQPReceiver, count int, timeAfterFirstMessage time.Duration) fetchMessagesResult {
+	// The first receive is a bit special - we activate a short timer after this
+	// so the user doesn't end up in a situation where we're holding onto a bunch
+	// of messages but never return because they never cancelled and we never
+	// received all 'count' number of messages.
 	firstMsg, err := receiver.Receive(parentCtx)
 
 	if err != nil {
@@ -518,8 +533,9 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 			// Since our link is always active it's possible some
 			// messages were sitting in the prefetched buffer from before
 			//
-			// This particularly affects us in ReceiveAndDelete mode since we
-			// can't release those messages since they come presettled.
+			// This particularly affects us in ReceiveAndDelete mode since the
+			// local copy of the message can never be retrieved from the server
+			// again (they're pre-settled).
 			Messages: getAllPrefetched(receiver, count),
 		}
 	}
@@ -567,12 +583,14 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 	}
 }
 
-// newReleaserFunc creates a function
-// The returned function will block
+// newReleaserFunc creates a function that continually receives on a
+// receiver and amqpReceiver.Release(msg)'s until cancelled. We use this
+// lieu of a 'drain' strategy so we don't hold onto messages in our internal
+// cache only for them to expire.
 func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 	if r.receiveMode == ReceiveModeReceiveAndDelete {
 		// you can't disposition messages that are received in this mode - these messages
-		// are "presettled".
+		// are "presettled" so we do NOT want to discard these messages.
 		return func() {}
 	}
 
@@ -580,6 +598,7 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 	done := make(chan struct{})
 	released := 0
 
+	// this func gets called when a new ReceiveMessages() starts
 	r.cancelReleaser.Store(func() string {
 		cancel()
 		<-done

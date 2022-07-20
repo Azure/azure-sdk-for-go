@@ -31,7 +31,7 @@ import (
 var (
 	ctx              = context.Background()
 	selfSignedPolicy = azcertificates.CertificatePolicy{
-		IssuerParameters:          &azcertificates.IssuerParameters{Name: (*string)(to.Ptr("self"))},
+		IssuerParameters:          &azcertificates.IssuerParameters{Name: to.Ptr("self")},
 		X509CertificateProperties: &azcertificates.X509CertificateProperties{Subject: to.Ptr("CN=DefaultPolicy")},
 	}
 )

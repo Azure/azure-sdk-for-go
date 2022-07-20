@@ -391,9 +391,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, r.defaultTimeAfterFirstMsg)
 
-	if result.Messages != nil {
-		log.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
-	}
+	log.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
 
 	// this'll only close anything if the error indicates that the link/connection is bad.
 	// it's safe to call with cancellation errors.

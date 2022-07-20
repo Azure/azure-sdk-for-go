@@ -166,15 +166,15 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	previousVersion := ""
 	isCurrentPreview := false
 	var oriExports *exports.Content
+	isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
+	if err != nil {
+		return nil, err
+	}
+
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
 		tags, err := GetAllVersionTags(generateParam.RPName, generateParam.NamespaceName)
-		if err != nil {
-			return nil, err
-		}
-
-		isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
 			return nil, err
 		}
@@ -210,6 +210,23 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")
 			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+				return nil, err
+			}
+		}
+
+		if !isCurrentPreview {
+			version, err = semver.NewVersion("1.0.0")
+			if err != nil {
+				return nil, err
+			}
+
+			log.Printf("Replace version in CHANGELOG.md...")
+			if err = UpdateOnboardChangelogVersion(packagePath, version.String()); err != nil {
+				return nil, err
+			}
+
+			log.Printf("Replace version in autorest.md and constants...")
+			if err = ReplaceVersion(packagePath, version.String()); err != nil {
 				return nil, err
 			}
 		}

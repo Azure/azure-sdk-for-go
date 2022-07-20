@@ -255,7 +255,13 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 	var newVersion semver.Version
 	if version.Major() == 0 {
 		// preview version calculation
-		if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
+		if !isCurrentPreview {
+			tempVersion, err := semver.NewVersion("1.0.0")
+			if err != nil {
+				return nil, err
+			}
+			newVersion = *tempVersion
+		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
 		} else {
 			newVersion = version.IncPatch()
@@ -380,5 +386,21 @@ func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, versi
 			return err
 		}
 	}
+	return nil
+}
+
+func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error {
+	changelogPath := filepath.Join(packageRootPath, common.ChangelogFilename)
+	b, err := ioutil.ReadFile(changelogPath)
+	if err != nil {
+		return err
+	}
+
+	newChangelog := regexp.MustCompile("\\d\\.\\d\\.\\d").ReplaceAllString(string(b), versionNumber)
+	err = ioutil.WriteFile(changelogPath, []byte(newChangelog), 0644)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

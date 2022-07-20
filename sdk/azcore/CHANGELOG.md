@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Fixed various doc bugs.
 
 ## 1.1.1 (2022-06-30)
 

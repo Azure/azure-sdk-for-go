@@ -43,6 +43,7 @@ func setDefaults(o *policy.RetryOptions) {
 		o.RetryDelay = 0
 	}
 	if o.StatusCodes == nil {
+		// NOTE: if you change this list, you MUST update the docs in policy/policy.go
 		o.StatusCodes = []int{
 			http.StatusRequestTimeout,      // 408
 			http.StatusTooManyRequests,     // 429

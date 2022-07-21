@@ -782,14 +782,25 @@ func (c *conn) readProtoHeader() (protoHeader, error) {
 	// might want to consider removing this and fixing the tests as the
 	// protocol doesn't actually work this way.
 	if c.rxBuf.Len() == 0 {
-		if c.connectTimeout != 0 {
-			_ = c.net.SetDeadline(time.Now().Add(c.connectTimeout))
-			defer func() { _ = c.net.SetDeadline(time.Time{}) }()
+		for {
+			if c.connectTimeout != 0 {
+				_ = c.net.SetReadDeadline(time.Now().Add(c.connectTimeout))
+			}
+
+			err := c.rxBuf.ReadFromOnce(c.net)
+			if err != nil {
+				return protoHeader{}, err
+			}
+
+			// read more if buf doesn't contain enough to parse the header
+			if c.rxBuf.Len() >= protoHeaderSize {
+				break
+			}
 		}
 
-		err := c.rxBuf.ReadFromOnce(c.net)
-		if err != nil {
-			return protoHeader{}, err
+		// reset outside the loop
+		if c.connectTimeout != 0 {
+			_ = c.net.SetReadDeadline(time.Time{})
 		}
 	}
 
@@ -954,6 +965,8 @@ func (c *conn) readSingleFrame() (frames.Frame, error) {
 	return fr, nil
 }
 
+const protoHeaderSize = 8
+
 type protoHeader struct {
 	ProtoID  protoID
 	Major    uint8
@@ -965,7 +978,6 @@ type protoHeader struct {
 //
 // An error is returned if the protocol is not "AMQP" or if the version is not 1.0.0.
 func parseProtoHeader(r *buffer.Buffer) (protoHeader, error) {
-	const protoHeaderSize = 8
 	buf, ok := r.Next(protoHeaderSize)
 	if !ok {
 		return protoHeader{}, errors.New("invalid protoHeader")

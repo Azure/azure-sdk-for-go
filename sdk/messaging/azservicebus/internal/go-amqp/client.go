@@ -65,20 +65,10 @@ func (c *Client) Close() error {
 // Returns ErrConnClosed if the underlying connection has been closed.
 // opts: pass nil to accept the default values.
 func (c *Client) NewSession(ctx context.Context, opts *SessionOptions) (*Session, error) {
-	// get a session allocated by Client.mux
-	var sResp newSessionResp
-	select {
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	case <-c.conn.Done:
-		return nil, c.conn.Err()
-	case sResp = <-c.conn.NewSession:
+	s, err := c.conn.NewSession()
+	if err != nil {
+		return nil, err
 	}
-
-	if sResp.err != nil {
-		return nil, sResp.err
-	}
-	s := sResp.session
 	s.init(opts)
 
 	// send Begin to server
@@ -95,7 +85,7 @@ func (c *Client) NewSession(ctx context.Context, opts *SessionOptions) (*Session
 	var fr frames.Frame
 	select {
 	case <-ctx.Done():
-		// TODO: this will leak s
+		c.conn.DeleteSession(s)
 		return nil, ctx.Err()
 	case <-c.conn.Done:
 		return nil, c.conn.Err()
@@ -106,17 +96,12 @@ func (c *Client) NewSession(ctx context.Context, opts *SessionOptions) (*Session
 	begin, ok := fr.Body.(*frames.PerformBegin)
 	if !ok {
 		// this codepath is hard to hit (impossible?).  if the response isn't a PerformBegin and we've not
-		// yet seen the remote channel number, the default clause in conn.mux will protect us from that.
+		// yet seen the remote channel number, the default clause in conn.connReader will protect us from that.
 		// if we have seen the remote channel number then it's likely the session.mux for that channel will
 		// either swallow the frame or blow up in some other way, both causing this call to hang.
 		// deallocate session on error.  we can't call
 		// s.Close() as the session mux hasn't started yet.
-		select {
-		case <-ctx.Done():
-			// TODO: this will leak s
-			return nil, ctx.Err()
-		case c.conn.DelSession <- s:
-		}
+		c.conn.DeleteSession(s)
 		return nil, fmt.Errorf("unexpected begin response: %+v", fr.Body)
 	}
 

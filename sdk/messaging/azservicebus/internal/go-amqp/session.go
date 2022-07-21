@@ -33,9 +33,9 @@ const (
 // A session multiplexes Receivers.
 type Session struct {
 	channel       uint16                       // session's local channel
-	remoteChannel uint16                       // session's remote channel, owned by conn.mux
+	remoteChannel uint16                       // session's remote channel, owned by conn.connReader
 	conn          *conn                        // underlying conn
-	rx            chan frames.Frame            // frames destined for this session are sent on this chan by conn.mux
+	rx            chan frames.Frame            // frames destined for this session are sent on this chan by conn.connReader
 	tx            chan frames.FrameBody        // non-transfer frames to be sent; session must track disposition
 	txTransfer    chan *frames.PerformTransfer // transfer frames to be sent; session must track disposition
 
@@ -169,15 +169,7 @@ func (s *Session) NewSender(ctx context.Context, target string, opts *SenderOpti
 
 func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 	defer func() {
-		// clean up session record in conn.mux()
-		select {
-		case <-s.rx:
-			// discard any incoming frames to keep conn mux unblocked
-		case s.conn.DelSession <- s:
-			// successfully deleted session
-		case <-s.conn.Done:
-			s.err = s.conn.Err()
-		}
+		s.conn.DeleteSession(s)
 		if s.err == nil {
 			s.err = ErrSessionClosed
 		}

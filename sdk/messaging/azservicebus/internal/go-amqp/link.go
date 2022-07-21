@@ -229,7 +229,7 @@ func (l *link) attach(ctx context.Context, s *Session) error {
 
 	isReceiver := l.receiver != nil
 
-	// buffer rx to linkCredit so that conn.mux won't block
+	// buffer rx to linkCredit so that session.mux won't block
 	// attempting to send to a slow reader
 	if isReceiver {
 		if l.receiver.manualCreditor != nil {

@@ -82,14 +82,20 @@ func NewClientFromConnectionString(connectionString string, containerName string
 
 // NewLeaseClient generates blob lease.Client from the blob.Client
 func (c *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
-	leaseID, err := shared.GenerateLeaseID(leaseID)
+	var err error
+	leaseID, err = shared.GenerateLeaseID(leaseID)
 	if err != nil {
 		return nil, err
 	}
+
 	return &LeaseClient{
 		containerClient: (*Client)(base.NewContainerClient(c.URL(), c.generated().Pipeline())),
 		leaseID:         leaseID,
 	}, nil
+}
+
+func (c *LeaseClient) LeaseID() *string {
+	return c.leaseID
 }
 
 func (c *Client) generated() *generated.ContainerClient {

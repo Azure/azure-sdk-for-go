@@ -177,8 +177,6 @@ func leasePeriodPointer(period int32) *int32 {
 }
 
 type AcquireOptions struct {
-	LeaseID *string
-
 	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
 	Duration *int32

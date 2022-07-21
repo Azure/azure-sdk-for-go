@@ -75,6 +75,15 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
+// NewLeaseClient generates blob lease.Client from the blob.Client
+func (ab *Client) NewLeaseClient(leaseID *string) (*blob.LeaseClient, error) {
+	leaseID, err := shared.GenerateLeaseID(leaseID)
+	if err != nil {
+		return nil, err
+	}
+	return ab.blobClient().NewLeaseClient(leaseID)
+}
+
 // Blob returns the blob client for this AppendBlob client.
 func (ab *Client) blobClient() *blob.Client {
 	innerBlob, _ := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.AppendBlobClient])(ab))

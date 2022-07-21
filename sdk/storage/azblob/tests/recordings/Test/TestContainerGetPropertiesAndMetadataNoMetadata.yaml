@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Tue, 12 Jul 2022 07:35:55 GMT
+      - Thu, 07 Jul 2022 08:58:09 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainergetpropertiesandmetadatanometadata?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 12 Jul 2022 07:35:54 GMT
+      - Thu, 07 Jul 2022 08:58:09 GMT
       Etag:
-      - '"0x8DA63D927920946"'
+      - '"0x8DA5FF6D13C1371"'
       Last-Modified:
-      - Tue, 12 Jul 2022 07:35:54 GMT
+      - Thu, 07 Jul 2022 08:58:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 288d9e23-401e-0080-5ac2-95707e000000
+      - 43263c1a-701e-007f-36df-9140e3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -48,7 +48,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Tue, 12 Jul 2022 07:35:55 GMT
+      - Thu, 07 Jul 2022 08:58:10 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainergetpropertiesandmetadatanometadata?restype=container
@@ -59,11 +59,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 12 Jul 2022 07:35:54 GMT
+      - Thu, 07 Jul 2022 08:58:09 GMT
       Etag:
-      - '"0x8DA63D927920946"'
+      - '"0x8DA5FF6D13C1371"'
       Last-Modified:
-      - Tue, 12 Jul 2022 07:35:54 GMT
+      - Thu, 07 Jul 2022 08:58:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Default-Encryption-Scope:
@@ -81,7 +81,7 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 288d9f76-401e-0080-06c2-95707e000000
+      - 43263d8e-701e-007f-0ddf-9140e3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -98,7 +98,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Tue, 12 Jul 2022 07:35:55 GMT
+      - Thu, 07 Jul 2022 08:58:10 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainergetpropertiesandmetadatanometadata?restype=container
@@ -109,11 +109,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 12 Jul 2022 07:35:54 GMT
+      - Thu, 07 Jul 2022 08:58:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 288da0a3-401e-0080-10c2-95707e000000
+      - 43263ee3-701e-007f-4bdf-9140e3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

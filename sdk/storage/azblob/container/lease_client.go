@@ -11,8 +11,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
@@ -86,20 +84,14 @@ func (c *LeaseClient) generated() *generated.ContainerClient {
 	return base.InnerClient((*base.Client[generated.ContainerClient])(c.containerClient))
 }
 
-func (c *LeaseClient) Acquire(ctx context.Context, options *AcquireOptions) (AcquireResponse, error) {
-	options = shared.CopyOptions(options)
-	if options.LeaseID == nil {
-		id, err := uuid.New()
-		if err != nil {
-			return AcquireResponse{}, err
-		}
-		options.LeaseID = to.Ptr(id.String())
-	}
+func (c *LeaseClient) Acquire(ctx context.Context, o *AcquireOptions) (AcquireResponse, error) {
+	opts, modifiedAccessConditions := o.format()
+	opts.ProposedLeaseID = c.leaseID
 
 	resp, err := c.generated().AcquireLease(ctx, &generated.ContainerClientAcquireLeaseOptions{
-		Duration:        options.Duration,
-		ProposedLeaseID: options.LeaseID,
-	}, options.ModifiedAccessConditions)
+		Duration:        opts.Duration,
+		ProposedLeaseID: opts.ProposedLeaseID,
+	}, modifiedAccessConditions)
 	if err != nil {
 		return AcquireResponse{}, err
 	}

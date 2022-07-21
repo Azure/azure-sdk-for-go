@@ -82,6 +82,15 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
+// NewLeaseClient generates blob lease.Client from the blob.Client
+func (bb *Client) NewLeaseClient(leaseID *string) (*blob.LeaseClient, error) {
+	leaseID, err := shared.GenerateLeaseID(leaseID)
+	if err != nil {
+		return nil, err
+	}
+	return bb.BlobClient().NewLeaseClient(leaseID)
+}
+
 func (bb *Client) generated() *generated.BlockBlobClient {
 	_, blockBlob := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	return blockBlob
@@ -92,7 +101,7 @@ func (bb *Client) URL() string {
 	return bb.generated().Endpoint()
 }
 
-func (bb *Client) blobClient() *blob.Client {
+func (bb *Client) BlobClient() *blob.Client {
 	blobClient, _ := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	return (*blob.Client)(blobClient)
 }
@@ -227,20 +236,20 @@ func (bb *Client) GetBlockList(ctx context.Context, listType BlockListType, opti
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (bb *Client) Download(ctx context.Context, o *blob.DownloadOptions) (blob.DownloadResponse, error) {
-	return bb.blobClient().Download(ctx, o)
+	return bb.BlobClient().Download(ctx, o)
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
 func (bb *Client) Delete(ctx context.Context, o *blob.DeleteOptions) (blob.DeleteResponse, error) {
-	return bb.blobClient().Delete(ctx, o)
+	return bb.BlobClient().Delete(ctx, o)
 }
 
 // Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/undelete-blob.
 func (bb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.UndeleteResponse, error) {
-	return bb.blobClient().Undelete(ctx, o)
+	return bb.BlobClient().Undelete(ctx, o)
 }
 
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
@@ -250,43 +259,43 @@ func (bb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 // does not update the blob's ETag.
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
 func (bb *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
-	return bb.blobClient().SetTier(ctx, tier, o)
+	return bb.BlobClient().SetTier(ctx, tier, o)
 }
 
 // GetProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (bb *Client) GetProperties(ctx context.Context, o *blob.GetPropertiesOptions) (blob.GetPropertiesResponse, error) {
-	return bb.blobClient().GetProperties(ctx, o)
+	return bb.BlobClient().GetProperties(ctx, o)
 }
 
 // SetHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
 func (bb *Client) SetHTTPHeaders(ctx context.Context, HTTPHeaders blob.HTTPHeaders, o *blob.SetHTTPHeadersOptions) (blob.SetHTTPHeadersResponse, error) {
-	return bb.blobClient().SetHTTPHeaders(ctx, HTTPHeaders, o)
+	return bb.BlobClient().SetHTTPHeaders(ctx, HTTPHeaders, o)
 }
 
 // SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
 func (bb *Client) SetMetadata(ctx context.Context, metadata map[string]string, o *blob.SetMetadataOptions) (blob.SetMetadataResponse, error) {
-	return bb.blobClient().SetMetadata(ctx, metadata, o)
+	return bb.BlobClient().SetMetadata(ctx, metadata, o)
 }
 
 // CreateSnapshot creates a read-only snapshot of a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/snapshot-blob.
 func (bb *Client) CreateSnapshot(ctx context.Context, o *blob.CreateSnapshotOptions) (blob.CreateSnapshotResponse, error) {
-	return bb.blobClient().CreateSnapshot(ctx, o)
+	return bb.BlobClient().CreateSnapshot(ctx, o)
 }
 
 // StartCopyFromURL copies the data at the source URL to a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (bb *Client) StartCopyFromURL(ctx context.Context, copySource string, o *blob.StartCopyFromURLOptions) (blob.StartCopyFromURLResponse, error) {
-	return bb.blobClient().StartCopyFromURL(ctx, copySource, o)
+	return bb.BlobClient().StartCopyFromURL(ctx, copySource, o)
 }
 
 // AbortCopyFromURL stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob.
 func (bb *Client) AbortCopyFromURL(ctx context.Context, copyID string, o *blob.AbortCopyFromURLOptions) (blob.AbortCopyFromURLResponse, error) {
-	return bb.blobClient().AbortCopyFromURL(ctx, copyID, o)
+	return bb.BlobClient().AbortCopyFromURL(ctx, copyID, o)
 }
 
 // SetTags operation enables users to set tags on a blob or specific blob version, but not snapshot.
@@ -294,19 +303,19 @@ func (bb *Client) AbortCopyFromURL(ctx context.Context, copyID string, o *blob.A
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
 func (bb *Client) SetTags(ctx context.Context, o *blob.SetTagsOptions) (blob.SetTagsResponse, error) {
-	return bb.blobClient().SetTags(ctx, o)
+	return bb.BlobClient().SetTags(ctx, o)
 }
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
 func (bb *Client) GetTags(ctx context.Context, o *blob.GetTagsOptions) (blob.GetTagsResponse, error) {
-	return bb.blobClient().GetTags(ctx, o)
+	return bb.BlobClient().GetTags(ctx, o)
 }
 
 // CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
 func (bb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.CopyFromURLOptions) (blob.CopyFromURLResponse, error) {
-	return bb.blobClient().CopyFromURL(ctx, copySource, o)
+	return bb.BlobClient().CopyFromURL(ctx, copySource, o)
 }
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------

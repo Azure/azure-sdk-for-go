@@ -80,6 +80,10 @@ func NewLeaseClientFromConnectionString(connectionString string, containerName s
 	return NewLeaseClientWithNoCredential(parsed.ServiceURL, leaseID, options)
 }
 
+func (c *LeaseClient) BlobClient() *Client {
+	return c.blobClient
+}
+
 func (c *LeaseClient) LeaseID() *string {
 	return c.leaseID
 }

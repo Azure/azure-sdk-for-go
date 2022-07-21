@@ -29,6 +29,13 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
+// AccessPolicy - An Access policy
+type AccessPolicy = generated.AccessPolicy
+
+// AccessPolicyPermission type simplifies creating the permissions string for a container's access policy.
+// Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
+type AccessPolicyPermission = exported.AccessPolicyPermission
+
 // SignedIdentifier - signed identifier
 type SignedIdentifier = generated.SignedIdentifier
 

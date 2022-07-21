@@ -70,8 +70,8 @@ func formatSASTime(t *time.Time, format string) string {
 	return t.Format(SASTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
-// parseSASTimeString try to parse sas time string.
-func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) {
+// ParseSASTimeString try to parse sas time string.
+func ParseSASTimeString(val string) (t time.Time, timeFormat string, err error) {
 	for _, sasTimeFormat := range SASTimeFormats {
 		t, err = time.Parse(sasTimeFormat, val)
 		if err == nil {
@@ -161,7 +161,12 @@ func (p *SASQueryParameters) SignedCorrelationId() string {
 	return p.correlationId
 }
 
-// SignedTid returns aignedTid
+// SignedOid returns signedOid
+func (p *SASQueryParameters) SignedOid() string {
+	return p.signedOid
+}
+
+// SignedTid returns signedTid
 func (p *SASQueryParameters) SignedTid() string {
 	return p.signedTid
 }
@@ -377,9 +382,9 @@ func NewSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 		case "snapshot":
 			p.snapshotTime, _ = time.Parse(SnapshotTimeFormat, val)
 		case "st":
-			p.startTime, p.stTimeFormat, _ = parseSASTimeString(val)
+			p.startTime, p.stTimeFormat, _ = ParseSASTimeString(val)
 		case "se":
-			p.expiryTime, p.seTimeFormat, _ = parseSASTimeString(val)
+			p.expiryTime, p.seTimeFormat, _ = ParseSASTimeString(val)
 		case "sip":
 			dashIndex := strings.Index(val, "-")
 			if dashIndex == -1 {

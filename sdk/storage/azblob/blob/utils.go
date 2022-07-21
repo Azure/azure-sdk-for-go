@@ -7,8 +7,10 @@
 package blob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"strings"
+	"time"
 )
 
 // ObjectReplicationRules struct
@@ -58,4 +60,9 @@ func deserializeORSPolicies(policies map[string]string) (objectReplicationPolici
 // ParseHTTPHeaders parses GetPropertiesResponse and returns HTTPHeaders
 func ParseHTTPHeaders(resp GetPropertiesResponse) HTTPHeaders {
 	return generated.ParseHTTPHeaders(resp)
+}
+
+// ParseSASTimeString try to parse sas time string.
+func ParseSASTimeString(val string) (t time.Time, timeFormat string, err error) {
+	return exported.ParseSASTimeString(val)
 }

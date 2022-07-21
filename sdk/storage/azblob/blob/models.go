@@ -576,3 +576,5 @@ func (o *ReleaseLeaseOptions) format() (*generated.BlobClientReleaseLeaseOptions
 
 	return nil, o.ModifiedAccessConditions
 }
+
+// ---------------------------------------------------------------------------------------------------------------------

@@ -20,7 +20,7 @@ type BatchTransferOptions struct {
 	OperationName string
 }
 
-// doBatchTransfer helps to execute operations in a batch manner.
+// DoBatchTransfer helps to execute operations in a batch manner.
 // Can be used by users to customize batch works (for other scenarios that the SDK does not provide)
 func DoBatchTransfer(ctx context.Context, o *BatchTransferOptions) error {
 	if o.ChunkSize == 0 {

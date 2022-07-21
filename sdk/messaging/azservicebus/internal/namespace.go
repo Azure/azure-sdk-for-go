@@ -454,6 +454,7 @@ func (ns *Namespace) updateClientWithoutLock(ctx context.Context) (amqpwrap.AMQP
 		return ns.client, ns.connID, nil
 	}
 
+	connStart := time.Now()
 	log.Writef(exported.EventConn, "Creating new client, current rev: %d", ns.connID)
 	tempClient, err := ns.newClientFn(ctx)
 
@@ -463,7 +464,7 @@ func (ns *Namespace) updateClientWithoutLock(ctx context.Context) (amqpwrap.AMQP
 
 	ns.connID++
 	ns.client = tempClient
-	log.Writef(exported.EventConn, "Client created, new rev: %d", ns.connID)
+	log.Writef(exported.EventConn, "Client created, new rev: %d, took %dms", ns.connID, time.Since(connStart)/time.Millisecond)
 
 	return ns.client, ns.connID, err
 }

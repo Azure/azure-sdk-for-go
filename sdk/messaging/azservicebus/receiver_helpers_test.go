@@ -5,11 +5,9 @@ package azservicebus
 
 import (
 	"context"
-	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
-	"github.com/stretchr/testify/require"
 )
 
 type StubAMQPReceiver struct {
@@ -17,8 +15,8 @@ type StubAMQPReceiver struct {
 	stubCloseCalled                 int
 	stubIssueCredit                 func(inner internal.AMQPReceiverCloser, credit uint32) error
 	stubIssueCreditCalled           int
-	stubDrainCredit                 func(inner internal.AMQPReceiverCloser, ctx context.Context) error
-	stubDrainCreditCalled           int
+	stubCredits                     func(inner internal.AMQPReceiverCloser) uint32
+	stubCreditsCalled               int
 	stubReceive                     func(inner internal.AMQPReceiverCloser, ctx context.Context) (*amqp.Message, error)
 	stubReceiveCalled               int
 	stubPrefetched                  func(inner internal.AMQPReceiverCloser) *amqp.Message
@@ -54,14 +52,6 @@ func (r *StubAMQPReceiver) IssueCredit(credit uint32) error {
 	return r.inner.IssueCredit(credit)
 }
 
-func (r *StubAMQPReceiver) DrainCredit(ctx context.Context) error {
-	r.stubDrainCreditCalled++
-	if r.stubDrainCredit != nil {
-		return r.stubDrainCredit(r.inner, ctx)
-	}
-	return r.inner.DrainCredit(ctx)
-}
-
 func (r *StubAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	r.stubReceiveCalled++
 	if r.stubReceive != nil {
@@ -75,6 +65,7 @@ func (r *StubAMQPReceiver) Prefetched() *amqp.Message {
 	if r.stubPrefetched != nil {
 		return r.stubPrefetched(r.inner)
 	}
+
 	return r.inner.Prefetched()
 }
 
@@ -126,18 +117,10 @@ func (r *StubAMQPReceiver) LinkSourceFilterValue(name string) interface{} {
 	return r.inner.LinkSourceFilterValue(name)
 }
 
-// addStub initializes the links and wraps the internal AMQPReceiver with a stub.
-//  The stub allows you to either forward calls to the actual underlying AMQPReceiver instance
-// or take it over.
-func addStub(t *testing.T, receiver *Receiver, stub *StubAMQPReceiver) *StubAMQPReceiver {
-	actualLinks := receiver.amqpLinks.(*internal.AMQPLinksImpl)
-
-	// make sure the links are live
-	_, err := actualLinks.Get(context.Background())
-	require.NoError(t, err)
-
-	stub.inner = actualLinks.Receiver
-	actualLinks.Receiver = stub
-
-	return stub
+func (r *StubAMQPReceiver) Credits() uint32 {
+	r.stubCreditsCalled++
+	if r.stubCredits != nil {
+		return r.stubCredits(r.inner)
+	}
+	return r.inner.Credits()
 }

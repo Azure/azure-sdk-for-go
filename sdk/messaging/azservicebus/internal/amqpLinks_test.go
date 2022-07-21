@@ -97,7 +97,6 @@ func TestAMQPLinksBasic(t *testing.T) {
 
 	assertLinks(t, lwr)
 
-	require.EqualValues(t, entityPath, links.EntityPath())
 }
 
 func TestAMQPLinksLive(t *testing.T) {
@@ -453,7 +452,7 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 
 func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 	t.Run("fatal", func(t *testing.T) {
-		for _, fatalErr := range []error{NewErrNonRetriable(""), context.Canceled, context.DeadlineExceeded} {
+		for _, fatalErr := range []error{NewErrNonRetriable("")} {
 			receiver := &FakeAMQPReceiver{}
 			sender := &FakeAMQPSender{}
 			ns := &FakeNS{}
@@ -477,9 +476,9 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 
 			rk := links.CloseIfNeeded(context.Background(), fatalErr)
 			require.Equal(t, RecoveryKindFatal, rk)
-			require.Equal(t, 0, receiver.Closed)
-			require.Equal(t, 0, sender.Closed)
-			require.Equal(t, 0, ns.CloseCalled)
+			require.Equal(t, 1, receiver.Closed)
+			require.Equal(t, 1, sender.Closed)
+			require.Equal(t, 1, ns.CloseCalled)
 		}
 	})
 
@@ -564,6 +563,18 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 		require.NoError(t, err)
 
 		rk := links.CloseIfNeeded(context.Background(), nil)
+		require.Equal(t, RecoveryKindNone, rk)
+		require.Equal(t, 0, receiver.Closed)
+		require.Equal(t, 0, sender.Closed)
+		require.Equal(t, 0, ns.CloseCalled)
+
+		rk = links.CloseIfNeeded(context.Background(), context.Canceled)
+		require.Equal(t, RecoveryKindNone, rk)
+		require.Equal(t, 0, receiver.Closed)
+		require.Equal(t, 0, sender.Closed)
+		require.Equal(t, 0, ns.CloseCalled)
+
+		rk = links.CloseIfNeeded(context.Background(), context.DeadlineExceeded)
 		require.Equal(t, RecoveryKindNone, rk)
 		require.Equal(t, 0, receiver.Closed)
 		require.Equal(t, 0, sender.Closed)
@@ -715,6 +726,100 @@ func TestAMQPLinks_Logging(t *testing.T) {
 	})
 }
 
+func TestAMQPLinksCreditTracking(t *testing.T) {
+	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
+	defer cleanup()
+
+	cs := test.GetConnectionString(t)
+	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
+	require.NoError(t, err)
+
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session amqpwrap.AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
+	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
+
+	lwr, err := links.Get(context.Background())
+	require.NoError(t, err)
+
+	t.Run("credits are decremented when messages are amqpReceiver.Receive()'d", func(t *testing.T) {
+		err = lwr.Sender.Send(context.Background(), &amqp.Message{
+			Data: [][]byte{[]byte("Received")},
+		})
+		require.NoError(t, err)
+
+		err = lwr.Receiver.IssueCredit(1)
+		require.NoError(t, err)
+		require.Equal(t, uint32(1), lwr.Receiver.Credits())
+
+		message, err := lwr.Receiver.Receive(context.Background())
+		require.NoError(t, err)
+		require.Equal(t, [][]byte{[]byte("Received")}, message.Data)
+		require.Equal(t, uint32(0), lwr.Receiver.Credits())
+
+		err = lwr.Receiver.AcceptMessage(context.Background(), message)
+		require.NoError(t, err)
+	})
+
+	t.Run("credits are decremented when messages are amqpReceiver.Prefetched()", func(t *testing.T) {
+		err = lwr.Sender.Send(context.Background(), &amqp.Message{
+			Data: [][]byte{[]byte("Received")},
+		})
+		require.NoError(t, err)
+
+		err = lwr.Receiver.IssueCredit(1)
+		require.NoError(t, err)
+		require.Equal(t, uint32(1), lwr.Receiver.Credits())
+
+		// prefetched messages arrive, but we don't block in Prefetched() so
+		// we'll have to poll our receiver for this part.
+		deadline := time.Now().Add(time.Minute)
+
+		for time.Until(deadline) > 0 {
+			message := lwr.Receiver.Prefetched()
+
+			if message != nil {
+				require.Equal(t, [][]byte{[]byte("Received")}, message.Data)
+				require.Equal(t, uint32(0), lwr.Receiver.Credits())
+
+				err = lwr.Receiver.AcceptMessage(context.Background(), message)
+				require.NoError(t, err)
+				break
+			}
+
+			time.Sleep(time.Second)
+		}
+	})
+
+	t.Run("credits are not altered if an error comes back from Prefetched() or Receive()", func(t *testing.T) {
+		// now that the link is empty, let's test:
+
+		// A receive where an error happens (cancellation, in this case)
+		// this won't touch the credit since nothing is actually received.
+		ctx, cancel := context.WithCancel(context.Background())
+		cancel()
+		_, err = lwr.Receiver.Receive(ctx)
+		require.ErrorIs(t, err, context.Canceled)
+		require.Equal(t, uint32(0), lwr.Receiver.Credits())
+
+		// a prefetch where there isn't anything.
+		message := lwr.Receiver.Prefetched()
+		require.Nil(t, message)
+		require.Equal(t, uint32(0), lwr.Receiver.Credits())
+	})
+}
+
+// newLinksForAMQPLinksTest creates a AMQPSenderCloser and a AMQPReceiverCloser linkwith the same options
+// we use when we create them with the azservicebus.Receiver/Sender.
 func newLinksForAMQPLinksTest(entityPath string, session amqpwrap.AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
 	receiverOpts := &amqp.ReceiverOptions{
 		SettlementMode: amqp.ModeSecond.Ptr(),

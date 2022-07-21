@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:38 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddatacountzero?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:37 GMT
       Etag:
-      - '"0x8DA5FF666BF38D7"'
+      - '"0x8DA6B054F7C42DE"'
       Last-Modified:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 432238ab-701e-007f-43df-9140e3000000
+      - 9e62ed38-301e-0033-74ee-9cd0d3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -52,7 +52,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:38 GMT
       x-ms-blob-type:
       - BlockBlob
       x-ms-version:
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:37 GMT
       Etag:
-      - '"0x8DA5FF666E3B1C1"'
+      - '"0x8DA6B054FCBDDE1"'
       Last-Modified:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 432239d4-701e-007f-55df-9140e3000000
+      - 9e62f093-301e-0033-2bee-9cd0d3000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-07-07T08:55:11.9138241Z"
+      - "2022-07-21T10:39:38.4115681Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -98,7 +98,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:38 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddatacountzero/gotestblobblobdownloaddatacountzero
@@ -115,17 +115,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:37 GMT
       Etag:
-      - '"0x8DA5FF666E3B1C1"'
+      - '"0x8DA6B054FCBDDE1"'
       Last-Modified:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:38 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -133,13 +133,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 43223b44-701e-007f-29df-9140e3000000
+      - 9e62f47d-301e-0033-54ee-9cd0d3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-07-07T08:55:11.9138241Z"
+      - "2022-07-21T10:39:38.4115681Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -154,7 +154,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:39 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddatacountzero?restype=container
@@ -165,11 +165,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Jul 2022 08:55:11 GMT
+      - Thu, 21 Jul 2022 10:39:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 43223cc4-701e-007f-18df-9140e3000000
+      - 9e62f739-301e-0033-7dee-9cd0d3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

@@ -1,0 +1,197 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainerrenewlease?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Thu, 21 Jul 2022 10:46:21 GMT
+      Etag:
+      - '"0x8DA6B06405C6806"'
+      Last-Modified:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 5d6dbca4-d01e-0082-44ef-9ccec6000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      x-ms-lease-action:
+      - acquire
+      x-ms-lease-duration:
+      - "15"
+      x-ms-proposed-lease-id:
+      - c820a799-76d7-4ee2-6e15-546f19325c2c
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainerrenewlease?comp=lease&restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Thu, 21 Jul 2022 10:46:21 GMT
+      Etag:
+      - '"0x8DA6B06405C6806"'
+      Last-Modified:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Lease-Id:
+      - c820a799-76d7-4ee2-6e15-546f19325c2c
+      X-Ms-Request-Id:
+      - 5d6dc1fe-d01e-0082-5bef-9ccec6000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      x-ms-lease-action:
+      - renew
+      x-ms-lease-id:
+      - c820a799-76d7-4ee2-6e15-546f19325c2c
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainerrenewlease?comp=lease&restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      Etag:
+      - '"0x8DA6B06405C6806"'
+      Last-Modified:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Lease-Id:
+      - c820a799-76d7-4ee2-6e15-546f19325c2c
+      X-Ms-Request-Id:
+      - 5d6dc820-d01e-0082-56ef-9ccec6000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Thu, 21 Jul 2022 10:46:23 GMT
+      x-ms-lease-action:
+      - release
+      x-ms-lease-id:
+      - c820a799-76d7-4ee2-6e15-546f19325c2c
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainerrenewlease?comp=lease&restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      Etag:
+      - '"0x8DA6B06405C6806"'
+      Last-Modified:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 5d6dd0f7-d01e-0082-75ef-9ccec6000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Thu, 21 Jul 2022 10:46:23 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainerrenewlease?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Thu, 21 Jul 2022 10:46:22 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 5d6dd70e-d01e-0082-48ef-9ccec6000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 202 Accepted
+    code: 202
+    duration: ""

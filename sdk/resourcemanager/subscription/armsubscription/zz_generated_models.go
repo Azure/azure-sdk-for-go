@@ -462,6 +462,12 @@ type Subscription struct {
 
 	// READ-ONLY; The subscription ID.
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+	
+	// READ-ONLY; The Tenant ID.
+        SubscriptionTenantID *string `json:"subscriptionTenantId,omitempty" azure:"ro"`
+	
+	// READ-ONLY; The Tags.
+        Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
 }
 
 // SubscriptionsClientGetOptions contains the optional parameters for the SubscriptionsClient.Get method.

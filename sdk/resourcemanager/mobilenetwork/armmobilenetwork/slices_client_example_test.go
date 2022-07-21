@@ -17,21 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/PacketCoreDataPlaneDelete.json
-func ExamplePacketCoreDataPlanesClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SliceDelete.json
+func ExampleSlicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewPacketCoreDataPlanesClient("subid", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
 		"rg1",
-		"testPacketCoreCP",
-		"testPacketCoreDP",
+		"testMobileNetwork",
+		"testSlice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -42,21 +42,21 @@ func ExamplePacketCoreDataPlanesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/PacketCoreDataPlaneGet.json
-func ExamplePacketCoreDataPlanesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SliceGet.json
+func ExampleSlicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewPacketCoreDataPlanesClient("subid", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
 		"rg1",
-		"testPacketCoreCP",
-		"testPacketCoreDP",
+		"testMobileNetwork",
+		"testSlice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,26 +65,28 @@ func ExamplePacketCoreDataPlanesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/PacketCoreDataPlaneCreate.json
-func ExamplePacketCoreDataPlanesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SliceCreate.json
+func ExampleSlicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewPacketCoreDataPlanesClient("subid", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"rg1",
-		"testPacketCoreCP",
-		"testPacketCoreDP",
-		armmobilenetwork.PacketCoreDataPlane{
+		"testMobileNetwork",
+		"testSlice",
+		armmobilenetwork.Slice{
 			Location: to.Ptr("eastus"),
-			Properties: &armmobilenetwork.PacketCoreDataPlanePropertiesFormat{
-				UserPlaneAccessInterface: &armmobilenetwork.InterfaceProperties{
-					Name: to.Ptr("N3"),
+			Properties: &armmobilenetwork.SlicePropertiesFormat{
+				Description: to.Ptr("myFavouriteSlice"),
+				Snssai: &armmobilenetwork.Snssai{
+					Sd:  to.Ptr("1abcde"),
+					Sst: to.Ptr[int32](1),
 				},
 			},
 		},
@@ -100,21 +102,21 @@ func ExamplePacketCoreDataPlanesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/PacketCoreDataPlaneUpdateTags.json
-func ExamplePacketCoreDataPlanesClient_UpdateTags() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SliceUpdateTags.json
+func ExampleSlicesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewPacketCoreDataPlanesClient("subid", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
 		"rg1",
-		"testPacketCoreCP",
-		"testPacketCoreDP",
+		"testMobileNetwork",
+		"testSlice",
 		armmobilenetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -129,19 +131,19 @@ func ExamplePacketCoreDataPlanesClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
-func ExamplePacketCoreDataPlanesClient_NewListByPacketCoreControlPlanePager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SliceListByMobileNetwork.json
+func ExampleSlicesClient_NewListByMobileNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewPacketCoreDataPlanesClient("subid", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPacketCoreControlPlanePager("rg1",
-		"testPacketCoreCP",
+	pager := client.NewListByMobileNetworkPager("rg1",
+		"testMobileNetwork",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

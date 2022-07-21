@@ -15,6 +15,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+type PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTier
+
+type PageList = generated.PageList
+
+type SequenceNumberActionType = generated.SequenceNumberActionType
+
+// SequenceNumberAccessConditions contains a group of parameters for the Client.UploadPages method.
+type SequenceNumberAccessConditions = generated.SequenceNumberAccessConditions
+
+// CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {
 	// Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of
 	// the sequence number must be between 0 and 2^63 - 1.
@@ -66,9 +76,7 @@ func (o *CreateOptions) format() (*generated.PageBlobClientCreateOptions, *gener
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type SequenceNumberAccessConditions = generated.SequenceNumberAccessConditions
-
-// UploadPagesOptions provides set of configurations for UploadPages operation
+// UploadPagesOptions contains the optional parameters for the Client.UploadPages method.
 type UploadPagesOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
 	Offset *int64
@@ -102,7 +110,7 @@ func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptio
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// UploadPagesFromURLOptions provides set of configurations for UploadPagesFromURL operation
+// UploadPagesFromURLOptions contains the optional parameters for the Client.UploadPagesFromURL method.
 type UploadPagesFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
@@ -140,7 +148,7 @@ func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPag
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ClearPagesOptions provides set of configurations for PageBlobClient.ClearPages operation
+// ClearPagesOptions contains the optional parameters for the Client.ClearPages operation
 type ClearPagesOptions struct {
 	CpkInfo                        *blob.CpkInfo
 	CpkScopeInfo                   *blob.CpkScopeInfo
@@ -160,7 +168,7 @@ func (o *ClearPagesOptions) format() (*generated.LeaseAccessConditions, *generat
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetPageRangesOptions provides set of configurations for NewGetPageRangesPager operation
+// GetPageRangesOptions contains the optional parameters for the Client.NewGetPageRangesPager method.
 type GetPageRangesOptions struct {
 	Marker *string
 	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
@@ -206,7 +214,7 @@ func (o *GetPageRangesOptions) format() (*generated.PageBlobClientGetPageRangesO
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetPageRangesDiffOptions provides set of configurations for PageBlobClient.NewGetPageRangesDiffPager operation
+// GetPageRangesDiffOptions contains the optional parameters for the Client.NewGetPageRangesDiffPager method.
 type GetPageRangesDiffOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
@@ -261,7 +269,7 @@ func (o *GetPageRangesDiffOptions) format() (*generated.PageBlobClientGetPageRan
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ResizeOptions provides set of configurations for PageBlobClient.Resize operation
+// ResizeOptions contains the optional parameters for the Client.Resize method.
 type ResizeOptions struct {
 	CpkInfo          *blob.CpkInfo
 	CpkScopeInfo     *blob.CpkScopeInfo
@@ -280,9 +288,7 @@ func (o *ResizeOptions) format() (*generated.PageBlobClientResizeOptions, *gener
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type SequenceNumberActionType = generated.SequenceNumberActionType
-
-// UpdateSequenceNumberOptions provides set of configurations for PageBlobClient.UpdateSequenceNumber operation
+// UpdateSequenceNumberOptions contains the optional parameters for the Client.UpdateSequenceNumber method.
 type UpdateSequenceNumberOptions struct {
 	ActionType *SequenceNumberActionType
 
@@ -311,7 +317,7 @@ func (o *UpdateSequenceNumberOptions) format() (*generated.SequenceNumberActionT
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// CopyIncrementalOptions provides set of configurations for PageBlobClient.StartCopyIncremental operation
+// CopyIncrementalOptions contains the optional parameters for the Client.StartCopyIncremental method.
 type CopyIncrementalOptions struct {
 	ModifiedAccessConditions *blob.ModifiedAccessConditions
 }
@@ -325,7 +331,3 @@ func (o *CopyIncrementalOptions) format() (*generated.PageBlobClientCopyIncremen
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-
-type PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTier
-
-type PageList = generated.PageList

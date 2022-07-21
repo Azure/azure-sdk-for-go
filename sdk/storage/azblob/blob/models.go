@@ -55,11 +55,12 @@ type SASQueryParameters = exported.SASQueryParameters
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
-// DownloadOptions provides set of configurations for Download blob operation
+// DownloadOptions contains the optional parameters for the Client.Download method.
 type DownloadOptions struct {
 	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
 	// range is less than or equal to 4 MB in size.
@@ -141,12 +142,15 @@ func (o *DownloadToWriterAtOptions) getDownloadBlobOptions(offSet, count int64, 
 	}
 }
 
+// DownloadToBufferOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
 type DownloadToBufferOptions = DownloadToWriterAtOptions
 
+// DownloadToFileOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
 type DownloadToFileOptions = DownloadToWriterAtOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
@@ -172,7 +176,7 @@ func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// UndeleteOptions provides set of configurations for Blob Undelete operation
+// UndeleteOptions contains the optional parameters for the Client.Undelete method.
 type UndeleteOptions struct {
 	// placeholder for future options
 }
@@ -183,7 +187,7 @@ func (o *UndeleteOptions) format() *generated.BlobClientUndeleteOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// SetTierOptions provides set of configurations for SetTier on blob operation
+// SetTierOptions contains the optional parameters for the Client.SetTier method.
 type SetTierOptions struct {
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
@@ -202,6 +206,7 @@ func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generat
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
 	AccessConditions *AccessConditions
 	CpkInfo          *CpkInfo
@@ -219,7 +224,7 @@ func (o *GetPropertiesOptions) format() (*generated.BlobClientGetPropertiesOptio
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// SetHTTPHeadersOptions provides set of configurations for SetHTTPHeaders on blob operation
+// SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
 type SetHTTPHeadersOptions struct {
 	AccessConditions *AccessConditions
 }
@@ -254,7 +259,7 @@ func (o *SetMetadataOptions) format() (*generated.LeaseAccessConditions, *CpkInf
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// CreateSnapshotOptions provides set of configurations for CreateSnapshot of blob operation
+// CreateSnapshotOptions contains the optional parameters for the Client.CreateSnapshot method.
 type CreateSnapshotOptions struct {
 	Metadata         map[string]string
 	AccessConditions *AccessConditions
@@ -277,7 +282,7 @@ func (o *CreateSnapshotOptions) format() (*generated.BlobClientCreateSnapshotOpt
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// StartCopyFromURLOptions provides set of configurations for StartCopyFromURL blob operation
+// StartCopyFromURLOptions contains the optional parameters for the Client.StartCopyFromURL method.
 type StartCopyFromURLOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
@@ -328,7 +333,7 @@ func (o *StartCopyFromURLOptions) format() (*generated.BlobClientStartCopyFromUR
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// AbortCopyFromURLOptions provides set of configurations for AbortCopyFromURL operation
+// AbortCopyFromURLOptions contains the optional parameters for the Client.AbortCopyFromURL method.
 type AbortCopyFromURLOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
@@ -342,7 +347,7 @@ func (o *AbortCopyFromURLOptions) format() (*generated.BlobClientAbortCopyFromUR
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// SetTagsOptions provides set of configurations for SetTags operation
+// SetTagsOptions contains the optional parameters for the Client.SetTags method.
 type SetTagsOptions struct {
 	// The version id parameter is an opaque DateTime value that, when present,
 	// specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
@@ -375,7 +380,7 @@ func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *Modifie
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetTagsOptions provides set of configurations for GetTags operation
+// GetTagsOptions contains the optional parameters for the Client.GetTags method.
 type GetTagsOptions struct {
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve.
 	Snapshot *string
@@ -402,7 +407,7 @@ func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generat
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// CopyFromURLOptions provides set of configurations for CopyBlockBlobFromURL operation
+// CopyFromURLOptions contains the optional parameters for the Client.CopyFromURL method.
 type CopyFromURLOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	BlobTags map[string]string
@@ -466,7 +471,7 @@ func leasePeriodPointer(period int32) *int32 {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// AcquireOptions provides set of configurations for AcquireLeaseBlob operation
+// AcquireOptions contains the optional parameters for the LeaseClient.Acquire method.
 type AcquireOptions struct {
 	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
@@ -486,7 +491,7 @@ func (o *AcquireOptions) format() (generated.BlobClientAcquireLeaseOptions, *Mod
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// BreakOptions provides set of configurations for BreakLeaseBlob operation
+// BreakOptions contains the optional parameters for the LeaseClient.Break method.
 type BreakOptions struct {
 	// For a break operation, proposed Duration the lease should continue before it is broken, in seconds, between 0 and 60. This
 	// break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease
@@ -514,7 +519,7 @@ func (o *BreakOptions) format() (*generated.BlobClientBreakLeaseOptions, *Modifi
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ChangeOptions provides set of configurations for ChangeLeaseBlob operation
+// ChangeOptions contains the optional parameters for the LeaseClient.Change method.
 type ChangeOptions struct {
 	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -539,7 +544,7 @@ func (o *ChangeOptions) format() (*string, *generated.BlobClientChangeLeaseOptio
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// RenewOptions provides set of configurations for RenewLeaseBlob operation
+// RenewOptions contains the optional parameters for the LeaseClient.Renew method.
 type RenewOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -554,7 +559,7 @@ func (o *RenewOptions) format() (*generated.BlobClientRenewLeaseOptions, *Modifi
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ReleaseOptions provides set of configurations for ReleaseLeaseBlob operation
+// ReleaseOptions contains the optional parameters for the LeaseClient.Release method.
 type ReleaseOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }

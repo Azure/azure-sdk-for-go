@@ -10,10 +10,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// CreateResponse contains the response from method Client.Create.
 type CreateResponse = generated.AppendBlobClientCreateResponse
 
+// AppendBlockResponse contains the response from method Client.AppendBlock.
 type AppendBlockResponse = generated.AppendBlobClientAppendBlockResponse
 
+// AppendBlockFromURLResponse contains the response from method Client.AppendBlockFromURL.
 type AppendBlockFromURLResponse = generated.AppendBlobClientAppendBlockFromURLResponse
 
+// SealResponse contains the response from method Client.Seal.
 type SealResponse = generated.AppendBlobClientSealResponse

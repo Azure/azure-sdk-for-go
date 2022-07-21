@@ -210,8 +210,12 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 	return resp, err
 }
 
+// SASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
 type SASResourceTypes = exported.AccountSASResourceTypes
 
+// SASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type SASPermissions = exported.AccountSASPermissions
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.

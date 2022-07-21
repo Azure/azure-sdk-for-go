@@ -10,25 +10,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
-// CreateContainerResponse contains the response from method ContainerClient.Create.
+// CreateContainerResponse contains the response from method container.Client.Create.
 type CreateContainerResponse = generated.ContainerClientCreateResponse
 
-// DeleteContainerResponse contains the response from method ContainerClient.Delete.
+// DeleteContainerResponse contains the response from method container.Client.Delete
 type DeleteContainerResponse = generated.ContainerClientDeleteResponse
 
-// GetAccountInfoResponse contains the response from method ServiceClient.GetAccountInfo.
+// GetAccountInfoResponse contains the response from method Client.GetAccountInfo.
 type GetAccountInfoResponse = generated.ServiceClientGetAccountInfoResponse
 
-// ListContainersResponse contains the response from method ServiceClient.ListContainersSegment.
+// ListContainersResponse contains the response from method Client.ListContainersSegment.
 type ListContainersResponse = generated.ServiceClientListContainersSegmentResponse
 
-// GetPropertiesResponse contains the response from method ServiceClient.GetProperties.
+// GetPropertiesResponse contains the response from method Client.GetProperties.
 type GetPropertiesResponse = generated.ServiceClientGetPropertiesResponse
 
-// SetPropertiesResponse contains the response from method ServiceClient.SetProperties.
+// SetPropertiesResponse contains the response from method Client.SetProperties.
 type SetPropertiesResponse = generated.ServiceClientSetPropertiesResponse
 
-// GetStatisticsResponse contains the response from method ServiceClient.GetStatistics.
+// GetStatisticsResponse contains the response from method Client.GetStatistics.
 type GetStatisticsResponse = generated.ServiceClientGetStatisticsResponse
 
+// FilterBlobsResponse contains the response from method Client.FilterBlobs.
 type FilterBlobsResponse = generated.ServiceClientFilterBlobsResponse

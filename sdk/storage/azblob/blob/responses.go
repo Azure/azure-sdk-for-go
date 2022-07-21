@@ -86,36 +86,53 @@ func (r *DownloadResponse) BodyReader(options *RetryReaderOptions) io.ReadCloser
 	}, options)
 }
 
+// DeleteResponse contains the response from method BlobClient.Delete.
 type DeleteResponse = generated.BlobClientDeleteResponse
 
+// UndeleteResponse contains the response from method BlobClient.Undelete.
 type UndeleteResponse = generated.BlobClientUndeleteResponse
 
+// SetTierResponse contains the response from method BlobClient.SetTier.
 type SetTierResponse = generated.BlobClientSetTierResponse
 
+// GetPropertiesResponse contains the response from method BlobClient.GetProperties.
 type GetPropertiesResponse = generated.BlobClientGetPropertiesResponse
 
+// SetHTTPHeadersResponse contains the response from method BlobClient.SetHTTPHeaders.
 type SetHTTPHeadersResponse = generated.BlobClientSetHTTPHeadersResponse
 
+// SetMetadataResponse contains the response from method BlobClient.SetMetadata.
 type SetMetadataResponse = generated.BlobClientSetMetadataResponse
 
+// CreateSnapshotResponse contains the response from method BlobClient.CreateSnapshot.
 type CreateSnapshotResponse = generated.BlobClientCreateSnapshotResponse
 
+// StartCopyFromURLResponse contains the response from method BlobClient.StartCopyFromURL.
 type StartCopyFromURLResponse = generated.BlobClientStartCopyFromURLResponse
 
+// AbortCopyFromURLResponse contains the response from method BlobClient.AbortCopyFromURL.
 type AbortCopyFromURLResponse = generated.BlobClientAbortCopyFromURLResponse
 
+// SetTagsResponse contains the response from method BlobClient.SetTags.
 type SetTagsResponse = generated.BlobClientSetTagsResponse
 
+// GetTagsResponse contains the response from method BlobClient.GetTags.
 type GetTagsResponse = generated.BlobClientGetTagsResponse
 
+// CopyFromURLResponse contains the response from method BlobClient.CopyFromURL.
 type CopyFromURLResponse = generated.BlobClientCopyFromURLResponse
 
+// AcquireResponse contains the response from method BlobClient.AcquireLease.
 type AcquireResponse = generated.BlobClientAcquireLeaseResponse
 
+// BreakResponse contains the response from method BlobClient.BreakLease.
 type BreakResponse = generated.BlobClientBreakLeaseResponse
 
+// ChangeResponse contains the response from method BlobClient.ChangeLease.
 type ChangeResponse = generated.BlobClientChangeLeaseResponse
 
+// ReleaseResponse contains the response from method BlobClient.ReleaseLease.
 type ReleaseResponse = generated.BlobClientReleaseLeaseResponse
 
+// RenewResponse contains the response from method BlobClient.RenewLease.
 type RenewResponse = generated.BlobClientRenewLeaseResponse

@@ -11,16 +11,22 @@ import (
 	"time"
 )
 
+// UploadResponse contains the response from method Client.Upload.
 type UploadResponse = generated.BlockBlobClientUploadResponse
 
+// StageBlockResponse contains the response from method Client.StageBlock.
 type StageBlockResponse = generated.BlockBlobClientStageBlockResponse
 
+// CommitBlockListResponse contains the response from method Client.CommitBlockList.
 type CommitBlockListResponse = generated.BlockBlobClientCommitBlockListResponse
 
+// StageBlockFromURLResponse contains the response from method Client.StageBlockFromURL.
 type StageBlockFromURLResponse = generated.BlockBlobClientStageBlockFromURLResponse
 
+// GetBlockListResponse contains the response from method Client.GetBlockList.
 type GetBlockListResponse = generated.BlockBlobClientGetBlockListResponse
 
+// UploadReaderAtResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
 type UploadReaderAtResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string

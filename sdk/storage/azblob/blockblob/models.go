@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+// UploadOptions contains the optional parameters for the Client.Upload method.
 type UploadOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	Tags map[string]string
@@ -64,6 +65,7 @@ type StageBlockOptions struct {
 	TransactionalContentMD5 []byte
 }
 
+// StageBlockOptions contains the optional parameters for the Client.StageBlock method.
 func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.CpkScopeInfo) {
 	if o == nil {
 		return nil, nil, nil, nil
@@ -75,9 +77,10 @@ func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOption
 	}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
 }
 
+// SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions = blob.SourceModifiedAccessConditions
 
-// StageBlockFromURLOptions provides set of configurations for StageBlockFromURL operation
+// StageBlockFromURLOptions contains the optional parameters for the Client.StageBlockFromURL method.
 type StageBlockFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
@@ -128,7 +131,7 @@ type CommitBlockListOptions struct {
 	AccessConditions          *blob.AccessConditions
 }
 
-// GetBlockListOptions provides set of configurations for GetBlockList operation
+// GetBlockListOptions contains the optional parameters for the Client.GetBlockList method.
 type GetBlockListOptions struct {
 	Snapshot         *string
 	AccessConditions *blob.AccessConditions

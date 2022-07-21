@@ -165,17 +165,6 @@ func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPo
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// LeaseBreakNaturally tells ContainerClient's or BlobClient's Break method to break the lease using service semantics.
-const LeaseBreakNaturally = -1
-
-func leasePeriodPointer(period int32) *int32 {
-	if period != LeaseBreakNaturally {
-		return &period
-	} else {
-		return nil
-	}
-}
-
 type AcquireOptions struct {
 	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.

@@ -10,12 +10,10 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"log"
 	"strconv"
 	"strings"
@@ -162,13 +160,14 @@ func disableSoftDelete(_require *require.Assertions, client *service.Client) {
 	_require.Nil(err)
 }
 
-func validateUpload(_require *require.Assertions, blobClient *blob.Client) {
-	resp, err := blobClient.Download(ctx, nil)
-	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
-	_require.Nil(err)
-	_require.Len(data, 0)
-}
+////nolint
+//func validateUpload(_require *require.Assertions, blobClient *blob.Client) {
+//	resp, err := blobClient.Download(ctx, nil)
+//	_require.Nil(err)
+//	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+//	_require.Nil(err)
+//	_require.Len(data, 0)
+//}
 
 func validateHTTPErrorCode(_require *require.Assertions, err error, code int) {
 	_require.NotNil(err)

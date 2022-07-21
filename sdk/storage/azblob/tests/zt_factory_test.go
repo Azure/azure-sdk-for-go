@@ -202,10 +202,12 @@ func deleteContainer(_require *require.Assertions, containerClient *container.Cl
 
 // 2. BlobClient -------------------------------------------------------------------------------------------------------
 
+//nolint
 func getBlobClient(blockBlobName string, containerClient *container.Client) *blob.Client {
 	return containerClient.NewBlobClient(blockBlobName)
 }
 
+//nolint
 func createNewBlobs(_require *require.Assertions, blobNames []string, containerClient *container.Client) {
 	for _, blobName := range blobNames {
 		createNewBlockBlob(_require, blobName, containerClient)
@@ -375,6 +377,7 @@ func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time
 	return anchorTime.Add(amount * time.Second)
 }
 
+//nolint
 func generateBlockIDsList(count int) []string {
 	blockIDs := make([]string, count)
 	for i := 0; i < count; i++ {

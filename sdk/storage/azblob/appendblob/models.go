@@ -141,6 +141,7 @@ func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendB
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// AppendPositionAccessConditions contains a group of parameters for the Client.AppendBlock method.
 type AppendPositionAccessConditions = generated.AppendPositionAccessConditions
 
 // SealOptions provides set of configurations for SealAppendBlob operation

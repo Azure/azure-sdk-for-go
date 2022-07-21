@@ -23,6 +23,7 @@ type ObjectReplicationPolicy struct {
 	Rules    *[]ObjectReplicationRules
 }
 
+// deserializeORSPolicies is utility function to deserialize ORS Policies
 func deserializeORSPolicies(policies map[string]string) (objectReplicationPolicies []ObjectReplicationPolicy) {
 	if policies == nil {
 		return nil
@@ -54,6 +55,7 @@ func deserializeORSPolicies(policies map[string]string) (objectReplicationPolici
 	return
 }
 
+// ParseHTTPHeaders parses GetPropertiesResponse and returns HTTPHeaders
 func ParseHTTPHeaders(resp GetPropertiesResponse) HTTPHeaders {
 	return generated.ParseHTTPHeaders(resp)
 }

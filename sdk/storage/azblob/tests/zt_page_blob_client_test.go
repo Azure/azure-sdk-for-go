@@ -3494,15 +3494,15 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	return
 //}
 
-func validateIncrementalCopy(_require *require.Assertions, copyPBClient *pageblob.Client, resp *pageblob.CopyIncrementalResponse) {
-	t := waitForIncrementalCopy(_require, copyPBClient, resp)
-
-	// If we can access the snapshot without error, we are satisfied that it was created as a result of the copy
-	copySnapshotURL, err := copyPBClient.WithSnapshot(*t)
-	_require.Nil(err)
-	_, err = copySnapshotURL.GetProperties(ctx, nil)
-	_require.Nil(err)
-}
+//func validateIncrementalCopy(_require *require.Assertions, copyPBClient *pageblob.Client, resp *pageblob.CopyIncrementalResponse) {
+//	t := waitForIncrementalCopy(_require, copyPBClient, resp)
+//
+//	// If we can access the snapshot without error, we are satisfied that it was created as a result of the copy
+//	copySnapshotURL, err := copyPBClient.WithSnapshot(*t)
+//	_require.Nil(err)
+//	_, err = copySnapshotURL.GetProperties(ctx, nil)
+//	_require.Nil(err)
+//}
 
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopySnapshotNotExist() {
 //	_require := require.New(s.T())

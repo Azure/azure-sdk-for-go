@@ -181,8 +181,10 @@ func (s *RetryReader) wasRetryableEarlyClose(err error) bool {
 	return strings.HasSuffix(err.Error(), ReadOnClosedBodyMessage)
 }
 
+// ReadOnClosedBodyMessage of retry reader
 const ReadOnClosedBodyMessage = "read on closed response body"
 
+// Close retry reader
 func (s *RetryReader) Close() error {
 	s.responseMu.Lock()
 	defer s.responseMu.Unlock()

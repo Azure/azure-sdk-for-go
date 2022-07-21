@@ -15,7 +15,25 @@ type CreateContainerOptions = container.CreateOptions
 
 type DeleteContainerOptions = container.DeleteOptions
 
-// GetAccountInfoOptions provides set of options for ServiceClient.GetAccountInfo
+// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+// domain. Web browsers implement a security restriction known as same-origin policy that
+// prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
+// domain) to call APIs in another domain
+type CorsRule = generated.CorsRule
+
+// RetentionPolicy - the retention policy which determines how long the associated data should persist
+type RetentionPolicy = generated.RetentionPolicy
+
+// Metrics - a summary of request statistics grouped by API in hour or minute aggregates for blobs
+type Metrics = generated.Metrics
+
+// Logging - Azure Analytics Logging settings.
+type Logging = generated.Logging
+
+// StaticWebsite - The properties that enable an account to host a static website
+type StaticWebsite = generated.StaticWebsite
+
+// GetAccountInfoOptions provides set of options for Client.GetAccountInfo
 type GetAccountInfoOptions struct {
 	// placeholder for future options
 }
@@ -24,6 +42,7 @@ func (o *GetAccountInfoOptions) format() *generated.ServiceClientGetAccountInfoO
 	return nil
 }
 
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
 type GetPropertiesOptions struct {
 	// placeholder for future options
 }
@@ -61,13 +80,7 @@ type ListContainersDetail struct {
 	Deleted bool
 }
 
-type CorsRule = generated.CorsRule
-type RetentionPolicy = generated.RetentionPolicy
-type Metrics = generated.Metrics
-type Logging = generated.Logging
-type StaticWebsite = generated.StaticWebsite
-
-// SetPropertiesOptions provides set of options for ServiceClient.SetProperties
+// SetPropertiesOptions provides set of options for Client.SetProperties
 type SetPropertiesOptions struct {
 	// The set of CORS rules.
 	Cors []*CorsRule
@@ -108,7 +121,7 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 	}, nil
 }
 
-// GetStatisticsOptions provides set of options for ServiceClient.GetStatistics
+// GetStatisticsOptions provides set of options for Client.GetStatistics
 type GetStatisticsOptions struct {
 	// placeholder for future options
 }

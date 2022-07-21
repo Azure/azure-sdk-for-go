@@ -13,6 +13,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// CpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
+type CpkScopeInfo = generated.ContainerCpkScopeInfo
+
+type PublicAccessType = generated.PublicAccessType
+
+type BlobItem = generated.BlobItemInternal
+
+// AccessConditions identifies container-specific access conditions which you optionally set.
+type AccessConditions = exported.ContainerAccessConditions
+
+// LeaseAccessConditions contains optional parameters to access leased entity.
+type LeaseAccessConditions = exported.LeaseAccessConditions
+
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
+type ModifiedAccessConditions = exported.ModifiedAccessConditions
+
+// SignedIdentifier - signed identifier
+type SignedIdentifier = generated.SignedIdentifier
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 type CreateOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
 	Access *PublicAccessType
@@ -21,13 +42,12 @@ type CreateOptions struct {
 	Metadata map[string]string
 
 	// Optional. Specifies the encryption scope settings to set on the container.
-	CpkScope *ContainerCpkScopeInfo
+	CpkScopeInfo *CpkScopeInfo
 }
 
-type AccessConditions = exported.ContainerAccessConditions
-type LeaseAccessConditions = exported.LeaseAccessConditions
-type ModifiedAccessConditions = exported.ModifiedAccessConditions
+// ---------------------------------------------------------------------------------------------------------------------
 
+// DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
 	AccessConditions *AccessConditions
 }
@@ -41,10 +61,13 @@ func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *Leas
 	return nil, leaseAccessConditions, modifiedAccessConditions
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 type GetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+// ContainerClientGetPropertiesOptions contains the optional parameters for the ContainerClient.GetProperties method.
 func (o *GetPropertiesOptions) format() (*generated.ContainerClientGetPropertiesOptions, *generated.LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil
@@ -52,6 +75,8 @@ func (o *GetPropertiesOptions) format() (*generated.ContainerClientGetProperties
 
 	return nil, o.LeaseAccessConditions
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 type ListBlobsFlatOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
@@ -72,7 +97,9 @@ type ListBlobsFlatOptions struct {
 	Prefix *string
 }
 
-//ListBlobsHierarchyOptions provides set of configurations for ContainerClient.NewListBlobsHierarchyPager
+// ---------------------------------------------------------------------------------------------------------------------
+
+//ListBlobsHierarchyOptions provides set of configurations for Client.NewListBlobsHierarchyPager
 type ListBlobsHierarchyOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include []ListBlobsIncludeItem
@@ -92,6 +119,7 @@ type ListBlobsHierarchyOptions struct {
 	Prefix *string
 }
 
+// ContainerClientListBlobHierarchySegmentOptions contains the optional parameters for the ContainerClient.ListBlobHierarchySegment method.
 func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHierarchySegmentOptions {
 	if o == nil {
 		return generated.ContainerClientListBlobHierarchySegmentOptions{}
@@ -105,13 +133,9 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 	}
 }
 
-type ContainerCpkScopeInfo = generated.ContainerCpkScopeInfo
+// ---------------------------------------------------------------------------------------------------------------------
 
-type PublicAccessType = generated.PublicAccessType
-
-type BlobItem = generated.BlobItemInternal
-
-// SetMetadataOptions provides set of configurations for SetMetadataContainer operation
+// SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
 type SetMetadataOptions struct {
 	Metadata                 map[string]string
 	LeaseAccessConditions    *LeaseAccessConditions
@@ -126,7 +150,7 @@ func (o *SetMetadataOptions) format() (*generated.ContainerClientSetMetadataOpti
 	return &generated.ContainerClientSetMetadataOptions{Metadata: o.Metadata}, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
-// GetAccessPolicyOptions provides set of configurations for GetAccessPolicy operation
+// GetAccessPolicyOptions contains the optional parameters for the Client.GetAccessPolicy method.
 type GetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
@@ -138,8 +162,6 @@ func (o *GetAccessPolicyOptions) format() (*generated.ContainerClientGetAccessPo
 
 	return nil, o.LeaseAccessConditions
 }
-
-type SignedIdentifier = generated.SignedIdentifier
 
 // SetAccessPolicyOptions provides set of configurations for ContainerClient.SetAccessPolicy operation
 type SetAccessPolicyOptions struct {
@@ -165,7 +187,7 @@ func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPo
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type AcquireOptions struct {
+type AcquireLeaseOptions struct {
 	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
 	Duration *int32
@@ -173,7 +195,7 @@ type AcquireOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *AcquireOptions) format() (generated.ContainerClientAcquireLeaseOptions, *generated.ModifiedAccessConditions) {
+func (o *AcquireLeaseOptions) format() (generated.ContainerClientAcquireLeaseOptions, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return generated.ContainerClientAcquireLeaseOptions{}, nil
 	}
@@ -186,13 +208,13 @@ func (o *AcquireOptions) format() (generated.ContainerClientAcquireLeaseOptions,
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// BreakOptions provides set of configurations for BreakLeaseContainer operation
-type BreakOptions struct {
+// BreakLeaseOptions provides set of configurations for BreakLeaseContainer operation
+type BreakLeaseOptions struct {
 	BreakPeriod              *int32
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BreakOptions) format() (*generated.ContainerClientBreakLeaseOptions, *ModifiedAccessConditions) {
+func (o *BreakLeaseOptions) format() (*generated.ContainerClientBreakLeaseOptions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}
@@ -206,13 +228,13 @@ func (o *BreakOptions) format() (*generated.ContainerClientBreakLeaseOptions, *M
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ChangeOptions provides set of configurations for ChangeLeaseContainer operation
-type ChangeOptions struct {
+// ChangeLeaseOptions provides set of configurations for ChangeLeaseContainer operation
+type ChangeLeaseOptions struct {
 	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ChangeOptions) format() (*string, *generated.ContainerClientChangeLeaseOptions, *generated.ModifiedAccessConditions, error) {
+func (o *ChangeLeaseOptions) format() (*string, *generated.ContainerClientChangeLeaseOptions, *generated.ModifiedAccessConditions, error) {
 	generatedUuid, err := uuid.New()
 	if err != nil {
 		return nil, nil, nil, err
@@ -231,12 +253,12 @@ func (o *ChangeOptions) format() (*string, *generated.ContainerClientChangeLease
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ReleaseOptions provides set of configurations for ReleaseLeaseContainer operation
-type ReleaseOptions struct {
+// ReleaseLeaseOptions provides set of configurations for ReleaseLeaseContainer operation
+type ReleaseLeaseOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ReleaseOptions) format() (*generated.ContainerClientReleaseLeaseOptions, *generated.ModifiedAccessConditions) {
+func (o *ReleaseLeaseOptions) format() (*generated.ContainerClientReleaseLeaseOptions, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}
@@ -246,12 +268,12 @@ func (o *ReleaseOptions) format() (*generated.ContainerClientReleaseLeaseOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// RenewOptions provides set of configurations for RenewLeaseContainer operation
-type RenewOptions struct {
+// RenewLeaseOptions contains the optional parameters for the Client.RenewLease method.
+type RenewLeaseOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *RenewOptions) format() (*generated.ContainerClientRenewLeaseOptions, *generated.ModifiedAccessConditions) {
+func (o *RenewLeaseOptions) format() (*generated.ContainerClientRenewLeaseOptions, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}

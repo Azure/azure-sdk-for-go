@@ -14,6 +14,11 @@ import (
 	"time"
 )
 
+// AppendPositionAccessConditions contains a group of parameters for the Client.AppendBlock method.
+type AppendPositionAccessConditions = generated.AppendPositionAccessConditions
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // CreateOptions provides set of configurations for Create Append Blob operation
 type CreateOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
@@ -65,7 +70,7 @@ func (o *CreateOptions) format() (*generated.AppendBlobClientCreateOptions, *gen
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// AppendBlockOptions provides set of configurations for AppendBlock operation
+// AppendBlockOptions contains the optional parameters for the Client.AppendBlock method.
 type AppendBlockOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
 	TransactionalContentCRC64 []byte
@@ -97,7 +102,7 @@ func (o *AppendBlockOptions) format() (*generated.AppendBlobClientAppendBlockOpt
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// AppendBlockFromURLOptions provides set of configurations for AppendBlockFromURL operation
+// AppendBlockFromURLOptions contains the optional parameters for the Client.AppendBlockFromURL method.
 type AppendBlockFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
@@ -140,9 +145,6 @@ func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendB
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-
-// AppendPositionAccessConditions contains a group of parameters for the Client.AppendBlock method.
-type AppendPositionAccessConditions = generated.AppendPositionAccessConditions
 
 // SealOptions provides set of configurations for SealAppendBlob operation
 type SealOptions struct {

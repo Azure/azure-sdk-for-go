@@ -15,14 +15,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// PremiumPageBlobAccessTier defines values for Premium PageBlob's AccessTier
 type PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTier
 
+// PageList - the list of pages
 type PageList = generated.PageList
 
+// SequenceNumberActionType defines values for SequenceNumberActionType
 type SequenceNumberActionType = generated.SequenceNumberActionType
 
 // SequenceNumberAccessConditions contains a group of parameters for the Client.UploadPages method.
 type SequenceNumberAccessConditions = generated.SequenceNumberAccessConditions
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {

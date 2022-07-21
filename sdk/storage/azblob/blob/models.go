@@ -20,10 +20,13 @@ import (
 // AccessConditions identifies blob-specific access conditions which you optionally set.
 type AccessConditions = exported.BlobAccessConditions
 
+// LeaseAccessConditions contains optional parameters to access leased entity.
 type LeaseAccessConditions = exported.LeaseAccessConditions
 
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
+// AccessTier defines values for Blob Access Tier
 type AccessTier = generated.AccessTier
 
 // ClientOptions adds additional client options while constructing connection
@@ -35,11 +38,13 @@ type CpkInfo = generated.CpkInfo
 // CpkScopeInfo contains a group of parameters for client provided encryption scope.
 type CpkScopeInfo = generated.CpkScopeInfo
 
+// DeleteSnapshotsOptionType defines values for DeleteSnapshotsOptionType
 type DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionType
 
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
 
+// ImmutabilityPolicyMode defines values for BlobImmutabilityPolicyMode
 type ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyMode
 
 // RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate.
@@ -458,7 +463,7 @@ func (o *CopyFromURLOptions) format() (*generated.BlobClientCopyFromURLOptions, 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// LeaseBreakNaturally tells ContainerClient's or BlobClient's Break method to break the lease using service semantics.
+// LeaseBreakNaturally tells ContainerClient's or BlobClient's BreakLease method to break the lease using service semantics.
 const LeaseBreakNaturally = -1
 
 func leasePeriodPointer(period int32) *int32 {
@@ -471,8 +476,8 @@ func leasePeriodPointer(period int32) *int32 {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// AcquireOptions contains the optional parameters for the LeaseClient.Acquire method.
-type AcquireOptions struct {
+// AcquireLeaseOptions contains the optional parameters for the LeaseClient.AcquireLease method.
+type AcquireLeaseOptions struct {
 	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
 	Duration *int32
@@ -480,7 +485,7 @@ type AcquireOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *AcquireOptions) format() (generated.BlobClientAcquireLeaseOptions, *ModifiedAccessConditions) {
+func (o *AcquireLeaseOptions) format() (generated.BlobClientAcquireLeaseOptions, *ModifiedAccessConditions) {
 	if o == nil {
 		return generated.BlobClientAcquireLeaseOptions{}, nil
 	}
@@ -491,8 +496,8 @@ func (o *AcquireOptions) format() (generated.BlobClientAcquireLeaseOptions, *Mod
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// BreakOptions contains the optional parameters for the LeaseClient.Break method.
-type BreakOptions struct {
+// BreakLeaseOptions contains the optional parameters for the LeaseClient.BreakLease method.
+type BreakLeaseOptions struct {
 	// For a break operation, proposed Duration the lease should continue before it is broken, in seconds, between 0 and 60. This
 	// break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease
 	// is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than
@@ -502,7 +507,7 @@ type BreakOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BreakOptions) format() (*generated.BlobClientBreakLeaseOptions, *ModifiedAccessConditions) {
+func (o *BreakLeaseOptions) format() (*generated.BlobClientBreakLeaseOptions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}
@@ -519,13 +524,13 @@ func (o *BreakOptions) format() (*generated.BlobClientBreakLeaseOptions, *Modifi
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ChangeOptions contains the optional parameters for the LeaseClient.Change method.
-type ChangeOptions struct {
+// ChangeLeaseOptions contains the optional parameters for the LeaseClient.ChangeLease method.
+type ChangeLeaseOptions struct {
 	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ChangeOptions) format() (*string, *generated.BlobClientChangeLeaseOptions, *ModifiedAccessConditions, error) {
+func (o *ChangeLeaseOptions) format() (*string, *generated.BlobClientChangeLeaseOptions, *ModifiedAccessConditions, error) {
 	generatedUuid, err := uuid.New()
 	if err != nil {
 		return nil, nil, nil, err
@@ -544,12 +549,12 @@ func (o *ChangeOptions) format() (*string, *generated.BlobClientChangeLeaseOptio
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// RenewOptions contains the optional parameters for the LeaseClient.Renew method.
-type RenewOptions struct {
+// RenewLeaseOptions contains the optional parameters for the LeaseClient.RenewLease method.
+type RenewLeaseOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *RenewOptions) format() (*generated.BlobClientRenewLeaseOptions, *ModifiedAccessConditions) {
+func (o *RenewLeaseOptions) format() (*generated.BlobClientRenewLeaseOptions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}
@@ -559,12 +564,12 @@ func (o *RenewOptions) format() (*generated.BlobClientRenewLeaseOptions, *Modifi
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ReleaseOptions contains the optional parameters for the LeaseClient.Release method.
-type ReleaseOptions struct {
+// ReleaseLeaseOptions contains the optional parameters for the LeaseClient.ReleaseLease method.
+type ReleaseLeaseOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ReleaseOptions) format() (*generated.BlobClientReleaseLeaseOptions, *ModifiedAccessConditions) {
+func (o *ReleaseLeaseOptions) format() (*generated.BlobClientReleaseLeaseOptions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil
 	}

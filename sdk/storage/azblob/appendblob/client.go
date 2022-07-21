@@ -19,17 +19,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
-// ClientOptions adds additional client options while constructing connection
-type ClientOptions = exported.ClientOptions
-
-// SharedKeyCredential contains an account's name and its primary or secondary key.
-type SharedKeyCredential = exported.SharedKeyCredential
-
 // Client represents a client to an Azure Storage append blob;
 type Client base.CompositeClient[generated.BlobClient, generated.AppendBlobClient]
 
 // NewClient creates an AppendBlobClient with the specified URL, Azure AD credential, and options.
-func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -39,7 +33,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 }
 
 // NewClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
-func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
+func NewClientWithNoCredential(blobURL string, options *blob.ClientOptions) (*Client, error) {
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
@@ -47,7 +41,7 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 }
 
 // NewClientWithSharedKey creates an AppendBlobClient with the specified URL, shared key, and options.
-func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, options *blob.ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -57,7 +51,7 @@ func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *
 }
 
 // NewClientFromConnectionString creates Client from a connection String
-func NewClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString, containerName, blobName string, options *blob.ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
@@ -81,11 +75,11 @@ func (ab *Client) NewLeaseClient(leaseID *string) (*blob.LeaseClient, error) {
 	if err != nil {
 		return nil, err
 	}
-	return ab.blobClient().NewLeaseClient(leaseID)
+	return ab.BlobClient().NewLeaseClient(leaseID)
 }
 
-// Blob returns the blob client for this AppendBlob client.
-func (ab *Client) blobClient() *blob.Client {
+// BlobClient returns the embedded blob client for this AppendBlob client.
+func (ab *Client) BlobClient() *blob.Client {
 	innerBlob, _ := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.AppendBlobClient])(ab))
 	return (*blob.Client)(innerBlob)
 }
@@ -172,20 +166,20 @@ func (ab *Client) Seal(ctx context.Context, options *SealOptions) (SealResponse,
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (ab *Client) Download(ctx context.Context, o *blob.DownloadOptions) (blob.DownloadResponse, error) {
-	return ab.blobClient().Download(ctx, o)
+	return ab.BlobClient().Download(ctx, o)
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
 func (ab *Client) Delete(ctx context.Context, o *blob.DeleteOptions) (blob.DeleteResponse, error) {
-	return ab.blobClient().Delete(ctx, o)
+	return ab.BlobClient().Delete(ctx, o)
 }
 
 // Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/undelete-blob.
 func (ab *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.UndeleteResponse, error) {
-	return ab.blobClient().Undelete(ctx, o)
+	return ab.BlobClient().Undelete(ctx, o)
 }
 
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
@@ -195,43 +189,43 @@ func (ab *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 // does not update the blob's ETag.
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
 func (ab *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
-	return ab.blobClient().SetTier(ctx, tier, o)
+	return ab.BlobClient().SetTier(ctx, tier, o)
 }
 
 // GetProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (ab *Client) GetProperties(ctx context.Context, o *blob.GetPropertiesOptions) (blob.GetPropertiesResponse, error) {
-	return ab.blobClient().GetProperties(ctx, o)
+	return ab.BlobClient().GetProperties(ctx, o)
 }
 
 // SetHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
 func (ab *Client) SetHTTPHeaders(ctx context.Context, HTTPHeaders blob.HTTPHeaders, o *blob.SetHTTPHeadersOptions) (blob.SetHTTPHeadersResponse, error) {
-	return ab.blobClient().SetHTTPHeaders(ctx, HTTPHeaders, o)
+	return ab.BlobClient().SetHTTPHeaders(ctx, HTTPHeaders, o)
 }
 
 // SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
 func (ab *Client) SetMetadata(ctx context.Context, metadata map[string]string, o *blob.SetMetadataOptions) (blob.SetMetadataResponse, error) {
-	return ab.blobClient().SetMetadata(ctx, metadata, o)
+	return ab.BlobClient().SetMetadata(ctx, metadata, o)
 }
 
 // CreateSnapshot creates a read-only snapshot of a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/snapshot-blob.
 func (ab *Client) CreateSnapshot(ctx context.Context, o *blob.CreateSnapshotOptions) (blob.CreateSnapshotResponse, error) {
-	return ab.blobClient().CreateSnapshot(ctx, o)
+	return ab.BlobClient().CreateSnapshot(ctx, o)
 }
 
 // StartCopyFromURL copies the data at the source URL to a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (ab *Client) StartCopyFromURL(ctx context.Context, copySource string, o *blob.StartCopyFromURLOptions) (blob.StartCopyFromURLResponse, error) {
-	return ab.blobClient().StartCopyFromURL(ctx, copySource, o)
+	return ab.BlobClient().StartCopyFromURL(ctx, copySource, o)
 }
 
 // AbortCopyFromURL stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob.
 func (ab *Client) AbortCopyFromURL(ctx context.Context, copyID string, o *blob.AbortCopyFromURLOptions) (blob.AbortCopyFromURLResponse, error) {
-	return ab.blobClient().AbortCopyFromURL(ctx, copyID, o)
+	return ab.BlobClient().AbortCopyFromURL(ctx, copyID, o)
 }
 
 // SetTags operation enables users to set tags on a blob or specific blob version, but not snapshot.
@@ -239,17 +233,17 @@ func (ab *Client) AbortCopyFromURL(ctx context.Context, copyID string, o *blob.A
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
 func (ab *Client) SetTags(ctx context.Context, o *blob.SetTagsOptions) (blob.SetTagsResponse, error) {
-	return ab.blobClient().SetTags(ctx, o)
+	return ab.BlobClient().SetTags(ctx, o)
 }
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
 func (ab *Client) GetTags(ctx context.Context, o *blob.GetTagsOptions) (blob.GetTagsResponse, error) {
-	return ab.blobClient().GetTags(ctx, o)
+	return ab.BlobClient().GetTags(ctx, o)
 }
 
 // CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
 func (ab *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.CopyFromURLOptions) (blob.CopyFromURLResponse, error) {
-	return ab.blobClient().CopyFromURL(ctx, copySource, o)
+	return ab.BlobClient().CopyFromURL(ctx, copySource, o)
 }

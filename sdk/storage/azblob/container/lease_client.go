@@ -84,7 +84,7 @@ func (c *LeaseClient) generated() *generated.ContainerClient {
 	return base.InnerClient((*base.Client[generated.ContainerClient])(c.containerClient))
 }
 
-func (c *LeaseClient) Acquire(ctx context.Context, o *AcquireOptions) (AcquireResponse, error) {
+func (c *LeaseClient) AcquireLease(ctx context.Context, o *AcquireLeaseOptions) (AcquireResponse, error) {
 	opts, modifiedAccessConditions := o.format()
 	opts.ProposedLeaseID = c.leaseID
 
@@ -98,17 +98,17 @@ func (c *LeaseClient) Acquire(ctx context.Context, o *AcquireOptions) (AcquireRe
 	return resp, err
 }
 
-// Break breaks the container's previously-acquired lease (if it exists).
+// BreakLease breaks the container's previously-acquired lease (if it exists).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (c *LeaseClient) Break(ctx context.Context, options *BreakOptions) (BreakResponse, error) {
+func (c *LeaseClient) BreakLease(ctx context.Context, options *BreakLeaseOptions) (BreakResponse, error) {
 	containerBreakLeaseOptions, modifiedAccessConditions := options.format()
 	resp, err := c.generated().BreakLease(ctx, containerBreakLeaseOptions, modifiedAccessConditions)
 	return resp, err
 }
 
-// Change changes the container's lease ID.
+// ChangeLease changes the container's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (c *LeaseClient) Change(ctx context.Context, options *ChangeOptions) (ChangeResponse, error) {
+func (c *LeaseClient) ChangeLease(ctx context.Context, options *ChangeLeaseOptions) (ChangeResponse, error) {
 	if c.leaseID == nil {
 		return ChangeResponse{}, errors.New("leaseID cannot be nil")
 	}
@@ -125,9 +125,9 @@ func (c *LeaseClient) Change(ctx context.Context, options *ChangeOptions) (Chang
 	return resp, err
 }
 
-// Release releases the container's previously-acquired lease.
+// ReleaseLease releases the container's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (c *LeaseClient) Release(ctx context.Context, options *ReleaseOptions) (ReleaseResponse, error) {
+func (c *LeaseClient) ReleaseLease(ctx context.Context, options *ReleaseLeaseOptions) (ReleaseResponse, error) {
 	if c.leaseID == nil {
 		return ReleaseResponse{}, errors.New("leaseID cannot be nil")
 	}
@@ -137,9 +137,9 @@ func (c *LeaseClient) Release(ctx context.Context, options *ReleaseOptions) (Rel
 	return resp, err
 }
 
-// Renew renews the container's previously-acquired lease.
+// RenewLease renews the container's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (c *LeaseClient) Renew(ctx context.Context, options *RenewOptions) (RenewResponse, error) {
+func (c *LeaseClient) RenewLease(ctx context.Context, options *RenewLeaseOptions) (RenewResponse, error) {
 	if c.leaseID == nil {
 		return RenewResponse{}, errors.New("leaseID cannot be nil")
 	}

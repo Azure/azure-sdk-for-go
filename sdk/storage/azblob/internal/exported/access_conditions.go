@@ -34,6 +34,8 @@ func FormatBlobAccessConditions(b *BlobAccessConditions) (*LeaseAccessConditions
 	return b.LeaseAccessConditions, b.ModifiedAccessConditions
 }
 
+// LeaseAccessConditions contains optional parameters to access leased entity.
 type LeaseAccessConditions = generated.LeaseAccessConditions
 
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = generated.ModifiedAccessConditions

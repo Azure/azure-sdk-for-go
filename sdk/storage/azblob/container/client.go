@@ -160,7 +160,7 @@ func (c *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 			Access:   options.Access,
 			Metadata: options.Metadata,
 		}
-		cpkScopes = options.CpkScope
+		cpkScopes = options.CpkScopeInfo
 	}
 	resp, err := c.generated().Create(ctx, opts, cpkScopes)
 
@@ -213,7 +213,7 @@ func (c *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions)
 	return resp, err
 }
 
-// ListBlobsFlat returns a pager for blobs starting from the specified Marker. Use an empty
+// NewListBlobsFlatPager returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
 func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {

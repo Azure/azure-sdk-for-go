@@ -26,17 +26,11 @@ import (
 	"sync"
 )
 
-// ClientOptions adds additional client options while constructing connection
-type ClientOptions = exported.ClientOptions
-
-// SharedKeyCredential contains an account's name and its primary or secondary key.
-type SharedKeyCredential = exported.SharedKeyCredential
-
 // Client defines a set of operations applicable to block blobs.
 type Client base.CompositeClient[generated.BlobClient, generated.BlockBlobClient]
 
 // NewClient creates a Client object using the specified URL, Azure AD credential, and options.
-func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -46,7 +40,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 }
 
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
-func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
+func NewClientWithNoCredential(blobURL string, options *blob.ClientOptions) (*Client, error) {
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
@@ -54,7 +48,7 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 }
 
 // NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
-func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, options *blob.ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -64,7 +58,7 @@ func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *
 }
 
 // NewClientFromConnectionString creates Client from a connection String
-func NewClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString, containerName, blobName string, options *blob.ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err

@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+// LeaseClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type LeaseClient struct {
 	blobClient *Client
 	leaseID    *string
@@ -80,10 +81,12 @@ func NewLeaseClientFromConnectionString(connectionString string, containerName s
 	return NewLeaseClientWithNoCredential(parsed.ServiceURL, leaseID, options)
 }
 
+// BlobClient returns the embedded blobClient from leaseClient
 func (c *LeaseClient) BlobClient() *Client {
 	return c.blobClient
 }
 
+// LeaseID returns leaseID of the client.
 func (c *LeaseClient) LeaseID() *string {
 	return c.leaseID
 }
@@ -92,10 +95,10 @@ func (c *LeaseClient) generated() *generated.BlobClient {
 	return base.InnerClient((*base.Client[generated.BlobClient])(c.blobClient))
 }
 
-// Acquire acquires a lease on the blob for write and delete operations.
+// AcquireLease acquires a lease on the blob for write and delete operations.
 //The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *LeaseClient) Acquire(ctx context.Context, o *AcquireOptions) (AcquireResponse, error) {
+func (c *LeaseClient) AcquireLease(ctx context.Context, o *AcquireLeaseOptions) (AcquireLeaseResponse, error) {
 	blobAcquireLeaseOptions, modifiedAccessConditions := o.format()
 	blobAcquireLeaseOptions.ProposedLeaseID = c.leaseID
 
@@ -103,24 +106,24 @@ func (c *LeaseClient) Acquire(ctx context.Context, o *AcquireOptions) (AcquireRe
 	return resp, err
 }
 
-// Break breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
+// BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
 // constant to break a fixed-Duration lease when it expires or an infinite lease immediately.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *LeaseClient) Break(ctx context.Context, o *BreakOptions) (BreakResponse, error) {
+func (c *LeaseClient) BreakLease(ctx context.Context, o *BreakLeaseOptions) (BreakLeaseResponse, error) {
 	blobBreakLeaseOptions, modifiedAccessConditions := o.format()
 	resp, err := c.generated().BreakLease(ctx, blobBreakLeaseOptions, modifiedAccessConditions)
 	return resp, err
 }
 
-// Change changes the blob's lease ID.
+// ChangeLease changes the blob's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *LeaseClient) Change(ctx context.Context, o *ChangeOptions) (ChangeResponse, error) {
+func (c *LeaseClient) ChangeLease(ctx context.Context, o *ChangeLeaseOptions) (ChangeLeaseResponse, error) {
 	if c.leaseID == nil {
-		return ChangeResponse{}, errors.New("leaseID cannot be nil")
+		return ChangeLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}
 	proposedLeaseID, changeLeaseOptions, modifiedAccessConditions, err := o.format()
 	if err != nil {
-		return ChangeResponse{}, err
+		return ChangeLeaseResponse{}, err
 	}
 	resp, err := c.generated().ChangeLease(ctx, *c.leaseID, *proposedLeaseID, changeLeaseOptions, modifiedAccessConditions)
 
@@ -132,22 +135,22 @@ func (c *LeaseClient) Change(ctx context.Context, o *ChangeOptions) (ChangeRespo
 	return resp, err
 }
 
-// Renew renews the blob's previously-acquired lease.
+// RenewLease renews the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *LeaseClient) Renew(ctx context.Context, o *RenewOptions) (RenewResponse, error) {
+func (c *LeaseClient) RenewLease(ctx context.Context, o *RenewLeaseOptions) (RenewLeaseResponse, error) {
 	if c.leaseID == nil {
-		return RenewResponse{}, errors.New("leaseID cannot be nil")
+		return RenewLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}
 	renewLeaseBlobOptions, modifiedAccessConditions := o.format()
 	resp, err := c.generated().RenewLease(ctx, *c.leaseID, renewLeaseBlobOptions, modifiedAccessConditions)
 	return resp, err
 }
 
-// Release releases the blob's previously-acquired lease.
+// ReleaseLease releases the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *LeaseClient) Release(ctx context.Context, o *ReleaseOptions) (ReleaseResponse, error) {
+func (c *LeaseClient) ReleaseLease(ctx context.Context, o *ReleaseLeaseOptions) (ReleaseLeaseResponse, error) {
 	if c.leaseID == nil {
-		return ReleaseResponse{}, errors.New("leaseID cannot be nil")
+		return ReleaseLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}
 	renewLeaseBlobOptions, modifiedAccessConditions := o.format()
 	resp, err := c.generated().ReleaseLease(ctx, *c.leaseID, renewLeaseBlobOptions, modifiedAccessConditions)

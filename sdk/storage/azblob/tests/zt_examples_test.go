@@ -610,7 +610,7 @@ package azblob_test
 //	get, err := http.Get(blockBlobClient.URL())
 //	handleError(err)
 //	if get.StatusCode == http.StatusNotFound {
-//		// Change the blob to be public access blob
+//		// ChangeLease the blob to be public access blob
 //		_, err := containerClient.SetAccessPolicy(
 //			context.TODO(),
 //			&azblob.ContainerSetAccessPolicyOptions{
@@ -911,7 +911,7 @@ package azblob_test
 //	// Now acquire a lease on the container.
 //	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
 //	duration := int32(60)
-//	acquireLeaseResponse, err := containerLeaseClient.Acquire(context.TODO(), &azblob.ContainerAcquireLeaseOptions{Duration: &duration})
+//	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(context.TODO(), &azblob.ContainerAcquireLeaseOptions{Duration: &duration})
 //	handleError(err)
 //	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
 //
@@ -923,30 +923,30 @@ package azblob_test
 //	fmt.Println("The container cannot be deleted while there is an active lease")
 //
 //	// We can release the lease now and the container can be deleted.
-//	_, err = containerLeaseClient.Release(context.TODO(), nil)
+//	_, err = containerLeaseClient.ReleaseLease(context.TODO(), nil)
 //	handleError(err)
 //	fmt.Println("The lease on the container is now released")
 //
-//	// Acquire a lease again to perform other operations.
+//	// AcquireLease a lease again to perform other operations.
 //	// Duration is still 60
-//	acquireLeaseResponse, err = containerLeaseClient.Acquire(context.TODO(), &azblob.ContainerAcquireLeaseOptions{Duration: &duration})
+//	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(context.TODO(), &azblob.ContainerAcquireLeaseOptions{Duration: &duration})
 //	handleError(err)
 //	fmt.Println("The container is leased again with lease ID", *acquireLeaseResponse.LeaseID)
 //
 //	// We can change the ID of an existing lease.
 //	newLeaseID := "6b3e65e5-e1bb-4a3f-8b72-13e9bc9cd3bf"
-//	changeLeaseResponse, err := containerLeaseClient.Change(context.TODO(),
+//	changeLeaseResponse, err := containerLeaseClient.ChangeLease(context.TODO(),
 //		&azblob.ContainerChangeLeaseOptions{ProposedLeaseID: to.Ptr(newLeaseID)})
 //	handleError(err)
 //	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
 //
 //	// The lease can be renewed.
-//	renewLeaseResponse, err := containerLeaseClient.Renew(context.TODO(), nil)
+//	renewLeaseResponse, err := containerLeaseClient.RenewLease(context.TODO(), nil)
 //	handleError(err)
 //	fmt.Println("The lease was renewed with the same ID", *renewLeaseResponse.LeaseID)
 //
 //	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
-//	_, err = containerLeaseClient.Break(context.TODO(), &azblob.ContainerBreakLeaseOptions{BreakPeriod: to.Ptr(int32(60))})
+//	_, err = containerLeaseClient.BreakLease(context.TODO(), &azblob.ContainerBreakLeaseOptions{BreakPeriod: to.Ptr(int32(60))})
 //	handleError(err)
 //	fmt.Println("The lease was broken, and nobody can acquire a lease for 60 seconds")
 //}

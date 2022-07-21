@@ -36,17 +36,17 @@ type SetAccessPolicyResponse = generated.ContainerClientSetAccessPolicyResponse
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// AcquireResponse contains the response from method LeaseClient.Acquire.
+// AcquireResponse contains the response from method LeaseClient.AcquireLease.
 type AcquireResponse = generated.ContainerClientAcquireLeaseResponse
 
-// BreakResponse contains the response from method LeaseClient.Break.
+// BreakResponse contains the response from method LeaseClient.BreakLease.
 type BreakResponse = generated.ContainerClientBreakLeaseResponse
 
-// ChangeResponse contains the response from method LeaseClient.Change.
+// ChangeResponse contains the response from method LeaseClient.ChangeLease.
 type ChangeResponse = generated.ContainerClientChangeLeaseResponse
 
-// ReleaseResponse contains the response from method LeaseClient.Release.
+// ReleaseResponse contains the response from method LeaseClient.ReleaseLease.
 type ReleaseResponse = generated.ContainerClientReleaseLeaseResponse
 
-// RenewResponse contains the response from method LeaseClient.Renew.
+// RenewResponse contains the response from method LeaseClient.RenewLease.
 type RenewResponse = generated.ContainerClientRenewLeaseResponse

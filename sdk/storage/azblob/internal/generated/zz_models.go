@@ -1278,7 +1278,7 @@ type Metrics struct {
 	Version *string `xml:"Version"`
 }
 
-// ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
 	IfMatch *string

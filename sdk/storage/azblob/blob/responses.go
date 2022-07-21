@@ -122,17 +122,17 @@ type GetTagsResponse = generated.BlobClientGetTagsResponse
 // CopyFromURLResponse contains the response from method BlobClient.CopyFromURL.
 type CopyFromURLResponse = generated.BlobClientCopyFromURLResponse
 
-// AcquireResponse contains the response from method BlobClient.AcquireLease.
-type AcquireResponse = generated.BlobClientAcquireLeaseResponse
+// AcquireLeaseResponse contains the response from method BlobClient.AcquireLease.
+type AcquireLeaseResponse = generated.BlobClientAcquireLeaseResponse
 
-// BreakResponse contains the response from method BlobClient.BreakLease.
-type BreakResponse = generated.BlobClientBreakLeaseResponse
+// BreakLeaseResponse contains the response from method BlobClient.BreakLease.
+type BreakLeaseResponse = generated.BlobClientBreakLeaseResponse
 
-// ChangeResponse contains the response from method BlobClient.ChangeLease.
-type ChangeResponse = generated.BlobClientChangeLeaseResponse
+// ChangeLeaseResponse contains the response from method BlobClient.ChangeLease.
+type ChangeLeaseResponse = generated.BlobClientChangeLeaseResponse
 
-// ReleaseResponse contains the response from method BlobClient.ReleaseLease.
-type ReleaseResponse = generated.BlobClientReleaseLeaseResponse
+// ReleaseLeaseResponse contains the response from method BlobClient.ReleaseLease.
+type ReleaseLeaseResponse = generated.BlobClientReleaseLeaseResponse
 
-// RenewResponse contains the response from method BlobClient.RenewLease.
-type RenewResponse = generated.BlobClientRenewLeaseResponse
+// RenewLeaseResponse contains the response from method BlobClient.RenewLease.
+type RenewLeaseResponse = generated.BlobClientRenewLeaseResponse

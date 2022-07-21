@@ -8,6 +8,7 @@
 
 package generated
 
+// AccessTier defines values for Blob Access Tier
 type AccessTier string
 
 const (
@@ -49,6 +50,7 @@ func PossibleAccessTierValues() []AccessTier {
 	}
 }
 
+// AccountKind defines values for AccountKind
 type AccountKind string
 
 const (
@@ -70,6 +72,7 @@ func PossibleAccountKindValues() []AccountKind {
 	}
 }
 
+// ArchiveStatus defines values for ArchiveStatus
 type ArchiveStatus string
 
 const (
@@ -85,6 +88,7 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 	}
 }
 
+// BlobDeleteType defines values for BlobDeleteType
 type BlobDeleteType string
 
 const (
@@ -100,6 +104,7 @@ func PossibleBlobDeleteTypeValues() []BlobDeleteType {
 	}
 }
 
+// BlobExpiryOptions defines values for BlobExpiryOptions
 type BlobExpiryOptions string
 
 const (
@@ -137,6 +142,7 @@ func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
 	}
 }
 
+// BlobImmutabilityPolicyMode defines values for BlobImmutabilityPolicyMode
 type BlobImmutabilityPolicyMode string
 
 const (
@@ -154,6 +160,7 @@ func PossibleBlobImmutabilityPolicyModeValues() []BlobImmutabilityPolicyMode {
 	}
 }
 
+// BlobType defines values for BlobType
 type BlobType string
 
 const (
@@ -171,6 +178,7 @@ func PossibleBlobTypeValues() []BlobType {
 	}
 }
 
+// BlockListType defines values for BlockListType
 type BlockListType string
 
 const (
@@ -188,6 +196,7 @@ func PossibleBlockListTypeValues() []BlockListType {
 	}
 }
 
+// CopyStatusType defines values for CopyStatusType
 type CopyStatusType string
 
 const (
@@ -207,6 +216,7 @@ func PossibleCopyStatusTypeValues() []CopyStatusType {
 	}
 }
 
+// DeleteSnapshotsOptionType defines values for DeleteSnapshotsOptionType
 type DeleteSnapshotsOptionType string
 
 const (
@@ -222,6 +232,7 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	}
 }
 
+// EncryptionAlgorithmType defines values for EncryptionAlgorithmType
 type EncryptionAlgorithmType string
 
 const (
@@ -237,6 +248,7 @@ func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
 	}
 }
 
+// LeaseDurationType defines values for LeaseDurationType
 type LeaseDurationType string
 
 const (
@@ -252,6 +264,7 @@ func PossibleLeaseDurationTypeValues() []LeaseDurationType {
 	}
 }
 
+// LeaseStateType defines values for LeaseStateType
 type LeaseStateType string
 
 const (
@@ -273,6 +286,7 @@ func PossibleLeaseStateTypeValues() []LeaseStateType {
 	}
 }
 
+// LeaseStatusType defines values for LeaseStatusType
 type LeaseStatusType string
 
 const (
@@ -288,6 +302,7 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 	}
 }
 
+// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
 type ListBlobsIncludeItem string
 
 const (
@@ -319,6 +334,7 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 	}
 }
 
+// ListContainersIncludeType defines values for ListContainersIncludeType
 type ListContainersIncludeType string
 
 const (
@@ -336,6 +352,7 @@ func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
 	}
 }
 
+// PremiumPageBlobAccessTier defines values for Premium PageBlob's AccessTier
 type PremiumPageBlobAccessTier string
 
 const (
@@ -369,6 +386,7 @@ func PossiblePremiumPageBlobAccessTierValues() []PremiumPageBlobAccessTier {
 	}
 }
 
+// PublicAccessType defines values for AccessType - private (default) or blob or container
 type PublicAccessType string
 
 const (
@@ -421,6 +439,7 @@ func PossibleRehydratePriorityValues() []RehydratePriority {
 	}
 }
 
+// SKUName defines values for SkuName - LRS, GRS, RAGRS, ZRS, Premium LRS
 type SKUName string
 
 const (
@@ -442,6 +461,7 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
+// SequenceNumberActionType defines values for SequenceNumberActionType
 type SequenceNumberActionType string
 
 const (

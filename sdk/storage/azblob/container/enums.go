@@ -13,7 +13,7 @@ const (
 	PublicAccessTypeContainer PublicAccessType = generated.PublicAccessTypeContainer
 )
 
-// ListBlobsIncludeItem enum
+// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
 type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
 
 const (

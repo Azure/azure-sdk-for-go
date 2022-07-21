@@ -14,6 +14,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // UploadOptions contains the optional parameters for the Client.Upload method.
 type UploadOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
@@ -51,6 +53,9 @@ func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *gene
 	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
+// StageBlockOptions contains the optional parameters for the Client.StageBlock method.
 type StageBlockOptions struct {
 	CpkInfo *blob.CpkInfo
 
@@ -77,8 +82,7 @@ func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOption
 	}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
 }
 
-// SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
-type SourceModifiedAccessConditions = blob.SourceModifiedAccessConditions
+// ---------------------------------------------------------------------------------------------------------------------
 
 // StageBlockFromURLOptions contains the optional parameters for the Client.StageBlockFromURL method.
 type StageBlockFromURLOptions struct {
@@ -87,7 +91,7 @@ type StageBlockFromURLOptions struct {
 
 	LeaseAccessConditions *blob.LeaseAccessConditions
 
-	SourceModifiedAccessConditions *SourceModifiedAccessConditions
+	SourceModifiedAccessConditions *blob.SourceModifiedAccessConditions
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
@@ -117,6 +121,9 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 	return options, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
+// CommitBlockListOptions contains the optional parameters for Client.CommitBlockList method.
 type CommitBlockListOptions struct {
 	Tags                      map[string]string
 	Metadata                  map[string]string
@@ -130,6 +137,8 @@ type CommitBlockListOptions struct {
 	CpkScopeInfo              *blob.CpkScopeInfo
 	AccessConditions          *blob.AccessConditions
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 // GetBlockListOptions contains the optional parameters for the Client.GetBlockList method.
 type GetBlockListOptions struct {

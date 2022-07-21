@@ -57,8 +57,8 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 
 			for arm, packageInfos := range service {
 				armServices[arm] = make([]common.PackageInfo, 0)
-				if subService == "" {
-					armServices[arm] = service[arm]
+				if subService == "" || len(packageInfos) == 1 {
+					armServices[arm] = packageInfos
 				} else {
 					for _, info := range packageInfos {
 						if strings.Contains(info.Config, subService) {

@@ -1,5 +1,19 @@
 # Release History
 
+## 2.1.0 (2022-07-21)
+### Features Added
+
+- New const `EncryptionKeySourceMicrosoftKeyVault`
+- New function `*VolumesClient.BeginReestablishReplication(context.Context, string, string, string, string, ReestablishReplicationRequest, *VolumesClientBeginReestablishReplicationOptions) (*runtime.Poller[VolumesClientReestablishReplicationResponse], error)`
+- New struct `ReestablishReplicationRequest`
+- New struct `VolumesClientBeginReestablishReplicationOptions`
+- New struct `VolumesClientReestablishReplicationResponse`
+- New field `CoolnessPeriod` in struct `VolumePatchProperties`
+- New field `CoolAccess` in struct `VolumePatchProperties`
+- New field `KeyVaultPrivateEndpointResourceID` in struct `VolumeProperties`
+- New field `CoolAccess` in struct `PoolPatchProperties`
+
+
 ## 2.0.0 (2022-06-22)
 ### Breaking Changes
 

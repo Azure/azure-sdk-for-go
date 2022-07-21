@@ -11,7 +11,7 @@ package armnetapp
 
 const (
 	moduleName    = "armnetapp"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.1.0"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory
@@ -187,10 +187,14 @@ func PossibleEnableSubvolumesValues() []EnableSubvolumes {
 	}
 }
 
-// EncryptionKeySource - Source of key used to encrypt data in volume. Possible values (case-insensitive) are: 'Microsoft.NetApp'
+// EncryptionKeySource - Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource
+// = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
+// Microsoft.KeyVault'
 type EncryptionKeySource string
 
 const (
+	// EncryptionKeySourceMicrosoftKeyVault - Customer-managed key encryption
+	EncryptionKeySourceMicrosoftKeyVault EncryptionKeySource = "Microsoft.KeyVault"
 	// EncryptionKeySourceMicrosoftNetApp - Microsoft-managed key encryption
 	EncryptionKeySourceMicrosoftNetApp EncryptionKeySource = "Microsoft.NetApp"
 )
@@ -198,6 +202,7 @@ const (
 // PossibleEncryptionKeySourceValues returns the possible values for the EncryptionKeySource const type.
 func PossibleEncryptionKeySourceValues() []EncryptionKeySource {
 	return []EncryptionKeySource{
+		EncryptionKeySourceMicrosoftKeyVault,
 		EncryptionKeySourceMicrosoftNetApp,
 	}
 }

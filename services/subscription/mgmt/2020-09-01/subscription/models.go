@@ -462,6 +462,20 @@ type TenantIDDescription struct {
 	ID *string `json:"id,omitempty"`
 	// TenantID - READ-ONLY; The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
 	TenantID *string `json:"tenantId,omitempty"`
+        // TenantCategory - READ-ONLY; Category of the tenant. Possible values include: 'TenantCategoryHome', 'TenantCategoryProjectedBy', 'TenantCategoryManagedBy'
+	TenantCategory TenantCategory `json:"tenantCategory,omitempty"`
+	// Country - READ-ONLY; Country/region name of the address for the tenant.
+	Country *string `json:"country,omitempty"`
+	// CountryCode - READ-ONLY; Country/region abbreviation for the tenant.
+	CountryCode *string `json:"countryCode,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the tenant.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Domains - READ-ONLY; The list of domains for the tenant.
+	Domains *[]string `json:"domains,omitempty"`
+	// DefaultDomain - READ-ONLY; The default domain for the tenant.
+	DefaultDomain *string `json:"defaultDomain,omitempty"`
+	// TenantType - READ-ONLY; The tenant type. Only available for 'Home' tenant category.
+	TenantType *string `json:"tenantType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TenantIDDescription.

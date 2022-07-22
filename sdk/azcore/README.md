@@ -70,7 +70,7 @@ for {
         panic(err)
     }
     if poller.Done(){
-        result, err != poller.Result(context.TODO())
+        result, err := poller.Result(context.TODO())
         if err != nil {
             panic(err)
         }
@@ -81,7 +81,7 @@ for {
 ```
 ### Consuming Service Methods Returning `Pager`
 
-If a service call returns multiple values in pages, it would return a `Pager` as a result.  You can iterate over pages using the following coding pattern:
+If a service call returns multiple values in pages, it would return a `runtime.Pager` as a result.  You can iterate over pages using the following coding pattern:
 
 ```go
 client, err := exampleservice.NewClient()

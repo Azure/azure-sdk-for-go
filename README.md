@@ -9,6 +9,7 @@ This repository is for active development of the Azure SDK for Go. For consumers
 * [Code Samples for Azure Go SDK](https://github.com/azure-samples/azure-sdk-for-go-samples)
 * [Azure REST API Docs](https://docs.microsoft.com/rest/api/)
 * [General Azure Docs](https://docs.microsoft.com/azure)
+* [Share your feedback to our Azure SDK](https://www.surveymonkey.com/r/FWPGFGG)
 
 ## Getting Started
 

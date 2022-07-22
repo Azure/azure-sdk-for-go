@@ -75,6 +75,7 @@ azlog.SetListener(func(event azlog.Event, s string) {
 azlog.SetEvents(azidentity.EventAuthentication)
 ```
 
+<a id="default-az"></a>
 ## Troubleshoot DefaultAzureCredential authentication issues
 
 | Error |Description| Mitigation |
@@ -82,12 +83,14 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |"DefaultAzureCredential failed to acquire a token"|No credential in the `DefaultAzureCredential` chain provided a token|<ul><li>[Enable logging](#enable-and-configure-logging) to get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-visualstudiocredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li></ul>|
 |Error from the client with a status code of 401 or 403|Authentication succeeded but the authorizing Azure service responded with a 401 (Unauthorized), or 403 (Forbidden) status code|<ul><li>[Enable logging](#enable-and-configure-logging) to determine which credential in the chain returned the authenticating token.</li><li>If an unexpected credential is returning a token, check application configuration such as environment variables.</li><li>Ensure the correct role is assigned to the authenticated identity. For example, a service specific role rather than the subscription Owner role.</li></ul>|
 
+<a id="env"></a>
 ## Troubleshoot EnvironmentCredential authentication issues
 
 | Error Message |Description| Mitigation |
 |---|---|---|
 |Missing or incomplete environment variable configuration|A valid combination of environment variables wasn't set|Ensure the appropriate environment variables are set for the intended authentication method as described in the [module documentation](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#EnvironmentCredential)|
 
+<a id="client-secret"></a>
 ## Troubleshoot ClientSecretCredential authentication issues
 
 | Error Code | Issue | Mitigation |
@@ -96,6 +99,7 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |AADSTS7000222|An expired client secret was provided.|Create a new client secret using the Azure portal. Details on creating a new client secret are in [Azure AD documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
 |AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Azure AD instructions](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
+<a id="client-cert"></a>
 ## Troubleshoot ClientCertificateCredential authentication issues
 
 | Error Code | Description | Mitigation |
@@ -103,12 +107,14 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the application registration as described in [Azure AD documentation](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).|
 |AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Azure AD instructions](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
+<a id="username-password"></a>
 ## Troubleshoot UsernamePasswordCredential authentication issues
 
 | Error Code | Issue | Mitigation |
 |---|---|---|
 |AADSTS50126|The provided username or password is invalid.|Ensure the username and password provided to the credential constructor are valid.|
 
+<a id="managed-id"></a>
 ## Troubleshoot ManagedIdentityCredential authentication issues
 
 `ManagedIdentityCredential` is designed to work on a variety of Azure hosts support managed identity. Configuration and troubleshooting vary from host to host. The below table lists the Azure hosts that can be assigned a managed identity and are supported by `ManagedIdentityCredential`.
@@ -164,6 +170,7 @@ curl "$IDENTITY_ENDPOINT?resource=https://management.core.windows.net&api-versio
 |---|---|---|
 |"no azure identity found for request clientID"|The application attempted to authenticate before an identity was assigned to its pod|Verify the pod is labeled correctly. This also occurs when a correctly labeled pod authenticates before the identity is ready. To prevent initialization races, configure NMI to set the Retry-After header in its responses as described in [Pod Identity documentation](https://azure.github.io/aad-pod-identity/docs/configure/feature_flags/#set-retry-after-header-in-nmi-response).
 
+<a id="azure-cli"></a>
 ## Troubleshoot AzureCliCredential authentication issues
 
 | Error Message |Description| Mitigation |

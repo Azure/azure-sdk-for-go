@@ -1769,6 +1769,7 @@ func (p *PoolChangeRequest) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PoolPatchProperties.
 func (p PoolPatchProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "coolAccess", p.CoolAccess)
 	populate(objectMap, "qosType", p.QosType)
 	populate(objectMap, "size", p.Size)
 	return json.Marshal(objectMap)
@@ -1783,6 +1784,9 @@ func (p *PoolPatchProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "coolAccess":
+			err = unpopulate(val, "CoolAccess", &p.CoolAccess)
+			delete(rawMsg, key)
 		case "qosType":
 			err = unpopulate(val, "QosType", &p.QosType)
 			delete(rawMsg, key)
@@ -1925,6 +1929,33 @@ func (q *QuotaAvailabilityRequest) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", q, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ReestablishReplicationRequest.
+func (r ReestablishReplicationRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "sourceVolumeId", r.SourceVolumeID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ReestablishReplicationRequest.
+func (r *ReestablishReplicationRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "sourceVolumeId":
+			err = unpopulate(val, "SourceVolumeID", &r.SourceVolumeID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
 		}
 	}
 	return nil
@@ -3676,6 +3707,8 @@ func (v *VolumePatch) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VolumePatchProperties.
 func (v VolumePatchProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "coolAccess", v.CoolAccess)
+	populate(objectMap, "coolnessPeriod", v.CoolnessPeriod)
 	populate(objectMap, "dataProtection", v.DataProtection)
 	populate(objectMap, "defaultGroupQuotaInKiBs", v.DefaultGroupQuotaInKiBs)
 	populate(objectMap, "defaultUserQuotaInKiBs", v.DefaultUserQuotaInKiBs)
@@ -3697,6 +3730,12 @@ func (v *VolumePatchProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "coolAccess":
+			err = unpopulate(val, "CoolAccess", &v.CoolAccess)
+			delete(rawMsg, key)
+		case "coolnessPeriod":
+			err = unpopulate(val, "CoolnessPeriod", &v.CoolnessPeriod)
+			delete(rawMsg, key)
 		case "dataProtection":
 			err = unpopulate(val, "DataProtection", &v.DataProtection)
 			delete(rawMsg, key)
@@ -3812,6 +3851,7 @@ func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isDefaultQuotaEnabled", v.IsDefaultQuotaEnabled)
 	populate(objectMap, "isRestoring", v.IsRestoring)
 	populate(objectMap, "kerberosEnabled", v.KerberosEnabled)
+	populate(objectMap, "keyVaultPrivateEndpointResourceId", v.KeyVaultPrivateEndpointResourceID)
 	populate(objectMap, "ldapEnabled", v.LdapEnabled)
 	populate(objectMap, "maximumNumberOfFiles", v.MaximumNumberOfFiles)
 	populate(objectMap, "mountTargets", v.MountTargets)
@@ -3904,6 +3944,9 @@ func (v *VolumeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "kerberosEnabled":
 			err = unpopulate(val, "KerberosEnabled", &v.KerberosEnabled)
+			delete(rawMsg, key)
+		case "keyVaultPrivateEndpointResourceId":
+			err = unpopulate(val, "KeyVaultPrivateEndpointResourceID", &v.KeyVaultPrivateEndpointResourceID)
 			delete(rawMsg, key)
 		case "ldapEnabled":
 			err = unpopulate(val, "LdapEnabled", &v.LdapEnabled)

@@ -364,6 +364,11 @@ type VolumesClientReInitializeReplicationResponse struct {
 	// placeholder for future response values
 }
 
+// VolumesClientReestablishReplicationResponse contains the response from method VolumesClient.ReestablishReplication.
+type VolumesClientReestablishReplicationResponse struct {
+	// placeholder for future response values
+}
+
 // VolumesClientRelocateResponse contains the response from method VolumesClient.Relocate.
 type VolumesClientRelocateResponse struct {
 	// placeholder for future response values

@@ -858,6 +858,9 @@ type PoolChangeRequest struct {
 
 // PoolPatchProperties - Patchable pool properties
 type PoolPatchProperties struct {
+	// If enabled (true) the pool can contain cool Access enabled volumes.
+	CoolAccess *bool `json:"coolAccess,omitempty"`
+
 	// The qos type of the pool
 	QosType *QosType `json:"qosType,omitempty"`
 
@@ -889,10 +892,10 @@ type PoolProperties struct {
 	// READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
-	// READ-ONLY; Total throughput of pool in Mibps
+	// READ-ONLY; Total throughput of pool in MiB/s
 	TotalThroughputMibps *float32 `json:"totalThroughputMibps,omitempty" azure:"ro"`
 
-	// READ-ONLY; Utilized throughput of pool in Mibps
+	// READ-ONLY; Utilized throughput of pool in MiB/s
 	UtilizedThroughputMibps *float32 `json:"utilizedThroughputMibps,omitempty" azure:"ro"`
 }
 
@@ -950,6 +953,12 @@ type QuotaAvailabilityRequest struct {
 
 	// REQUIRED; Resource type used for verification.
 	Type *CheckQuotaNameResourceTypes `json:"type,omitempty"`
+}
+
+// ReestablishReplicationRequest - Re-establish request object supplied in the body of the operation.
+type ReestablishReplicationRequest struct {
+	// Resource id of the source volume for the replication
+	SourceVolumeID *string `json:"sourceVolumeId,omitempty"`
 }
 
 // Replication properties
@@ -1777,6 +1786,12 @@ type VolumePatch struct {
 
 // VolumePatchProperties - Patchable volume properties
 type VolumePatchProperties struct {
+	// Specifies whether Cool Access(tiering) is enabled for the volume.
+	CoolAccess *bool `json:"coolAccess,omitempty"`
+
+	// Specifies the number of days after which data that is not accessed by clients will be tiered.
+	CoolnessPeriod *int32 `json:"coolnessPeriod,omitempty"`
+
 	// DataProtection type volumes include an object containing details of the replication
 	DataProtection *VolumePatchPropertiesDataProtection `json:"dataProtection,omitempty"`
 
@@ -1865,7 +1880,9 @@ type VolumeProperties struct {
 	// Flag indicating whether subvolume operations are enabled on the volume
 	EnableSubvolumes *EnableSubvolumes `json:"enableSubvolumes,omitempty"`
 
-	// Source of key used to encrypt data in volume. Possible values (case-insensitive) are: 'Microsoft.NetApp'
+	// Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource = 'Microsoft.KeyVault'.
+	// Possible values (case-insensitive) are: 'Microsoft.NetApp,
+	// Microsoft.KeyVault'
 	EncryptionKeySource *EncryptionKeySource `json:"encryptionKeySource,omitempty"`
 
 	// Set of export policy rules
@@ -1879,6 +1896,10 @@ type VolumeProperties struct {
 
 	// Describe if a volume is KerberosEnabled. To be use with swagger version 2020-05-01 or later
 	KerberosEnabled *bool `json:"kerberosEnabled,omitempty"`
+
+	// The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable if encryptionKeySource
+	// = 'Microsoft.KeyVault'.
+	KeyVaultPrivateEndpointResourceID *string `json:"keyVaultPrivateEndpointResourceId,omitempty"`
 
 	// Specifies whether LDAP is enabled or not for a given NFS volume.
 	LdapEnabled *bool `json:"ldapEnabled,omitempty"`
@@ -1915,7 +1936,7 @@ type VolumeProperties struct {
 	// UUID v4 or resource identifier used to identify the Snapshot.
 	SnapshotID *string `json:"snapshotId,omitempty"`
 
-	// Maximum throughput in Mibps that can be achieved by this volume and this will be accepted as input only for manual qosType
+	// Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for manual qosType
 	// volume
 	ThroughputMibps *float32 `json:"throughputMibps,omitempty"`
 
@@ -2146,6 +2167,13 @@ type VolumesClientBeginPoolChangeOptions struct {
 // VolumesClientBeginReInitializeReplicationOptions contains the optional parameters for the VolumesClient.BeginReInitializeReplication
 // method.
 type VolumesClientBeginReInitializeReplicationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginReestablishReplicationOptions contains the optional parameters for the VolumesClient.BeginReestablishReplication
+// method.
+type VolumesClientBeginReestablishReplicationOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v2.0.0"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -550,54 +550,6 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
-// FleetMemberProvisioningState - The provisioning state of the last accepted operation.
-type FleetMemberProvisioningState string
-
-const (
-	FleetMemberProvisioningStateCanceled  FleetMemberProvisioningState = "Canceled"
-	FleetMemberProvisioningStateFailed    FleetMemberProvisioningState = "Failed"
-	FleetMemberProvisioningStateJoining   FleetMemberProvisioningState = "Joining"
-	FleetMemberProvisioningStateLeaving   FleetMemberProvisioningState = "Leaving"
-	FleetMemberProvisioningStateSucceeded FleetMemberProvisioningState = "Succeeded"
-	FleetMemberProvisioningStateUpdating  FleetMemberProvisioningState = "Updating"
-)
-
-// PossibleFleetMemberProvisioningStateValues returns the possible values for the FleetMemberProvisioningState const type.
-func PossibleFleetMemberProvisioningStateValues() []FleetMemberProvisioningState {
-	return []FleetMemberProvisioningState{
-		FleetMemberProvisioningStateCanceled,
-		FleetMemberProvisioningStateFailed,
-		FleetMemberProvisioningStateJoining,
-		FleetMemberProvisioningStateLeaving,
-		FleetMemberProvisioningStateSucceeded,
-		FleetMemberProvisioningStateUpdating,
-	}
-}
-
-// FleetProvisioningState - The provisioning state of the last accepted operation.
-type FleetProvisioningState string
-
-const (
-	FleetProvisioningStateCanceled  FleetProvisioningState = "Canceled"
-	FleetProvisioningStateCreating  FleetProvisioningState = "Creating"
-	FleetProvisioningStateDeleting  FleetProvisioningState = "Deleting"
-	FleetProvisioningStateFailed    FleetProvisioningState = "Failed"
-	FleetProvisioningStateSucceeded FleetProvisioningState = "Succeeded"
-	FleetProvisioningStateUpdating  FleetProvisioningState = "Updating"
-)
-
-// PossibleFleetProvisioningStateValues returns the possible values for the FleetProvisioningState const type.
-func PossibleFleetProvisioningStateValues() []FleetProvisioningState {
-	return []FleetProvisioningState{
-		FleetProvisioningStateCanceled,
-		FleetProvisioningStateCreating,
-		FleetProvisioningStateDeleting,
-		FleetProvisioningStateFailed,
-		FleetProvisioningStateSucceeded,
-		FleetProvisioningStateUpdating,
-	}
-}
-
 type Format string
 
 const (
@@ -812,8 +764,8 @@ const (
 	// NetworkPluginKubenet - Use the Kubenet network plugin. See [Kubenet (basic) networking](https://docs.microsoft.com/azure/aks/concepts-network#kubenet-basic-networking)
 	// for more information.
 	NetworkPluginKubenet NetworkPlugin = "kubenet"
-	// NetworkPluginNone - Do not use a network plugin. A custom CNI will need to be installed after cluster creation for networking
-	// functionality.
+	// NetworkPluginNone - No CNI plugin is pre-installed. See [BYO CNI](https://docs.microsoft.com/en-us/azure/aks/use-byo-cni)
+	// for more information.
 	NetworkPluginNone NetworkPlugin = "none"
 )
 
@@ -823,22 +775,6 @@ func PossibleNetworkPluginValues() []NetworkPlugin {
 		NetworkPluginAzure,
 		NetworkPluginKubenet,
 		NetworkPluginNone,
-	}
-}
-
-// NetworkPluginMode - The mode the network plugin should use.
-type NetworkPluginMode string
-
-const (
-	// NetworkPluginModeOverlay - Pods are given IPs from the PodCIDR address space but use Azure Routing Domains rather than
-	// Kubenet reference plugins host-local and bridge.
-	NetworkPluginModeOverlay NetworkPluginMode = "Overlay"
-)
-
-// PossibleNetworkPluginModeValues returns the possible values for the NetworkPluginMode const type.
-func PossibleNetworkPluginModeValues() []NetworkPluginMode {
-	return []NetworkPluginMode{
-		NetworkPluginModeOverlay,
 	}
 }
 
@@ -886,16 +822,12 @@ func PossibleOSDiskTypeValues() []OSDiskType {
 	}
 }
 
-// OSSKU - Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if OSType=Linux or Windows2019
-// if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022
-// after Windows2019 is deprecated.
+// OSSKU - Specifies an OS SKU. This value must not be specified if OSType is Windows.
 type OSSKU string
 
 const (
-	OSSKUCBLMariner  OSSKU = "CBLMariner"
-	OSSKUUbuntu      OSSKU = "Ubuntu"
-	OSSKUWindows2019 OSSKU = "Windows2019"
-	OSSKUWindows2022 OSSKU = "Windows2022"
+	OSSKUCBLMariner OSSKU = "CBLMariner"
+	OSSKUUbuntu     OSSKU = "Ubuntu"
 )
 
 // PossibleOSSKUValues returns the possible values for the OSSKU const type.
@@ -903,8 +835,6 @@ func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
 		OSSKUCBLMariner,
 		OSSKUUbuntu,
-		OSSKUWindows2019,
-		OSSKUWindows2022,
 	}
 }
 
@@ -1079,8 +1009,6 @@ func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 type SnapshotType string
 
 const (
-	// SnapshotTypeManagedCluster - The snapshot is a snapshot of a managed cluster.
-	SnapshotTypeManagedCluster SnapshotType = "ManagedCluster"
 	// SnapshotTypeNodePool - The snapshot is a snapshot of a node pool.
 	SnapshotTypeNodePool SnapshotType = "NodePool"
 )
@@ -1088,28 +1016,7 @@ const (
 // PossibleSnapshotTypeValues returns the possible values for the SnapshotType const type.
 func PossibleSnapshotTypeValues() []SnapshotType {
 	return []SnapshotType{
-		SnapshotTypeManagedCluster,
 		SnapshotTypeNodePool,
-	}
-}
-
-// TrustedAccessRoleBindingProvisioningState - The current provisioning state of trusted access role binding.
-type TrustedAccessRoleBindingProvisioningState string
-
-const (
-	TrustedAccessRoleBindingProvisioningStateDeleting  TrustedAccessRoleBindingProvisioningState = "Deleting"
-	TrustedAccessRoleBindingProvisioningStateFailed    TrustedAccessRoleBindingProvisioningState = "Failed"
-	TrustedAccessRoleBindingProvisioningStateSucceeded TrustedAccessRoleBindingProvisioningState = "Succeeded"
-	TrustedAccessRoleBindingProvisioningStateUpdating  TrustedAccessRoleBindingProvisioningState = "Updating"
-)
-
-// PossibleTrustedAccessRoleBindingProvisioningStateValues returns the possible values for the TrustedAccessRoleBindingProvisioningState const type.
-func PossibleTrustedAccessRoleBindingProvisioningStateValues() []TrustedAccessRoleBindingProvisioningState {
-	return []TrustedAccessRoleBindingProvisioningState{
-		TrustedAccessRoleBindingProvisioningStateDeleting,
-		TrustedAccessRoleBindingProvisioningStateFailed,
-		TrustedAccessRoleBindingProvisioningStateSucceeded,
-		TrustedAccessRoleBindingProvisioningStateUpdating,
 	}
 }
 

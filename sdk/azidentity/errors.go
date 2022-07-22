@@ -75,20 +75,19 @@ func (e *AuthenticationFailedError) Error() string {
 		fmt.Fprint(msg, "Response contained no body")
 	}
 	fmt.Fprintln(msg, "\n--------------------------------------------------------------------------------")
-
 	// adding link to TROUBLESHOOTING.md for relevant errors
-	fmt.Println(e.credType)
 	switch e.credType {
+	case "AzureCLICredential":
+		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#azure-cli")
 	case "ClientCertificateCredential":
-		fmt.Fprint(msg, "\nhttps://aka.ms/azsdk/go/identity/troubleshoot#client-cert")
+		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#client-cert")
 	case "ClientSecretCredential":
-		fmt.Fprint(msg, "\nhttps://aka.ms/azsdk/go/identity/troubleshoot#client-secret")
+		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#client-secret")
 	case "ManagedIdentityCredential":
-		fmt.Fprint(msg, "\nhttps://aka.ms/azsdk/go/identity/troubleshoot#managed-id")
+		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#managed-id")
 	case "UsernamePasswordCredential":
-		fmt.Fprint(msg, "\nhttps://aka.ms/azsdk/go/identity/troubleshoot#username-password")
+		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#username-password")
 	}
-
 	return msg.String()
 }
 

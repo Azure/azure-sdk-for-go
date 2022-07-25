@@ -75,7 +75,6 @@ func (e *AuthenticationFailedError) Error() string {
 		fmt.Fprint(msg, "Response contained no body")
 	}
 	fmt.Fprintln(msg, "\n--------------------------------------------------------------------------------")
-	// adding link to TROUBLESHOOTING.md for relevant errors
 	var anchor string
 	switch e.credType {
 	case credNameAzureCLI:
@@ -90,7 +89,7 @@ func (e *AuthenticationFailedError) Error() string {
 		anchor = "username-password"
 	}
 	if anchor != "" {
-		fmt.Fprintf(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#%s", anchor)
+		fmt.Fprintf(msg, "To troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#%s", anchor)
 	}
 	return msg.String()
 }

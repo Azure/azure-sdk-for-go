@@ -75,7 +75,6 @@ azlog.SetListener(func(event azlog.Event, s string) {
 azlog.SetEvents(azidentity.EventAuthentication)
 ```
 
-<a id="default-az"></a>
 ## Troubleshoot DefaultAzureCredential authentication issues
 
 | Error |Description| Mitigation |
@@ -83,7 +82,6 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |"DefaultAzureCredential failed to acquire a token"|No credential in the `DefaultAzureCredential` chain provided a token|<ul><li>[Enable logging](#enable-and-configure-logging) to get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-visualstudiocredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li></ul>|
 |Error from the client with a status code of 401 or 403|Authentication succeeded but the authorizing Azure service responded with a 401 (Unauthorized), or 403 (Forbidden) status code|<ul><li>[Enable logging](#enable-and-configure-logging) to determine which credential in the chain returned the authenticating token.</li><li>If an unexpected credential is returning a token, check application configuration such as environment variables.</li><li>Ensure the correct role is assigned to the authenticated identity. For example, a service specific role rather than the subscription Owner role.</li></ul>|
 
-<a id="env"></a>
 ## Troubleshoot EnvironmentCredential authentication issues
 
 | Error Message |Description| Mitigation |

@@ -76,17 +76,21 @@ func (e *AuthenticationFailedError) Error() string {
 	}
 	fmt.Fprintln(msg, "\n--------------------------------------------------------------------------------")
 	// adding link to TROUBLESHOOTING.md for relevant errors
+	var anchor string
 	switch e.credType {
 	case "AzureCLICredential":
-		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#azure-cli")
+		anchor = "azure-cli"
 	case "ClientCertificateCredential":
-		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#client-cert")
+		anchor = "client-cert"
 	case "ClientSecretCredential":
-		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#client-secret")
+		anchor = "client-secret"
 	case "ManagedIdentityCredential":
-		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#managed-id")
+		anchor = "managed-id"
 	case "UsernamePasswordCredential":
-		fmt.Fprint(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#username-password")
+		anchor = "username-password"
+	}
+	if anchor != "" {
+		fmt.Fprintf(msg, "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#%s", anchor)
 	}
 	return msg.String()
 }

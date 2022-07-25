@@ -8,7 +8,7 @@ package azidentity
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"os"
 	"strings"
 	"time"
@@ -101,14 +101,13 @@ var _ azcore.TokenCredential = (*DefaultAzureCredential)(nil)
 
 func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
 	errorMessage := strings.Join(errorMessages, "\n\t")
-	troubleshootMessage := "to troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#default-az"
 
 	if numberOfSuccessfulCredentials == 0 {
-		return fmt.Errorf("%s\n\t%s", errorMessage, troubleshootMessage)
+		return errors.New(errorMessage)
 	}
 
 	if len(errorMessages) != 0 {
-		log.Writef(EventAuthentication, "NewDefaultAzureCredential failed to initialize some credentials:\n\t%s\n\t%s", errorMessage, troubleshootMessage)
+		log.Writef(EventAuthentication, "NewDefaultAzureCredential failed to initialize some credentials:\n\t%s", errorMessage)
 	}
 
 	return nil

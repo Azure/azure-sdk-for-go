@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:42 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshot?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 18:33:22 GMT
+      - Mon, 25 Jul 2022 20:45:42 GMT
       Etag:
-      - '"0x8DA6E6C27C1F810"'
+      - '"0x8DA6E7EA443FF3D"'
       Last-Modified:
-      - Mon, 25 Jul 2022 18:33:22 GMT
+      - Mon, 25 Jul 2022 20:45:42 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d76a9dfb-601e-0063-1655-a01283000000
+      - af05b491-601e-004c-5967-a01f48000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -52,7 +52,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:43 GMT
       x-ms-blob-type:
       - BlockBlob
       x-ms-version:
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Mon, 25 Jul 2022 18:33:22 GMT
+      - Mon, 25 Jul 2022 20:45:42 GMT
       Etag:
-      - '"0x8DA6E6C27E7237F"'
+      - '"0x8DA6E7EA4697F1E"'
       Last-Modified:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:42 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - d76a9f36-601e-0063-2355-a01283000000
+      - af05b588-601e-004c-3967-a01f48000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-07-25T18:33:23.1329151Z"
+      - "2022-07-25T20:45:42.9658398Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -98,7 +98,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:43 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshot/gotestblobblobdeletesnapshot?comp=snapshot
@@ -109,23 +109,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 18:33:22 GMT
+      - Mon, 25 Jul 2022 20:45:42 GMT
       Etag:
-      - '"0x8DA6E6C27E7237F"'
+      - '"0x8DA6E7EA4697F1E"'
       Last-Modified:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:42 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d76aa045-601e-0063-0e55-a01283000000
+      - af05b6dd-601e-004c-7d67-a01f48000000
       X-Ms-Request-Server-Encrypted:
       - "false"
       X-Ms-Snapshot:
-      - "2022-07-25T18:33:23.3787764Z"
+      - "2022-07-25T20:45:43.2097026Z"
       X-Ms-Version:
       - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-07-25T18:33:23.3797764Z"
+      - "2022-07-25T20:45:43.2107026Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -140,10 +140,10 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:43 GMT
       x-ms-version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshot/gotestblobblobdeletesnapshot?snapshot=2022-07-25T18%3A33%3A23.3787764Z
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshot/gotestblobblobdeletesnapshot?snapshot=2022-07-25T20%3A45%3A43.2097026Z
     method: DELETE
   response:
     body: ""
@@ -151,13 +151,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:42 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Delete-Type-Permanent:
       - "true"
       X-Ms-Request-Id:
-      - d76aa135-601e-0063-6055-a01283000000
+      - af05b7e8-601e-004c-6a67-a01f48000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted
@@ -174,22 +174,22 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:33:24 GMT
+      - Mon, 25 Jul 2022 20:45:43 GMT
       x-ms-version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshot/gotestblobblobdeletesnapshot?snapshot=2022-07-25T18%3A33%3A23.3787764Z
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshot/gotestblobblobdeletesnapshot?snapshot=2022-07-25T20%3A45%3A43.2097026Z
     method: HEAD
   response:
     body: ""
     headers:
       Date:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:43 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - BlobNotFound
       X-Ms-Request-Id:
-      - d76aa299-601e-0063-8055-a01283000000
+      - af05b935-601e-004c-1c67-a01f48000000
       X-Ms-Version:
       - "2020-10-02"
     status: 404 The specified blob does not exist.
@@ -206,7 +206,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:33:24 GMT
+      - Mon, 25 Jul 2022 20:45:44 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshot?restype=container
@@ -217,11 +217,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 18:33:23 GMT
+      - Mon, 25 Jul 2022 20:45:43 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d76aa3fd-601e-0063-4b55-a01283000000
+      - af05ba40-601e-004c-0e67-a01f48000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

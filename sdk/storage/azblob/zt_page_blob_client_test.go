@@ -335,7 +335,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(ctx, &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
 	_require.Nil(err)
 
 	srcBlob := createNewPageBlob(_require, "src"+generateBlobName(testName), containerClient)

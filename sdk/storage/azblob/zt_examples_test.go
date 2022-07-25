@@ -626,6 +626,7 @@ func Example_container_ClientSetAccessPolicy() {
 		// ChangeLease the blob to be public access blob
 		_, err := containerClient.SetAccessPolicy(
 			context.TODO(),
+			nil,
 			&container.SetAccessPolicyOptions{
 				Access: to.Ptr(azblob.PublicAccessTypeBlob),
 			},

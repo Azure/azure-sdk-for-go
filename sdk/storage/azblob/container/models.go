@@ -197,8 +197,6 @@ func (o *GetAccessPolicyOptions) format() (*generated.ContainerClientGetAccessPo
 type SetAccessPolicyOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
 	Access *PublicAccessType
-	// the acls for the container
-	ContainerACL []*SignedIdentifier
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	AccessConditions *AccessConditions
@@ -210,8 +208,7 @@ func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPo
 	}
 	lac, mac := exported.FormatContainerAccessConditions(o.AccessConditions)
 	return &generated.ContainerClientSetAccessPolicyOptions{
-		Access:       o.Access,
-		ContainerACL: o.ContainerACL,
+		Access: o.Access,
 	}, lac, mac
 }
 

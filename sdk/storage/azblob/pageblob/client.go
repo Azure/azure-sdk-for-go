@@ -362,8 +362,8 @@ func (pb *Client) AbortCopyFromURL(ctx context.Context, copyID string, o *blob.A
 // Each call to this operation replaces all existing tags attached to the blob.
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
-func (pb *Client) SetTags(ctx context.Context, o *blob.SetTagsOptions) (blob.SetTagsResponse, error) {
-	return pb.BlobClient().SetTags(ctx, o)
+func (pb *Client) SetTags(ctx context.Context, tags map[string]string, o *blob.SetTagsOptions) (blob.SetTagsResponse, error) {
+	return pb.BlobClient().SetTags(ctx, tags, o)
 }
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.

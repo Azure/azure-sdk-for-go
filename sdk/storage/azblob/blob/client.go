@@ -241,10 +241,10 @@ func (b *Client) AbortCopyFromURL(ctx context.Context, copyID string, options *A
 // Each call to this operation replaces all existing tags attached to the blob.
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
-func (b *Client) SetTags(ctx context.Context, options *SetTagsOptions) (SetTagsResponse, error) {
+func (b *Client) SetTags(ctx context.Context, tags map[string]string, options *SetTagsOptions) (SetTagsResponse, error) {
+	serializedTags := shared.SerializeBlobTags(tags)
 	blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions := options.format()
-	resp, err := b.generated().SetTags(ctx, blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions)
-
+	resp, err := b.generated().SetTags(ctx, *serializedTags, blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions)
 	return resp, err
 }
 

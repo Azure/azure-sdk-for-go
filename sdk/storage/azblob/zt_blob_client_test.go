@@ -356,7 +356,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(ctx, nil)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, nil)
 	_require.Nil(err)
 
 	bbClient := createNewBlockBlob(_require, generateBlobName(testName), containerClient)
@@ -470,7 +470,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
 		_require.Nil(err)
 
 		containerClient := createNewContainer(_require, generateContainerName(testName)+strconv.Itoa(i), svcClient)
-		_, err := containerClient.SetAccessPolicy(ctx, nil)
+		_, err := containerClient.SetAccessPolicy(ctx, nil, nil)
 		_require.Nil(err)
 
 		blobClient := createNewBlockBlob(_require, generateBlobName(testName), containerClient)
@@ -1056,7 +1056,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions) // So that we don't have to create a SAS
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &setAccessPolicyOptions) // So that we don't have to create a SAS
 	_require.Nil(err)
 
 	// Must copy across accounts so it takes time to copy

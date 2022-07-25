@@ -67,7 +67,7 @@ func (c *SharedKeyCredential) computeHMACSHA256(message string) (string, error) 
 func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	headers := req.Header
-	contentLength := headers.Get(shared.HeaderContentLength)
+	contentLength := getHeader(shared.HeaderContentLength, headers)
 	if contentLength == "0" {
 		contentLength = ""
 	}
@@ -79,21 +79,34 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 
 	stringToSign := strings.Join([]string{
 		req.Method,
-		headers.Get(shared.HeaderContentEncoding),
-		headers.Get(shared.HeaderContentLanguage),
+		getHeader(shared.HeaderContentEncoding, headers),
+		getHeader(shared.HeaderContentLanguage, headers),
 		contentLength,
-		headers.Get(shared.HeaderContentMD5),
-		headers.Get(shared.HeaderContentType),
+		getHeader(shared.HeaderContentMD5, headers),
+		getHeader(shared.HeaderContentType, headers),
 		"", // Empty date because x-ms-date is expected (as per web page above)
-		headers.Get(shared.HeaderIfModifiedSince),
-		headers.Get(shared.HeaderIfMatch),
-		headers.Get(shared.HeaderIfNoneMatch),
-		headers.Get(shared.HeaderIfUnmodifiedSince),
-		headers.Get(shared.HeaderRange),
+		getHeader(shared.HeaderIfModifiedSince, headers),
+		getHeader(shared.HeaderIfMatch, headers),
+		getHeader(shared.HeaderIfNoneMatch, headers),
+		getHeader(shared.HeaderIfUnmodifiedSince, headers),
+		getHeader(shared.HeaderRange, headers),
 		c.buildCanonicalizedHeader(headers),
 		canonicalizedResource,
 	}, "\n")
 	return stringToSign, nil
+}
+
+func getHeader(key string, headers map[string][]string) string {
+	if headers == nil {
+		return ""
+	}
+	if v, ok := headers[key]; ok {
+		if len(v) > 0 {
+			return v[0]
+		}
+	}
+
+	return ""
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) string {
@@ -177,7 +190,7 @@ func NewSharedKeyCredPolicy(cred *SharedKeyCredential) *SharedKeyCredPolicy {
 }
 
 func (s *SharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
-	if d := req.Raw().Header.Get(shared.HeaderXmsDate); d == "" {
+	if d := getHeader(shared.HeaderXmsDate, req.Raw().Header); d == "" {
 		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	}
 	stringToSign, err := s.cred.buildStringToSign(req.Raw())

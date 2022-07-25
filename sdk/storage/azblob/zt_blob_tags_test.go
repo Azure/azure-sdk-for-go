@@ -45,10 +45,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	_require.Nil(err)
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
-	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags: blobTagsMap,
-	}
-	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = bbClient.SetTags(ctx, blobTagsMap, nil)
 	_require.Nil(err)
 	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
@@ -93,10 +90,9 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	versionId2 := blockBlobUploadResp.VersionID
 
 	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags:      blobTagsMap,
 		VersionID: versionId1,
 	}
-	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = bbClient.SetTags(ctx, blobTagsMap, &setTagsBlobOptions)
 	_require.Nil(err)
 	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
@@ -478,10 +474,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 		"Storage+SDK":     "SDK/GO",
 		"GO ":             ".Net",
 	}
-	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags: blobTagsMap,
-	}
-	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = bbClient.SetTags(ctx, blobTagsMap, nil)
 	_require.Nil(err)
 
 	resp, err := bbClient.CreateSnapshot(ctx, nil)
@@ -514,9 +507,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 		"+-./:=_1": "+-./:=_",
 	}
 
-	_, err = blobClient.SetTags(ctx, &blob.SetTagsOptions{
-		Tags: blobTagsMap,
-	})
+	_, err = blobClient.SetTags(ctx, blobTagsMap, nil)
 	_require.Nil(err)
 	// _require.Equal(resp.RawResponse.StatusCode,204)
 
@@ -696,10 +687,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	_require.NotEqual(putResp.ETag, "")
 	_require.NotEqual(putResp.Version, "")
 
-	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags: basicBlobTagsMap,
-	}
-	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = pbClient.SetTags(ctx, basicBlobTagsMap, nil)
 	_require.Nil(err)
 	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
 
@@ -723,10 +711,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 		"b0l1o2b3":   "s0d1k2",
 	}
 
-	setTagsBlobOptions2 := blob.SetTagsOptions{
-		Tags: modifiedBlobTags,
-	}
-	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
+	_, err = pbClient.SetTags(ctx, modifiedBlobTags, nil)
 	_require.Nil(err)
 	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
 
@@ -760,10 +745,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	pbClient := createNewPageBlob(_require, generateBlobName(testName), containerClient)
 
-	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags: specialCharBlobTagsMap,
-	}
-	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = pbClient.SetTags(ctx, specialCharBlobTagsMap, nil)
 	_require.Nil(err)
 
 	resp, err := pbClient.CreateSnapshot(ctx, nil)

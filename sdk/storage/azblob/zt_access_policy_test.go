@@ -29,7 +29,7 @@ func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(ctx, &container.SetAccessPolicyOptions{})
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &container.SetAccessPolicyOptions{})
 	_require.Nil(err)
 }
 
@@ -62,11 +62,7 @@ func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 		ID: &id,
 	})
 
-	param := container.SetAccessPolicyOptions{
-		ContainerACL: signedIdentifiers,
-	}
-
-	_, err = containerClient.SetAccessPolicy(ctx, &param)
+	_, err = containerClient.SetAccessPolicy(ctx, signedIdentifiers, nil)
 	_require.Nil(err)
 }
 
@@ -114,11 +110,7 @@ func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 		},
 	})
 
-	param := container.SetAccessPolicyOptions{
-		ContainerACL: signedIdentifiers,
-	}
-
-	_, err = containerClient.SetAccessPolicy(ctx, &param)
+	_, err = containerClient.SetAccessPolicy(ctx, signedIdentifiers, nil)
 	_require.Nil(err)
 
 	// Make a Get to assert two access policies
@@ -147,11 +139,7 @@ func (s *azblobUnrecordedTestSuite) TestSetNullAccessPolicy() {
 		ID: &id,
 	})
 
-	param := container.SetAccessPolicyOptions{
-		ContainerACL: signedIdentifiers,
-	}
-
-	_, err = containerClient.SetAccessPolicy(ctx, &param)
+	_, err = containerClient.SetAccessPolicy(ctx, signedIdentifiers, nil)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -197,10 +185,7 @@ func (s *azblobTestSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 		},
 	}
 
-	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		ContainerACL: permissions,
-	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, permissions, nil)
 
 	_require.Nil(err)
 
@@ -253,7 +238,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessNone() {
 	_ = createNewBlockBlob(_require, blobName, containerClient)
 
 	// Container is created with PublicAccessTypeBlob, so setting it to None will actually test that it is changed through this method
-	_, err = containerClient.SetAccessPolicy(ctx, nil)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, nil)
 	_require.Nil(err)
 
 	bsu2, err := service.NewClientWithNoCredential(svcClient.URL(), nil)
@@ -292,11 +277,10 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	access := container.PublicAccessTypeBlob
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: &access,
+		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -317,11 +301,10 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 
 	defer deleteContainer(_require, containerClient)
 
-	access := container.PublicAccessTypeContainer
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: &access,
+		Access: to.Ptr(container.PublicAccessTypeContainer),
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -421,10 +404,9 @@ func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
 
 	access := container.PublicAccessTypeBlob
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access:       &access,
-		ContainerACL: permissions,
+		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, permissions, &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
@@ -463,10 +445,9 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 
 	access := container.PublicAccessTypeBlob
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access:       &access,
-		ContainerACL: permissions,
+		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, permissions, &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -477,10 +458,9 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	newId := "0004"
 	permissions[0].ID = &newId // Modify the remaining policy which is at index 0 in the new slice
 	setAccessPolicyOptions1 := container.SetAccessPolicyOptions{
-		Access:       &access,
-		ContainerACL: permissions,
+		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions1)
+	_, err = containerClient.SetAccessPolicy(ctx, permissions, &setAccessPolicyOptions1)
 	_require.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
@@ -520,12 +500,10 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 		}
 	}
 
-	access := container.PublicAccessTypeBlob
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access:       &access,
-		ContainerACL: permissions,
+		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, permissions, &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -534,10 +512,9 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	_require.EqualValues(resp.SignedIdentifiers, permissions)
 
 	setAccessPolicyOptions = container.SetAccessPolicyOptions{
-		Access:       &access,
-		ContainerACL: []*container.SignedIdentifier{},
+		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, []*container.SignedIdentifier{}, &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
@@ -577,12 +554,10 @@ func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 		}
 	}
 
-	access := container.PublicAccessTypeBlob
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access:       &access,
-		ContainerACL: permissions,
+		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, permissions, &setAccessPolicyOptions)
 	_require.Nil(err)
 }
 
@@ -599,7 +574,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsNilPolicySlice() {
 
 	defer deleteContainer(_require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(ctx, nil)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, nil)
 	_require.Nil(err)
 }
 
@@ -636,12 +611,10 @@ func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 		}
 	}
 
-	access := container.PublicAccessTypeBlob
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access:       &access,
-		ContainerACL: permissions,
+		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, permissions, &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
@@ -670,7 +643,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -702,7 +675,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -732,7 +705,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -764,7 +737,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)

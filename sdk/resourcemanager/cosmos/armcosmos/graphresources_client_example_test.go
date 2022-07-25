@@ -17,18 +17,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBServicesList.json
-func ExampleServiceClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGraphResourceList.json
+func ExampleGraphResourcesClient_NewListGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1",
+	pager := client.NewListGraphsPager("rgName",
 		"ddb1",
 		nil)
 	for pager.More() {
@@ -43,26 +43,52 @@ func ExampleServiceClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDataTransferServiceCreate.json
-func ExampleServiceClient_BeginCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGraphResourceGet.json
+func ExampleGraphResourcesClient_GetGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
+	res, err := client.GetGraph(ctx,
 		"rg1",
 		"ddb1",
-		"DataTransfer",
-		armcosmos.ServiceResourceCreateUpdateParameters{
-			Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
-				InstanceCount: to.Ptr[int32](1),
-				InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
-				ServiceType:   to.Ptr(armcosmos.ServiceTypeDataTransfer),
+		"graphName",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGraphResourceCreateUpdate.json
+func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateUpdateGraph(ctx,
+		"rg1",
+		"ddb1",
+		"graphName",
+		armcosmos.GraphResourceCreateUpdateParameters{
+			Location: to.Ptr("West US"),
+			Tags:     map[string]*string{},
+			Properties: &armcosmos.GraphResourceCreateUpdateProperties{
+				Options: &armcosmos.CreateUpdateOptions{},
+				Resource: &armcosmos.GraphResource{
+					ID: to.Ptr("graphName"),
+				},
 			},
 		},
 		nil)
@@ -77,44 +103,21 @@ func ExampleServiceClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDataTransferServiceGet.json
-func ExampleServiceClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGraphResourceDelete.json
+func ExampleGraphResourcesClient_BeginDeleteGraphResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
+	poller, err := client.BeginDeleteGraphResource(ctx,
 		"rg1",
 		"ddb1",
-		"DataTransfer",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDataTransferServiceDelete.json
-func ExampleServiceClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"ddb1",
-		"DataTransfer",
+		"graphName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

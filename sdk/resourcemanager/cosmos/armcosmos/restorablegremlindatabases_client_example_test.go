@@ -16,23 +16,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBPKeyRangeIdGetMetrics.json
-func ExamplePartitionKeyRangeIDClient_NewListMetricsPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBRestorableGremlinDatabaseList.json
+func ExampleRestorableGremlinDatabasesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewPartitionKeyRangeIDClient("subid", cred, nil)
+	client, err := armcosmos.NewRestorableGremlinDatabasesClient("2296c272-5d55-40d9-bc05-4d56dc2d7588", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricsPager("rg1",
-		"ddb1",
-		"databaseRid",
-		"collectionRid",
-		"0",
-		"$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z",
+	pager := client.NewListPager("WestUS",
+		"d9b26648-2f53-4541-b3d8-3044f4f9810d",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

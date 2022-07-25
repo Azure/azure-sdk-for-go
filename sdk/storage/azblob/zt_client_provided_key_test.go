@@ -197,7 +197,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -314,7 +314,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -641,7 +641,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -751,7 +751,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -956,7 +956,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -1041,7 +1041,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -1115,7 +1115,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}

@@ -299,7 +299,7 @@ func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry t
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.NewSASQueryParameters(c.sharedKey())
+	}.Sign(c.sharedKey())
 
 	return urlParts.URL(), err
 }

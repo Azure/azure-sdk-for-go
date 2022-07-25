@@ -1032,7 +1032,7 @@ func Example_service_SASSignatureValues_Sign() {
 //		ContainerName: containerName,
 //		BlobName:      blobName,
 //		Permissions:   azblob.BlobSASPermissions{Add: true, Read: true, Write: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	handleError(err)
 //
 //	// Create the SAS URL for the resource you wish to access, and append the SAS query parameters.

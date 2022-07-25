@@ -273,7 +273,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fail()
 //	}
@@ -381,7 +381,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -430,8 +430,6 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	//_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
@@ -449,7 +447,6 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	}
 	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 	_require.Nil(err)
-	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
 	getPropertiesResponse, err := bbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
@@ -501,8 +498,6 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	//_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
@@ -634,7 +629,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, DeletePreviousVersion: true, Tag: true, FilterByTags: true, Create: true}.String(),
 //		Services:      AccountSASServices{Blob: true}.String(),
 //		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		log.Fatal(err)
 //	}

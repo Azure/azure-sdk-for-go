@@ -162,7 +162,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -257,7 +257,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}

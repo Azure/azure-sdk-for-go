@@ -146,7 +146,7 @@ import (
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	_require.Nil(err)
 //
 //	srcBlobURLWithSAS := srcBlobParts.URL()
@@ -244,7 +244,7 @@ import (
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -350,7 +350,7 @@ import (
 //		ContentEncoding:    contentEncodingVal,
 //		ContentLanguage:    contentLanguageVal,
 //		ContentType:        contentTypeVal,
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	_require.Nil(err)
 //
 //	// Generate new bbClient client
@@ -1250,7 +1250,7 @@ import (
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}

@@ -124,7 +124,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		_require.Error(err)
 //	}
@@ -190,7 +190,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		_require.Error(err)
 //	}

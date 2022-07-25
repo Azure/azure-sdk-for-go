@@ -414,7 +414,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 //		Permissions:   BlobSASPermissions{Read: true, Write: true}.String(),
 //		ContainerName: containerName,
 //		BlobName:      blockBlobName}
-//	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
+//	queryParams, err := serviceSASValues.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}

@@ -290,7 +290,7 @@ func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry
 
 		StartTime:  start.UTC(),
 		ExpiryTime: expiry.UTC(),
-	}.NewSASQueryParameters(b.sharedKey())
+	}.Sign(b.sharedKey())
 
 	if err != nil {
 		return "", err

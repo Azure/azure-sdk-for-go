@@ -9,8 +9,6 @@ package azblob
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"net/url"
-	"strings"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -43,25 +41,4 @@ type BlobURLParts = exported.BlobURLParts
 // query parameters remain in the UnparsedParams field. This method overwrites all fields in the BlobURLParts object.
 func ParseBlobURL(u string) (BlobURLParts, error) {
 	return exported.ParseBlobURL(u)
-}
-
-// isIPEndpointStyle checkes if URL's host is IP, in this case the storage account endpoint will be composed as:
-// http(s)://IP(:port)/storageaccount/container/...
-// As url's Host property, host could be both host or host:port
-// nolint
-func isIPEndpointStyle(host string) bool {
-	return exported.IsIPEndpointStyle(host)
-}
-
-type caseInsensitiveValues url.Values // map[string][]string
-
-// Get returns array of string from values corresponding to the key
-func (values caseInsensitiveValues) Get(key string) ([]string, bool) {
-	key = strings.ToLower(key)
-	for k, v := range values {
-		if strings.ToLower(k) == key {
-			return v, true
-		}
-	}
-	return []string{}, false
 }

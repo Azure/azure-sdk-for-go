@@ -55,6 +55,7 @@ func isIPEndpointStyle(host string) bool {
 
 type caseInsensitiveValues url.Values // map[string][]string
 
+// Get returns array of string from values corresponding to the key
 func (values caseInsensitiveValues) Get(key string) ([]string, bool) {
 	key = strings.ToLower(key)
 	for k, v := range values {

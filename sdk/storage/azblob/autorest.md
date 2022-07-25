@@ -3,9 +3,8 @@
 <!-- autorest --use=@autorest/go@4.0.0-preview.35 https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json --file-prefix="zz_generated_" --modelerfour.lenient-model-deduplication --license-header=MICROSOFT_MIT_NO_VERSION --output-folder=generated/ --module=azblob --openapi-type="data-plane" --credential-scope=none -->
 
 ```bash
-cd swagger
 autorest autorest.md
-gofmt -w generated/*
+gofmt -w internal/generated/*
 ```
 
 ### Settings
@@ -27,7 +26,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.42"
+use: "@autorest/go@4.0.0-preview.43"
 ```
 
 ### Remove pager methods and export various generated methods in container client

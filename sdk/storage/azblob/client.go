@@ -86,18 +86,30 @@ func (c *Client) CreateContainer(ctx context.Context, containerName string, o *C
 	return c.svc.CreateContainer(ctx, containerName, o)
 }
 
+// DeleteContainer is a lifecycle method that marks the specified container for deletion.
+// The container and any blobs contained within it are later deleted during garbage collection.
+// If the container is not found, a ResourceNotFoundError will be raised.
 func (c *Client) DeleteContainer(ctx context.Context, containerName string, o *DeleteContainerOptions) (DeleteContainerResponse, error) {
 	return c.svc.DeleteContainer(ctx, containerName, o)
 }
 
+// DeleteBlob marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
+// Note that deleting a blob also deletes all its snapshots.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
 func (c *Client) DeleteBlob(ctx context.Context, containerName string, blobName string, o *DeleteBlobOptions) (DeleteBlobResponse, error) {
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).Delete(ctx, o)
 }
 
+// NewListBlobsPager returns a pager for blobs starting from the specified Marker. Use an empty
+// Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
 func (c *Client) NewListBlobsPager(containerName string, o *ListBlobsOptions) *runtime.Pager[ListBlobsResponse] {
 	return c.svc.NewContainerClient(containerName).NewListBlobsFlatPager(o)
 }
 
+// NewListContainersPager operation returns a pager of the containers under the specified account.
+// Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
 func (c *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager[ListContainersResponse] {
 	return c.svc.NewListContainersPager(o)
 }
@@ -131,6 +143,8 @@ func (c *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 //	return result, nil
 //}
 
+// Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (c *Client) Download(ctx context.Context, containerName string, blobName string, o *DownloadOptions) (DownloadResponse, error) {
 	o = shared.CopyOptions(o)
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).Download(ctx, o.BlobOptions)

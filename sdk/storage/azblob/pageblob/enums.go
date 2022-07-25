@@ -23,9 +23,9 @@ const (
 )
 
 const (
-	SequenceNumberActionTypeMax       SequenceNumberActionType = "max"
-	SequenceNumberActionTypeUpdate    SequenceNumberActionType = "update"
-	SequenceNumberActionTypeIncrement SequenceNumberActionType = "increment"
+	SequenceNumberActionTypeMax       = generated.SequenceNumberActionTypeMax
+	SequenceNumberActionTypeUpdate    = generated.SequenceNumberActionTypeUpdate
+	SequenceNumberActionTypeIncrement = generated.SequenceNumberActionTypeIncrement
 )
 
 // PossibleSequenceNumberActionTypeValues returns the possible values for the SequenceNumberActionType const type.

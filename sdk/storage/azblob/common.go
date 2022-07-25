@@ -23,9 +23,10 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
-// ParsedConnectionString
+// ParsedConnectionString is parsed connection string
 type ParsedConnectionString = shared.ParsedConnectionString
 
+// ParseConnectionString returns ParsedConnectionString
 func ParseConnectionString(connectionString string) (ParsedConnectionString, error) {
 	return shared.ParseConnectionString(connectionString)
 }
@@ -47,68 +48,7 @@ type BlobURLParts = exported.BlobURLParts
 // ParseBlobURL parses a URL initializing BlobURLParts' fields including any SAS-related & snapshot query parameters. Any other
 // query parameters remain in the UnparsedParams field. This method overwrites all fields in the BlobURLParts object.
 func ParseBlobURL(u string) (BlobURLParts, error) {
-	uri, err := url.Parse(u)
-	if err != nil {
-		return BlobURLParts{}, err
-	}
-
-	up := BlobURLParts{
-		Scheme: uri.Scheme,
-		Host:   uri.Host,
-	}
-
-	// Find the container & blob names (if any)
-	if uri.Path != "" {
-		path := uri.Path
-		if path[0] == '/' {
-			path = path[1:] // If path starts with a slash, remove it
-		}
-		if isIPEndpointStyle(up.Host) {
-			if accountEndIndex := strings.Index(path, "/"); accountEndIndex == -1 { // Slash not found; path has account name & no container name or blob
-				up.IPEndpointStyleInfo.AccountName = path
-				path = "" // No ContainerName present in the URL so path should be empty
-			} else {
-				up.IPEndpointStyleInfo.AccountName = path[:accountEndIndex] // The account name is the part between the slashes
-				path = path[accountEndIndex+1:]                             // path refers to portion after the account name now (container & blob names)
-			}
-		}
-
-		containerEndIndex := strings.Index(path, "/") // Find the next slash (if it exists)
-		if containerEndIndex == -1 {                  // Slash not found; path has container name & no blob name
-			up.ContainerName = path
-		} else {
-			up.ContainerName = path[:containerEndIndex] // The container name is the part between the slashes
-			up.BlobName = path[containerEndIndex+1:]    // The blob name is after the container slash
-		}
-	}
-
-	// Convert the query parameters to a case-sensitive map & trim whitespace
-	paramsMap := uri.Query()
-
-	up.Snapshot = "" // Assume no snapshot
-	if snapshotStr, ok := caseInsensitiveValues(paramsMap).Get(snapshot); ok {
-		up.Snapshot = snapshotStr[0]
-		// If we recognized the query parameter, remove it from the map
-		delete(paramsMap, snapshot)
-	}
-
-	up.VersionID = "" // Assume no versionID
-	if versionIDs, ok := caseInsensitiveValues(paramsMap).Get(versionId); ok {
-		up.VersionID = versionIDs[0]
-		// If we recognized the query parameter, remove it from the map
-		delete(paramsMap, versionId)   // delete "versionid" from paramsMap
-		delete(paramsMap, "versionId") // delete "versionId" from paramsMap
-	}
-
-	up.SAS = exported.NewSASQueryParameters(paramsMap, true)
-	up.UnparsedParams = paramsMap.Encode()
-	return up, nil
-}
-
-// BlobURLToString returns a URL object whose fields are initialized from the BlobURLParts fields. The URL's RawQuery
-// field contains the SAS, snapshot, and unparsed query parameters.
-func BlobURLToString(up BlobURLParts) string {
-	return up.URL()
+	return exported.ParseBlobURL(u)
 }
 
 // isIPEndpointStyle checkes if URL's host is IP, in this case the storage account endpoint will be composed as:

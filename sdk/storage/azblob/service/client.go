@@ -22,12 +22,6 @@ import (
 	"time"
 )
 
-// ClientOptions adds additional client options while constructing connection
-type ClientOptions = exported.ClientOptions
-
-// SharedKeyCredential contains an account's name and its primary or secondary key.
-type SharedKeyCredential = exported.SharedKeyCredential
-
 // Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type Client base.Client[generated.ServiceClient]
 
@@ -214,9 +208,21 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
 type SASResourceTypes = exported.AccountSASResourceTypes
 
+type SASServices = exported.AccountSASServices
+
 // SASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type SASPermissions = exported.AccountSASPermissions
+
+const (
+	SASProtocolHTTPS = exported.SASProtocolHTTPS
+
+	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
+)
+
+// SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
+type SASSignatureValues = exported.AccountSASSignatureValues
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
@@ -226,7 +232,7 @@ func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermission
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
-	qps, err := exported.AccountSASSignatureValues{
+	qps, err := SASSignatureValues{
 		Version:       exported.SASVersion,
 		Protocol:      exported.SASProtocolHTTPS,
 		Permissions:   permissions.String(),

@@ -11,11 +11,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 type AccountKind = generated.AccountKind
 
 const (
-	AccountKindStorage          AccountKind = "Storage"
-	AccountKindBlobStorage      AccountKind = "BlobStorage"
-	AccountKindStorageV2        AccountKind = "StorageV2"
-	AccountKindFileStorage      AccountKind = "FileStorage"
-	AccountKindBlockBlobStorage AccountKind = "BlockBlobStorage"
+	AccountKindStorage          = generated.AccountKindStorage
+	AccountKindBlobStorage      = generated.AccountKindBlobStorage
+	AccountKindStorageV2        = generated.AccountKindStorageV2
+	AccountKindFileStorage      = generated.AccountKindFileStorage
+	AccountKindBlockBlobStorage = generated.AccountKindBlockBlobStorage
 )
 
 // PossibleAccountKindValues returns the possible values for the AccountKind const type.
@@ -29,11 +29,12 @@ func PossibleAccountKindValues() []AccountKind {
 	}
 }
 
+// ArchiveStatus defines values for ArchiveStatus
 type ArchiveStatus = generated.ArchiveStatus
 
 const (
-	ArchiveStatusRehydratePendingToCool ArchiveStatus = "rehydrate-pending-to-cool"
-	ArchiveStatusRehydratePendingToHot  ArchiveStatus = "rehydrate-pending-to-hot"
+	ArchiveStatusRehydratePendingToCool = generated.ArchiveStatusRehydratePendingToCool
+	ArchiveStatusRehydratePendingToHot  = generated.ArchiveStatusRehydratePendingToHot
 )
 
 // PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.
@@ -44,11 +45,12 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 	}
 }
 
+// BlobDeleteType defines values for BlobDeleteType
 type BlobDeleteType = generated.BlobDeleteType
 
 const (
-	BlobDeleteTypeNone      BlobDeleteType = "None"
-	BlobDeleteTypePermanent BlobDeleteType = "Permanent"
+	BlobDeleteTypeNone      = generated.BlobDeleteTypeNone
+	BlobDeleteTypePermanent = generated.BlobDeleteTypePermanent
 )
 
 // PossibleBlobDeleteTypeValues returns the possible values for the BlobDeleteType const type.
@@ -62,10 +64,10 @@ func PossibleBlobDeleteTypeValues() []BlobDeleteType {
 type BlobExpiryOptions = generated.BlobExpiryOptions
 
 const (
-	BlobExpiryOptionsAbsolute           BlobExpiryOptions = "Absolute"
-	BlobExpiryOptionsNeverExpire        BlobExpiryOptions = "NeverExpire"
-	BlobExpiryOptionsRelativeToCreation BlobExpiryOptions = "RelativeToCreation"
-	BlobExpiryOptionsRelativeToNow      BlobExpiryOptions = "RelativeToNow"
+	BlobExpiryOptionsAbsolute           = generated.BlobExpiryOptionsAbsolute
+	BlobExpiryOptionsNeverExpire        = generated.BlobExpiryOptionsNeverExpire
+	BlobExpiryOptionsRelativeToCreation = generated.BlobExpiryOptionsRelativeToCreation
+	BlobExpiryOptionsRelativeToNow      = generated.BlobExpiryOptionsRelativeToNow
 )
 
 // PossibleBlobExpiryOptionsValues returns the possible values for the BlobExpiryOptions const type.
@@ -82,9 +84,9 @@ func PossibleBlobExpiryOptionsValues() []BlobExpiryOptions {
 type BlobGeoReplicationStatus = generated.BlobGeoReplicationStatus
 
 const (
-	BlobGeoReplicationStatusLive        BlobGeoReplicationStatus = "live"
-	BlobGeoReplicationStatusBootstrap   BlobGeoReplicationStatus = "bootstrap"
-	BlobGeoReplicationStatusUnavailable BlobGeoReplicationStatus = "unavailable"
+	BlobGeoReplicationStatusLive        = generated.BlobGeoReplicationStatusLive
+	BlobGeoReplicationStatusBootstrap   = generated.BlobGeoReplicationStatusBootstrap
+	BlobGeoReplicationStatusUnavailable = generated.BlobGeoReplicationStatusUnavailable
 )
 
 // PossibleBlobGeoReplicationStatusValues returns the possible values for the BlobGeoReplicationStatus const type.
@@ -96,12 +98,13 @@ func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
 	}
 }
 
+// BlobType defines values for BlobType
 type BlobType = generated.BlobType
 
 const (
-	BlobTypeBlockBlob  BlobType = "BlockBlob"
-	BlobTypePageBlob   BlobType = "PageBlob"
-	BlobTypeAppendBlob BlobType = "AppendBlob"
+	BlobTypeBlockBlob  = generated.BlobTypeBlockBlob
+	BlobTypePageBlob   = generated.BlobTypePageBlob
+	BlobTypeAppendBlob = generated.BlobTypeAppendBlob
 )
 
 // PossibleBlobTypeValues returns the possible values for the BlobType const type.
@@ -113,11 +116,12 @@ func PossibleBlobTypeValues() []BlobType {
 	}
 }
 
+// LeaseDurationType defines values for LeaseDurationType
 type LeaseDurationType = generated.LeaseDurationType
 
 const (
-	LeaseDurationTypeInfinite LeaseDurationType = "infinite"
-	LeaseDurationTypeFixed    LeaseDurationType = "fixed"
+	LeaseDurationTypeInfinite = generated.LeaseDurationTypeInfinite
+	LeaseDurationTypeFixed    = generated.LeaseDurationTypeFixed
 )
 
 // PossibleLeaseDurationTypeValues returns the possible values for the LeaseDurationType const type.
@@ -131,11 +135,11 @@ func PossibleLeaseDurationTypeValues() []LeaseDurationType {
 type LeaseStateType = generated.LeaseStateType
 
 const (
-	LeaseStateTypeAvailable LeaseStateType = "available"
-	LeaseStateTypeLeased    LeaseStateType = "leased"
-	LeaseStateTypeExpired   LeaseStateType = "expired"
-	LeaseStateTypeBreaking  LeaseStateType = "breaking"
-	LeaseStateTypeBroken    LeaseStateType = "broken"
+	LeaseStateTypeAvailable = generated.LeaseStateTypeAvailable
+	LeaseStateTypeLeased    = generated.LeaseStateTypeLeased
+	LeaseStateTypeExpired   = generated.LeaseStateTypeExpired
+	LeaseStateTypeBreaking  = generated.LeaseStateTypeBreaking
+	LeaseStateTypeBroken    = generated.LeaseStateTypeBroken
 )
 
 // PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
@@ -152,8 +156,8 @@ func PossibleLeaseStateTypeValues() []LeaseStateType {
 type LeaseStatusType = generated.LeaseStatusType
 
 const (
-	LeaseStatusTypeLocked   LeaseStatusType = generated.LeaseStatusTypeLocked
-	LeaseStatusTypeUnlocked LeaseStatusType = generated.LeaseStatusTypeUnlocked
+	LeaseStatusTypeLocked   = generated.LeaseStatusTypeLocked
+	LeaseStatusTypeUnlocked = generated.LeaseStatusTypeUnlocked
 )
 
 // PossibleLeaseStatusTypeValues returns the possible values for the LeaseStatusType const type.
@@ -167,16 +171,16 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
 
 const (
-	ListBlobsIncludeItemCopy                ListBlobsIncludeItem = "copy"
-	ListBlobsIncludeItemDeleted             ListBlobsIncludeItem = "deleted"
-	ListBlobsIncludeItemMetadata            ListBlobsIncludeItem = "metadata"
-	ListBlobsIncludeItemSnapshots           ListBlobsIncludeItem = "snapshots"
-	ListBlobsIncludeItemUncommittedblobs    ListBlobsIncludeItem = "uncommittedblobs"
-	ListBlobsIncludeItemVersions            ListBlobsIncludeItem = "versions"
-	ListBlobsIncludeItemTags                ListBlobsIncludeItem = "tags"
-	ListBlobsIncludeItemImmutabilitypolicy  ListBlobsIncludeItem = "immutabilitypolicy"
-	ListBlobsIncludeItemLegalhold           ListBlobsIncludeItem = "legalhold"
-	ListBlobsIncludeItemDeletedwithversions ListBlobsIncludeItem = "deletedwithversions"
+	ListBlobsIncludeItemCopy                = generated.ListBlobsIncludeItemCopy
+	ListBlobsIncludeItemDeleted             = generated.ListBlobsIncludeItemDeleted
+	ListBlobsIncludeItemMetadata            = generated.ListBlobsIncludeItemMetadata
+	ListBlobsIncludeItemSnapshots           = generated.ListBlobsIncludeItemSnapshots
+	ListBlobsIncludeItemUncommittedblobs    = generated.ListBlobsIncludeItemUncommittedblobs
+	ListBlobsIncludeItemVersions            = generated.ListBlobsIncludeItemVersions
+	ListBlobsIncludeItemTags                = generated.ListBlobsIncludeItemTags
+	ListBlobsIncludeItemImmutabilitypolicy  = generated.ListBlobsIncludeItemImmutabilitypolicy
+	ListBlobsIncludeItemLegalhold           = generated.ListBlobsIncludeItemLegalhold
+	ListBlobsIncludeItemDeletedwithversions = generated.ListBlobsIncludeItemDeletedwithversions
 )
 
 // PossibleListBlobsIncludeItemValues returns the possible values for the ListBlobsIncludeItem const type.
@@ -198,9 +202,9 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 type ListContainersIncludeType = generated.ListContainersIncludeType
 
 const (
-	ListContainersIncludeTypeMetadata ListContainersIncludeType = "metadata"
-	ListContainersIncludeTypeDeleted  ListContainersIncludeType = "deleted"
-	ListContainersIncludeTypeSystem   ListContainersIncludeType = "system"
+	ListContainersIncludeTypeMetadata = generated.ListContainersIncludeTypeMetadata
+	ListContainersIncludeTypeDeleted  = generated.ListContainersIncludeTypeDeleted
+	ListContainersIncludeTypeSystem   = generated.ListContainersIncludeTypeSystem
 )
 
 // PossibleListContainersIncludeTypeValues returns the possible values for the ListContainersIncludeType const type.
@@ -217,8 +221,8 @@ func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
 type PublicAccessType = generated.PublicAccessType
 
 const (
-	PublicAccessTypeBlob      PublicAccessType = generated.PublicAccessTypeBlob
-	PublicAccessTypeContainer PublicAccessType = generated.PublicAccessTypeContainer
+	PublicAccessTypeBlob      = generated.PublicAccessTypeBlob
+	PublicAccessTypeContainer = generated.PublicAccessTypeContainer
 )
 
 // PossiblePublicAccessTypeValues returns the possible values for the PublicAccessType const type.
@@ -230,10 +234,10 @@ func PossiblePublicAccessTypeValues() []PublicAccessType {
 type QueryFormatType = generated.QueryFormatType
 
 const (
-	QueryFormatTypeDelimited QueryFormatType = "delimited"
-	QueryFormatTypeJSON      QueryFormatType = "json"
-	QueryFormatTypeArrow     QueryFormatType = "arrow"
-	QueryFormatTypeParquet   QueryFormatType = "parquet"
+	QueryFormatTypeDelimited = generated.QueryFormatTypeDelimited
+	QueryFormatTypeJSON      = generated.QueryFormatTypeJSON
+	QueryFormatTypeArrow     = generated.QueryFormatTypeArrow
+	QueryFormatTypeParquet   = generated.QueryFormatTypeParquet
 )
 
 // PossibleQueryFormatTypeValues returns the possible values for the QueryFormatType const type.
@@ -249,11 +253,11 @@ func PossibleQueryFormatTypeValues() []QueryFormatType {
 type SKUName = generated.SKUName
 
 const (
-	SKUNameStandardLRS   SKUName = "Standard_LRS"
-	SKUNameStandardGRS   SKUName = "Standard_GRS"
-	SKUNameStandardRAGRS SKUName = "Standard_RAGRS"
-	SKUNameStandardZRS   SKUName = "Standard_ZRS"
-	SKUNamePremiumLRS    SKUName = "Premium_LRS"
+	SKUNameStandardLRS   = generated.SKUNameStandardLRS
+	SKUNameStandardGRS   = generated.SKUNameStandardGRS
+	SKUNameStandardRAGRS = generated.SKUNameStandardRAGRS
+	SKUNameStandardZRS   = generated.SKUNameStandardZRS
+	SKUNamePremiumLRS    = generated.SKUNamePremiumLRS
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.

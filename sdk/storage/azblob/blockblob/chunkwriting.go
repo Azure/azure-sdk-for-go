@@ -112,6 +112,7 @@ type copier struct {
 	result CommitBlockListResponse
 }
 
+// copierChunk contains buffer
 type copierChunk struct {
 	buffer []byte
 	id     string

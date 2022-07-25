@@ -8,13 +8,10 @@ package blockblob
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 
-// BlockListType defines values for BlockListType
-type BlockListType = generated.BlockListType
-
 const (
-	BlockListTypeCommitted   BlockListType = "committed"
-	BlockListTypeUncommitted BlockListType = "uncommitted"
-	BlockListTypeAll         BlockListType = "all"
+	BlockListTypeCommitted   = generated.BlockListTypeCommitted
+	BlockListTypeUncommitted = generated.BlockListTypeUncommitted
+	BlockListTypeAll         = generated.BlockListTypeAll
 )
 
 // PossibleBlockListTypeValues returns the possible values for the BlockListType const type.

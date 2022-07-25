@@ -40,7 +40,7 @@ type azblobUnrecordedTestSuite struct {
 // Hookup to the testing framework
 func Test(t *testing.T) {
 	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	suite.Run(t, &azblobUnrecordedTestSuite{})
+	//suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {
@@ -180,7 +180,7 @@ func validateHTTPErrorCode(_require *require.Assertions, err error, code int) {
 	}
 }
 
-func validateBlobErrorCode(_require *require.Assertions, err error, code bloberror.BlobErrorCode) {
+func validateBlobErrorCode(_require *require.Assertions, err error, code bloberror.Code) {
 	_require.NotNil(err)
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)

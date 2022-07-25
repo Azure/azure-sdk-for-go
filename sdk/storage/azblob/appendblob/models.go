@@ -162,3 +162,5 @@ func (o *SealOptions) format() (*generated.LeaseAccessConditions,
 	return leaseAccessConditions, modifiedAccessConditions, o.AppendPositionAccessConditions
 
 }
+
+// ---------------------------------------------------------------------------------------------------------------------

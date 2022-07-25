@@ -8,6 +8,7 @@ package blob
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -17,7 +18,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"io"
 	"os"
+	"strings"
 	"sync"
+	"time"
 )
 
 // Client represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -84,6 +87,10 @@ func (b *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
 
 func (b *Client) generated() *generated.BlobClient {
 	return base.InnerClient((*base.Client[generated.BlobClient])(b))
+}
+
+func (b *Client) sharedKey() *SharedKeyCredential {
+	return base.SharedKey((*base.Client[generated.BlobClient])(b))
 }
 
 // URL returns the URL endpoint used by the Client object.
@@ -258,34 +265,45 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 	return resp, err
 }
 
-//
-//// GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
-//// It can only be used if the credential supplied during creation was a SharedKeyCredential.
-//func (b *Client) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
-//	urlParts, _ := exported.ParseBlobURL(b.URL())
-//
-//	t, err := time.Parse(exported.SnapshotTimeFormat, urlParts.Snapshot)
-//
-//	if err != nil {
-//		t = time.Time{}
-//	}
-//
-//	if b.sharedKey == nil {
-//		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
-//	}
-//
-//	return BlobSASSignatureValues{
-//		ContainerName: urlParts.ContainerName,
-//		BlobName:      urlParts.BlobName,
-//		SnapshotTime:  t,
-//		Version:       exported.SASVersion,
-//
-//		Permissions: permissions.String(),
-//
-//		StartTime:  start.UTC(),
-//		ExpiryTime: expiry.UTC(),
-//	}.NewSASQueryParameters(b.sharedKey)
-//}
+// GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+	urlParts, _ := exported.ParseBlobURL(b.URL())
+
+	t, err := time.Parse(exported.SnapshotTimeFormat, urlParts.Snapshot)
+
+	if err != nil {
+		t = time.Time{}
+	}
+
+	if b.sharedKey() == nil {
+		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
+
+	qps, err := exported.BlobSASSignatureValues{
+		ContainerName: urlParts.ContainerName,
+		BlobName:      urlParts.BlobName,
+		SnapshotTime:  t,
+		Version:       exported.SASVersion,
+
+		Permissions: permissions.String(),
+
+		StartTime:  start.UTC(),
+		ExpiryTime: expiry.UTC(),
+	}.NewSASQueryParameters(b.sharedKey())
+
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := b.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
+}
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 

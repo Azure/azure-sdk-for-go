@@ -8,11 +8,20 @@ package service
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// ClientOptions adds additional client options while constructing connection
+type ClientOptions = exported.ClientOptions
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential
+
+// CreateContainerOptions contains the optional parameters for the container.Client.Create method.
 type CreateContainerOptions = container.CreateOptions
 
+// DeleteContainerOptions contains the optional parameters for the container.Client.Delete method.
 type DeleteContainerOptions = container.DeleteOptions
 
 // CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
@@ -33,6 +42,8 @@ type Logging = generated.Logging
 // StaticWebsite - The properties that enable an account to host a static website
 type StaticWebsite = generated.StaticWebsite
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetAccountInfoOptions provides set of options for Client.GetAccountInfo
 type GetAccountInfoOptions struct {
 	// placeholder for future options
@@ -42,6 +53,8 @@ func (o *GetAccountInfoOptions) format() *generated.ServiceClientGetAccountInfoO
 	return nil
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
 type GetPropertiesOptions struct {
 	// placeholder for future options
@@ -50,6 +63,8 @@ type GetPropertiesOptions struct {
 func (o *GetPropertiesOptions) format() *generated.ServiceClientGetPropertiesOptions {
 	return nil
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 // ListContainersOptions provides set of configurations for ListContainers operation
 type ListContainersOptions struct {
@@ -79,6 +94,8 @@ type ListContainersDetail struct {
 	// Tells the service whether to return soft-deleted containers.
 	Deleted bool
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 // SetPropertiesOptions provides set of options for Client.SetProperties
 type SetPropertiesOptions struct {
@@ -121,6 +138,8 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 	}, nil
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetStatisticsOptions provides set of options for Client.GetStatistics
 type GetStatisticsOptions struct {
 	// placeholder for future options
@@ -129,3 +148,5 @@ type GetStatisticsOptions struct {
 func (o *GetStatisticsOptions) format() *generated.ServiceClientGetStatisticsOptions {
 	return nil
 }
+
+// ---------------------------------------------------------------------------------------------------------------------

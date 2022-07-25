@@ -291,8 +291,6 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 	})
 }
 
-type SASPermissions = exported.ContainerSASPermissions
-
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {

@@ -14,6 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+// BlockListType defines values for BlockListType
+type BlockListType = generated.BlockListType
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // UploadOptions contains the optional parameters for the Client.Upload method.

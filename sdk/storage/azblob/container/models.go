@@ -39,8 +39,17 @@ type AccessPolicyPermission = exported.AccessPolicyPermission
 // SignedIdentifier - signed identifier
 type SignedIdentifier = generated.SignedIdentifier
 
+// SASPermissions type simplifies creating the permissions string for an Azure Storage container SAS.
+// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
+// All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
+type SASPermissions = exported.ContainerSASPermissions
+
+// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
+type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
+
 // ---------------------------------------------------------------------------------------------------------------------
 
+// CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
 	Access *PublicAccessType

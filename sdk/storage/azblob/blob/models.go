@@ -47,6 +47,12 @@ type HTTPHeaders = generated.BlobHTTPHeaders
 // ImmutabilityPolicyMode defines values for BlobImmutabilityPolicyMode
 type ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyMode
 
+// CopyStatusType defines values for CopyStatusType
+type CopyStatusType = generated.CopyStatusType
+
+// EncryptionAlgorithmType defines values for EncryptionAlgorithmType
+type EncryptionAlgorithmType = generated.EncryptionAlgorithmType
+
 // RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate.
 // Valid values are High and Standard.
 type RehydratePriority = generated.RehydratePriority
@@ -62,6 +68,10 @@ type SharedKeyCredential = exported.SharedKeyCredential
 
 // SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
+
+// SASPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
+// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
+type SASPermissions = exported.BlobSASPermissions
 
 // Request Model Declaration -------------------------------------------------------------------------------------------
 

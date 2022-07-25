@@ -9,24 +9,21 @@ package container
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 
 const (
-	PublicAccessTypeBlob      PublicAccessType = generated.PublicAccessTypeBlob
-	PublicAccessTypeContainer PublicAccessType = generated.PublicAccessTypeContainer
+	PublicAccessTypeBlob      = generated.PublicAccessTypeBlob
+	PublicAccessTypeContainer = generated.PublicAccessTypeContainer
 )
 
-// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
-type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
-
 const (
-	ListBlobsIncludeItemCopy                ListBlobsIncludeItem = generated.ListBlobsIncludeItemCopy
-	ListBlobsIncludeItemDeleted             ListBlobsIncludeItem = generated.ListBlobsIncludeItemDeleted
-	ListBlobsIncludeItemMetadata            ListBlobsIncludeItem = generated.ListBlobsIncludeItemMetadata
-	ListBlobsIncludeItemSnapshots           ListBlobsIncludeItem = generated.ListBlobsIncludeItemSnapshots
-	ListBlobsIncludeItemUncommittedblobs    ListBlobsIncludeItem = generated.ListBlobsIncludeItemUncommittedblobs
-	ListBlobsIncludeItemVersions            ListBlobsIncludeItem = generated.ListBlobsIncludeItemVersions
-	ListBlobsIncludeItemTags                ListBlobsIncludeItem = generated.ListBlobsIncludeItemTags
-	ListBlobsIncludeItemImmutabilitypolicy  ListBlobsIncludeItem = generated.ListBlobsIncludeItemImmutabilitypolicy
-	ListBlobsIncludeItemLegalhold           ListBlobsIncludeItem = generated.ListBlobsIncludeItemLegalhold
-	ListBlobsIncludeItemDeletedwithversions ListBlobsIncludeItem = generated.ListBlobsIncludeItemDeletedwithversions
+	ListBlobsIncludeItemCopy                = generated.ListBlobsIncludeItemCopy
+	ListBlobsIncludeItemDeleted             = generated.ListBlobsIncludeItemDeleted
+	ListBlobsIncludeItemMetadata            = generated.ListBlobsIncludeItemMetadata
+	ListBlobsIncludeItemSnapshots           = generated.ListBlobsIncludeItemSnapshots
+	ListBlobsIncludeItemUncommittedblobs    = generated.ListBlobsIncludeItemUncommittedblobs
+	ListBlobsIncludeItemVersions            = generated.ListBlobsIncludeItemVersions
+	ListBlobsIncludeItemTags                = generated.ListBlobsIncludeItemTags
+	ListBlobsIncludeItemImmutabilitypolicy  = generated.ListBlobsIncludeItemImmutabilitypolicy
+	ListBlobsIncludeItemLegalhold           = generated.ListBlobsIncludeItemLegalhold
+	ListBlobsIncludeItemDeletedwithversions = generated.ListBlobsIncludeItemDeletedwithversions
 )
 
 // PossibleListBlobsIncludeItemValues returns the possible values for the ListBlobsIncludeItem const type.

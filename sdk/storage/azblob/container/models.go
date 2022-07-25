@@ -13,11 +13,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// ClientOptions adds additional client options while constructing connection
+type ClientOptions = exported.ClientOptions
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential
+
 // CpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
 type CpkScopeInfo = generated.ContainerCpkScopeInfo
 
+// PublicAccessType defines values for AccessType - private (default) or blob or container
 type PublicAccessType = generated.PublicAccessType
 
+// BlobItem - An Azure Storage blob
 type BlobItem = generated.BlobItemInternal
 
 // AccessConditions identifies container-specific access conditions which you optionally set.
@@ -68,7 +76,7 @@ type DeleteOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil
 	}
@@ -79,6 +87,7 @@ func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *Leas
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// GetPropertiesOptions contains the optional parameters for the ContainerClient.GetProperties method.
 type GetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
@@ -94,6 +103,7 @@ func (o *GetPropertiesOptions) format() (*generated.ContainerClientGetProperties
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// ListBlobsFlatOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment method.
 type ListBlobsFlatOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include []ListBlobsIncludeItem
@@ -166,6 +176,8 @@ func (o *SetMetadataOptions) format() (*generated.ContainerClientSetMetadataOpti
 	return &generated.ContainerClientSetMetadataOptions{Metadata: o.Metadata}, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetAccessPolicyOptions contains the optional parameters for the Client.GetAccessPolicy method.
 type GetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
@@ -178,6 +190,8 @@ func (o *GetAccessPolicyOptions) format() (*generated.ContainerClientGetAccessPo
 
 	return nil, o.LeaseAccessConditions
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 // SetAccessPolicyOptions provides set of configurations for ContainerClient.SetAccessPolicy operation
 type SetAccessPolicyOptions struct {
@@ -203,6 +217,7 @@ func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPo
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// AcquireLeaseOptions contains the optional parameters for the ContainerClient.AcquireLease method.
 type AcquireLeaseOptions struct {
 	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.

@@ -95,6 +95,7 @@ func (bb *Client) URL() string {
 	return bb.generated().Endpoint()
 }
 
+// BlobClient returns the embedded blob client for this AppendBlob client.
 func (bb *Client) BlobClient() *blob.Client {
 	blobClient, _ := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	return (*blob.Client)(blobClient)

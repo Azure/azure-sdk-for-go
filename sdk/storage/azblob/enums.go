@@ -8,6 +8,7 @@ package azblob
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 
+// AccountKind defines values for AccountKind
 type AccountKind = generated.AccountKind
 
 const (
@@ -61,6 +62,7 @@ func PossibleBlobDeleteTypeValues() []BlobDeleteType {
 	}
 }
 
+// BlobExpiryOptions defines values for BlobExpiryOptions
 type BlobExpiryOptions = generated.BlobExpiryOptions
 
 const (
@@ -132,6 +134,7 @@ func PossibleLeaseDurationTypeValues() []LeaseDurationType {
 	}
 }
 
+// LeaseStateType defines values for LeaseStateType
 type LeaseStateType = generated.LeaseStateType
 
 const (
@@ -153,6 +156,7 @@ func PossibleLeaseStateTypeValues() []LeaseStateType {
 	}
 }
 
+// LeaseStatusType defines values for LeaseStatusType
 type LeaseStatusType = generated.LeaseStatusType
 
 const (
@@ -168,6 +172,7 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 	}
 }
 
+// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
 type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
 
 const (
@@ -199,6 +204,7 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 	}
 }
 
+// ListContainersIncludeType defines values for ListContainersIncludeType
 type ListContainersIncludeType = generated.ListContainersIncludeType
 
 const (
@@ -216,8 +222,7 @@ func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
 	}
 }
 
-// PossiblePremiumPageBlobAccessTierValues returns the possible values for the PremiumPageBlobAccessTier const type.
-
+// PublicAccessType defines values for AccessType - private (default) or blob or container
 type PublicAccessType = generated.PublicAccessType
 
 const (
@@ -250,6 +255,7 @@ func PossibleQueryFormatTypeValues() []QueryFormatType {
 	}
 }
 
+// SKUName defines values for SkuName - LRS, GRS, RAGRS, ZRS, Premium LRS
 type SKUName = generated.SKUName
 
 const (

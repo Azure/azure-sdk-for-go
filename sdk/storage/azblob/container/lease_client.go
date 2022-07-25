@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+// LeaseClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type LeaseClient struct {
 	containerClient *Client
 	leaseID         *string
@@ -84,6 +85,10 @@ func (c *LeaseClient) generated() *generated.ContainerClient {
 	return base.InnerClient((*base.Client[generated.ContainerClient])(c.containerClient))
 }
 
+// AcquireLease - establishes and manages a lock on a container for delete operations.
+// The lock duration can be 15 to 60 seconds, or can be infinite
+// If the operation fails it returns an *azcore.ResponseError type.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/lease-container
 func (c *LeaseClient) AcquireLease(ctx context.Context, o *AcquireLeaseOptions) (AcquireResponse, error) {
 	opts, modifiedAccessConditions := o.format()
 	opts.ProposedLeaseID = c.leaseID
@@ -106,7 +111,12 @@ func (c *LeaseClient) BreakLease(ctx context.Context, options *BreakLeaseOptions
 	return resp, err
 }
 
-// ChangeLease changes the container's lease ID.
+// ChangeLease - establishes and manages a lock on a container for delete operations.
+// The lock duration can be 15 to 60 seconds, or can be infinite
+// If the operation fails it returns an *azcore.ResponseError type.
+// proposedLeaseID - Proposed lease ID, in a GUID string format.
+// The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
+// See Guid Constructor (String) for a list of valid GUID string formats.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
 func (c *LeaseClient) ChangeLease(ctx context.Context, options *ChangeLeaseOptions) (ChangeResponse, error) {
 	if c.leaseID == nil {

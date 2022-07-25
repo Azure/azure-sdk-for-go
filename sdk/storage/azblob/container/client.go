@@ -24,12 +24,6 @@ import (
 	"time"
 )
 
-// ClientOptions adds additional client options while constructing connection
-type ClientOptions = exported.ClientOptions
-
-// SharedKeyCredential contains an account's name and its primary or secondary key.
-type SharedKeyCredential = exported.SharedKeyCredential
-
 // Client represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type Client base.Client[generated.ContainerClient]
 
@@ -94,6 +88,7 @@ func (c *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
 	}, nil
 }
 
+// LeaseID Specifies the current lease ID on the resource.
 func (c *LeaseClient) LeaseID() *string {
 	return c.leaseID
 }

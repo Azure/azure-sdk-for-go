@@ -58,7 +58,7 @@ func ParseBlobURL(u string) (BlobURLParts, error) {
 		if path[0] == '/' {
 			path = path[1:] // If path starts with a slash, remove it
 		}
-		if isIPEndpointStyle(up.Host) {
+		if IsIPEndpointStyle(up.Host) {
 			if accountEndIndex := strings.Index(path, "/"); accountEndIndex == -1 { // Slash not found; path has account name & no container name or blob
 				up.IPEndpointStyleInfo.AccountName = path
 				path = "" // No ContainerName present in the URL so path should be empty
@@ -104,7 +104,7 @@ func ParseBlobURL(u string) (BlobURLParts, error) {
 // field contains the SAS, snapshot, and unparsed query parameters.
 func (up BlobURLParts) URL() string {
 	path := ""
-	if isIPEndpointStyle(up.Host) && up.IPEndpointStyleInfo.AccountName != "" {
+	if IsIPEndpointStyle(up.Host) && up.IPEndpointStyleInfo.AccountName != "" {
 		path += "/" + up.IPEndpointStyleInfo.AccountName
 	}
 	// Concatenate container & blob names (if they exist)
@@ -153,10 +153,10 @@ func (up BlobURLParts) URL() string {
 	return u.String()
 }
 
-// isIPEndpointStyle checkes if URL's host is IP, in this case the storage account endpoint will be composed as:
+// IsIPEndpointStyle checkes if URL's host is IP, in this case the storage account endpoint will be composed as:
 // http(s)://IP(:port)/storageaccount/container/...
 // As url's Host property, host could be both host or host:port
-func isIPEndpointStyle(host string) bool {
+func IsIPEndpointStyle(host string) bool {
 	if host == "" {
 		return false
 	}

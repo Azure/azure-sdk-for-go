@@ -96,12 +96,14 @@ func NewRetryReader(ctx context.Context, initialResponse io.ReadCloser, info HTT
 	}
 }
 
+// setResponse function
 func (s *RetryReader) setResponse(r io.ReadCloser) {
 	s.responseMu.Lock()
 	defer s.responseMu.Unlock()
 	s.response = r
 }
 
+// Read from retry reader
 func (s *RetryReader) Read(p []byte) (n int, err error) {
 	for try := 0; ; try++ {
 		//fmt.Println(try)       // Comment out for debugging.

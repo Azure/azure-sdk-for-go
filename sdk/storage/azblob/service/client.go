@@ -208,10 +208,12 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
 type SASResourceTypes = exported.AccountSASResourceTypes
 
+// SASServices type simplifies creating the services string for an Azure Storage Account SAS.
+// Initialize an instance of this type and then call its String method to set SASServices' Services field.
 type SASServices = exported.AccountSASServices
 
 // SASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues' Permissions field.
 type SASPermissions = exported.AccountSASPermissions
 
 const (

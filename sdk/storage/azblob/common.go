@@ -9,7 +9,6 @@ package azblob
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"net"
 	"net/url"
 	"strings"
 )
@@ -31,11 +30,6 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 	return shared.ParseConnectionString(connectionString)
 }
 
-const (
-	snapshot  = "snapshot"
-	versionId = "versionid"
-)
-
 // IPEndpointStyleInfo is used for IP endpoint style URL when working with Azure storage emulator.
 // Ex: "https://10.132.141.33/accountname/containername"
 type IPEndpointStyleInfo = exported.IPEndpointStyleInfo
@@ -54,20 +48,9 @@ func ParseBlobURL(u string) (BlobURLParts, error) {
 // isIPEndpointStyle checkes if URL's host is IP, in this case the storage account endpoint will be composed as:
 // http(s)://IP(:port)/storageaccount/container/...
 // As url's Host property, host could be both host or host:port
+// nolint
 func isIPEndpointStyle(host string) bool {
-	if host == "" {
-		return false
-	}
-	if h, _, err := net.SplitHostPort(host); err == nil {
-		host = h
-	}
-	// For IPv6, there could be case where SplitHostPort fails for cannot finding port.
-	// In this case, eliminate the '[' and ']' in the URL.
-	// For details about IPv6 URL, please refer to https://tools.ietf.org/html/rfc2732
-	if host[0] == '[' && host[len(host)-1] == ']' {
-		host = host[1 : len(host)-1]
-	}
-	return net.ParseIP(host) != nil
+	return exported.IsIPEndpointStyle(host)
 }
 
 type caseInsensitiveValues url.Values // map[string][]string

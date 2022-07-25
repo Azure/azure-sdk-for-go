@@ -78,15 +78,15 @@ func (e *AuthenticationFailedError) Error() string {
 	// adding link to TROUBLESHOOTING.md for relevant errors
 	var anchor string
 	switch e.credType {
-	case "AzureCLICredential":
+	case credNameAzureCLI:
 		anchor = "azure-cli"
-	case "ClientCertificateCredential":
+	case credNameCert:
 		anchor = "client-cert"
-	case "ClientSecretCredential":
+	case credNameSecret:
 		anchor = "client-secret"
-	case "ManagedIdentityCredential":
+	case credNameManagedIdentity:
 		anchor = "managed-id"
-	case "UsernamePasswordCredential":
+	case credNameUserPassword:
 		anchor = "username-password"
 	}
 	if anchor != "" {

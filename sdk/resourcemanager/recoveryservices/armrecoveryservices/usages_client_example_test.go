@@ -16,19 +16,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-03-01/examples/ListReplicationUsages.json
-func ExampleReplicationUsagesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListUsages.json
+func ExampleUsagesClient_NewListByVaultsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservices.NewReplicationUsagesClient("6808dbbc-98c7-431f-a1b1-9580902423b7", cred, nil)
+	client, err := armrecoveryservices.NewUsagesClient("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("avrai7517RG1",
-		"avrai7517Vault1",
+	pager := client.NewListByVaultsPager("Default-RecoveryServices-ResourceGroup",
+		"swaggerExample",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

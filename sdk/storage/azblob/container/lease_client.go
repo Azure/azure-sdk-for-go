@@ -81,6 +81,16 @@ func NewLeaseClientFromConnectionString(connectionString string, containerName s
 	return NewLeaseClientWithNoCredential(parsed.ServiceURL, leaseID, options)
 }
 
+// ContainerClient returns the embedded containerClient from container.LeaseClient
+func (c *LeaseClient) ContainerClient() *Client {
+	return c.containerClient
+}
+
+// LeaseID Specifies the current lease ID on the resource.
+func (c *LeaseClient) LeaseID() *string {
+	return c.leaseID
+}
+
 func (c *LeaseClient) generated() *generated.ContainerClient {
 	return base.InnerClient((*base.Client[generated.ContainerClient])(c.containerClient))
 }
@@ -105,8 +115,8 @@ func (c *LeaseClient) AcquireLease(ctx context.Context, o *AcquireLeaseOptions) 
 
 // BreakLease breaks the container's previously-acquired lease (if it exists).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (c *LeaseClient) BreakLease(ctx context.Context, options *BreakLeaseOptions) (BreakResponse, error) {
-	containerBreakLeaseOptions, modifiedAccessConditions := options.format()
+func (c *LeaseClient) BreakLease(ctx context.Context, o *BreakLeaseOptions) (BreakResponse, error) {
+	containerBreakLeaseOptions, modifiedAccessConditions := o.format()
 	resp, err := c.generated().BreakLease(ctx, containerBreakLeaseOptions, modifiedAccessConditions)
 	return resp, err
 }
@@ -118,12 +128,12 @@ func (c *LeaseClient) BreakLease(ctx context.Context, options *BreakLeaseOptions
 // The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
 // See Guid Constructor (String) for a list of valid GUID string formats.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (c *LeaseClient) ChangeLease(ctx context.Context, options *ChangeLeaseOptions) (ChangeResponse, error) {
+func (c *LeaseClient) ChangeLease(ctx context.Context, o *ChangeLeaseOptions) (ChangeResponse, error) {
 	if c.leaseID == nil {
 		return ChangeResponse{}, errors.New("leaseID cannot be nil")
 	}
 
-	proposedLeaseID, changeLeaseOptions, modifiedAccessConditions, err := options.format()
+	proposedLeaseID, changeLeaseOptions, modifiedAccessConditions, err := o.format()
 	if err != nil {
 		return ChangeResponse{}, err
 	}
@@ -137,11 +147,11 @@ func (c *LeaseClient) ChangeLease(ctx context.Context, options *ChangeLeaseOptio
 
 // ReleaseLease releases the container's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (c *LeaseClient) ReleaseLease(ctx context.Context, options *ReleaseLeaseOptions) (ReleaseResponse, error) {
+func (c *LeaseClient) ReleaseLease(ctx context.Context, o *ReleaseLeaseOptions) (ReleaseResponse, error) {
 	if c.leaseID == nil {
 		return ReleaseResponse{}, errors.New("leaseID cannot be nil")
 	}
-	containerReleaseLeaseOptions, modifiedAccessConditions := options.format()
+	containerReleaseLeaseOptions, modifiedAccessConditions := o.format()
 	resp, err := c.generated().ReleaseLease(ctx, *c.leaseID, containerReleaseLeaseOptions, modifiedAccessConditions)
 
 	return resp, err

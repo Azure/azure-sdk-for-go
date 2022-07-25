@@ -8,6 +8,9 @@ package blockblob
 
 //nolint
 const (
+	// CountToEnd specifies the end of the file
+	CountToEnd = 0
+
 	_1MiB = 1024 * 1024
 
 	// MaxUploadBlobBytes indicates the maximum number of bytes that can be sent in a call to Upload.

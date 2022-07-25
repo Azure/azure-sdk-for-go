@@ -88,11 +88,6 @@ func (c *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
 	}, nil
 }
 
-// LeaseID Specifies the current lease ID on the resource.
-func (c *LeaseClient) LeaseID() *string {
-	return c.leaseID
-}
-
 func (c *Client) generated() *generated.ContainerClient {
 	return base.InnerClient((*base.Client[generated.ContainerClient])(c))
 }

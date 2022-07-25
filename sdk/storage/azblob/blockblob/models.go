@@ -160,8 +160,8 @@ func (o *GetBlockListOptions) format() (*generated.BlockBlobClientGetBlockListOp
 
 // ------------------------------------------------------------
 
-// UploadReaderAtToBlockBlobOption identifies options used by the UploadBuffer and UploadFile functions.
-type UploadReaderAtToBlockBlobOption struct {
+// UploadReaderAtToBlockBlobOptions identifies options used by the UploadBuffer and UploadFile functions.
+type UploadReaderAtToBlockBlobOptions struct {
 	// BlockSize specifies the block size to use; the default (and maximum size) is MaxStageBlockBytes.
 	BlockSize int64
 
@@ -196,7 +196,13 @@ type UploadReaderAtToBlockBlobOption struct {
 	TransactionalContentMD5 *[]byte
 }
 
-func (o *UploadReaderAtToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
+// UploadBufferOptions provides set of configurations for UploadBuffer operation
+type UploadBufferOptions = UploadReaderAtToBlockBlobOptions
+
+// UploadFileOptions provides set of configurations for UploadFile operation
+type UploadFileOptions = UploadReaderAtToBlockBlobOptions
+
+func (o *UploadReaderAtToBlockBlobOptions) getStageBlockOptions() *StageBlockOptions {
 	leaseAccessConditions, _ := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &StageBlockOptions{
 		CpkInfo:               o.CpkInfo,
@@ -205,7 +211,7 @@ func (o *UploadReaderAtToBlockBlobOption) getStageBlockOptions() *StageBlockOpti
 	}
 }
 
-func (o *UploadReaderAtToBlockBlobOption) getUploadBlockBlobOptions() *UploadOptions {
+func (o *UploadReaderAtToBlockBlobOptions) getUploadBlockBlobOptions() *UploadOptions {
 	return &UploadOptions{
 		Tags:             o.Tags,
 		Metadata:         o.Metadata,
@@ -217,7 +223,7 @@ func (o *UploadReaderAtToBlockBlobOption) getUploadBlockBlobOptions() *UploadOpt
 	}
 }
 
-func (o *UploadReaderAtToBlockBlobOption) getCommitBlockListOptions() *CommitBlockListOptions {
+func (o *UploadReaderAtToBlockBlobOptions) getCommitBlockListOptions() *CommitBlockListOptions {
 	return &CommitBlockListOptions{
 		Tags:         o.Tags,
 		Metadata:     o.Metadata,

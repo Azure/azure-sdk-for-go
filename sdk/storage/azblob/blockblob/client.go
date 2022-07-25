@@ -316,7 +316,7 @@ func (bb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.Co
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
 
 // uploadReaderAtToBlockBlob uploads a buffer in blocks to a block blob.
-func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o UploadReaderAtToBlockBlobOption) (UploadReaderAtResponse, error) {
+func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o UploadReaderAtToBlockBlobOptions) (UploadReaderAtResponse, error) {
 	if o.BlockSize == 0 {
 		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
 		if readerSize > MaxStageBlockBytes*MaxBlocks {
@@ -400,8 +400,8 @@ func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.Reade
 }
 
 // UploadBuffer uploads a buffer in blocks to a block blob.
-func (bb *Client) UploadBuffer(ctx context.Context, b []byte, o *UploadReaderAtToBlockBlobOption) (UploadReaderAtResponse, error) {
-	uploadOptions := UploadReaderAtToBlockBlobOption{}
+func (bb *Client) UploadBuffer(ctx context.Context, b []byte, o *UploadBufferOptions) (UploadReaderAtResponse, error) {
+	uploadOptions := UploadReaderAtToBlockBlobOptions{}
 	if o != nil {
 		uploadOptions = *o
 	}
@@ -409,12 +409,12 @@ func (bb *Client) UploadBuffer(ctx context.Context, b []byte, o *UploadReaderAtT
 }
 
 // UploadFile uploads a file in blocks to a block blob.
-func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadReaderAtToBlockBlobOption) (UploadReaderAtResponse, error) {
+func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadReaderAtToBlockBlobOptions) (UploadReaderAtResponse, error) {
 	stat, err := file.Stat()
 	if err != nil {
 		return UploadReaderAtResponse{}, err
 	}
-	uploadOptions := UploadReaderAtToBlockBlobOption{}
+	uploadOptions := UploadReaderAtToBlockBlobOptions{}
 	if o != nil {
 		uploadOptions = *o
 	}
@@ -443,4 +443,25 @@ func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStr
 	}
 
 	return result, nil
+}
+
+// Concurrent Download Functions -----------------------------------------------------------------------------------------
+
+// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (bb *Client) DownloadToWriterAt(ctx context.Context, offset, count int64, writer io.WriterAt, o *blob.DownloadToWriterAtOptions) error {
+	return bb.BlobClient().DownloadToWriterAt(ctx, offset, count, writer, o)
+}
+
+// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (bb *Client) DownloadToBuffer(ctx context.Context, offset, count int64, _bytes []byte, o *blob.DownloadToBufferOptions) error {
+	return bb.BlobClient().DownloadToBuffer(ctx, offset, count, shared.NewBytesWriter(_bytes), o)
+}
+
+// DownloadToFile downloads an Azure blob to a local file.
+// The file would be truncated if the size doesn't match.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (bb *Client) DownloadToFile(ctx context.Context, offset, count int64, file *os.File, o *blob.DownloadToFileOptions) error {
+	return bb.BlobClient().DownloadToFile(ctx, offset, count, file, o)
 }

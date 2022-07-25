@@ -20,17 +20,6 @@ import (
 	"strings"
 )
 
-//
-//import (
-//	"bytes"
-//	"context"
-//	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-//	"github.com/stretchr/testify/require"
-//	"io/ioutil"
-//	"strconv"
-//	"strings"
-//)
-
 func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -97,49 +86,47 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
+//
 //nolint
-//func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	bbName := generateName(testName)
-//	bbClient := createNewBlockBlob(_require, bbName, containerClient)
-//
-//	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
-//	resp, err := bbClient.SetMetadata(ctx, metadata, nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp.VersionID)
-//
-//	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-//		Include: []container.ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
-//	})
-//
-//	if !pager.NextPage(ctx) {
-//		_require.Nil(pager.Err()) // check for an error first
-//		s.T().Fail()             // no page was gotten
-//	}
-//
-//	pageResp := pager.PageResponse()
-//
-//	_require.NotNil(pageResp.EnumerationResults.Segment.BlobItems)
-//	blobList := pageResp.EnumerationResults.Segment.BlobItems
-//	_require.Len(blobList, 1)
-//	blobResp1 := blobList[0]
-//	_require.Equal(*blobResp1.Name, bbName)
-//	_require.NotNil(blobResp1.Metadata.AdditionalProperties)
-//	_require.Len(blobResp1.Metadata.AdditionalProperties, 2)
-//	// _assert(*blobResp1.Metadata, chk.DeepEquals, metadata)
-//
-//}
+func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	bbName := generateName(testName)
+	bbClient := createNewBlockBlob(_require, bbName, containerClient)
+
+	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
+	resp, err := bbClient.SetMetadata(ctx, metadata, nil)
+	_require.Nil(err)
+	_require.NotNil(resp.VersionID)
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemMetadata},
+	})
+
+	if pager.More() {
+		pageResp, err := pager.NextPage(ctx)
+		_require.Nil(err) // check for an error first
+		//s.T().Fail()      // no page was gotten
+
+		_require.NotNil(pageResp.Segment.BlobItems)
+		blobList := pageResp.Segment.BlobItems
+		_require.Len(blobList, 1)
+		blobResp1 := blobList[0]
+		_require.Equal(*blobResp1.Name, bbName)
+		_require.NotNil(blobResp1.Metadata)
+		_require.Len(blobResp1.Metadata, 2)
+	}
+}
 
 func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	_require := require.New(s.T())
@@ -175,12 +162,11 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	}
 }
 
-//func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
+//func (s *azblobUnrecordedTestSuite) TestDeleteSpecificBlobVersionWithBlobSAS() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -188,93 +174,32 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	containerName := generateContainerName(testName)
 //	containerClient := createNewContainer(_require, containerName, svcClient)
 //	defer deleteContainer(_require, containerClient)
-//	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
+//	blobClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
-//	uploadResp, err := blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &blockblob.UploadOptions{
-//		Metadata: basicMetadata,
-//	})
-//	_require.Nil(err)
-//	_require.NotNil(uploadResp.VersionID)
-//	versionID1 := uploadResp.VersionID
-//
-//	uploadResp, err = blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))),, &blockblob.UploadOptions{
-//		Metadata: basicMetadata,
-//	})
-//	_require.Nil(err)
-//	_require.NotNil(uploadResp.VersionID)
-//
-//	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-//		Include: &[]container.ListBlobsIncludeItem{container.ListBlobsIncludeItemVersions},
-//	})
-//
-//	count := 0
-//	blobs
-//	for listPager.NextPage(ctx) {
-//		resp := listPager.PageResponse()
-//		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
-//			count += 1;
-//			// Process the blobs returned
-//			snapTime := "N/A"
-//			if blob.Snapshot != nil {
-//				snapTime = *blob.Snapshot
-//			}
-//			fmt.Printf("Blob name: %s, Snapshot: %s\n", *blob.Name, snapTime)
-//		}
-//	}
-//	_require.Nil(listPager.Err())
-//	_require.Len(count, 2)
-//
-//	// Deleting previous version snapshot.
-//	deleteResp, err := blobURL.WithVersionID(versionID1).Delete(ctx, DeleteSnapshotsOptionNone, LeaseAccessConditions{})
-//	_require.Nil(err)
-//	_assert(deleteResp.StatusCode(), chk.Equals, 202)
-//
-//	listBlobsResp, err = containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true}})
-//	_require.Nil(err)
-//	_assert(listBlobsResp.Segment.BlobItems, chk.NotNil)
-//	if len(listBlobsResp.Segment.BlobItems) != 1 {
-//		s.T().Fail()
-//	}
-//}
-//
-//func (s *azblobTestSuite) TestDeleteSpecificBlobVersionWithBlobSAS() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//	blobURL, blobName := getBlockBlobClient(c, containerClient)
-//
-//	resp, err := blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	resp, err := blobClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &blockblob.UploadOptions{Metadata: basicMetadata})
 //	_require.Nil(err)
 //	versionId := resp.VersionID
-//	_assert(versionId, chk.NotNil)
+//	_require.NotNil(versionId)
 //
-//	resp, err = blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	resp, err = blobClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))), &blockblob.UploadOptions{Metadata: basicMetadata})
 //	_require.Nil(err)
-//	_assert(resp.VersionID, chk.NotNil)
+//	_require.NotNil(resp.VersionID)
 //
-//	blobParts := NewBlobURLParts(blobURL.URL())
-//	blobParts.VersionID = versionId
-//	blobParts.SAS, err = BlobSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,
+//	blobParts, err := azblob.ParseBlobURL(blobClient.URL())
+//	_require.Nil(err)
+//	blobParts.VersionID = *versionId
+//	blobParts.SAS, err = service.SASSignatureValues{
+//		Protocol:      service.SASProtocolHTTPS,
 //		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
 //		ContainerName: containerName,
 //		BlobName:      blobName,
 //		Permissions:   BlobSASPermissions{Delete: true, DeletePreviousVersion: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
 //
-//	sbURL := NewBlockBlobClient(blobParts.URL(), containerClient.client.p)
+//	sbURL, err := blockblob.NewClient(blobParts.URL(), containerClient.client.p)
 //	deleteResp, err := sbURL.Delete(ctx, DeleteSnapshotsOptionNone, LeaseAccessConditions{})
 //	_assert(deleteResp, chk.IsNil)
 //
@@ -284,6 +209,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //		_assert(blob.VersionID, chk.Not(chk.Equals), versionId)
 //	}
 //}
+
 func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

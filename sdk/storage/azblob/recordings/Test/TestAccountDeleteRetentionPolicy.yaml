@@ -16,9 +16,9 @@ interactions:
       Content-Type:
       - application/xml
       User-Agent:
-      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 11:39:04 GMT
+      - Mon, 25 Jul 2022 18:29:13 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=service
@@ -29,11 +29,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 11:39:04 GMT
+      - Mon, 25 Jul 2022 18:29:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2bcd497f-801e-006b-1d1b-a0088c000000
+      - d7662d7a-601e-0063-1e54-a01283000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted
@@ -48,9 +48,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 11:39:35 GMT
+      - Mon, 25 Jul 2022 18:29:44 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=service
@@ -61,11 +61,11 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Mon, 25 Jul 2022 11:39:34 GMT
+      - Mon, 25 Jul 2022 18:29:44 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2bcddf18-801e-006b-581b-a0088c000000
+      - d766ab9e-601e-0063-2554-a01283000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -86,9 +86,9 @@ interactions:
       Content-Type:
       - application/xml
       User-Agent:
-      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 11:39:36 GMT
+      - Mon, 25 Jul 2022 18:29:45 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=service
@@ -99,11 +99,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 11:39:34 GMT
+      - Mon, 25 Jul 2022 18:29:44 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2bcde04d-801e-006b-731b-a0088c000000
+      - d766acd4-601e-0063-3a54-a01283000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted
@@ -118,9 +118,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 11:40:06 GMT
+      - Mon, 25 Jul 2022 18:30:15 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=service
@@ -131,11 +131,11 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Mon, 25 Jul 2022 11:40:04 GMT
+      - Mon, 25 Jul 2022 18:30:14 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2bce5ccb-801e-006b-451b-a0088c000000
+      - d76733a7-601e-0063-1454-a01283000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK

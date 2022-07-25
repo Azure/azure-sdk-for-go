@@ -8,18 +8,18 @@ package pageblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"io"
-	"net/http"
-	"net/url"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"io"
+	"net/http"
+	"net/url"
+	"os"
 )
 
 // Client represents a client to an Azure Storage page blob;
@@ -376,4 +376,25 @@ func (pb *Client) GetTags(ctx context.Context, o *blob.GetTagsOptions) (blob.Get
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
 func (pb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.CopyFromURLOptions) (blob.CopyFromURLResponse, error) {
 	return pb.BlobClient().CopyFromURL(ctx, copySource, o)
+}
+
+// Concurrent Download Functions -----------------------------------------------------------------------------------------
+
+// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (pb *Client) DownloadToWriterAt(ctx context.Context, offset, count int64, writer io.WriterAt, o *blob.DownloadToWriterAtOptions) error {
+	return pb.BlobClient().DownloadToWriterAt(ctx, offset, count, writer, o)
+}
+
+// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (pb *Client) DownloadToBuffer(ctx context.Context, offset, count int64, _bytes []byte, o *blob.DownloadToBufferOptions) error {
+	return pb.BlobClient().DownloadToBuffer(ctx, offset, count, shared.NewBytesWriter(_bytes), o)
+}
+
+// DownloadToFile downloads an Azure blob to a local file.
+// The file would be truncated if the size doesn't match.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (pb *Client) DownloadToFile(ctx context.Context, offset, count int64, file *os.File, o *blob.DownloadToFileOptions) error {
+	return pb.BlobClient().DownloadToFile(ctx, offset, count, file, o)
 }

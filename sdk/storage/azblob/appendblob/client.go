@@ -8,8 +8,6 @@ package appendblob
 
 import (
 	"context"
-	"io"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -17,15 +15,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"io"
+	"os"
 )
 
 // Client represents a client to an Azure Storage append blob;
 type Client base.CompositeClient[generated.BlobClient, generated.AppendBlobClient]
 
 // NewClient creates an AppendBlobClient with the specified URL, Azure AD credential, and options.
-func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.ClientOptions) (*Client, error) {
+func NewClient(blobURL string, cred azcore.TokenCredential, o *blob.ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
-	conOptions := exported.GetConnectionOptions(options)
+	conOptions := exported.GetConnectionOptions(o)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
@@ -33,17 +33,17 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.Client
 }
 
 // NewClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
-func NewClientWithNoCredential(blobURL string, options *blob.ClientOptions) (*Client, error) {
-	conOptions := exported.GetConnectionOptions(options)
+func NewClientWithNoCredential(blobURL string, o *blob.ClientOptions) (*Client, error) {
+	conOptions := exported.GetConnectionOptions(o)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewAppendBlobClient(blobURL, pl)), nil
 }
 
 // NewClientWithSharedKey creates an AppendBlobClient with the specified URL, shared key, and options.
-func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, options *blob.ClientOptions) (*Client, error) {
+func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, o *blob.ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
-	conOptions := exported.GetConnectionOptions(options)
+	conOptions := exported.GetConnectionOptions(o)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
@@ -51,7 +51,7 @@ func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, opti
 }
 
 // NewClientFromConnectionString creates Client from a connection String
-func NewClientFromConnectionString(connectionString, containerName, blobName string, options *blob.ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString, containerName, blobName string, o *blob.ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
@@ -63,10 +63,10 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKey(parsed.ServiceURL, credential, options)
+		return NewClientWithSharedKey(parsed.ServiceURL, credential, o)
 	}
 
-	return NewClientWithNoCredential(parsed.ServiceURL, options)
+	return NewClientWithNoCredential(parsed.ServiceURL, o)
 }
 
 // NewLeaseClient generates blob lease.Client from the blob.Client
@@ -131,13 +131,13 @@ func (ab *Client) Create(ctx context.Context, o *CreateOptions) (CreateResponse,
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/append-block.
-func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, options *AppendBlockOptions) (AppendBlockResponse, error) {
+func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *AppendBlockOptions) (AppendBlockResponse, error) {
 	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return AppendBlockResponse{}, nil
 	}
 
-	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := options.format()
+	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
 
 	resp, err := ab.generated().AppendBlock(ctx, count, body, appendOptions, leaseAccessConditions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)
 
@@ -157,8 +157,8 @@ func (ab *Client) AppendBlockFromURL(ctx context.Context, source string, o *Appe
 
 // Seal - The purpose of Append Blob Seal is to allow users and applications to seal append blobs, marking them as read only.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/append-blob-seal
-func (ab *Client) Seal(ctx context.Context, options *SealOptions) (SealResponse, error) {
-	leaseAccessConditions, modifiedAccessConditions, positionAccessConditions := options.format()
+func (ab *Client) Seal(ctx context.Context, o *SealOptions) (SealResponse, error) {
+	leaseAccessConditions, modifiedAccessConditions, positionAccessConditions := o.format()
 	resp, err := ab.generated().Seal(ctx, nil, leaseAccessConditions, modifiedAccessConditions, positionAccessConditions)
 	return resp, err
 }
@@ -246,4 +246,25 @@ func (ab *Client) GetTags(ctx context.Context, o *blob.GetTagsOptions) (blob.Get
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
 func (ab *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.CopyFromURLOptions) (blob.CopyFromURLResponse, error) {
 	return ab.BlobClient().CopyFromURL(ctx, copySource, o)
+}
+
+// Concurrent Download Functions -----------------------------------------------------------------------------------------
+
+// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (ab *Client) DownloadToWriterAt(ctx context.Context, offset, count int64, writer io.WriterAt, o *blob.DownloadToWriterAtOptions) error {
+	return ab.BlobClient().DownloadToWriterAt(ctx, offset, count, writer, o)
+}
+
+// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (ab *Client) DownloadToBuffer(ctx context.Context, offset, count int64, _bytes []byte, o *blob.DownloadToBufferOptions) error {
+	return ab.BlobClient().DownloadToBuffer(ctx, offset, count, shared.NewBytesWriter(_bytes), o)
+}
+
+// DownloadToFile downloads an Azure blob to a local file.
+// The file would be truncated if the size doesn't match.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (ab *Client) DownloadToFile(ctx context.Context, offset, count int64, file *os.File, o *blob.DownloadToFileOptions) error {
+	return ab.BlobClient().DownloadToFile(ctx, offset, count, file, o)
 }

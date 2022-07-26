@@ -86,7 +86,6 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
-//
 //nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
 	_require := require.New(s.T())
@@ -185,29 +184,38 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	_require.Nil(err)
 //	_require.NotNil(resp.VersionID)
 //
+//	cred, err := getGenericCredential(nil, testAccountDefault)
+//	_require.Nil(err)
+//
 //	blobParts, err := azblob.ParseBlobURL(blobClient.URL())
 //	_require.Nil(err)
 //	blobParts.VersionID = *versionId
 //	blobParts.SAS, err = service.SASSignatureValues{
+//		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
 //		Protocol:      service.SASProtocolHTTPS,
 //		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
-//		ContainerName: containerName,
-//		BlobName:      blobName,
-//		Permissions:   BlobSASPermissions{Delete: true, DeletePreviousVersion: true}.String(),
-//	}.Sign(credential)
+//		Permissions:   to.Ptr(service.SASPermissions{Delete: true, DeletePreviousVersion: true}).String(),
+//		ResourceTypes: to.Ptr(service.SASResourceTypes{Service: true, Container: true, Object: true}).String(),
+//	}.Sign(cred)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
 //
-//	sbURL, err := blockblob.NewClient(blobParts.URL(), containerClient.client.p)
-//	deleteResp, err := sbURL.Delete(ctx, DeleteSnapshotsOptionNone, LeaseAccessConditions{})
-//	_assert(deleteResp, chk.IsNil)
-//
-//	listBlobResp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true}})
+//	sbClient, err := blockblob.NewClientWithNoCredential(blobParts.URL(), nil)
+//	_, err = sbClient.Delete(ctx, nil)
 //	_require.Nil(err)
-//	for _, blob := range listBlobResp.Segment.BlobItems {
-//		_assert(blob.VersionID, chk.Not(chk.Equals), versionId)
+//
+//	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+//		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemVersions},
+//	})
+//	for pager.More() {
+//		pageResp, err := pager.NextPage(ctx)
+//		_require.Nil(err)
+//		for _, blob := range pageResp.Segment.BlobItems {
+//			_require.NotEqual(*blob.VersionID, versionId)
+//		}
 //	}
+//
 //}
 
 func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {

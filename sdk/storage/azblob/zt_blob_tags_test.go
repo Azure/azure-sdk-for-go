@@ -224,7 +224,8 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	}
 }
 
-//nolint
+//
+////nolint
 //func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -328,7 +329,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //}
@@ -533,7 +534,8 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	}
 }
 
-//nolint
+//
+////nolint
 //func (s *azblobUnrecordedTestSuite) TestFindBlobsByTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -605,7 +607,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //		_assert(blob.TagValue, chk.Equals, "firsttag")
 //	}
 //}
-
+//
 //nolint
 //func (s *azblobUnrecordedTestSuite) TestFilterBlobsUsingAccountSAS() {
 //	accountName, accountKey := accountInfo()

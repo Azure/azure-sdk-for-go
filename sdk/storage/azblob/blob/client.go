@@ -33,7 +33,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
@@ -41,7 +41,7 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
@@ -51,7 +51,7 @@ func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlobClient(blobURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates Client from a connection String
@@ -80,7 +80,7 @@ func (b *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
 		return nil, err
 	}
 	return &LeaseClient{
-		blobClient: (*Client)(base.NewBlobClient(b.URL(), b.generated().Pipeline())),
+		blobClient: (*Client)(base.NewBlobClient(b.URL(), b.generated().Pipeline(), b.sharedKey())),
 		leaseID:    leaseID,
 	}, nil
 }
@@ -107,7 +107,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline())), nil
+	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -119,7 +119,7 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline())), nil
+	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.

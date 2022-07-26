@@ -36,7 +36,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.Client
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlockBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlockBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
@@ -44,7 +44,7 @@ func NewClientWithNoCredential(blobURL string, options *blob.ClientOptions) (*Cl
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlockBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlockBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
@@ -54,7 +54,7 @@ func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, opti
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlockBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlockBlobClient(blobURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates Client from a connection String
@@ -85,6 +85,10 @@ func (bb *Client) NewLeaseClient(leaseID *string) (*blob.LeaseClient, error) {
 	return bb.BlobClient().NewLeaseClient(leaseID)
 }
 
+//func (bb *Client) sharedKey() *blob.SharedKeyCredential {
+//	return base.SharedKeyComposite(*((base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb)))
+//}
+
 func (bb *Client) generated() *generated.BlockBlobClient {
 	_, blockBlob := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	return blockBlob
@@ -101,6 +105,10 @@ func (bb *Client) BlobClient() *blob.Client {
 	return (*blob.Client)(blobClient)
 }
 
+func (bb *Client) sharedKey() *blob.SharedKeyCredential {
+	return base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
+}
+
 // WithSnapshot creates a new Client object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (bb *Client) WithSnapshot(snapshot string) (*Client, error) {
@@ -110,7 +118,7 @@ func (bb *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlockBlobClient(p.URL(), bb.generated().Pipeline())), nil
+	return (*Client)(base.NewBlockBlobClient(p.URL(), bb.generated().Pipeline(), bb.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -122,7 +130,7 @@ func (bb *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlockBlobClient(p.URL(), bb.generated().Pipeline())), nil
+	return (*Client)(base.NewBlockBlobClient(p.URL(), bb.generated().Pipeline(), bb.sharedKey())), nil
 }
 
 // Upload creates a new block blob or overwrites an existing block blob.

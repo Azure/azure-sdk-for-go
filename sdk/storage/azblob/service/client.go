@@ -33,7 +33,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
@@ -42,7 +42,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
@@ -53,7 +53,7 @@ func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, option
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates a service client from the given connection string.
@@ -95,7 +95,7 @@ func (s *Client) URL() string {
 // NewContainerClient method.
 func (s *Client) NewContainerClient(containerName string) *container.Client {
 	containerURL := runtime.JoinPaths(s.generated().Endpoint(), containerName)
-	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().Pipeline()))
+	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().Pipeline(), s.sharedKey()))
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
@@ -229,7 +229,7 @@ type SASSignatureValues = exported.AccountSASSignatureValues
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermissions, services SASServices, start time.Time, expiry time.Time) (string, error) {
 	if s.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
@@ -238,7 +238,7 @@ func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermission
 		Version:       exported.SASVersion,
 		Protocol:      exported.SASProtocolHTTPS,
 		Permissions:   permissions.String(),
-		Services:      "b",
+		Services:      services.String(),
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),

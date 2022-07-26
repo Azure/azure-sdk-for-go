@@ -29,44 +29,61 @@ func NewClient[T any](inner *T) *Client[T] {
 	return &Client[T]{inner: inner}
 }
 
-func NewServiceClient(containerURL string, pipeline runtime.Pipeline) *Client[generated.ServiceClient] {
-	return &Client[generated.ServiceClient]{inner: generated.NewServiceClient(containerURL, pipeline)}
+func NewServiceClient(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
+	return &Client[generated.ServiceClient]{
+		inner:     generated.NewServiceClient(containerURL, pipeline),
+		sharedKey: sharedKey,
+	}
 }
 
-func NewContainerClient(containerURL string, pipeline runtime.Pipeline) *Client[generated.ContainerClient] {
-	return &Client[generated.ContainerClient]{inner: generated.NewContainerClient(containerURL, pipeline)}
+func NewContainerClient(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ContainerClient] {
+	return &Client[generated.ContainerClient]{
+		inner:     generated.NewContainerClient(containerURL, pipeline),
+		sharedKey: sharedKey,
+	}
 }
 
-func NewBlobClient(blobURL string, pipeline runtime.Pipeline) *Client[generated.BlobClient] {
-	return &Client[generated.BlobClient]{inner: generated.NewBlobClient(blobURL, pipeline)}
+func NewBlobClient(blobURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.BlobClient] {
+	return &Client[generated.BlobClient]{
+		inner:     generated.NewBlobClient(blobURL, pipeline),
+		sharedKey: sharedKey,
+	}
 }
 
 type CompositeClient[T, U any] struct {
-	innerT *T
-	innerU *U
+	innerT    *T
+	innerU    *U
+	sharedKey *exported.SharedKeyCredential
 }
 
 func InnerClients[T, U any](client *CompositeClient[T, U]) (*Client[T], *U) {
 	return &Client[T]{inner: client.innerT}, client.innerU
 }
 
-func NewAppendBlobClient(blobURL string, pipeline runtime.Pipeline) *CompositeClient[generated.BlobClient, generated.AppendBlobClient] {
+func NewAppendBlobClient(blobURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.BlobClient, generated.AppendBlobClient] {
 	return &CompositeClient[generated.BlobClient, generated.AppendBlobClient]{
-		innerT: generated.NewBlobClient(blobURL, pipeline),
-		innerU: generated.NewAppendBlobClient(blobURL, pipeline),
+		innerT:    generated.NewBlobClient(blobURL, pipeline),
+		innerU:    generated.NewAppendBlobClient(blobURL, pipeline),
+		sharedKey: sharedKey,
 	}
 }
 
-func NewBlockBlobClient(blobURL string, pipeline runtime.Pipeline) *CompositeClient[generated.BlobClient, generated.BlockBlobClient] {
+func NewBlockBlobClient(blobURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.BlobClient, generated.BlockBlobClient] {
 	return &CompositeClient[generated.BlobClient, generated.BlockBlobClient]{
-		innerT: generated.NewBlobClient(blobURL, pipeline),
-		innerU: generated.NewBlockBlobClient(blobURL, pipeline),
+		innerT:    generated.NewBlobClient(blobURL, pipeline),
+		innerU:    generated.NewBlockBlobClient(blobURL, pipeline),
+		sharedKey: sharedKey,
 	}
 }
 
-func NewPageBlobClient(blobURL string, pipeline runtime.Pipeline) *CompositeClient[generated.BlobClient, generated.PageBlobClient] {
+func NewPageBlobClient(blobURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.BlobClient, generated.PageBlobClient] {
 	return &CompositeClient[generated.BlobClient, generated.PageBlobClient]{
-		innerT: generated.NewBlobClient(blobURL, pipeline),
-		innerU: generated.NewPageBlobClient(blobURL, pipeline),
+		innerT:    generated.NewBlobClient(blobURL, pipeline),
+		innerU:    generated.NewPageBlobClient(blobURL, pipeline),
+		sharedKey: sharedKey,
 	}
+}
+
+func SharedKeyComposite[T, U any](client *CompositeClient[T, U]) *exported.SharedKeyCredential {
+	return client.sharedKey
 }

@@ -33,7 +33,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.Client
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewPageBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewPageBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates a ServiceClient object using the specified URL and options.
@@ -42,7 +42,7 @@ func NewClientWithNoCredential(blobURL string, options *blob.ClientOptions) (*Cl
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewPageBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewPageBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
@@ -53,7 +53,7 @@ func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, opti
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewPageBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewPageBlobClient(blobURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates Client from a connection String
@@ -100,6 +100,10 @@ func (pb *Client) BlobClient() *blob.Client {
 	return (*blob.Client)(innerBlob)
 }
 
+func (pb *Client) sharedKey() *blob.SharedKeyCredential {
+	return base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.PageBlobClient])(pb))
+}
+
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (pb *Client) WithSnapshot(snapshot string) (*Client, error) {
@@ -109,7 +113,7 @@ func (pb *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline())), nil
+	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline(), pb.sharedKey())), nil
 }
 
 // WithVersionID creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
@@ -121,7 +125,7 @@ func (pb *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline())), nil
+	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline(), pb.sharedKey())), nil
 }
 
 // Create creates a page blob of the specified length. Call PutPage to upload data to a page blob.

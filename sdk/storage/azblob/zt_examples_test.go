@@ -276,7 +276,7 @@ func Example_service_Client_GetSASURL() {
 	permission := service.SASPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
-	sasURL, err := serviceClient.GetSASURL(resources, permission, start, expiry)
+	sasURL, err := serviceClient.GetSASURL(resources, permission, service.SASServices{Blob: true}, start, expiry)
 	handleError(err)
 
 	serviceURL := fmt.Sprintf("https://<myAccountName>.blob.core.windows.net/?%s", sasURL)

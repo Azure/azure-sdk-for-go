@@ -8,6 +8,7 @@ package azblob_test
 
 import (
 	"bytes"
+	"crypto/md5"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -56,59 +57,59 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	// set up abClient to test
-//	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
-//	_, err = abClient.Create(ctx, nil)
-//	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode, 201)
-//
-//	// test append block with valid MD5 value
-//	readerToBody, body := getRandomDataAndReader(1024)
-//	md5Value := md5.Sum(body)
-//	_ = body
-//	contentMD5 := md5Value[:]
-//	appendBlockOptions := appendblob.AppendBlockOptions{
-//		TransactionalContentMD5: contentMD5,
-//	}
-//	appendResp, err := abClient.AppendBlock(ctx, NopCloser(readerToBody), &appendBlockOptions)
-//	_require.Nil(err)
-//	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
-//	_require.Equal(*appendResp.BlobAppendOffset, "0")
-//	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
-//	_require.NotNil(appendResp.ETag)
-//	_require.NotNil(appendResp.LastModified)
-//	_require.Equal((*appendResp.LastModified).IsZero(), false)
-//	_require.EqualValues(appendResp.ContentMD5, contentMD5)
-//	_require.NotNil(appendResp.RequestID)
-//	_require.NotNil(appendResp.Version)
-//	_require.NotNil(appendResp.Date)
-//	_require.Equal((*appendResp.Date).IsZero(), false)
-//
-//	// test append block with bad MD5 value
-//	readerToBody, body = getRandomDataAndReader(1024)
-//	_, badMD5 := getRandomDataAndReader(16)
-//	_ = body
-//	appendBlockOptions = appendblob.AppendBlockOptions{
-//		TransactionalContentMD5: badMD5,
-//	}
-//	appendResp, err = abClient.AppendBlock(ctx, NopCloser(readerToBody), &appendBlockOptions)
-//	_require.NotNil(err)
-//
-//	validateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
-//}
+//nolint
+func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	// set up abClient to test
+	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
+	_, err = abClient.Create(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
+
+	// test append block with valid MD5 value
+	readerToBody, body := getRandomDataAndReader(1024)
+	md5Value := md5.Sum(body)
+	_ = body
+	contentMD5 := md5Value[:]
+	appendBlockOptions := appendblob.AppendBlockOptions{
+		TransactionalContentMD5: contentMD5,
+	}
+	appendResp, err := abClient.AppendBlock(ctx, NopCloser(readerToBody), &appendBlockOptions)
+	_require.Nil(err)
+	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
+	_require.Equal(*appendResp.BlobAppendOffset, "0")
+	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
+	_require.NotNil(appendResp.ETag)
+	_require.NotNil(appendResp.LastModified)
+	_require.Equal((*appendResp.LastModified).IsZero(), false)
+	_require.EqualValues(appendResp.ContentMD5, contentMD5)
+	_require.NotNil(appendResp.RequestID)
+	_require.NotNil(appendResp.Version)
+	_require.NotNil(appendResp.Date)
+	_require.Equal((*appendResp.Date).IsZero(), false)
+
+	// test append block with bad MD5 value
+	readerToBody, body = getRandomDataAndReader(1024)
+	_, badMD5 := getRandomDataAndReader(16)
+	_ = body
+	appendBlockOptions = appendblob.AppendBlockOptions{
+		TransactionalContentMD5: badMD5,
+	}
+	appendResp, err = abClient.AppendBlock(ctx, NopCloser(readerToBody), &appendBlockOptions)
+	_require.NotNil(err)
+
+	validateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
+}
 
 //nolint
 //func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {

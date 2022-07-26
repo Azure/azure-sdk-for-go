@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 20:49:20 GMT
+      - Tue, 26 Jul 2022 08:22:01 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsnilpolicyslice?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 20:49:19 GMT
+      - Tue, 26 Jul 2022 08:22:00 GMT
       Etag:
-      - '"0x8DA6E7F25CBDDDD"'
+      - '"0x8DA6EDFE9E70DB8"'
       Last-Modified:
-      - Mon, 25 Jul 2022 20:49:20 GMT
+      - Tue, 26 Jul 2022 08:22:00 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - af0a1bb0-601e-004c-1168-a01f48000000
+      - 053c5c14-401e-0074-01c8-a0bb88000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -54,7 +54,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 20:49:20 GMT
+      - Tue, 26 Jul 2022 08:22:01 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsnilpolicyslice?comp=acl&restype=container
@@ -65,15 +65,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 20:49:19 GMT
+      - Tue, 26 Jul 2022 08:22:00 GMT
       Etag:
-      - '"0x8DA6E7F25F2A01C"'
+      - '"0x8DA6EDFEA0E43D0"'
       Last-Modified:
-      - Mon, 25 Jul 2022 20:49:20 GMT
+      - Tue, 26 Jul 2022 08:22:00 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - af0a1cc8-601e-004c-1268-a01f48000000
+      - 053c5d50-401e-0074-1bc8-a0bb88000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -90,7 +90,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 20:49:20 GMT
+      - Tue, 26 Jul 2022 08:22:01 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsnilpolicyslice?restype=container
@@ -101,11 +101,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 20:49:19 GMT
+      - Tue, 26 Jul 2022 08:22:01 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - af0a1e22-601e-004c-5168-a01f48000000
+      - 053c5e99-401e-0074-3cc8-a0bb88000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

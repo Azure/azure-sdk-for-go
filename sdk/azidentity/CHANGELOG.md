@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated AuthenticationFailedError with links to TROUBLESHOOTING.md for relevant errors
 
 ## 1.2.0-beta.1 (2022-06-07)
 
@@ -50,7 +51,6 @@
 ### Other Changes
 * `GetToken()` returns an error when the caller specifies no scope
 * Updated to the latest versions of `golang.org/x/crypto`, `azcore` and `internal`
-* Updated AuthenicationFailedError to include links to TROUBLESHOOTING.md for relevant errors
 
 ## 0.14.0 (2022-04-05)
 

@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:35:39 GMT
+      - Tue, 26 Jul 2022 08:20:35 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotifnonematchtrue?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 18:35:38 GMT
+      - Tue, 26 Jul 2022 08:20:34 GMT
       Etag:
-      - '"0x8DA6E6C78F2558D"'
+      - '"0x8DA6EDFB6C935FA"'
       Last-Modified:
-      - Mon, 25 Jul 2022 18:35:39 GMT
+      - Tue, 26 Jul 2022 08:20:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d76d56f5-601e-0063-3b55-a01283000000
+      - 053ab56e-401e-0074-0ac8-a0bb88000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -52,7 +52,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:35:39 GMT
+      - Tue, 26 Jul 2022 08:20:35 GMT
       x-ms-blob-type:
       - BlockBlob
       x-ms-version:
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Mon, 25 Jul 2022 18:35:38 GMT
+      - Tue, 26 Jul 2022 08:20:35 GMT
       Etag:
-      - '"0x8DA6E6C79171F61"'
+      - '"0x8DA6EDFB6EF35AB"'
       Last-Modified:
-      - Mon, 25 Jul 2022 18:35:39 GMT
+      - Tue, 26 Jul 2022 08:20:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - d76d5809-601e-0063-2f55-a01283000000
+      - 053ab69b-401e-0074-17c8-a0bb88000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-07-25T18:35:39.3428321Z"
+      - "2022-07-26T08:20:35.2239019Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -100,7 +100,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:35:39 GMT
+      - Tue, 26 Jul 2022 08:20:35 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotifnonematchtrue/gotestblobblobsnapshotifnonematchtrue?comp=snapshot
@@ -111,23 +111,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 18:35:38 GMT
+      - Tue, 26 Jul 2022 08:20:35 GMT
       Etag:
-      - '"0x8DA6E6C79171F61"'
+      - '"0x8DA6EDFB6EF35AB"'
       Last-Modified:
-      - Mon, 25 Jul 2022 18:35:39 GMT
+      - Tue, 26 Jul 2022 08:20:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d76d590b-601e-0063-1d55-a01283000000
+      - 053ab79d-401e-0074-7dc8-a0bb88000000
       X-Ms-Request-Server-Encrypted:
       - "false"
       X-Ms-Snapshot:
-      - "2022-07-25T18:35:39.5846959Z"
+      - "2022-07-26T08:20:35.4747607Z"
       X-Ms-Version:
       - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-07-25T18:35:39.5856959Z"
+      - "2022-07-26T08:20:35.4757607Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -142,7 +142,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Mon, 25 Jul 2022 18:35:40 GMT
+      - Tue, 26 Jul 2022 08:20:36 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotifnonematchtrue?restype=container
@@ -153,11 +153,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 25 Jul 2022 18:35:39 GMT
+      - Tue, 26 Jul 2022 08:20:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d76d5a39-601e-0063-2b55-a01283000000
+      - 053ab889-401e-0074-4fc8-a0bb88000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

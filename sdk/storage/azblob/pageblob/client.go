@@ -33,7 +33,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.Client
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewPageBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewPageBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates a ServiceClient object using the specified URL and options.
@@ -42,7 +42,7 @@ func NewClientWithNoCredential(blobURL string, options *blob.ClientOptions) (*Cl
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewPageBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewPageBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
@@ -53,7 +53,7 @@ func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, opti
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewPageBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewPageBlobClient(blobURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates Client from a connection String
@@ -100,6 +100,10 @@ func (pb *Client) BlobClient() *blob.Client {
 	return (*blob.Client)(innerBlob)
 }
 
+func (pb *Client) sharedKey() *blob.SharedKeyCredential {
+	return base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.PageBlobClient])(pb))
+}
+
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (pb *Client) WithSnapshot(snapshot string) (*Client, error) {
@@ -109,7 +113,7 @@ func (pb *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline())), nil
+	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline(), pb.sharedKey())), nil
 }
 
 // WithVersionID creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
@@ -121,7 +125,7 @@ func (pb *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline())), nil
+	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline(), pb.sharedKey())), nil
 }
 
 // Create creates a page blob of the specified length. Call PutPage to upload data to a page blob.
@@ -362,8 +366,8 @@ func (pb *Client) AbortCopyFromURL(ctx context.Context, copyID string, o *blob.A
 // Each call to this operation replaces all existing tags attached to the blob.
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
-func (pb *Client) SetTags(ctx context.Context, o *blob.SetTagsOptions) (blob.SetTagsResponse, error) {
-	return pb.BlobClient().SetTags(ctx, o)
+func (pb *Client) SetTags(ctx context.Context, tags map[string]string, o *blob.SetTagsOptions) (blob.SetTagsResponse, error) {
+	return pb.BlobClient().SetTags(ctx, tags, o)
 }
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.

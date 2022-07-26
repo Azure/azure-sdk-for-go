@@ -276,7 +276,7 @@ func Example_service_Client_GetSASURL() {
 	permission := service.SASPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
-	sasURL, err := serviceClient.GetSASURL(resources, permission, start, expiry)
+	sasURL, err := serviceClient.GetSASURL(resources, permission, service.SASServices{Blob: true}, start, expiry)
 	handleError(err)
 
 	serviceURL := fmt.Sprintf("https://<myAccountName>.blob.core.windows.net/?%s", sasURL)
@@ -626,6 +626,7 @@ func Example_container_ClientSetAccessPolicy() {
 		// ChangeLease the blob to be public access blob
 		_, err := containerClient.SetAccessPolicy(
 			context.TODO(),
+			nil,
 			&container.SetAccessPolicyOptions{
 				Access: to.Ptr(azblob.PublicAccessTypeBlob),
 			},
@@ -1032,7 +1033,7 @@ func Example_service_SASSignatureValues_Sign() {
 //		ContainerName: containerName,
 //		BlobName:      blobName,
 //		Permissions:   azblob.BlobSASPermissions{Add: true, Read: true, Write: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	handleError(err)
 //
 //	// Create the SAS URL for the resource you wish to access, and append the SAS query parameters.

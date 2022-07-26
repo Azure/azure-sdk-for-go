@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -34,7 +35,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewContainerClient(containerURL, pl)), nil
+	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
@@ -42,7 +43,7 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewContainerClient(containerURL, pl)), nil
+	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
@@ -52,7 +53,7 @@ func NewClientWithSharedKey(containerURL string, cred *SharedKeyCredential, opti
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewContainerClient(containerURL, pl)), nil
+	return (*Client)(base.NewContainerClient(containerURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates a Client object using connection string of an account
@@ -83,7 +84,7 @@ func (c *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
 	}
 
 	return &LeaseClient{
-		containerClient: (*Client)(base.NewContainerClient(c.URL(), c.generated().Pipeline())),
+		containerClient: (*Client)(base.NewContainerClient(c.URL(), c.generated().Pipeline(), c.sharedKey())),
 		leaseID:         leaseID,
 	}, nil
 }
@@ -108,7 +109,7 @@ func (c *Client) URL() string {
 // NewBlobClient method.
 func (c *Client) NewBlobClient(blobName string) *blob.Client {
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().Pipeline()))
+	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().Pipeline(), c.sharedKey()))
 }
 
 // NewAppendBlobClient creates a new AppendBlobURL object by concatenating blobName to the end of
@@ -118,7 +119,7 @@ func (c *Client) NewBlobClient(blobName string) *blob.Client {
 // NewAppendBlobClient method.
 func (c *Client) NewAppendBlobClient(blobName string) *appendblob.Client {
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*appendblob.Client)(base.NewAppendBlobClient(blobURL, c.generated().Pipeline()))
+	return (*appendblob.Client)(base.NewAppendBlobClient(blobURL, c.generated().Pipeline(), c.sharedKey()))
 }
 
 // NewBlockBlobClient creates a new BlockBlobClient object by concatenating blobName to the end of
@@ -128,7 +129,7 @@ func (c *Client) NewAppendBlobClient(blobName string) *appendblob.Client {
 // NewBlockBlobClient method.
 func (c *Client) NewBlockBlobClient(blobName string) *blockblob.Client {
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*blockblob.Client)(base.NewBlockBlobClient(blobURL, c.generated().Pipeline()))
+	return (*blockblob.Client)(base.NewBlockBlobClient(blobURL, c.generated().Pipeline(), c.sharedKey()))
 }
 
 // NewPageBlobClient creates a new PageBlobURL object by concatenating blobName to the end of Client's URL. The new PageBlobURL uses the same request policy pipeline as the Client.
@@ -137,7 +138,7 @@ func (c *Client) NewBlockBlobClient(blobName string) *blockblob.Client {
 // NewPageBlobClient method.
 func (c *Client) NewPageBlobClient(blobName string) *pageblob.Client {
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*pageblob.Client)(base.NewPageBlobClient(blobURL, c.generated().Pipeline()))
+	return (*pageblob.Client)(base.NewPageBlobClient(blobURL, c.generated().Pipeline(), c.sharedKey()))
 }
 
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.
@@ -197,9 +198,9 @@ func (c *Client) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions)
 
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
-func (c *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
+func (c *Client) SetAccessPolicy(ctx context.Context, containerACL []*SignedIdentifier, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	accessPolicy, mac, lac := o.format()
-	resp, err := c.generated().SetAccessPolicy(ctx, accessPolicy, mac, lac)
+	resp, err := c.generated().SetAccessPolicy(ctx, containerACL, accessPolicy, mac, lac)
 	return resp, err
 }
 
@@ -294,12 +295,23 @@ func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry t
 	}
 
 	// Containers do not have snapshots, nor versions.
-	urlParts.SAS, err = exported.BlobSASSignatureValues{
+	qps, err := SASSignatureValues{
+		Version:       exported.SASVersion,
+		Protocol:      exported.SASProtocolHTTPS,
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.NewSASQueryParameters(c.sharedKey())
+	}.Sign(c.sharedKey())
+	if err != nil {
+		return "", err
+	}
 
-	return urlParts.URL(), err
+	endpoint := c.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
 }

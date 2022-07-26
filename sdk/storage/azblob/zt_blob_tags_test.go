@@ -45,10 +45,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	_require.Nil(err)
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
-	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags: blobTagsMap,
-	}
-	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = bbClient.SetTags(ctx, blobTagsMap, nil)
 	_require.Nil(err)
 	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
@@ -93,10 +90,9 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	versionId2 := blockBlobUploadResp.VersionID
 
 	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags:      blobTagsMap,
 		VersionID: versionId1,
 	}
-	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = bbClient.SetTags(ctx, blobTagsMap, &setTagsBlobOptions)
 	_require.Nil(err)
 	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
@@ -228,7 +224,8 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	}
 }
 
-//nolint
+//
+////nolint
 //func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -273,7 +270,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fail()
 //	}
@@ -332,7 +329,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //}
@@ -381,7 +378,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
@@ -430,8 +427,6 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	//_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
@@ -449,7 +444,6 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	}
 	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 	_require.Nil(err)
-	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
 	getPropertiesResponse, err := bbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
@@ -481,10 +475,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 		"Storage+SDK":     "SDK/GO",
 		"GO ":             ".Net",
 	}
-	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags: blobTagsMap,
-	}
-	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = bbClient.SetTags(ctx, blobTagsMap, nil)
 	_require.Nil(err)
 
 	resp, err := bbClient.CreateSnapshot(ctx, nil)
@@ -501,8 +492,6 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	//_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
@@ -519,9 +508,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 		"+-./:=_1": "+-./:=_",
 	}
 
-	_, err = blobClient.SetTags(ctx, &blob.SetTagsOptions{
-		Tags: blobTagsMap,
-	})
+	_, err = blobClient.SetTags(ctx, blobTagsMap, nil)
 	_require.Nil(err)
 	// _require.Equal(resp.RawResponse.StatusCode,204)
 
@@ -547,7 +534,8 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	}
 }
 
-//nolint
+//
+////nolint
 //func (s *azblobUnrecordedTestSuite) TestFindBlobsByTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -619,7 +607,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //		_assert(blob.TagValue, chk.Equals, "firsttag")
 //	}
 //}
-
+//
 //nolint
 //func (s *azblobUnrecordedTestSuite) TestFilterBlobsUsingAccountSAS() {
 //	accountName, accountKey := accountInfo()
@@ -634,7 +622,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, DeletePreviousVersion: true, Tag: true, FilterByTags: true, Create: true}.String(),
 //		Services:      AccountSASServices{Blob: true}.String(),
 //		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		log.Fatal(err)
 //	}
@@ -701,10 +689,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	_require.NotEqual(putResp.ETag, "")
 	_require.NotEqual(putResp.Version, "")
 
-	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags: basicBlobTagsMap,
-	}
-	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = pbClient.SetTags(ctx, basicBlobTagsMap, nil)
 	_require.Nil(err)
 	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
 
@@ -728,10 +713,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 		"b0l1o2b3":   "s0d1k2",
 	}
 
-	setTagsBlobOptions2 := blob.SetTagsOptions{
-		Tags: modifiedBlobTags,
-	}
-	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
+	_, err = pbClient.SetTags(ctx, modifiedBlobTags, nil)
 	_require.Nil(err)
 	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
 
@@ -765,10 +747,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	pbClient := createNewPageBlob(_require, generateBlobName(testName), containerClient)
 
-	setTagsBlobOptions := blob.SetTagsOptions{
-		Tags: specialCharBlobTagsMap,
-	}
-	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = pbClient.SetTags(ctx, specialCharBlobTagsMap, nil)
 	_require.Nil(err)
 
 	resp, err := pbClient.CreateSnapshot(ctx, nil)

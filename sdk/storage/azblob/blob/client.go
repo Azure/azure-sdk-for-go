@@ -33,7 +33,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
@@ -41,7 +41,7 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 	conOptions := exported.GetConnectionOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
@@ -51,7 +51,7 @@ func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
+	return (*Client)(base.NewBlobClient(blobURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates Client from a connection String
@@ -80,7 +80,7 @@ func (b *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
 		return nil, err
 	}
 	return &LeaseClient{
-		blobClient: (*Client)(base.NewBlobClient(b.URL(), b.generated().Pipeline())),
+		blobClient: (*Client)(base.NewBlobClient(b.URL(), b.generated().Pipeline(), b.sharedKey())),
 		leaseID:    leaseID,
 	}, nil
 }
@@ -107,7 +107,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline())), nil
+	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -119,7 +119,7 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline())), nil
+	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
@@ -241,10 +241,10 @@ func (b *Client) AbortCopyFromURL(ctx context.Context, copyID string, options *A
 // Each call to this operation replaces all existing tags attached to the blob.
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
-func (b *Client) SetTags(ctx context.Context, options *SetTagsOptions) (SetTagsResponse, error) {
+func (b *Client) SetTags(ctx context.Context, tags map[string]string, options *SetTagsOptions) (SetTagsResponse, error) {
+	serializedTags := shared.SerializeBlobTags(tags)
 	blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions := options.format()
-	resp, err := b.generated().SetTags(ctx, blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions)
-
+	resp, err := b.generated().SetTags(ctx, *serializedTags, blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions)
 	return resp, err
 }
 
@@ -290,7 +290,7 @@ func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry
 
 		StartTime:  start.UTC(),
 		ExpiryTime: expiry.UTC(),
-	}.NewSASQueryParameters(b.sharedKey())
+	}.Sign(b.sharedKey())
 
 	if err != nil {
 		return "", err

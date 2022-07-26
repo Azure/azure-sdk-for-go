@@ -58,7 +58,7 @@ type EncryptionAlgorithmType = generated.EncryptionAlgorithmType
 type RehydratePriority = generated.RehydratePriority
 
 // SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
-// You parse a map of query parameters into its fields by calling NewSASQueryParameters(). You add the components
+// You parse a map of query parameters into its fields by calling Sign(). You add the components
 // to a query parameter map by calling AddToValues().
 // NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
 type SASQueryParameters = exported.SASQueryParameters
@@ -372,8 +372,6 @@ type SetTagsOptions struct {
 	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
-	Tags map[string]string
-
 	AccessConditions *AccessConditions
 }
 
@@ -383,7 +381,6 @@ func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *Modifie
 	}
 
 	options := &generated.BlobClientSetTagsOptions{
-		Tags:                      shared.SerializeBlobTags(o.Tags),
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		VersionID:                 o.VersionID,

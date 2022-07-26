@@ -114,3 +114,19 @@ func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
 		EncryptionAlgorithmTypeAES256,
 	}
 }
+
+// ArchiveStatus defines values for ArchiveStatus
+type ArchiveStatus = generated.ArchiveStatus
+
+const (
+	ArchiveStatusRehydratePendingToCool = generated.ArchiveStatusRehydratePendingToCool
+	ArchiveStatusRehydratePendingToHot  = generated.ArchiveStatusRehydratePendingToHot
+)
+
+// PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.
+func PossibleArchiveStatusValues() []ArchiveStatus {
+	return []ArchiveStatus{
+		ArchiveStatusRehydratePendingToCool,
+		ArchiveStatusRehydratePendingToHot,
+	}
+}

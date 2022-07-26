@@ -73,7 +73,7 @@ package azblob_test
 ////		ContainerName: containerName,
 ////		BlobName:      blobName,
 ////		Protocol:      SASProtocolHTTPS,
-////	}.NewSASQueryParameters(credential)
+////	}.Sign(credential)
 ////	if err != nil {
 ////		s.T().Fatal(err)
 ////	}

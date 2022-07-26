@@ -124,7 +124,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		_require.Error(err)
 //	}
@@ -190,7 +190,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 //		ContainerName: srcBlobParts.ContainerName,
 //		BlobName:      srcBlobParts.BlobName,
 //		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	if err != nil {
 //		_require.Error(err)
 //	}
@@ -335,7 +335,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(ctx, &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
+	_, err = containerClient.SetAccessPolicy(ctx, nil, &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
 	_require.Nil(err)
 
 	srcBlob := createNewPageBlob(_require, "src"+generateBlobName(testName), containerClient)

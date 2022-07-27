@@ -442,6 +442,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [default_cred_ref]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
+[goget_azkeys]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-keys/docs
 [key_client_docs]: https://aka.ms/azsdk/go/keyvault-keys/docs#Client

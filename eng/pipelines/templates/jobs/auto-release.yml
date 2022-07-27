@@ -1,24 +1,14 @@
-trigger:
-  branches:
-    exclude:
-      - '*'
+trigger: none
 
-# avoid being triggered as part of CI check
-pr:
-  branches:
-    exclude:
-      - '*'
+pr: none
 
 schedules:
-  - cron: "0,30 1-9 * * *"
+  - cron: "0 1 * * *"
     displayName: Daily release
     branches:
       include:
         - main
     always: true
-
-variables:
-  - group: Release Secrets for GitHub
 
 stages:
   - stage:
@@ -26,6 +16,16 @@ stages:
       - job:
         displayName: Go Auto Release
         steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '16.16.0'
+              checkLatest: true
+
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: 'install -g autorest@latest'
+
           - task: GoTool@0
             inputs:
               version: '1.18.2'
@@ -33,26 +33,28 @@ stages:
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml
 
           - script: |
-              echo $GO_WORKSPACE_PATH
-              echo $GO_PATH
+              sudo ln -s /usr/bin/pwsh /usr/bin/pwsh.exe
+              git config --global user.email "ReleaseHelper"
+              git config --global user.name "ReleaseHelper"
               
               rm -rf $GO_WORKSPACE_PATH
-              cd $GO_WORKSPACE_PATH../
+              cd $(system.defaultWorkingDirectory)/../go/src/github.com/Azure
+              
               git clone https://github.com/Azure/azure-sdk-for-go.git
               git clone https://github.com/Azure/azure-rest-api-specs.git
               
               cd azure-sdk-for-go
-              git remote add fork https://github.com/Azure/azure-sdk-for-go.git
-              git remote -v
+              git remote add fork https://Azure:$(azuresdk-github-pat)@github.com/Azure/azure-sdk-for-go.git
               cd ../
               
               go install github.com/Azure/azure-sdk-for-go/eng/tools/generator@latest
               
               generator issue -t $(azuresdk-github-pat) > sdk-release.json
               cat sdk-release.json
+            
               
               file_size=`du -b ./sdk-release.json |awk '{print $1}'`
-              echo "file size:" ${file_size}
+              echo "sdk-release.json file size:" ${file_size}
               if [ ${file_size} -le 70 ]; then
                 echo "There are no services that need to be released"
               else

@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewConsumerClient(t *testing.T) {
+func TestUnitNewConsumerClient(t *testing.T) {
 	connectionStringNoEntityPath := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
 
 	client, err := NewConsumerClientFromConnectionString(connectionStringNoEntityPath, "eventHubName", "0", "$Default", nil)

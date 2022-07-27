@@ -79,6 +79,7 @@ type PartitionProperties struct {
 	PartitionID string
 }
 
+// GetPartitionPropertiesOptions are the options for the GetPartitionProperties function.
 type GetPartitionPropertiesOptions struct {
 	// For future expansion
 }

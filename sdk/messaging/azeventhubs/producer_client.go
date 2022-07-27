@@ -43,6 +43,7 @@ type ProducerClientOptions struct {
 	RetryOptions RetryOptions
 }
 
+// ProducerClient can be used to send events to an Event Hub.
 type ProducerClient struct {
 	retryOptions RetryOptions
 	namespace    internal.NamespaceForProducerOrConsumer
@@ -111,6 +112,9 @@ type NewEventDataBatchOptions struct {
 	PartitionID *string
 }
 
+// NewMessageBatch can be used to create a batch that contain multiple
+// events.
+// If the operation fails it can return an *azeventhubs.Error type if the failure is actionable.
 func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *NewEventDataBatchOptions) (*EventDataBatch, error) {
 	if options == nil {
 		options = &NewEventDataBatchOptions{}
@@ -157,17 +161,12 @@ func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *NewEve
 	return &batch, nil
 }
 
-// SendEventsOptions are options for the SendEvents function.
-type SendEventsOptions struct {
-	// PartitionID is the intended partition for the messages
-	PartitionID *string
-}
-
 // SendEventBatchOptions contains optional parameters for the SendEventBatch function
 type SendEventBatchOptions struct {
 	// For future expansion
 }
 
+// SendEventBatch sends an event data batch to Event Hubs.
 func (pc *ProducerClient) SendEventBatch(ctx context.Context, batch *EventDataBatch, options *SendEventBatchOptions) error {
 	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventBatch", *batch.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
 		return lwid.Link.Send(ctx, batch.toAMQPMessage())

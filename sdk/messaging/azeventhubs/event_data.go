@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
+// EventData is an event that can be sent, using the ProducerClient, to an Event Hub.
 type EventData struct {
 	// ApplicationProperties can be used to store custom metadata for a message.
 	ApplicationProperties map[string]any
@@ -34,6 +35,7 @@ type EventData struct {
 	PartitionKey *string
 }
 
+// ReceivedEventData is an event that has been received using the ConsumerClient.
 type ReceivedEventData struct {
 	// ApplicationProperties can be used to store custom metadata for a message.
 	ApplicationProperties map[string]any

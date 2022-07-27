@@ -79,6 +79,6 @@ func ExampleConsumerClient_GetPartitionProperties() {
 		panic(err)
 	}
 
-	fmt.Printf("First sequence number for partition ID %s: %d\n", partitionProps.PartitionId, partitionProps.BeginningSequenceNumber)
-	fmt.Printf("Last sequence number for partition ID %s: %d\n", partitionProps.PartitionId, partitionProps.LastEnqueuedSequenceNumber)
+	fmt.Printf("First sequence number for partition ID %s: %d\n", partitionProps.PartitionID, partitionProps.BeginningSequenceNumber)
+	fmt.Printf("Last sequence number for partition ID %s: %d\n", partitionProps.PartitionID, partitionProps.LastEnqueuedSequenceNumber)
 }

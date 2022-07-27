@@ -59,20 +59,20 @@ func FiniteSendAndReceiveTest() error {
 		go func(partition azeventhubs.PartitionProperties) {
 			defer wg.Done()
 
-			log.Printf("[p:%s] Starting to send messages to partition", partition.PartitionId)
-			defer log.Printf("[p:%s] Done sending messages to partition", partition.PartitionId)
+			log.Printf("[p:%s] Starting to send messages to partition", partition.PartitionID)
+			defer log.Printf("[p:%s] Done sending messages to partition", partition.PartitionID)
 
-			err := sendEventsToPartition(cs, hubName, partition.PartitionId, messageLimit, extraBytes)
+			err := sendEventsToPartition(cs, hubName, partition.PartitionID, messageLimit, extraBytes)
 
 			if err != nil {
-				log.Fatalf("Failed to send events to partition %s: %s", partition.PartitionId, err)
+				log.Fatalf("Failed to send events to partition %s: %s", partition.PartitionID, err)
 			}
 
-			log.Printf("[p:%s] Starting to receive messages from partition", partition.PartitionId)
-			defer log.Printf("[p:%s] Done receiving messages from partition", partition.PartitionId)
+			log.Printf("[p:%s] Starting to receive messages from partition", partition.PartitionID)
+			defer log.Printf("[p:%s] Done receiving messages from partition", partition.PartitionID)
 
-			if err := consumeEventsFromPartition(cs, hubName, partition.PartitionId, messageLimit, partition.LastEnqueuedSequenceNumber); err != nil {
-				log.Fatalf("[p:%s] Failed to receive all events from partition, started at %d: %s", partition.PartitionId, partition.LastEnqueuedSequenceNumber, err)
+			if err := consumeEventsFromPartition(cs, hubName, partition.PartitionID, messageLimit, partition.LastEnqueuedSequenceNumber); err != nil {
+				log.Fatalf("[p:%s] Failed to receive all events from partition, started at %d: %s", partition.PartitionID, partition.LastEnqueuedSequenceNumber, err)
 			}
 		}(partition)
 	}

@@ -60,7 +60,7 @@ func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, props)
 
-		require.Equal(t, pid, props.PartitionId)
+		require.Equal(t, pid, props.PartitionID)
 	}
 }
 

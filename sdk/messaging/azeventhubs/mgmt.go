@@ -56,14 +56,27 @@ func getEventHubProperties(ctx context.Context, ns internal.NamespaceForManageme
 	return newEventHubProperties(resp.Message.Value)
 }
 
+// PartitionProperties are the properties for a single partition.
 type PartitionProperties struct {
-	BeginningSequenceNumber    int64
-	EventHubName               string
-	IsEmpty                    bool
-	LastEnqueuedOffset         int64
-	LastEnqueuedOn             time.Time
+	// BeginningSequenceNumber is the first sequence number for a partition.
+	BeginningSequenceNumber int64
+	// EventHubName is the name of the Event Hub for this partition.
+	EventHubName string
+
+	// IsEmpty is true if the partition is empty, false otherwise.
+	IsEmpty bool
+
+	// LastEnqueuedOffset is the offset of latest enqueued event.
+	LastEnqueuedOffset int64
+
+	// LastEnqueuedOn is the date of latest enqueued event.
+	LastEnqueuedOn time.Time
+
+	// LastEnqueuedSequenceNumber is the sequence number of the latest enqueued event.
 	LastEnqueuedSequenceNumber int64
-	PartitionId                string
+
+	// PartitionID is the partition ID of this partition.
+	PartitionID string
 }
 
 type GetPartitionPropertiesOptions struct {
@@ -195,7 +208,7 @@ func newPartitionProperties(amqpValue any) (PartitionProperties, error) {
 		LastEnqueuedOffset:         lastEnqueuedOffset,
 		LastEnqueuedOn:             lastEnqueuedTime,
 		IsEmpty:                    isEmpty,
-		PartitionId:                partition,
+		PartitionID:                partition,
 		EventHubName:               eventHubName,
 	}, nil
 }

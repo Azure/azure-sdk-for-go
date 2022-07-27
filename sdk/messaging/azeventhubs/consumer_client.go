@@ -77,6 +77,7 @@ type StartPosition struct {
 	Latest *bool
 }
 
+// ConsumerClient is used to receive events from an Event Hub partition.
 type ConsumerClient struct {
 	retryOptions  RetryOptions
 	namespace     *internal.Namespace

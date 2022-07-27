@@ -59,7 +59,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		firstPartition, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
 		require.NoError(t, err)
 
-		consumerClient, err := azeventhubs.NewConsumerClient("$Default", testParams.EventHubNamespace, testParams.EventHubName, firstPartition.PartitionId, dac,
+		consumerClient, err := azeventhubs.NewConsumerClient("$Default", testParams.EventHubNamespace, testParams.EventHubName, firstPartition.PartitionID, dac,
 			&azeventhubs.ConsumerClientOptions{
 				StartPosition: azeventhubs.StartPosition{
 					SequenceNumber: &firstPartition.LastEnqueuedSequenceNumber,
@@ -69,7 +69,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		require.NoError(t, err)
 
 		eventDataBatch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
-			PartitionID: to.Ptr(firstPartition.PartitionId),
+			PartitionID: to.Ptr(firstPartition.PartitionID),
 		})
 		require.NoError(t, err)
 
@@ -89,9 +89,9 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		require.NotEmpty(t, events)
 		require.Equal(t, "hello", string(events[0].Body))
 
-		consumerPart, err := consumerClient.GetPartitionProperties(context.Background(), firstPartition.PartitionId, nil)
+		consumerPart, err := consumerClient.GetPartitionProperties(context.Background(), firstPartition.PartitionID, nil)
 		require.NoError(t, err)
-		producerPart, err := producerClient.GetPartitionProperties(context.Background(), firstPartition.PartitionId, nil)
+		producerPart, err := producerClient.GetPartitionProperties(context.Background(), firstPartition.PartitionID, nil)
 		require.NoError(t, err)
 
 		require.Equal(t, firstPartition.LastEnqueuedSequenceNumber+1, consumerPart.LastEnqueuedSequenceNumber)
@@ -142,7 +142,7 @@ func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
 		props, err := consumer.GetPartitionProperties(context.Background(), partitionID, nil)
 		require.NoError(t, err)
 
-		require.Equal(t, partitionID, props.PartitionId)
+		require.Equal(t, partitionID, props.PartitionID)
 	}
 }
 
@@ -165,7 +165,7 @@ func TestConsumerClient_Epochs(t *testing.T) {
 	// this is fine - you can have multiple parallel consumers so long as nobody specifies an epoch
 	for i := 0; i < concurrentClients; i++ {
 		go func() {
-			client, err := azeventhubs.NewConsumerClientForHubFromConnectionString("$Default", testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionId, &azeventhubs.ConsumerClientOptions{
+			client, err := azeventhubs.NewConsumerClientForHubFromConnectionString("$Default", testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, &azeventhubs.ConsumerClientOptions{
 				StartPosition: azeventhubs.StartPosition{
 					SequenceNumber: &partitions[0].LastEnqueuedSequenceNumber,
 					Inclusive:      false,

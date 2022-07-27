@@ -10,12 +10,12 @@
   - AMQP messages can be scheduled using `Sender.ScheduleAMQPAnnotatedMessages`.
   - Access the full set of AMQP message properties when receiving using the `ReceivedMessage.RawAMQPMessage` property. 
 
-### Breaking Changes
-
 ### Bugs Fixed
 
-Updating to the latest go-amqp (TBD:), which fixes several bugs related to incorrect message locking (PR#18599)
-  - Requesting large quantities of messages in a single ReceiveMessages() call  could result in messages 
+- Changed receive messages algorithm to avoid messages being excessively locked in Service Bus without 
+  being transferred to the client. (PR#18657)
+- Updating go-amqp, which fixes several bugs related to incorrect message locking (PR#18599)
+  - Requesting large quantities of messages in a single ReceiveMessages() call could result in messages 
     not being delivered, but still incrementing their delivery count and requiring the message lock 
     timeout to expire.
   - Link detach could result in messages being ignored, requiring the message lock timeout to expire.

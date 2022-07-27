@@ -384,7 +384,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 						expiresOn = tmpExpiresOn
 						return nil
-					}, IsFatalSBError)
+					}, IsFatalEHError)
 
 					if err == nil {
 						break

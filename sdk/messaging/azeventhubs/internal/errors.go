@@ -38,7 +38,7 @@ const (
 	RecoveryKindConn  RecoveryKind = "connection"
 )
 
-func IsFatalSBError(err error) bool {
+func IsFatalEHError(err error) bool {
 	return GetRecoveryKind(err) == RecoveryKindFatal
 }
 

@@ -29,7 +29,7 @@ const (
 
 type (
 	// Namespace is an abstraction over an amqp.Client, allowing us to hold onto a single
-	// instance of a connection per ServiceBusClient.
+	// instance of a connection per client..
 	Namespace struct {
 		// NOTE: values need to be 64-bit aligned. Simplest way to make sure this happens
 		// is just to make it the first value in the struct

@@ -112,8 +112,7 @@ type NewEventDataBatchOptions struct {
 	PartitionID *string
 }
 
-// NewMessageBatch can be used to create a batch that contain multiple
-// events.
+// NewEventDataBatch can be used to create a batch that contain multiple events.
 // If the operation fails it can return an *azeventhubs.Error type if the failure is actionable.
 func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *NewEventDataBatchOptions) (*EventDataBatch, error) {
 	if options == nil {

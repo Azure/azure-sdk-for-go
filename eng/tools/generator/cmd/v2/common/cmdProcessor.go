@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
+	"regexp"
 	"strings"
 )
 
@@ -73,10 +74,9 @@ func ExecuteCreatePullRequest(path, repoOwner, repoName, prOwner, prBranch, prTi
 		return "", fmt.Errorf("failed to execute `pwsh Submit-PullRequest` '%s': %+v", string(output), err)
 	}
 
-	s1 := strings.Split(string(output), "html_url=")
-	s2 := strings.Split(s1[len(s1)-1], ";")
+	htmlUrl := regexp.MustCompile("(?<=html_url[ ]*:[ ]).*").FindString(string(output))
 
-	return s2[0], nil
+	return strings.TrimSpace(htmlUrl), nil
 }
 
 func ExecuteAddIssueComment(path, repoOwner, repoName, issueNumber, comment, authToken string) error {

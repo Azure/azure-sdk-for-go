@@ -76,7 +76,8 @@ func ExecuteCreatePullRequest(path, repoOwner, repoName, prOwner, prBranch, prTi
 
 	match := regexp.MustCompile(`html_url[ ]*:.*`).FindString(string(output))
 	_, after, _ := strings.Cut(match, ":")
-	return strings.TrimSpace(after), nil
+	index := strings.Index(after, "https")
+	return after[index:], nil
 }
 
 func ExecuteAddIssueComment(path, repoOwner, repoName, issueNumber, comment, authToken string) error {

@@ -159,7 +159,7 @@ func sendEventsToPartition(cs string, hubName string, partitionID string, messag
 func consumeEventsFromPartition(cs string, hubName string, partitionID string, numMessages int, startingSequence int64) error {
 	log.Printf("Starting to consume events from %s, partitionID: %s, startingSequence: %d", hubName, partitionID, startingSequence)
 
-	consumerClient, err := azeventhubs.NewConsumerClientForHubFromConnectionString("$Default", cs, hubName, partitionID, &azeventhubs.ConsumerClientOptions{
+	consumerClient, err := azeventhubs.NewConsumerClientForHubFromConnectionString(cs, hubName, partitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
 		StartPosition: azeventhubs.StartPosition{
 			SequenceNumber: &startingSequence,
 		},

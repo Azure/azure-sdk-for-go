@@ -21,7 +21,7 @@ func ExampleNewConsumerClient() {
 		panic(err)
 	}
 
-	consumerClient, err = azeventhubs.NewConsumerClient(consumerGroup, "<ex: myeventhubnamespace.servicebus.windows.net>", "eventhub-name", "partition id", defaultAzureCred, nil)
+	consumerClient, err = azeventhubs.NewConsumerClient("<ex: myeventhubnamespace.servicebus.windows.net>", "eventhub-name", "partition id", consumerGroup, defaultAzureCred, nil)
 
 	if err != nil {
 		panic(err)
@@ -31,7 +31,7 @@ func ExampleNewConsumerClient() {
 func ExampleNewConsumerClientFromConnectionString() {
 	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>"
 
-	consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString(consumerGroup, connectionString, "partition id", nil)
+	consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString(connectionString, "partition id", consumerGroup, nil)
 
 	if err != nil {
 		panic(err)
@@ -41,7 +41,7 @@ func ExampleNewConsumerClientFromConnectionString() {
 func ExampleNewConsumerClientForHubFromConnectionString() {
 	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
 
-	consumerClient, err = azeventhubs.NewConsumerClientForHubFromConnectionString(consumerGroup, connectionString, "eventhub-name", "partition id", nil)
+	consumerClient, err = azeventhubs.NewConsumerClientForHubFromConnectionString(connectionString, "eventhub-name", "partition id", consumerGroup, nil)
 
 	if err != nil {
 		panic(err)

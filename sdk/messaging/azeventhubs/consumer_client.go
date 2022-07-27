@@ -96,7 +96,7 @@ type ConsumerClient struct {
 // The consumerGroup is the consumer group for this consumer.
 // The fullyQualifiedNamespace is the Event Hubs namespace name (ex: myeventhub.servicebus.windows.net)
 // The credential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
-func NewConsumerClient(consumerGroup string, fullyQualifiedNamespace string, eventHub string, partitionID string, credential azcore.TokenCredential, options *ConsumerClientOptions) (*ConsumerClient, error) {
+func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, partitionID string, consumerGroup string, credential azcore.TokenCredential, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	return newConsumerClientImpl(consumerClientArgs{
 		fullyQualifiedNamespace: fullyQualifiedNamespace,
 		credential:              credential,
@@ -109,17 +109,7 @@ func NewConsumerClient(consumerGroup string, fullyQualifiedNamespace string, eve
 // NewConsumerClientFromConnectionString creates a ConsumerClient with a connection string that contains an EntityPath value.
 // The consumerGroup is the consumer group for this consumer.
 // ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
-func NewConsumerClientFromConnectionString(consumerGroup string, connectionString string, partitionID string, options *ConsumerClientOptions) (*ConsumerClient, error) {
-	parsedConn, err := conn.ParsedConnectionFromStr(connectionString)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if parsedConn.HubName == "" {
-		return nil, errors.New("Connection string needs to contain an EntityPath. Use NewConsumerClientForHubFromConnectionString to specify eventHub as a parameter.")
-	}
-
+func NewConsumerClientFromConnectionString(connectionString string, partitionID string, consumerGroup string, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	return newConsumerClientImpl(consumerClientArgs{
 		connectionString: connectionString,
 		// eventHub will come from the connection string itself.
@@ -130,8 +120,27 @@ func NewConsumerClientFromConnectionString(consumerGroup string, connectionStrin
 
 // NewConsumerClientFromConnectionString creates a ConsumerClient with a connection string that does not have an entity path value.
 // The consumerGroup is the consumer group for this consumer.
+//
+// connectionString can be one of the following formats:
+//
+// Connection string, no EntityPath. In this case eventHub cannot be empty.
 // ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
-func NewConsumerClientForHubFromConnectionString(consumerGroup string, connectionString string, eventHub string, partitionID string, options *ConsumerClientOptions) (*ConsumerClient, error) {
+//
+// Connection string, has EntityPath. In this case eventHub must be empty.
+// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
+func NewConsumerClientForHubFromConnectionString(connectionString string, eventHub string, partitionID string, consumerGroup string, options *ConsumerClientOptions) (*ConsumerClient, error) {
+	parsedConn, err := conn.ParsedConnectionFromStr(connectionString)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if parsedConn.HubName == "" && eventHub == "" {
+		return nil, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
+	} else if parsedConn.HubName != "" && eventHub != "" {
+		return nil, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
+	}
+
 	return newConsumerClientImpl(consumerClientArgs{
 		connectionString: connectionString,
 		eventHub:         eventHub,

@@ -51,6 +51,7 @@ type ConsumerClientOptions struct {
 	OwnerLevel *uint64
 }
 
+// StartPosition indicates the position to start receiving events within a partition.
 type StartPosition struct {
 	// Offset will start the consumer after the specified offset. Can be exclusive
 	// or inclusive, based on the Inclusive property.

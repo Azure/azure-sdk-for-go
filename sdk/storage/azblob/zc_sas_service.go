@@ -240,24 +240,22 @@ func (v BlobSASSignatureValues) NewSASQueryParametersWithUserDelegation(credenti
 
 	signedIdentifier := v.Identifier
 
-	//udk := credential.getUDKParams()
-	//
-	//if udk != nil {
-	//	udkStart, udkExpiry, _ := FormatTimesForSASSigning(udk.SignedStart, udk.SignedExpiry, time.Time{})
-	//	//I don't like this answer to combining the functions
-	//	//But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
-	//	signedIdentifier = strings.Join([]string{
-	//		udk.SignedOid,
-	//		udk.SignedTid,
-	//		udkStart,
-	//		udkExpiry,
-	//		udk.SignedService,
-	//		udk.SignedVersion,
-	//		v.PreauthorizedAgentObjectId,
-	//		v.AgentObjectId,
-	//		v.CorrelationId,
-	//	}, "\n")
-	//}
+	udk := credential.getUDKParams()
+
+	if udk != nil {
+		udkStart, udkExpiry, _ := FormatTimesForSASSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
+		signedIdentifier = strings.Join([]string{
+			*udk.SignedOid,
+			*udk.SignedTid,
+			udkStart,
+			udkExpiry,
+			*udk.SignedService,
+			*udk.SignedVersion,
+			v.PreauthorizedAgentObjectId,
+			v.AgentObjectId,
+			v.CorrelationId,
+		}, "\n")
+	}
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 	stringToSign := strings.Join([]string{
@@ -309,15 +307,15 @@ func (v BlobSASSignatureValues) NewSASQueryParametersWithUserDelegation(credenti
 		signature: signature,
 	}
 
-	////User delegation SAS specific parameters
-	//if udk != nil {
-	//	p.signedOid = udk.SignedOid
-	//	p.signedTid = udk.SignedTid
-	//	p.signedStart = udk.SignedStart
-	//	p.signedExpiry = udk.SignedExpiry
-	//	p.signedService = udk.SignedService
-	//	p.signedVersion = udk.SignedVersion
-	//}
+	//User delegation SAS specific parameters
+	if udk != nil {
+		p.signedOid = *udk.SignedOid
+		p.signedTid = *udk.SignedTid
+		p.signedStart = *udk.SignedStart
+		p.signedExpiry = *udk.SignedExpiry
+		p.signedService = *udk.SignedService
+		p.signedVersion = *udk.SignedVersion
+	}
 
 	return p, nil
 }

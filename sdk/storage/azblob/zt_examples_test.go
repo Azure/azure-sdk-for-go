@@ -1549,6 +1549,13 @@ func ExampleBlobClient_Download() {
 //}
 
 func ExampleUserDelegationCredential() {
+	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	containerName := "testcontainer"
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
+
 	// Create Managed Identity (OAuth) Credentials using Client ID
 	clientOptions := azcore.ClientOptions{}
 	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
@@ -1560,20 +1567,89 @@ func ExampleUserDelegationCredential() {
 	svcClient := azblob.NewServiceClient("svcURL", cred, &clientOptionsAzBlob)
 
 	// Set current and past time
-	// TODO: fix format ?
 	currentTime := time.Now().UTC().Add(-10 * time.Second)
 	pastTime := currentTime.Add(48 * time.Hour)
 	info := azblob.KeyInfo{
-		Start:  currentTime.UTC().Format(azblob.SASTimeFormat),
-		Expiry: pastTime.UTC().Format(azblob.SASTimeFormat),
+		Start:  to.Ptr(currentTime.UTC().Format(azblob.SASTimeFormat)),
+		Expiry: to.Ptr(pastTime.UTC().Format(azblob.SASTimeFormat)),
 	}
 
-	udkResp, err := svcClient.NewServiceClientWithUserDelegationCredential(context.Background(), info, nil, nil)
+	// Prepare User Delegation Key
+	udkResp, err := svcClient.GetUserDelegationCredential(context.Background(), info)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("User Delegation Key has been created for ", udkResp.AccountName())
 
+	// Prepare User Delegation SAS query
+	cSAS, err := azblob.BlobSASSignatureValues{
+		Protocol:   azblob.SASProtocolHTTPS,
+		StartTime:  currentTime,
+		ExpiryTime: pastTime,
+		Permissions: azblob.BlobSASPermissions{ // Set only needed permissions to true
+			Read:                  true,
+			Add:                   true,
+			Create:                true,
+			Write:                 true,
+			Delete:                true,
+			DeletePreviousVersion: true,
+			Tag:                   true,
+			List:                  true,
+			Move:                  true,
+			Execute:               true,
+			Ownership:             true,
+			Permissions:           true,
+		}.String(),
+		ContainerName: containerName,
+	}.NewSASQueryParametersWithUserDelegation(&udkResp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// TODO: figure out how to append SAS to container URL
+	// try creating/upload/download
+	// Create the container
+	/*containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
+
+	containerCreateResponse, err := containerClient.Create(context.TODO(), &azblob.ContainerCreateOptions{
+		Metadata: map[string]string{"Foo": "Bar"},
+	})
+	handleError(err)
+	fmt.Println(containerCreateResponse)
+
+	// Craft a container URL w/ container UDK SAS
+	cURL := containerClient.URL()
+	cURL.RawQuery += cSAS.Encode()
+	cSASURL := NewContainerURL(cURL, p)
+
+	bblob := cSASURL.NewBlockBlobURL("test")
+	_, err = bblob.Upload(ctx, strings.NewReader("hello world!"), BlobHTTPHeaders{}, Metadata{}, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{}, ImmutabilityPolicyOptions{})
+	if err != nil {
+		c.Fatal(err)
+	}
+
+	resp, err := bblob.Download(ctx, 0, 0, BlobAccessConditions{}, false, ClientProvidedKeyOptions{})
+	data := &bytes.Buffer{}
+	body := resp.Body(RetryReaderOptions{})
+	if body == nil {
+		c.Fatal("download body was nil")
+	}
+	_, err = data.ReadFrom(body)
+	if err != nil {
+		c.Fatal(err)
+	}
+	err = body.Close()
+	if err != nil {
+		c.Fatal(err)
+	}
+
+	c.Assert(data.String(), chk.Equals, "hello world!")
+	_, err = bblob.Delete(ctx, DeleteSnapshotsOptionNone, BlobAccessConditions{})
+	if err != nil {
+		c.Fatal(err)
+	}
+	*/
 	// Create Managed Identity (OAuth) Credentials using Resource ID
 	optsResourceID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ResourceID("/subscriptions/...")}
 	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
@@ -1582,7 +1658,7 @@ func ExampleUserDelegationCredential() {
 	}
 	svcClient = azblob.NewServiceClient("svcURL", cred, &clientOptionsAzBlob)
 
-	udkResp, err = svcClient.NewServiceClientWithUserDelegationCredential(context.Background(), info, nil, nil)
+	udkResp, err = svcClient.GetUserDelegationCredential(context.Background(), info)
 	if err != nil {
 		log.Fatal(err)
 	}

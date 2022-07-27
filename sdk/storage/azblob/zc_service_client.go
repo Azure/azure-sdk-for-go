@@ -97,12 +97,12 @@ func (s *ServiceClient) NewContainerClient(containerName string) *ContainerClien
 	}
 }
 
-//NewServiceClientWithUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+//UserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
 //OAuth is required for this call, as well as any role that can delegate access to the storage account.
-func (s *ServiceClient) NewServiceClientWithUserDelegationCredential(ctx context.Context, info KeyInfo, timeout *int32, requestID *string) (UserDelegationCredential, error) {
+func (s *ServiceClient) GetUserDelegationCredential(ctx context.Context, info KeyInfo) (UserDelegationCredential, error) {
 	options := serviceClientGetUserDelegationKeyOptions{
-		RequestID: requestID,
-		Timeout:   timeout,
+		RequestID: nil,
+		Timeout:   nil,
 	}
 	sc := newServiceClient(s.client.endpoint, s.client.pl)
 	udk, err := sc.GetUserDelegationKey(ctx, info, &options)

@@ -12,6 +12,8 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
@@ -704,9 +706,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_require.EqualValues(destData, srcData)
 }
 
-// TODO: Write test(s) for User Delegation Credential
-/*func (s *azblobUnrecordedTestSuite) TestUserDelegationCredential() {
-	_assert := assert.New(s.T())
+func (s *azblobUnrecordedTestSuite) TestUserDelegationCredentialAllPermissions() {
+	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
@@ -714,49 +715,61 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	}
 
 	// Set current and past time
-	currentTime := time.Now().UTC().Add(-10 * time.Second).Format(azblob.SASTimeFormat)
-	pastTime := time.Now().UTC().Add(-10 * time.Second).Add(48 * time.Hour).Format(azblob.SASTimeFormat)
-	info := azblob.KeyInfo{
+	currentTime := time.Now().UTC().Add(-10 * time.Second).Format(SASTimeFormat)
+	pastTime := time.Now().UTC().Add(-10 * time.Second).Add(48 * time.Hour).Format(SASTimeFormat)
+	info := KeyInfo{
 		Start:  &currentTime,
 		Expiry: &pastTime,
 	}
 
 	ctx := context.Background()
-	udkresp, err := svcClient.NewServiceClientWithUserDelegationCredential(ctx, info, nil, nil)
+	udkresp, err := svcClient.GetUserDelegationCredential(ctx, info)
 	if err != nil {
 		s.Fail("Unable to create user delegation credential because " + err.Error())
 	}
 
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(_require, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(_require, containerClient)
 
-	src, err := containerClient.NewBlockBlobClient("src")
-	if err != nil {
-		s.Fail("Unable to fetch block blob client because " + err.Error())
-	}
+	src := containerClient.NewBlockBlobClient("src")
 
 	srcBlobParts, _ := NewBlobURLParts(src.URL())
 
 	// new oauth cred
 	clientOptions := azcore.ClientOptions{}
 	opts1 := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: nil}
-	cred, err := azidentity.NewManagedIdentityCredential(&opts1)
+	_, err = azidentity.NewManagedIdentityCredential(&opts1)
 	if err != nil {
-		log.Fatal(err)
+		s.T().Fatal(err)
 	}
+	_require.Nil(err)
 
-	_assert.Nil(err)
+	// Creating User Delegation SAS query with ALL permissions
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
 		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
 		ContainerName: srcBlobParts.ContainerName,
 		BlobName:      srcBlobParts.BlobName,
-		Permissions:   BlobSASPermissions{Read: true}.String(),
+		Permissions: BlobSASPermissions{
+			Read:                  true,
+			Add:                   true,
+			Create:                true,
+			Write:                 true,
+			Delete:                true,
+			DeletePreviousVersion: true,
+			Tag:                   true,
+			List:                  true,
+			Move:                  true,
+			Execute:               true,
+			Ownership:             true,
+			Permissions:           true,
+		}.String(),
 	}.NewSASQueryParametersWithUserDelegation(&udkresp)
 	if err != nil {
 		s.T().Fatal(err)
 	}
-}*/
+	_require.Nil(err)
+}
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {

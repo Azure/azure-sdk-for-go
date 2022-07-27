@@ -74,9 +74,9 @@ func ExecuteCreatePullRequest(path, repoOwner, repoName, prOwner, prBranch, prTi
 		return "", fmt.Errorf("failed to execute `pwsh Submit-PullRequest` '%s': %+v", string(output), err)
 	}
 
-	htmlUrl := regexp.MustCompile("(?<=html_url[ ]*:[ ]).*").FindString(string(output))
-
-	return strings.TrimSpace(htmlUrl), nil
+	match := regexp.MustCompile(`html_url[ ]*:.*`).FindString(string(output))
+	_, after, _ := strings.Cut(match, ":")
+	return strings.TrimSpace(after), nil
 }
 
 func ExecuteAddIssueComment(path, repoOwner, repoName, issueNumber, comment, authToken string) error {

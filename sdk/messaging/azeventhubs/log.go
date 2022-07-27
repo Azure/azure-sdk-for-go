@@ -13,11 +13,11 @@ const (
 	EventConn log.Event = exported.EventConn
 
 	// EventAuth is used when we're doing authentication/claims negotiation.
-	EventAuth log.Event = "azeh.Auth"
+	EventAuth log.Event = exported.EventAuth
 
 	// EventProducer represents operations that happen on Producers.
-	EventProducer log.Event = "azeh.Producer"
+	EventProducer log.Event = exported.EventProducer
 
 	// EventConsumer represents operations that happen on Consumers.
-	EventConsumer log.Event = "azeh.Consumer"
+	EventConsumer log.Event = exported.EventConsumer
 )

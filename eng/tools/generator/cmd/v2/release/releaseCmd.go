@@ -234,9 +234,9 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 	if c.flags.Token != "" {
 		for branchName, issue := range pushBranch {
 			log.Printf("git push fork %s\n", branchName)
-			_, err = common.ExecuteGitPush(sdkRepo.Root(), forkRemote.Config().Name, branchName)
+			msg, err := common.ExecuteGitPush(sdkRepo.Root(), forkRemote.Config().Name, branchName)
 			if err != nil {
-				return fmt.Errorf("git push fork error:%v", err)
+				return fmt.Errorf("git push fork error:%v,msg:%s", err, msg)
 			}
 
 			githubUserName := repo.GetRemoteUserName(forkRemote)

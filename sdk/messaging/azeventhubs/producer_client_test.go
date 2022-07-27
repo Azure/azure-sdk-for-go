@@ -138,7 +138,18 @@ func getConnectionParams(t *testing.T) struct {
 	EventHubName      string
 	EventHubNamespace string
 } {
-	require.NoError(t, godotenv.Load())
+	err := godotenv.Load()
+
+	if err != nil {
+		fmt.Printf("Warning: live tests not running, .env file not loading: %s\n", err)
+		t.Skip()
+
+		return struct {
+			ConnectionString  string
+			EventHubName      string
+			EventHubNamespace string
+		}{}
+	}
 
 	cs := os.Getenv("EVENTHUB_CONNECTION_STRING")
 	require.NotEmpty(t, cs)

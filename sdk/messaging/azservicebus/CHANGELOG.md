@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (Unreleased)
+## 1.1.0 (2022-08-09)
 
 ### Features Added
 
@@ -19,8 +19,6 @@
     not being delivered, but still incrementing their delivery count and requiring the message lock 
     timeout to expire.
   - Link detach could result in messages being ignored, requiring the message lock timeout to expire.
-
-### Other Changes
 
 ## 1.0.2-beta.0 (2022-07-07)
 

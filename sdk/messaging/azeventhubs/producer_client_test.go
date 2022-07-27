@@ -71,7 +71,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 	partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, &azeventhubs.GetPartitionPropertiesOptions{})
 	require.NoError(t, err)
 
-	consumer, err := azeventhubs.NewConsumerClientForHubFromConnectionString(cs, eventHubName, partitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(cs, eventHubName, partitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
 		StartPosition: azeventhubs.StartPosition{
 			// we'll make sure we start our consumer _after_ the last offset so we don't
 			// receive any old messages and we only receive the ones we're sending in this test.

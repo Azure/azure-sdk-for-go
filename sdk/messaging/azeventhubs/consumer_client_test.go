@@ -131,7 +131,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
 	testParams := getConnectionParams(t)
 
-	consumer, err := azeventhubs.NewConsumerClientForHubFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, nil)
+	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, nil)
 	require.NoError(t, err)
 
 	hubProps, err := consumer.GetEventHubProperties(context.Background(), nil)
@@ -165,7 +165,7 @@ func TestConsumerClient_Epochs(t *testing.T) {
 	// this is fine - you can have multiple parallel consumers so long as nobody specifies an epoch
 	for i := 0; i < concurrentClients; i++ {
 		go func() {
-			client, err := azeventhubs.NewConsumerClientForHubFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
+			client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
 				StartPosition: azeventhubs.StartPosition{
 					SequenceNumber: &partitions[0].LastEnqueuedSequenceNumber,
 					Inclusive:      false,

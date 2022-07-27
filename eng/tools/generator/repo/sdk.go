@@ -209,20 +209,20 @@ func (s *sdkRepository) checkoutBack(ref *plumbing.Reference) error {
 	return s.Checkout(&opt)
 }
 
-// GetRemoteUserName https://github.com/githubName/azure-sdk-for-go
+// GetRemoteUserName https://github.com/githubName/azure-sdk-for-go.git
 func GetRemoteUserName(remote *git.Remote) string {
 	if len(remote.Config().URLs) == 0 {
 		return ""
 	}
-	_, after, found := strings.Cut(remote.Config().URLs[0], "https://github.com")
+	before, _, found := strings.Cut(remote.Config().URLs[0], link.SDKRepo)
 	if !found {
 		return ""
 	}
-	before, _, found := strings.Cut(after, link.SDKRepo)
+	_, after, found := strings.Cut(before, "github.com")
 	if !found {
 		return ""
 	}
-	return strings.Trim(before, "/")
+	return strings.Trim(after, "/")
 }
 
 func GetForkRemote(repo WorkTree) (forkRemote *git.Remote, err error) {

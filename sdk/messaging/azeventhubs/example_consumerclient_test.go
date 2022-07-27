@@ -29,26 +29,16 @@ func ExampleNewConsumerClient() {
 }
 
 func ExampleNewConsumerClientFromConnectionString() {
-	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>"
-
-	consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString(connectionString, "partition id", consumerGroup, nil)
-
-	if err != nil {
-		panic(err)
-	}
-}
-
-func ExampleNewConsumerClientForHubFromConnectionString() {
 
 	// if the connection string contains an EntityPath, with the Event Hub name.
 	//
-	// connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>"
-	// consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString(connectionString, "", "partition id", consumerGroup, nil)
+	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>"
+	consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString(connectionString, "", "partition id", consumerGroup, nil)
 
 	// or
 
 	// if the connection string does not contain an EntityPath
-	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
+	connectionString = "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
 	consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString(connectionString, "eventhub-name", "partition id", consumerGroup, nil)
 
 	if err != nil {

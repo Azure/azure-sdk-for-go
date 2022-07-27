@@ -125,8 +125,12 @@ func NewConsumerClientFromConnectionString(connectionString string, eventHub str
 
 	if parsedConn.HubName == "" && eventHub == "" {
 		return nil, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
-	} else if parsedConn.HubName != "" && eventHub != "" {
-		return nil, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
+	} else if parsedConn.HubName != "" {
+		if eventHub != "" {
+			return nil, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
+		}
+
+		eventHub = parsedConn.HubName
 	}
 
 	return newConsumerClientImpl(consumerClientArgs{

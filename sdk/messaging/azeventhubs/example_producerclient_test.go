@@ -44,16 +44,6 @@ func ExampleNewProducerClientFromConnectionString() {
 	}
 }
 
-func ExampleNewProducerClientForHubFromConnectionString() {
-	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
-
-	producerClient, err = azeventhubs.NewProducerClientFromConnectionString(connectionString, "eventhub-name", nil)
-
-	if err != nil {
-		panic(err)
-	}
-}
-
 func ExampleProducerClient_SendEventBatch() {
 	batch, err := producerClient.NewEventDataBatch(context.TODO(), nil)
 

@@ -144,7 +144,7 @@ func getConnectionParams(t *testing.T) struct {
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 
 	if cs == "" || eventHubName == "" {
-		t.Skipf("Warning: EVENTHUB_CONNECTION_STRING and EVENTHUB_NAME must be defined in the environment. Live test skipped")
+		t.Skipf("EVENTHUB_CONNECTION_STRING and EVENTHUB_NAME must be defined in the environment. Live test skipped")
 
 		return struct {
 			ConnectionString  string

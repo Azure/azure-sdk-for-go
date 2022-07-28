@@ -30,16 +30,12 @@ stages:
             inputs:
               version: '1.18.2'
 
-          - template: /eng/pipelines/templates/steps/create-go-workspace.yml
-
           - script: |
               sudo ln -s /usr/bin/pwsh /usr/bin/pwsh.exe
               git config --global user.email "ReleaseHelper"
-              git config --global user.name "ReleaseHelper"
+              git config --global user.name "ReleaseHelper"              
               
-              rm -rf $GO_WORKSPACE_PATH
-              cd $(system.defaultWorkingDirectory)/../go/src/github.com/Azure
-              
+              cd ../
               git clone https://github.com/Azure/azure-sdk-for-go.git
               git clone https://github.com/Azure/azure-rest-api-specs.git
               
@@ -51,7 +47,6 @@ stages:
               
               generator issue -t $(azuresdk-github-pat) > sdk-release.json
               cat sdk-release.json
-            
               
               file_size=`du -b ./sdk-release.json |awk '{print $1}'`
               echo "sdk-release.json file size:" ${file_size}

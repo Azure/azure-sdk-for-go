@@ -4,7 +4,6 @@ package azeventhubs_test
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"sync"
 	"testing"
@@ -59,8 +58,6 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 
 		firstPartition, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
 		require.NoError(t, err)
-
-		fmt.Printf("Starting consume client at %d, not inclusive\n", firstPartition.LastEnqueuedSequenceNumber)
 
 		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, firstPartition.PartitionID, azeventhubs.DefaultConsumerGroup, dac,
 			&azeventhubs.ConsumerClientOptions{
@@ -252,7 +249,6 @@ func getStartPosition(props azeventhubs.PartitionProperties) azeventhubs.StartPo
 	}
 
 	return azeventhubs.StartPosition{
-		//SequenceNumber: &firstPartition.LastEnqueuedSequenceNumber,
 		SequenceNumber: to.Ptr(props.LastEnqueuedSequenceNumber),
 		Inclusive:      false,
 	}

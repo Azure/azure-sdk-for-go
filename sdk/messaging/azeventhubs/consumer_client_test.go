@@ -200,7 +200,7 @@ func TestConsumerClient_Epochs(t *testing.T) {
 // this function. Each message gets an additional property (DestPartitionID), set to the parttion ID that
 // we sent it to.
 func mustSendEventToAllPartitions(t *testing.T, cs string, eventHub string, evt *azeventhubs.EventData) []azeventhubs.PartitionProperties {
-	producer, err := azeventhubs.NewProducerClientForHubFromConnectionString(cs, eventHub, nil)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(cs, eventHub, nil)
 	require.NoError(t, err)
 
 	defer producer.Close(context.Background())

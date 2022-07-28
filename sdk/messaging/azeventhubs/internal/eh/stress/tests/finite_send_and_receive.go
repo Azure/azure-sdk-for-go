@@ -88,7 +88,7 @@ func sendEventsToPartition(cs string, hubName string, partitionID string, messag
 
 	extraBytes := make([]byte, numExtraBytes)
 
-	producerClient, err := azeventhubs.NewProducerClientForHubFromConnectionString(cs, hubName, nil)
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(cs, hubName, nil)
 
 	if err != nil {
 		return err
@@ -255,7 +255,7 @@ func consumeEventsFromPartition(cs string, hubName string, partitionID string, n
 }
 
 func getPartitions(cs string, hubName string) (allPartitionProps []azeventhubs.PartitionProperties, err error) {
-	producerClient, err := azeventhubs.NewProducerClientForHubFromConnectionString(cs, hubName, nil)
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(cs, hubName, nil)
 
 	if err != nil {
 		return nil, err

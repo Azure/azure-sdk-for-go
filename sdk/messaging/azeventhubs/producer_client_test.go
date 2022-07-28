@@ -20,7 +20,7 @@ import (
 func TestNewProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 	testParams := getConnectionParams(t)
 
-	producer, err := azeventhubs.NewProducerClientForHubFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
 
 	hubProps, err := producer.GetEventHubProperties(context.Background(), nil)
@@ -46,7 +46,7 @@ func TestNewProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
 	testParams := getConnectionParams(t)
 
-	producer, err := azeventhubs.NewProducerClientForHubFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
 
 	props, err := producer.GetEventHubProperties(context.Background(), nil)
@@ -65,7 +65,7 @@ func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
 }
 
 func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string, partitionID string) {
-	producer, err := azeventhubs.NewProducerClientForHubFromConnectionString(cs, eventHubName, nil)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(cs, eventHubName, nil)
 	require.NoError(t, err)
 
 	partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, &azeventhubs.GetPartitionPropertiesOptions{})

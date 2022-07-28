@@ -5,7 +5,6 @@ package azeventhubs
 import (
 	"context"
 	"crypto/tls"
-	"errors"
 	"fmt"
 	"net"
 	"time"
@@ -15,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
@@ -106,7 +104,7 @@ func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, partitio
 	}, options)
 }
 
-// NewConsumerClientFromConnectionString creates a ConsumerClient with a connection string that does not have an entity path value.
+// NewConsumerClientFromConnectionString creates a ConsumerClient from a connection string.
 // The consumerGroup is the consumer group for this consumer.
 //
 // connectionString can be one of the following formats:
@@ -117,25 +115,15 @@ func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, partitio
 // Connection string, has EntityPath. In this case eventHub must be empty.
 // ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
 func NewConsumerClientFromConnectionString(connectionString string, eventHub string, partitionID string, consumerGroup string, options *ConsumerClientOptions) (*ConsumerClient, error) {
-	parsedConn, err := conn.ParsedConnectionFromStr(connectionString)
+	parsedConn, err := parseConn(connectionString, eventHub)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if parsedConn.HubName == "" && eventHub == "" {
-		return nil, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
-	} else if parsedConn.HubName != "" {
-		if eventHub != "" {
-			return nil, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
-		}
-
-		eventHub = parsedConn.HubName
-	}
-
 	return newConsumerClientImpl(consumerClientArgs{
 		connectionString: connectionString,
-		eventHub:         eventHub,
+		eventHub:         parsedConn.HubName,
 		partitionID:      partitionID,
 		consumerGroup:    consumerGroup,
 	}, options)

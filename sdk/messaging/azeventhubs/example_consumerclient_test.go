@@ -29,8 +29,7 @@ func ExampleNewConsumerClient() {
 }
 
 func ExampleNewConsumerClientFromConnectionString() {
-
-	// if the connection string contains an EntityPath, with the Event Hub name.
+	// if the connection string contains an EntityPath
 	//
 	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>"
 	consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString(connectionString, "", "partition id", consumerGroup, nil)

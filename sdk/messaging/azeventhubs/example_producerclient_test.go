@@ -28,9 +28,16 @@ func ExampleNewProducerClient() {
 }
 
 func ExampleNewProducerClientFromConnectionString() {
+	// if the connection string contains an EntityPath
+	//
 	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>"
+	producerClient, err = azeventhubs.NewProducerClientFromConnectionString(connectionString, "", nil)
 
-	producerClient, err = azeventhubs.NewProducerClientFromConnectionString(connectionString, nil)
+	// or
+
+	// if the connection string does not contain an EntityPath
+	connectionString = "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
+	producerClient, err = azeventhubs.NewProducerClientFromConnectionString(connectionString, "eventhub-name", nil)
 
 	if err != nil {
 		panic(err)
@@ -40,7 +47,7 @@ func ExampleNewProducerClientFromConnectionString() {
 func ExampleNewProducerClientForHubFromConnectionString() {
 	connectionString := "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>"
 
-	producerClient, err = azeventhubs.NewProducerClientForHubFromConnectionString(connectionString, "eventhub-name", nil)
+	producerClient, err = azeventhubs.NewProducerClientFromConnectionString(connectionString, "eventhub-name", nil)
 
 	if err != nil {
 		panic(err)

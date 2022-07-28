@@ -68,31 +68,25 @@ func NewProducerClient(fullyQualifiedNamespace string, eventHub string, credenti
 	}, options)
 }
 
-// NewProducerClientFromConnectionString creates a ProducerClient with a connection string that contains an EntityPath value.
+// NewProducerClientFromConnectionString creates a ProducerClient from a connection string.
+//
+// connectionString can be one of the following formats:
+//
+// Connection string, no EntityPath. In this case eventHub cannot be empty.
+// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
+//
+// Connection string, has EntityPath. In this case eventHub must be empty.
 // ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
-func NewProducerClientFromConnectionString(connectionString string, options *ProducerClientOptions) (*ProducerClient, error) {
-	parsedConn, err := conn.ParsedConnectionFromStr(connectionString)
+func NewProducerClientFromConnectionString(connectionString string, eventHub string, options *ProducerClientOptions) (*ProducerClient, error) {
+	parsedConn, err := parseConn(connectionString, eventHub)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if parsedConn.HubName == "" {
-		return nil, errors.New("Connection string needs to contain an EntityPath. Use NewProducerClientForHubFromConnectionString to specify eventHub as a parameter.")
-	}
-
 	return newProducerClientImpl(producerClientCreds{
 		connectionString: connectionString,
-		// eventHub will come from the connection string itself.
-	}, options)
-}
-
-// NewProducerClientForHubFromConnectionString creates a ProducerClient with a connection string that does not have an entity path value.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
-func NewProducerClientForHubFromConnectionString(connectionString string, eventHub string, options *ProducerClientOptions) (*ProducerClient, error) {
-	return newProducerClientImpl(producerClientCreds{
-		connectionString: connectionString,
-		eventHub:         eventHub,
+		eventHub:         parsedConn.HubName,
 	}, options)
 }
 
@@ -286,4 +280,25 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 	client.links = internal.NewLinks(tmpNS, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubProducerLink)
 
 	return client, err
+}
+
+func parseConn(connectionString string, eventHub string) (*conn.ParsedConn, error) {
+	parsedConn, err := conn.ParsedConnectionFromStr(connectionString)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if parsedConn.HubName == "" {
+		if eventHub == "" {
+			return nil, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
+		}
+		parsedConn.HubName = eventHub
+	} else if parsedConn.HubName != "" {
+		if eventHub != "" {
+			return nil, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
+		}
+	}
+
+	return parsedConn, nil
 }

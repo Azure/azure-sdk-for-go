@@ -893,7 +893,7 @@ func readLong(r *buffer.Buffer) (int64, error) {
 	switch type_ {
 	case TypeCodeSmalllong:
 		n, err := r.ReadByte()
-		return int64(n), err
+		return int64(int8(n)), err
 	case TypeCodeLong:
 		n, err := r.ReadUint64()
 		return int64(n), err
@@ -911,7 +911,7 @@ func readInt32(r *buffer.Buffer) (int32, error) {
 	switch type_ {
 	case TypeCodeSmallint:
 		n, err := r.ReadByte()
-		return int32(n), err
+		return int32(int8(n)), err
 	case TypeCodeInt:
 		n, err := r.ReadUint32()
 		return int32(n), err

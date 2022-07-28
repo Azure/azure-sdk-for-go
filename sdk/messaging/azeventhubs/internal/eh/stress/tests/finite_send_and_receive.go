@@ -12,6 +12,7 @@ import (
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/joho/godotenv"
 )
@@ -71,7 +72,7 @@ func FiniteSendAndReceiveTest() error {
 			log.Printf("[p:%s] Starting to receive messages from partition", partition.PartitionID)
 			defer log.Printf("[p:%s] Done receiving messages from partition", partition.PartitionID)
 
-			if err := consumeEventsFromPartition(cs, hubName, partition.PartitionID, messageLimit, partition.LastEnqueuedSequenceNumber); err != nil {
+			if err := consumeEventsFromPartition(cs, hubName, partition, messageLimit); err != nil {
 				log.Fatalf("[p:%s] Failed to receive all events from partition, started at %d: %s", partition.PartitionID, partition.LastEnqueuedSequenceNumber, err)
 			}
 		}(partition)
@@ -156,13 +157,24 @@ func sendEventsToPartition(cs string, hubName string, partitionID string, messag
 	return nil
 }
 
-func consumeEventsFromPartition(cs string, hubName string, partitionID string, numMessages int, startingSequence int64) error {
-	log.Printf("Starting to consume events from %s, partitionID: %s, startingSequence: %d", hubName, partitionID, startingSequence)
+func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs.PartitionProperties, numMessages int) error {
+	log.Printf("Starting to consume events from %s, partitionID: %s, startingSequence: %d", hubName, partProps.PartitionID, partProps.LastEnqueuedSequenceNumber)
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(cs, hubName, partitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
-		StartPosition: azeventhubs.StartPosition{
-			SequenceNumber: &startingSequence,
-		},
+	startPosition := azeventhubs.StartPosition{
+		//SequenceNumber: &firstPartition.LastEnqueuedSequenceNumber,
+		SequenceNumber: to.Ptr(partProps.LastEnqueuedSequenceNumber),
+		Inclusive:      false,
+	}
+
+	if partProps.IsEmpty {
+		startPosition = azeventhubs.StartPosition{
+			Earliest:  to.Ptr(true),
+			Inclusive: true,
+		}
+	}
+
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(cs, hubName, partProps.PartitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		StartPosition: startPosition,
 	})
 
 	if err != nil {
@@ -200,7 +212,7 @@ func consumeEventsFromPartition(cs string, hubName string, partitionID string, n
 
 			count += len(events)
 
-			log.Printf("[p:%s] Got %d/%d messages", partitionID, count, numMessages)
+			log.Printf("[p:%s] Got %d/%d messages", partProps.PartitionID, count, numMessages)
 
 			if len(events) == 0 {
 				numEmptyBatches++
@@ -218,8 +230,8 @@ func consumeEventsFromPartition(cs string, hubName string, partitionID string, n
 				eventPartitionID := event.ApplicationProperties[partitionProperty].(string)
 				num := event.ApplicationProperties[numProperty].(int64)
 
-				if eventPartitionID != partitionID {
-					return false, fmt.Errorf("message with ID %s, with num %d, had a partition %s but we only were reading from partition %s", *event.MessageID, num, eventPartitionID, partitionID)
+				if eventPartitionID != partProps.PartitionID {
+					return false, fmt.Errorf("message with ID %s, with num %d, had a partition %s but we only were reading from partition %s", *event.MessageID, num, eventPartitionID, partProps.PartitionID)
 				}
 
 				val, exists := sequenceNumbers[event.SequenceNumber]

@@ -4,6 +4,7 @@ package azeventhubs_test
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"sync"
 	"testing"
@@ -59,12 +60,11 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		firstPartition, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
 		require.NoError(t, err)
 
+		fmt.Printf("Starting consume client at %d, not inclusive\n", firstPartition.LastEnqueuedSequenceNumber)
+
 		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, firstPartition.PartitionID, azeventhubs.DefaultConsumerGroup, dac,
 			&azeventhubs.ConsumerClientOptions{
-				StartPosition: azeventhubs.StartPosition{
-					SequenceNumber: &firstPartition.LastEnqueuedSequenceNumber,
-					Inclusive:      false,
-				},
+				StartPosition: getStartPosition(firstPartition),
 			})
 		require.NoError(t, err)
 
@@ -81,7 +81,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		err = producerClient.SendEventBatch(context.Background(), eventDataBatch, nil)
 		require.NoError(t, err)
 
-		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
 
 		events, err := consumerClient.ReceiveEvents(ctx, 1, nil)
@@ -166,14 +166,11 @@ func TestConsumerClient_Epochs(t *testing.T) {
 	for i := 0; i < concurrentClients; i++ {
 		go func() {
 			client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
-				StartPosition: azeventhubs.StartPosition{
-					SequenceNumber: &partitions[0].LastEnqueuedSequenceNumber,
-					Inclusive:      false,
-				},
+				StartPosition: getStartPosition(partitions[0]),
 			})
 			require.NoError(t, err)
 
-			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 			defer cancel()
 
 			events, err := client.ReceiveEvents(ctx, 2, nil)
@@ -244,4 +241,19 @@ func mustSendEventToAllPartitions(t *testing.T, cs string, eventHub string, evt 
 	wg.Wait()
 
 	return partitions
+}
+
+func getStartPosition(props azeventhubs.PartitionProperties) azeventhubs.StartPosition {
+	if props.IsEmpty {
+		return azeventhubs.StartPosition{
+			Earliest:  to.Ptr(true),
+			Inclusive: true,
+		}
+	}
+
+	return azeventhubs.StartPosition{
+		//SequenceNumber: &firstPartition.LastEnqueuedSequenceNumber,
+		SequenceNumber: to.Ptr(props.LastEnqueuedSequenceNumber),
+		Inclusive:      false,
+	}
 }

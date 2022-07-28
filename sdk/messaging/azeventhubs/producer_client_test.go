@@ -138,11 +138,13 @@ func getConnectionParams(t *testing.T) struct {
 	EventHubName      string
 	EventHubNamespace string
 } {
-	err := godotenv.Load()
+	_ = godotenv.Load()
 
-	if err != nil {
-		fmt.Printf("Warning: live tests not running, .env file not loading: %s\n", err)
-		t.Skip()
+	cs := os.Getenv("EVENTHUB_CONNECTION_STRING")
+	eventHubName := os.Getenv("EVENTHUB_NAME")
+
+	if cs == "" || eventHubName == "" {
+		t.Skipf("Warning: EVENTHUB_CONNECTION_STRING and EVENTHUB_NAME must be defined in the environment. Live test skipped")
 
 		return struct {
 			ConnectionString  string
@@ -150,12 +152,6 @@ func getConnectionParams(t *testing.T) struct {
 			EventHubNamespace string
 		}{}
 	}
-
-	cs := os.Getenv("EVENTHUB_CONNECTION_STRING")
-	require.NotEmpty(t, cs)
-
-	eventHubName := os.Getenv("EVENTHUB_NAME")
-	require.NotEmpty(t, eventHubName)
 
 	parsedConn, err := conn.ParsedConnectionFromStr(cs)
 	require.NoError(t, err)

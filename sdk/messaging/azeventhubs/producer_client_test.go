@@ -28,9 +28,10 @@ func TestNewProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 	require.NotEmpty(t, hubProps.PartitionIDs)
 
 	wg := sync.WaitGroup{}
-	wg.Add(3)
 
 	for _, partitionID := range hubProps.PartitionIDs {
+		wg.Add(1)
+
 		go func(pid string) {
 			defer wg.Done()
 

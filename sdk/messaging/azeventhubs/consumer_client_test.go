@@ -26,12 +26,18 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, dac, nil)
 		require.NoError(t, err)
 
-		defer consumerClient.Close(context.Background())
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
 
 		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
 		require.NoError(t, err)
 
-		defer producerClient.Close(context.Background())
+		defer func() {
+			err := producerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
 
 		consumerProps, err := consumerClient.GetEventHubProperties(context.Background(), nil)
 		require.NoError(t, err)
@@ -54,7 +60,10 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
 		require.NoError(t, err)
 
-		defer producerClient.Close(context.Background())
+		defer func() {
+			err := producerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
 
 		firstPartition, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
 		require.NoError(t, err)
@@ -64,6 +73,11 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 				StartPosition: getStartPosition(firstPartition),
 			})
 		require.NoError(t, err)
+
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
 
 		eventDataBatch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
 			PartitionID: to.Ptr(firstPartition.PartitionID),
@@ -99,12 +113,18 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, dac, nil)
 		require.NoError(t, err)
 
-		defer consumerClient.Close(context.Background())
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
 
 		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
 		require.NoError(t, err)
 
-		defer producerClient.Close(context.Background())
+		defer func() {
+			err := producerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
 
 		consumerProps, err := consumerClient.GetEventHubProperties(context.Background(), nil)
 		require.NoError(t, err)
@@ -130,6 +150,11 @@ func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
 
 	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, nil)
 	require.NoError(t, err)
+
+	defer func() {
+		err := consumer.Close(context.Background())
+		require.NoError(t, err)
+	}()
 
 	hubProps, err := consumer.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
@@ -167,6 +192,11 @@ func TestConsumerClient_Epochs(t *testing.T) {
 			})
 			require.NoError(t, err)
 
+			defer func() {
+				err := client.Close(context.Background())
+				require.NoError(t, err)
+			}()
+
 			ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 			defer cancel()
 
@@ -197,7 +227,10 @@ func mustSendEventToAllPartitions(t *testing.T, cs string, eventHub string, evt 
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(cs, eventHub, nil)
 	require.NoError(t, err)
 
-	defer producer.Close(context.Background())
+	defer func() {
+		err := producer.Close(context.Background())
+		require.NoError(t, err)
+	}()
 
 	hubProps, err := producer.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)

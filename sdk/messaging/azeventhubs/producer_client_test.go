@@ -23,6 +23,11 @@ func TestNewProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
 
+	defer func() {
+		err := producer.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
 	hubProps, err := producer.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, hubProps.PartitionIDs)
@@ -50,6 +55,11 @@ func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
 
+	defer func() {
+		err := producer.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
 	props, err := producer.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, props)
@@ -69,6 +79,11 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(cs, eventHubName, nil)
 	require.NoError(t, err)
 
+	defer func() {
+		err := producer.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
 	partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, &azeventhubs.GetPartitionPropertiesOptions{})
 	require.NoError(t, err)
 
@@ -76,6 +91,11 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 		StartPosition: getStartPosition(partProps),
 	})
 	require.NoError(t, err)
+
+	defer func() {
+		err := consumer.Close(context.Background())
+		require.NoError(t, err)
+	}()
 
 	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
 		PartitionID: &partitionID,

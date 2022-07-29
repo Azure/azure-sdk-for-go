@@ -1,5 +1,9 @@
 # Release History
 
+## 3.0.1 (2022-07-29)
+### Other Changes
+- Fix wrong module import for live test
+
 ## 3.0.0 (2022-06-24)
 ### Breaking Changes
 

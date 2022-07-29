@@ -16,11 +16,6 @@ stages:
       - job:
         displayName: Go Auto Release
         steps:
-          - task: NodeTool@0
-            inputs:
-              versionSpec: '16.16.0'
-              checkLatest: true
-
           - task: Npm@1
             inputs:
               command: 'custom'
@@ -31,6 +26,7 @@ stages:
               version: '1.18.2'
 
           - script: |
+              export PATH=$PATH:$HOME/go/bin
               sudo ln -s /usr/bin/pwsh /usr/bin/pwsh.exe
               git config --global user.email "ReleaseHelper"
               git config --global user.name "ReleaseHelper"              

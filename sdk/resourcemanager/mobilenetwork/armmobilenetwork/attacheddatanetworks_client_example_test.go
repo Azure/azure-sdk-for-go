@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkDelete.json
 func ExampleAttachedDataNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleAttachedDataNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkGet.json
 func ExampleAttachedDataNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleAttachedDataNetworksClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkCreate.json
 func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,16 +86,18 @@ func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 		armmobilenetwork.AttachedDataNetwork{
 			Location: to.Ptr("eastus"),
 			Properties: &armmobilenetwork.AttachedDataNetworkPropertiesFormat{
+				DNSAddresses: []*string{
+					to.Ptr("1.1.1.1")},
 				NaptConfiguration: &armmobilenetwork.NaptConfiguration{
 					Enabled:       to.Ptr(armmobilenetwork.NaptEnabledEnabled),
 					PinholeLimits: to.Ptr[int32](65536),
 					PinholeTimeouts: &armmobilenetwork.PinholeTimeouts{
-						Icmp: to.Ptr[int32](60),
-						TCP:  to.Ptr[int32](7440),
-						UDP:  to.Ptr[int32](300),
+						Icmp: to.Ptr[int32](30),
+						TCP:  to.Ptr[int32](180),
+						UDP:  to.Ptr[int32](30),
 					},
 					PortRange: &armmobilenetwork.PortRange{
-						MaxPort: to.Ptr[int32](65535),
+						MaxPort: to.Ptr[int32](49999),
 						MinPort: to.Ptr[int32](1024),
 					},
 					PortReuseHoldTime: &armmobilenetwork.PortReuseHoldTimes{
@@ -124,7 +126,7 @@ func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkUpdateTags.json
 func ExampleAttachedDataNetworksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +156,7 @@ func ExampleAttachedDataNetworksClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
 func ExampleAttachedDataNetworksClient_NewListByPacketCoreDataPlanePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

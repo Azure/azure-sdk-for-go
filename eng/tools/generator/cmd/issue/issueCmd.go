@@ -179,13 +179,13 @@ func (c *commandContext) listSpecifiedIssues(ids []int) ([]*github.Issue, error)
 	return issues, nil
 }
 
-func issueHasLabel(issue *github.Issue, label string) bool {
+func issueHasLabel(issue *github.Issue, label IssueLabel) bool {
 	if issue == nil {
 		return false
 	}
 
 	for _, l := range issue.Labels {
-		if l.GetName() == label {
+		if IssueLabel(l.GetName()) == label {
 			return true
 		}
 	}
@@ -193,8 +193,29 @@ func issueHasLabel(issue *github.Issue, label string) bool {
 	return false
 }
 
+type IssueLabel string
+
+const (
+	GoLabel              IssueLabel = "GO"
+	AutoLinkLabel        IssueLabel = "auto-link"
+	PRreadyLabel         IssueLabel = "PRready"
+	InconsistentTagLabel IssueLabel = "Inconsistent tag"
+)
+
 func isGoReleaseRequest(issue *github.Issue) bool {
-	return issueHasLabel(issue, "Go")
+	return issueHasLabel(issue, GoLabel)
+}
+
+func isAutoLink(issue *github.Issue) bool {
+	return issueHasLabel(issue, AutoLinkLabel)
+}
+
+func isPRReady(issue *github.Issue) bool {
+	return issueHasLabel(issue, PRreadyLabel)
+}
+
+func isInconsistentTag(issue *github.Issue) bool {
+	return issueHasLabel(issue, InconsistentTagLabel)
 }
 
 func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request, error) {
@@ -204,6 +225,18 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		if issue == nil {
 			continue
 		}
+		if isPRReady(issue) {
+			continue
+		}
+		if !isAutoLink(issue) {
+			continue
+		}
+		if isInconsistentTag(issue) {
+			log.Printf("[ERROR] %s Readme tag is inconsistent with default tag\n", issue.GetHTMLURL())
+			errResult = multierror.Append(errResult, fmt.Errorf("%s: readme tag is inconsistent with default tag", issue.GetHTMLURL()))
+			continue
+		}
+
 		log.Printf("Parsing issue %s (%s)", issue.GetHTMLURL(), issue.GetTitle())
 		req, err := request.ParseIssue(c.ctx, c.client, *issue, request.ParsingOptions{
 			IncludeDataPlaneRequests: c.flags.IncludeDataPlaneRequests,

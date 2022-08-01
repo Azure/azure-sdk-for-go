@@ -28,7 +28,7 @@ func (v *localValidator) Validate(cfg config.Config) error {
 			continue // readme file cannot pass validation, we just skip the validations
 		}
 		// get content of the readme
-		contentOfReadme, err := v.getReadmeContent(readme)
+		contentOfReadme, err := getReadmeContent(v.specRoot, readme)
 		if err != nil {
 			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.md content: %+v", err))
 			continue
@@ -39,7 +39,7 @@ func (v *localValidator) Validate(cfg config.Config) error {
 			continue // readme.go.md is mandatory
 		}
 		// get content of the readme.go.md
-		contentOfReadmeGo, err := v.getReadmeContent(getReadmeGoFromReadme(readme))
+		contentOfReadmeGo, err := getReadmeContent(v.specRoot, getReadmeGoFromReadme(readme))
 		if err != nil {
 			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
 			continue
@@ -69,8 +69,8 @@ func (v *localValidator) validateReadmeExistence(readme string) error {
 	return nil
 }
 
-func (v *localValidator) getReadmeContent(readme string) ([]byte, error) {
-	full := filepath.Join(v.specRoot, readme)
+func getReadmeContent(specRoot, readme string) ([]byte, error) {
+	full := filepath.Join(specRoot, readme)
 	return ioutil.ReadFile(full)
 }
 
@@ -86,9 +86,23 @@ func getReadmeGoFromReadme(readme string) string {
 	return strings.ReplaceAll(readme, readmeFilename, goReadmeFilename)
 }
 
+func GetModuleName(content []byte) (string, string) {
+	moduleExist := regexp.MustCompile(goReadmeModuleName).Match(content)
+	if moduleExist {
+		moduleName := regexp.MustCompile(goReadmeModuleName).FindString(string(content))
+		s := strings.Split(moduleName, "/")
+		if len(s) == 4 {
+			return s[2], s[3]
+		}
+		return "", ""
+	}
+	return "", ""
+}
+
 const (
 	tagDefinedInReadmeRegex = `\$\(tag\)\s*==\s*'%s'`
 	tagInBatchRegex         = `-\s*tag\s*:\s*`
 	readmeFilename          = "readme.md"
 	goReadmeFilename        = "readme.go.md"
+	goReadmeModuleName      = `module-name: \S*`
 )

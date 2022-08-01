@@ -39,8 +39,10 @@ var (
 )
 
 type PackageInfo struct {
-	Name   string
-	Config string
+	Name        string
+	Config      string
+	SpecName    string
+	RequestLink string
 }
 
 // reads from readme.go.md, parses the `track2` section to get module and package name
@@ -78,6 +80,10 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 		return nil, fmt.Errorf("last `track2` section does not properly end")
 	}
 
+	s := strings.ReplaceAll(path, "\\", "/")
+	s1 := strings.Split(s, "/")
+	specName := s1[len(s1)-3]
+
 	for i := range start {
 		// get the content of the `track2` section
 		section := lines[start[i]+1 : end[i]]
@@ -95,7 +101,7 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 				for _, matchResult := range matchResults {
 					packageConfig = matchResult[1] + ": true"
 				}
-				result[modules[2]] = append(result[modules[2]], PackageInfo{Name: namespaceName, Config: packageConfig})
+				result[modules[2]] = append(result[modules[2]], PackageInfo{Name: namespaceName, Config: packageConfig, SpecName: specName})
 			}
 		}
 	}

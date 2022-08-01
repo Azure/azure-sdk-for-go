@@ -40,10 +40,10 @@ func handlePRNotMerged(_ context.Context, _ *query.Client, reqIssue ReleaseReque
 
 func getTrack(issue ReleaseRequestIssue) Track {
 	for _, l := range issue.Labels {
-		if l != nil && l.GetName() == "Track2" {
-			return Track2
+		if l != nil && l.GetName() == "Track1" {
+			return Track1
 		}
 	}
 
-	return Track1
+	return Track2
 }

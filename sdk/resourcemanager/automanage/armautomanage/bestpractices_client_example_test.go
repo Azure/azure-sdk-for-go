@@ -16,23 +16,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/getHCIReport.json
-func ExampleHCIReportsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getBestPractice.json
+func ExampleBestPracticesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewHCIReportsClient("mySubscriptionId", cred, nil)
+	client, err := armautomanage.NewBestPracticesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroupName",
-		"myClusterName",
-		"default",
-		"b4e9ee6b-1717-4ff0-a8d2-e6d72c33d5f4",
-		nil)
+	res, err := client.Get(ctx, "azureBestPracticesProduction", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -40,21 +35,18 @@ func ExampleHCIReportsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listReportsByconfigurationProfileHCIAssignment.json
-func ExampleHCIReportsClient_NewListByConfigurationProfileAssignmentsPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listBestPracticesByTenant.json
+func ExampleBestPracticesClient_NewListByTenantPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewHCIReportsClient("mySubscriptionId", cred, nil)
+	client, err := armautomanage.NewBestPracticesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByConfigurationProfileAssignmentsPager("myResourceGroupName",
-		"myClusterName",
-		"default",
-		nil)
+	pager := client.NewListByTenantPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

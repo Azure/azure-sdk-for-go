@@ -67,4 +67,8 @@ func TestUsernamePasswordCredential_InvalidPasswordLive(t *testing.T) {
 	if e.RawResponse == nil {
 		t.Fatal("expected a non-nil RawResponse")
 	}
+	expectedErrorMsg := "UsernamePasswordCredential authentication failed\nPOST https://localhost:5001/fake-tenant/oauth2/v2.0/token\n--------------------------------------------------------------------------------\nRESPONSE 400 Bad Request\n--------------------------------------------------------------------------------\n{\n  \"error\": \"invalid_grant\",\n  \"error_description\": \"AADSTS50126: Error validating credentials due to invalid username or password.\\r\\nTrace ID: be3e1080-9e7f-418d-9c32-dc42cdf2d400\\r\\nCorrelation ID: e4caccbc-1ab2-43f8-a4b4-c74b9a94c87a\\r\\nTimestamp: 2022-01-24 22:41:16Z\",\n  \"error_codes\": [\n    50126\n  ],\n  \"timestamp\": \"2022-01-24 22:41:16Z\",\n  \"trace_id\": \"be3e1080-9e7f-418d-9c32-dc42cdf2d400\",\n  \"correlation_id\": \"e4caccbc-1ab2-43f8-a4b4-c74b9a94c87a\",\n  \"error_uri\": \"https://login.microsoftonline.com/error?code=50126\"\n}\n--------------------------------------------------------------------------------\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#username-password"
+	if e.Error() != expectedErrorMsg {
+		t.Fatal("unexpected error message")
+	}
 }

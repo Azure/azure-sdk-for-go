@@ -49,10 +49,6 @@ cp generator $GOPATH/bin/
 export PATH=$GOPATH/bin:$PATH
 cd $DIRECTORY
 
-if [ ! -L "$GOPATH/bin/pwsh.exe" ]; then
-  ln -s /usr/bin/pwsh $GOPATH/bin/pwsh.exe
-fi
-
 cat > $outputFile << EOF
 {
   "envs": {

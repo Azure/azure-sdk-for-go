@@ -2,6 +2,6 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 // This file enables 'go generate' to regenerate this specific SDK
-//go:generate pwsh.exe ../../../../eng/scripts/build.ps1 -skipBuild -cleanGenerated -format -tidy -generate resourcemanager/storsimple8000series/armstorsimple8000series
+//go:generate pwsh ../../../../eng/scripts/build.ps1 -skipBuild -cleanGenerated -format -tidy -generate resourcemanager/storsimple8000series/armstorsimple8000series
 
 package armstorsimple8000series

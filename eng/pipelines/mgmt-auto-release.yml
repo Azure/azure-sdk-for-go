@@ -29,3 +29,4 @@ stages:
             inputs:
               scriptPath: 'eng/scripts/mgmt-auto-release.sh'
               cwd: '$(System.DefaultWorkingDirectory)'
+              args: '$(azuresdk-github-pat)'

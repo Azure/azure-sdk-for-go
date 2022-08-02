@@ -13,14 +13,24 @@ The `armautomanage` module provides operations for working with Azure Automanage
 - an [Azure subscription](https://azure.microsoft.com/free/)
 - Go 1.18 or above
 
-## Install the package
+## Install and import required packages
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Automanage module:
+Install the Azure Automanage and Azure Identity modules:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage
+go get "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage"
+go get "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+```
+
+Import the Azure Automanage and Azure Identity modules:
+
+```go
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage"
+)
 ```
 
 ## Authorization
@@ -38,7 +48,9 @@ For more information on authentication, please see the documentation for `aziden
 Azure Automanage modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client, err := armautomanage.NewReportsClient(<subscription ID>, cred, nil)
+reportsClient, err := armautomanage.NewReportsClient(<subscription ID>, cred, nil)
+configProfilesClient, err := armautomanage.NewConfigurationProfilesClient("<sub ID>", cred, nil)
+assignmentClient, err := armautomanage.NewConfigurationProfileAssignmentsClient("<sub ID>", cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -49,8 +61,145 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-client, err := armautomanage.NewReportsClient(<subscription ID>, cred, &options)
+reportsClient, err := armautomanage.NewReportsClient("<sub ID>", cred, &options)
 ```
+
+## Create or Update a Custom Automanage Configuration Profile
+
+To update a profile, provide a value for all properties as if you were creating a configuration profile (ID, Name, Type, Location, Properties, Tags)
+
+```go
+configuration := make(map[string]interface{})
+configuration["Antimalware/Enable"] = true
+configuration["Antimalware/Exclusions/Paths"] = ""
+configuration["Antimalware/Exclusions/Extensions"] = ""
+configuration["Antimalware/Exclusions/Processes"] = ""
+configuration["Antimalware/EnableRealTimeProtection"] = false
+configuration["Antimalware/RunScheduledScan"] = true
+configuration["Antimalware/ScanType"] = "Quick"
+configuration["Antimalware/ScanDay"] = 7
+configuration["Antimalware/ScanTimeInMinutes"] = 120
+configuration["Backup/Enable"] = true
+configuration["Backup/PolicyName"] = "dailyBackupPolicy"
+configuration["Backup/TimeZone"] = "UTC"
+configuration["Backup/InstantRpRetentionRangeInDays"] = 2
+configuration["Backup/SchedulePolicy/ScheduleRunFrequency"] = "Daily"
+configuration["Backup/SchedulePolicy/ScheduleRunTimes"] = []string{"2022-07-27T12: 00: 00Z"}
+configuration["Backup/SchedulePolicy/SchedulePolicyType"] = "SimpleSchedulePolicy"
+configuration["Backup/RetentionPolicy/RetentionPolicyType"] = "LongTermRetentionPolicy"
+configuration["Backup/RetentionPolicy/DailySchedule/RetentionTimes"] = []string{"2022-07-27T12: 00: 00Z"}
+configuration["Backup/RetentionPolicy/DailySchedule/RetentionDuration/Count"] = 180
+configuration["Backup/RetentionPolicy/DailySchedule/RetentionDuration/DurationType"] = "Days"
+configuration["WindowsAdminCenter/Enable"] = false
+configuration["VMInsights/Enable"] = true
+configuration["AzureSecurityCenter/Enable"] = true
+configuration["UpdateManagement/Enable"] = true
+configuration["ChangeTrackingAndInventory/Enable"] = true
+configuration["GuestConfiguration/Enable"] = true
+configuration["AutomationAccount/Enable"] = true
+configuration["LogAnalytics/Enable"] = true
+configuration["BootDiagnostics/Enable"] = true
+
+properties := armautomanage.ConfigurationProfileProperties{
+    Configuration: configuration,
+}
+
+id := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
+resourceType := "Microsoft.Automanage/configurationProfiles"
+location := "eastus"
+environment := "dev"
+configurationProfileName := "name"
+
+// tags may be omitted 
+tags := make(map[string]*string)
+tags["environment"] = &environment
+
+newProfile := armautomanage.ConfigurationProfile{
+    ID:         &id,
+    Name:       &configurationProfileName,
+    Type:       &resourceType,
+    Location:   &location,
+    Properties: &properties,
+    Tags:       tags,
+}
+
+configProfilesClient.CreateOrUpdate(context.Background(), configurationProfileName, "resourceGroupName", newProfile, nil)
+```
+
+
+## Get an Automanage Configuration Profile
+
+```go
+profile, _ := configProfilesClient.Get(context.Background(), "configurationProfileName", "resourceGroupName", nil)
+data, _ := json.MarshalIndent(profile, "", "   ")
+
+fmt.Println(string(data))
+```
+
+
+## Delete an Automanage Configuration Profile
+
+```go
+configProfilesClient.Delete(context.Background(), "resourceGroupName", "configurationProfileName", nil)
+```
+
+
+## Get an Automanage Profile Assignment
+
+```go
+assignment, _ := assignmentClient.Get(context.Background(), "resourceGroupName", "default", "vmName", nil)
+data, _ := json.MarshalIndent(assignment, "", "   ")
+fmt.Println(string(data))
+```
+
+
+## Create an Assignment between a VM and an Automanage Best Practices Production Configuration Profile
+
+```go
+vmId := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName"
+configProfileId := "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+
+properties := armautomanage.ConfigurationProfileAssignmentProperties{
+    ConfigurationProfile: &configProfileId,
+    TargetID:             &vmId,
+}
+
+id := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName/providers/Microsoft.Automanage/AutomanageAssignments/default"
+name := "default" // name must be default
+assignment := armautomanage.ConfigurationProfileAssignment{
+    ID:         &id,
+    Name:       &name,
+    Properties: &properties,
+}
+
+// assignment name must be 'default'
+assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
+```
+
+
+## Create an Assignment between a VM and a Custom Automanage Configuration Profile
+
+```go
+vmId := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName"
+configProfileId := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
+
+properties := armautomanage.ConfigurationProfileAssignmentProperties{
+    ConfigurationProfile: &configProfileId,
+    TargetID:             &vmId,
+}
+
+id := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName/providers/Microsoft.Automanage/AutomanageAssignments/default"
+name := "default" // name must be default
+assignment := armautomanage.ConfigurationProfileAssignment{
+    ID:         &id,
+    Name:       &name,
+    Properties: &properties,
+}
+
+// assignment name must be 'default'
+assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
+```
+
 
 ## Provide Feedback
 

@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -68,5 +69,9 @@ func TestClientSecretCredential_InvalidSecretLive(t *testing.T) {
 	}
 	if e.RawResponse == nil {
 		t.Fatal("expected a non-nil RawResponse")
+	}
+	expectedErrorMsg := "ClientSecretCredential authentication failed"
+	if !strings.Contains(e.Error(), expectedErrorMsg) {
+		t.Fatalf("unexpected error message: expected error to contain %s", expectedErrorMsg)
 	}
 }

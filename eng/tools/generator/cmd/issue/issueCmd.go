@@ -127,7 +127,7 @@ func (c *commandContext) execute() error {
 	if err := c.validateConfig(*cfg); err != nil {
 		return err
 	}
-	return reqErr
+	return nil
 }
 
 func (c *commandContext) listIssues() ([]*github.Issue, error) {

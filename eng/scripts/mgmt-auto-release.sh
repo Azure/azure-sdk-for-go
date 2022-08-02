@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ex
 
 export PATH=$PATH:$HOME/go/bin
 sudo ln -s /usr/bin/pwsh /usr/bin/pwsh.exe

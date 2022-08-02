@@ -221,6 +221,10 @@ func TestManagedIdentityCredential_AppServiceError(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
+	expectedErrorMsg := "ManagedIdentityCredential authentication failed"
+	if !strings.Contains(err.Error(), expectedErrorMsg) {
+		t.Fatalf("unexpected error message: expected error to contain %s", expectedErrorMsg)
+	}
 }
 
 func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {

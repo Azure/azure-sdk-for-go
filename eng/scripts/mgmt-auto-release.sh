@@ -2,7 +2,6 @@
 set -ex
 
 export PATH=$PATH:$HOME/go/bin
-sudo ln -s /usr/bin/pwsh /usr/bin/pwsh.exe
 git config --global user.email "ReleaseHelper"
 git config --global user.name "ReleaseHelper"
 

@@ -68,8 +68,7 @@ func TestUsernamePasswordCredential_InvalidPasswordLive(t *testing.T) {
 	if e.RawResponse == nil {
 		t.Fatal("expected a non-nil RawResponse")
 	}
-	expectedErrorMsg := "UsernamePasswordCredential authentication failed"
-	if !strings.Contains(e.Error(), expectedErrorMsg) {
-		t.Fatalf("unexpected error message: expected error to contain %s", expectedErrorMsg)
+	if !strings.Contains(e.Error(), credNameUserPassword) {
+		t.Fatalf("unexpected error message: expected error to contain %s", credNameUserPassword)
 	}
 }

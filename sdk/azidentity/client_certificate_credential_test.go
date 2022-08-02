@@ -244,9 +244,8 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 	if e.RawResponse == nil {
 		t.Fatal("expected a non-nil RawResponse")
 	}
-	expectedErrorMsg := "ClientCertificateCredential authentication failed"
-	if !strings.Contains(e.Error(), expectedErrorMsg) {
-		t.Fatalf("unexpected error message: expected error to contain %s", expectedErrorMsg)
+	if !strings.Contains(e.Error(), credNameCert) {
+		t.Fatalf("unexpected error message: expected error to contain %s", credNameCert)
 	}
 }
 

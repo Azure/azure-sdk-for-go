@@ -69,36 +69,17 @@ reportsClient, err := armautomanage.NewReportsClient("<subscription ID>", cred, 
 To update a profile, provide a value for all properties as if you were creating a configuration profile (ID, Name, Type, Location, Properties, Tags)
 
 ```go
-configuration := make(map[string]interface{})
-configuration["Antimalware/Enable"] = true
-configuration["Antimalware/Exclusions/Paths"] = ""
-configuration["Antimalware/Exclusions/Extensions"] = ""
-configuration["Antimalware/Exclusions/Processes"] = ""
-configuration["Antimalware/EnableRealTimeProtection"] = false
-configuration["Antimalware/RunScheduledScan"] = true
-configuration["Antimalware/ScanType"] = "Quick"
-configuration["Antimalware/ScanDay"] = 7
-configuration["Antimalware/ScanTimeInMinutes"] = 120
-configuration["Backup/Enable"] = true
-configuration["Backup/PolicyName"] = "dailyBackupPolicy"
-configuration["Backup/TimeZone"] = "UTC"
-configuration["Backup/InstantRpRetentionRangeInDays"] = 2
-configuration["Backup/SchedulePolicy/ScheduleRunFrequency"] = "Daily"
-configuration["Backup/SchedulePolicy/ScheduleRunTimes"] = []string{"2022-07-27T12: 00: 00Z"}
-configuration["Backup/SchedulePolicy/SchedulePolicyType"] = "SimpleSchedulePolicy"
-configuration["Backup/RetentionPolicy/RetentionPolicyType"] = "LongTermRetentionPolicy"
-configuration["Backup/RetentionPolicy/DailySchedule/RetentionTimes"] = []string{"2022-07-27T12: 00: 00Z"}
-configuration["Backup/RetentionPolicy/DailySchedule/RetentionDuration/Count"] = 180
-configuration["Backup/RetentionPolicy/DailySchedule/RetentionDuration/DurationType"] = "Days"
-configuration["WindowsAdminCenter/Enable"] = false
-configuration["VMInsights/Enable"] = true
-configuration["AzureSecurityCenter/Enable"] = true
-configuration["UpdateManagement/Enable"] = true
-configuration["ChangeTrackingAndInventory/Enable"] = true
-configuration["GuestConfiguration/Enable"] = true
-configuration["AutomationAccount/Enable"] = true
-configuration["LogAnalytics/Enable"] = true
-configuration["BootDiagnostics/Enable"] = true
+configuration := map[string]interface{}{
+    "Antimalware/Enable":                false,
+    "AzureSecurityCenter/Enable":        true,
+    "Backup/Enable":                     false,
+    "BootDiagnostics/Enable":            true,
+    "ChangeTrackingAndInventory/Enable": true,
+    "GuestConfiguration/Enable":         true,
+    "LogAnalytics/Enable":               true,
+    "UpdateManagement/Enable":           true,
+    "VMInsights/Enable":                 true,
+}
 
 properties := armautomanage.ConfigurationProfileProperties{
     Configuration: configuration,

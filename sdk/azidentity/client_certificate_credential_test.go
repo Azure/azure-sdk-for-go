@@ -111,7 +111,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain_mock(t
 	test := allCertTests[0]
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
-	srv.AppendResponse()
+	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
 	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
 	srv.AppendResponse(mock.WithPredicate(validateJWTRequestContainsHeader(t, "x5c")), mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse()

@@ -221,8 +221,8 @@ func TestManagedIdentityCredential_AppServiceError(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	if !strings.Contains(err.Error(), credNameManagedIdentity) {
-		t.Fatalf("unexpected error message: expected error to contain %s", credNameManagedIdentity)
+	if !strings.HasPrefix(err.Error(), credNameManagedIdentity) {
+		t.Fatal("missing credential type prefix")
 	}
 }
 

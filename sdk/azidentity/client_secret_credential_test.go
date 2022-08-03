@@ -70,7 +70,7 @@ func TestClientSecretCredential_InvalidSecretLive(t *testing.T) {
 	if e.RawResponse == nil {
 		t.Fatal("expected a non-nil RawResponse")
 	}
-	if !strings.Contains(e.Error(), credNameSecret) {
-		t.Fatalf("unexpected error message: expected error to contain %s", credNameSecret)
+	if !strings.HasPrefix(e.Error(), credNameSecret) {
+		t.Fatal("missing credential type prefix")
 	}
 }

@@ -68,7 +68,7 @@ func TestUsernamePasswordCredential_InvalidPasswordLive(t *testing.T) {
 	if e.RawResponse == nil {
 		t.Fatal("expected a non-nil RawResponse")
 	}
-	if !strings.Contains(e.Error(), credNameUserPassword) {
-		t.Fatalf("unexpected error message: expected error to contain %s", credNameUserPassword)
+	if !strings.HasPrefix(e.Error(), credNameUserPassword) {
+		t.Fatal("missing credential type prefix")
 	}
 }

@@ -244,8 +244,8 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 	if e.RawResponse == nil {
 		t.Fatal("expected a non-nil RawResponse")
 	}
-	if !strings.Contains(e.Error(), credNameCert) {
-		t.Fatalf("unexpected error message: expected error to contain %s", credNameCert)
+	if !strings.HasPrefix(e.Error(), credNameCert) {
+		t.Fatal("missing credential type prefix")
 	}
 }
 

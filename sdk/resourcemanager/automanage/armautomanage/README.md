@@ -48,9 +48,9 @@ For more information on authentication, please see the documentation for `aziden
 Azure Automanage modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-reportsClient, err := armautomanage.NewReportsClient(<subscription ID>, cred, nil)
-configProfilesClient, err := armautomanage.NewConfigurationProfilesClient("<sub ID>", cred, nil)
-assignmentClient, err := armautomanage.NewConfigurationProfileAssignmentsClient("<sub ID>", cred, nil)
+reportsClient, err := armautomanage.NewReportsClient("<subscription ID>", cred, nil)
+configProfilesClient, err := armautomanage.NewConfigurationProfilesClient("<subscription ID>", cred, nil)
+assignmentClient, err := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription ID>", cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -61,7 +61,7 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-reportsClient, err := armautomanage.NewReportsClient("<sub ID>", cred, &options)
+reportsClient, err := armautomanage.NewReportsClient("<subscription ID>", cred, &options)
 ```
 
 ## Create or Update a Custom Automanage Configuration Profile
@@ -104,7 +104,7 @@ properties := armautomanage.ConfigurationProfileProperties{
     Configuration: configuration,
 }
 
-id := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
+id := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
 resourceType := "Microsoft.Automanage/configurationProfiles"
 location := "eastus"
 environment := "dev"
@@ -130,8 +130,8 @@ configProfilesClient.CreateOrUpdate(context.Background(), configurationProfileNa
 ## Get an Automanage Configuration Profile
 
 ```go
-profile, _ := configProfilesClient.Get(context.Background(), "configurationProfileName", "resourceGroupName", nil)
-data, _ := json.MarshalIndent(profile, "", "   ")
+profile, err := configProfilesClient.Get(context.Background(), "configurationProfileName", "resourceGroupName", nil)
+data, err := json.MarshalIndent(profile, "", "   ")
 
 fmt.Println(string(data))
 ```
@@ -147,8 +147,8 @@ configProfilesClient.Delete(context.Background(), "resourceGroupName", "configur
 ## Get an Automanage Profile Assignment
 
 ```go
-assignment, _ := assignmentClient.Get(context.Background(), "resourceGroupName", "default", "vmName", nil)
-data, _ := json.MarshalIndent(assignment, "", "   ")
+assignment, err := assignmentClient.Get(context.Background(), "resourceGroupName", "default", "vmName", nil)
+data, err := json.MarshalIndent(assignment, "", "   ")
 fmt.Println(string(data))
 ```
 
@@ -156,7 +156,7 @@ fmt.Println(string(data))
 ## Create an Assignment between a VM and an Automanage Best Practices Production Configuration Profile
 
 ```go
-vmId := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName"
+vmId := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName"
 configProfileId := "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
 
 properties := armautomanage.ConfigurationProfileAssignmentProperties{
@@ -164,7 +164,7 @@ properties := armautomanage.ConfigurationProfileAssignmentProperties{
     TargetID:             &vmId,
 }
 
-id := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName/providers/Microsoft.Automanage/AutomanageAssignments/default"
+id := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName/providers/Microsoft.Automanage/AutomanageAssignments/default"
 name := "default" // name must be default
 assignment := armautomanage.ConfigurationProfileAssignment{
     ID:         &id,
@@ -180,15 +180,15 @@ assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupN
 ## Create an Assignment between a VM and a Custom Automanage Configuration Profile
 
 ```go
-vmId := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName"
-configProfileId := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
+vmId := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName"
+configProfileId := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
 
 properties := armautomanage.ConfigurationProfileAssignmentProperties{
     ConfigurationProfile: &configProfileId,
     TargetID:             &vmId,
 }
 
-id := "/subscriptions/[sub ID]/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName/providers/Microsoft.Automanage/AutomanageAssignments/default"
+id := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName/providers/Microsoft.Automanage/AutomanageAssignments/default"
 name := "default" // name must be default
 assignment := armautomanage.ConfigurationProfileAssignment{
     ID:         &id,

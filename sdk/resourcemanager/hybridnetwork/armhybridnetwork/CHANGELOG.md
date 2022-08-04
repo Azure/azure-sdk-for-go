@@ -1,5 +1,12 @@
 # Release History
 
+## 2.0.0-beta.2 (2022-08-04)
+### Breaking Changes
+
+- Function `*VendorsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, *VendorsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, Vendor, *VendorsClientBeginCreateOrUpdateOptions)`
+- Field `Parameters` of struct `VendorsClientBeginCreateOrUpdateOptions` has been removed
+
+
 ## 2.0.0-beta.1 (2022-05-24)
 ### Breaking Changes
 

@@ -10,7 +10,6 @@
 
 ### Other Changes
 * Updated AuthenticationFailedError with links to TROUBLESHOOTING.md for relevant errors
-* Added additional testing for AuthenticationFailedError
 
 ## 1.2.0-beta.1 (2022-06-07)
 

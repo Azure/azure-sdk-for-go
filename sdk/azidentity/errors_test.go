@@ -41,21 +41,21 @@ func TestAuthenticationFailedErrorInterface(t *testing.T) {
 	}
 	errMsg := err.Error()
 	if !strings.HasPrefix(errMsg, credNameAzureCLI) {
-		t.Fatal("missing credential type prefix")
+		t.Fatalf("expected credential type prefix: %s", credNameAzureCLI)
 	}
 	if !strings.Contains(errMsg, fmt.Sprint(res.StatusCode)) {
-		t.Fatalf("unexpected error code: expected error to contain status code %s", fmt.Sprint(res.StatusCode))
+		t.Fatalf("expected status code: %s", fmt.Sprint(res.StatusCode))
 	}
 	if !strings.Contains(errMsg, res.Request.Method) {
-		t.Fatalf("unexpected error method: expected error to contain method %s", res.Request.Method)
+		t.Fatalf("expected method: %s", res.Request.Method)
 	}
 	if !strings.Contains(errMsg, urlString) {
-		t.Fatalf("unexpected error url: expected error to contain url %s", urlString)
+		t.Fatalf("expected url: %s", urlString)
 	}
 	if !strings.Contains(errMsg, resBodyString) {
-		t.Fatalf("unexpected error body: expected error to contain response body %s", resBodyString)
+		t.Fatalf("expected response body: %s", resBodyString)
 	}
 	if !strings.Contains(errMsg, "https://aka.ms/azsdk/go/identity/troubleshoot#azure-cli") {
-		t.Fatalf("unexpected error link: expected error to contain troubleshooting link %s", resBodyString)
+		t.Fatalf("expected troubleshooting link: %s", resBodyString)
 	}
 }

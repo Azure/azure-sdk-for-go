@@ -95,7 +95,7 @@ configurationProfileName := "name"
 tags := make(map[string]*string)
 tags["environment"] = &environment
 
-newProfile := armautomanage.ConfigurationProfile{
+profile := armautomanage.ConfigurationProfile{
     ID:         &id,
     Name:       &configurationProfileName,
     Type:       &resourceType,
@@ -104,7 +104,7 @@ newProfile := armautomanage.ConfigurationProfile{
     Tags:       tags,
 }
 
-configProfilesClient.CreateOrUpdate(context.Background(), configurationProfileName, "resourceGroupName", newProfile, nil)
+newProfile, err := configProfilesClient.CreateOrUpdate(context.Background(), configurationProfileName, "resourceGroupName", profile, nil)
 ```
 
 
@@ -121,7 +121,7 @@ fmt.Println(string(data))
 ## Delete an Automanage Configuration Profile
 
 ```go
-configProfilesClient.Delete(context.Background(), "resourceGroupName", "configurationProfileName", nil)
+_, err := configProfilesClient.Delete(context.Background(), "resourceGroupName", "configurationProfileName", nil)
 ```
 
 
@@ -154,7 +154,7 @@ assignment := armautomanage.ConfigurationProfileAssignment{
 }
 
 // assignment name must be 'default'
-assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
+newAssignment, err = assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
 ```
 
 
@@ -178,7 +178,7 @@ assignment := armautomanage.ConfigurationProfileAssignment{
 }
 
 // assignment name must be 'default'
-assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
+newAssignment, err = assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
 ```
 
 

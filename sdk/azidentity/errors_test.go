@@ -8,7 +8,6 @@ package azidentity
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -33,14 +32,14 @@ func TestAuthenticationFailedErrorInterface(t *testing.T) {
 		Request:    req,
 	}
 	err = newAuthenticationFailedError(credNameAzureCLI, "error message", res)
-	var e *AuthenticationFailedError
-	if !errors.As(err, &e) {
-		t.Fatal("expected AuthenticationFailedError")
+	if e, ok := err.(*AuthenticationFailedError); ok {
+		if e.RawResponse == nil {
+			t.Fatal("expected a non-nil RawResponse")
+		}
+	} else {
+		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
-	if e.RawResponse == nil {
-		t.Fatal("expected a non-nil RawResponse")
-	}
-	errMsg := e.Error()
+	errMsg := err.Error()
 	if !strings.HasPrefix(errMsg, credNameAzureCLI) {
 		t.Fatal("missing credential type prefix")
 	}

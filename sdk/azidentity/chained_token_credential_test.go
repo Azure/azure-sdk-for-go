@@ -8,7 +8,6 @@ package azidentity
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -117,15 +116,11 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
+	if _, ok := err.(*AuthenticationFailedError); !ok {
+		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
-	var authErr *AuthenticationFailedError
-	if !errors.As(err, &authErr) {
-		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
-	}
-	if e := err.Error(); !strings.Contains(err.Error(), "something went wrong") {
-		t.Fatalf(`unexpected error message "%s"`, e)
+	if !strings.Contains(err.Error(), "something went wrong") {
+		t.Fatalf(`unexpected error message "%s"`, err.Error())
 	}
 }
 
@@ -141,12 +136,8 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testin
 		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
-	}
-	var authErr *credentialUnavailableError
-	if !errors.As(err, &authErr) {
-		t.Fatalf("Expected CredentialUnavailableError, received %T", err)
+	if _, ok := err.(*credentialUnavailableError); !ok {
+		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
 	expectedError := `ChainedTokenCredential: failed to acquire a token.
 Attempted credentials:
@@ -170,12 +161,8 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
-	}
-	var authErr *AuthenticationFailedError
-	if !errors.As(err, &authErr) {
-		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
+	if _, ok := err.(*AuthenticationFailedError); !ok {
+		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
 	expectedError := `ChainedTokenCredential: failed to acquire a token.
 Attempted credentials:
@@ -196,12 +183,8 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 	}
 	cred.name = "CustomNameCredential"
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
-	}
-	var authErr *credentialUnavailableError
-	if !errors.As(err, &authErr) {
-		t.Fatalf("Expected credentialUnavailableError, received %T", err)
+	if _, ok := err.(*credentialUnavailableError); !ok {
+		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
 	expectedError := `CustomNameCredential: failed to acquire a token.
 Attempted credentials:

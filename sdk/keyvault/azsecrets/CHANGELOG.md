@@ -1,10 +1,12 @@
 # Release History
 
-## 0.8.1 (Unreleased)
+## 0.9.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Changed type of `NewClient` options parameter to `azsecrets.Options`, which embeds
+  the former type, `azcore.ClientOptions`
 
 ### Bugs Fixed
 

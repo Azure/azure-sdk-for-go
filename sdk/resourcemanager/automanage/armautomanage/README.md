@@ -85,20 +85,14 @@ properties := armautomanage.ConfigurationProfileProperties{
     Configuration: configuration,
 }
 
-id := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
-resourceType := "Microsoft.Automanage/configurationProfiles"
 location := "eastus"
 environment := "dev"
-configurationProfileName := "name"
 
 // tags may be omitted 
 tags := make(map[string]*string)
 tags["environment"] = &environment
 
 profile := armautomanage.ConfigurationProfile{
-    ID:         &id,
-    Name:       &configurationProfileName,
-    Type:       &resourceType,
     Location:   &location,
     Properties: &properties,
     Tags:       tags,
@@ -137,19 +131,13 @@ fmt.Println(string(data))
 ## Create an Assignment between a VM and an Automanage Best Practices Production Configuration Profile
 
 ```go
-vmId := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName"
 configProfileId := "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
 
 properties := armautomanage.ConfigurationProfileAssignmentProperties{
     ConfigurationProfile: &configProfileId,
-    TargetID:             &vmId,
 }
 
-id := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName/providers/Microsoft.Automanage/AutomanageAssignments/default"
-name := "default" // name must be default
 assignment := armautomanage.ConfigurationProfileAssignment{
-    ID:         &id,
-    Name:       &name,
     Properties: &properties,
 }
 
@@ -161,19 +149,13 @@ newAssignment, err = assignmentClient.CreateOrUpdate(context.Background(), "defa
 ## Create an Assignment between a VM and a Custom Automanage Configuration Profile
 
 ```go
-vmId := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName"
 configProfileId := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
 
 properties := armautomanage.ConfigurationProfileAssignmentProperties{
     ConfigurationProfile: &configProfileId,
-    TargetID:             &vmId,
 }
 
-id := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Compute/virtualMachines/vmName/providers/Microsoft.Automanage/AutomanageAssignments/default"
-name := "default" // name must be default
 assignment := armautomanage.ConfigurationProfileAssignment{
-    ID:         &id,
-    Name:       &name,
     Properties: &properties,
 }
 

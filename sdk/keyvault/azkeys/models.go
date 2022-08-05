@@ -309,7 +309,8 @@ type KeyAttributes struct {
 	// Expiry date in UTC.
 	Expires *time.Time `json:"exp,omitempty"`
 
-	// Indicates if the private key can be exported.
+	// Indicates if the private key can be exported. Release policy must be provided when creating the 1st version of an exportable
+	// key.
 	Exportable *bool `json:"exportable,omitempty"`
 
 	// Not before date in UTC.
@@ -403,7 +404,7 @@ type KeyOperationsParameters struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AAD []byte `json:"aad,omitempty"`
 
-	// Initialization vector for symmetric algorithms.
+	// Cryptographically random, non-repeating initialization vector for symmetric algorithms.
 	IV []byte `json:"iv,omitempty"`
 
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
@@ -415,7 +416,7 @@ type KeyReleasePolicy struct {
 	// Content type and version of key release policy
 	ContentType *string `json:"contentType,omitempty"`
 
-	// Blob encoding the policy rules under which the key can be released.
+	// Blob encoding the policy rules under which the key can be released. Blob must be base64 URL encoded.
 	EncodedPolicy []byte `json:"data,omitempty"`
 
 	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed

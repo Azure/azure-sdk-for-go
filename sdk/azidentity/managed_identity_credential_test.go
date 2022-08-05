@@ -8,7 +8,6 @@ package azidentity
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -221,6 +220,9 @@ func TestManagedIdentityCredential_AppServiceError(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
+	if !strings.HasPrefix(err.Error(), credNameManagedIdentity) {
+		t.Fatal("missing credential type prefix")
+	}
 }
 
 func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
@@ -234,11 +236,10 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 		t.Fatal(err)
 	}
 	// cred should return credentialUnavailableError when IMDS responds 400 to a token request
-	var expected *credentialUnavailableError
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-		if !errors.As(err, &expected) {
-			t.Fatalf(`expected credentialUnavailableError, got %T: "%s"`, err, err.Error())
+		if _, ok := err.(*credentialUnavailableError); !ok {
+			t.Fatalf("expected credentialUnavailableError, received %T", err)
 		}
 	}
 }
@@ -514,9 +515,8 @@ func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
 	}
 	cred.client.imdsTimeout = time.Nanosecond
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	var expected *credentialUnavailableError
-	if !errors.As(err, &expected) {
-		t.Fatalf(`expected credentialUnavailableError, got %T: "%v"`, err, err)
+	if _, ok := err.(*credentialUnavailableError); !ok {
+		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")

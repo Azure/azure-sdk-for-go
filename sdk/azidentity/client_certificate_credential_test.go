@@ -10,10 +10,10 @@ import (
 	"context"
 	"crypto"
 	"crypto/x509"
-	"errors"
 	"log"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -236,12 +236,15 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}
-	var e *AuthenticationFailedError
-	if !errors.As(err, &e) {
-		t.Fatal("expected AuthenticationFailedError")
+	if e, ok := err.(*AuthenticationFailedError); ok {
+		if e.RawResponse == nil {
+			t.Fatal("expected a non-nil RawResponse")
+		}
+	} else {
+		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
-	if e.RawResponse == nil {
-		t.Fatal("expected a non-nil RawResponse")
+	if !strings.HasPrefix(err.Error(), credNameCert) {
+		t.Fatal("missing credential type prefix")
 	}
 }
 

@@ -47,3 +47,6 @@ vendor/
 # vscode
 **/.vscode/*
 !.vscode/cspell.json
+
+# api view file
+*.gosource

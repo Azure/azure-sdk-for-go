@@ -9,7 +9,7 @@ package recording
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -57,7 +57,7 @@ func (s *recordingTests) TestStopDoesNotSaveVariablesWhenNoVariablesExist() {
 	err = target.Stop()
 	require.NoError(err)
 
-	_, err = ioutil.ReadFile(target.VariablesFile)
+	_, err = os.ReadFile(target.VariablesFile)
 	require.Equal(true, os.IsNotExist(err))
 }
 
@@ -468,7 +468,7 @@ func TestStartStopRecordingClient(t *testing.T) {
 	}()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)

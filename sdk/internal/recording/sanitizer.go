@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -101,7 +101,7 @@ func handleProxyResponse(resp *http.Response, err error) error {
 		return nil
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
 		return err
@@ -153,7 +153,7 @@ func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOption
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -189,7 +189,7 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -226,7 +226,7 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -262,7 +262,7 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -303,7 +303,7 @@ func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -360,7 +360,7 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -393,7 +393,7 @@ func AddURISanitizer(value, regex string, options *RecordingOptions) error {
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -425,7 +425,7 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 			return err
 		}
 
-		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+		req.Body = io.NopCloser(bytes.NewReader(marshalled))
 		req.ContentLength = int64(len(marshalled))
 	}
 	return handleProxyResponse(client.Do(req))

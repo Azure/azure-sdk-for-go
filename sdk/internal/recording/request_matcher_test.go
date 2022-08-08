@@ -8,7 +8,6 @@ package recording
 
 import (
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -206,5 +205,5 @@ func (s *requestMatcherTests) TestCompareMethods() {
 }
 
 func closerFromString(content string) io.ReadCloser {
-	return ioutil.NopCloser(strings.NewReader(content))
+	return io.NopCloser(strings.NewReader(content))
 }

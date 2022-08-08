@@ -11,7 +11,6 @@ import (
 	"context"
 	"errors"
 	"io"
-	"io/ioutil"
 	"math"
 	"net/http"
 	"strings"
@@ -99,11 +98,11 @@ func TestRetryPolicyFailOnStatusCodeRespBodyPreserved(t *testing.T) {
 	// add a per-request policy that reads and restores the request body.
 	// this is to simulate how something like httputil.DumpRequest works.
 	pl := exported.NewPipeline(srv, policyFunc(func(r *policy.Request) (*http.Response, error) {
-		b, err := ioutil.ReadAll(r.Raw().Body)
+		b, err := io.ReadAll(r.Raw().Body)
 		if err != nil {
 			t.Fatal(err)
 		}
-		r.Raw().Body = ioutil.NopCloser(bytes.NewReader(b))
+		r.Raw().Body = io.NopCloser(bytes.NewReader(b))
 		return r.Next()
 	}), NewRetryPolicy(testRetryOptions()))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
@@ -131,7 +130,7 @@ func TestRetryPolicyFailOnStatusCodeRespBodyPreserved(t *testing.T) {
 		t.Fatal("request body wasn't closed")
 	}
 	// ensure response body hasn't been drained
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
 	}

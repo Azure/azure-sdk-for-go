@@ -12,7 +12,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -83,5 +83,5 @@ func ExampleResponseError() {
 		}
 	}
 	// Do something with response
-	fmt.Println(ioutil.ReadAll(resp.Body))
+	fmt.Println(io.ReadAll(resp.Body))
 }

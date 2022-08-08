@@ -9,7 +9,7 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net"
 	"net/http"
@@ -37,7 +37,7 @@ func init() {
 			panic(err)
 		}
 	}
-	cert, err := ioutil.ReadFile(localFile)
+	cert, err := os.ReadFile(localFile)
 	if err != nil {
 		log.Printf("could not read file set in PROXY_CERT variable at %s.\n", localFile)
 	}
@@ -182,7 +182,7 @@ func (c *RecordingHTTPClient) start() error {
 
 	recID := resp.Header.Get(idHeader)
 	if recID == "" {
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err != nil {
 			return fmt.Errorf("there was an error reading the body: %s", err.Error())
@@ -209,7 +209,7 @@ func (c *RecordingHTTPClient) stop() error {
 	req.Header.Set("x-recording-id", c.recID) //recTest)
 	resp, err := defaultHTTPClient.Do(req)
 	if resp.StatusCode != 200 {
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err == nil {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))

@@ -11,7 +11,6 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"mime"
 	"mime/multipart"
 	"net/http"
@@ -109,7 +108,7 @@ func TestRequestMarshalAsByteArrayURLFormat(t *testing.T) {
 	if req.Raw().ContentLength == 0 {
 		t.Fatal("unexpected zero content length")
 	}
-	b, err := ioutil.ReadAll(req.Raw().Body)
+	b, err := io.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -137,7 +136,7 @@ func TestRequestMarshalAsByteArrayStdFormat(t *testing.T) {
 	if req.Raw().ContentLength == 0 {
 		t.Fatal("unexpected zero content length")
 	}
-	b, err := ioutil.ReadAll(req.Raw().Body)
+	b, err := io.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -345,7 +344,7 @@ func TestCloneWithoutReadOnlyFieldsEndToEnd(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	b, err := ioutil.ReadAll(req.Raw().Body)
+	b, err := io.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatal(err)
 	}

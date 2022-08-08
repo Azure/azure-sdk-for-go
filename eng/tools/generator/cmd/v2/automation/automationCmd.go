@@ -31,7 +31,7 @@ func Command() *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			goVersion := "1.18"
+			goVersion := "1.19"
 			if len(args) == 3 {
 				goVersion = args[2]
 			}

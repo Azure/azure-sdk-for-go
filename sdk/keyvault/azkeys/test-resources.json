@@ -37,7 +37,7 @@
         },
         "hsmLocation": {
             "type": "string",
-            "defaultValue": "westus3",
+            "defaultValue": "uksouth",
             "allowedValues": [
                 "australiacentral",
                 "australiaeast",
@@ -66,7 +66,7 @@
                 "westus3"
             ],
             "metadata": {
-                "description": "The location of the Managed HSM. By default, this is 'westus3'."
+                "description": "The location of the Managed HSM."
             }
         },
         "enableHsm": {

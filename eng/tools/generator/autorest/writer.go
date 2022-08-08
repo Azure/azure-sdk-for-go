@@ -39,7 +39,6 @@ func NewWriterFromFile(file string) *Writer {
 	}
 }
 
-//
 // Write writes the new version changelog to the changelog file, also modify the links in the previous version
 func (w *Writer) Write(r *report.PkgsReport) error {
 	// first we read the changelog, get the lines as an array

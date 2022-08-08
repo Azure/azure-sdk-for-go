@@ -348,7 +348,7 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 	return additionalChangelog, nil
 }
 
-// replace `{{NewClientName}}`` placeholder in README.md by first func name according to `^New.+Method$` pattern
+// replace `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string

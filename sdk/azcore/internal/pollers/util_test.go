@@ -10,7 +10,6 @@ import (
 	"context"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
@@ -98,7 +97,7 @@ func TestGetJSON(t *testing.T) {
 	j, err := GetJSON(&http.Response{Body: http.NoBody})
 	require.ErrorIs(t, err, ErrNoBody)
 	require.Nil(t, j)
-	j, err = GetJSON(&http.Response{Body: ioutil.NopCloser(strings.NewReader(`{ "foo": "bar" }`))})
+	j, err = GetJSON(&http.Response{Body: io.NopCloser(strings.NewReader(`{ "foo": "bar" }`))})
 	require.NoError(t, err)
 	require.Equal(t, "bar", j["foo"])
 }
@@ -106,7 +105,7 @@ func TestGetJSON(t *testing.T) {
 func TestGetStatusSuccess(t *testing.T) {
 	const jsonBody = `{ "status": "InProgress" }`
 	resp := &http.Response{
-		Body: ioutil.NopCloser(strings.NewReader(jsonBody)),
+		Body: io.NopCloser(strings.NewReader(jsonBody)),
 	}
 	status, err := GetStatus(resp)
 	require.NoError(t, err)
@@ -127,7 +126,7 @@ func TestGetNoBody(t *testing.T) {
 
 func TestGetStatusError(t *testing.T) {
 	resp := &http.Response{
-		Body: ioutil.NopCloser(strings.NewReader("{}")),
+		Body: io.NopCloser(strings.NewReader("{}")),
 	}
 	status, err := GetStatus(resp)
 	require.NoError(t, err)
@@ -137,7 +136,7 @@ func TestGetStatusError(t *testing.T) {
 func TestGetProvisioningState(t *testing.T) {
 	const jsonBody = `{ "properties": { "provisioningState": "Canceled" } }`
 	resp := &http.Response{
-		Body: ioutil.NopCloser(strings.NewReader(jsonBody)),
+		Body: io.NopCloser(strings.NewReader(jsonBody)),
 	}
 	state, err := GetProvisioningState(resp)
 	require.NoError(t, err)
@@ -167,7 +166,7 @@ func TestGetResourceLocation(t *testing.T) {
 
 func TestGetProvisioningStateError(t *testing.T) {
 	resp := &http.Response{
-		Body: ioutil.NopCloser(strings.NewReader("{}")),
+		Body: io.NopCloser(strings.NewReader("{}")),
 	}
 	state, err := GetProvisioningState(resp)
 	require.NoError(t, err)

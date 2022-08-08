@@ -9,7 +9,7 @@ package recording
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -104,7 +104,7 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 
 	return handleProxyResponse(client.Do(req))

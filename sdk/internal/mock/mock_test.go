@@ -8,7 +8,7 @@ package mock
 
 import (
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 	"time"
@@ -221,7 +221,7 @@ func TestComplexResponse(t *testing.T) {
 	if h := resp.Header.Get("some"); h != "value" {
 		t.Fatalf("unexpected header value %s", h)
 	}
-	r, err := ioutil.ReadAll(resp.Body)
+	r, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -255,7 +255,7 @@ func TestComplexResponseTLS(t *testing.T) {
 	if h := resp.Header.Get("some"); h != "value" {
 		t.Fatalf("unexpected header value %s", h)
 	}
-	r, err := ioutil.ReadAll(resp.Body)
+	r, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -293,7 +293,7 @@ func TestTLSServerConfig(t *testing.T) {
 	if h := resp.Header.Get("some"); h != "value" {
 		t.Fatalf("unexpected header value %s", h)
 	}
-	r, err := ioutil.ReadAll(resp.Body)
+	r, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -318,7 +318,7 @@ func TestBodyReadError(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	_, err = ioutil.ReadAll(resp.Body)
+	_, err = io.ReadAll(resp.Body)
 	if err == nil {
 		t.Fatal("unexpected nil error reading response body")
 	}

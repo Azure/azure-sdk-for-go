@@ -21,7 +21,10 @@ const credNameAssertion = "ClientAssertionCredential"
 
 // ClientAssertionCredential authenticates an application with assertions provided by a callback function.
 // This credential is for advanced scenarios. ClientCertificateCredential has a more convenient API for
-// the most common assertion scenario, authenticating a service principal with a certificate.
+// the most common assertion scenario, authenticating a service principal with a certificate. See
+// [Azure AD documentation] for details of the assertion format.
+//
+// [Azure AD documentation]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials#assertion-format
 type ClientAssertionCredential struct {
 	client confidentialClient
 }

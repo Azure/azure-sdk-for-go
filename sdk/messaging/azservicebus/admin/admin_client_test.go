@@ -8,8 +8,10 @@ import (
 	"context"
 	cryptoRand "crypto/rand"
 	"encoding/hex"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"sort"
@@ -1076,6 +1078,80 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 
 	_, err = testData.Client.DeleteSubscription(ctx, testData.TopicName, testData.SubName, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'DeleteSubscription'")
+}
+
+type fakeEM struct {
+	atom.EntityManager
+
+	getResponses []string
+}
+
+func (em *fakeEM) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
+	jsonPath := em.getResponses[0]
+	em.getResponses = em.getResponses[1:]
+
+	reader, err := os.Open(jsonPath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer reader.Close()
+
+	bytes, err := io.ReadAll(reader)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(bytes, respObj); err != nil {
+		return nil, err
+	}
+
+	return &http.Response{
+		Body: http.NoBody,
+	}, nil
+}
+
+func TestAdminClient_ruleWithDifferentXMLNamespaces(t *testing.T) {
+	adminClient := &Client{
+		em: &fakeEM{
+			getResponses: []string{
+				"testdata/rulefeed.json",
+				"testdata/emptyrulefeed.json",
+			},
+		},
+	}
+
+	// we're stubbed out at this point, so no need to use "real" entities
+	pager := adminClient.NewListRulesPager("test", "test", nil)
+
+	require.True(t, pager.More())
+	listRulesResp, err := pager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, listRulesResp)
+
+	expectedTime, err := time.Parse(time.RFC3339, "2020-01-01T01:02:03Z")
+	require.NoError(t, err)
+
+	correlationFilter := listRulesResp.Rules[0].Filter.(*CorrelationFilter)
+	require.Equal(t, map[string]any{
+		"hello":         "world",
+		"hellodatetime": expectedTime,
+		"hellodouble":   1.1,
+		"helloint":      int64(101),
+	}, correlationFilter.ApplicationProperties)
+	require.Equal(t, "11", *correlationFilter.CorrelationID)
+
+	sqlFilter := listRulesResp.Rules[1].Filter.(*SQLFilter)
+	require.Equal(t, "1=1", sqlFilter.Expression)
+
+	require.True(t, pager.More())
+	listRulesResp, err = pager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.Empty(t, listRulesResp.Rules)
+
+	require.False(t, pager.More())
 }
 
 func TestAdminClient_CreateRules(t *testing.T) {

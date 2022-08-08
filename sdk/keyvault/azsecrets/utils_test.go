@@ -110,7 +110,7 @@ func startTest(t *testing.T) *azsecrets.Client {
 	})
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	opts := &azsecrets.Options{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	opts := &azsecrets.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	return azsecrets.NewClient(vaultURL, credential, opts)
 }
 

@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-* Changed type of `NewClient` options parameter to `azcertificates.Options`, which embeds
+* Changed type of `NewClient` options parameter to `azcertificates.ClientOptions`, which embeds
   the former type, `azcore.ClientOptions`
 
 ### Bugs Fixed

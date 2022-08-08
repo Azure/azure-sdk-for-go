@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-* Changed type of `NewClient` options parameter to `azsecrets.Options`, which embeds
+* Changed type of `NewClient` options parameter to `azsecrets.ClientOptions`, which embeds
   the former type, `azcore.ClientOptions`
 
 ### Bugs Fixed

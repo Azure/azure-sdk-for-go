@@ -4,9 +4,13 @@
 package automation
 
 import (
+	"archive/zip"
 	"fmt"
+	"io"
+	"io/fs"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/automation/pipeline"
@@ -132,6 +136,13 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			breaking := namespaceResult.Changelog.HasBreakingChanges()
 			breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
+			srcFolder := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName)
+			apiViewArtifact := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName+".gosource")
+			err := zipDirectory(srcFolder, apiViewArtifact)
+			if err != nil {
+				fmt.Println(err)
+			}
+
 			results = append(results, pipeline.PackageResult{
 				Version:       namespaceResult.Version,
 				PackageName:   namespaceResult.PackageName,
@@ -143,6 +154,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 					HasBreakingChange:   &breaking,
 					BreakingChangeItems: &breakingChangeItems,
 				},
+				APIViewArtifact: apiViewArtifact,
+				Language:        "Go",
 			})
 		}
 		log.Printf("Finish to process readme file: %s", readme)
@@ -178,4 +191,58 @@ func logError(err error) {
 			log.Printf("[ERROR] %s", l)
 		}
 	}
+}
+
+func zipDirectory(srcFolder, dstZip string) error {
+	outFile, err := os.Create(dstZip)
+	if err != nil {
+		return err
+	}
+	w := zip.NewWriter(outFile)
+	srcFolder = strings.TrimSuffix(srcFolder, string(os.PathSeparator))
+	err = filepath.Walk(srcFolder, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+		header.Method = zip.Deflate
+		header.Name, err = filepath.Rel(filepath.Dir(srcFolder), path)
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			header.Name += string(os.PathSeparator)
+		}
+		hw, err := w.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+		f, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		_, err = io.Copy(hw, f)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	err = w.Close()
+	if err != nil {
+		return err
+	}
+	err = outFile.Close()
+	if err != nil {
+		return err
+	}
+	return nil
 }

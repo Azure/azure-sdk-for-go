@@ -83,6 +83,8 @@ type PackageResult struct {
 	Changelog           *Changelog                      `json:"changelog,omitempty"`
 	Artifacts           []string                        `json:"artifacts,omitempty"`
 	InstallInstructions *InstallInstructionScriptOutput `json:"installInstructions,omitempty"`
+	APIViewArtifact     string                          `json:"apiViewArtifact,omitempty"`
+	Language            string                          `json:"language,omitempty"`
 }
 
 // Changelog ...

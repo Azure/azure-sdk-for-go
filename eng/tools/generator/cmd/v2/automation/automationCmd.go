@@ -154,7 +154,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 					HasBreakingChange:   &breaking,
 					BreakingChangeItems: &breakingChangeItems,
 				},
-				APIViewArtifact: apiViewArtifact,
+				APIViewArtifact: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName+".gosource"),
 				Language:        "Go",
 			})
 		}

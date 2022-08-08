@@ -62,6 +62,10 @@
             "CoverageGoal": 0.10
         },
         {
+            "Name": "messaging/azeventhubs",
+            "CoverageGoal": 0.0
+        },
+        {
             "Name": "messaging/internal",
             "CoverageGoal": 0.40
         },

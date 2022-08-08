@@ -11,6 +11,8 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 const testURL = "http://test.contoso.com/"
@@ -140,4 +142,16 @@ func TestNewRequestFail(t *testing.T) {
 	if req != nil {
 		t.Fatal("unexpected request")
 	}
+}
+
+func TestNewRequestURLEncoded(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodOptions, `https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/usageDetails?$expand=meterDetails&$filter=properties/usageStart ge '2021-07-01' and properties/usageEnd lt '2022-07-02'&$top=2&api-version=2021-10-01&sessiontoken=&$skiptoken=ABC;123&skiptokenver=v1&id=00000000-0000-0000-0000-000000000000`)
+	require.NoError(t, err)
+	require.Equal(t, "%24expand=meterDetails&%24filter=properties%2FusageStart+ge+%272021-07-01%27+and+properties%2FusageEnd+lt+%272022-07-02%27&%24skiptoken=ABC%3B123&%24top=2&api-version=2021-10-01&id=00000000-0000-0000-0000-000000000000&sessiontoken=&skiptokenver=v1", req.req.URL.RawQuery)
+}
+
+func TestNewRequestURLEncodedFailed(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodOptions, `http://test.contoso.com/?invalid=%1`)
+	require.Error(t, err)
+	require.Nil(t, req)
 }

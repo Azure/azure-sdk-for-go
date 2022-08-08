@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"context"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
@@ -52,7 +51,7 @@ func TestProgressReporting(t *testing.T) {
 		bytesReceived = bytesTransferred
 	})
 	defer respRpt.Close()
-	b, err := ioutil.ReadAll(respRpt)
+	b, err := io.ReadAll(respRpt)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

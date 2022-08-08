@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -230,7 +230,7 @@ func TestUriSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -287,7 +287,7 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -324,7 +324,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 	marshalled, err := json.Marshal(bodyValue)
 	require.NoError(t, err)
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddBodyKeySanitizer("$.Tag", "Sanitized", "", nil)
 	require.NoError(t, err)
@@ -344,7 +344,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -379,7 +379,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	marshalled, err := json.Marshal(bodyValue)
 	require.NoError(t, err)
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddBodyRegexSanitizer("Sanitized", "Value", nil)
 	require.NoError(t, err)
@@ -401,7 +401,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -451,7 +451,7 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -487,7 +487,7 @@ func TestContinuationSanitizer(t *testing.T) {
 	marshalled, err := json.Marshal(bodyValue)
 	require.NoError(t, err)
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddContinuationSanitizer("Location", "Sanitized", true, nil)
 	require.NoError(t, err)
@@ -515,7 +515,7 @@ func TestContinuationSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -562,7 +562,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -608,7 +608,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -651,7 +651,7 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -704,7 +704,7 @@ func TestResetSanitizers(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -755,7 +755,7 @@ func TestSingleTestSanitizer(t *testing.T) {
 			defer jsonFile.Close()
 
 			var data RecordingFileStruct
-			byteValue, err := ioutil.ReadAll(jsonFile)
+			byteValue, err := io.ReadAll(jsonFile)
 			require.NoError(t, err)
 			err = json.Unmarshal(byteValue, &data)
 			require.NoError(t, err)

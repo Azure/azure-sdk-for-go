@@ -13,7 +13,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"math/rand"
 	"net/http"
@@ -415,7 +415,7 @@ func (r *Recording) createVariablesFileIfNotExists() (*os.File, error) {
 }
 
 func (r *Recording) unmarshalVariablesFile(out interface{}) error {
-	data, err := ioutil.ReadFile(r.VariablesFile)
+	data, err := os.ReadFile(r.VariablesFile)
 	if err != nil {
 		// If the file or dir do not exist, this is not an error to report
 		if os.IsNotExist(err) {
@@ -468,7 +468,7 @@ func init() {
 			log.Panicf(err.Error())
 		}
 	}
-	cert, err := ioutil.ReadFile(localFile)
+	cert, err := os.ReadFile(localFile)
 	if err != nil {
 		log.Printf("could not read file set in PROXY_CERT variable at %s.\n", localFile)
 	}
@@ -598,7 +598,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	if err != nil {
 		return err
 	}
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 
 	resp, err := client.Do(req)
@@ -607,7 +607,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	}
 	recId := resp.Header.Get(IDHeader)
 	if recId == "" {
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err != nil {
 			return err
@@ -617,7 +617,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 
 	// Unmarshal any variables returned by the proxy
 	var m map[string]interface{}
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
 		return err
@@ -670,7 +670,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		if err != nil {
 			return err
 		}
-		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+		req.Body = io.NopCloser(bytes.NewReader(marshalled))
 		req.ContentLength = int64(len(marshalled))
 	}
 
@@ -682,7 +682,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	req.Header.Set(IDHeader, recTest.recordingId)
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err == nil {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))

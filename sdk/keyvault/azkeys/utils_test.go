@@ -169,7 +169,8 @@ func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {
 	if MHSMtest {
 		URL = mhsmURL
 	}
-	return azkeys.NewClient(URL, credential, &azcore.ClientOptions{Transport: transport})
+	opts := &azkeys.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	return azkeys.NewClient(URL, credential, opts)
 }
 
 func createRandomName(t *testing.T, prefix string) string {

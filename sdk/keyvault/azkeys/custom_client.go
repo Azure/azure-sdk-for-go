@@ -15,10 +15,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
+// ClientOptions contains optional settings for Client.
+type ClientOptions struct {
+	azcore.ClientOptions
+}
+
 // NewClient creates a client that accesses a Key Vault's keys.
-func NewClient(vaultURL string, credential azcore.TokenCredential, options *azcore.ClientOptions) *Client {
+func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) *Client {
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	authPolicy := internal.NewKeyVaultChallengePolicy(credential)
-	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, options)
+	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &Client{endpoint: vaultURL, pl: pl}
 }
 

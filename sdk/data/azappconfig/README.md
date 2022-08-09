@@ -144,7 +144,7 @@ func ExampleGetConfigurationSetting() {
         context.TODO(),
         "key",
         &azappconfig.GetSettingOptions{
-            Label: to.Ptr("label")
+            Label: to.Ptr("label"),
         })
 
     if err != nil {
@@ -218,7 +218,7 @@ func ExampleSetConfigurationSettingReadOnly() {
         "key",
         true,
         &azappconfig.SetReadOnlyOptions{
-            Label: to.Ptr("label")
+            Label: to.Ptr("label"),
         })
 
     if err != nil {
@@ -236,7 +236,7 @@ func ExampleSetConfigurationSettingReadOnly() {
         "key",
         false,
         &azappconfig.SetReadOnlyOptions{
-            Label: to.Ptr("label")
+            Label: to.Ptr("label"),
         })
 
     if err != nil {
@@ -272,7 +272,7 @@ func ExampleListRevisions() {
         azappconfig.SettingSelector{
             KeyFilter: to.Ptr("*"),
             LabelFilter: to.Ptr("*"),
-            Fields: azappconfig.AllSettingFields()
+            Fields: azappconfig.AllSettingFields(),
         },
         nil)
 
@@ -312,7 +312,7 @@ func ExampleDeleteConfigurationSetting() {
         context.TODO(),
         "key",
         &azappconfig.DeleteSettingOptions{
-            Label: to.Ptr("label")
+            Label: to.Ptr("label"),
         })
 
     if err != nil {

@@ -173,6 +173,7 @@ Examples
 	// RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 	reader := blobDownloadResponse.Body(nil)
 	downloadData, err := io.ReadAll(reader)
+
 	handle(err)
 	if string(downloadData) != uploadData {
 		handle(errors.New("Uploaded data should be same as downloaded data"))

@@ -15,8 +15,11 @@ The Azure Blob SDK can access an Azure Storage account.
 
 * Go versions 1.18 or higher.
 * You must have an [Azure storage account][azure_storage_account].
-* If you need to create one, you can follow [the public documentation](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal).
-* You can also use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with following commands (replace `my-resource-group`
+* If you need to create one, you can
+  follow [the public documentation](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
+  .
+* You can also use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with following commands (
+  replace `my-resource-group`
   and `mystorageaccount` with your own unique names):
   (Optional) if you want a new resource group to hold the Storage Account:
   ```pwsh
@@ -36,7 +39,7 @@ The Azure Blob SDK can access an Azure Storage account.
   # PowerShell
   $ENV:AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
   ```
-  
+
   ```bash
   # bash
   export AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
@@ -198,12 +201,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 
 resources := service.SASResourceTypes{Object: true, Service: true, Container: true}
 permissions := service.SASPermissions{
-    Read:   true,
-    Add:    true,
-    Write:  true,
-    Create: true,
-    Update: true,
-    Delete: true,
+Read:   true,
+Add:    true,
+Write:  true,
+Create: true,
+Update: true,
+Delete: true,
 }
 services := service.SASServices{Blob: true}
 start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
@@ -242,12 +245,12 @@ Three different clients are provided to interact with the various components of 
 // Your account name and key can be obtained from the Azure Portal.
 accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 if !ok {
-    handleError(errors.New("AZURE_STORAGE_ACCOUNT_NAME could not be found"))
+handleError(errors.New("AZURE_STORAGE_ACCOUNT_NAME could not be found"))
 }
 
 accountKey, ok := os.LookupEnv("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY")
-if !ok { 
-	handleError(errors.New("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY could not be found")) 
+if !ok {
+handleError(errors.New("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY could not be found"))
 }
 
 cred, err := service.NewSharedKeyCredential(accountName, accountKey)
@@ -278,8 +281,8 @@ handleError(err)
 
 // Upload data to the block blob
 blockBlobUploadOptions := blockblob.UploadOptions{
-    Metadata: map[string]string{"Foo": "Bar"},
-    Tags:     map[string]string{"Year": "2022"},
+Metadata: map[string]string{"Foo": "Bar"},
+Tags:     map[string]string{"Year": "2022"},
 }
 _, err = blockBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewReader(uploadData)), &blockBlobUploadOptions)
 handleError(err)
@@ -295,11 +298,11 @@ downloadData, err := ioutil.ReadAll(reader)
 handleError(err)
 
 if string(downloadData) != uploadData {
-    handleError(errors.New("Uploaded data should be same as downloaded data"))
+handleError(errors.New("Uploaded data should be same as downloaded data"))
 }
 
 if err = reader.Close(); err != nil {
-    return
+return
 }
 
 // ===== 3. List blobs =====
@@ -308,14 +311,14 @@ if err = reader.Close(); err != nil {
 // PageResponse() can be used to iterate over the results of the specific page.
 pager := containerClient.NewListBlobsFlatPager(nil)
 for pager.More() {
-    resp, err := pager.NextPage(context.TODO())
-    if err != nil {
-        handleError(err)
-    }
+resp, err := pager.NextPage(context.TODO())
+if err != nil {
+handleError(err)
+}
 
-    for _, v := range resp.Segment.BlobItems {
-        fmt.Println(*v.Name)
-    }
+for _, v := range resp.Segment.BlobItems {
+fmt.Println(*v.Name)
+}
 }
 
 // Delete the blob.
@@ -336,8 +339,8 @@ addition, you can investigate the raw response of any response object:
 
 ```golang
 import (
-	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+"fmt"
+"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 
@@ -345,9 +348,9 @@ var responseErr *azcore.ResponseError
 errors.As(err, &responseErr)
 
 if responseErr != nil {
-    fmt.Println("ErrorCode: " + responseErr.ErrorCode + ", StatusCode: " + strconv.Itoa(responseErr.StatusCode))
+fmt.Println("ErrorCode: " + responseErr.ErrorCode + ", StatusCode: " + strconv.Itoa(responseErr.StatusCode))
 } else {
-    fmt.Println(err.Error())
+fmt.Println(err.Error())
 }
 ```
 
@@ -367,7 +370,7 @@ be like the following:
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
 azlog.SetListener(func (cls azlog.Classification, msg string) {
-    fmt.Println(msg) // printing log out to the console
+fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs

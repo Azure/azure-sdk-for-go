@@ -7,7 +7,6 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-* URL-encode request query parameters when creating the request.
 
 ### Other Changes
 * Fixed various doc bugs.

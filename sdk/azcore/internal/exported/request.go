@@ -12,10 +12,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"reflect"
 	"strconv"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
@@ -59,14 +57,6 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Reque
 	if !(req.URL.Scheme == "http" || req.URL.Scheme == "https") {
 		return nil, fmt.Errorf("unsupported protocol scheme %s", req.URL.Scheme)
 	}
-	// some services will return query param values that include a semi-colon.
-	// we must encode it before parsing the raw query as it's considered invalid otherwise.
-	req.URL.RawQuery = strings.Replace(req.URL.RawQuery, ";", "%3B", -1)
-	qp, err := url.ParseQuery(req.URL.RawQuery)
-	if err != nil {
-		return nil, err
-	}
-	req.URL.RawQuery = qp.Encode()
 	return &Request{req: req}, nil
 }
 

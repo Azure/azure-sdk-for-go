@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBytesWriterWriteAt() {
 	_require := require.New(s.T())
 	b := make([]byte, 10)

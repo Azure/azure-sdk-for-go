@@ -18,7 +18,7 @@ import (
 	"time"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -62,7 +62,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -120,7 +120,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_require.Nil(blobGetTagsResponse.BlobTagSet)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -160,7 +160,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTa
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -227,7 +227,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -336,7 +336,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	_require.EqualValues(destData, sourceData)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -425,7 +425,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	_require.Equal(resp.RawResponse.StatusCode, 202)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -460,7 +460,7 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_require.Equal(*downloadResp.TagCount, int64(3))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -496,7 +496,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 }
 
 // TODO: Once new pacer is done.
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -750,7 +750,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -789,7 +789,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

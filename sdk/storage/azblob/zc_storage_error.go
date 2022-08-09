@@ -160,7 +160,7 @@ func (e StorageError) Response() *http.Response {
 	return e.response
 }
 
-//nolint
+// nolint
 func writeRequestWithResponse(b *bytes.Buffer, request *policy.Request, response *http.Response) {
 	// Write the request into the buffer.
 	_, _ = fmt.Fprint(b, "   "+request.Raw().Method+" "+request.Raw().URL.String()+"\n")
@@ -173,7 +173,7 @@ func writeRequestWithResponse(b *bytes.Buffer, request *policy.Request, response
 }
 
 // formatHeaders appends an HTTP request's or response's header into a Buffer.
-//nolint
+// nolint
 func writeHeader(b *bytes.Buffer, header map[string][]string) {
 	if len(header) == 0 {
 		b.WriteString("   (no headers)\n")
@@ -207,7 +207,7 @@ func (e *StorageError) Temporary() bool {
 }
 
 // UnmarshalXML performs custom unmarshalling of XML-formatted Azure storage request errors.
-//nolint
+// nolint
 func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err error) {
 	tokName := ""
 	var t xml.Token

@@ -8,7 +8,7 @@ package azblob
 
 import "github.com/stretchr/testify/require"
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
 	_require := require.New(s.T())
 

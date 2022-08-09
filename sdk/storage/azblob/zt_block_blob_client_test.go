@@ -99,7 +99,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 	_require.Len(blockList.BlockList.CommittedBlocks, len(data))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -198,7 +198,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_require.EqualValues(destData, content)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -294,7 +294,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	_require.EqualValues(*resp.CopyStatus, "success")
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -362,7 +362,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	_require.Equal(*gResp.ContentType, contentTypeVal)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1144,7 +1144,7 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1208,7 +1208,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

@@ -384,7 +384,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 	validateStorageError(_require, err, StorageErrorCodeCannotVerifyCopySource)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -460,7 +460,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_ = resp2.Body(nil).Close()
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1020,7 +1020,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	validateStorageError(_require, err, StorageErrorCodeTargetConditionNotMet)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3212,7 +3212,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
 }
 
-//nolint
+// nolint
 func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *ServiceClient) error {
 	//containerClient := createNewContainer(_require, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(_require, containerClient)
@@ -3438,7 +3438,7 @@ func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3472,7 +3472,7 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 	_require.EqualValues(buf, []byte(blockBlobDefaultData))
 }
 
-//nolint
+// nolint
 func InjectErrorInRetryReaderOptions(err error) *RetryReaderOptions {
 	return &RetryReaderOptions{
 		MaxRetryRequests:       1,

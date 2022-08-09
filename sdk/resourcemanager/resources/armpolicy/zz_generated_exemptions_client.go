@@ -213,7 +213,7 @@ func (client *ExemptionsClient) getHandleResponse(resp *http.Response) (Exemptio
 
 // NewListPager - This operation retrieves the list of all policy exemptions associated with the given subscription that match
 // the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-// 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy
+// 'excludeExpired()' or 'policyAssignmentId eq '{value}”. If $filter is not provided, the unfiltered list includes all policy
 // exemptions associated with the subscription, including those that apply
 // directly or from management groups that contain the given subscription, as well as any applied to objects contained within
 // the subscription.
@@ -282,7 +282,7 @@ func (client *ExemptionsClient) listHandleResponse(resp *http.Response) (Exempti
 
 // NewListForManagementGroupPager - This operation retrieves the list of all policy exemptions applicable to the management
 // group that match the given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-// 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all
+// 'excludeExpired()' or 'policyAssignmentId eq '{value}”. If $filter=atScope() is provided, the returned list includes all
 // policy exemptions that are assigned to the management group or the management
 // group's ancestors.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -352,19 +352,19 @@ func (client *ExemptionsClient) listForManagementGroupHandleResponse(resp *http.
 
 // NewListForResourcePager - This operation retrieves the list of all policy exemptions associated with the specified resource
 // in the given resource group and subscription that match the optional given $filter. Valid values for
-// $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not
+// $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}”. If $filter is not
 // provided, the unfiltered list includes all policy exemptions associated with the
 // resource, including those that apply directly or from all containing scopes, as well as any applied to resources contained
 // within the resource. Three parameters plus the resource name are used to
 // identify a specific resource. If the resource is not part of a parent resource (the more common case), the parent resource
-// path should not be provided (or provided as ''). For example a web app could
-// be specified as ({resourceProviderNamespace} == 'Microsoft.Web', {parentResourcePath} == '', {resourceType} == 'sites',
+// path should not be provided (or provided as ”). For example a web app could
+// be specified as ({resourceProviderNamespace} == 'Microsoft.Web', {parentResourcePath} == ”, {resourceType} == 'sites',
 // {resourceName} == 'MyWebApp'). If the resource is part of a parent resource,
 // then all parameters should be provided. For example a virtual machine DNS name could be specified as ({resourceProviderNamespace}
 // == 'Microsoft.Compute', {parentResourcePath} ==
 // 'virtualMachines/MyVirtualMachine', {resourceType} == 'domainNames', {resourceName} == 'MyComputerName'). A convenient
 // alternative to providing the namespace and type name separately is to provide
-// both in the {resourceType} parameter, format: ({resourceProviderNamespace} == '', {parentResourcePath} == '', {resourceType}
+// both in the {resourceType} parameter, format: ({resourceProviderNamespace} == ”, {parentResourcePath} == ”, {resourceType}
 // == 'Microsoft.Web/sites', {resourceName} == 'MyWebApp').
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-07-01-preview
@@ -452,7 +452,7 @@ func (client *ExemptionsClient) listForResourceHandleResponse(resp *http.Respons
 
 // NewListForResourceGroupPager - This operation retrieves the list of all policy exemptions associated with the given resource
 // group in the given subscription that match the optional given $filter. Valid values for $filter are:
-// 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
+// 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}”. If $filter is not provided, the
 // unfiltered list includes all policy exemptions associated with the resource
 // group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained
 // within the resource group.

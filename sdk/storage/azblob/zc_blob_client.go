@@ -57,7 +57,7 @@ func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, optio
 }
 
 // NewBlobClientFromConnectionString creates BlobClient from a connection String
-//nolint
+// nolint
 func NewBlobClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (*BlobClient, error) {
 	containerClient, err := NewContainerClientFromConnectionString(connectionString, containerName, options)
 	if err != nil {

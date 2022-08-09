@@ -28,7 +28,7 @@ type EnvironmentCredentialOptions struct {
 // EnvironmentCredential authenticates a service principal with a secret or certificate, or a user with a password, depending
 // on environment variable configuration. It reads configuration from these variables, in the following order:
 //
-// Service principal with client secret
+// # Service principal with client secret
 //
 // AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
 //
@@ -36,7 +36,7 @@ type EnvironmentCredentialOptions struct {
 //
 // AZURE_CLIENT_SECRET: one of the service principal's client secrets
 //
-// Service principal with certificate
+// # Service principal with certificate
 //
 // AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
 //
@@ -46,7 +46,7 @@ type EnvironmentCredentialOptions struct {
 //
 // AZURE_CLIENT_CERTIFICATE_PASSWORD: (optional) password for the certificate file.
 //
-// User with username and password
+// # User with username and password
 //
 // AZURE_TENANT_ID: (optional) tenant to authenticate in. Defaults to "organizations".
 //

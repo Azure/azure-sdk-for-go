@@ -75,7 +75,7 @@ func (c *KeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *policy.Requ
 	return value, nil
 }
 
-//where date is like time.RFC1123 but hard-codes GMT as the time zone
+// where date is like time.RFC1123 but hard-codes GMT as the time zone
 func (c *KeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resourceAddress, xmsDate, tokenType, version string) string {
 	if method == "" || resourceType == "" {
 		return ""

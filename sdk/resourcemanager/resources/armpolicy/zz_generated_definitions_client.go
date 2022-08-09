@@ -402,7 +402,7 @@ func (client *DefinitionsClient) getBuiltInHandleResponse(resp *http.Response) (
 
 // NewListPager - This operation retrieves a list of all the policy definitions in a given subscription that match the optional
 // given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or
-// 'category eq '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with
+// 'category eq '{value}”. If $filter is not provided, the unfiltered list includes all policy definitions associated with
 // the subscription, including those that apply directly or from management groups
 // that contain the given subscription. If $filter=atExactScope() is provided, the returned list only includes all policy
 // definitions that at the given subscription. If $filter='policyType -eq {value}'
@@ -544,7 +544,7 @@ func (client *DefinitionsClient) listBuiltInHandleResponse(resp *http.Response) 
 
 // NewListByManagementGroupPager - This operation retrieves a list of all the policy definitions in a given management group
 // that match the optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq
-// {value}' or 'category eq '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated
+// {value}' or 'category eq '{value}”. If $filter is not provided, the unfiltered list includes all policy definitions associated
 // with the management group, including those that apply directly or from
 // management groups that contain the given management group. If $filter=atExactScope() is provided, the returned list only
 // includes all policy definitions that at the given management group. If

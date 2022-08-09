@@ -218,8 +218,8 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 //
 // NewListTablesPager returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
 // For more information about writing query strings, check out:
-//  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
-//  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
+//   - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+//   - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
 func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runtime.Pager[ListTablesResponse] {
 	if listOptions == nil {
 		listOptions = &ListTablesOptions{}

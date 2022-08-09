@@ -109,7 +109,7 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 					Type: to.Ptr("MappingDataFlow"),
 					TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
 						Script: to.Ptr("\n\nsource(output(\n		Column_1 as string\n	),\n	allowSchemaDrift: true,\n	validateSchema: false) ~> source1"),
-						Sinks: []*armdatafactory.DataFlowSink{},
+						Sinks:  []*armdatafactory.DataFlowSink{},
 						Sources: []*armdatafactory.DataFlowSource{
 							{
 								Name: to.Ptr("source1"),

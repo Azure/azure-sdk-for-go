@@ -1,5 +1,16 @@
 # Release History
 
+## 1.1.0 (2022-08-09)
+### Features Added
+
+- New const `ConnectionStateTypeChangeInProgress`
+- New const `ConnectionStateTypeChangeRequested`
+- New function `*RegisteredPrefixesClient.Validate(context.Context, string, string, string, *RegisteredPrefixesClientValidateOptions) (RegisteredPrefixesClientValidateResponse, error)`
+- New struct `RegisteredPrefixesClientValidateOptions`
+- New struct `RegisteredPrefixesClientValidateResponse`
+- New field `DirectPeeringType` in struct `LegacyPeeringsClientListOptions`
+
+
 ## 1.0.0 (2022-05-18)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

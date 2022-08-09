@@ -137,7 +137,10 @@ func (client *Client) createKeyHandleResponse(resp *http.Response) (CreateKeyRes
 // algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of
 // data may be decrypted, the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT
 // operation applies to asymmetric and symmetric keys stored in Azure Key Vault
-// since it uses the private portion of the key. This operation requires the keys/decrypt permission.
+// since it uses the private portion of the key. This operation requires the keys/decrypt permission. Microsoft recommends
+// not to use CBC algorithms for decryption without first ensuring the integrity of
+// the ciphertext using an HMAC, for example. See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode
+// for more information.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.3
 // name - The name of the key.

@@ -22,88 +22,16 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ### Prerequisites
 
 * An [Azure subscription][azure_sub]
-* Go version 1.18 or later
-* A Key Vault. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-key-vault"` with your own, unique names):
+* A supported Go version (the Azure SDK supports the two most recent Go releases)
+* A key vault. If you need to create one, see the Key Vault documentation for instructions on doing so in the [Azure Portal][azure_keyvault_portal] or with the [Azure CLI][azure_keyvault_cli].
 
-  (Optional) if you want a new resource group to hold the Key Vault:
-  ```sh
-  az group create --name my-resource-group --location westus2
-  ```
+### Authentication
 
-  Create the Key Vault:
-  ```Bash
-  az keyvault create --resource-group my-resource-group --name my-key-vault
-  ```
+This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. This credential type works in both local development and production environments. We recommend using a [managed identity][managed_identity] in production.
 
-  Output:
-  ```json
-  {
-      "id": "...",
-      "location": "westus2",
-      "name": "my-key-vault",
-      "properties": {
-          "accessPolicies": [...],
-          "createMode": null,
-          "enablePurgeProtection": null,
-          "enableSoftDelete": null,
-          "enabledForDeployment": false,
-          "enabledForDiskEncryption": null,
-          "enabledForTemplateDeployment": null,
-          "networkAcls": null,
-          "provisioningState": "Succeeded",
-          "sku": { "name": "standard" },
-          "tenantId": "...",
-          "vaultUri": "https://my-key-vault.vault.azure.net/"
-      },
-      "resourceGroup": "my-resource-group",
-      "type": "Microsoft.KeyVault/vaults"
-  }
-  ```
-
-  > The `"vaultUri"` property is the `vaultURL` argument for [NewClient][secret_client_docs]
-
-### Authenticate the client
-This document demonstrates using [azidentity.DefaultAzureCredential][default_cred] to authenticate as a service principal. However, [Client][secret_client_docs] accepts any `azidentity` credential. See the [azidentity documentation][azure_identity] for information about other credentials.
-
-#### Create a service principal (optional)
-
-This [Azure Cloud Shell][azure_cloud_shell] snippet shows how to create a new service principal. Before using it, replace "my-application" with an appropriate name for your application.
-
-Create a service principal:
-```Bash
-az ad sp create-for-rbac --name http://my-application --skip-assignment
-```
-
-> Output:
-> ```json
-> {
->     "appId": "generated app id",
->     "displayName": "my-application",
->     "name": "http://my-application",
->     "password": "random password",
->     "tenant": "tenant id"
-> }
-> ```
-
-Use the output to set **AZURE_CLIENT_ID** ("appId" above), **AZURE_CLIENT_SECRET** ("password" above) and **AZURE_TENANT_ID** ("tenant" above) environment variables. The following example shows a way to do this in Bash:
-```Bash
-export AZURE_CLIENT_ID="generated app id"
-export AZURE_CLIENT_SECRET="random password"
-export AZURE_TENANT_ID="tenant id"
-```
-
-Authorize the service principal to access secrets in your Key Vault:
-```Bash
-az keyvault set-policy --name my-key-vault --spn $AZURE_CLIENT_ID --secret-permissions get set list delete backup recover restore purge
-```
-> Possible permissions:
-> - Secret management: set, backup, delete, get, list, purge, recover, restore
-
-If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
+[Client][client_docs] accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
 #### Create a client
-
-Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables are set, [DefaultAzureCredential][default_cred] will be able to authenticate the Client.
 
 Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal.
 
@@ -175,7 +103,7 @@ func main() {
 
 ### Retrieve a Secret
 
-[GetSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.GetSecret) retrieves a secret previously stored in the Key Vault.
+[GetSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.GetSecret) retrieves a secret previously stored in the key vault.
 
 ```golang
 import (
@@ -375,15 +303,16 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
 
-[azure_cloud_shell]: https://shell.azure.com/bash
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
+[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/general/quick-create-cli
+[azure_keyvault_portal]: https://docs.microsoft.com/azure/key-vault/general/quick-create-portal
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[default_cred]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
+[default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
+[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-secrets/docs
-[secret_client_docs]: https://aka.ms/azsdk/go/keyvault-secrets/docs#Client
+[client_docs]: https://aka.ms/azsdk/go/keyvault-secrets/docs#Client
 [module_source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets
 [secrets_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/example_test.go
 

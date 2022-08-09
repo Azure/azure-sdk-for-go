@@ -1,15 +1,14 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2022-08-10)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+* Added `ClientAssertionCredential` to enable applications to authenticate
+  with custom client assertions
 
 ### Other Changes
 * Updated AuthenticationFailedError with links to TROUBLESHOOTING.md for relevant errors
+* Upgraded `microsoft-authentication-library-for-go` requirement to v0.6.0
 
 ## 1.2.0-beta.1 (2022-06-07)
 

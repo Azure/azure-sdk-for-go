@@ -56,7 +56,9 @@ type AMQPLinks interface {
 }
 
 // AMQPLinksImpl manages the set of AMQP links (and detritus) typically needed to work
-//  within Service Bus:
+//
+//	within Service Bus:
+//
 // - An *goamqp.Sender or *goamqp.Receiver AMQP link (could also be 'both' if needed)
 // - A `$management` link
 // - an *goamqp.Session

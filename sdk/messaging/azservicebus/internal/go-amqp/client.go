@@ -173,7 +173,9 @@ func randString(n int) string {
 // linkKey uniquely identifies a link on a connection by name and direction.
 //
 // A link can be identified uniquely by the ordered tuple
-//     (source-container-id, target-container-id, name)
+//
+//	(source-container-id, target-container-id, name)
+//
 // On a single connection the container ID pairs can be abbreviated
 // to a boolean flag indicating the direction of the link.
 type linkKey struct {

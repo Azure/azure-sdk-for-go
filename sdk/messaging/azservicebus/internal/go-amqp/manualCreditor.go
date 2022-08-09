@@ -36,9 +36,10 @@ func (mc *manualCreditor) EndDrain() {
 // FlowBits gets gets the proper values for the next flow frame
 // and resets the internal state.
 // Returns:
-//   (drain: true, credits: 0) if a flow is needed (drain)
-//   (drain: false, credits > 0) if a flow is needed (issue credit)
-//   (drain: false, credits == 0) if no flow needed.
+//
+//	(drain: true, credits: 0) if a flow is needed (drain)
+//	(drain: false, credits > 0) if a flow is needed (issue credit)
+//	(drain: false, credits == 0) if no flow needed.
 func (mc *manualCreditor) FlowBits(currentCredits uint32) (bool, uint32) {
 	mc.mu.Lock()
 	defer mc.mu.Unlock()

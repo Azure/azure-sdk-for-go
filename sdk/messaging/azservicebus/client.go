@@ -87,9 +87,12 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
 // connectionString can be a Service Bus connection string for the namespace or for an entity, which contains a
 // SharedAccessKeyName and SharedAccessKey properties (for instance, from the Azure Portal):
-//   Endpoint=sb://<sb>.servicebus.windows.net/;SharedAccessKeyName=<key name>;SharedAccessKey=<key value>
+//
+//	Endpoint=sb://<sb>.servicebus.windows.net/;SharedAccessKeyName=<key name>;SharedAccessKey=<key value>
+//
 // Or it can be a connection string with a SharedAccessSignature:
-//   Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>
+//
+//	Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	if connectionString == "" {
 		return nil, errors.New("connectionString must not be empty")

@@ -177,14 +177,18 @@ type ReceiverOptions struct {
 // Example:
 //
 // The standard selector-filter is defined as:
-//  <descriptor name="apache.org:selector-filter:string" code="0x0000468C:0x00000004"/>
+//
+//	<descriptor name="apache.org:selector-filter:string" code="0x0000468C:0x00000004"/>
+//
 // In this case the name is "apache.org:selector-filter:string" and the code is
 // 0x0000468C00000004.
-//  LinkSourceFilter("apache.org:selector-filter:string", 0x0000468C00000004, exampleValue)
+//
+//	LinkSourceFilter("apache.org:selector-filter:string", 0x0000468C00000004, exampleValue)
 //
 // References:
-//  http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-filter-set
-//  http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-descriptor-values
+//
+//	http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-filter-set
+//	http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-descriptor-values
 type LinkFilter func(encoding.Filter)
 
 // LinkFilterSource creates or updates the named filter for this LinkFilter.

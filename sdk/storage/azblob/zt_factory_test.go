@@ -74,14 +74,14 @@ var basicHeaders = blob.HTTPHeaders{
 
 var basicMetadata = map[string]string{"Foo": "bar"}
 
-//nolint
+// nolint
 var basicBlobTagsMap = map[string]string{
 	"azure": "blob",
 	"blob":  "sdk",
 	"sdk":   "go",
 }
 
-//nolint
+// nolint
 var specialCharBlobTagsMap = map[string]string{
 	"+-./:=_ ":        "firsttag",
 	"tag2":            "+-./:=_",
@@ -156,7 +156,7 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 	return serviceClient, err
 }
 
-//nolint
+// nolint
 func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
 	accountName, accountKey := getAccountInfo(recording, accountType)
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
@@ -164,7 +164,7 @@ func getConnectionString(recording *testframework.Recording, accountType testAcc
 	return connectionString
 }
 
-//nolint
+// nolint
 func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *service.ClientOptions) (*service.Client, error) {
 	if recording != nil {
 		if options == nil {
@@ -202,12 +202,12 @@ func deleteContainer(_require *require.Assertions, containerClient *container.Cl
 
 // 2. BlobClient -------------------------------------------------------------------------------------------------------
 
-//nolint
+// nolint
 func getBlobClient(blockBlobName string, containerClient *container.Client) *blob.Client {
 	return containerClient.NewBlobClient(blockBlobName)
 }
 
-//nolint
+// nolint
 func createNewBlobs(_require *require.Assertions, blobNames []string, containerClient *container.Client) {
 	for _, blobName := range blobNames {
 		createNewBlockBlob(_require, blobName, containerClient)
@@ -302,7 +302,7 @@ func createNewPageBlobWithCPK(_require *require.Assertions, pageBlobName string,
 // This should make it easy to associate the entities with their test, uniquely identify
 // them, and determine the order in which they were created.
 // Note that this imposes a restriction on the length of test names
-//nolint
+// nolint
 func generateName(prefix string) string {
 	// These next lines up through the for loop are obtaining and walking up the stack
 	// trace to extract the test name, which is stored in name
@@ -340,7 +340,7 @@ func getReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	return NopCloser(r)
 }
 
-//nolint
+// nolint
 func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
 	rand.Read(data)
@@ -366,7 +366,7 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 
 // 5. Utility Functions ------------------------------------------------------------------------------------------------
 
-//nolint
+// nolint
 func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)
@@ -377,7 +377,7 @@ func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time
 	return anchorTime.Add(amount * time.Second)
 }
 
-//nolint
+// nolint
 func generateBlockIDsList(count int) []string {
 	blockIDs := make([]string, count)
 	for i := 0; i < count; i++ {

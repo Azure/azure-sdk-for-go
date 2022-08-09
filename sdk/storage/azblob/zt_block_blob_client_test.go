@@ -21,369 +21,354 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"strings"
 	"time"
 )
 
+//	func (s *azblobTestSuite) TestStageGetBlocks() {
+//		_require := require.New(s.T())
+//		testName := s.T().Name()
+//		_context := getTestContext(testName)
+//		svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//		if err != nil {
+//			s.Fail("Unable to fetch service client because " + err.Error())
+//		}
 //
-//import (
-//	"bytes"
-//	"context"
-//	"crypto/md5"
-//	"encoding/base64"
-//	"fmt"
-//	"github.com/stretchr/testify/require"
-//	"io"
-//	"io/ioutil"
-//	"strings"
-//	"time"
+//		containerName := generateContainerName(testName)
+//		containerClient := createNewContainer(_require, containerName, svcClient)
+//		defer deleteContainer(_require, containerClient)
 //
-//	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-//	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-//)
+//		blobName := generateBlobName(testName)
+//		bbClient := containerClient.NewBlockBlobClient(blobName)
 //
-//func (s *azblobTestSuite) TestStageGetBlocks() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
+//		data := []string{"Azure ", "Storage ", "Block ", "Blob."}
+//		base64BlockIDs := make([]string, len(data))
 //
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
+//		for index, d := range data {
+//			base64BlockIDs[index] = blockIDIntToBase64(index)
+//			io.NopCloser(strings.NewReader("hello world"))
+//			putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
+//			_require.Nil(err)
+//			//_require.Equal(putResp.RawResponse.StatusCode, 201)
+//			_require.Nil(putResp.ContentMD5)
+//			_require.NotNil(putResp.RequestID)
+//			_require.NotNil(putResp.Version)
+//			_require.NotNil(putResp.Date)
+//			_require.Equal((*putResp.Date).IsZero(), false)
+//		}
 //
-//	blobName := generateBlobName(testName)
-//	bbClient := containerClient.NewBlockBlobClient(blobName)
-//
-//	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
-//	base64BlockIDs := make([]string, len(data))
-//
-//	for index, d := range data {
-//		base64BlockIDs[index] = blockIDIntToBase64(index)
-//		io.NopCloser(strings.NewReader("hello world"))
-//		putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
+//		blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
 //		_require.Nil(err)
-//		//_require.Equal(putResp.RawResponse.StatusCode, 201)
-//		_require.Nil(putResp.ContentMD5)
-//		_require.NotNil(putResp.RequestID)
-//		_require.NotNil(putResp.Version)
-//		_require.NotNil(putResp.Date)
-//		_require.Equal((*putResp.Date).IsZero(), false)
+//		// _require.Equal(blockList.RawResponse.StatusCode, 200)
+//		_require.Nil(blockList.LastModified)
+//		_require.Nil(blockList.ETag)
+//		_require.NotNil(blockList.ContentType)
+//		_require.Nil(blockList.BlobContentLength)
+//		_require.NotNil(blockList.RequestID)
+//		_require.NotNil(blockList.Version)
+//		_require.NotNil(blockList.Date)
+//		_require.Equal((*blockList.Date).IsZero(), false)
+//		_require.NotNil(blockList.BlockList)
+//		_require.Nil(blockList.BlockList.CommittedBlocks)
+//		_require.NotNil(blockList.BlockList.UncommittedBlocks)
+//		_require.Len(blockList.BlockList.UncommittedBlocks, len(data))
+//
+//		listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
+//		_require.Nil(err)
+//		// _require.Equal(listResp.RawResponse.StatusCode,  201)
+//		_require.NotNil(listResp.LastModified)
+//		_require.Equal((*listResp.LastModified).IsZero(), false)
+//		_require.NotNil(listResp.ETag)
+//		_require.NotNil(listResp.RequestID)
+//		_require.NotNil(listResp.Version)
+//		_require.NotNil(listResp.Date)
+//		_require.Equal((*listResp.Date).IsZero(), false)
+//
+//		blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
+//		_require.Nil(err)
+//		// _require.Equal(blockList.RawResponse.StatusCode, 200)
+//		_require.NotNil(blockList.LastModified)
+//		_require.Equal((*blockList.LastModified).IsZero(), false)
+//		_require.NotNil(blockList.ETag)
+//		_require.NotNil(blockList.ContentType)
+//		_require.Equal(*blockList.BlobContentLength, int64(25))
+//		_require.NotNil(blockList.RequestID)
+//		_require.NotNil(blockList.Version)
+//		_require.NotNil(blockList.Date)
+//		_require.Equal((*blockList.Date).IsZero(), false)
+//		_require.NotNil(blockList.BlockList)
+//		_require.NotNil(blockList.BlockList.CommittedBlocks)
+//		_require.Nil(blockList.BlockList.UncommittedBlocks)
+//		_require.Len(blockList.BlockList.CommittedBlocks, len(data))
 //	}
 //
-//	blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blockList.RawResponse.StatusCode, 200)
-//	_require.Nil(blockList.LastModified)
-//	_require.Nil(blockList.ETag)
-//	_require.NotNil(blockList.ContentType)
-//	_require.Nil(blockList.BlobContentLength)
-//	_require.NotNil(blockList.RequestID)
-//	_require.NotNil(blockList.Version)
-//	_require.NotNil(blockList.Date)
-//	_require.Equal((*blockList.Date).IsZero(), false)
-//	_require.NotNil(blockList.BlockList)
-//	_require.Nil(blockList.BlockList.CommittedBlocks)
-//	_require.NotNil(blockList.BlockList.UncommittedBlocks)
-//	_require.Len(blockList.BlockList.UncommittedBlocks, len(data))
+// //nolint
 //
-//	listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
-//	_require.Nil(err)
-//	// _require.Equal(listResp.RawResponse.StatusCode,  201)
-//	_require.NotNil(listResp.LastModified)
-//	_require.Equal((*listResp.LastModified).IsZero(), false)
-//	_require.NotNil(listResp.ETag)
-//	_require.NotNil(listResp.RequestID)
-//	_require.NotNil(listResp.Version)
-//	_require.NotNil(listResp.Date)
-//	_require.Equal((*listResp.Date).IsZero(), false)
+//	func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
+//		_require := require.New(s.T())
+//		testName := s.T().Name()
+//		svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//		if err != nil {
+//			s.Fail("Unable to fetch service client because " + err.Error())
+//		}
 //
-//	blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blockList.RawResponse.StatusCode, 200)
-//	_require.NotNil(blockList.LastModified)
-//	_require.Equal((*blockList.LastModified).IsZero(), false)
-//	_require.NotNil(blockList.ETag)
-//	_require.NotNil(blockList.ContentType)
-//	_require.Equal(*blockList.BlobContentLength, int64(25))
-//	_require.NotNil(blockList.RequestID)
-//	_require.NotNil(blockList.Version)
-//	_require.NotNil(blockList.Date)
-//	_require.Equal((*blockList.Date).IsZero(), false)
-//	_require.NotNil(blockList.BlockList)
-//	_require.NotNil(blockList.BlockList.CommittedBlocks)
-//	_require.Nil(blockList.BlockList.UncommittedBlocks)
-//	_require.Len(blockList.BlockList.CommittedBlocks, len(data))
-//}
+//		containerName := generateContainerName(testName)
+//		containerClient := createNewContainer(_require, containerName, svcClient)
+//		defer deleteContainer(_require, containerClient)
 //
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//		contentSize := 8 * 1024 // 8 KB
+//		content := make([]byte, contentSize)
+//		body := bytes.NewReader(content)
+//		rsc := NopCloser(body)
+//
+//		ctx := context.Background() // Use default Background context
+//		srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
+//
+//		destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
+//
+//		// Prepare source bbClient for copy.
+//		_, err = srcBlob.Upload(ctx, rsc, nil)
+//		_require.Nil(err)
+//		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+//
+//		// Get source blob url with SAS for StageFromURL.
+//		srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
+//
+//		credential, err := getGenericCredential(nil, testAccountDefault)
+//		_require.Nil(err)
+//
+//		srcBlobParts.SAS, err = BlobSASSignatureValues{
+//			Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+//			ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+//			ContainerName: srcBlobParts.ContainerName,
+//			BlobName:      srcBlobParts.BlobName,
+//			Permissions:   BlobSASPermissions{Read: true}.String(),
+//		}.Sign(credential)
+//		_require.Nil(err)
+//
+//		srcBlobURLWithSAS := srcBlobParts.URL()
+//
+//		// Stage blocks from URL.
+//		blockIDs := generateBlockIDsList(2)
+//
+//		stageResp1, err := destBlob.StageBlockFromURL(ctx, blockIDs[0], srcBlobURLWithSAS, 0, &BlockBlobStageBlockFromURLOptions{
+//			Offset: to.Ptr[int64](0),
+//			Count:  to.Ptr(int64(contentSize / 2)),
+//		})
+//		_require.Nil(err)
+//		// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
+//		_require.NotEqual(stageResp1.ContentMD5, "")
+//		_require.NotEqual(stageResp1.RequestID, "")
+//		_require.NotEqual(stageResp1.Version, "")
+//		_require.Equal(stageResp1.Date.IsZero(), false)
+//
+//		stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &BlockBlobStageBlockFromURLOptions{
+//			Offset: to.Ptr(int64(contentSize / 2)),
+//			Count:  to.Ptr(int64(CountToEnd)),
+//		})
+//		_require.Nil(err)
+//		// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
+//		_require.NotEqual(stageResp2.ContentMD5, "")
+//		_require.NotEqual(stageResp2.RequestID, "")
+//		_require.NotEqual(stageResp2.Version, "")
+//		_require.Equal(stageResp2.Date.IsZero(), false)
+//
+//		// Check block list.
+//		blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+//		_require.Nil(err)
+//		// _require.Equal(blockList.RawResponse.StatusCode, 200)
+//		_require.NotNil(blockList.BlockList)
+//		_require.Nil(blockList.BlockList.CommittedBlocks)
+//		_require.NotNil(blockList.BlockList.UncommittedBlocks)
+//		_require.Len(blockList.BlockList.UncommittedBlocks, 2)
+//
+//		// Commit block list.
+//		listResp, err := destBlob.CommitBlockList(context.Background(), blockIDs, nil)
+//		_require.Nil(err)
+//		// _require.Equal(listResp.RawResponse.StatusCode,  201)
+//		_require.NotNil(listResp.LastModified)
+//		_require.Equal((*listResp.LastModified).IsZero(), false)
+//		_require.NotNil(listResp.ETag)
+//		_require.NotNil(listResp.RequestID)
+//		_require.NotNil(listResp.Version)
+//		_require.NotNil(listResp.Date)
+//		_require.Equal((*listResp.Date).IsZero(), false)
+//
+//		// Check data integrity through downloading.
+//		downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
+//		_require.Nil(err)
+//		destData, err := io.ReadAll(downloadresp.BodyReader(nil))
+//		_require.Nil(err)
+//		_require.EqualValues(destData, content)
 //	}
 //
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
+// //nolint
 //
-//	contentSize := 8 * 1024 // 8 KB
-//	content := make([]byte, contentSize)
-//	body := bytes.NewReader(content)
-//	rsc := NopCloser(body)
+//	func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
+//		_require := require.New(s.T())
+//		testName := s.T().Name()
+//		svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//		if err != nil {
+//			s.Fail("Unable to fetch service client because " + err.Error())
+//		}
 //
-//	ctx := context.Background() // Use default Background context
-//	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
+//		containerName := generateContainerName(testName)
+//		containerClient := createNewContainer(_require, containerName, svcClient)
+//		defer deleteContainer(_require, containerClient)
 //
-//	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
+//		const contentSize = 8 * 1024 // 8 KB
+//		content := make([]byte, contentSize)
+//		contentMD5 := md5.Sum(content)
+//		body := bytes.NewReader(content)
+//		ctx := context.Background()
 //
-//	// Prepare source bbClient for copy.
-//	_, err = srcBlob.Upload(ctx, rsc, nil)
-//	_require.Nil(err)
-//	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+//		srcBlob := containerClient.NewBlockBlobClient("srcblob")
+//		destBlob := containerClient.NewBlockBlobClient("destblob")
 //
-//	// Get source blob url with SAS for StageFromURL.
-//	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
+//		// Prepare source bbClient for copy.
+//		_, err = srcBlob.Upload(ctx, NopCloser(body), nil)
+//		_require.Nil(err)
+//		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
-//	credential, err := getGenericCredential(nil, testAccountDefault)
-//	_require.Nil(err)
+//		// Get source blob url with SAS for StageFromURL.
+//		srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //
-//	srcBlobParts.SAS, err = BlobSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
-//		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-//		ContainerName: srcBlobParts.ContainerName,
-//		BlobName:      srcBlobParts.BlobName,
-//		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.Sign(credential)
-//	_require.Nil(err)
+//		credential, err := getGenericCredential(nil, testAccountDefault)
+//		_require.Nil(err)
 //
-//	srcBlobURLWithSAS := srcBlobParts.URL()
+//		srcBlobParts.SAS, err = BlobSASSignatureValues{
+//			Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+//			ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+//			ContainerName: srcBlobParts.ContainerName,
+//			BlobName:      srcBlobParts.BlobName,
+//			Permissions:   BlobSASPermissions{Read: true}.String(),
+//		}.Sign(credential)
+//		if err != nil {
+//			s.T().Fatal(err)
+//		}
 //
-//	// Stage blocks from URL.
-//	blockIDs := generateBlockIDsList(2)
+//		srcBlobURLWithSAS := srcBlobParts.URL()
 //
-//	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockIDs[0], srcBlobURLWithSAS, 0, &BlockBlobStageBlockFromURLOptions{
-//		Offset: to.Ptr[int64](0),
-//		Count:  to.Ptr(int64(contentSize / 2)),
-//	})
-//	_require.Nil(err)
-//	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
-//	_require.NotEqual(stageResp1.ContentMD5, "")
-//	_require.NotEqual(stageResp1.RequestID, "")
-//	_require.NotEqual(stageResp1.Version, "")
-//	_require.Equal(stageResp1.Date.IsZero(), false)
+//		// Invoke copy bbClient from URL.
+//		sourceContentMD5 := contentMD5[:]
+//		resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &BlockBlobCopyFromURLOptions{
+//			Metadata:         map[string]string{"foo": "bar"},
+//			SourceContentMD5: sourceContentMD5,
+//		})
+//		_require.Nil(err)
+//		// _require.Equal(resp.RawResponse.StatusCode, 202)
+//		_require.NotNil(resp.ETag)
+//		_require.NotNil(resp.RequestID)
+//		_require.NotNil(resp.Version)
+//		_require.NotNil(resp.Date)
+//		_require.Equal((*resp.Date).IsZero(), false)
+//		_require.NotNil(resp.CopyID)
+//		_require.EqualValues(resp.ContentMD5, sourceContentMD5)
+//		_require.Equal(*resp.CopyStatus, "success")
 //
-//	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &BlockBlobStageBlockFromURLOptions{
-//		Offset: to.Ptr(int64(contentSize / 2)),
-//		Count:  to.Ptr(int64(CountToEnd)),
-//	})
-//	_require.Nil(err)
-//	// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
-//	_require.NotEqual(stageResp2.ContentMD5, "")
-//	_require.NotEqual(stageResp2.RequestID, "")
-//	_require.NotEqual(stageResp2.Version, "")
-//	_require.Equal(stageResp2.Date.IsZero(), false)
+//		// Make sure the metadata got copied over
+//		getPropResp, err := destBlob.GetProperties(ctx, nil)
+//		_require.Nil(err)
+//		metadata := getPropResp.Metadata
+//		_require.NotNil(metadata)
+//		_require.Len(metadata, 1)
+//		_require.EqualValues(metadata, map[string]string{"Foo": "bar"})
 //
-//	// Check block list.
-//	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blockList.RawResponse.StatusCode, 200)
-//	_require.NotNil(blockList.BlockList)
-//	_require.Nil(blockList.BlockList.CommittedBlocks)
-//	_require.NotNil(blockList.BlockList.UncommittedBlocks)
-//	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
+//		// Check data integrity through downloading.
+//		downloadResp, err := destBlob.Download(ctx, nil)
+//		_require.Nil(err)
+//		destData, err := io.ReadAll(downloadresp.BodyReader(nil))
+//		_require.Nil(err)
+//		_require.EqualValues(destData, content)
 //
-//	// Commit block list.
-//	listResp, err := destBlob.CommitBlockList(context.Background(), blockIDs, nil)
-//	_require.Nil(err)
-//	// _require.Equal(listResp.RawResponse.StatusCode,  201)
-//	_require.NotNil(listResp.LastModified)
-//	_require.Equal((*listResp.LastModified).IsZero(), false)
-//	_require.NotNil(listResp.ETag)
-//	_require.NotNil(listResp.RequestID)
-//	_require.NotNil(listResp.Version)
-//	_require.NotNil(listResp.Date)
-//	_require.Equal((*listResp.Date).IsZero(), false)
+//		// Edge case 1: Provide bad MD5 and make sure the copy fails
+//		_, badMD5 := getRandomDataAndReader(16)
+//		copyBlockBlobFromURLOptions1 := BlockBlobCopyFromURLOptions{
+//			SourceContentMD5: badMD5,
+//		}
+//		resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
+//		_require.NotNil(err)
 //
-//	// Check data integrity through downloading.
-//	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-//	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
-//	_require.Nil(err)
-//	_require.EqualValues(destData, content)
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//		// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
+//		copyBlockBlobFromURLOptions2 := BlockBlobCopyFromURLOptions{
+//			SourceContentMD5: sourceContentMD5,
+//		}
+//		resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
+//		_require.Nil(err)
+//		// _require.Equal(resp.RawResponse.StatusCode, 202)
+//		_require.EqualValues(*resp.CopyStatus, "success")
 //	}
 //
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
+// //nolint
 //
-//	const contentSize = 8 * 1024 // 8 KB
-//	content := make([]byte, contentSize)
-//	contentMD5 := md5.Sum(content)
-//	body := bytes.NewReader(content)
-//	ctx := context.Background()
+//	func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
+//		_require := require.New(s.T())
+//		testName := s.T().Name()
+//		svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//		if err != nil {
+//			s.Fail("Unable to fetch service client because " + err.Error())
+//		}
 //
-//	srcBlob := containerClient.NewBlockBlobClient("srcblob")
-//	destBlob := containerClient.NewBlockBlobClient("destblob")
+//		containerName := generateContainerName(testName)
+//		containerClient := createNewContainer(_require, containerName, svcClient)
+//		defer deleteContainer(_require, containerClient)
 //
-//	// Prepare source bbClient for copy.
-//	_, err = srcBlob.Upload(ctx, NopCloser(body), nil)
-//	_require.Nil(err)
-//	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+//		const contentSize = 8 * 1024 // 8 KB
+//		content := make([]byte, contentSize)
+//		body := bytes.NewReader(content)
+//		//contentMD5 := md5.Sum(content)
 //
-//	// Get source blob url with SAS for StageFromURL.
-//	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
+//		ctx := context.Background()
 //
-//	credential, err := getGenericCredential(nil, testAccountDefault)
-//	_require.Nil(err)
+//		bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 //
-//	srcBlobParts.SAS, err = BlobSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
-//		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-//		ContainerName: srcBlobParts.ContainerName,
-//		BlobName:      srcBlobParts.BlobName,
-//		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.Sign(credential)
-//	if err != nil {
-//		s.T().Fatal(err)
+//		_, err = bbClient.Upload(ctx, NopCloser(body), nil)
+//		_require.Nil(err)
+//		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+//
+//		// Get blob url with SAS.
+//		blobParts, _ := NewBlobURLParts(bbClient.URL())
+//
+//		cacheControlVal := "cache-control-override"
+//		contentDispositionVal := "content-disposition-override"
+//		contentEncodingVal := "content-encoding-override"
+//		contentLanguageVal := "content-language-override"
+//		contentTypeVal := "content-type-override"
+//
+//		credential, err := getGenericCredential(nil, testAccountDefault)
+//		_require.Nil(err)
+//		// Append User Delegation SAS token to URL
+//		blobParts.SAS, err = BlobSASSignatureValues{
+//			Protocol:           SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+//			ExpiryTime:         time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+//			ContainerName:      blobParts.ContainerName,
+//			BlobName:           blobParts.BlobName,
+//			Permissions:        BlobSASPermissions{Read: true}.String(),
+//			CacheControl:       cacheControlVal,
+//			ContentDisposition: contentDispositionVal,
+//			ContentEncoding:    contentEncodingVal,
+//			ContentLanguage:    contentLanguageVal,
+//			ContentType:        contentTypeVal,
+//		}.Sign(credential)
+//		_require.Nil(err)
+//
+//		// Generate new bbClient client
+//		blobURLWithSAS := blobParts.URL()
+//		_require.NotNil(blobURLWithSAS)
+//
+//		blobClientWithSAS, err := NewBlockBlobClientWithNoCredential(blobURLWithSAS, nil)
+//		_require.Nil(err)
+//
+//		gResp, err := blobClientWithSAS.GetProperties(ctx, nil)
+//		_require.Nil(err)
+//		_require.Equal(*gResp.CacheControl, cacheControlVal)
+//		_require.Equal(*gResp.ContentDisposition, contentDispositionVal)
+//		_require.Equal(*gResp.ContentEncoding, contentEncodingVal)
+//		_require.Equal(*gResp.ContentLanguage, contentLanguageVal)
+//		_require.Equal(*gResp.ContentType, contentTypeVal)
 //	}
 //
-//	srcBlobURLWithSAS := srcBlobParts.URL()
-//
-//	// Invoke copy bbClient from URL.
-//	sourceContentMD5 := contentMD5[:]
-//	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &BlockBlobCopyFromURLOptions{
-//		Metadata:         map[string]string{"foo": "bar"},
-//		SourceContentMD5: sourceContentMD5,
-//	})
-//	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode, 202)
-//	_require.NotNil(resp.ETag)
-//	_require.NotNil(resp.RequestID)
-//	_require.NotNil(resp.Version)
-//	_require.NotNil(resp.Date)
-//	_require.Equal((*resp.Date).IsZero(), false)
-//	_require.NotNil(resp.CopyID)
-//	_require.EqualValues(resp.ContentMD5, sourceContentMD5)
-//	_require.Equal(*resp.CopyStatus, "success")
-//
-//	// Make sure the metadata got copied over
-//	getPropResp, err := destBlob.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	metadata := getPropResp.Metadata
-//	_require.NotNil(metadata)
-//	_require.Len(metadata, 1)
-//	_require.EqualValues(metadata, map[string]string{"Foo": "bar"})
-//
-//	// Check data integrity through downloading.
-//	downloadResp, err := destBlob.Download(ctx, nil)
-//	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
-//	_require.Nil(err)
-//	_require.EqualValues(destData, content)
-//
-//	// Edge case 1: Provide bad MD5 and make sure the copy fails
-//	_, badMD5 := getRandomDataAndReader(16)
-//	copyBlockBlobFromURLOptions1 := BlockBlobCopyFromURLOptions{
-//		SourceContentMD5: badMD5,
-//	}
-//	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
-//	_require.NotNil(err)
-//
-//	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
-//	copyBlockBlobFromURLOptions2 := BlockBlobCopyFromURLOptions{
-//		SourceContentMD5: sourceContentMD5,
-//	}
-//	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
-//	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode, 202)
-//	_require.EqualValues(*resp.CopyStatus, "success")
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	const contentSize = 8 * 1024 // 8 KB
-//	content := make([]byte, contentSize)
-//	body := bytes.NewReader(content)
-//	//contentMD5 := md5.Sum(content)
-//
-//	ctx := context.Background()
-//
-//	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
-//
-//	_, err = bbClient.Upload(ctx, NopCloser(body), nil)
-//	_require.Nil(err)
-//	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
-//
-//	// Get blob url with SAS.
-//	blobParts, _ := NewBlobURLParts(bbClient.URL())
-//
-//	cacheControlVal := "cache-control-override"
-//	contentDispositionVal := "content-disposition-override"
-//	contentEncodingVal := "content-encoding-override"
-//	contentLanguageVal := "content-language-override"
-//	contentTypeVal := "content-type-override"
-//
-//	credential, err := getGenericCredential(nil, testAccountDefault)
-//	_require.Nil(err)
-//	// Append User Delegation SAS token to URL
-//	blobParts.SAS, err = BlobSASSignatureValues{
-//		Protocol:           SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
-//		ExpiryTime:         time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-//		ContainerName:      blobParts.ContainerName,
-//		BlobName:           blobParts.BlobName,
-//		Permissions:        BlobSASPermissions{Read: true}.String(),
-//		CacheControl:       cacheControlVal,
-//		ContentDisposition: contentDispositionVal,
-//		ContentEncoding:    contentEncodingVal,
-//		ContentLanguage:    contentLanguageVal,
-//		ContentType:        contentTypeVal,
-//	}.Sign(credential)
-//	_require.Nil(err)
-//
-//	// Generate new bbClient client
-//	blobURLWithSAS := blobParts.URL()
-//	_require.NotNil(blobURLWithSAS)
-//
-//	blobClientWithSAS, err := NewBlockBlobClientWithNoCredential(blobURLWithSAS, nil)
-//	_require.Nil(err)
-//
-//	gResp, err := blobClientWithSAS.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.Equal(*gResp.CacheControl, cacheControlVal)
-//	_require.Equal(*gResp.ContentDisposition, contentDispositionVal)
-//	_require.Equal(*gResp.ContentEncoding, contentEncodingVal)
-//	_require.Equal(*gResp.ContentLanguage, contentLanguageVal)
-//	_require.Equal(*gResp.ContentType, contentTypeVal)
-//}
-//
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1064,7 +1049,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 
 	resp, err := bbClient.Download(ctx, nil)
 	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1165,7 +1150,7 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1326,7 +1311,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, content)
 //

@@ -6,7 +6,7 @@
 
 package blockblob
 
-//nolint
+// nolint
 const (
 	// CountToEnd specifies the end of the file
 	CountToEnd = 0

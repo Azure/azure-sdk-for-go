@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"log"
 	"strconv"
 	"strings"
@@ -34,7 +33,7 @@ type azblobTestSuite struct {
 	mode testframework.RecordMode
 }
 
-//nolint
+// nolint
 type azblobUnrecordedTestSuite struct {
 	suite.Suite
 }
@@ -93,24 +92,24 @@ func recordedTestTeardown(key string) {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobTestSuite) BeforeTest(suite string, test string) {
 	// set up the test environment
 	recordedTestSetup(s.T(), s.mode)
 }
 
-//nolint
+// nolint
 func (s *azblobTestSuite) AfterTest(suite string, test string) {
 	// teardown the test context
 	recordedTestTeardown(s.T().Name())
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
 
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
@@ -162,11 +161,11 @@ func disableSoftDelete(_require *require.Assertions, client *service.Client) {
 	_require.Nil(err)
 }
 
-//nolint
+// nolint
 func validateUpload(_require *require.Assertions, blobClient *blockblob.Client) {
 	resp, err := blobClient.Download(ctx, nil)
 	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Len(data, 0)
 }

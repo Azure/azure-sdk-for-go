@@ -96,7 +96,7 @@ func (c *LeaseClient) generated() *generated.BlobClient {
 }
 
 // AcquireLease acquires a lease on the blob for write and delete operations.
-//The lease Duration must be between 15 and 60 seconds, or infinite (-1).
+// The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *LeaseClient) AcquireLease(ctx context.Context, o *AcquireLeaseOptions) (AcquireLeaseResponse, error) {
 	blobAcquireLeaseOptions, modifiedAccessConditions := o.format()

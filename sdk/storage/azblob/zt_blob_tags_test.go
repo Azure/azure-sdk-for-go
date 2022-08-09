@@ -15,11 +15,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"strings"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -60,7 +60,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -117,7 +117,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_require.Nil(blobGetTagsResponse.BlobTagSet)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -157,7 +157,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTa
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -200,7 +200,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 
 	contentResp, err := bbClient.Download(ctx, nil)
 	_require.Nil(err)
-	contentData, err := ioutil.ReadAll(contentResp.BodyReader(nil))
+	contentData, err := io.ReadAll(contentResp.BodyReader(nil))
 	_require.Nil(err)
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 
@@ -329,7 +329,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //}
@@ -402,7 +402,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //	_require.Equal(*downloadResp.TagCount, int64(1))
@@ -423,7 +423,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //	// _require.Equal(resp.RawResponse.StatusCode, 202)
 //}
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -455,7 +455,7 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_require.Equal(*downloadResp.TagCount, int64(3))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -488,7 +488,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 }
 
 // TODO: Once new pacer is done.
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -733,7 +733,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -769,7 +769,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"strconv"
 	"strings"
 )
@@ -86,7 +86,7 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -152,7 +152,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 		_require.Nil(err)
 		dResp, err := blobClientWithVersionID.Download(ctx, nil)
 		_require.Nil(err)
-		d1, err := ioutil.ReadAll(dResp.BodyReader(nil))
+		d1, err := io.ReadAll(dResp.BodyReader(nil))
 		_require.Nil(err)
 		_require.NotEqual(*dResp.Version, "")
 		_require.EqualValues(string(d1), string(data[i]))
@@ -286,7 +286,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 		_require.Nil(err)
 		downloadResp, err := bbClientWithVersionID.Download(ctx, nil)
 		_require.Nil(err)
-		destData, err := ioutil.ReadAll(downloadResp.BodyReader(nil))
+		destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 		_require.Nil(err)
 		_require.EqualValues(destData, "data"+strconv.Itoa(i))
 	}
@@ -344,7 +344,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //
 //	downloadResp, err := destBlob.ServiceURL.Download(ctx, 0, CountToEnd, LeaseAccessConditions{}, false, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
 //	_assert(destData, chk.DeepEquals, sourceData)
 //	_assert(downloadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
@@ -448,12 +448,12 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 
 	contentResp, err := bbClient.Download(ctx, nil)
 	_require.Nil(err)
-	contentData, err := ioutil.ReadAll(contentResp.BodyReader(nil))
+	contentData, err := io.ReadAll(contentResp.BodyReader(nil))
 	_require.Nil(err)
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

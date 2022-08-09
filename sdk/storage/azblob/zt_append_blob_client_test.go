@@ -17,7 +17,7 @@ import (
 	"strings"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -57,7 +57,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -201,7 +201,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
 //
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.Equal(destData, sourceData)
 //	_ = downloadresp.BodyReader(nil).Close()
@@ -296,7 +296,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //

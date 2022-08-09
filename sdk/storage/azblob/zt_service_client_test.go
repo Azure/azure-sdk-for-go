@@ -83,21 +83,21 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
-		for _, container := range resp.ContainerItems {
-			_require.NotNil(container.Name)
+		for _, ctnr := range resp.ContainerItems {
+			_require.NotNil(ctnr.Name)
 
-			if *container.Name == containerName {
-				_require.NotNil(container.Properties)
-				_require.NotNil(container.Properties.LastModified)
-				_require.NotNil(container.Properties.Etag)
-				_require.Equal(*container.Properties.LeaseStatus, azblob.LeaseStatusTypeUnlocked)
-				_require.Equal(*container.Properties.LeaseState, azblob.LeaseStateTypeAvailable)
-				_require.Nil(container.Properties.LeaseDuration)
-				_require.Nil(container.Properties.PublicAccess)
-				_require.NotNil(container.Metadata)
+			if *ctnr.Name == containerName {
+				_require.NotNil(ctnr.Properties)
+				_require.NotNil(ctnr.Properties.LastModified)
+				_require.NotNil(ctnr.Properties.Etag)
+				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
+				_require.Nil(ctnr.Properties.LeaseDuration)
+				_require.Nil(ctnr.Properties.PublicAccess)
+				_require.NotNil(ctnr.Metadata)
 
 				unwrappedMeta := map[string]string{}
-				for k, v := range container.Metadata {
+				for k, v := range ctnr.Metadata {
 					if v != nil {
 						unwrappedMeta[k] = *v
 					}
@@ -145,21 +145,21 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
 
-		for _, container := range resp.ContainerItems {
-			_require.NotNil(container.Name)
+		for _, ctnr := range resp.ContainerItems {
+			_require.NotNil(ctnr.Name)
 
-			if *container.Name == containerName {
-				_require.NotNil(container.Properties)
-				_require.NotNil(container.Properties.LastModified)
-				_require.NotNil(container.Properties.Etag)
-				_require.Equal(*container.Properties.LeaseStatus, azblob.LeaseStatusTypeUnlocked)
-				_require.Equal(*container.Properties.LeaseState, azblob.LeaseStateTypeAvailable)
-				_require.Nil(container.Properties.LeaseDuration)
-				_require.Nil(container.Properties.PublicAccess)
-				_require.NotNil(container.Metadata)
+			if *ctnr.Name == containerName {
+				_require.NotNil(ctnr.Properties)
+				_require.NotNil(ctnr.Properties.LastModified)
+				_require.NotNil(ctnr.Properties.Etag)
+				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
+				_require.Nil(ctnr.Properties.LeaseDuration)
+				_require.Nil(ctnr.Properties.PublicAccess)
+				_require.NotNil(ctnr.Metadata)
 
 				unwrappedMeta := map[string]string{}
-				for k, v := range container.Metadata {
+				for k, v := range ctnr.Metadata {
 					if v != nil {
 						unwrappedMeta[k] = *v
 					}

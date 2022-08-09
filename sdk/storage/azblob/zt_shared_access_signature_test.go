@@ -46,8 +46,8 @@ func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
 	services := service.SASServices{
 		Blob: true,
 	}
-	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
-	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
 
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
 	_require.Nil(err)

@@ -8,7 +8,6 @@ package azblob_test
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -58,7 +57,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	}
 	containerClient := svcClient.NewContainerClient("foo bar")
 
-	access := azblob.PublicAccessTypeBlob
+	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
@@ -79,7 +78,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 
 	containerClient := svcClient.NewContainerClient("")
 
-	access := azblob.PublicAccessTypeBlob
+	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
@@ -104,7 +103,7 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 
 	defer deleteContainer(_require, containerClient)
 
-	access := azblob.PublicAccessTypeBlob
+	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
@@ -128,7 +127,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := azblob.PublicAccessTypeBlob
+	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{"1 foo": "bar"},
@@ -150,7 +149,7 @@ func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := azblob.PublicAccessTypeBlob
+	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
@@ -176,7 +175,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := azblob.PublicAccessTypeBlob
+	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
 		Metadata: map[string]string{},
@@ -205,7 +204,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	containerName := generateContainerName(testName)
 //	containerClient := getContainerClient(containerName, svcClient)
 //
-//	access := azblob.PublicAccessTypeBlob
+//	access := container.PublicAccessTypeBlob
 //	createContainerOptions := container.CreateOptions{
 //		Access: &access,
 //	}
@@ -253,7 +252,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	containerName := generateContainerName(testName)
 //	containerClient := getContainerClient(containerName, svcClient)
 //
-//	access := azblob.PublicAccessTypeBlob
+//	access := container.PublicAccessTypeBlob
 //	createContainerOptions := container.CreateOptions{
 //		Access: &access,
 //	}
@@ -349,7 +348,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //	defer deleteContainer(_require, containerClient)
 //	_require.Nil(err)
 //
-//	access := azblob.PublicAccessTypeBlob
+//	access := container.PublicAccessTypeBlob
 //	createContainerOptions := container.CreateOptions{
 //		Access:   &access,
 //		Metadata: nil,
@@ -376,7 +375,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //	containerName := generateContainerName(testName)
 //	containerClient := getContainerClient(containerName, serviceClient)
 //
-//	access := azblob.PublicAccessTypeBlob
+//	access := container.PublicAccessTypeBlob
 //	createContainerOptions := container.CreateOptions{
 //		Access:   &access,
 //		Metadata: basicMetadata,
@@ -1095,7 +1094,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := azblob.PublicAccessTypeBlob
+	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Metadata: basicMetadata,
 		Access:   &access,
@@ -1125,7 +1124,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 	}
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
-	access := azblob.PublicAccessTypeBlob
+	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
 		Metadata: basicMetadata,

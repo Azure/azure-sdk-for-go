@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"net/url"
 	"strconv"
 	"strings"
@@ -179,7 +179,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_require.Nil(err)
 
 	// Read the blob data to verify the copy
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_require.Equal(string(data), blockBlobDefaultData)
@@ -448,7 +448,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 //	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //
-//	data, err := ioutil.ReadAll(resp2.Body(nil))
+//	data, err := io.ReadAll(resp2.Body(nil))
 //	_require.Nil(err)
 //	_require.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 //	_require.Equal(string(data), blockBlobDefaultData)
@@ -1626,7 +1626,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	_require.Nil(err)
 
 	// Specifying a count of 0 results in the value being ignored
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1654,7 +1654,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 	resp, err := bbClient.Download(ctx, &options)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1681,7 +1681,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	resp, err := bbClient.Download(ctx, &options)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1709,7 +1709,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	resp, err := bbClient.Download(ctx, &options)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -3432,14 +3432,14 @@ func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 //	// Verify that we can inject errors first.
 //	reader := resp.Body(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
 //
-//	_, err = ioutil.ReadAll(reader)
+//	_, err = io.ReadAll(reader)
 //	_require.NotNil(err)
 //	_require.Equal(err.Error(), "unrecoverable error")
 //
 //	// Then inject the retryable error.
 //	reader = resp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
 //
-//	buf, err := ioutil.ReadAll(reader)
+//	buf, err := io.ReadAll(reader)
 //	_require.Nil(err)
 //	_require.EqualValues(buf, []byte(blockBlobDefaultData))
 //}

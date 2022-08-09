@@ -146,7 +146,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{}))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //}
@@ -217,7 +217,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{}))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //

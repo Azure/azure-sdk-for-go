@@ -291,7 +291,7 @@ handleError(err)
 // Use the bytes.Buffer object to read the downloaded data.
 // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 reader := blobDownloadResponse.BodyReader(nil)
-downloadData, err := ioutil.ReadAll(reader)
+downloadData, err := io.ReadAll(reader)
 handleError(err)
 
 if string(downloadData) != uploadData {

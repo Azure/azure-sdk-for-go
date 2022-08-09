@@ -21,28 +21,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"strings"
 	"time"
 )
 
-//
-//import (
-//	"bytes"
-//	"context"
-//	"crypto/md5"
-//	"encoding/base64"
-//	"fmt"
-//	"github.com/stretchr/testify/require"
-//	"io"
-//	"io/ioutil"
-//	"strings"
-//	"time"
-//
-//	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-//	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-//)
-//
 //func (s *azblobTestSuite) TestStageGetBlocks() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -214,7 +196,7 @@ import (
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, content)
 //}
@@ -293,7 +275,7 @@ import (
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, content)
 //
@@ -1064,7 +1046,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 
 	resp, err := bbClient.Download(ctx, nil)
 	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1326,7 +1308,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, content)
 //

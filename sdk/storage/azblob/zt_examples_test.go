@@ -22,7 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -97,7 +96,7 @@ func Example() {
 	// Use the bytes.Buffer object to read the downloaded data.
 	// RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 	reader := blobDownloadResponse.BodyReader(nil)
-	downloadData, err := ioutil.ReadAll(reader)
+	downloadData, err := io.ReadAll(reader)
 	handleError(err)
 	if string(downloadData) != uploadData {
 		log.Fatal("Uploaded data should be same as downloaded data")

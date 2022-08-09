@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"strings"
 )
 
@@ -200,7 +200,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 
 	contentResp, err := bbClient.Download(ctx, nil)
 	_require.Nil(err)
-	contentData, err := ioutil.ReadAll(contentResp.BodyReader(nil))
+	contentData, err := io.ReadAll(contentResp.BodyReader(nil))
 	_require.Nil(err)
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 
@@ -329,7 +329,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //}
@@ -402,7 +402,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadresp.BodyReader(nil))
+//	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //	_require.Equal(*downloadResp.TagCount, int64(1))

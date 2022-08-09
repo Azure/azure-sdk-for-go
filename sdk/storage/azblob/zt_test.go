@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"log"
 	"strconv"
 	"strings"
@@ -166,7 +165,7 @@ func disableSoftDelete(_require *require.Assertions, client *service.Client) {
 func validateUpload(_require *require.Assertions, blobClient *blockblob.Client) {
 	resp, err := blobClient.Download(ctx, nil)
 	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
 	_require.Len(data, 0)
 }

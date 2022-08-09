@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"os"
 	"sync/atomic"
 	"time"
@@ -27,7 +27,7 @@ func generateFile(fileName string, fileSize int) []byte {
 	_, bigBuff := generateData(fileSize)
 
 	// write to file and return the data
-	_ = ioutil.WriteFile(fileName, bigBuff, 0666)
+	_ = os.WriteFile(fileName, bigBuff, 0666)
 	return bigBuff
 }
 
@@ -67,7 +67,7 @@ func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName s
 	_require.Nil(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.BodyReader(nil))
+	actualBlobData, err := io.ReadAll(downloadResponse.BodyReader(nil))
 	_require.Nil(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)
@@ -601,7 +601,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	_require.NoError(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.BodyReader(nil))
+	actualBlobData, err := io.ReadAll(downloadResponse.BodyReader(nil))
 	_require.NoError(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)

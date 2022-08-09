@@ -14,7 +14,7 @@ import (
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"time"
 )
 
@@ -142,7 +142,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
 	_require.Nil(err)
 	_require.EqualValues(destData, sourceData)
 }
@@ -213,7 +213,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
 	_require.Nil(err)
 	_require.EqualValues(destData, sourceData)
 

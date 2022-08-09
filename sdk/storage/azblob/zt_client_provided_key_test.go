@@ -14,7 +14,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"strconv"
 	"strings"
 	"time"
@@ -276,7 +276,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	}
 	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+	destData, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(destData, content)
 	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
@@ -390,7 +390,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	}
 	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+	destData, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(destData, content)
 	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
@@ -436,7 +436,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	})
 	_require.Nil(err)
 	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 	_require.EqualValues(downloadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
@@ -474,7 +474,7 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	downloadResp, err := bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
@@ -533,7 +533,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 	downloadResp, err := abClient.Download(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(downloadResp.Body(nil))
+	data, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(string(data), "AAA BBB CCC ")
 	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
@@ -588,7 +588,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 	downloadResp, err := abClient.Download(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(downloadResp.Body(nil))
+	data, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(string(data), "AAA BBB CCC ")
 	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
@@ -699,7 +699,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_require.Equal(*downloadResp.IsServerEncrypted, true)
 	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 }
@@ -796,7 +796,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	_require.Equal(*downloadResp.IsServerEncrypted, true)
 	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 }
@@ -855,7 +855,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	downloadResp, err := pbClient.Download(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
-	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+	destData, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
@@ -905,7 +905,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	downloadResp, err := pbClient.Download(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
-	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+	destData, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
@@ -991,7 +991,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	_require.Nil(err)
 	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 }
@@ -1067,7 +1067,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	_require.Nil(err)
 	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 }
@@ -1152,7 +1152,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	_require.Nil(err)
 	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
 
@@ -1483,7 +1483,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKK
 	_require.NoError(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	actualBlobData, err := io.ReadAll(downloadResponse.RawResponse.Body)
 	_require.NoError(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)
@@ -1548,7 +1548,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKS
 	_require.NoError(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	actualBlobData, err := io.ReadAll(downloadResponse.RawResponse.Body)
 	_require.NoError(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)

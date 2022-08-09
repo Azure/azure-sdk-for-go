@@ -13,7 +13,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -48,11 +48,11 @@ func (policy *hmacAuthenticationPolicy) Do(request *policy.Request) (*http.Respo
 	var content []byte
 	if req.Body != nil {
 		var err error
-		if content, err = ioutil.ReadAll(req.Body); err != nil {
+		if content, err = io.ReadAll(req.Body); err != nil {
 			return nil, err
 		}
 	}
-	req.Body = ioutil.NopCloser(bytes.NewBuffer(content))
+	req.Body = io.NopCloser(bytes.NewBuffer(content))
 
 	timestamp := time.Now().UTC().Format(http.TimeFormat)
 

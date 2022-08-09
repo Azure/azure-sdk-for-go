@@ -135,7 +135,7 @@ type ListBlobsFlatOptions struct {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-//ListBlobsHierarchyOptions provides set of configurations for Client.NewListBlobsHierarchyPager
+// ListBlobsHierarchyOptions provides set of configurations for Client.NewListBlobsHierarchyPager
 type ListBlobsHierarchyOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include []ListBlobsIncludeItem

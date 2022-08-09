@@ -86,7 +86,7 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -453,7 +453,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

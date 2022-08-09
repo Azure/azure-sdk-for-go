@@ -17,7 +17,7 @@ import (
 	"strings"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -57,7 +57,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

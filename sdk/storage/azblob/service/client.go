@@ -57,7 +57,7 @@ func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, option
 }
 
 // NewClientFromConnectionString creates a service client from the given connection string.
-//nolint
+// nolint
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {

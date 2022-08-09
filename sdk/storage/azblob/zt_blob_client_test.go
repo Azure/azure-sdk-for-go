@@ -26,7 +26,7 @@ import (
 	"time"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -50,7 +50,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClient() {
 	_require.Equal(bbClient.URL(), correctURL)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -93,7 +93,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_require.Equal(blobURLParts, correctURL)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSASUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -455,7 +455,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 //	_ = resp2.Body(nil).Close()
 //}
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1031,7 +1031,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	validateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3246,7 +3246,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
-//nolint
+// nolint
 func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *service.Client) error {
 	//containerClient := createNewContainer(_require, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(_require, containerClient)

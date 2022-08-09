@@ -21,7 +21,7 @@ import (
 )
 
 // create a test file
-//nolint
+// nolint
 func generateFile(fileName string, fileSize int) []byte {
 	// generate random data
 	_, bigBuff := generateData(fileSize)
@@ -31,7 +31,7 @@ func generateFile(fileName string, fileSize int) []byte {
 	return bigBuff
 }
 
-//nolint
+// nolint
 func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
 	_context := getTestContext(testName)
 	var recording *testframework.Recording
@@ -73,7 +73,7 @@ func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName s
 	_require.EqualValues(actualBlobData, blobData)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobInChunks() {
 	blobSize := 8 * 1024
 	bufferSize := 1024
@@ -83,7 +83,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobInChunks() {
 	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleBuffer() {
 	blobSize := 8 * 1024
 	bufferSize := 1024
@@ -93,7 +93,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleBuffer() {
 	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleIO() {
 	blobSize := 1024
 	bufferSize := 8 * 1024
@@ -103,7 +103,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleIO() {
 	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleIOEdgeCase() {
 	blobSize := 8 * 1024
 	bufferSize := 8 * 1024
@@ -113,7 +113,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleIOEdgeCase(
 	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobEmpty() {
 	blobSize := 0
 	bufferSize := 8 * 1024
@@ -123,7 +123,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobEmpty() {
 	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
 }
 
-//nolint
+// nolint
 func performUploadAndDownloadFileTest(_require *require.Assertions, testName string, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
 	// Set up file to upload
 	fileName := "BigFile.bin"
@@ -220,7 +220,7 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileInChunks() {
 	fileSize := 8 * 1024
 	blockSize := 1024
@@ -230,7 +230,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileInChunks() {
 	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileSingleIO() {
 	fileSize := 1024
 	blockSize := 2048
@@ -240,7 +240,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileSingleIO() {
 	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileSingleRoutine() {
 	fileSize := 8 * 1024
 	blockSize := 1024
@@ -250,7 +250,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileSingleRoutine() {
 	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileEmpty() {
 	fileSize := 0
 	blockSize := 1024
@@ -260,7 +260,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileEmpty() {
 	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroOffset() {
 	fileSize := 8 * 1024
 	blockSize := 1024
@@ -272,7 +272,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroOffset() {
 	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroCount() {
 	fileSize := 8 * 1024
 	blockSize := 1024
@@ -284,7 +284,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroCount() {
 	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroOffsetAndCount() {
 	fileSize := 8 * 1024
 	blockSize := 1024
@@ -296,7 +296,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroOffsetAndCou
 	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
-//nolint
+// nolint
 func performUploadAndDownloadBufferTest(_require *require.Assertions, testName string, blobSize, blockSize, parallelism, downloadOffset, downloadCount int) {
 	// Set up buffer to upload
 	_, bytesToUpload := generateData(blobSize)
@@ -362,7 +362,7 @@ func performUploadAndDownloadBufferTest(_require *require.Assertions, testName s
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferInChunks() {
 	blobSize := 8 * 1024
 	blockSize := 1024
@@ -372,7 +372,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferInChunks() {
 	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferSingleIO() {
 	blobSize := 1024
 	blockSize := 8 * 1024
@@ -382,7 +382,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferSingleIO() {
 	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferSingleRoutine() {
 	blobSize := 8 * 1024
 	blockSize := 1024
@@ -392,7 +392,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferSingleRoutine() {
 	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferEmpty() {
 	blobSize := 0
 	blockSize := 1024
@@ -402,7 +402,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferEmpty() {
 	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroOffset() {
 	blobSize := 8 * 1024
 	blockSize := 1024
@@ -414,7 +414,7 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroOffset() {
 	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroCount() {
 	blobSize := 8 * 1024
 	blockSize := 1024
@@ -426,7 +426,7 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroCount() {
 	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroOffsetAndCount() {
 	blobSize := 8 * 1024
 	blockSize := 1024
@@ -438,7 +438,7 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroOffsetAndCount(
 	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBasicDoBatchTransfer() {
 	_require := require.New(s.T())
 	// test the basic multi-routine processing
@@ -488,14 +488,14 @@ func (s *azblobUnrecordedTestSuite) TestBasicDoBatchTransfer() {
 }
 
 // mock a memory mapped file (low-quality mock, meant to simulate the scenario only)
-//nolint
+// nolint
 type mockMMF struct {
 	isClosed   bool
 	failHandle *require.Assertions
 }
 
 // accept input
-//nolint
+// nolint
 func (m *mockMMF) write(_ string) {
 	if m.isClosed {
 		// simulate panic
@@ -503,7 +503,7 @@ func (m *mockMMF) write(_ string) {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 	_require := require.New(s.T())
 	ctx := context.Background()
@@ -545,7 +545,7 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 	time.Sleep(time.Second * 5)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

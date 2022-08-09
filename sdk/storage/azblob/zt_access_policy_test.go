@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -33,7 +33,7 @@ func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_require.Nil(err)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -66,7 +66,7 @@ func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 	_require.Nil(err)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -119,7 +119,7 @@ func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_require.Len(resp.SignedIdentifiers, 3)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

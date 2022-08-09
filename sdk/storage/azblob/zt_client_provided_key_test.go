@@ -396,7 +396,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 //}
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -801,7 +801,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	_require.EqualValues(destData, srcData)
 //}
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -864,7 +864,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

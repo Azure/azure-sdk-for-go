@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

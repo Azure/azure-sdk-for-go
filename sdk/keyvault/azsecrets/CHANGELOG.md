@@ -1,8 +1,6 @@
 # Release History
 
-## 0.9.0 (Unreleased)
-
-### Features Added
+## 0.9.0 (2022-08-09)
 
 ### Breaking Changes
 * Changed type of `NewClient` options parameter to `azsecrets.ClientOptions`, which embeds

@@ -1,8 +1,6 @@
 # Release History
 
-## 0.7.0 (Unreleased)
-
-### Features Added
+## 0.7.0 (2022-08-09)
 
 ### Breaking Changes
 * Changed type of `NewClient` options parameter to `azkeys.ClientOptions`, which embeds

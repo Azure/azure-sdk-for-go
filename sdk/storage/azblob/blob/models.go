@@ -66,6 +66,12 @@ type SASQueryParameters = exported.SASQueryParameters
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
+// storage account's name and either its primary or secondary key.
+func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+	return exported.NewSharedKeyCredential(accountName, accountKey)
+}
+
 // SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 

@@ -18,6 +18,12 @@ type ClientOptions = exported.ClientOptions
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
+// storage account's name and either its primary or secondary key.
+func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+	return exported.NewSharedKeyCredential(accountName, accountKey)
+}
+
 // CreateContainerOptions contains the optional parameters for the container.Client.Create method.
 type CreateContainerOptions = container.CreateOptions
 

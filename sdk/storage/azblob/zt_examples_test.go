@@ -135,9 +135,9 @@ func Example() {
 // ---------------------------------------------------------------------------------------------------------------------
 
 func Example_service_Client_NewClient() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
@@ -149,17 +149,17 @@ func Example_service_Client_NewClient() {
 }
 
 func Example_service_Client_NewClientWithSharedKey() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
-	accountKey, ok := os.LookupEnv("BLOB_STORAGE_PRIMARY_ACCOUNT_KEY")
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
 	if !ok {
-		panic("BLOB_STORAGE_PRIMARY_ACCOUNT_KEY could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
-	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
 	serviceClient, err := service.NewClientWithSharedKey(serviceURL, cred, nil)
 	handleError(err)
@@ -167,13 +167,13 @@ func Example_service_Client_NewClientWithSharedKey() {
 }
 
 func Example_service_Client_NewClientWithNoCredential() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
-	sharedAccessSignature, ok := os.LookupEnv("BLOB_STORAGE_SHARED_ACCESS_SIGNATURE")
+	sharedAccessSignature, ok := os.LookupEnv("AZURE_STORAGE_SHARED_ACCESS_SIGNATURE")
 	if !ok {
-		panic("BLOB_STORAGE_SHARED_ACCESS_SIGNATURE could not be found")
+		panic("AZURE_STORAGE_SHARED_ACCESS_SIGNATURE could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sharedAccessSignature)
 
@@ -184,7 +184,7 @@ func Example_service_Client_NewClientWithNoCredential() {
 
 func Example_service_Client_NewClientFromConnectionString() {
 	// Your connection string can be obtained from the Azure Portal.
-	connectionString, ok := os.LookupEnv("BLOB_STORAGE_CONNECTION_STRING")
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
 		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
@@ -195,9 +195,9 @@ func Example_service_Client_NewClientFromConnectionString() {
 }
 
 func Example_service_Client_CreateContainer() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
@@ -220,9 +220,9 @@ func Example_service_Client_CreateContainer() {
 }
 
 func Example_service_Client_DeleteContainer() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
@@ -236,9 +236,9 @@ func Example_service_Client_DeleteContainer() {
 }
 
 func Example_service_Client_ListContainers() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
@@ -286,9 +286,9 @@ func Example_service_Client_GetSASURL() {
 }
 
 func Example_service_Client_SetProperties() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
@@ -308,9 +308,9 @@ func Example_service_Client_SetProperties() {
 }
 
 func Example_service_Client_GetProperties() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
@@ -329,9 +329,9 @@ func Example_service_Client_GetProperties() {
 // ---------------------------------------------------------------------------------------------------------------------
 
 func Example_container_NewClient() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -345,13 +345,13 @@ func Example_container_NewClient() {
 }
 
 func Example_container_NewClientWithSharedKey() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
-	accountKey, ok := os.LookupEnv("BLOB_STORAGE_PRIMARY_ACCOUNT_KEY")
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
 	if !ok {
-		panic("BLOB_STORAGE_PRIMARY_ACCOUNT_KEY could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -364,13 +364,13 @@ func Example_container_NewClientWithSharedKey() {
 }
 
 func Example_container_NewClientWithNoCredential() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
-	sharedAccessSignature, ok := os.LookupEnv("BLOB_STORAGE_SHARED_ACCESS_SIGNATURE")
+	sharedAccessSignature, ok := os.LookupEnv("AZURE_STORAGE_SHARED_ACCESS_SIGNATURE")
 	if !ok {
-		panic("BLOB_STORAGE_SHARED_ACCESS_SIGNATURE could not be found")
+		panic("AZURE_STORAGE_SHARED_ACCESS_SIGNATURE could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s?%s", accountName, containerName, sharedAccessSignature)
@@ -382,7 +382,7 @@ func Example_container_NewClientWithNoCredential() {
 
 func Example_container_NewClientFromConnectionString() {
 	// Your connection string can be obtained from the Azure Portal.
-	connectionString, ok := os.LookupEnv("BLOB_STORAGE_CONNECTION_STRING")
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
 		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
@@ -393,9 +393,9 @@ func Example_container_NewClientFromConnectionString() {
 }
 
 func Example_container_ClientNewAppendBlobClient() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -412,9 +412,9 @@ func Example_container_ClientNewAppendBlobClient() {
 }
 
 func Example_container_ClientNewBlobClient() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -431,9 +431,9 @@ func Example_container_ClientNewBlobClient() {
 }
 
 func Example_container_ClientNewBlockBlobClient() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -450,9 +450,9 @@ func Example_container_ClientNewBlockBlobClient() {
 }
 
 func Example_container_ClientNewPageBlobClient() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -469,9 +469,9 @@ func Example_container_ClientNewPageBlobClient() {
 }
 
 func Example_container_ClientCreate() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -490,9 +490,9 @@ func Example_container_ClientCreate() {
 }
 
 func Example_container_ClientDelete() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -509,9 +509,9 @@ func Example_container_ClientDelete() {
 }
 
 func Example_container_ClientListBlobsFlat() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -523,7 +523,7 @@ func Example_container_ClientListBlobsFlat() {
 	handleError(err)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: []azblob.ListBlobsIncludeItem{azblob.ListBlobsIncludeItemSnapshots, azblob.ListBlobsIncludeItemVersions},
+		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots, container.ListBlobsIncludeItemVersions},
 	})
 
 	for pager.More() {
@@ -538,9 +538,9 @@ func Example_container_ClientListBlobsFlat() {
 }
 
 func Example_container_ClientListBlobsHierarchy() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -553,9 +553,9 @@ func Example_container_ClientListBlobsHierarchy() {
 
 	maxResults := int32(5)
 	pager := containerClient.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{
-		Include: []azblob.ListBlobsIncludeItem{
-			azblob.ListBlobsIncludeItemMetadata,
-			azblob.ListBlobsIncludeItemTags,
+		Include: []container.ListBlobsIncludeItem{
+			container.ListBlobsIncludeItemMetadata,
+			container.ListBlobsIncludeItemTags,
 		},
 		MaxResults: &maxResults,
 	})
@@ -572,9 +572,9 @@ func Example_container_ClientListBlobsHierarchy() {
 }
 
 func Example_container_ClientGetSASURL() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -595,9 +595,9 @@ func Example_container_ClientGetSASURL() {
 
 // This example shows how to manipulate a container's permissions.
 func Example_container_ClientSetAccessPolicy() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -628,7 +628,7 @@ func Example_container_ClientSetAccessPolicy() {
 			context.TODO(),
 			nil,
 			&container.SetAccessPolicyOptions{
-				Access: to.Ptr(azblob.PublicAccessTypeBlob),
+				Access: to.Ptr(container.PublicAccessTypeBlob),
 			},
 		)
 		if err != nil {
@@ -654,9 +654,9 @@ func Example_container_ClientSetAccessPolicy() {
 }
 
 func Example_container_ClientSetMetadata() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
@@ -700,9 +700,9 @@ func Example_container_ClientSetMetadata() {
 // A block blob can have a maximum of 50,000 blocks; each block can have a maximum of 100MB.
 // The maximum size of a block blob is slightly more than 4.75 TB (100 MB X 50,000 blocks).
 func Example_blockblob_Client() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	blobName := "test_block_blob.txt"
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
@@ -777,9 +777,9 @@ func Example_blockblob_Client() {
 // An append blob can have a maximum of 50,000 blocks; each block can have a maximum of 100MB.
 // The maximum size of an append blob is slightly more than 4.75 TB (100 MB X 50,000 blocks).
 func Example_appendblob_Client() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	blobName := "test_append_blob.txt"
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
@@ -820,9 +820,9 @@ func Example_appendblob_Client() {
 // A page blob is a collection of 512-byte pages optimized for random read and write operations.
 // The maximum size for a page blob is 8 TB.
 func Example_pageblob_Client() {
-	accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
-		panic("BLOB_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	blobName := "test_page_blob.vhd"
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)

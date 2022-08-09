@@ -21,7 +21,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * An [Azure subscription][azure_sub]
 * A supported Go version (the Azure SDK supports the two most recent Go releases)
-* A Key Vault. If you need to create one, see the Key Vault documentation for instructions on doing so in the [Azure Portal][azure_keyvault_portal] or with the [Azure CLI][azure_keyvault_cli].
+* A key vault. If you need to create one, see the Key Vault documentation for instructions on doing so in the [Azure Portal][azure_keyvault_portal] or with the [Azure CLI][azure_keyvault_cli].
 
 ### Authentication
 
@@ -70,7 +70,7 @@ This section contains code snippets covering common tasks:
 ### Create a Certificate
 
 [CreateCertificate](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.CreateCertificate)
-creates a certificate to be stored in the Azure Key Vault. If a certificate with the same name already exists, a new
+creates a certificate to be stored in the key vault. If a certificate with the same name already exists, a new
 version of the certificate is created.
 
 ```go

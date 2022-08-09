@@ -21,7 +21,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * An [Azure subscription][azure_sub]
 * A supported Go version (the Azure SDK supports the two most recent Go releases)
-* A Key Vault. If you need to create one, see the Key Vault documentation for instructions on doing so in the [Azure Portal][azure_keyvault_portal] or with the [Azure CLI][azure_keyvault_cli].
+* A key vault. If you need to create one, see the Key Vault documentation for instructions on doing so in the [Azure Portal][azure_keyvault_portal] or with the [Azure CLI][azure_keyvault_cli].
 
 ### Authentication
 
@@ -146,7 +146,7 @@ func main() {
 ### Update an existing key
 
 [`UpdateKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.UpdateKey)
-updates the properties of a key previously stored in the Key Vault.
+updates the properties of a key previously stored in the key vault.
 
 ```go
 import (

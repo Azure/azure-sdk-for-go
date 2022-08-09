@@ -2,8 +2,6 @@
 
 ## 1.1.2 (2022-08-09)
 
-### Bugs Fixed
-
 ### Other Changes
 * Fixed various doc bugs.
 

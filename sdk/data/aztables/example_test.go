@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"time"
 
@@ -166,7 +166,7 @@ func ExampleClient_SubmitTransaction() {
 	if err != nil {
 		var httpErr *azcore.ResponseError
 		if errors.As(err, &httpErr) {
-			body, err := ioutil.ReadAll(httpErr.RawResponse.Body)
+			body, err := io.ReadAll(httpErr.RawResponse.Body)
 			if err != nil {
 				panic(err)
 			}

@@ -11,7 +11,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -338,7 +337,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	if pos == -1 {
 		return "", fmt.Errorf("did not receive a correct value from WWW-Authenticate header: %s", header)
 	}
-	key, err := ioutil.ReadFile(header[pos+1:])
+	key, err := os.ReadFile(header[pos+1:])
 	if err != nil {
 		return "", fmt.Errorf("could not read file (%s) contents: %v", header[pos+1:], err)
 	}

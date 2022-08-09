@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
@@ -139,7 +138,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 
 // create the transaction response. This will read the inner responses
 func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCount int) (TransactionResponse, error) {
-	bytesBody, err := ioutil.ReadAll(resp.Body)
+	bytesBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -156,7 +155,7 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 		return TransactionResponse{}, err
 	}
 
-	innerBytes, err := ioutil.ReadAll(outerPart)
+	innerBytes, err := io.ReadAll(outerPart)
 	if err != nil && err != io.ErrUnexpectedEOF { // Cosmos specific error handling
 		return TransactionResponse{}, err
 	}
@@ -166,7 +165,7 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 	i := 0
 	innerPart, err := mpReader.NextPart()
 	for ; err == nil; innerPart, err = mpReader.NextPart() {
-		part, err := ioutil.ReadAll(innerPart)
+		part, err := io.ReadAll(innerPart)
 		if err != nil {
 			break
 		}

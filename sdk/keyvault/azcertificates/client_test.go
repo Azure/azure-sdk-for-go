@@ -15,8 +15,8 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"math/big"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -457,14 +457,14 @@ func TestMergeCertificate(t *testing.T) {
 	certOpResp, err := client.GetCertificateOperation(ctx, certName, nil)
 	require.NoError(t, err)
 
-	data, err := ioutil.ReadFile("testdata/ca.crt")
+	data, err := os.ReadFile("testdata/ca.crt")
 	require.NoError(t, err)
 	block, _ := pem.Decode(data)
 	require.NotNil(t, block)
 	caCert, err := x509.ParseCertificate(block.Bytes)
 	require.NoError(t, err)
 
-	data, err = ioutil.ReadFile("testdata/ca.key")
+	data, err = os.ReadFile("testdata/ca.key")
 	require.NoError(t, err)
 	pkeyBlock, _ := pem.Decode(data)
 	require.NotNil(t, pkeyBlock)

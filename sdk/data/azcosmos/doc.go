@@ -6,11 +6,11 @@
 Package azcosmos implements the client to interact with the Azure Cosmos DB SQL API.
 
 The azcosmos package is capable of:
-	- Creating, deleting, and reading databases in an account
-	- Creating, deleting, updating, and reading containers in a database
-	- Creating, deleting, replacing, upserting, and reading items in a container
+  - Creating, deleting, and reading databases in an account
+  - Creating, deleting, updating, and reading containers in a database
+  - Creating, deleting, replacing, upserting, and reading items in a container
 
-Creating the Client
+# Creating the Client
 
 Types of Credentials
 The clients support different forms of authentication. The azcosmos library supports
@@ -18,11 +18,11 @@ authorization via Azure Active Directory or an account key.
 
 Using Azure Active Directory
 To create a client, you can use any of the TokenCredential implementations provided by `azidentity`.
+
 	cred, err := azidentity.NewClientSecretCredential("tenantId", "clientId", "clientSecret")
 	handle(err)
 	client, err := azcosmos.NewClient("myAccountEndpointURL", cred, nil)
 	handle(err)
-
 
 Using account keys
 To create a client, you will need the account's endpoint URL and a key credential.
@@ -32,34 +32,30 @@ To create a client, you will need the account's endpoint URL and a key credentia
 	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, nil)
 	handle(err)
 
-
 Using connection string
 To create a client, you will need the account's connection string.
 
 	client, err := azcosmos.NewClientFromConnectionString("myConnectionString", nil)
 	handle(err)
 
-
-Key Concepts
+# Key Concepts
 
 The following are relevant concepts for the usage of the client:
-	- A client is a connection to an Azure Cosmos DB account.
-	- An account can have multiple databases, and the client allows you to create, read, and delete databases.
-	- A database can have multiple containers, and the client allows you to create, read, update, and delete containers, and to modify throughput provision.
-	- Information is stored as items inside containers and the client allows you to create, read, update, and delete items in containers.
+  - A client is a connection to an Azure Cosmos DB account.
+  - An account can have multiple databases, and the client allows you to create, read, and delete databases.
+  - A database can have multiple containers, and the client allows you to create, read, update, and delete containers, and to modify throughput provision.
+  - Information is stored as items inside containers and the client allows you to create, read, update, and delete items in containers.
 
-
-More Examples
+# More Examples
 
 The following sections provide several code snippets covering some of the most common Table tasks, including:
-	- Creating a database
-	- Creating a container
-	- Creating, reading, and deleting items
-	- Querying items
-	- Using Transactional Batch
+  - Creating a database
+  - Creating a container
+  - Creating, reading, and deleting items
+  - Querying items
+  - Using Transactional Batch
 
-
-Creating a database
+# Creating a database
 
 Create a database and obtain a `DatabaseClient` to perform operations on your newly created database.
 
@@ -73,8 +69,7 @@ Create a database and obtain a `DatabaseClient` to perform operations on your ne
 	database, err := azcosmos.NewDatabase("myDatabase")
 	handle(err)
 
-
-Creating a container
+# Creating a container
 
 Create a container on an existing database and obtain a `ContainerClient` to perform operations on your newly created container.
 
@@ -145,6 +140,7 @@ Querying items
 	}
 
 Querying items with parametrized queries
+
 	&opt := azcosmos.QueryOptions{
 		azcosmos.QueryParameters: []QueryParameter{
 			{"@value", "2"},

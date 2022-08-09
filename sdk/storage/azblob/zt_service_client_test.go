@@ -29,7 +29,7 @@ func (s *azblobTestSuite) TestGetAccountInfo() {
 	_require.NotEqualValues(sAccInfo, ServiceGetAccountInfoResponse{})
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -47,7 +47,7 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	defer deleteContainer(_require, containerClient)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -106,7 +106,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -421,7 +421,7 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
 	_require.NotNil(err)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_require := require.New(s.T())
 	var svcClient *ServiceClient

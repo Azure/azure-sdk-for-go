@@ -321,7 +321,6 @@ type ErrorDetails struct {
 // * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after"
 // header.
 //
-//
 // * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After"
 // header.
 type ErrorResponse struct {
@@ -666,10 +665,8 @@ type GenerateDetailedCostReportDefinition struct {
 // * 413 Request Entity Too Large - Request is throttled. The amount of data required to fulfill the request exceeds the maximum
 // size permitted of 2Gb. Please utilize our Exports feature instead.
 //
-//
 // * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after"
 // header.
-//
 //
 // * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After"
 // header.

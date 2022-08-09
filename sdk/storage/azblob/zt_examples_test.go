@@ -16,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -95,7 +94,7 @@ func Example() {
 	// Use the bytes.Buffer object to read the downloaded data.
 	// RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 	reader := blobDownloadResponse.Body(nil)
-	downloadData, err := ioutil.ReadAll(reader)
+	downloadData, err := io.ReadAll(reader)
 	if err != nil {
 		log.Fatal(err)
 	}

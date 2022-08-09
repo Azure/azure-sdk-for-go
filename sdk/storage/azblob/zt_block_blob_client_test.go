@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"strings"
 	"time"
 
@@ -99,7 +98,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 	_require.Len(blockList.BlockList.CommittedBlocks, len(data))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -193,12 +192,12 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+	destData, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(destData, content)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -272,7 +271,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+	destData, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(destData, content)
 
@@ -294,7 +293,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	_require.EqualValues(*resp.CopyStatus, "success")
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -362,7 +361,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	_require.Equal(*gResp.ContentType, contentTypeVal)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1043,7 +1042,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 
 	resp, err := bbClient.Download(ctx, nil)
 	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := io.ReadAll(resp.RawResponse.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1144,7 +1143,7 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1208,7 +1207,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1305,7 +1304,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+	destData, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(destData, content)
 

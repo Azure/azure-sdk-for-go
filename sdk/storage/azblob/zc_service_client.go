@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-//nolint
+// nolint
 const (
 	// ContainerNameRoot is the special Azure Storage name used to identify a storage account's root container.
 	ContainerNameRoot = "$root"
@@ -77,7 +77,7 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 }
 
 // NewServiceClientFromConnectionString creates a service client from the given connection string.
-//nolint
+// nolint
 func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (*ServiceClient, error) {
 	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {

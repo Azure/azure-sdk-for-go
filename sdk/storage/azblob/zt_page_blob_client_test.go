@@ -14,7 +14,7 @@ import (
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"time"
 )
 
@@ -75,7 +75,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -142,12 +142,12 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
 	_require.Nil(err)
 	_require.EqualValues(destData, sourceData)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -213,7 +213,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
+	destData, err := io.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
 	_require.Nil(err)
 	_require.EqualValues(destData, sourceData)
 
@@ -229,7 +229,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -284,7 +284,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	}
 }
 
-//nolint
+// nolint
 func waitForIncrementalCopy(_require *require.Assertions, copyBlobClient *PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
 	status := *blobCopyResponse.CopyStatus
 	var getPropertiesAndMetadataResult BlobGetPropertiesResponse
@@ -301,7 +301,7 @@ func waitForIncrementalCopy(_require *require.Assertions, copyBlobClient *PageBl
 	return getPropertiesAndMetadataResult.DestinationSnapshot
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -429,7 +429,7 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 	_require.Equal(resp.RawResponse.StatusCode, 200)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -949,7 +949,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2409,7 +2409,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 	//_require.(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
 }
 
-//nolint
+// nolint
 func setupDiffPageRangesTest(_require *require.Assertions, testName string) (containerClient *ContainerClient, pbClient *PageBlobClient, snapshot string) {
 	_context := getTestContext(testName)
 	var recording *testframework.Recording
@@ -2449,7 +2449,7 @@ func setupDiffPageRangesTest(_require *require.Assertions, testName string) (con
 	return
 }
 
-//nolint
+// nolint
 func validateDiffPageRanges(_require *require.Assertions, resp PageList, err error) {
 	_require.Nil(err)
 	pageListResp := resp.PageRange
@@ -2461,7 +2461,7 @@ func validateDiffPageRanges(_require *require.Assertions, resp PageList, err err
 	_require.EqualValues(rawEnd, end)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2481,7 +2481,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() 
 
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2494,7 +2494,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2516,7 +2516,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2543,7 +2543,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() 
 
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2567,7 +2567,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue()
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2592,7 +2592,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2618,7 +2618,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2640,7 +2640,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2663,7 +2663,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

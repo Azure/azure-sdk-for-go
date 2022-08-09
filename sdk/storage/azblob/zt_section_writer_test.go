@@ -12,7 +12,7 @@ import (
 	"io"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
 	_require := require.New(s.T())
 	b := [10]byte{}
@@ -71,7 +71,7 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
 	_require.Equal(b, [10]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSectionWriterCopySrcDestEmpty() {
 	_require := require.New(s.T())
 	input := make([]byte, 0)
@@ -86,7 +86,7 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriterCopySrcDestEmpty() {
 	_require.Equal(count, int64(0))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestSectionWriterCopyDestEmpty() {
 	_require := require.New(s.T())
 	input := make([]byte, 10)

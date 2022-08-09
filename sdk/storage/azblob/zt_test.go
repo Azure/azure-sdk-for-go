@@ -15,7 +15,6 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/url"
@@ -37,7 +36,7 @@ type azblobTestSuite struct {
 	mode testframework.RecordMode
 }
 
-//nolint
+// nolint
 type azblobUnrecordedTestSuite struct {
 	suite.Suite
 }
@@ -96,24 +95,24 @@ func recordedTestTeardown(key string) {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobTestSuite) BeforeTest(suite string, test string) {
 	// set up the test environment
 	recordedTestSetup(s.T(), s.mode)
 }
 
-//nolint
+// nolint
 func (s *azblobTestSuite) AfterTest(suite string, test string) {
 	// teardown the test context
 	recordedTestTeardown(s.T().Name())
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
 
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
@@ -121,7 +120,7 @@ func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
 
-//const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
+// const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
 const AccountNameEnvVar = "AZURE_STORAGE_ACCOUNT_NAME"
 const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
 const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
@@ -154,14 +153,14 @@ var basicHeaders = BlobHTTPHeaders{
 
 var basicMetadata = map[string]string{"Foo": "bar"}
 
-//nolint
+// nolint
 var basicBlobTagsMap = map[string]string{
 	"azure": "blob",
 	"blob":  "sdk",
 	"sdk":   "go",
 }
 
-//nolint
+// nolint
 var specialCharBlobTagsMap = map[string]string{
 	"+-./:=_ ":        "firsttag",
 	"tag2":            "+-./:=_",
@@ -176,7 +175,7 @@ var specialCharBlobTagsMap = map[string]string{
 // This should make it easy to associate the entities with their test, uniquely identify
 // them, and determine the order in which they were created.
 // Note that this imposes a restriction on the length of test names
-//nolint
+// nolint
 func generateName(prefix string) string {
 	// These next lines up through the for loop are obtaining and walking up the stack
 	// trace to extract the test name, which is stored in name
@@ -230,7 +229,7 @@ func getReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	return internal.NopCloser(r)
 }
 
-//nolint
+// nolint
 func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
 	rand.Read(data)
@@ -389,7 +388,7 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-//nolint
+// nolint
 func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
 	accountName, accountKey := getAccountInfo(recording, accountType)
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
@@ -397,7 +396,7 @@ func getConnectionString(recording *testframework.Recording, accountType testAcc
 	return connectionString
 }
 
-//nolint
+// nolint
 func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (*ServiceClient, error) {
 	if recording != nil {
 		if options == nil {
@@ -448,7 +447,7 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 	return serviceClient, err
 }
 
-//nolint
+// nolint
 func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)
@@ -502,7 +501,7 @@ func disableSoftDelete(_require *require.Assertions, bsu *ServiceClient) {
 func validateUpload(_require *require.Assertions, blobClient *BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := io.ReadAll(resp.RawResponse.Body)
 	_require.Nil(err)
 	_require.Len(data, 0)
 }

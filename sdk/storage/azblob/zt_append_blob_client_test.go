@@ -13,12 +13,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"strings"
 	"time"
 )
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -58,7 +58,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -112,7 +112,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -202,13 +202,13 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_require.Nil(err)
 
-	destData, err := ioutil.ReadAll(downloadResp.RawResponse.Body)
+	destData, err := io.ReadAll(downloadResp.RawResponse.Body)
 	_require.Nil(err)
 	_require.Equal(destData, sourceData)
 	_ = downloadResp.Body(nil).Close()
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -297,7 +297,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
 	_require.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+	destData, err := io.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.EqualValues(destData, sourceData)
 

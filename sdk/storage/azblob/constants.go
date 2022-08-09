@@ -8,7 +8,7 @@ package azblob
 
 var SASVersion = "2019-12-12"
 
-//nolint
+// nolint
 const (
 	// BlockBlobMaxUploadBlobBytes indicates the maximum number of bytes that can be sent in a call to Upload.
 	BlockBlobMaxUploadBlobBytes = 256 * 1024 * 1024 // 256MB

@@ -12,7 +12,6 @@ import (
 	"errors"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"net/url"
 	"strconv"
 	"strings"
@@ -182,7 +181,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_require.Nil(err)
 
 	// Read the blob data to verify the copy
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := io.ReadAll(resp.RawResponse.Body)
 	_require.Nil(err)
 	_require.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_require.Equal(string(data), blockBlobDefaultData)
@@ -384,7 +383,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 	validateStorageError(_require, err, StorageErrorCodeCannotVerifyCopySource)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -453,14 +452,14 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
+	data, err := io.ReadAll(resp2.RawResponse.Body)
 	_require.Nil(err)
 	_require.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 	_require.Equal(string(data), blockBlobDefaultData)
 	_ = resp2.Body(nil).Close()
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1020,7 +1019,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	validateStorageError(_require, err, StorageErrorCodeTargetConditionNotMet)
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1612,7 +1611,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	_require.Nil(err)
 
 	// Specifying a count of 0 results in the value being ignored
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := io.ReadAll(resp.RawResponse.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1640,7 +1639,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 	resp, err := bbClient.Download(ctx, &options)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := io.ReadAll(resp.RawResponse.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1667,7 +1666,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	resp, err := bbClient.Download(ctx, &options)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := io.ReadAll(resp.RawResponse.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1695,7 +1694,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	resp, err := bbClient.Download(ctx, &options)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := io.ReadAll(resp.RawResponse.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -3212,7 +3211,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
 }
 
-//nolint
+// nolint
 func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *ServiceClient) error {
 	//containerClient := createNewContainer(_require, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(_require, containerClient)
@@ -3438,7 +3437,7 @@ func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 	}
 }
 
-//nolint
+// nolint
 func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3460,19 +3459,19 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 	// Verify that we can inject errors first.
 	reader := resp.Body(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
 
-	_, err = ioutil.ReadAll(reader)
+	_, err = io.ReadAll(reader)
 	_require.NotNil(err)
 	_require.Equal(err.Error(), "unrecoverable error")
 
 	// Then inject the retryable error.
 	reader = resp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
 
-	buf, err := ioutil.ReadAll(reader)
+	buf, err := io.ReadAll(reader)
 	_require.Nil(err)
 	_require.EqualValues(buf, []byte(blockBlobDefaultData))
 }
 
-//nolint
+// nolint
 func InjectErrorInRetryReaderOptions(err error) *RetryReaderOptions {
 	return &RetryReaderOptions{
 		MaxRetryRequests:       1,

@@ -10,7 +10,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -107,7 +107,7 @@ const (
 
 func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.ResponsePredicate {
 	return func(req *http.Request) bool {
-		body, err := ioutil.ReadAll(req.Body)
+		body, err := io.ReadAll(req.Body)
 		if err != nil {
 			t.Fatal("Expected a request with the JWT in the body.")
 		}

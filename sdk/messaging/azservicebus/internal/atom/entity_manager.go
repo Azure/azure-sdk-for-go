@@ -10,7 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -214,7 +213,7 @@ var ErrFeedEmpty = errors.New("entity does not exist")
 // (similar to xml.Unmarshal, which this func is calling).
 // If an empty feed is found, it returns nil.
 func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, error) {
-	bytes, err := ioutil.ReadAll(resp.Body)
+	bytes, err := io.ReadAll(resp.Body)
 
 	if err != nil {
 		return resp, err

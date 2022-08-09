@@ -6,7 +6,6 @@ package atom
 import (
 	"context"
 	"io"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -16,6 +15,6 @@ func CloseRes(ctx context.Context, res *http.Response) {
 		return
 	}
 
-	_, _ = io.Copy(ioutil.Discard, res.Body)
+	_, _ = io.Copy(io.Discard, res.Body)
 	_ = res.Body.Close()
 }

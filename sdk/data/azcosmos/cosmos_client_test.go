@@ -6,7 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"testing"
@@ -202,7 +202,7 @@ func TestAttachContent(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	readBody, _ := ioutil.ReadAll(req.Body())
+	readBody, _ := io.ReadAll(req.Body())
 
 	if string(readBody) != string(marshalled) {
 		t.Errorf("Expected %v, but got %v", string(marshalled), string(readBody))
@@ -219,7 +219,7 @@ func TestAttachContent(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	readBody, _ = ioutil.ReadAll(req.Body())
+	readBody, _ = io.ReadAll(req.Body())
 
 	if string(readBody) != string(marshalled) {
 		t.Errorf("Expected %v, but got %v", string(marshalled), string(readBody))
@@ -530,7 +530,7 @@ func (p *pipelineVerifier) Do(req *policy.Request) (*http.Response, error) {
 	pr.method = req.Raw().Method
 	pr.url = req.Raw().URL
 	if req.Body() != nil {
-		readBody, _ := ioutil.ReadAll(req.Body())
+		readBody, _ := io.ReadAll(req.Body())
 		pr.body = string(readBody)
 	}
 	pr.contentType = req.Raw().Header.Get(headerContentType)

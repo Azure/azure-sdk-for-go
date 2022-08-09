@@ -59,8 +59,8 @@ function Invoke-MgmtTestgen ()
         {
             $mockTestFlag = "false"
         }
-        Write-Host "autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag $autorestPath"
-        npx autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag $autorestPath
+        Write-Host "autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --honor-body-placement --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag $autorestPath"
+        npx autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --honor-body-placement --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag $autorestPath
         if ($LASTEXITCODE)
         {
             Write-Host "##[error]Error running autorest.gotest"

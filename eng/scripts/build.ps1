@@ -44,11 +44,11 @@ function Process-Sdk ()
         }
         if ($filePrefix)
         {
-            autorest --version=$autorestVersion --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false $autorestPath
+            autorest --version=$autorestVersion --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --honor-body-placement --clear-output-folder=false --go.clear-output-folder=false $autorestPath
         }
         else
         {
-            autorest --version=$autorestVersion --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false $autorestPath
+            autorest --version=$autorestVersion --use=$goExtension --go --track2 --output-folder=$outputFolder --honor-body-placement --clear-output-folder=false --go.clear-output-folder=false $autorestPath
         }
         
         if ($LASTEXITCODE)

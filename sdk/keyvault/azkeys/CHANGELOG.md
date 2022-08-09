@@ -6,10 +6,6 @@
 * Changed type of `NewClient` options parameter to `azkeys.ClientOptions`, which embeds
   the former type, `azcore.ClientOptions`
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 0.6.0 (2022-07-07)
 
 ### Breaking Changes

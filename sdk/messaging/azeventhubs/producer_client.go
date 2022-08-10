@@ -127,13 +127,7 @@ func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *NewEve
 		batch.partitionKey = options.PartitionKey
 	}
 
-	partitionID := anyPartitionID
-
-	if batch.partitionID != nil {
-		partitionID = *batch.partitionID
-	}
-
-	err := pc.links.Retry(ctx, exported.EventProducer, "NewEventDataBatch", partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+	err := pc.links.Retry(ctx, exported.EventProducer, "NewEventDataBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
 		if options.MaxBytes == 0 {
 			batch.maxBytes = lwid.Link.MaxMessageSize()
 			return nil
@@ -161,7 +155,7 @@ type SendEventBatchOptions struct {
 
 // SendEventBatch sends an event data batch to Event Hubs.
 func (pc *ProducerClient) SendEventBatch(ctx context.Context, batch *EventDataBatch, options *SendEventBatchOptions) error {
-	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventBatch", *batch.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
 		return lwid.Link.Send(ctx, batch.toAMQPMessage())
 	})
 	return internal.TransformError(err)
@@ -301,4 +295,12 @@ func parseConn(connectionString string, eventHub string) (*conn.ParsedConn, erro
 	}
 
 	return parsedConn, nil
+}
+
+func getPartitionID(partitionID *string) string {
+	if partitionID != nil {
+		return *partitionID
+	}
+
+	return anyPartitionID
 }

@@ -16,6 +16,7 @@ function Invoke-MgmtTestgen ()
         [switch]$cleanGenerated,
         [switch]$format,
         [switch]$tidy,
+        [switch]$alwaysSetBodyParamRequired,
         [string]$autorestPath = "",
         [string]$config = "autorest.md",
         [string]$autorestVersion = "3.8.2",
@@ -40,7 +41,8 @@ function Invoke-MgmtTestgen ()
     {
         Write-Host "##[command]Executing autorest.gotest in " $sdkDirectory
 
-        if ($autorestPath -eq "") {
+        if ($autorestPath -eq "")
+        {
             $autorestPath = "./" + $config
         }
         
@@ -59,8 +61,15 @@ function Invoke-MgmtTestgen ()
         {
             $mockTestFlag = "false"
         }
-        Write-Host "autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag $autorestPath"
-        npx autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag $autorestPath
+        
+        $honorBodyPlacement = "false"
+        if (-not $alwaysSetBodyParamRequired)
+        {
+            $honorBodyPlacement = "true"
+        }
+
+        Write-Host "autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement $autorestPath"
+        npx autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement $autorestPath
         if ($LASTEXITCODE)
         {
             Write-Host "##[error]Error running autorest.gotest"
@@ -134,16 +143,21 @@ function StartMockServer()
 
     $swaggerPath = $swaggerInfo.path
     $specName = $swaggerInfo.specName
-    if ($swaggerInfo.isRepoUrl -eq $true) {
+    if ($swaggerInfo.isRepoUrl -eq $true)
+    {
         Add-Content $envFile "specRetrievalGitUrl=$swaggerPath"
-        if ([string]::IsNullOrEmpty($swaggerInfo.branch) -eq $false) {
+        if ([string]::IsNullOrEmpty($swaggerInfo.branch) -eq $false)
+        {
             Add-Content $envFile "specRetrievalGitBranch=$($swaggerInfo.branch)"
         }
-        if ([string]::IsNullOrEmpty($swaggerInfo.commitID) -eq $false) {
+        if ([string]::IsNullOrEmpty($swaggerInfo.commitID) -eq $false)
+        {
             Add-Content $envFile "specRetrievalGitCommitID=$($swaggerInfo.commitID)"
         }
         Add-Content $envFile "validationPathsPattern=specification/$specName/resource-manager/**/*.json"
-    } else {
+    }
+    else
+    {
         Write-Host "start Mock Test from local swagger"
         Add-Content $envFile "specRetrievalMethod=filesystem
 specRetrievalLocalRelativePath=$swaggerPath
@@ -191,7 +205,8 @@ function StopMockServer()
     }
 }
 
-function GetSwaggerInfo() {
+function GetSwaggerInfo()
+{
     param(
         [string]$specDir = "",
         [string]$rpSDKFolder,
@@ -200,29 +215,35 @@ function GetSwaggerInfo() {
 
     if ([string]::IsNullOrEmpty($rpSDKFolder))
     {
-        if ([string]::IsNullOrEmpty($specDir)) {
+        if ([string]::IsNullOrEmpty($specDir))
+        {
             $swaggerInfo = [PSCustomObject]@{
                 isRepoUrl = $true
-                path = "https://github.com/Azure/azure-rest-api-specs"
-                specName = "*"
-                org = "Azure"
-                branch = "main"
-                commitID = ""
-            }
-        } else {
-            $swaggerInfo = [PSCustomObject]@{
-                isRepoUrl = $false
-                path = $specDir
-                specName = "*"
-                org = ""
-                branch = ""
-                commitID = ""
+                path      = "https://github.com/Azure/azure-rest-api-specs"
+                specName  = "*"
+                org       = "Azure"
+                branch    = "main"
+                commitID  = ""
             }
         }
-    } else {
-        $file="$rpSDKFolder/$autorestConfigFile"
-        $readmefile = (Select-String -Path $file -Pattern ".*readme.md" | ForEach-Object {$_.Matches.Value}) -replace "require *:|- ", ""
-        if ([string]::IsNullOrEmpty($readmefile)) {
+        else
+        {
+            $swaggerInfo = [PSCustomObject]@{
+                isRepoUrl = $false
+                path      = $specDir
+                specName  = "*"
+                org       = ""
+                branch    = ""
+                commitID  = ""
+            }
+        }
+    }
+    else
+    {
+        $file = "$rpSDKFolder/$autorestConfigFile"
+        $readmefile = (Select-String -Path $file -Pattern ".*readme.md" | ForEach-Object { $_.Matches.Value }) -replace "require *:|- ", ""
+        if ([string]::IsNullOrEmpty($readmefile))
+        {
             Write-Host "Cannot get swagger info"
             exit 1
         }
@@ -236,10 +257,12 @@ function GetSwaggerInfo() {
         $commitID = ""
         $readmefile = $readmefile.Trim()
 
-        if ($readmefile.StartsWith("http")) {
+        if ($readmefile.StartsWith("http"))
+        {
             $isRepoUrl = $true
         }
-        if ($isRepoUrl -eq $true) {
+        if ($isRepoUrl -eq $true)
+        {
             $swaggerInfoRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/blob\/(?<commitID>[0-9a-f]{40})\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
             $rawSwaggerInfoRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/(?<commitID>[0-9a-f]{40})\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
             $swaggerNoCommitRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/(blob\/)?(?<branch>.*)\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
@@ -251,13 +274,15 @@ function GetSwaggerInfo() {
                     $specName = $matches["specName"]
                     $commitID = $matches["commitID"]
                     $path = "https://github.com/$org/azure-rest-api-specs"
-                } elseif ($readmefile -match $rawSwaggerInfoRegex)
+                }
+                elseif ($readmefile -match $rawSwaggerInfoRegex)
                 {
                     $org = $matches["org"]
                     $specName = $matches["specName"]
                     $commitID = $matches["commitID"]
                     $path = "https://github.com/$org/azure-rest-api-specs"
-                }elseif ($readmefile -match $swaggerNoCommitRegex)
+                }
+                elseif ($readmefile -match $swaggerNoCommitRegex)
                 {
                     $org = $matches["org"]
                     $specName = $matches["specName"]
@@ -270,10 +295,13 @@ function GetSwaggerInfo() {
                 Write-Error "Error parsing swagger info"
                 Write-Error $_
             }
-        } else {
+        }
+        else
+        {
             $paths = $readmefile.split("/");
             $len = $paths.count
-            if ($len -gt 2) {
+            if ($len -gt 2)
+            {
                 $specName = $paths[$len - 3]
                 $path = ($paths[0..($len - 4)]) -join "/"
             }
@@ -281,11 +309,11 @@ function GetSwaggerInfo() {
         
         $swaggerInfo = [PSCustomObject]@{
             isRepoUrl = $isRepoUrl
-            path = $path
-            specName = $specName
-            org = $org
-            branch = $branch
-            commitID = $commitID
+            path      = $path
+            specName  = $specName
+            org       = $org
+            branch    = $branch
+            commitID  = $commitID
         }
     }
 
@@ -329,16 +357,18 @@ function JudgeExitCode($errorMsg = "execution error")
     }
 }
 
-function ExecuteSingleTest($sdk, $needRunMockServer=$true)
+function ExecuteSingleTest($sdk, $needRunMockServer = $true)
 {
     Write-Host "Start mock server"
-    if ($needRunMockServer -eq $true) {
+    if ($needRunMockServer -eq $true)
+    {
         StartMockServer -rpSDKFolder $sdk.DirectoryPath
     }
     Write-Host "Execute mock test for $($sdk.Name)"
     TestAndGenerateReport $sdk.DirectoryPath
     Write-Host "Stop mock server"
-    if ($needRunMockServer -eq $true) {
+    if ($needRunMockServer -eq $true)
+    {
         StopMockServer
     }
 }

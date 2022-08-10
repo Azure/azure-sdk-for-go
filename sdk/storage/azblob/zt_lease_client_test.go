@@ -2,12 +2,14 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azblob
+package azblob_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
@@ -31,13 +33,13 @@ func (s *azblobTestSuite) TestContainerAcquireLease() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
+	containerLeaseClient, _ := containerClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &ContainerAcquireLeaseOptions{Duration: to.Ptr[int32](60)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &container.AcquireLeaseOptions{Duration: to.Ptr[int32](60)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_require.EqualValues(*acquireLeaseResponse.LeaseID, *containerLeaseClient.LeaseID())
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
 	_require.Nil(err)
@@ -57,21 +59,23 @@ func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
+	containerLeaseClient, _ := containerClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &ContainerAcquireLeaseOptions{Duration: to.Ptr[int32](60)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &container.AcquireLeaseOptions{Duration: to.Ptr[int32](60)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_require.EqualValues(*acquireLeaseResponse.LeaseID, *containerLeaseClient.LeaseID())
 
 	_, err = containerClient.Delete(ctx, nil)
 	_require.NotNil(err)
 
-	leaseID := containerLeaseClient.leaseID
-	_, err = containerClient.Delete(ctx, &ContainerDeleteOptions{
-		LeaseAccessConditions: &LeaseAccessConditions{
-			LeaseID: leaseID,
+	leaseID := containerLeaseClient.LeaseID()
+	_, err = containerClient.Delete(ctx, &container.DeleteOptions{
+		AccessConditions: &container.AccessConditions{
+			LeaseAccessConditions: &container.LeaseAccessConditions{
+				LeaseID: leaseID,
+			},
 		},
 	})
 	_require.Nil(err)
@@ -93,13 +97,13 @@ func (s *azblobTestSuite) TestContainerReleaseLease() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
+	containerLeaseClient, _ := containerClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &ContainerAcquireLeaseOptions{Duration: to.Ptr[int32](60)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &container.AcquireLeaseOptions{Duration: to.Ptr[int32](60)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_require.EqualValues(*acquireLeaseResponse.LeaseID, *containerLeaseClient.LeaseID())
 
 	_, err = containerClient.Delete(ctx, nil)
 	_require.NotNil(err)
@@ -127,13 +131,13 @@ func (s *azblobTestSuite) TestContainerRenewLease() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
+	containerLeaseClient, _ := containerClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &ContainerAcquireLeaseOptions{Duration: to.Ptr[int32](15)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &container.AcquireLeaseOptions{Duration: to.Ptr[int32](15)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_require.EqualValues(*acquireLeaseResponse.LeaseID, *containerLeaseClient.LeaseID())
 
 	_, err = containerLeaseClient.RenewLease(ctx, nil)
 	_require.Nil(err)
@@ -158,20 +162,20 @@ func (s *azblobTestSuite) TestContainerChangeLease() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
+	containerLeaseClient, _ := containerClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &ContainerAcquireLeaseOptions{Duration: to.Ptr[int32](15)})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &container.AcquireLeaseOptions{Duration: to.Ptr[int32](15)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	_require.EqualValues(*acquireLeaseResponse.LeaseID, *containerLeaseClient.LeaseID())
 
-	changeLeaseResp, err := containerLeaseClient.ChangeLease(ctx, &ContainerChangeLeaseOptions{
+	changeLeaseResp, err := containerLeaseClient.ChangeLease(ctx, &container.ChangeLeaseOptions{
 		ProposedLeaseID: proposedLeaseIDs[1],
 	})
 	_require.Nil(err)
 	_require.EqualValues(changeLeaseResp.LeaseID, proposedLeaseIDs[1])
-	_require.EqualValues(containerLeaseClient.leaseID, proposedLeaseIDs[1])
+	_require.EqualValues(containerLeaseClient.LeaseID(), proposedLeaseIDs[1])
 
 	_, err = containerLeaseClient.RenewLease(ctx, nil)
 	_require.Nil(err)
@@ -198,13 +202,13 @@ func (s *azblobTestSuite) TestBlobAcquireLease() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
-	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &BlobAcquireLeaseOptions{Duration: to.Ptr[int32](60)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &blob.AcquireLeaseOptions{Duration: to.Ptr[int32](60)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
 	_require.Nil(err)
@@ -228,21 +232,21 @@ func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
-	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &BlobAcquireLeaseOptions{Duration: to.Ptr[int32](60)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &blob.AcquireLeaseOptions{Duration: to.Ptr[int32](60)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
 
-	_, err = blobLeaseClient.Delete(ctx, nil)
+	_, err = blobLeaseClient.BlobClient().Delete(ctx, nil)
 	_require.NotNil(err)
 
-	leaseID := blobLeaseClient.leaseID
-	_, err = blobLeaseClient.Delete(ctx, &BlobDeleteOptions{
-		BlobAccessConditions: &BlobAccessConditions{
-			LeaseAccessConditions: &LeaseAccessConditions{
+	leaseID := blobLeaseClient.LeaseID()
+	_, err = blobLeaseClient.BlobClient().Delete(ctx, &blob.DeleteOptions{
+		AccessConditions: &blob.AccessConditions{
+			LeaseAccessConditions: &blob.LeaseAccessConditions{
 				LeaseID: leaseID,
 			},
 		},
@@ -268,21 +272,21 @@ func (s *azblobTestSuite) TestBlobReleaseLease() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
-	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &BlobAcquireLeaseOptions{Duration: to.Ptr[int32](60)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &blob.AcquireLeaseOptions{Duration: to.Ptr[int32](60)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
 
-	_, err = blobLeaseClient.Delete(ctx, nil)
+	_, err = blobLeaseClient.BlobClient().Delete(ctx, nil)
 	_require.NotNil(err)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
 	_require.Nil(err)
 
-	_, err = blobLeaseClient.Delete(ctx, nil)
+	_, err = blobLeaseClient.BlobClient().Delete(ctx, nil)
 	_require.Nil(err)
 }
 
@@ -301,13 +305,13 @@ func (s *azblobTestSuite) TestBlobRenewLease() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
-	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &BlobAcquireLeaseOptions{Duration: to.Ptr[int32](15)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &blob.AcquireLeaseOptions{Duration: to.Ptr[int32](15)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
-	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
 
 	_, err = blobLeaseClient.RenewLease(ctx, nil)
 	_require.Nil(err)
@@ -334,15 +338,15 @@ func (s *azblobTestSuite) TestBlobChangeLease() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
-	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &BlobAcquireLeaseOptions{Duration: to.Ptr[int32](15)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &blob.AcquireLeaseOptions{Duration: to.Ptr[int32](15)})
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.Equal(*acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
 
-	changeLeaseResp, err := blobLeaseClient.ChangeLease(ctx, &BlobChangeLeaseOptions{
+	changeLeaseResp, err := blobLeaseClient.ChangeLease(ctx, &blob.ChangeLeaseOptions{
 		ProposedLeaseID: proposedLeaseIDs[1],
 	})
 	_require.Nil(err)

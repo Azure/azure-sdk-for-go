@@ -19,8 +19,3 @@ type ClientExecuteResponse struct {
 	Results
 }
 
-// ClientGetResponse contains the response from method Client.Get.
-type ClientGetResponse struct {
-	Results
-}
-

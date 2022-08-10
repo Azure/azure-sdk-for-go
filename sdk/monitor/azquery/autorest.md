@@ -25,6 +25,7 @@ directive:
   # delete metadata operations
   - remove-operation: "Metadata_Post"
   - remove-operation: "Metadata_Get"
+  - remove-operation: "Query_Get"
 
   # delete metadata models
   - remove-model: metadataResults

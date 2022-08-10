@@ -87,13 +87,6 @@ type ClientExecuteOptions struct {
 	Prefer *string
 }
 
-// ClientGetOptions contains the optional parameters for the Client.Get method.
-type ClientGetOptions struct {
-	// Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied in addition
-// to any that are specified in the query expression.
-	Timespan *string
-}
-
 // Column - A column in a table.
 type Column struct {
 	// The name of this column.

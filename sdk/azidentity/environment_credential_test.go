@@ -198,7 +198,7 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
-	srv.AppendResponse()
+	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
 	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
 	srv.AppendResponse(mock.WithPredicate(validateJWTRequestContainsHeader(t, "x5c")), mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse()

@@ -30,13 +30,7 @@ const (
 	accessTokenRespSuccess   = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
 	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
 	badTenantID              = "bad_tenant"
-	tokenValue               = "new_token"
-)
-
-// constants for this file
-const (
-	testHost                = "https://localhost"
-	tenantDiscoveryResponse = `{
+	tenantDiscoveryResponse  = `{
 		"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",
 		"token_endpoint_auth_methods_supported": [
 		"client_secret_post",
@@ -103,6 +97,29 @@ const (
 		"msgraph_host": "graph.microsoft.com",
 		"rbac_url": "https://pas.windows.net"
 		}`
+	tokenValue = "new_token"
+)
+
+var instanceDiscoveryResponse = []byte(`{
+	"tenant_discovery_endpoint": "https://login.microsoftonline.com/tenant/v2.0/.well-known/openid-configuration",
+	"api-version": "1.1",
+	"metadata": [
+		{
+			"preferred_network": "login.microsoftonline.com",
+			"preferred_cache": "login.windows.net",
+			"aliases": [
+				"login.microsoftonline.com",
+				"login.windows.net",
+				"login.microsoft.com",
+				"sts.windows.net"
+			]
+		}
+	]
+}`)
+
+// constants for this file
+const (
+	testHost = "https://localhost"
 )
 
 func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.ResponsePredicate {

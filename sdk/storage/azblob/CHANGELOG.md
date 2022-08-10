@@ -2,13 +2,11 @@
 
 ## 0.5.0 (Unreleased)
 
+### Features Added
+
 ### Breaking Changes
 
-* Complete architectural change for better user experience. Please see the example file for more information.
-
 ### Bugs Fixed
-
-* Fixed bugs reported in the previous version of `azblob`.
 
 ### Other Changes
 

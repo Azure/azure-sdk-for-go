@@ -1,8 +1,8 @@
-# Azure Connectedvmware Module for Go
+# Azure Arc VMware Management Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware)
 
-The `armconnectedvmware` module provides operations for working with Azure Connectedvmware.
+The `armconnectedvmware` module provides operations for working with Azure Arc VMware Management.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/connectedvmware/armconnectedvmware)
 
@@ -17,7 +17,7 @@ The `armconnectedvmware` module provides operations for working with Azure Conne
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Connectedvmware module:
+Install the Azure Arc VMware Management module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/arm
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Connectedvmware.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Arc VMware Management.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Clients
 
-Azure Connectedvmware modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
+Azure Arc VMware Management modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
 client, err := armconnectedvmware.NewVirtualMachineTemplatesClient(<subscription ID>, cred, nil)
@@ -55,7 +55,7 @@ client, err := armconnectedvmware.NewVirtualMachineTemplatesClient(<subscription
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Connectedvmware` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Arc VMware Management` label.
 
 # Contributing
 

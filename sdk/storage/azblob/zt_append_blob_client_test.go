@@ -9,12 +9,14 @@ package azblob_test
 import (
 	"bytes"
 	"crypto/md5"
+	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/stretchr/testify/require"
-	"strings"
 )
 
 // nolint
@@ -84,7 +86,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	appendBlockOptions := appendblob.AppendBlockOptions{
 		TransactionalContentMD5: contentMD5,
 	}
-	appendResp, err := abClient.AppendBlock(ctx, NopCloser(readerToBody), &appendBlockOptions)
+	appendResp, err := abClient.AppendBlock(ctx, streaming.NopCloser(readerToBody), &appendBlockOptions)
 	_require.Nil(err)
 	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
@@ -105,7 +107,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	appendBlockOptions = appendblob.AppendBlockOptions{
 		TransactionalContentMD5: badMD5,
 	}
-	appendResp, err = abClient.AppendBlock(ctx, NopCloser(readerToBody), &appendBlockOptions)
+	appendResp, err = abClient.AppendBlock(ctx, streaming.NopCloser(readerToBody), &appendBlockOptions)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
@@ -136,7 +138,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 //	_require.Nil(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
-//	appendResp, err := srcBlob.AppendBlock(ctx, NopCloser(r), nil)
+//	appendResp, err := srcBlob.AppendBlock(ctx, streaming.NopCloser(r), nil)
 //	_require.Nil(err)
 //	_require.Nil(err)
 //	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
@@ -232,7 +234,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 //	_require.Nil(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
-//	appendResp, err := srcBlob.AppendBlock(ctx, NopCloser(r), nil)
+//	appendResp, err := srcBlob.AppendBlock(ctx, streaming.NopCloser(r), nil)
 //	_require.Nil(err)
 //	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 //	_require.Equal(*appendResp.BlobAppendOffset, "0")
@@ -724,7 +726,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNilBody() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(bytes.NewReader(nil)), nil)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(bytes.NewReader(nil)), nil)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
@@ -746,7 +748,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockEmptyBody() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader("")), nil)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader("")), nil)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
@@ -768,7 +770,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -810,7 +812,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceTrue() {
 			},
 		},
 	}
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_require.Nil(err)
 
 	validateBlockAppended(_require, abClient, len(blockBlobDefaultData))
@@ -846,7 +848,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
 			},
 		},
 	}
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -882,7 +884,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue() {
 			},
 		},
 	}
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_require.Nil(err)
 
 	validateBlockAppended(_require, abClient, len(blockBlobDefaultData))
@@ -918,7 +920,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
 			},
 		},
 	}
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_require.NotNil(err)
 
 	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -942,7 +944,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchTrue() {
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -970,7 +972,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchFalse() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfMatch: to.Ptr("garbage"),
@@ -997,7 +999,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchTrue() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfNoneMatch: to.Ptr("garbage"),
@@ -1026,7 +1028,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -1050,7 +1052,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////			AppendPosition: &appendPosition,
 ////		},
 ////	}
-////	_, err := abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions) // This will cause the library to set the value of the header to 0
+////	_, err := abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions) // This will cause the library to set the value of the header to 0
 ////	_require.NotNil(err)
 ////
 ////	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
@@ -1062,7 +1064,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////	defer deleteContainer(_require, containerClient)
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
-////	_, err := abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil) // The position will not match, but the condition should be ignored
+////	_, err := abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil) // The position will not match, but the condition should be ignored
 ////	_require.Nil(err)
 ////
 ////	appendPosition := int64(0)
@@ -1071,7 +1073,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////			AppendPosition: &appendPosition,
 ////		},
 ////	}
-////	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+////	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 ////	_require.Nil(err)
 ////
 ////	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
@@ -1093,10 +1095,10 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero() 
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AppendPositionAccessConditions: &appendblob.AppendPositionAccessConditions{
 			AppendPosition: to.Ptr(int64(len(blockBlobDefaultData))),
 		},
@@ -1122,10 +1124,10 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() 
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AppendPositionAccessConditions: &appendblob.AppendPositionAccessConditions{
 			AppendPosition: to.Ptr[int64](-1),
 		},
@@ -1150,7 +1152,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero()
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AppendPositionAccessConditions: &appendblob.AppendPositionAccessConditions{
 			AppendPosition: to.Ptr[int64](12),
 		},
@@ -1175,7 +1177,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeTrue() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AppendPositionAccessConditions: &appendblob.AppendPositionAccessConditions{
 			MaxSize: to.Ptr(int64(len(blockBlobDefaultData) + 1)),
 		},
@@ -1200,7 +1202,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_require, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AppendPositionAccessConditions: &appendblob.AppendPositionAccessConditions{
 			MaxSize: to.Ptr(int64(len(blockBlobDefaultData) - 1)),
 		},

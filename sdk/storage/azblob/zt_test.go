@@ -9,17 +9,18 @@ package azblob_test
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
-	"github.com/stretchr/testify/require"
 	"io"
 	"log"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
+	"github.com/stretchr/testify/require"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -112,19 +113,6 @@ func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
 // nolint
 func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
-}
-
-type nopCloser struct {
-	io.ReadSeeker
-}
-
-func (n nopCloser) Close() error {
-	return nil
-}
-
-// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
-func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
-	return nopCloser{rs}
 }
 
 // Some tests require setting service properties. It can take up to 30 seconds for the new properties to be reflected across all FEs.

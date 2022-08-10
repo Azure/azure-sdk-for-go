@@ -8,6 +8,10 @@ package azblob_test
 
 import (
 	"bytes"
+	"io"
+	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -15,8 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/stretchr/testify/require"
-	"io"
-	"strings"
 )
 
 // nolint
@@ -79,12 +81,12 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 		"Javascript": "Android",
 	}
 
-	blockBlobUploadResp, err := bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), nil)
+	blockBlobUploadResp, err := bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("data"))), nil)
 	_require.Nil(err)
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId1 := blockBlobUploadResp.VersionID
 
-	blockBlobUploadResp, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
+	blockBlobUploadResp, err = bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
 	_require.Nil(err)
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId2 := blockBlobUploadResp.VersionID
@@ -143,7 +145,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTa
 		HTTPHeaders: &basicHeaders,
 		Tags:        blobTagsMap,
 	}
-	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 	_require.Nil(err)
 	// TODO: Check for metadata and header
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
@@ -178,7 +180,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 
 	for index, d := range data {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
-		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
+		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], streaming.NopCloser(strings.NewReader(d)), nil)
 		_require.Nil(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.NotEqual(*resp.Version, "")
@@ -442,7 +444,7 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 	}
-	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 	_require.Nil(err)
 
 	getPropertiesResponse, err := bbClient.GetProperties(ctx, nil)

@@ -8,6 +8,11 @@ package azblob_test
 
 import (
 	"bytes"
+	"io"
+	"strconv"
+	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -15,9 +20,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/stretchr/testify/require"
-	"io"
-	"strconv"
-	"strings"
 )
 
 func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
@@ -144,7 +146,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	for i := 0; i < len(data); i++ {
 		blobName := "abc" + string(data[i])
 		blobClient := containerClient.NewBlockBlobClient(blobName)
-		resp, err := blobClient.Upload(ctx, NopCloser(strings.NewReader(string(data[i]))), nil)
+		resp, err := blobClient.Upload(ctx, streaming.NopCloser(strings.NewReader(string(data[i]))), nil)
 		_require.Nil(err)
 		_require.NotNil(resp.VersionID)
 
@@ -175,12 +177,12 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	defer deleteContainer(_require, containerClient)
 //	blobClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
-//	resp, err := blobClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &blockblob.UploadOptions{Metadata: basicMetadata})
+//	resp, err := blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("data"))), &blockblob.UploadOptions{Metadata: basicMetadata})
 //	_require.Nil(err)
 //	versionId := resp.VersionID
 //	_require.NotNil(versionId)
 //
-//	resp, err = blobClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))), &blockblob.UploadOptions{Metadata: basicMetadata})
+//	resp, err = blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("updated_data"))), &blockblob.UploadOptions{Metadata: basicMetadata})
 //	_require.Nil(err)
 //	_require.NotNil(resp.VersionID)
 //
@@ -234,7 +236,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 
 	versions := make([]string, 0)
 	for i := 0; i < 5; i++ {
-		uploadResp, err := bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &blockblob.UploadOptions{
+		uploadResp, err := bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &blockblob.UploadOptions{
 			Metadata: basicMetadata,
 		})
 		_require.Nil(err)
@@ -435,7 +437,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 
 	for index, d := range data {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
-		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
+		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], streaming.NopCloser(strings.NewReader(d)), nil)
 		_require.Nil(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.NotNil(resp.Version)
@@ -473,7 +475,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	// Prepare source blob for copy.
-	uploadResp, err := bbClient.Upload(ctx, NopCloser(r), nil)
+	uploadResp, err := bbClient.Upload(ctx, streaming.NopCloser(r), nil)
 	_require.Nil(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.NotNil(uploadResp.VersionID)

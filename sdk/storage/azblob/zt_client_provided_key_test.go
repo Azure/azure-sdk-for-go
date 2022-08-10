@@ -9,15 +9,17 @@ package azblob_test
 import (
 	"bytes"
 	"crypto/md5"
+	"io"
+	"strconv"
+	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/stretchr/testify/require"
-	"io"
-	"strconv"
-	"strings"
 )
 
 /*
@@ -73,7 +75,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 		stageBlockOptions := blockblob.StageBlockOptions{
 			CpkInfo: &testCPKByValue,
 		}
-		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(word)), &stageBlockOptions)
+		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), &stageBlockOptions)
 		_require.Nil(err)
 	}
 
@@ -127,7 +129,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 		stageBlockOptions := blockblob.StageBlockOptions{
 			CpkScopeInfo: &testCPKByScope,
 		}
-		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(word)), &stageBlockOptions)
+		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), &stageBlockOptions)
 		_require.Nil(err)
 	}
 
@@ -505,7 +507,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 		appendBlockOptions := appendblob.AppendBlockOptions{
 			CpkInfo: &testCPKByValue,
 		}
-		resp, err := abClient.AppendBlock(ctx, NopCloser(strings.NewReader(word)), &appendBlockOptions)
+		resp, err := abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.Nil(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
@@ -564,7 +566,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 		appendBlockOptions := appendblob.AppendBlockOptions{
 			CpkScopeInfo: &testCPKByScope,
 		}
-		resp, err := abClient.AppendBlock(ctx, NopCloser(strings.NewReader(word)), &appendBlockOptions)
+		resp, err := abClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.Nil(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
@@ -617,7 +619,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	_require.Nil(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
-//	resp, err := srcABClient.AppendBlock(ctx, NopCloser(r), nil)
+//	resp, err := srcABClient.AppendBlock(ctx, streaming.NopCloser(r), nil)
 //	_require.Nil(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 201)
 //	_require.Equal(*resp.BlobAppendOffset, "0")
@@ -727,7 +729,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	_require.Nil(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
-//	resp, err := srcClient.AppendBlock(ctx, NopCloser(r), nil)
+//	resp, err := srcClient.AppendBlock(ctx, streaming.NopCloser(r), nil)
 //	_require.Nil(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 201)
 //	_require.Equal(*resp.BlobAppendOffset, "0")
@@ -943,7 +945,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		Offset: to.Ptr(offset), Count: to.Ptr(count),
 //	}
-//	_, err = bbClient.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
+//	_, err = bbClient.UploadPages(ctx, streaming.NopCloser(r), &uploadPagesOptions)
 //	_require.Nil(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //	srcBlobParts, _ := NewBlobURLParts(bbClient.URL())
@@ -1028,7 +1030,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		Offset: to.Ptr(offset), Count: to.Ptr(count),
 //	}
-//	_, err = srcPBClient.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
+//	_, err = srcPBClient.UploadPages(ctx, streaming.NopCloser(r), &uploadPagesOptions)
 //	_require.Nil(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //	srcBlobParts, _ := NewBlobURLParts(srcPBClient.URL())
@@ -1101,7 +1103,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		Offset: to.Ptr(offset), Count: to.Ptr(count),
 //	}
-//	_, err = srcBlob.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
+//	_, err = srcBlob.UploadPages(ctx, streaming.NopCloser(r), &uploadPagesOptions)
 //	_require.Nil(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //

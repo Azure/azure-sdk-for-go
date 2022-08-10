@@ -13,7 +13,16 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"io"
+	"math/rand"
+	"net/url"
+	"os"
+	"runtime"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
@@ -23,13 +32,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
-	"io"
-	"math/rand"
-	"net/url"
-	"os"
-	"runtime"
-	"strings"
-	"time"
 )
 
 // Index
@@ -223,7 +225,7 @@ func getBlockBlobClient(blockBlobName string, containerClient *container.Client)
 func createNewBlockBlob(_require *require.Assertions, blockBlobName string, containerClient *container.Client) *blockblob.Client {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	_, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return bbClient
@@ -236,7 +238,7 @@ func createNewBlockBlobWithCPK(_require *require.Assertions, blockBlobName strin
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	}
-	cResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
+	cResp, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
 	_require.Nil(err)
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	_require.Equal(*cResp.IsServerEncrypted, true)
@@ -337,7 +339,7 @@ func generateBlobName(testName string) string {
 
 func getReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	r, _ := generateData(n)
-	return NopCloser(r)
+	return streaming.NopCloser(r)
 }
 
 // nolint
@@ -361,7 +363,7 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	} else {
 		copy(data[:], random64BString)
 	}
-	return NopCloser(bytes.NewReader(data)), data
+	return streaming.NopCloser(bytes.NewReader(data)), data
 }
 
 // 5. Utility Functions ------------------------------------------------------------------------------------------------

@@ -10,12 +10,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:22:02 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:57:05 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocresizepageblob?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocresizepageblob?restype=container
     method: PUT
   response:
     body: ""
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:22:01 GMT
+      - Tue, 09 Aug 2022 06:57:02 GMT
       Etag:
-      - '"0x8DA34769A17BD52"'
+      - '"0x8DA79D45D4BF398"'
       Last-Modified:
-      - Fri, 13 May 2022 00:22:02 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 8317807a-301e-0046-5c5f-663fbd000000
+      - a5454e7c-c01e-0055-6fbd-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -48,16 +48,16 @@ interactions:
       Content-Length:
       - "0"
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
-      X-Ms-Blob-Content-Length:
-      - "5120"
-      X-Ms-Blob-Type:
-      - PageBlob
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:22:02 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:57:05 GMT
+      x-ms-blob-content-length:
+      - "5120"
+      x-ms-blob-type:
+      - PageBlob
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocresizepageblob/gotestblobresizepageblob
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocresizepageblob/gotestblobresizepageblob
     method: PUT
   response:
     body: ""
@@ -65,19 +65,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:22:01 GMT
+      - Tue, 09 Aug 2022 06:57:02 GMT
       Etag:
-      - '"0x8DA34769A1B484A"'
+      - '"0x8DA79D45D72A23D"'
       Last-Modified:
-      - Fri, 13 May 2022 00:22:02 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 83178089-301e-0046-6a5f-663fbd000000
+      - a54550ab-c01e-0055-7abd-ab9ff3000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-08-09T06:57:03.4167869Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -90,14 +92,14 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
-      X-Ms-Blob-Content-Length:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:57:05 GMT
+      x-ms-blob-content-length:
       - "2048"
-      X-Ms-Date:
-      - Fri, 13 May 2022 00:22:02 GMT
-      X-Ms-Version:
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocresizepageblob/gotestblobresizepageblob?comp=properties
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocresizepageblob/gotestblobresizepageblob?comp=properties
     method: PUT
   response:
     body: ""
@@ -105,17 +107,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:22:01 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Etag:
-      - '"0x8DA34769A1ECA33"'
+      - '"0x8DA79D45D9C4438"'
       Last-Modified:
-      - Fri, 13 May 2022 00:22:02 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
       - "0"
       X-Ms-Request-Id:
-      - 83178096-301e-0046-745f-663fbd000000
+      - a54552a3-c01e-0055-4dbd-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -130,14 +132,14 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
-      X-Ms-Blob-Content-Length:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:57:05 GMT
+      x-ms-blob-content-length:
       - "8192"
-      X-Ms-Date:
-      - Fri, 13 May 2022 00:22:02 GMT
-      X-Ms-Version:
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocresizepageblob/gotestblobresizepageblob?comp=properties
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocresizepageblob/gotestblobresizepageblob?comp=properties
     method: PUT
   response:
     body: ""
@@ -145,17 +147,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:22:01 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Etag:
-      - '"0x8DA34769A22E839"'
+      - '"0x8DA79D45DC2D969"'
       Last-Modified:
-      - Fri, 13 May 2022 00:22:02 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
       - "0"
       X-Ms-Request-Id:
-      - 831780a8-301e-0046-045f-663fbd000000
+      - a5455435-c01e-0055-42bd-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -170,12 +172,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:22:02 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:57:06 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocresizepageblob/gotestblobresizepageblob
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocresizepageblob/gotestblobresizepageblob
     method: HEAD
   response:
     body: ""
@@ -187,11 +189,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Fri, 13 May 2022 00:22:01 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Etag:
-      - '"0x8DA34769A22E839"'
+      - '"0x8DA79D45DC2D969"'
       Last-Modified:
-      - Fri, 13 May 2022 00:22:02 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -199,17 +201,21 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Fri, 13 May 2022 00:22:02 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
+      X-Ms-Is-Current-Version:
+      - "true"
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 831780ba-301e-0046-165f-663fbd000000
+      - a54555ec-c01e-0055-5abd-ab9ff3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-08-09T06:57:03.4167869Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -222,12 +228,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:22:02 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:57:06 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocresizepageblob?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocresizepageblob?restype=container
     method: DELETE
   response:
     body: ""
@@ -235,11 +241,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:22:01 GMT
+      - Tue, 09 Aug 2022 06:57:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 831780da-301e-0046-345f-663fbd000000
+      - a545579b-c01e-0055-64bd-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

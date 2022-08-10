@@ -5,6 +5,7 @@ package azeventhubs
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"net"
 	"time"
@@ -55,7 +56,7 @@ type StartPosition struct {
 	// or inclusive, based on the Inclusive property.
 	// NOTE: offsets are not stable values, and might refer to different events over time
 	// as the Event Hub events reach their age limit and are discarded.
-	Offset *uint64
+	Offset *int64
 
 	// SequenceNumber will start the consumer after the specified sequence number. Can be exclusive
 	// or inclusive, based on the Inclusive property.
@@ -181,11 +182,7 @@ func (cc *ConsumerClient) ReceiveEvents(ctx context.Context, count int, options 
 		return nil, internal.TransformError(err)
 	}
 
-	cc.offsetExpression = getOffsetExpression(StartPosition{
-		SequenceNumber: to.Ptr(events[len(events)-1].SequenceNumber),
-		Inclusive:      false,
-	})
-
+	cc.offsetExpression = formatOffsetExpressionForSequence(">", events[len(events)-1].SequenceNumber)
 	return events, nil
 }
 
@@ -220,34 +217,66 @@ func (cc *ConsumerClient) Close(ctx context.Context) error {
 	return cc.namespace.Close(ctx, true)
 }
 
-func getOffsetExpression(startPosition StartPosition) string {
+func getOffsetExpression(startPosition StartPosition) (string, error) {
 	lt := ">"
 
 	if startPosition.Inclusive {
 		lt = ">="
 	}
 
+	var errMultipleFieldsSet = errors.New("only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
+
+	offsetExpr := ""
+
 	if startPosition.EnqueuedTime != nil {
 		// time-based, non-inclusive
-		return fmt.Sprintf("amqp.annotation.x-opt-enqueued-time %s '%v'", lt, startPosition.EnqueuedTime.UnixNano()/int64(time.Millisecond))
+		offsetExpr = fmt.Sprintf("amqp.annotation.x-opt-enqueued-time %s '%d'", lt, startPosition.EnqueuedTime.UnixMilli())
 	}
 
 	if startPosition.Offset != nil {
 		// offset-based, non-inclusive
 		// ex: amqp.annotation.x-opt-enqueued-time %s '165805323000'
-		return fmt.Sprintf("amqp.annotation.x-opt-offset %s '%v'", lt, startPosition.Offset)
+		if offsetExpr != "" {
+			return "", errMultipleFieldsSet
+		}
+
+		offsetExpr = fmt.Sprintf("amqp.annotation.x-opt-offset %s '%d'", lt, *startPosition.Offset)
 	}
 
 	if startPosition.Latest != nil && *startPosition.Latest {
-		return "amqp.annotation.x-opt-offset > '@latest'"
+		if offsetExpr != "" {
+			return "", errMultipleFieldsSet
+		}
+
+		offsetExpr = "amqp.annotation.x-opt-offset > '@latest'"
 	}
 
 	if startPosition.SequenceNumber != nil {
-		return fmt.Sprintf("amqp.annotation.x-opt-sequence-number %s '%d", lt, *startPosition.SequenceNumber)
+		if offsetExpr != "" {
+			return "", errMultipleFieldsSet
+		}
+
+		offsetExpr = formatOffsetExpressionForSequence(lt, *startPosition.SequenceNumber)
+	}
+
+	if startPosition.Earliest != nil && *startPosition.Earliest {
+		if offsetExpr != "" {
+			return "", errMultipleFieldsSet
+		}
+
+		return "amqp.annotation.x-opt-offset > '-1'", nil
+	}
+
+	if offsetExpr != "" {
+		return offsetExpr, nil
 	}
 
 	// default to the start
-	return "amqp.annotation.x-opt-offset > '-1'"
+	return "amqp.annotation.x-opt-offset > '-1'", nil
+}
+
+func formatOffsetExpressionForSequence(op string, sequenceNumber int64) string {
+	return fmt.Sprintf("amqp.annotation.x-opt-sequence-number %s '%d'", op, sequenceNumber)
 }
 
 func (cc *ConsumerClient) getEntityPath(partitionID string) string {
@@ -295,15 +324,20 @@ func newConsumerClientImpl(args consumerClientArgs, options *ConsumerClientOptio
 		options = &ConsumerClientOptions{}
 	}
 
+	offsetExpr, err := getOffsetExpression(options.StartPosition)
+
+	if err != nil {
+		return nil, err
+	}
+
 	client := &ConsumerClient{
 		eventHub:         args.eventHub,
 		partitionID:      args.partitionID,
 		ownerLevel:       options.OwnerLevel,
 		consumerGroup:    args.consumerGroup,
-		offsetExpression: getOffsetExpression(options.StartPosition),
+		offsetExpression: offsetExpr,
 	}
 
-	var err error
 	var nsOptions []internal.NamespaceOption
 
 	if args.connectionString != "" {

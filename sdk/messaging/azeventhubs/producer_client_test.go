@@ -4,6 +4,7 @@ package azeventhubs_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"sort"
@@ -73,6 +74,98 @@ func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
 
 		require.Equal(t, pid, props.PartitionID)
 	}
+}
+
+func TestNewProducerClient_SendToAny(t *testing.T) {
+	testParams := getConnectionParams(t)
+	partitions := getPartitions(t, testParams)
+
+	require.NotNil(t, partitions)
+
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	batch, err := producer.NewEventDataBatch(context.Background(), nil)
+	require.NoError(t, err)
+
+	err = batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("hello world"),
+	}, nil)
+	require.NoError(t, err)
+
+	err = producer.SendEventBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	wg := sync.WaitGroup{}
+
+	for _, partProps := range partitions {
+		wg.Add(1)
+
+		go func(partProps azeventhubs.PartitionProperties) {
+			defer wg.Done()
+
+			consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partProps.PartitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+				StartPosition: getStartPosition(partProps),
+			})
+			require.NoError(t, err)
+
+			defer func() {
+				err := consumer.Close(context.Background())
+				require.NoError(t, err)
+			}()
+
+			events, err := consumer.ReceiveEvents(ctx, 1, nil)
+
+			if err != nil {
+				if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
+					return
+				}
+
+				require.NoError(t, err)
+			}
+
+			cancel()
+			require.Equal(t, "hello world", string(events[0].Body))
+		}(partProps)
+	}
+
+	wg.Wait()
+	require.ErrorIs(t, ctx.Err(), context.Canceled)
+}
+
+func getPartitions(t *testing.T, testParams struct {
+	ConnectionString  string
+	EventHubName      string
+	EventHubNamespace string
+}) []azeventhubs.PartitionProperties {
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	defer func() {
+		err := producer.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	hubProps, err := producer.GetEventHubProperties(context.Background(), nil)
+	require.NoError(t, err)
+
+	var partitions []azeventhubs.PartitionProperties
+
+	for _, partitionID := range hubProps.PartitionIDs {
+		partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, nil)
+		require.NoError(t, err)
+
+		partitions = append(partitions, partProps)
+	}
+
+	sort.Slice(partitions, func(i, j int) bool {
+		return partitions[i].PartitionID < partitions[j].PartitionID
+	})
+
+	return partitions
 }
 
 func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string, partitionID string) {

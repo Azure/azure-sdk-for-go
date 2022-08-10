@@ -224,7 +224,7 @@ func getOffsetExpression(startPosition StartPosition) (string, error) {
 		lt = ">="
 	}
 
-	var errMultipleFieldsSet = errors.New("Only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
+	var errMultipleFieldsSet = errors.New("only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 
 	offsetExpr := ""
 

@@ -97,28 +97,28 @@ func TestUnit_getOffsetExpression(t *testing.T) {
 			EnqueuedTime: &enqueueTime,
 			Offset:       to.Ptr[int64](101),
 		})
-		require.EqualError(t, err, "Only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
+		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 		require.Empty(t, expr)
 
 		expr, err = getOffsetExpression(StartPosition{
 			Offset: to.Ptr[int64](202),
 			Latest: to.Ptr(true),
 		})
-		require.EqualError(t, err, "Only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
+		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 		require.Empty(t, expr)
 
 		expr, err = getOffsetExpression(StartPosition{
 			Latest:         to.Ptr(true),
 			SequenceNumber: to.Ptr[int64](202),
 		})
-		require.EqualError(t, err, "Only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
+		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 		require.Empty(t, expr)
 
 		expr, err = getOffsetExpression(StartPosition{
 			SequenceNumber: to.Ptr[int64](202),
 			Earliest:       to.Ptr(true),
 		})
-		require.EqualError(t, err, "Only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
+		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 		require.Empty(t, expr)
 	})
 }

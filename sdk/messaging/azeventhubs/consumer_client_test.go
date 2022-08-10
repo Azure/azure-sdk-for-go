@@ -214,6 +214,166 @@ func TestConsumerClient_Epochs(t *testing.T) {
 	}
 }
 
+func TestConsumerClient_StartPositions(t *testing.T) {
+	testParams := getConnectionParams(t)
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	defer func() {
+		err := producerClient.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+		PartitionID: to.Ptr("0"),
+	})
+	require.NoError(t, err)
+
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("message 1"),
+	}, nil))
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("message 2"),
+	}, nil))
+
+	origPartProps, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
+	require.NoError(t, err)
+
+	// introduce a little gap between any messages that are already in the eventhub and our new ones we're sending.
+	// (this adds some peace of mind or the test below that uses the enqueued time for a filter)
+	time.Sleep(time.Second)
+
+	err = producerClient.SendEventBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
+
+	t.Run("offset", func(t *testing.T) {
+		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+			StartPosition: azeventhubs.StartPosition{
+				Offset: &origPartProps.LastEnqueuedOffset,
+			},
+		})
+		require.NoError(t, err)
+
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		events, err := consumerClient.ReceiveEvents(ctx, 2, nil)
+		require.NoError(t, err)
+		require.Equal(t, []string{"message 1", "message 2"}, getSortedBodies(events))
+	})
+
+	t.Run("enqueuedTime", func(t *testing.T) {
+		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+			StartPosition: azeventhubs.StartPosition{
+				EnqueuedTime: &origPartProps.LastEnqueuedOn,
+			},
+		})
+		require.NoError(t, err)
+
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		events, err := consumerClient.ReceiveEvents(ctx, 2, nil)
+		require.NoError(t, err)
+		require.Equal(t, []string{"message 1", "message 2"}, getSortedBodies(events))
+	})
+
+	t.Run("earliest", func(t *testing.T) {
+		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+			StartPosition: azeventhubs.StartPosition{
+				Earliest: to.Ptr(true),
+			},
+		})
+		require.NoError(t, err)
+
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		// we know there are _at_ two events but it's okay if they're just any events.
+		events, err := consumerClient.ReceiveEvents(ctx, 2, nil)
+		require.NoError(t, err)
+		require.Equal(t, 2, len(events))
+	})
+}
+
+func TestConsumerClient_StartPosition_Latest(t *testing.T) {
+	testParams := getConnectionParams(t)
+
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup,
+		&azeventhubs.ConsumerClientOptions{
+			StartPosition: azeventhubs.StartPosition{
+				Latest: to.Ptr(true),
+			},
+		})
+	require.NoError(t, err)
+
+	defer func() {
+		err := consumerClient.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	// warm up the AMQP connection underneath. The link will be created when I start doing the receive.
+	_, err = consumerClient.GetEventHubProperties(context.Background(), nil)
+	require.NoError(t, err)
+
+	latestEventsCh := make(chan []*azeventhubs.ReceivedEventData, 1)
+
+	go func() {
+		events, err := consumerClient.ReceiveEvents(context.Background(), 2, nil)
+		require.NoError(t, err)
+		latestEventsCh <- events
+	}()
+
+	// give the consumer link time to spin up and start listening on the partition
+	time.Sleep(5 * time.Second)
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	defer func() {
+		err := producerClient.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+		PartitionID: to.Ptr("0"),
+	})
+	require.NoError(t, err)
+
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("latest test: message 1"),
+	}, nil))
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("latest test: message 2"),
+	}, nil))
+
+	err = producerClient.SendEventBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
+
+	select {
+	case events := <-latestEventsCh:
+		require.Equal(t, []string{"latest test: message 1", "latest test: message 2"}, getSortedBodies(events))
+	case <-time.After(time.Minute):
+		require.Fail(t, "Timed out waiting for events to arrrive")
+	}
+}
+
 // mustSendEventToAllPartitions sends the event given in evt to each partition in the
 // eventHub, returning the sequence number just before the new message.
 //
@@ -285,4 +445,14 @@ func getStartPosition(props azeventhubs.PartitionProperties) azeventhubs.StartPo
 		SequenceNumber: to.Ptr(props.LastEnqueuedSequenceNumber),
 		Inclusive:      false,
 	}
+}
+
+func getSortedBodies(events []*azeventhubs.ReceivedEventData) []string {
+	var bodies []string
+
+	for _, e := range events {
+		bodies = append(bodies, string(e.Body))
+	}
+
+	return bodies
 }

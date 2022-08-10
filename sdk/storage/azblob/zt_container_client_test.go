@@ -8,13 +8,15 @@ package azblob_test
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/stretchr/testify/require"
-	"strconv"
-	"strings"
 )
 
 //nolint
@@ -304,7 +306,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		Metadata: basicMetadata,
 	}
-	_, err = bbClient.Upload(ctx, NopCloser(strings.NewReader("Content")), &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader("Content")), &uploadBlockBlobOptions)
 	_require.Nil(err)
 
 	// Reference the same container URL but with anonymous credentials
@@ -1282,7 +1284,7 @@ func (s *azblobTestSuite) TestListBlobIncludeMetadata() {
 	blobName := generateBlobName(testName)
 	for i := 0; i < 6; i++ {
 		bbClient := getBlockBlobClient(blobName+strconv.Itoa(i), containerClient)
-		_, err = bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &blockblob.UploadOptions{Metadata: basicMetadata})
+		_, err = bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &blockblob.UploadOptions{Metadata: basicMetadata})
 		_require.Nil(err)
 		// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	}

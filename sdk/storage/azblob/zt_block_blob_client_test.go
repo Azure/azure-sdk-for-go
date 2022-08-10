@@ -12,6 +12,11 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
+	"io"
+	"strings"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -20,9 +25,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
-	"io"
-	"strings"
-	"time"
 )
 
 //	func (s *azblobTestSuite) TestStageGetBlocks() {
@@ -47,7 +49,7 @@ import (
 //		for index, d := range data {
 //			base64BlockIDs[index] = blockIDIntToBase64(index)
 //			io.NopCloser(strings.NewReader("hello world"))
-//			putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
+//			putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(d)), nil)
 //			_require.Nil(err)
 //			//_require.Equal(putResp.RawResponse.StatusCode, 201)
 //			_require.Nil(putResp.ContentMD5)
@@ -119,7 +121,7 @@ import (
 //		contentSize := 8 * 1024 // 8 KB
 //		content := make([]byte, contentSize)
 //		body := bytes.NewReader(content)
-//		rsc := NopCloser(body)
+//		rsc := streaming.NopCloser(body)
 //
 //		ctx := context.Background() // Use default Background context
 //		srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
@@ -226,7 +228,7 @@ import (
 //		destBlob := containerClient.NewBlockBlobClient("destblob")
 //
 //		// Prepare source bbClient for copy.
-//		_, err = srcBlob.Upload(ctx, NopCloser(body), nil)
+//		_, err = srcBlob.Upload(ctx, streaming.NopCloser(body), nil)
 //		_require.Nil(err)
 //		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
@@ -322,7 +324,7 @@ import (
 //
 //		bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 //
-//		_, err = bbClient.Upload(ctx, NopCloser(body), nil)
+//		_, err = bbClient.Upload(ctx, streaming.NopCloser(body), nil)
 //		_require.Nil(err)
 //		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
@@ -388,7 +390,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
-	rsc := NopCloser(body)
+	rsc := streaming.NopCloser(body)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
 
@@ -436,7 +438,7 @@ func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	_, err = bbClient.Upload(ctx, NopCloser(body), &blockblob.UploadOptions{
+	_, err = bbClient.Upload(ctx, streaming.NopCloser(body), &blockblob.UploadOptions{
 		HTTPHeaders: &basicHeaders,
 	})
 	_require.Nil(err)
@@ -466,7 +468,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	_, err = bbClient.Upload(ctx, NopCloser(body), &blockblob.UploadOptions{
+	_, err = bbClient.Upload(ctx, streaming.NopCloser(body), &blockblob.UploadOptions{
 		Metadata: basicMetadata,
 	})
 	_require.Nil(err)
@@ -496,7 +498,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := NopCloser(body)
+	rsc := streaming.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, nil)
 	_require.Nil(err)
@@ -524,7 +526,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := NopCloser(body)
+	rsc := streaming.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, &blockblob.UploadOptions{
 		Metadata: map[string]string{"In valid!": "bar"},
@@ -549,7 +551,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	createResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	createResp, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
@@ -558,7 +560,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	_, err = bbClient.Upload(ctx, NopCloser(body), &blockblob.UploadOptions{
+	_, err = bbClient.Upload(ctx, streaming.NopCloser(body), &blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -585,7 +587,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	createResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	createResp, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
@@ -594,7 +596,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := NopCloser(body)
+	rsc := streaming.NopCloser(body)
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -626,7 +628,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	createResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	createResp, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
@@ -635,7 +637,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := NopCloser(body)
+	rsc := streaming.NopCloser(body)
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -666,7 +668,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	createResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	createResp, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
@@ -680,7 +682,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 			},
 		},
 	}
-	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
 	_ = err
 
 	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -707,7 +709,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := NopCloser(body)
+	rsc := streaming.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, &blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -751,7 +753,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 			},
 		},
 	}
-	_, err = bbClient.Upload(ctx, NopCloser(body), &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, streaming.NopCloser(body), &uploadBlockBlobOptions)
 	_require.NotNil(err)
 	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -777,7 +779,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := NopCloser(body)
+	rsc := streaming.NopCloser(body)
 
 	ifNoneMatch := "garbage"
 	uploadBlockBlobOptions := blockblob.UploadOptions{
@@ -815,7 +817,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := NopCloser(body)
+	rsc := streaming.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, &blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -848,7 +850,7 @@ func setupPutBlockListTest(_require *require.Assertions, _context *testContext, 
 	bbClient := getBlockBlobClient(blobName, containerClient)
 
 	blockIDs := generateBlockIDsList(1)
-	_, err = bbClient.StageBlock(ctx, blockIDs[0], NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_, err = bbClient.StageBlock(ctx, blockIDs[0], streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	return containerClient, bbClient, blockIDs
 }
@@ -1064,13 +1066,13 @@ func (s *azblobTestSuite) TestBlobPutBlockListModifyBlob() {
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
 	_require.Nil(err)
 
-	_, err = bbClient.StageBlock(ctx, "0001", NopCloser(bytes.NewReader([]byte("new data"))), nil)
+	_, err = bbClient.StageBlock(ctx, "0001", streaming.NopCloser(bytes.NewReader([]byte("new data"))), nil)
 	_require.Nil(err)
-	_, err = bbClient.StageBlock(ctx, "0010", NopCloser(bytes.NewReader([]byte("new data"))), nil)
+	_, err = bbClient.StageBlock(ctx, "0010", streaming.NopCloser(bytes.NewReader([]byte("new data"))), nil)
 	_require.Nil(err)
-	_, err = bbClient.StageBlock(ctx, "0011", NopCloser(bytes.NewReader([]byte("new data"))), nil)
+	_, err = bbClient.StageBlock(ctx, "0011", streaming.NopCloser(bytes.NewReader([]byte("new data"))), nil)
 	_require.Nil(err)
-	_, err = bbClient.StageBlock(ctx, "0100", NopCloser(bytes.NewReader([]byte("new data"))), nil)
+	_, err = bbClient.StageBlock(ctx, "0100", streaming.NopCloser(bytes.NewReader([]byte("new data"))), nil)
 	_require.Nil(err)
 
 	_, err = bbClient.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
@@ -1106,7 +1108,7 @@ func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
 			HTTPHeaders: &basicHeaders,
 			Tier:        &tier,
 		}
-		_, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
+		_, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
 		_require.Nil(err)
 
 		resp, err := bbClient.GetProperties(ctx, nil)
@@ -1133,7 +1135,7 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 		bbClient := getBlockBlobClient(blobName, containerClient)
 
 		blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-		_, err := bbClient.StageBlock(ctx, blockID, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+		_, err := bbClient.StageBlock(ctx, blockID, streaming.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 		_require.Nil(err)
 
 		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &blockblob.CommitBlockListOptions{
@@ -1170,7 +1172,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	srcBlob := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	tier := blob.AccessTierCool
-	_, err = srcBlob.Upload(ctx, NopCloser(contentReader), &blockblob.UploadOptions{Tier: &tier})
+	_, err = srcBlob.Upload(ctx, streaming.NopCloser(contentReader), &blockblob.UploadOptions{Tier: &tier})
 	_require.Nil(err)
 	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
@@ -1230,7 +1232,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 //	contentSize := 8 * 1024 // 8 KB
 //	content := make([]byte, contentSize)
 //	body := bytes.NewReader(content)
-//	rsc := NopCloser(body)
+//	rsc := streaming.NopCloser(body)
 //	ctx := context.Background()
 //	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
 //	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))

@@ -8,6 +8,9 @@ package azblob_test
 
 import (
 	"bytes"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -15,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/stretchr/testify/require"
-	"time"
 )
 
 func (s *azblobTestSuite) TestPutGetPages() {
@@ -98,7 +100,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 //	destBlob := createNewPageBlobWithSize(_require, "dstblob", containerClient, int64(contentSize))
 //
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-//	uploadSrcResp1, err := srcBlob.UploadPages(ctx, NopCloser(r), &pageblob.UploadPagesOptions{
+//	uploadSrcResp1, err := srcBlob.UploadPages(ctx, streaming.NopCloser(r), &pageblob.UploadPagesOptions{
 //		Offset: to.Ptr(offset),
 //		Count: to.Ptr(count),
 //	}
@@ -175,7 +177,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 //	// Prepare source pbClient for copy.
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 //	uploadPagesOptions := pageblob.UploadPagesOptions{Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),}
-//	_, err = srcBlob.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
+//	_, err = srcBlob.UploadPages(ctx, streaming.NopCloser(r), &uploadPagesOptions)
 //	_require.Nil(err)
 //	// _require.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
 //
@@ -465,7 +467,7 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 //	_ = body
 //	contentMD5 := md5Value[:]
 //
-//	putResp, err := pbClient.UploadPages(ctx, NopCloser(readerToBody), &pageblob.UploadPagesOptions{
+//	putResp, err := pbClient.UploadPages(ctx, streaming.NopCloser(readerToBody), &pageblob.UploadPagesOptions{
 //		Offset:                  to.Ptr(offset),
 //		Count:                   to.Ptr(count),
 //		TransactionalContentMD5: contentMD5,
@@ -487,7 +489,7 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 //	readerToBody, _ = getRandomDataAndReader(1024)
 //	_, badMD5 := getRandomDataAndReader(16)
 //	basContentMD5 := badMD5[:]
-//	putResp, err = pbClient.UploadPages(ctx, NopCloser(readerToBody), &pageblob.UploadPagesOptions{
+//	putResp, err = pbClient.UploadPages(ctx, streaming.NopCloser(readerToBody), &pageblob.UploadPagesOptions{
 //		Offset:                  to.Ptr(offset),
 //		Count:                   to.Ptr(count),
 //		TransactionalContentMD5: basContentMD5,
@@ -1016,7 +1018,7 @@ func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
 	r := bytes.NewReader([]byte{})
 	offset, count := int64(0), int64(0)
 	uploadPagesOptions := pageblob.UploadPagesOptions{Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count))}
-	_, err = pbClient.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
+	_, err = pbClient.UploadPages(ctx, streaming.NopCloser(r), &uploadPagesOptions)
 	_require.NotNil(err)
 }
 

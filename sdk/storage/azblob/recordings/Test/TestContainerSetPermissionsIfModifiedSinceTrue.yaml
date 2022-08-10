@@ -10,12 +10,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:56 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:56:12 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/goccontainersetpermissionsifmodifiedsincetrue?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsifmodifiedsincetrue?restype=container
     method: PUT
   response:
     body: ""
@@ -23,37 +23,43 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:21:55 GMT
+      - Tue, 09 Aug 2022 06:56:09 GMT
       Etag:
-      - '"0x8DA347696C2A648"'
+      - '"0x8DA79D43D9C5950"'
       Last-Modified:
-      - Fri, 13 May 2022 00:21:56 GMT
+      - Tue, 09 Aug 2022 06:56:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 83177461-301e-0046-545f-663fbd000000
+      - a543d4dd-c01e-0055-50bd-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: ""
+    body: |-
+      <?xml version="1.0" encoding="UTF-8"?>
+      <SignedIdentifiers></SignedIdentifiers>
     form: {}
     headers:
       Accept:
       - application/xml
       Authorization:
       - sanitized
+      Content-Length:
+      - "78"
+      Content-Type:
+      - application/xml
       If-Modified-Since:
-      - Fri, 13 May 2022 00:21:45 GMT
+      - Tue, 09 Aug 2022 06:55:59 GMT
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:56 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:56:12 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/goccontainersetpermissionsifmodifiedsincetrue?comp=acl&restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsifmodifiedsincetrue?comp=acl&restype=container
     method: PUT
   response:
     body: ""
@@ -61,15 +67,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:21:55 GMT
+      - Tue, 09 Aug 2022 06:56:09 GMT
       Etag:
-      - '"0x8DA347696C63EF6"'
+      - '"0x8DA79D43DC3F892"'
       Last-Modified:
-      - Fri, 13 May 2022 00:21:56 GMT
+      - Tue, 09 Aug 2022 06:56:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 83177473-301e-0046-635f-663fbd000000
+      - a543d6c5-c01e-0055-10bd-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -84,12 +90,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:56 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:56:12 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/goccontainersetpermissionsifmodifiedsincetrue?comp=acl&restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsifmodifiedsincetrue?comp=acl&restype=container
     method: GET
   response:
     body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x20\x2F\x3E"
@@ -97,15 +103,15 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Fri, 13 May 2022 00:21:55 GMT
+      - Tue, 09 Aug 2022 06:56:10 GMT
       Etag:
-      - '"0x8DA347696C63EF6"'
+      - '"0x8DA79D43DC3F892"'
       Last-Modified:
-      - Fri, 13 May 2022 00:21:56 GMT
+      - Tue, 09 Aug 2022 06:56:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 83177480-301e-0046-6e5f-663fbd000000
+      - a543d8bb-c01e-0055-6dbd-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -120,12 +126,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:56 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:56:12 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/goccontainersetpermissionsifmodifiedsincetrue?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsifmodifiedsincetrue?restype=container
     method: DELETE
   response:
     body: ""
@@ -133,11 +139,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:21:55 GMT
+      - Tue, 09 Aug 2022 06:56:10 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 83177484-301e-0046-725f-663fbd000000
+      - a543dad3-c01e-0055-6abd-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

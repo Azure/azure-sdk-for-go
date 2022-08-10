@@ -2,18 +2,20 @@
 // +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azblob
+package azblob_test
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/stretchr/testify/require"
 	"net/url"
 	"strings"
 )
 
-func validateSAS(_require *require.Assertions, sas string, parameters SASQueryParameters) {
+func validateSAS(_require *require.Assertions, sas string, parameters blob.SASQueryParameters) {
 	sasCompMap := make(map[string]string)
 	for _, sasComp := range strings.Split(sas, "&") {
 		comp := strings.Split(sasComp, "=")
@@ -25,18 +27,18 @@ func validateSAS(_require *require.Assertions, sas string, parameters SASQueryPa
 	_require.Equal(parameters.ResourceTypes(), sasCompMap["srt"])
 	_require.Equal(string(parameters.Protocol()), sasCompMap["spr"])
 	if _, ok := sasCompMap["st"]; ok {
-		startTime, _, err := parseSASTimeString(sasCompMap["st"])
+		startTime, _, err := blob.ParseSASTimeString(sasCompMap["st"])
 		_require.Nil(err)
 		_require.Equal(parameters.StartTime(), startTime)
 	}
 	if _, ok := sasCompMap["se"]; ok {
-		endTime, _, err := parseSASTimeString(sasCompMap["se"])
+		endTime, _, err := blob.ParseSASTimeString(sasCompMap["se"])
 		_require.Nil(err)
 		_require.Equal(parameters.ExpiryTime(), endTime)
 	}
 
 	if _, ok := sasCompMap["snapshot"]; ok {
-		snapshotTime, _, err := parseSASTimeString(sasCompMap["snapshot"])
+		snapshotTime, _, err := blob.ParseSASTimeString(sasCompMap["snapshot"])
 		_require.Nil(err)
 		_require.Equal(parameters.SnapshotTime(), snapshotTime)
 	}
@@ -55,18 +57,18 @@ func validateSAS(_require *require.Assertions, sas string, parameters SASQueryPa
 	_require.Equal(parameters.ContentEncoding(), sasCompMap["rsce"])
 	_require.Equal(parameters.ContentLanguage(), sasCompMap["rscl"])
 	_require.Equal(parameters.ContentType(), sasCompMap["rsct"])
-	_require.Equal(parameters.signedOid, sasCompMap["skoid"])
+	_require.Equal(parameters.SignedOid(), sasCompMap["skoid"])
 	_require.Equal(parameters.SignedTid(), sasCompMap["sktid"])
 
 	if _, ok := sasCompMap["skt"]; ok {
-		signedStart, _, err := parseSASTimeString(sasCompMap["skt"])
+		signedStart, _, err := blob.ParseSASTimeString(sasCompMap["skt"])
 		_require.Nil(err)
 		_require.Equal(parameters.SignedStart(), signedStart)
 	}
 	_require.Equal(parameters.SignedService(), sasCompMap["sks"])
 
 	if _, ok := sasCompMap["ske"]; ok {
-		signedExpiry, _, err := parseSASTimeString(sasCompMap["ske"])
+		signedExpiry, _, err := blob.ParseSASTimeString(sasCompMap["ske"])
 		_require.Nil(err)
 		_require.Equal(parameters.SignedExpiry(), signedExpiry)
 	}
@@ -84,6 +86,6 @@ func (s *azblobTestSuite) TestSASGeneration() {
 	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 	_uri, err := url.Parse(_url)
 	_require.Nil(err)
-	sasQueryParams := newSASQueryParameters(_uri.Query(), true)
+	sasQueryParams := exported.NewSASQueryParameters(_uri.Query(), true)
 	validateSAS(_require, sas, sasQueryParams)
 }

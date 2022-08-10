@@ -10,12 +10,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:13 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:51:25 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdeleteifmatchtrue?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifmatchtrue?restype=container
     method: PUT
   response:
     body: ""
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:21:12 GMT
+      - Tue, 09 Aug 2022 06:51:22 GMT
       Etag:
-      - '"0x8DA34767D0626E5"'
+      - '"0x8DA79D3929C2905"'
       Last-Modified:
-      - Fri, 13 May 2022 00:21:13 GMT
+      - Tue, 09 Aug 2022 06:51:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 8317167f-301e-0046-015f-663fbd000000
+      - a53bb3e9-c01e-0055-05bc-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -50,14 +50,14 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
-      X-Ms-Blob-Type:
-      - BlockBlob
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:13 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:51:25 GMT
+      x-ms-blob-type:
+      - BlockBlob
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdeleteifmatchtrue/gotestblobblobdeleteifmatchtrue
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifmatchtrue/gotestblobblobdeleteifmatchtrue
     method: PUT
   response:
     body: ""
@@ -67,21 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Fri, 13 May 2022 00:21:12 GMT
+      - Tue, 09 Aug 2022 06:51:23 GMT
       Etag:
-      - '"0x8DA34767D12F6AC"'
+      - '"0x8DA79D392DA32FE"'
       Last-Modified:
-      - Fri, 13 May 2022 00:21:13 GMT
+      - Tue, 09 Aug 2022 06:51:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 83171693-301e-0046-125f-663fbd000000
+      - a53bb71a-c01e-0055-08bc-ab9ff3000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-08-09T06:51:23.5180286Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -94,12 +96,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:13 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:51:25 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdeleteifmatchtrue/gotestblobblobdeleteifmatchtrue
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifmatchtrue/gotestblobblobdeleteifmatchtrue
     method: HEAD
   response:
     body: ""
@@ -113,11 +115,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Fri, 13 May 2022 00:21:12 GMT
+      - Tue, 09 Aug 2022 06:51:23 GMT
       Etag:
-      - '"0x8DA34767D12F6AC"'
+      - '"0x8DA79D392DA32FE"'
       Last-Modified:
-      - Fri, 13 May 2022 00:21:13 GMT
+      - Tue, 09 Aug 2022 06:51:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -127,17 +129,21 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Fri, 13 May 2022 00:21:13 GMT
+      - Tue, 09 Aug 2022 06:51:23 GMT
+      X-Ms-Is-Current-Version:
+      - "true"
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 831716d2-301e-0046-4d5f-663fbd000000
+      - a53bba89-c01e-0055-38bc-ab9ff3000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-08-09T06:51:23.5180286Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -150,14 +156,14 @@ interactions:
       Authorization:
       - sanitized
       If-Match:
-      - '"0x8DA34767D12F6AC"'
+      - '"0x8DA79D392DA32FE"'
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:13 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:51:26 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdeleteifmatchtrue/gotestblobblobdeleteifmatchtrue
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifmatchtrue/gotestblobblobdeleteifmatchtrue
     method: DELETE
   response:
     body: ""
@@ -165,13 +171,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:21:12 GMT
+      - Tue, 09 Aug 2022 06:51:24 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Delete-Type-Permanent:
-      - "true"
+      - "false"
       X-Ms-Request-Id:
-      - 831716df-301e-0046-595f-663fbd000000
+      - a53bbdfc-c01e-0055-0cbc-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted
@@ -186,24 +192,24 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:13 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:51:26 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdeleteifmatchtrue/gotestblobblobdeleteifmatchtrue
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifmatchtrue/gotestblobblobdeleteifmatchtrue
     method: HEAD
   response:
     body: ""
     headers:
       Date:
-      - Fri, 13 May 2022 00:21:12 GMT
+      - Tue, 09 Aug 2022 06:51:24 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - BlobNotFound
       X-Ms-Request-Id:
-      - 831716f0-301e-0046-665f-663fbd000000
+      - a53bc0f3-c01e-0055-62bc-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 404 The specified blob does not exist.
@@ -218,12 +224,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
       X-Ms-Date:
-      - Fri, 13 May 2022 00:21:13 GMT
-      X-Ms-Version:
+      - Tue, 09 Aug 2022 06:51:27 GMT
+      x-ms-version:
       - "2020-10-02"
-    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdeleteifmatchtrue?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifmatchtrue?restype=container
     method: DELETE
   response:
     body: ""
@@ -231,11 +237,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 13 May 2022 00:21:12 GMT
+      - Tue, 09 Aug 2022 06:51:24 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 831716f6-301e-0046-6b5f-663fbd000000
+      - a53bc40a-c01e-0055-4ebc-ab9ff3000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

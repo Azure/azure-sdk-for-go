@@ -8,6 +8,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
@@ -43,7 +44,7 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, l.containerName, nil)
+	containerClient, err := container.NewClientFromConnectionString(connStr, l.containerName, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -53,10 +54,7 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 	}
 
 	for i := 0; i < 100; i++ {
-		blobClient, err := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobName, i))
-		if err != nil {
-			return nil, err
-		}
+		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobName, i))
 		_, err = blobClient.Upload(
 			context.Background(),
 			NopCloser(bytes.NewReader([]byte(""))),
@@ -76,7 +74,7 @@ func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, l.containerName, nil)
+	containerClient, err := container.NewClientFromConnectionString(connStr, l.containerName, nil)
 	if err != nil {
 		return err
 	}
@@ -88,7 +86,7 @@ func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
 type listPerfTest struct {
 	*listTestGlobal
 	perf.PerfTestOptions
-	containerClient *azblob.ContainerClient
+	containerClient *container.Client
 }
 
 // NewPerfTest is called once per goroutine
@@ -103,7 +101,7 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(
+	containerClient, err := container.NewClientFromConnectionString(
 		connStr,
 		u.listTestGlobal.containerName,
 		&azblob.ClientOptions{
@@ -120,12 +118,16 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 
 func (m *listPerfTest) Run(ctx context.Context) error {
 	c := int32(listTestOpts.count)
-	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobsFlatOptions{
+	pager := m.containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		MaxResults: &c,
 	})
-	for pager.NextPage(context.Background()) {
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		if err != nil {
+			return err
+		}
 	}
-	return pager.Err()
+	return nil
 }
 
 func (m *listPerfTest) Cleanup(ctx context.Context) error {

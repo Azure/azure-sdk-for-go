@@ -1,0 +1,731 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:40 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:37 GMT
+      Etag:
+      - '"0x8DA79D407138372"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf560-f01c-005e-7ebc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "0"
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:40 GMT
+      x-ms-blob-content-length:
+      - "5120"
+      x-ms-blob-type:
+      - PageBlob
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:37 GMT
+      Etag:
+      - '"0x8DA79D4071B519C"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf57d-f01c-005e-1bbc-ab0510000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:40 GMT
+      x-ms-access-tier:
+      - P4
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob?comp=tier
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:37 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf594-f01c-005e-32bc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:40 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Etag:
+      - '"0x8DA79D4071B519C"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - P4
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Creation-Time:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 88acf5be-f01c-005e-5cbc-ab0510000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:40 GMT
+      x-ms-access-tier:
+      - P6
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob?comp=tier
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf5d3-f01c-005e-71bc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:40 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Etag:
+      - '"0x8DA79D4071B519C"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - P6
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Creation-Time:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 88acf5ec-f01c-005e-0abc-ab0510000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:40 GMT
+      x-ms-access-tier:
+      - P10
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob?comp=tier
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf602-f01c-005e-20bc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Etag:
+      - '"0x8DA79D4071B519C"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - P10
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Creation-Time:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 88acf619-f01c-005e-37bc-ab0510000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-access-tier:
+      - P20
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob?comp=tier
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf62b-f01c-005e-49bc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Etag:
+      - '"0x8DA79D4071B519C"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - P20
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Creation-Time:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 88acf639-f01c-005e-57bc-ab0510000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-access-tier:
+      - P30
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob?comp=tier
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf64a-f01c-005e-68bc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Etag:
+      - '"0x8DA79D4071B519C"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - P30
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Creation-Time:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 88acf65f-f01c-005e-7dbc-ab0510000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-access-tier:
+      - P40
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob?comp=tier
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf671-f01c-005e-0fbc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Etag:
+      - '"0x8DA79D4071B519C"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - P40
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Creation-Time:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 88acf68a-f01c-005e-28bc-ab0510000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-access-tier:
+      - P50
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob?comp=tier
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf69a-f01c-005e-38bc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob/gotestblobblobsettieralltiersonpageblob
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Etag:
+      - '"0x8DA79D4071B519C"'
+      Last-Modified:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - P50
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Creation-Time:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 88acf6b1-f01c-005e-4fbc-ab0510000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.3; Windows_NT)
+      X-Ms-Date:
+      - Tue, 09 Aug 2022 06:54:41 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azurepremiummohit.blob.core.windows.net/premgocblobsettieralltiersonpageblob?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 09 Aug 2022 06:54:38 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 88acf6c6-f01c-005e-64bc-ab0510000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 202 Accepted
+    code: 202
+    duration: ""

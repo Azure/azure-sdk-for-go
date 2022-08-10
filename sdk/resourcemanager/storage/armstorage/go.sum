@@ -8,6 +8,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.0.0 h1:lMW1lD/
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.0.0/go.mod h1:ceIuwmxDWptoW3eCqSXlnPsZFKh4X+R38dWPv7GS9Vs=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.0.0 h1:ECsQtyERDVz3NP3kvDOTLvbQhqWp/x9EsGKtb4ogUr8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.0.0/go.mod h1:s1tW/At+xHqjNFvWU4G0c0Qv33KOhvbGNj0RCTQDV8s=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.0.0 h1:TMEyRFKh1zaSPmoQh3kxK+xRAYVq8guCI/7SMO0F3KY=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.0.0/go.mod h1:c+Lifp3EDEamAkPVzMooRNOK6CZjNSdEnf1A7jsI9u4=
 github.com/AzureAD/microsoft-authentication-library-for-go v0.4.0 h1:WVsrXCnHlDDX8ls+tootqRE87/hL9S/g4ewig9RsD/c=
 github.com/AzureAD/microsoft-authentication-library-for-go v0.4.0/go.mod h1:Vt9sXTKwMyGcOxSmLDMnGPgqsUg7m8pe215qMLrDXw4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

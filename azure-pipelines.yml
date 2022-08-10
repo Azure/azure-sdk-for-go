@@ -1,6 +1,10 @@
 # This builds only track 1 SDKs. See eng\pipelines\templates\steps\build.yml for track 2.
 
 trigger:
+  branches:
+    include:
+    - main
+    - legacy
   paths:
     exclude:
     - sdk/
@@ -8,6 +12,10 @@ trigger:
     - eng/config.json
 
 pr:
+  branches:
+    include:
+    - main
+    - legacy
   paths:
     exclude:
     - sdk/

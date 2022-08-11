@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `ClientCertificateCredential` sends only the leaf cert for SNI authentication
 
 ### Other Changes
 

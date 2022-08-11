@@ -25,14 +25,6 @@ type Client struct {
 	pl runtime.Pipeline
 }
 
-// NewClient creates a new instance of Client with the specified values.
-// pl - the pipeline used for sending requests and handling responses.
-func NewClient(pl runtime.Pipeline) *Client {
-	client := &Client{
-		pl: pl,
-	}
-	return client
-}
 
 // Batch - Executes a batch of Analytics queries for data. Here [https://dev.loganalytics.io/documentation/Using-the-API]
 // is an example for using POST with an Analytics query.

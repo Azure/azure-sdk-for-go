@@ -11,7 +11,7 @@ openapi-type: "data-plane"
 output-folder: ../azquery
 override-client-name: Client
 security: "AADToken"
-security-scopes:  "https://vault.azure.net/.default"
+security-scopes:  "https://api.loganalytics.io/.default"
 use: "@autorest/go@4.0.0-preview.43"
 version: "^3.0.0"
 
@@ -39,3 +39,8 @@ directive:
   - remove-model: metadataWorkspace
   - remove-model: metadataResource
   - remove-model: metadataPermissions
+
+  # delete generated constructor
+  - from: client.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");

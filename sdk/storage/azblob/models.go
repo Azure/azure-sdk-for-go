@@ -8,6 +8,7 @@ package azblob
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
@@ -34,3 +35,21 @@ type ListBlobsOptions = container.ListBlobsFlatOptions
 
 // ListContainersOptions contains the optional parameters for the container.Client.ListContainers operation
 type ListContainersOptions = service.ListContainersOptions
+
+// UploadBufferOptions provides set of configurations for UploadBuffer operation
+type UploadBufferOptions = blockblob.UploadBufferOptions
+
+// UploadFileOptions provides set of configurations for UploadFile operation
+type UploadFileOptions = blockblob.UploadReaderAtToBlockBlobOptions
+
+// UploadStreamOptions provides set of configurations for UploadStream operation
+type UploadStreamOptions = blockblob.UploadStreamOptions
+
+// DownloadToWriterAtOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
+type DownloadToWriterAtOptions = blob.DownloadToWriterAtOptions
+
+// DownloadToBufferOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
+type DownloadToBufferOptions = blob.DownloadToBufferOptions
+
+// DownloadToFileOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
+type DownloadToFileOptions = blob.DownloadToFileOptions

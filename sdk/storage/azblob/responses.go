@@ -33,3 +33,12 @@ type ListBlobsResponse = container.ListBlobsFlatResponse
 
 // ListContainersResponse contains the response from method service.Client.ListContainersSegment.
 type ListContainersResponse = service.ListContainersResponse
+
+// UploadBufferResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
+type UploadBufferResponse = blockblob.UploadReaderAtResponse
+
+// UploadFileResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
+type UploadFileResponse = blockblob.UploadReaderAtResponse
+
+// UploadStreamResponse contains the response from method Client.CommitBlockList.
+type UploadStreamResponse = blockblob.CommitBlockListResponse

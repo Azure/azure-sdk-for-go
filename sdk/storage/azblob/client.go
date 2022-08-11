@@ -13,8 +13,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
@@ -119,18 +117,18 @@ func (c *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 }
 
 // UploadBuffer uploads a buffer in blocks to a block blob.
-func (c *Client) UploadBuffer(ctx context.Context, containerName string, blobName string, b []byte, o *blockblob.UploadBufferOptions) (blockblob.UploadReaderAtResponse, error) {
+func (c *Client) UploadBuffer(ctx context.Context, containerName string, blobName string, b []byte, o *UploadBufferOptions) (UploadBufferResponse, error) {
 	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadBuffer(ctx, b, o)
 }
 
 // UploadFile uploads a file in blocks to a block blob.
-func (c *Client) UploadFile(ctx context.Context, containerName string, blobName string, file *os.File, o *blockblob.UploadReaderAtToBlockBlobOptions) (blockblob.UploadReaderAtResponse, error) {
+func (c *Client) UploadFile(ctx context.Context, containerName string, blobName string, file *os.File, o *UploadFileOptions) (UploadFileResponse, error) {
 	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadFile(ctx, file, o)
 }
 
 // UploadStream copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func (c *Client) UploadStream(ctx context.Context, containerName string, blobName string, body io.Reader, o *blockblob.UploadStreamOptions) (blockblob.CommitBlockListResponse, error) {
+func (c *Client) UploadStream(ctx context.Context, containerName string, blobName string, body io.Reader, o *UploadStreamOptions) (UploadStreamResponse, error) {
 	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadStream(ctx, body, o)
 }
 
@@ -143,20 +141,20 @@ func (c *Client) Download(ctx context.Context, containerName string, blobName st
 
 // DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (c *Client) DownloadToWriterAt(ctx context.Context, containerName string, blobName string, offset, count int64, writer io.WriterAt, o *blob.DownloadToWriterAtOptions) error {
+func (c *Client) DownloadToWriterAt(ctx context.Context, containerName string, blobName string, offset, count int64, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToWriterAt(ctx, offset, count, writer, o)
 }
 
 // DownloadToBuffer downloads an Azure blob to a buffer with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (c *Client) DownloadToBuffer(ctx context.Context, containerName string, blobName string, offset, count int64, _bytes []byte, o *blob.DownloadToBufferOptions) error {
+func (c *Client) DownloadToBuffer(ctx context.Context, containerName string, blobName string, offset, count int64, _bytes []byte, o *DownloadToBufferOptions) error {
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToBuffer(ctx, offset, count, shared.NewBytesWriter(_bytes), o)
 }
 
 // DownloadToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (c *Client) DownloadToFile(ctx context.Context, containerName string, blobName string, offset, count int64, file *os.File, o *blob.DownloadToFileOptions) error {
+func (c *Client) DownloadToFile(ctx context.Context, containerName string, blobName string, offset, count int64, file *os.File, o *DownloadToFileOptions) error {
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToFile(ctx, offset, count, file, o)
 }
 

@@ -4,4 +4,4 @@
 package internal
 
 // Version is the semantic version number
-const Version = "v0.1.0"
+const Version = "v0.1.1"

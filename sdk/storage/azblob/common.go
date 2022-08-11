@@ -42,3 +42,16 @@ type BlobURLParts = exported.BlobURLParts
 func ParseBlobURL(u string) (BlobURLParts, error) {
 	return exported.ParseBlobURL(u)
 }
+
+// SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
+// You parse a map of query parameters into its fields by calling NewSASQueryParameters(). You add the components
+// to a query parameter map by calling AddToValues().
+// NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+type SASQueryParameters = exported.SASQueryParameters
+
+// SASProtocol indicates the protocal in use for the SAS URL (http/https).
+type SASProtocol = exported.SASProtocol
+
+// IPRange represents a SAS IP range's start IP and (optionally) end IP.
+type IPRange = exported.IPRange

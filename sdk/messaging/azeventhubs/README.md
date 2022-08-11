@@ -34,7 +34,8 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs
 
 ### Authenticate the client
 
-Event Hub clients are created using an Event Hub connection string or a credential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
+Event Hub clients are created using an Event Hub a credential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
+You can also create a client using a connection string.
 
 #### Using a service principal
  - ConsumerClient: [link](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#example-NewConsumerClient)

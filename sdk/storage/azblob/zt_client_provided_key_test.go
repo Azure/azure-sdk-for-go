@@ -57,11 +57,8 @@ var testInvalidCPKByScope = blob.CpkScopeInfo{
 func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
@@ -112,11 +109,8 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -403,9 +397,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -447,11 +439,8 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -485,11 +474,8 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -544,11 +530,8 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -808,9 +791,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -871,9 +852,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName)+"01", svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -1179,8 +1158,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+////	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1232,11 +1210,8 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 func (s *azblobTestSuite) TestBlobResizeWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName)+"01", svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -1259,11 +1234,8 @@ func (s *azblobTestSuite) TestBlobResizeWithCPK() {
 func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName)+"01", svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -1305,11 +1277,8 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
 func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName)+"01", svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -1344,11 +1313,8 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope() {
 func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName)+"01", svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -1393,11 +1359,8 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName)+"01", svcClient)
 	defer deleteContainer(_require, containerClient)
 

@@ -8,29 +8,25 @@ package azblob_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/stretchr/testify/require"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
+	"github.com/stretchr/testify/require"
 )
 
 func (s *azblobTestSuite) TestGetAccountInfo() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
 	sAccInfo, err := svcClient.GetAccountInfo(context.Background(), nil)
 	_require.Nil(err)
-	_require.NotEqualValues(sAccInfo, service.GetAccountInfoResponse{})
+	_require.NotZero(sAccInfo)
 }
 
 // nolint
@@ -38,8 +34,8 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	accountName, _ := getAccountInfo(nil, testAccountDefault)
-	connectionString := getConnectionString(nil, testAccountDefault)
+	accountName, _ := getAccountInfo(testAccountDefault)
+	connectionString := getConnectionString(testAccountDefault)
 
 	parsedConnStr, err := azblob.ParseConnectionString(connectionString)
 	_require.Nil(err)
@@ -246,11 +242,8 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerClient1 := createNewContainer(_require, generateContainerName(testName)+"1", svcClient)
 	defer deleteContainer(_require, containerClient1)
@@ -321,12 +314,8 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 
 func (s *azblobTestSuite) TestAccountDeleteRetentionPolicy() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
@@ -356,12 +345,8 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicy() {
 
 func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyEmpty() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
@@ -383,12 +368,8 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyEmpty() {
 
 func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
@@ -423,12 +404,8 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil() {
 
 func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	days := int32(0) // Minimum days is 1. Validated on the client.
 	enabled := true
@@ -460,12 +437,8 @@ func (s *azblobUnrecordedTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge
 
 func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysOmitted() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	// Days is required if enabled is true.
 	enabled := true

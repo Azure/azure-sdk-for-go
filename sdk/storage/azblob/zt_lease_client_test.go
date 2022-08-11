@@ -8,6 +8,7 @@ package azblob_test
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 
@@ -21,13 +22,10 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 func (s *azblobTestSuite) TestContainerAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -49,11 +47,8 @@ func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -85,13 +80,10 @@ func (s *azblobTestSuite) TestContainerReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -119,13 +111,10 @@ func (s *azblobTestSuite) TestContainerRenewLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -150,13 +139,10 @@ func (s *azblobTestSuite) TestContainerChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -188,13 +174,10 @@ func (s *azblobTestSuite) TestBlobAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -218,13 +201,10 @@ func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -258,13 +238,10 @@ func (s *azblobTestSuite) TestBlobReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -293,11 +270,8 @@ func (s *azblobTestSuite) TestBlobReleaseLease() {
 func (s *azblobTestSuite) TestBlobRenewLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -324,13 +298,10 @@ func (s *azblobTestSuite) TestBlobChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)

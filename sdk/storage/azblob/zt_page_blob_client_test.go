@@ -8,11 +8,11 @@ package azblob_test
 
 import (
 	"bytes"
+	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
@@ -23,11 +23,8 @@ import (
 func (s *azblobTestSuite) TestPutGetPages() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -240,9 +237,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -329,9 +324,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -371,15 +364,8 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 func (s *azblobTestSuite) TestResizePageBlob() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	var recording *testframework.Recording
-	if _context != nil {
-		recording = _context.recording
-	}
-	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -402,11 +388,8 @@ func (s *azblobTestSuite) TestResizePageBlob() {
 func (s *azblobTestSuite) TestPageSequenceNumbers() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -502,11 +485,8 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -528,11 +508,8 @@ func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
 func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -552,11 +529,8 @@ func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
 func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -582,11 +556,8 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
 func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -611,11 +582,8 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
 func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -638,11 +606,8 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
 func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -676,11 +641,8 @@ func validatePageBlobPut(_require *require.Assertions, pbClient *pageblob.Client
 func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -714,11 +676,8 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -752,11 +711,8 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -790,11 +746,8 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -828,11 +781,8 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -864,11 +814,8 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -898,11 +845,8 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -932,11 +876,8 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -969,9 +910,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1002,11 +941,8 @@ func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1025,11 +961,8 @@ func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
 func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1072,11 +1005,8 @@ func validateUploadPages(_require *require.Assertions, pbClient *pageblob.Client
 func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1109,11 +1039,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1146,11 +1073,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1183,11 +1107,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1220,11 +1141,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1257,11 +1175,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1294,11 +1209,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1331,11 +1243,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1369,11 +1278,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1400,11 +1306,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1440,11 +1343,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1472,11 +1372,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1512,11 +1409,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1552,11 +1446,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1581,11 +1472,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1621,11 +1509,8 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1652,8 +1537,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 //func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+////	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
 //	if err != nil {
 //		_require.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1678,12 +1562,9 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 //	_require.Nil(err)
 //}
 
-func setupClearPagesTest(_require *require.Assertions, testName string) (*container.Client, *pageblob.Client) {
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+func setupClearPagesTest(t *testing.T, _require *require.Assertions, testName string) (*container.Client, *pageblob.Client) {
+	svcClient, err := getServiceClient(t, testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1718,7 +1599,7 @@ func validateClearPagesTest(_require *require.Assertions, pbClient *pageblob.Cli
 func (s *azblobTestSuite) TestBlobClearPagesInvalidRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	_, err := pbClient.ClearPages(ctx, int64(0), int64(pageblob.PageBytes+1), nil)
@@ -1728,7 +1609,7 @@ func (s *azblobTestSuite) TestBlobClearPagesInvalidRange() {
 func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1749,7 +1630,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1772,7 +1653,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1795,7 +1676,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1818,7 +1699,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -1840,7 +1721,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	eTag := "garbage"
@@ -1860,7 +1741,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	eTag := "garbage"
@@ -1880,7 +1761,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
@@ -1901,7 +1782,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	ifSequenceNumberLessThan := int64(10)
@@ -1919,7 +1800,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	sequenceNumber := int64(10)
@@ -1946,7 +1827,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	ifSequenceNumberLessThan := int64(-1)
@@ -1964,7 +1845,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(10)
@@ -1982,7 +1863,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	sequenceNumber := int64(10)
@@ -2009,7 +1890,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
@@ -2027,7 +1908,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	sequenceNumber := int64(10)
@@ -2054,7 +1935,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	sequenceNumber := int64(10)
@@ -2081,7 +1962,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupClearPagesTest(_require, testName)
+	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	ifSequenceNumberEqualTo := int64(-1)
@@ -2096,12 +1977,9 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 	validateBlobErrorCode(_require, err, bloberror.InvalidInput)
 }
 
-func setupGetPageRangesTest(_require *require.Assertions, testName string) (containerClient *container.Client, pbClient *pageblob.Client) {
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+func setupGetPageRangesTest(t *testing.T, _require *require.Assertions, testName string) (containerClient *container.Client, pbClient *pageblob.Client) {
+	svcClient, err := getServiceClient(t, testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient = createNewContainer(_require, containerName, svcClient)
@@ -2132,11 +2010,8 @@ func validateBasicGetPageRanges(_require *require.Assertions, resp pageblob.Page
 func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -2160,7 +2035,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
 func (s *azblobTestSuite) TestBlobGetPageRangesEmptyRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0))})
@@ -2179,7 +2054,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyRange() {
 func (s *azblobTestSuite) TestBlobGetPageRangesInvalidRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(-2)), Count: to.Ptr(int64(500))})
@@ -2195,7 +2070,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesInvalidRange() {
 func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	r, _ := generateData(pageblob.PageBytes)
@@ -2233,7 +2108,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 func (s *azblobTestSuite) TestBlobGetPageRangesNotPageAligned() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(2000))})
@@ -2251,7 +2126,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNotPageAligned() {
 func (s *azblobTestSuite) TestBlobGetPageRangesSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	resp, err := pbClient.CreateSnapshot(ctx, nil)
@@ -2275,7 +2150,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesSnapshot() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -2302,7 +2177,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -2329,7 +2204,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -2356,7 +2231,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
@@ -2383,7 +2258,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
@@ -2407,7 +2282,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
@@ -2428,7 +2303,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
@@ -2449,7 +2324,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
+	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
@@ -2472,16 +2347,9 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 }
 
 // nolint
-func setupDiffPageRangesTest(_require *require.Assertions, testName string) (containerClient *container.Client, pbClient *pageblob.Client, snapshot string) {
-	_context := getTestContext(testName)
-	var recording *testframework.Recording
-	if _context != nil {
-		recording = _context.recording
-	}
-	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+func setupDiffPageRangesTest(t *testing.T, _require *require.Assertions, testName string) (containerClient *container.Client, pbClient *pageblob.Client, snapshot string) {
+	svcClient, err := getServiceClient(t, testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient = createNewContainer(_require, containerName, svcClient)
@@ -2524,7 +2392,7 @@ func validateDiffPageRanges(_require *require.Assertions, resp pageblob.PageList
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	snapshotTime, _ := time.Parse(blob.SnapshotTimeFormat, snapshot)
@@ -2547,7 +2415,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() 
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{Offset: to.Ptr(int64(-22)), Count: to.Ptr(int64(14)), Snapshot: &snapshot})
 	for pager.More() {
@@ -2563,7 +2431,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
@@ -2588,7 +2456,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
@@ -2617,7 +2485,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() 
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
@@ -2643,7 +2511,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue()
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
@@ -2670,7 +2538,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 //func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
+//	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 //	defer deleteContainer(_require, containerClient)
 //
 //	resp, err := pbClient.GetProperties(ctx, nil)
@@ -2698,7 +2566,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshotStr := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshotStr := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
@@ -2725,7 +2593,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshotStr := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshotStr := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
@@ -2751,7 +2619,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
+	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer deleteContainer(_require, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
@@ -2776,11 +2644,8 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobResizeZero() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -2801,11 +2666,8 @@ func (s *azblobTestSuite) TestBlobResizeZero() {
 func (s *azblobTestSuite) TestBlobResizeInvalidSizeNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -2821,11 +2683,8 @@ func (s *azblobTestSuite) TestBlobResizeInvalidSizeNegative() {
 func (s *azblobTestSuite) TestBlobResizeInvalidSizeMisaligned() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -2846,11 +2705,8 @@ func validateResize(_require *require.Assertions, pbClient *pageblob.Client) {
 func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -2882,11 +2738,8 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -2918,11 +2771,8 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -2954,11 +2804,8 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -2990,11 +2837,8 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3021,11 +2865,8 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3051,11 +2892,8 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3081,11 +2919,8 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3112,11 +2947,8 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3140,11 +2972,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3179,11 +3008,8 @@ func validateSequenceNumberSet(_require *require.Assertions, pbClient *pageblob.
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3217,11 +3043,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3255,11 +3078,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3293,11 +3113,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3331,11 +3148,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3364,11 +3178,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3396,11 +3207,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3428,11 +3236,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -3460,8 +3265,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 
 //func setupStartIncrementalCopyTest(_require *require.Assertions, testName string) (containerClient *container.Client,
 //	pbClient *pageblob.Client, copyPBClient *pageblob.Client, snapshot string) {
-//	_context := getTestContext(testName)
-//	var recording *testframework.Recording
+////	var recording *testframework.Recording
 //	if _context != nil {
 //		recording = _context.recording
 //	}
@@ -3509,8 +3313,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopySnapshotNotExist() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+////	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
 //	if err != nil {
 //		_require.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -3700,11 +3503,8 @@ func setAndCheckPageBlobTier(_require *require.Assertions, pbClient *pageblob.Cl
 func (s *azblobTestSuite) TestBlobSetTierAllTiersOnPageBlob() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	premiumServiceClient, err := getServiceClient(_context.recording, testAccountPremium, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	premiumServiceClient, err := getServiceClient(s.T(), testAccountPremium, nil)
+	_require.NoError(err)
 
 	premContainerName := "prem" + generateContainerName(testName)
 	premContainerClient := createNewContainer(_require, premContainerName, premiumServiceClient)

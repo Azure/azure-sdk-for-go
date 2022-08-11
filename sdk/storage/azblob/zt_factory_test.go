@@ -15,15 +15,14 @@ import (
 	"fmt"
 	"io"
 	"math/rand"
-	"net/url"
 	"os"
 	"runtime"
 	"strings"
+	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -114,70 +113,70 @@ func getRequiredEnv(name string) (string, error) {
 	}
 }
 
-func getAccountInfo(recording *testframework.Recording, accountType testAccountType) (string, string) {
+func getAccountInfo(accountType testAccountType) (string, string) {
 	accountNameEnvVar := string(accountType) + AccountNameEnvVar
 	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
-	accountName, accountKey := "", ""
-	if recording == nil {
-		accountName, _ = getRequiredEnv(accountNameEnvVar)
-		accountKey, _ = getRequiredEnv(accountKeyEnvVar)
-
-	} else {
-		accountName, _ = recording.GetEnvVar(accountNameEnvVar, testframework.NoSanitization)
-		accountKey, _ = recording.GetEnvVar(accountKeyEnvVar, testframework.Secret_Base64String)
-	}
+	accountName, _ := getRequiredEnv(accountNameEnvVar)
+	accountKey, _ := getRequiredEnv(accountKeyEnvVar)
 	return accountName, accountKey
 }
 
-func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*azblob.SharedKeyCredential, error) {
-	accountName, accountKey := getAccountInfo(recording, accountType)
+func getGenericCredential(accountType testAccountType) (*azblob.SharedKeyCredential, error) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return azblob.NewSharedKeyCredential(fakeStorageAccount, "ZmFrZQ==")
+	}
+
+	accountName, accountKey := getAccountInfo(accountType)
 	if accountName == "" || accountKey == "" {
 		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
 	}
 	return azblob.NewSharedKeyCredential(accountName, accountKey)
 }
 
-func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *service.ClientOptions) (*service.Client, error) {
-	if recording != nil {
-		if options == nil {
-			options = &service.ClientOptions{
-				Transport: recording,
-				Retry:     policy.RetryOptions{MaxRetries: -1},
-			}
-		}
+func getServiceClient(t *testing.T, accountType testAccountType, options *service.ClientOptions) (*service.Client, error) {
+	if options == nil {
+		options = &service.ClientOptions{}
 	}
 
-	cred, err := getGenericCredential(recording, accountType)
+	options.Logging.AllowedHeaders = []string{"X-Request-Mismatch", "X-Request-Mismatch-Error"}
+
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	options.Transport = transport
+
+	cred, err := getGenericCredential(accountType)
 	if err != nil {
 		return nil, err
 	}
 
-	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".blob.core.windows.net/")
-	serviceClient, err := service.NewClientWithSharedKey(serviceURL.String(), cred, options)
+	serviceClient, err := service.NewClientWithSharedKey("https://"+cred.AccountName()+".blob.core.windows.net/", cred, options)
 
 	return serviceClient, err
 }
 
 // nolint
-func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
-	accountName, accountKey := getAccountInfo(recording, accountType)
+func getConnectionString(accountType testAccountType) string {
+	accountName, accountKey := getAccountInfo(accountType)
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
 		accountName, accountKey)
 	return connectionString
 }
 
 // nolint
-func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *service.ClientOptions) (*service.Client, error) {
-	if recording != nil {
-		if options == nil {
-			options = &service.ClientOptions{
-				Transport: recording,
-				Retry:     policy.RetryOptions{MaxRetries: -1},
-			}
-		}
+func getServiceClientFromConnectionString(t *testing.T, accountType testAccountType, options *service.ClientOptions) (*service.Client, error) {
+	if options == nil {
+		options = &service.ClientOptions{}
 	}
 
-	connectionString := getConnectionString(recording, accountType)
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	options.Transport = transport
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return service.NewClientWithNoCredential(fakeStorageURL, options)
+	}
+
+	connectionString := getConnectionString(accountType)
 	svcClient, err := service.NewClientFromConnectionString(connectionString, options)
 	return svcClient, err
 }

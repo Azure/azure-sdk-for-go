@@ -9,15 +9,16 @@ package azblob_test
 import (
 	"context"
 	"errors"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"io"
+	"os"
+	"sync/atomic"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/stretchr/testify/require"
-	"io"
-	"os"
-	"sync/atomic"
-	"time"
 )
 
 // create a test file
@@ -32,16 +33,9 @@ func generateFile(fileName string, fileSize int) []byte {
 }
 
 // nolint
-func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
-	_context := getTestContext(testName)
-	var recording *testframework.Recording
-	if _context != nil {
-		recording = _context.recording
-	}
-	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
+	svcClient, err := getServiceClient(t, testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -80,7 +74,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobInChunks() {
 	maxBuffers := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(s.T(), _require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 // nolint
@@ -90,7 +84,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleBuffer() {
 	maxBuffers := 1
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(s.T(), _require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 // nolint
@@ -100,7 +94,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleIO() {
 	maxBuffers := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(s.T(), _require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 // nolint
@@ -110,7 +104,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobSingleIOEdgeCase(
 	maxBuffers := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(s.T(), _require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 // nolint
@@ -120,11 +114,11 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlockBlobEmpty() {
 	maxBuffers := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadStreamToBlockBlobTest(_require, testName, blobSize, bufferSize, maxBuffers)
+	performUploadStreamToBlockBlobTest(s.T(), _require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 // nolint
-func performUploadAndDownloadFileTest(_require *require.Assertions, testName string, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
+func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions, testName string, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
 	// Set up file to upload
 	fileName := "BigFile.bin"
 	fileData := generateFile(fileName, fileSize)
@@ -139,15 +133,8 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 		_ = os.Remove(name)
 	}(fileName)
 
-	_context := getTestContext(testName)
-	var recording *testframework.Recording
-	if _context != nil {
-		recording = _context.recording
-	}
-	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(t, testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
@@ -227,7 +214,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileInChunks() {
 	parallelism := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
 // nolint
@@ -237,7 +224,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileSingleIO() {
 	parallelism := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
 // nolint
@@ -247,7 +234,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileSingleRoutine() {
 	parallelism := 1
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
 // nolint
@@ -257,7 +244,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileEmpty() {
 	parallelism := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, 0, 0)
 }
 
 // nolint
@@ -269,7 +256,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroOffset() {
 	downloadCount := 0
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 // nolint
@@ -281,7 +268,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroCount() {
 	downloadCount := 6000
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 // nolint
@@ -293,24 +280,17 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadFileNonZeroOffsetAndCou
 	downloadCount := 6000
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(_require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 // nolint
-func performUploadAndDownloadBufferTest(_require *require.Assertions, testName string, blobSize, blockSize, parallelism, downloadOffset, downloadCount int) {
+func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertions, testName string, blobSize, blockSize, parallelism, downloadOffset, downloadCount int) {
 	// Set up buffer to upload
 	_, bytesToUpload := generateData(blobSize)
 
 	// Set up test container
-	_context := getTestContext(testName)
-	var recording *testframework.Recording
-	if _context != nil {
-		recording = _context.recording
-	}
-	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(t, testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
@@ -369,7 +349,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferInChunks() {
 	parallelism := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
 // nolint
@@ -379,7 +359,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferSingleIO() {
 	parallelism := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
 // nolint
@@ -389,7 +369,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferSingleRoutine() {
 	parallelism := 1
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
 // nolint
@@ -399,7 +379,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadAndDownloadBufferEmpty() {
 	parallelism := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, 0, 0)
 }
 
 // nolint
@@ -411,7 +391,7 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroOffset() {
 	downloadCount := 0
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 // nolint
@@ -423,7 +403,7 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroCount() {
 	downloadCount := 6000
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 // nolint
@@ -435,7 +415,7 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBufferWithNonZeroOffsetAndCount(
 	downloadCount := 6 * 1024
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(_require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 }
 
 // nolint
@@ -550,9 +530,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	_require.NoError(err)
 
 	blobSize := 1024
 	bufferSize := 8 * 1024

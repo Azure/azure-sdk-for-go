@@ -51,12 +51,8 @@ import (
 
 func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerClient := svcClient.NewContainerClient("foo bar")
 
 	access := container.PublicAccessTypeBlob
@@ -71,12 +67,8 @@ func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 
 func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerClient := svcClient.NewContainerClient("")
 
@@ -94,11 +86,8 @@ func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -121,11 +110,8 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -143,11 +129,8 @@ func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -168,12 +151,9 @@ func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -195,8 +175,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	// TOD0: NotWorking
 //	_require := require.New(s.T())
 //testName := s.T().Name()
-//	_context := getTestContext(testName)
-//
+////
 //	svcClient := getServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
@@ -246,8 +225,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	// TODO: Not Working
 //	_require := require.New(s.T())
 // testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient := getServiceClient(&ClientOptions{
+////	svcClient := getServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
 //
@@ -288,11 +266,8 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -336,8 +311,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //func (s *azblobTestSuite) TestContainerCreateIfExists() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+////	serviceClient, err := getServiceClient(s.T(), testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -368,8 +342,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //func (s *azblobTestSuite) TestContainerCreateIfNotExists() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+////	serviceClient, err := getServiceClient(s.T(), testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -403,11 +376,8 @@ func validateContainerDeleted(_require *require.Assertions, containerClient *con
 func (s *azblobTestSuite) TestContainerDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -421,8 +391,7 @@ func (s *azblobTestSuite) TestContainerDelete() {
 //func (s *azblobTestSuite) TestContainerDeleteIfExists() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+////	serviceClient, err := getServiceClient(s.T(), testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -444,8 +413,7 @@ func (s *azblobTestSuite) TestContainerDelete() {
 //func (s *azblobTestSuite) TestContainerDeleteIfNotExists() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+////	serviceClient, err := getServiceClient(s.T(), testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -460,11 +428,8 @@ func (s *azblobTestSuite) TestContainerDelete() {
 func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -477,11 +442,8 @@ func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
 func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -507,11 +469,8 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -539,11 +498,8 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -570,11 +526,8 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -698,8 +651,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+////	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -741,11 +693,8 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -953,11 +902,8 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -991,11 +937,8 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
@@ -1031,11 +974,8 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 func (s *azblobTestSuite) TestContainerListBlobsNonExistentContainer() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -1053,11 +993,8 @@ func (s *azblobTestSuite) TestContainerListBlobsNonExistentContainer() {
 func (s *azblobTestSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
 
@@ -1071,11 +1008,8 @@ func (s *azblobTestSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 func (s *azblobTestSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -1088,11 +1022,8 @@ func (s *azblobTestSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -1119,11 +1050,8 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 	access := container.PublicAccessTypeBlob
@@ -1146,11 +1074,8 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)
 
@@ -1167,11 +1092,8 @@ func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
 func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -1210,8 +1132,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //	// TODO: NotWorking
 //	_require := require.New(s.T())
 // testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient := getServiceClient(&ClientOptions{
+////	svcClient := getServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
 //	containerClient, _ := createNewContainer(_require, testName, svcClient)
@@ -1237,11 +1158,8 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 func (s *azblobTestSuite) TestContainerNewBlobURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -1254,11 +1172,8 @@ func (s *azblobTestSuite) TestContainerNewBlobURL() {
 func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
@@ -1271,11 +1186,8 @@ func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
 func (s *azblobTestSuite) TestListBlobIncludeMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_require, containerName, svcClient)

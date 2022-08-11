@@ -10,20 +10,18 @@ import (
 	"context"
 	"errors"
 	"io"
-	"log"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -31,7 +29,6 @@ var ctx = context.Background()
 
 type azblobTestSuite struct {
 	suite.Suite
-	mode testframework.RecordMode
 }
 
 // nolint
@@ -41,68 +38,34 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
+	suite.Run(t, &azblobTestSuite{})
 	//suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
-type testContext struct {
-	recording *testframework.Recording
-	context   *testframework.TestContext
-}
-
-// a map to store our created test contexts
-var clientsMap = make(map[string]*testContext)
-
-// recordedTestSetup is called before each test execution by the test suite's BeforeTest method
-func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
-	testName := t.Name()
-	_require := require.New(t)
-
-	// init the test framework
-	_testContext := testframework.NewTestContext(
-		func(msg string) { _require.FailNow(msg) },
-		func(msg string) { t.Log(msg) },
-		func() string { return testName })
-
-	// mode should be test_framework.Playback.
-	// This will automatically record if no test recording is available and playback if it is.
-	recording, err := testframework.NewRecording(_testContext, mode)
-	_require.Nil(err)
-
-	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
-
-	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
-}
-
-func getTestContext(key string) *testContext {
-	return clientsMap[key]
-}
-
-func recordedTestTeardown(key string) {
-	_context, ok := clientsMap[key]
-	if ok && !(*_context.context).IsFailed() {
-		_ = _context.recording.Stop()
-	}
-}
+const (
+	fakeStorageAccount = "fakestorage"
+	fakeStorageURL     = "https://fakestorage.blob.core.windows.net"
+)
 
 // nolint
 func (s *azblobTestSuite) BeforeTest(suite string, test string) {
-	// set up the test environment
-	recordedTestSetup(s.T(), s.mode)
+	const urlRegex = `https://\S+\.blob\.core\.windows\.net`
+	recording.AddURISanitizer(fakeStorageURL, urlRegex, nil)
+	recording.AddHeaderRegexSanitizer("x-ms-copy-source", fakeStorageURL, urlRegex, nil)
+	// we freeze request IDs and timestamps to avoid creating noisy diffs
+	// NOTE: we can't freeze time stamps as that breaks some tests that use if-modified-since etc (maybe it can be fixed?)
+	//testframework.AddHeaderRegexSanitizer("X-Ms-Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
+	recording.AddHeaderRegexSanitizer("x-ms-request-id", "00000000-0000-0000-0000-000000000000", "", nil)
+	//testframework.AddHeaderRegexSanitizer("Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
+	// TODO: more freezing
+	//testframework.AddBodyRegexSanitizer("RequestId:00000000-0000-0000-0000-000000000000", `RequestId:\w{8}-\w{4}-\w{4}-\w{4}-\w{12}`, nil)
+	//testframework.AddBodyRegexSanitizer("Time:2022-08-11T00:21:56.4562741Z", `Time:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z`, nil)
+	require.NoError(s.T(), recording.Start(s.T(), "sdk/storage/azblob/testdata", nil))
 }
 
 // nolint
 func (s *azblobTestSuite) AfterTest(suite string, test string) {
-	// teardown the test context
-	recordedTestTeardown(s.T().Name())
+	require.NoError(s.T(), recording.Stop(s.T(), nil))
 }
 
 // nolint
@@ -174,7 +137,7 @@ func validateBlobErrorCode(_require *require.Assertions, err error, code bloberr
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)
 	if responseErr != nil {
-		_require.Equal(responseErr.ErrorCode, string(code))
+		_require.Equal(string(code), responseErr.ErrorCode)
 	} else {
 		_require.Contains(err.Error(), code)
 	}

@@ -23,7 +23,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -123,7 +122,7 @@ func getAccountInfo(accountType testAccountType) (string, string) {
 }
 
 func getGenericCredential(accountType testAccountType) (*azblob.SharedKeyCredential, error) {
-	if testframework.GetRecordMode() == testframework.PlaybackMode {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		return azblob.NewSharedKeyCredential(fakeStorageAccount, "ZmFrZQ==")
 	}
 
@@ -173,7 +172,7 @@ func getServiceClientFromConnectionString(t *testing.T, accountType testAccountT
 	require.NoError(t, err)
 	options.Transport = transport
 
-	if testframework.GetRecordMode() == testframework.PlaybackMode {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		return service.NewClientWithNoCredential(fakeStorageURL, options)
 	}
 

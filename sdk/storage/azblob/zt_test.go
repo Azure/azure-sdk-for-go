@@ -16,13 +16,12 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -51,22 +50,22 @@ const (
 // nolint
 func (s *azblobTestSuite) BeforeTest(suite string, test string) {
 	const urlRegex = `https://\S+\.blob\.core\.windows\.net`
-	testframework.AddURISanitizer(fakeStorageURL, urlRegex, nil)
-	testframework.AddHeaderRegexSanitizer("x-ms-copy-source", fakeStorageURL, urlRegex, nil)
+	recording.AddURISanitizer(fakeStorageURL, urlRegex, nil)
+	recording.AddHeaderRegexSanitizer("x-ms-copy-source", fakeStorageURL, urlRegex, nil)
 	// we freeze request IDs and timestamps to avoid creating noisy diffs
 	// NOTE: we can't freeze time stamps as that breaks some tests that use if-modified-since etc (maybe it can be fixed?)
 	//testframework.AddHeaderRegexSanitizer("X-Ms-Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
-	testframework.AddHeaderRegexSanitizer("x-ms-request-id", "00000000-0000-0000-0000-000000000000", "", nil)
+	recording.AddHeaderRegexSanitizer("x-ms-request-id", "00000000-0000-0000-0000-000000000000", "", nil)
 	//testframework.AddHeaderRegexSanitizer("Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
 	// TODO: more freezing
 	//testframework.AddBodyRegexSanitizer("RequestId:00000000-0000-0000-0000-000000000000", `RequestId:\w{8}-\w{4}-\w{4}-\w{4}-\w{12}`, nil)
 	//testframework.AddBodyRegexSanitizer("Time:2022-08-11T00:21:56.4562741Z", `Time:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z`, nil)
-	require.NoError(s.T(), testframework.Start(s.T(), "sdk/storage/azblob/testdata", nil))
+	require.NoError(s.T(), recording.Start(s.T(), "sdk/storage/azblob/testdata", nil))
 }
 
 // nolint
 func (s *azblobTestSuite) AfterTest(suite string, test string) {
-	require.NoError(s.T(), testframework.Stop(s.T(), nil))
+	require.NoError(s.T(), recording.Stop(s.T(), nil))
 }
 
 // nolint

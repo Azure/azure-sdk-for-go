@@ -124,7 +124,7 @@ func sendEventsToPartition(cs string, hubName string, partitionID string, messag
 
 		err := batch.AddEventData(ed, nil)
 
-		if errors.Is(err, azeventhubs.ErrMessageTooLarge) {
+		if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
 			if batch.NumMessages() == 0 {
 				return errors.New("single event was too large to fit into batch")
 			}

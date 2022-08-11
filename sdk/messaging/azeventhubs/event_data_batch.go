@@ -5,14 +5,17 @@ package azeventhubs
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
-// ErrMessageTooLarge is returned when a message cannot fit into a batch when using MessageBatch.Add()
-var ErrMessageTooLarge = errors.New("the message could not be added because it is too large for the batch")
+// ErrEventDataTooLarge is returned when a message cannot fit into a batch when using EventDataBatch.AddEventData()
+var ErrEventDataTooLarge = errors.New("the EventData could not be added because it is too large for the batch")
 
 type (
 	// EventDataBatch represents a batch of messages to send to Event Hubs in a single message
@@ -126,7 +129,7 @@ func (mb *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
 			mb.batchEnvelope = nil
 		}
 
-		return ErrMessageTooLarge
+		return ErrEventDataTooLarge
 	}
 
 	mb.currentSize += actualPayloadSize
@@ -165,4 +168,36 @@ func calcActualSizeForPayload(payload []byte) uint64 {
 	}
 
 	return uint64(vbin32Overhead + len(payload))
+}
+
+func newEventDataBatch(sender amqpwrap.AMQPSenderCloser, options *NewEventDataBatchOptions) (*EventDataBatch, error) {
+	if options == nil {
+		options = &NewEventDataBatchOptions{}
+	}
+
+	if options.PartitionID != nil && options.PartitionKey != nil {
+		return nil, errors.New("either PartitionID or PartitionKey can be set, but not both")
+	}
+
+	var batch EventDataBatch
+
+	if options.PartitionID != nil {
+		// they want to send to a particular partition. The batch size should be the same for any
+		// link but we might as well use the one they're going to send to.
+		batch.partitionID = options.PartitionID
+	} else if options.PartitionKey != nil {
+		batch.partitionKey = options.PartitionKey
+	}
+
+	if options.MaxBytes == 0 {
+		batch.maxBytes = sender.MaxMessageSize()
+		return &batch, nil
+	}
+
+	if options.MaxBytes > sender.MaxMessageSize() {
+		return nil, internal.NewErrNonRetriable(fmt.Sprintf("maximum message size for batch was set to %d bytes, which is larger than the maximum size allowed by link (%d)", options.MaxBytes, sender.MaxMessageSize()))
+	}
+
+	batch.maxBytes = options.MaxBytes
+	return &batch, nil
 }

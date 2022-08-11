@@ -22,7 +22,7 @@ type DeleteContainerOptions = service.DeleteContainerOptions
 // DeleteBlobOptions contains the optional parameters for the Client.Delete method.
 type DeleteBlobOptions = blob.DeleteOptions
 
-// DownloadOptions contains the optional parameters for the Client.DownloadToSTream method.
+// DownloadToStreamOptions contains the optional parameters for the Client.DownloadToSTream method.
 type DownloadToStreamOptions = blob.DownloadToStreamOptions
 
 // ListBlobsOptions contains the optional parameters for the container.Client.ListBlobFlatSegment method.

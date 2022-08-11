@@ -239,7 +239,7 @@ func (bb *Client) GetBlockList(ctx context.Context, listType BlockListType, opti
 
 // DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (bb *Client) DownloadToStream(ctx context.Context, o *blob.DownloadOptions) (blob.DownloadToStreamResponse, error) {
+func (bb *Client) DownloadToStream(ctx context.Context, o *blob.DownloadToStreamOptions) (blob.DownloadToStreamResponse, error) {
 	return bb.BlobClient().DownloadToStream(ctx, o)
 }
 

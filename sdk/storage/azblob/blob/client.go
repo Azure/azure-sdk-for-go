@@ -128,7 +128,7 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 
 // DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (b *Client) DownloadToStream(ctx context.Context, o *DownloadOptions) (DownloadToStreamResponse, error) {
+func (b *Client) DownloadToStream(ctx context.Context, o *DownloadToStreamOptions) (DownloadToStreamResponse, error) {
 	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
 
 	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)

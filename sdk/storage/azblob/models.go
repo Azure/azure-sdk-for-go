@@ -22,13 +22,8 @@ type DeleteContainerOptions = service.DeleteContainerOptions
 // DeleteBlobOptions contains the optional parameters for the Client.Delete method.
 type DeleteBlobOptions = blob.DeleteOptions
 
-// DownloadOptions contains the optional parameters for the Client.Download method.
-type DownloadOptions struct {
-	BlobOptions *BlobDownloadOptions
-}
-
-// BlobDownloadOptions contains the optional parameters for the Client.Download method.
-type BlobDownloadOptions = blob.DownloadOptions
+// DownloadOptions contains the optional parameters for the Client.DownloadToSTream method.
+type DownloadToStreamOptions = blob.DownloadToStreamOptions
 
 // ListBlobsOptions contains the optional parameters for the container.Client.ListBlobFlatSegment method.
 type ListBlobsOptions = container.ListBlobsFlatOptions

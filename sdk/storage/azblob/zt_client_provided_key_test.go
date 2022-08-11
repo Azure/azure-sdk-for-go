@@ -92,7 +92,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	getResp, err := bbClient.DownloadToStream(ctx, &downloadBlobOptions)
@@ -137,13 +137,13 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	_require.Equal(*resp.IsServerEncrypted, true)
 	_require.EqualValues(resp.EncryptionScope, testCPKByScope.EncryptionScope)
 
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	_, err = bbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.NotNil(err)
 
-	downloadBlobOptions = blob.DownloadOptions{
+	downloadBlobOptions = blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	getResp, err := bbClient.DownloadToStream(ctx, &downloadBlobOptions)
@@ -419,13 +419,13 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_, err = bbClient.DownloadToStream(ctx, nil)
 	_require.NotNil(err)
 
-	_, err = bbClient.DownloadToStream(ctx, &blob.DownloadOptions{
+	_, err = bbClient.DownloadToStream(ctx, &blob.DownloadToStreamOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	})
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadResp, err := bbClient.DownloadToStream(ctx, &blob.DownloadOptions{
+	downloadResp, err := bbClient.DownloadToStream(ctx, &blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	})
 	_require.Nil(err)
@@ -459,7 +459,7 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	_require.EqualValues(uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := bbClient.DownloadToStream(ctx, &downloadBlobOptions)
@@ -515,7 +515,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	downloadResp, err := abClient.DownloadToStream(ctx, &downloadBlobOptions)
@@ -567,7 +567,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 	}
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := abClient.DownloadToStream(ctx, &downloadBlobOptions)
@@ -828,14 +828,14 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_, err = pbClient.DownloadToStream(ctx, nil)
 	_require.NotNil(err)
 
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
 	_, err = pbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions = blob.DownloadOptions{
+	downloadBlobOptions = blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	downloadResp, err := pbClient.DownloadToStream(ctx, &downloadBlobOptions)
@@ -887,7 +887,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	}
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := pbClient.DownloadToStream(ctx, &downloadBlobOptions)
@@ -1339,7 +1339,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 	_require.Equal(*resp.IsServerEncrypted, false)
 
 	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	dResp, err := snapshotURL.DownloadToStream(ctx, &downloadBlobOptions)
@@ -1385,7 +1385,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 	_require.Equal(*resp.IsServerEncrypted, false)
 
 	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
 	dResp, err := snapshotURL.DownloadToStream(ctx, &downloadBlobOptions)

@@ -170,7 +170,7 @@ func (ab *Client) Seal(ctx context.Context, o *SealOptions) (SealResponse, error
 
 // DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (ab *Client) DownloadToStream(ctx context.Context, o *blob.DownloadOptions) (blob.DownloadToStreamResponse, error) {
+func (ab *Client) DownloadToStream(ctx context.Context, o *blob.DownloadToStreamOptions) (blob.DownloadToStreamResponse, error) {
 	return ab.BlobClient().DownloadToStream(ctx, o)
 }
 

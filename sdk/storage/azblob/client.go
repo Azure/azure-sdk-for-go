@@ -134,9 +134,9 @@ func (c *Client) UploadStream(ctx context.Context, containerName string, blobNam
 
 // DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (c *Client) DownloadToStream(ctx context.Context, containerName string, blobName string, o *DownloadOptions) (DownloadToStreamResponse, error) {
+func (c *Client) DownloadToStream(ctx context.Context, containerName string, blobName string, o *DownloadToStreamOptions) (DownloadToStreamResponse, error) {
 	o = shared.CopyOptions(o)
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToStream(ctx, o.BlobOptions)
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToStream(ctx, o)
 }
 
 // DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.

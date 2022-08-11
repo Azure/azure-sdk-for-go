@@ -1092,7 +1092,7 @@ func Example_blob_AccessConditions() {
 	// Download blob content if the blob has been modified since we uploaded it (fails):
 	downloadResp, err := blockBlob.DownloadToStream(
 		context.TODO(),
-		&azblob.BlobDownloadOptions{
+		&azblob.DownloadToStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 					IfModifiedSince: upload.LastModified,
@@ -1105,7 +1105,7 @@ func Example_blob_AccessConditions() {
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
 	downloadResp, err = blockBlob.DownloadToStream(
 		context.TODO(),
-		&azblob.BlobDownloadOptions{
+		&azblob.DownloadToStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 					IfUnmodifiedSince: to.Ptr(time.Now().UTC().Add(time.Hour * -24))},
@@ -1128,7 +1128,7 @@ func Example_blob_AccessConditions() {
 	// Download content if it has changed since the version identified by ETag (fails):
 	downloadResp, err = blockBlob.DownloadToStream(
 		context.TODO(),
-		&azblob.BlobDownloadOptions{
+		&azblob.DownloadToStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
 		})

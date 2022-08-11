@@ -300,7 +300,7 @@ func (pb *Client) StartCopyIncremental(ctx context.Context, copySource string, p
 
 // DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (pb *Client) DownloadToStream(ctx context.Context, o *blob.DownloadOptions) (blob.DownloadToStreamResponse, error) {
+func (pb *Client) DownloadToStream(ctx context.Context, o *blob.DownloadToStreamOptions) (blob.DownloadToStreamResponse, error) {
 	return pb.BlobClient().DownloadToStream(ctx, o)
 }
 

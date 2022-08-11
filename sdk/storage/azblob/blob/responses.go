@@ -39,7 +39,7 @@ func (r *DownloadToStreamResponse) NewRetryReader(ctx context.Context, options *
 		accessConditions := &AccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
 		}
-		options := DownloadOptions{
+		options := DownloadToStreamOptions{
 			Offset:           &getInfo.Offset,
 			Count:            &getInfo.Count,
 			AccessConditions: accessConditions,
@@ -71,7 +71,7 @@ func (r *DownloadToStreamResponse) BodyReader(options *RetryReaderOptions) io.Re
 		accessConditions := &AccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
 		}
-		options := DownloadOptions{
+		options := DownloadToStreamOptions{
 			Offset:           &getInfo.Offset,
 			Count:            &getInfo.Count,
 			AccessConditions: accessConditions,

@@ -1429,7 +1429,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataNegativeOffset() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		Offset: to.Ptr[int64](-1),
 	}
 	_, err = bbClient.DownloadToStream(ctx, &options)
@@ -1449,7 +1449,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		Offset: to.Ptr(int64(len(blockBlobDefaultData))),
 	}
 	_, err = bbClient.DownloadToStream(ctx, &options)
@@ -1470,7 +1470,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountNegative() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		Count: to.Ptr[int64](-2),
 	}
 	_, err = bbClient.DownloadToStream(ctx, &options)
@@ -1490,7 +1490,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		Count: to.Ptr[int64](0),
 	}
 	resp, err := bbClient.DownloadToStream(ctx, &options)
@@ -1516,7 +1516,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
 	count := int64(len(blockBlobDefaultData))
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		Count: &count,
 	}
 	resp, err := bbClient.DownloadToStream(ctx, &options)
@@ -1540,7 +1540,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		Count: to.Ptr(int64((len(blockBlobDefaultData)) * 2)),
 	}
 	resp, err := bbClient.DownloadToStream(ctx, &options)
@@ -1564,7 +1564,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		Count:  to.Ptr[int64](0),
 		Offset: to.Ptr[int64](0),
 	}
@@ -1589,7 +1589,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataContentMD5() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		Count:              to.Ptr[int64](3),
 		Offset:             to.Ptr[int64](10),
 		RangeGetContentMD5: to.Ptr(true),
@@ -1619,7 +1619,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -1649,7 +1649,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	resp, err := bbClient.DownloadToStream(ctx, &blob.DownloadOptions{
+	resp, err := bbClient.DownloadToStream(ctx, &blob.DownloadToStreamOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		}},
@@ -1678,7 +1678,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
@@ -1709,7 +1709,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse() {
 	access := blob.ModifiedAccessConditions{
 		IfUnmodifiedSince: &currentTime,
 	}
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &access},
 	}
 	_, err = bbClient.DownloadToStream(ctx, &options)
@@ -1732,7 +1732,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchTrue() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
@@ -1758,7 +1758,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchFalse() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
 
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
@@ -1786,7 +1786,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchTrue() {
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfNoneMatch: resp.ETag,
 		}},
@@ -1815,7 +1815,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
-	options := blob.DownloadOptions{
+	options := blob.DownloadToStreamOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 		},

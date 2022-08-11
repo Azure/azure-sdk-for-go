@@ -132,30 +132,27 @@ func (c *Client) UploadStream(ctx context.Context, containerName string, blobNam
 	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadStream(ctx, body, o)
 }
 
-// Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (c *Client) Download(ctx context.Context, containerName string, blobName string, o *DownloadOptions) (DownloadResponse, error) {
+func (c *Client) DownloadToStream(ctx context.Context, containerName string, blobName string, o *DownloadOptions) (DownloadToStreamResponse, error) {
 	o = shared.CopyOptions(o)
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).Download(ctx, o.BlobOptions)
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToStream(ctx, o.BlobOptions)
 }
 
 // DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (c *Client) DownloadToWriterAt(ctx context.Context, containerName string, blobName string, offset, count int64, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToWriterAt(ctx, offset, count, writer, o)
+func (c *Client) DownloadToWriterAt(ctx context.Context, containerName string, blobName string, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToWriterAt(ctx, writer, o)
 }
 
 // DownloadToBuffer downloads an Azure blob to a buffer with parallel.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (c *Client) DownloadToBuffer(ctx context.Context, containerName string, blobName string, offset, count int64, _bytes []byte, o *DownloadToBufferOptions) error {
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToBuffer(ctx, offset, count, shared.NewBytesWriter(_bytes), o)
+func (c *Client) DownloadToBuffer(ctx context.Context, containerName string, blobName string, _bytes []byte, o *DownloadToBufferOptions) error {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToBuffer(ctx, shared.NewBytesWriter(_bytes), o)
 }
 
 // DownloadToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (c *Client) DownloadToFile(ctx context.Context, containerName string, blobName string, offset, count int64, file *os.File, o *DownloadToFileOptions) error {
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToFile(ctx, offset, count, file, o)
+func (c *Client) DownloadToFile(ctx context.Context, containerName string, blobName string, file *os.File, o *DownloadToFileOptions) error {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToFile(ctx, file, o)
 }
 
 // ServiceClient returns the underlying *service.Client for this client.

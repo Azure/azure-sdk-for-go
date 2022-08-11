@@ -192,7 +192,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	_require.NotNil(commitResp.VersionID)
 	versionId := commitResp.VersionID
 
-	contentResp, err := bbClient.Download(ctx, nil)
+	contentResp, err := bbClient.DownloadToStream(ctx, nil)
 	_require.Nil(err)
 	contentData, err := io.ReadAll(contentResp.BodyReader(nil))
 	_require.Nil(err)
@@ -321,7 +321,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
 //	}
 //
-//	downloadResp, err := destBlob.Download(ctx, nil)
+//	downloadResp, err := destBlob.DownloadToStream(ctx, nil)
 //	_require.Nil(err)
 //	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
@@ -394,7 +394,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //	_require.EqualValues(resp.ContentMD5, sourceDataMD5Value[:])
 //	_require.EqualValues(*resp.CopyStatus, "success")
 //
-//	downloadResp, err := destBlob.Download(ctx, nil)
+//	downloadResp, err := destBlob.DownloadToStream(ctx, nil)
 //	_require.Nil(err)
 //	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
@@ -441,7 +441,7 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_require.Nil(err)
 	_require.Equal(*getPropertiesResponse.TagCount, int64(3))
 
-	downloadResp, err := bbClient.Download(ctx, nil)
+	downloadResp, err := bbClient.DownloadToStream(ctx, nil)
 	_require.Nil(err)
 	_require.NotNil(downloadResp)
 	_require.Equal(*downloadResp.TagCount, int64(3))

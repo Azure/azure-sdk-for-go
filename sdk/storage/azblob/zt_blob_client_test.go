@@ -174,7 +174,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_require.Nil(err)
 	waitForCopy(_require, copyBlobClient, blobCopyResponse)
 
-	resp, err := copyBlobClient.Download(ctx, nil)
+	resp, err := copyBlobClient.DownloadToStream(ctx, nil)
 	_require.Nil(err)
 
 	// Read the blob data to verify the copy
@@ -426,7 +426,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 //		Offset: to.Ptr[int64](0),
 //		Count:  to.Ptr(int64(len(blockBlobDefaultData))),
 //	}
-//	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
+//	resp2, err := copyBlobClient.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //
 //	data, err := io.ReadAll(resp2.Body(nil))
@@ -1412,7 +1412,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataNonExistentBlob() {
 	blobName := generateBlobName(testName)
 	bbClient := containerClient.NewBlobClient(blobName)
 
-	_, err = bbClient.Download(ctx, nil)
+	_, err = bbClient.DownloadToStream(ctx, nil)
 	_require.NotNil(err)
 }
 
@@ -1432,7 +1432,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataNegativeOffset() {
 	options := blob.DownloadOptions{
 		Offset: to.Ptr[int64](-1),
 	}
-	_, err = bbClient.Download(ctx, &options)
+	_, err = bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 }
 
@@ -1452,7 +1452,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	options := blob.DownloadOptions{
 		Offset: to.Ptr(int64(len(blockBlobDefaultData))),
 	}
-	_, err = bbClient.Download(ctx, &options)
+	_, err = bbClient.DownloadToStream(ctx, &options)
 	_require.NotNil(err)
 	validateBlobErrorCode(_require, err, bloberror.InvalidRange)
 }
@@ -1473,7 +1473,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountNegative() {
 	options := blob.DownloadOptions{
 		Count: to.Ptr[int64](-2),
 	}
-	_, err = bbClient.Download(ctx, &options)
+	_, err = bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 }
 
@@ -1493,7 +1493,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	options := blob.DownloadOptions{
 		Count: to.Ptr[int64](0),
 	}
-	resp, err := bbClient.Download(ctx, &options)
+	resp, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 
 	// Specifying a count of 0 results in the value being ignored
@@ -1519,7 +1519,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 	options := blob.DownloadOptions{
 		Count: &count,
 	}
-	resp, err := bbClient.Download(ctx, &options)
+	resp, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 
 	data, err := io.ReadAll(resp.BodyReader(nil))
@@ -1543,7 +1543,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	options := blob.DownloadOptions{
 		Count: to.Ptr(int64((len(blockBlobDefaultData)) * 2)),
 	}
-	resp, err := bbClient.Download(ctx, &options)
+	resp, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 
 	data, err := io.ReadAll(resp.BodyReader(nil))
@@ -1568,7 +1568,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 		Count:  to.Ptr[int64](0),
 		Offset: to.Ptr[int64](0),
 	}
-	resp, err := bbClient.Download(ctx, &options)
+	resp, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 
 	data, err := io.ReadAll(resp.BodyReader(nil))
@@ -1594,7 +1594,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataContentMD5() {
 		Offset:             to.Ptr[int64](10),
 		RangeGetContentMD5: to.Ptr(true),
 	}
-	resp, err := bbClient.Download(ctx, &options)
+	resp, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 	mdf := md5.Sum([]byte(blockBlobDefaultData)[10:13])
 	_require.Equal(resp.ContentMD5, mdf[:])
@@ -1627,7 +1627,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
 		},
 	}
 
-	resp, err := bbClient.Download(ctx, &options)
+	resp, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 	_require.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 }
@@ -1649,7 +1649,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
-	resp, err := bbClient.Download(ctx, &blob.DownloadOptions{
+	resp, err := bbClient.DownloadToStream(ctx, &blob.DownloadOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		}},
@@ -1683,7 +1683,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
-	resp, err := bbClient.Download(ctx, &options)
+	resp, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 	_require.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 }
@@ -1712,7 +1712,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse() {
 	options := blob.DownloadOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &access},
 	}
-	_, err = bbClient.Download(ctx, &options)
+	_, err = bbClient.DownloadToStream(ctx, &options)
 	_require.NotNil(err)
 }
 
@@ -1737,7 +1737,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchTrue() {
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
 	}
-	resp2, err := bbClient.Download(ctx, &options)
+	resp2, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 	_require.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 }
@@ -1767,7 +1767,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchFalse() {
 	_, err = bbClient.SetMetadata(ctx, nil, nil)
 	_require.Nil(err)
 
-	_, err = bbClient.Download(ctx, &options)
+	_, err = bbClient.DownloadToStream(ctx, &options)
 	_require.NotNil(err)
 }
 
@@ -1795,7 +1795,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchTrue() {
 	_, err = bbClient.SetMetadata(ctx, nil, nil)
 	_require.Nil(err)
 
-	resp2, err := bbClient.Download(ctx, &options)
+	resp2, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 	_require.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 }
@@ -1821,7 +1821,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 		},
 	}
 
-	resp2, err := bbClient.Download(ctx, &options)
+	resp2, err := bbClient.DownloadToStream(ctx, &options)
 	_require.Nil(err)
 	_require.Equal(*resp2.ErrorCode, string(bloberror.ConditionNotMet))
 }
@@ -3140,7 +3140,7 @@ func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 //	blockBlobName := generateBlobName(testName)
 //	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 //
-//	resp, err := bbClient.Download(ctx, nil)
+//	resp, err := bbClient.DownloadToStream(ctx, nil)
 //	_require.Nil(err)
 //
 //	// Verify that we can inject errors first.

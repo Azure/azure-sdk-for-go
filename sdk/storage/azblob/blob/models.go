@@ -123,6 +123,12 @@ func (o *DownloadOptions) format() (*generated.BlobClientDownloadOptions, *gener
 
 // DownloadToWriterAtOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
 type DownloadToWriterAtOptions struct {
+	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
+	Count int64
+
+	// Offset is the byte offset within the blob to start the download.  The default value is zero.
+	Offset int64
+
 	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
 	BlockSize int64
 

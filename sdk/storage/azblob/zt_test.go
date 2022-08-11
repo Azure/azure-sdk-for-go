@@ -114,7 +114,7 @@ func disableSoftDelete(_require *require.Assertions, client *service.Client) {
 
 // nolint
 func validateUpload(_require *require.Assertions, blobClient *blockblob.Client) {
-	resp, err := blobClient.Download(ctx, nil)
+	resp, err := blobClient.DownloadToStream(ctx, nil)
 	_require.Nil(err)
 	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)

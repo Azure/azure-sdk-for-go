@@ -8,6 +8,11 @@ package pageblob
 
 import (
 	"context"
+	"io"
+	"net/http"
+	"net/url"
+	"os"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -16,10 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"io"
-	"net/http"
-	"net/url"
-	"os"
 )
 
 // Client represents a client to an Azure Storage page blob;
@@ -29,9 +30,9 @@ type Client base.CompositeClient[generated.BlobClient, generated.PageBlobClient]
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
-	conOptions := exported.GetConnectionOptions(options)
+	conOptions := exported.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
 	return (*Client)(base.NewPageBlobClient(blobURL, pl, nil)), nil
 }
@@ -39,8 +40,8 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *blob.Client
 // NewClientWithNoCredential creates a ServiceClient object using the specified URL and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewClientWithNoCredential(blobURL string, options *blob.ClientOptions) (*Client, error) {
-	conOptions := exported.GetConnectionOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	conOptions := exported.GetClientOptions(options)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
 	return (*Client)(base.NewPageBlobClient(blobURL, pl, nil)), nil
 }
@@ -49,9 +50,9 @@ func NewClientWithNoCredential(blobURL string, options *blob.ClientOptions) (*Cl
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, options *blob.ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
-	conOptions := exported.GetConnectionOptions(options)
+	conOptions := exported.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
 	return (*Client)(base.NewPageBlobClient(blobURL, pl, cred)), nil
 }

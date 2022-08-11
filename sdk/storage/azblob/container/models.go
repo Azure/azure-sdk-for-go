@@ -13,9 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
-// ClientOptions adds additional client options while constructing connection
-type ClientOptions = exported.ClientOptions
-
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 

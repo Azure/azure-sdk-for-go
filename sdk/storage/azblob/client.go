@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
 
-// ClientOptions adds additional client options while constructing connection
+// ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions = exported.ClientOptions
 
 // Client represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.

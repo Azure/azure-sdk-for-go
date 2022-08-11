@@ -133,7 +133,7 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 
 |Credential|Usage
 |-|-
-|[ClientAssertionCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientAssertionCredential)|Authenticate a service principal with a signed client assertion
+|[ClientAssertionCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity@v1.2.0-beta.2#ClientAssertionCredential)|Authenticate a service principal with a signed client assertion
 |[ClientCertificateCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientCertificateCredential)|Authenticate a service principal with a certificate
 |[ClientSecretCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientSecretCredential)|Authenticate a service principal with a secret
 

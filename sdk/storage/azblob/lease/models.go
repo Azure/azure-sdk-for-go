@@ -16,7 +16,7 @@ import (
 // BreakNaturally tells ContainerClient's or BlobClient's BreakLease method to break the lease using service semantics.
 const BreakNaturally = -1
 
-// LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
+// AccessConditions contains a group of parameters for specifying lease access conditions.
 type AccessConditions = generated.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.

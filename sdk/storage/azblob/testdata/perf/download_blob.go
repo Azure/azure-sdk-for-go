@@ -127,7 +127,7 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 }
 
 func (d *downloadPerfTest) Run(ctx context.Context) error {
-	get, err := d.blobClient.Download(ctx, nil)
+	get, err := d.blobClient.DownloadToStream(ctx, nil)
 	if err != nil {
 		return err
 	}

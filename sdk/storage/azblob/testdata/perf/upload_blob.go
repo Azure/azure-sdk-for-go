@@ -7,10 +7,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"io"
 	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -88,7 +90,9 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 		connStr,
 		u.uploadTestGlobal.containerName,
 		&azblob.ClientOptions{
-			Transport: u.PerfTestOptions.Transporter,
+			ClientOptions: azcore.ClientOptions{
+				Transport: u.PerfTestOptions.Transporter,
+			},
 		},
 	)
 	if err != nil {

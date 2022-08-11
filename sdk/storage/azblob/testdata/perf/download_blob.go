@@ -8,10 +8,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"io"
 	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -106,7 +108,9 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 	}
 
 	containerClient, err := container.NewClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
-		Transport: d.PerfTestOptions.Transporter,
+		ClientOptions: azcore.ClientOptions{
+			Transport: d.PerfTestOptions.Transporter,
+		},
 	})
 	if err != nil {
 		return nil, err

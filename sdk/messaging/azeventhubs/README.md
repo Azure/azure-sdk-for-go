@@ -7,7 +7,7 @@ Use the client library `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventh
 - Send messages to an event hub.
 - Consume messages from an event hub.
 
-**NOTE**: This library is currently a beta. There may be breaking interface changes until it reaches semantic version `v1.0.0`.
+**NOTE**: This library is currently a beta. There may be breaking changes until it reaches semantic version `v1.0.0`.
 
 Key links:
 - [Source code][source]

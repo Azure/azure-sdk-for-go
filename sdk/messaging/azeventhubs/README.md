@@ -29,7 +29,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs
 
 - Go, version 1.18 or higher
 - An [Azure subscription](https://azure.microsoft.com/free/)
-- A [Event Hub namespace](https://docs.microsoft.com/azure/event-hubs/).
+- An [Event Hub namespace](https://docs.microsoft.com/azure/event-hubs/).
 - An Event Hub. You can create an event hub in your Event Hubs Namespace using the [Azure Portal](https://docs.microsoft.com/azure/event-hubs/event-hubs-create), or the [Azure CLI](https://docs.microsoft.com/azure/event-hubs/event-hubs-quickstart-cli).
 
 ### Authenticate the client

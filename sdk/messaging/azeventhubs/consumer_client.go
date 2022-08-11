@@ -51,6 +51,7 @@ type ConsumerClientOptions struct {
 }
 
 // StartPosition indicates the position to start receiving events within a partition.
+// The default position is Latest.
 type StartPosition struct {
 	// Offset will start the consumer after the specified offset. Can be exclusive
 	// or inclusive, based on the Inclusive property.
@@ -272,7 +273,7 @@ func getOffsetExpression(startPosition StartPosition) (string, error) {
 	}
 
 	// default to the start
-	return "amqp.annotation.x-opt-offset > '-1'", nil
+	return "amqp.annotation.x-opt-offset > '@latest'", nil
 }
 
 func formatOffsetExpressionForSequence(op string, sequenceNumber int64) string {

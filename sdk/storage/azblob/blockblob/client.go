@@ -77,18 +77,9 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-// NewLeaseClient generates blob lease.Client from the blob.Client
-func (bb *Client) NewLeaseClient(leaseID *string) (*blob.LeaseClient, error) {
-	leaseID, err := shared.GenerateLeaseID(leaseID)
-	if err != nil {
-		return nil, err
-	}
-	return bb.BlobClient().NewLeaseClient(leaseID)
+func (bb *Client) sharedKey() *blob.SharedKeyCredential {
+	return base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 }
-
-//func (bb *Client) sharedKey() *blob.SharedKeyCredential {
-//	return base.SharedKeyComposite(*((base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb)))
-//}
 
 func (bb *Client) generated() *generated.BlockBlobClient {
 	_, blockBlob := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
@@ -104,10 +95,6 @@ func (bb *Client) URL() string {
 func (bb *Client) BlobClient() *blob.Client {
 	blobClient, _ := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	return (*blob.Client)(blobClient)
-}
-
-func (bb *Client) sharedKey() *blob.SharedKeyCredential {
-	return base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified snapshot timestamp.

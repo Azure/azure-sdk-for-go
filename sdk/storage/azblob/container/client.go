@@ -79,20 +79,6 @@ func NewClientFromConnectionString(connectionString string, containerName string
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-// NewLeaseClient generates blob lease.Client from the blob.Client
-func (c *Client) NewLeaseClient(leaseID *string) (*LeaseClient, error) {
-	var err error
-	leaseID, err = shared.GenerateLeaseID(leaseID)
-	if err != nil {
-		return nil, err
-	}
-
-	return &LeaseClient{
-		containerClient: (*Client)(base.NewContainerClient(c.URL(), c.generated().Pipeline(), c.sharedKey())),
-		leaseID:         leaseID,
-	}, nil
-}
-
 func (c *Client) generated() *generated.ContainerClient {
 	return base.InnerClient((*base.Client[generated.ContainerClient])(c))
 }

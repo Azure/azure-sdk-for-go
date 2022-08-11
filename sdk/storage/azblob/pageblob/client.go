@@ -76,15 +76,6 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-// NewLeaseClient generates blob lease.Client from the blob.Client
-func (pb *Client) NewLeaseClient(leaseID *string) (*blob.LeaseClient, error) {
-	leaseID, err := shared.GenerateLeaseID(leaseID)
-	if err != nil {
-		return nil, err
-	}
-	return pb.BlobClient().NewLeaseClient(leaseID)
-}
-
 func (pb *Client) generated() *generated.PageBlobClient {
 	_, pageBlob := base.InnerClients((*base.CompositeClient[generated.BlobClient, generated.PageBlobClient])(pb))
 	return pageBlob

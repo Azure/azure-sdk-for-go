@@ -79,8 +79,8 @@ type SASPermissions = exported.BlobSASPermissions
 
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
-// DownloadOptions contains the optional parameters for the Client.Download method.
-type DownloadOptions struct {
+// DownloadToStreamOptions contains the optional parameters for the Client.Download method.
+type DownloadToStreamOptions struct {
 	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
 	// range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
@@ -94,7 +94,7 @@ type DownloadOptions struct {
 	CpkScopeInfo     *CpkScopeInfo
 }
 
-func (o *DownloadOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
+func (o *DownloadToStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -123,6 +123,12 @@ func (o *DownloadOptions) format() (*generated.BlobClientDownloadOptions, *gener
 
 // DownloadToWriterAtOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
 type DownloadToWriterAtOptions struct {
+	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
+	Count int64
+
+	// Offset is the byte offset within the blob to start the download.  The default value is zero.
+	Offset int64
+
 	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
 	BlockSize int64
 
@@ -150,8 +156,8 @@ func (o *DownloadToWriterAtOptions) getBlobPropertiesOptions() *GetPropertiesOpt
 	}
 }
 
-func (o *DownloadToWriterAtOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadOptions {
-	return &DownloadOptions{
+func (o *DownloadToWriterAtOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadToStreamOptions {
+	return &DownloadToStreamOptions{
 		AccessConditions:   o.AccessConditions,
 		CpkInfo:            o.CpkInfo,
 		CpkScopeInfo:       o.CpkScopeInfo,

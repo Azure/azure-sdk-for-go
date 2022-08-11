@@ -141,7 +141,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 
 		blobClientWithVersionID, err := blobClient.WithVersionID(*resp.VersionID)
 		_require.Nil(err)
-		dResp, err := blobClientWithVersionID.Download(ctx, nil)
+		dResp, err := blobClientWithVersionID.DownloadToStream(ctx, nil)
 		_require.Nil(err)
 		d1, err := io.ReadAll(dResp.BodyReader(nil))
 		_require.Nil(err)
@@ -272,7 +272,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 	for i := 3; i < 5; i++ {
 		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
 		_require.Nil(err)
-		downloadResp, err := bbClientWithVersionID.Download(ctx, nil)
+		downloadResp, err := bbClientWithVersionID.DownloadToStream(ctx, nil)
 		_require.Nil(err)
 		destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 		_require.Nil(err)
@@ -329,7 +329,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //	_assert(string(resp.CopyStatus()), chk.DeepEquals, "success")
 //	_assert(resp.VersionID, chk.NotNil)
 //
-//	downloadResp, err := destBlob.ServiceURL.Download(ctx, 0, CountToEnd, LeaseAccessConditions{}, false, ClientProvidedKeyOptions{})
+//	downloadResp, err := destBlob.ServiceURL.DownloadToStream(ctx, 0, CountToEnd, LeaseAccessConditions{}, false, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
 //	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.Nil(err)
@@ -429,7 +429,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	_require.Nil(err)
 	_require.NotNil(commitResp.VersionID)
 
-	contentResp, err := bbClient.Download(ctx, nil)
+	contentResp, err := bbClient.DownloadToStream(ctx, nil)
 	_require.Nil(err)
 	contentData, err := io.ReadAll(contentResp.BodyReader(nil))
 	_require.Nil(err)

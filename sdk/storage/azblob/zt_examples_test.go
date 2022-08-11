@@ -13,6 +13,13 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
@@ -21,12 +28,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
-	"io"
-	"log"
-	"net/http"
-	"os"
-	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -90,7 +91,7 @@ func Example() {
 	handleError(err)
 
 	// Download the blob's contents and ensure that the download worked properly
-	blobDownloadResponse, err := blockBlobClient.Download(context.TODO(), nil)
+	blobDownloadResponse, err := blockBlobClient.DownloadToStream(context.TODO(), nil)
 	handleError(err)
 
 	// Use the bytes.Buffer object to read the downloaded data.
@@ -756,7 +757,7 @@ func Example_blockblob_Client() {
 	}
 
 	// Download the blob in its entirety; download operations do not take blocks into account.
-	blobDownloadResponse, err := blockBlobClient.Download(context.TODO(), nil)
+	blobDownloadResponse, err := blockBlobClient.DownloadToStream(context.TODO(), nil)
 	handleError(err)
 
 	blobData := &bytes.Buffer{}
@@ -800,7 +801,7 @@ func Example_appendblob_Client() {
 	}
 
 	// Download the entire append blob's contents and read into a bytes.Buffer.
-	get, err := appendBlobClient.Download(context.TODO(), nil)
+	get, err := appendBlobClient.DownloadToStream(context.TODO(), nil)
 	handleError(err)
 	b := bytes.Buffer{}
 	reader := get.BodyReader(nil)
@@ -881,7 +882,7 @@ func Example_pageblob_Client() {
 		}
 	}
 
-	get, err := pageBlobClient.Download(context.TODO(), nil)
+	get, err := pageBlobClient.DownloadToStream(context.TODO(), nil)
 	handleError(err)
 	blobData := &bytes.Buffer{}
 	reader := get.BodyReader(nil)
@@ -1058,7 +1059,7 @@ func Example_blob_AccessConditions() {
 	handleError(err)
 
 	// This function displays the results of an operation
-	showResult := func(response *blob.DownloadResponse, err error) {
+	showResult := func(response *blob.DownloadToStreamResponse, err error) {
 		if err != nil {
 			log.Fatalf("Failure: %s\n", err.Error())
 		} else {
@@ -1089,9 +1090,9 @@ func Example_blob_AccessConditions() {
 	showResultUpload(upload, err)
 
 	// Download blob content if the blob has been modified since we uploaded it (fails):
-	downloadResp, err := blockBlob.Download(
+	downloadResp, err := blockBlob.DownloadToStream(
 		context.TODO(),
-		&azblob.BlobDownloadOptions{
+		&azblob.DownloadToStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 					IfModifiedSince: upload.LastModified,
@@ -1102,9 +1103,9 @@ func Example_blob_AccessConditions() {
 	showResult(&downloadResp, err)
 
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
-	downloadResp, err = blockBlob.Download(
+	downloadResp, err = blockBlob.DownloadToStream(
 		context.TODO(),
-		&azblob.BlobDownloadOptions{
+		&azblob.DownloadToStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 					IfUnmodifiedSince: to.Ptr(time.Now().UTC().Add(time.Hour * -24))},
@@ -1125,9 +1126,9 @@ func Example_blob_AccessConditions() {
 	))
 
 	// Download content if it has changed since the version identified by ETag (fails):
-	downloadResp, err = blockBlob.Download(
+	downloadResp, err = blockBlob.DownloadToStream(
 		context.TODO(),
-		&azblob.BlobDownloadOptions{
+		&azblob.DownloadToStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
 		})
@@ -1256,7 +1257,7 @@ func Example_blob_Client_CreateSnapshot() {
 	handleError(err)
 
 	// Download the modified blob:
-	get, err := baseBlobClient.Download(context.TODO(), nil)
+	get, err := baseBlobClient.DownloadToStream(context.TODO(), nil)
 	handleError(err)
 	b := bytes.Buffer{}
 	reader := get.BodyReader(nil)
@@ -1272,7 +1273,7 @@ func Example_blob_Client_CreateSnapshot() {
 
 	// Show snapshot blob via original blob URI & snapshot time:
 	snapshotBlobClient, _ := baseBlobClient.WithSnapshot(snapshot)
-	get, err = snapshotBlobClient.Download(context.TODO(), nil)
+	get, err = snapshotBlobClient.DownloadToStream(context.TODO(), nil)
 	handleError(err)
 	b.Reset()
 	reader = get.BodyReader(nil)
@@ -1352,7 +1353,7 @@ func Example_progressUploadDownload() {
 	handleError(err)
 
 	// Here's how to read the blob's data with progress reporting:
-	get, err := blobClient.Download(context.TODO(), nil)
+	get, err := blobClient.DownloadToStream(context.TODO(), nil)
 	handleError(err)
 
 	// Wrap the response body in a ResponseBodyProgress and pass a callback function for progress reporting.
@@ -1459,7 +1460,7 @@ func Example_blockblob_Client_UploadFile() {
 	}(destFile)
 
 	// Perform download
-	err = blockBlobClient.DownloadToFile(context.TODO(), 0, blockblob.CountToEnd, destFile,
+	err = blockBlobClient.DownloadToFile(context.TODO(), destFile,
 		&blob.DownloadToFileOptions{
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
@@ -1488,7 +1489,7 @@ func Example_blob_Client_Download() {
 	contentLength := int64(0) // Used for progress reporting to report the total number of bytes being downloaded.
 
 	// Download returns an intelligent retryable stream around a blob; it returns an io.ReadCloser.
-	dr, err := blobClient.Download(context.TODO(), nil)
+	dr, err := blobClient.DownloadToStream(context.TODO(), nil)
 	handleError(err)
 	rs := dr.BodyReader(nil)
 

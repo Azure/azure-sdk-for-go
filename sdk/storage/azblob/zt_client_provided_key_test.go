@@ -88,14 +88,14 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 	_require.EqualValues(*resp.EncryptionKeySHA256, *(testCPKByValue.EncryptionKeySHA256))
 
 	// Get blob content without encryption key should fail the request.
-	_, err = bbClient.Download(ctx, nil)
+	_, err = bbClient.DownloadToStream(ctx, nil)
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
+	getResp, err := bbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 	b := bytes.Buffer{}
 	reader := getResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue})
@@ -137,16 +137,16 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	_require.Equal(*resp.IsServerEncrypted, true)
 	_require.EqualValues(resp.EncryptionScope, testCPKByScope.EncryptionScope)
 
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	_, err = bbClient.Download(ctx, &downloadBlobOptions)
+	_, err = bbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.NotNil(err)
 
-	downloadBlobOptions = blob.DownloadOptions{
+	downloadBlobOptions = blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
+	getResp, err := bbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 	b := bytes.Buffer{}
 	reader := getResp.BodyReader(nil)
@@ -265,13 +265,13 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 //	_require.Len(blockList.BlockList.CommittedBlocks, 2)
 //
 //	// Check data integrity through downloading.
-//	_, err = destBlob.BlobClient.Download(ctx, nil)
+//	_, err = destBlob.BlobClient.DownloadToStream(ctx, nil)
 //	_require.NotNil(err)
 //
 //	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
-//	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
+//	downloadResp, err := destBlob.BlobClient.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
@@ -384,7 +384,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 //	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
-//	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
+//	downloadResp, err := destBlob.BlobClient.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
@@ -416,16 +416,16 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_require.EqualValues(uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	// Get blob content without encryption key should fail the request.
-	_, err = bbClient.Download(ctx, nil)
+	_, err = bbClient.DownloadToStream(ctx, nil)
 	_require.NotNil(err)
 
-	_, err = bbClient.Download(ctx, &blob.DownloadOptions{
+	_, err = bbClient.DownloadToStream(ctx, &blob.DownloadToStreamOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	})
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadResp, err := bbClient.Download(ctx, &blob.DownloadOptions{
+	downloadResp, err := bbClient.DownloadToStream(ctx, &blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	})
 	_require.Nil(err)
@@ -459,10 +459,10 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	_require.EqualValues(uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	downloadResp, err := bbClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := bbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
 	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue}))
@@ -511,14 +511,14 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 	}
 
 	// Get blob content without encryption key should fail the request.
-	_, err = abClient.Download(ctx, nil)
+	_, err = abClient.DownloadToStream(ctx, nil)
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err := abClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := abClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
 	data, err := io.ReadAll(downloadResp.BodyReader(nil))
@@ -567,10 +567,10 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 	}
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	downloadResp, err := abClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := abClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
 	data, err := io.ReadAll(downloadResp.BodyReader(nil))
@@ -664,21 +664,21 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	_require.Equal(*appendFromURLResp.IsServerEncrypted, true)
 //
 //	// Get blob content without encryption key should fail the request.
-//	_, err = destBlob.Download(ctx, nil)
+//	_, err = destBlob.DownloadToStream(ctx, nil)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
-//	_, err = destBlob.Download(ctx, &downloadBlobOptions)
+//	_, err = destBlob.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
-//	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
+//	downloadResp, err := destBlob.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //
 //	_require.Equal(*downloadResp.IsServerEncrypted, true)
@@ -776,7 +776,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
-//	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
+//	downloadResp, err := destBlob.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.Equal(*downloadResp.IsServerEncrypted, true)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
@@ -825,20 +825,20 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	}
 
 	// Get blob content without encryption key should fail the request.
-	_, err = pbClient.Download(ctx, nil)
+	_, err = pbClient.DownloadToStream(ctx, nil)
 	_require.NotNil(err)
 
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	_, err = pbClient.Download(ctx, &downloadBlobOptions)
+	_, err = pbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions = blob.DownloadOptions{
+	downloadBlobOptions = blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err := pbClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := pbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
 	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
@@ -887,10 +887,10 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	}
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	downloadResp, err := pbClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := pbClient.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 
 	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
@@ -962,20 +962,20 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	_require.Equal(*resp.IsServerEncrypted, true)
 //	_require.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 //
-//	_, err = destBlob.Download(ctx, nil)
+//	_, err = destBlob.DownloadToStream(ctx, nil)
 //	_require.NotNil(err)
 //
 //	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
-//	_, err = destBlob.Download(ctx, &downloadBlobOptions)
+//	_, err = destBlob.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
-//	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
+//	downloadResp, err := destBlob.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 //
@@ -1051,7 +1051,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
-//	downloadResp, err := dstPBBlob.Download(ctx, &downloadBlobOptions)
+//	downloadResp, err := dstPBBlob.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 //
@@ -1123,20 +1123,20 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	_require.Equal(*resp.IsServerEncrypted, true)
 //	_require.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 //
-//	_, err = destPBClient.Download(ctx, nil)
+//	_, err = destPBClient.DownloadToStream(ctx, nil)
 //	_require.NotNil(err)
 //
 //	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
-//	_, err = destPBClient.Download(ctx, &downloadBlobOptions)
+//	_, err = destPBClient.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
-//	downloadResp, err := destPBClient.Download(ctx, &downloadBlobOptions)
+//	downloadResp, err := destPBClient.DownloadToStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 //
@@ -1339,10 +1339,10 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 	_require.Equal(*resp.IsServerEncrypted, false)
 
 	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	dResp, err := snapshotURL.Download(ctx, &downloadBlobOptions)
+	dResp, err := snapshotURL.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 	_require.EqualValues(*dResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
@@ -1385,10 +1385,10 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 	_require.Equal(*resp.IsServerEncrypted, false)
 
 	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
-	downloadBlobOptions := blob.DownloadOptions{
+	downloadBlobOptions := blob.DownloadToStreamOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	dResp, err := snapshotURL.Download(ctx, &downloadBlobOptions)
+	dResp, err := snapshotURL.DownloadToStream(ctx, &downloadBlobOptions)
 	_require.Nil(err)
 	_require.EqualValues(*dResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 
@@ -1451,7 +1451,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 //	}
 //
 //	// Download the blob to verify
-//	downloadResponse, err := bbClient.Download(ctx, &blob.DownloadToWriterAtOptions{CpkInfo: &testCPKByValue})
+//	downloadResponse, err := bbClient.DownloadToStream(ctx, &blob.DownloadToWriterAtOptions{CpkInfo: &testCPKByValue})
 //	_require.NoError(err)
 //
 //	// Assert that the content is correct
@@ -1516,7 +1516,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 //	}
 //
 //	// Download the blob to verify
-//	downloadResponse, err := bbClient.Download(ctx, &blob.DownloadToWriterAtOptions{CpkScopeInfo: &testCPKByScope})
+//	downloadResponse, err := bbClient.DownloadToStream(ctx, &blob.DownloadToWriterAtOptions{CpkScopeInfo: &testCPKByScope})
 //	_require.NoError(err)
 //
 //	// Assert that the content is correct

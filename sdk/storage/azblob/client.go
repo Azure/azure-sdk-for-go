@@ -8,6 +8,8 @@ package azblob
 
 import (
 	"context"
+	"io"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -114,40 +116,43 @@ func (c *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 	return c.svc.NewListContainersPager(o)
 }
 
-// TODO: Come here and expose highlevel functions here
-//func (c *Client) Upload(ctx context.Context, containerName string, blobName string, data io.Reader, o *UploadOptions) (UploadResponse, error) {
-//	o = shared.CopyOptions(o)
-//	if o.TransferManager == nil {
-//		// create a default transfer manager
-//		if o.MaxBuffers == 0 {
-//			o.MaxBuffers = 1
-//		}
-//		if o.BufferSize < blobrt.OneMB {
-//			o.BufferSize = blobrt.OneMB
-//		}
-//		var err error
-//		o.TransferManager, err = blobrt.NewStaticBuffer(o.BufferSize, o.MaxBuffers)
-//		if err != nil {
-//			return UploadResponse{}, fmt.Errorf("failed to create default transfer manager: %s", err)
-//		}
-//	} else {
-//		// wrap in nop closer so we don't close caller's TM (caller is responsible for closing it)
-//		o.TransferManager = &nopClosingTransferManager{o.TransferManager}
-//	}
-//
-//	bb := c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName)
-//	result, err := blockblob.Upload .ConcurrentUpload(ctx, data, bb, o)
-//	if err != nil {
-//		return UploadResponse{}, err
-//	}
-//	return result, nil
-//}
+// UploadBuffer uploads a buffer in blocks to a block blob.
+func (c *Client) UploadBuffer(ctx context.Context, containerName string, blobName string, b []byte, o *UploadBufferOptions) (UploadBufferResponse, error) {
+	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadBuffer(ctx, b, o)
+}
 
-// Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// UploadFile uploads a file in blocks to a block blob.
+func (c *Client) UploadFile(ctx context.Context, containerName string, blobName string, file *os.File, o *UploadFileOptions) (UploadFileResponse, error) {
+	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadFile(ctx, file, o)
+}
+
+// UploadStream copies the file held in io.Reader to the Blob at blockBlobClient.
+// A Context deadline or cancellation will cause this to error.
+func (c *Client) UploadStream(ctx context.Context, containerName string, blobName string, body io.Reader, o *UploadStreamOptions) (UploadStreamResponse, error) {
+	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadStream(ctx, body, o)
+}
+
+// DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (c *Client) Download(ctx context.Context, containerName string, blobName string, o *DownloadOptions) (DownloadResponse, error) {
+func (c *Client) DownloadToStream(ctx context.Context, containerName string, blobName string, o *DownloadToStreamOptions) (DownloadToStreamResponse, error) {
 	o = shared.CopyOptions(o)
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).Download(ctx, o.BlobOptions)
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToStream(ctx, o)
+}
+
+// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
+func (c *Client) DownloadToWriterAt(ctx context.Context, containerName string, blobName string, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToWriterAt(ctx, writer, o)
+}
+
+// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
+func (c *Client) DownloadToBuffer(ctx context.Context, containerName string, blobName string, _bytes []byte, o *DownloadToBufferOptions) error {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToBuffer(ctx, shared.NewBytesWriter(_bytes), o)
+}
+
+// DownloadToFile downloads an Azure blob to a local file.
+// The file would be truncated if the size doesn't match.
+func (c *Client) DownloadToFile(ctx context.Context, containerName string, blobName string, file *os.File, o *DownloadToFileOptions) error {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToFile(ctx, file, o)
 }
 
 // ServiceClient returns the underlying *service.Client for this client.

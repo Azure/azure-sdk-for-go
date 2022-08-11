@@ -237,10 +237,10 @@ func (bb *Client) GetBlockList(ctx context.Context, listType BlockListType, opti
 
 // Redeclared APIs ----- Copy over to Append blob and Page blob as well.
 
-// Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (bb *Client) Download(ctx context.Context, o *blob.DownloadOptions) (blob.DownloadResponse, error) {
-	return bb.BlobClient().Download(ctx, o)
+func (bb *Client) DownloadToStream(ctx context.Context, o *blob.DownloadToStreamOptions) (blob.DownloadToStreamResponse, error) {
+	return bb.BlobClient().DownloadToStream(ctx, o)
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
@@ -457,20 +457,17 @@ func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStr
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
 // DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (bb *Client) DownloadToWriterAt(ctx context.Context, offset, count int64, writer io.WriterAt, o *blob.DownloadToWriterAtOptions) error {
-	return bb.BlobClient().DownloadToWriterAt(ctx, offset, count, writer, o)
+func (bb *Client) DownloadToWriterAt(ctx context.Context, writer io.WriterAt, o *blob.DownloadToWriterAtOptions) error {
+	return bb.BlobClient().DownloadToWriterAt(ctx, writer, o)
 }
 
 // DownloadToBuffer downloads an Azure blob to a buffer with parallel.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (bb *Client) DownloadToBuffer(ctx context.Context, offset, count int64, _bytes []byte, o *blob.DownloadToBufferOptions) error {
-	return bb.BlobClient().DownloadToBuffer(ctx, offset, count, shared.NewBytesWriter(_bytes), o)
+func (bb *Client) DownloadToBuffer(ctx context.Context, _bytes []byte, o *blob.DownloadToBufferOptions) error {
+	return bb.BlobClient().DownloadToBuffer(ctx, shared.NewBytesWriter(_bytes), o)
 }
 
 // DownloadToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (bb *Client) DownloadToFile(ctx context.Context, offset, count int64, file *os.File, o *blob.DownloadToFileOptions) error {
-	return bb.BlobClient().DownloadToFile(ctx, offset, count, file, o)
+func (bb *Client) DownloadToFile(ctx context.Context, file *os.File, o *blob.DownloadToFileOptions) error {
+	return bb.BlobClient().DownloadToFile(ctx, file, o)
 }

@@ -25,11 +25,20 @@ type DeleteBlobResponse = blob.DeleteResponse
 // UploadResponse contains the response from method blockblob.Client.CommitBlockList.
 type UploadResponse = blockblob.CommitBlockListResponse
 
-// DownloadResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
-type DownloadResponse = blob.DownloadResponse
+// DownloadToStreamResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
+type DownloadToStreamResponse = blob.DownloadToStreamResponse
 
 // ListBlobsResponse contains the response from method container.Client.ListBlobFlatSegment.
 type ListBlobsResponse = container.ListBlobsFlatResponse
 
 // ListContainersResponse contains the response from method service.Client.ListContainersSegment.
 type ListContainersResponse = service.ListContainersResponse
+
+// UploadBufferResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
+type UploadBufferResponse = blockblob.UploadReaderAtResponse
+
+// UploadFileResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
+type UploadFileResponse = blockblob.UploadReaderAtResponse
+
+// UploadStreamResponse contains the response from method Client.CommitBlockList.
+type UploadStreamResponse = blockblob.CommitBlockListResponse

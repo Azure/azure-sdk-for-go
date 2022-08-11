@@ -126,14 +126,14 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
-// Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (b *Client) Download(ctx context.Context, o *DownloadOptions) (DownloadResponse, error) {
+func (b *Client) DownloadToStream(ctx context.Context, o *DownloadToStreamOptions) (DownloadToStreamResponse, error) {
 	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
 
 	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
-		return DownloadResponse{}, err
+		return DownloadToStreamResponse{}, err
 	}
 
 	offset := int64(0)
@@ -151,7 +151,7 @@ func (b *Client) Download(ctx context.Context, o *DownloadOptions) (DownloadResp
 	if dr.ETag != nil {
 		eTag = *dr.ETag
 	}
-	return DownloadResponse{
+	return DownloadToStreamResponse{
 		b:                          b,
 		BlobClientDownloadResponse: dr,
 		getInfo:                    HTTPGetterInfo{Offset: offset, Count: count, ETag: eTag},
@@ -312,20 +312,23 @@ func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
 // DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *Client) DownloadToWriterAt(ctx context.Context, offset, count int64, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
+func (b *Client) DownloadToWriterAt(ctx context.Context, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
+	if o == nil {
+		o = &DownloadToWriterAtOptions{}
+	}
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
 	}
 
+	count := o.Count
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
 		downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
-		dr, err := b.Download(ctx, downloadBlobOptions)
+		dr, err := b.DownloadToStream(ctx, downloadBlobOptions)
 		if err != nil {
 			return err
 		}
-		count = *dr.ContentLength - offset
+		count = *dr.ContentLength - o.Offset
 	}
 
 	if count <= 0 {
@@ -344,8 +347,8 @@ func (b *Client) DownloadToWriterAt(ctx context.Context, offset, count int64, wr
 		Parallelism:   o.Parallelism,
 		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
 
-			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+offset, count, nil)
-			dr, err := b.Download(ctx, downloadBlobOptions)
+			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+o.Offset, count, nil)
+			dr, err := b.DownloadToStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
 			}
@@ -378,18 +381,17 @@ func (b *Client) DownloadToWriterAt(ctx context.Context, offset, count int64, wr
 }
 
 // DownloadToBuffer downloads an Azure blob to a buffer with parallel.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *Client) DownloadToBuffer(ctx context.Context, offset, count int64, _bytes []byte, o *DownloadToBufferOptions) error {
-	return b.DownloadToWriterAt(ctx, offset, count, shared.NewBytesWriter(_bytes), o)
+func (b *Client) DownloadToBuffer(ctx context.Context, _bytes []byte, o *DownloadToBufferOptions) error {
+	return b.DownloadToWriterAt(ctx, shared.NewBytesWriter(_bytes), o)
 }
 
 // DownloadToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
-// Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *Client) DownloadToFile(ctx context.Context, offset, count int64, file *os.File, o *DownloadToFileOptions) error {
+func (b *Client) DownloadToFile(ctx context.Context, file *os.File, o *DownloadToFileOptions) error {
 	// 1. Calculate the size of the destination file
 	var size int64
 
+	count := o.Count
 	if count == CountToEnd {
 		// Try to get Azure blob's size
 		getBlobPropertiesOptions := o.getBlobPropertiesOptions()
@@ -397,7 +399,7 @@ func (b *Client) DownloadToFile(ctx context.Context, offset, count int64, file *
 		if err != nil {
 			return err
 		}
-		size = *props.ContentLength - offset
+		size = *props.ContentLength - o.Offset
 	} else {
 		size = count
 	}
@@ -414,7 +416,7 @@ func (b *Client) DownloadToFile(ctx context.Context, offset, count int64, file *
 	}
 
 	if size > 0 {
-		return b.DownloadToWriterAt(ctx, offset, size, file, o)
+		return b.DownloadToWriterAt(ctx, file, o)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return nil
 	}

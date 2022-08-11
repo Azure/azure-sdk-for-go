@@ -197,7 +197,7 @@ import (
 //		_require.Equal((*listResp.Date).IsZero(), false)
 //
 //		// Check data integrity through downloading.
-//		downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
+//		downloadResp, err := destBlob.BlobClient.DownloadToStream(ctx, nil)
 //		_require.Nil(err)
 //		destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //		_require.Nil(err)
@@ -277,7 +277,7 @@ import (
 //		_require.EqualValues(metadata, map[string]string{"Foo": "bar"})
 //
 //		// Check data integrity through downloading.
-//		downloadResp, err := destBlob.Download(ctx, nil)
+//		downloadResp, err := destBlob.DownloadToStream(ctx, nil)
 //		_require.Nil(err)
 //		destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //		_require.Nil(err)
@@ -998,7 +998,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
 	_require.Nil(err)
 
-	resp, err := bbClient.Download(ctx, nil)
+	resp, err := bbClient.DownloadToStream(ctx, nil)
 	_require.Nil(err)
 	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
@@ -1251,7 +1251,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 //	_require.Equal((*listResp.Date).IsZero(), false)
 //
 //	// Check data integrity through downloading.
-//	downloadResp, err := destBlob.Download(ctx, nil)
+//	downloadResp, err := destBlob.DownloadToStream(ctx, nil)
 //	_require.Nil(err)
 //	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)

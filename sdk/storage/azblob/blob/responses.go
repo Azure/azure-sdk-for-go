@@ -13,8 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
-// DownloadResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
-type DownloadResponse struct {
+// DownloadToStreamResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
+type DownloadToStreamResponse struct {
 	generated.BlobClientDownloadResponse
 	ctx                    context.Context
 	b                      *Client
@@ -27,7 +27,7 @@ type DownloadResponse struct {
 // continue reading. Specifying a RetryReaderOption's with MaxRetryRequests set to 0
 // (the default), returns the original response body and no retries will be performed.
 // Pass in nil for options to accept the default options.
-func (r *DownloadResponse) NewRetryReader(ctx context.Context, options *RetryReaderOptions) io.ReadCloser {
+func (r *DownloadToStreamResponse) NewRetryReader(ctx context.Context, options *RetryReaderOptions) io.ReadCloser {
 	if options == nil {
 		options = &RetryReaderOptions{}
 	}
@@ -39,14 +39,14 @@ func (r *DownloadResponse) NewRetryReader(ctx context.Context, options *RetryRea
 		accessConditions := &AccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
 		}
-		options := DownloadOptions{
+		options := DownloadToStreamOptions{
 			Offset:           &getInfo.Offset,
 			Count:            &getInfo.Count,
 			AccessConditions: accessConditions,
 			CpkInfo:          options.CpkInfo,
 			//CpkScopeInfo:         options.CpkScopeInfo,
 		}
-		resp, err := r.b.Download(ctx, &options)
+		resp, err := r.b.DownloadToStream(ctx, &options)
 		if err != nil {
 			return nil, err
 		}
@@ -59,7 +59,7 @@ func (r *DownloadResponse) NewRetryReader(ctx context.Context, options *RetryRea
 // continue reading. Specifying a RetryReaderOption's with MaxRetryRequests set to 0
 // (the default), returns the original response body and no retries will be performed.
 // Pass in nil for options to accept the default options.
-func (r *DownloadResponse) BodyReader(options *RetryReaderOptions) io.ReadCloser {
+func (r *DownloadToStreamResponse) BodyReader(options *RetryReaderOptions) io.ReadCloser {
 	if options == nil {
 		options = &RetryReaderOptions{}
 	}
@@ -71,14 +71,14 @@ func (r *DownloadResponse) BodyReader(options *RetryReaderOptions) io.ReadCloser
 		accessConditions := &AccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
 		}
-		options := DownloadOptions{
+		options := DownloadToStreamOptions{
 			Offset:           &getInfo.Offset,
 			Count:            &getInfo.Count,
 			AccessConditions: accessConditions,
 			CpkInfo:          options.CpkInfo,
 			CpkScopeInfo:     options.CpkScopeInfo,
 		}
-		resp, err := r.b.Download(ctx, &options)
+		resp, err := r.b.DownloadToStream(ctx, &options)
 		if err != nil {
 			return nil, err
 		}

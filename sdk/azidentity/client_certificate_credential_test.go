@@ -108,7 +108,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 	}
 }
 
-func TestClientCertificateCredential_Chain(t *testing.T) {
+func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 	for _, test := range allCertTests {
 		t.Run(test.name, func(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())

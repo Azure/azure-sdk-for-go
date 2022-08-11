@@ -9,6 +9,10 @@ package container
 import (
 	"context"
 	"errors"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -20,10 +24,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
-	"net/http"
-	"strings"
-	"time"
 )
+
+// ClientOptions contains the optional parameters when creating a Client.
+type ClientOptions = exported.ClientOptions
 
 // Client represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type Client base.Client[generated.ContainerClient]
@@ -31,17 +35,17 @@ type Client base.Client[generated.ContainerClient]
 // NewClient creates a Client object using the specified URL, Azure AD credential, and options.
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
-	conOptions := exported.GetConnectionOptions(options)
+	conOptions := exported.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
 	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
-	conOptions := exported.GetConnectionOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	conOptions := exported.GetClientOptions(options)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
 	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
 }
@@ -49,9 +53,9 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 // NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
 func NewClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
-	conOptions := exported.GetConnectionOptions(options)
+	conOptions := exported.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
 	return (*Client)(base.NewContainerClient(containerURL, pl, cred)), nil
 }

@@ -7,12 +7,13 @@
 package blob
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"time"
 )
 
 // Type Declarations ---------------------------------------------------------------------
@@ -28,9 +29,6 @@ type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
 // AccessTier defines values for Blob Access Tier
 type AccessTier = generated.AccessTier
-
-// ClientOptions adds additional client options while constructing connection
-type ClientOptions = exported.ClientOptions
 
 // CpkInfo contains a group of parameters for client provided encryption key.
 type CpkInfo = generated.CpkInfo

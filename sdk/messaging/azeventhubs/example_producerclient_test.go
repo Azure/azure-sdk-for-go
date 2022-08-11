@@ -78,7 +78,7 @@ func ExampleEventDataBatch_AddEventData() {
 		Body: []byte("hello"),
 	}, nil)
 
-	if errors.Is(err, azeventhubs.ErrMessageTooLarge) {
+	if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
 		// Message was too large to fit into this batch.
 		//
 		// At this point you'd usually just send the batch (using ProducerClient.SendEventBatch),

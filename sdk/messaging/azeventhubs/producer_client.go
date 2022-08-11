@@ -109,35 +109,22 @@ type NewEventDataBatchOptions struct {
 // NewEventDataBatch can be used to create a batch that contain multiple events.
 // If the operation fails it can return an *azeventhubs.Error type if the failure is actionable.
 func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *NewEventDataBatchOptions) (*EventDataBatch, error) {
-	if options == nil {
-		options = &NewEventDataBatchOptions{}
+	var batch *EventDataBatch
+
+	partitionID := anyPartitionID
+
+	if options != nil && options.PartitionID != nil {
+		partitionID = *options.PartitionID
 	}
 
-	if options.PartitionID != nil && options.PartitionKey != nil {
-		return nil, errors.New("either PartitionID or PartitionKey can be set, but not both")
-	}
+	err := pc.links.Retry(ctx, exported.EventProducer, "NewEventDataBatch", partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+		tmpBatch, err := newEventDataBatch(lwid.Link, options)
 
-	var batch EventDataBatch
-
-	if options.PartitionID != nil {
-		// they want to send to a particular partition. The batch size should be the same for any
-		// link but we might as well use the one they're going to send to.
-		batch.partitionID = options.PartitionID
-	} else if options.PartitionKey != nil {
-		batch.partitionKey = options.PartitionKey
-	}
-
-	err := pc.links.Retry(ctx, exported.EventProducer, "NewEventDataBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
-		if options.MaxBytes == 0 {
-			batch.maxBytes = lwid.Link.MaxMessageSize()
-			return nil
+		if err != nil {
+			return err
 		}
 
-		if options.MaxBytes > lwid.Link.MaxMessageSize() {
-			return internal.NewErrNonRetriable(fmt.Sprintf("maximum message size for batch was set to %d bytes, which is larger than the maximum size allowed by link (%d)", options.MaxBytes, lwid.Link.MaxMessageSize()))
-		}
-
-		batch.maxBytes = options.MaxBytes
+		batch = tmpBatch
 		return nil
 	})
 
@@ -145,7 +132,7 @@ func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *NewEve
 		return nil, internal.TransformError(err)
 	}
 
-	return &batch, nil
+	return batch, nil
 }
 
 // SendEventBatchOptions contains optional parameters for the SendEventBatch function

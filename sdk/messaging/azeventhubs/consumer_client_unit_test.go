@@ -51,7 +51,7 @@ func TestUnit_getOffsetExpression(t *testing.T) {
 	t.Run("Valid", func(t *testing.T) {
 		expr, err := getOffsetExpression(StartPosition{})
 		require.NoError(t, err)
-		require.Equal(t, "amqp.annotation.x-opt-offset > '-1'", expr)
+		require.Equal(t, "amqp.annotation.x-opt-offset > '@latest'", expr)
 
 		expr, err = getOffsetExpression(StartPosition{Earliest: to.Ptr(true)})
 		require.NoError(t, err)

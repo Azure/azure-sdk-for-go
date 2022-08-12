@@ -8,14 +8,12 @@ package blockblob
 
 import (
 	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
-
-// BlockListType defines values for BlockListType
-type BlockListType = generated.BlockListType
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -236,11 +234,15 @@ func (o *UploadReaderAtToBlockBlobOptions) getCommitBlockListOptions() *CommitBl
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// TransferManager provides a buffer and thread pool manager for certain transfer options.
+// It is undefined behavior if code outside this package call any of these methods.
+type TransferManager = shared.TransferManager
+
 // UploadStreamOptions provides set of configurations for UploadStream operation
 type UploadStreamOptions struct {
 	// TransferManager provides a TransferManager that controls buffer allocation/reuse and
 	// concurrency. This overrides BufferSize and MaxBuffers if set.
-	TransferManager      shared.TransferManager
+	TransferManager      TransferManager
 	transferMangerNotSet bool
 	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, format to 1 MiB.
 	BufferSize int

@@ -13,13 +13,14 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions = exported.ClientOptions
+type ClientOptions struct {
+	azcore.ClientOptions
+}
 
 // Client represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type Client struct {
@@ -28,7 +29,11 @@ type Client struct {
 
 // NewClient creates a BlobClient object using the specified URL, Azure AD credential, and options.
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	svcClient, err := service.NewClient(serviceURL, cred, options)
+	var clientOptions *service.ClientOptions
+	if options != nil {
+		clientOptions = &service.ClientOptions{ClientOptions: options.ClientOptions}
+	}
+	svcClient, err := service.NewClient(serviceURL, cred, clientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +45,11 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 
 // NewClientWithNoCredential creates a BlobClient object using the specified URL and options.
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
-	svcClient, err := service.NewClientWithNoCredential(serviceURL, options)
+	var clientOptions *service.ClientOptions
+	if options != nil {
+		clientOptions = &service.ClientOptions{ClientOptions: options.ClientOptions}
+	}
+	svcClient, err := service.NewClientWithNoCredential(serviceURL, clientOptions)
 	if err != nil {
 		return nil, err
 	}

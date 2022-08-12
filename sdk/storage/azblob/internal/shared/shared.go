@@ -9,13 +9,14 @@ package shared
 import (
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"io"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
 const (
@@ -247,4 +248,11 @@ func GenerateLeaseID(leaseID *string) (*string, error) {
 		leaseID = to.Ptr(generatedUuid.String())
 	}
 	return leaseID, nil
+}
+
+func GetClientOptions[T any](o *T) *T {
+	if o == nil {
+		return new(T)
+	}
+	return o
 }

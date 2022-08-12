@@ -11,10 +11,8 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
 type listTestOptions struct {
@@ -106,7 +104,7 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 	containerClient, err := container.NewClientFromConnectionString(
 		connStr,
 		u.listTestGlobal.containerName,
-		&azblob.ClientOptions{
+		&container.ClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: g.PerfTestOptions.Transporter,
 			},

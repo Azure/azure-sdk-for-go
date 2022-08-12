@@ -24,7 +24,9 @@ import (
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions = exported.ClientOptions
+type ClientOptions struct {
+	azcore.ClientOptions
+}
 
 // Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type Client base.Client[generated.ServiceClient]
@@ -33,7 +35,7 @@ type Client base.Client[generated.ServiceClient]
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
-	conOptions := exported.GetClientOptions(options)
+	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
@@ -43,7 +45,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
-	conOptions := exported.GetClientOptions(options)
+	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
 	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
@@ -53,7 +55,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
-	conOptions := exported.GetClientOptions(options)
+	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 

@@ -6,6 +6,8 @@
 
 package blockblob
 
+import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+
 // nolint
 const (
 	// CountToEnd specifies the end of the file
@@ -22,3 +24,18 @@ const (
 	// MaxBlocks indicates the maximum number of blocks allowed in a block blob.
 	MaxBlocks = 50000
 )
+
+const (
+	BlockListTypeCommitted   = generated.BlockListTypeCommitted
+	BlockListTypeUncommitted = generated.BlockListTypeUncommitted
+	BlockListTypeAll         = generated.BlockListTypeAll
+)
+
+// PossibleBlockListTypeValues returns the possible values for the BlockListType const type.
+func PossibleBlockListTypeValues() []BlockListType {
+	return []BlockListType{
+		BlockListTypeCommitted,
+		BlockListTypeUncommitted,
+		BlockListTypeAll,
+	}
+}

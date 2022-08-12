@@ -25,17 +25,16 @@ const (
 	MaxBlocks = 50000
 )
 
+// BlockListType defines values for BlockListType
+type BlockListType = generated.BlockListType
+
 const (
-	BlockListTypeCommitted   = generated.BlockListTypeCommitted
-	BlockListTypeUncommitted = generated.BlockListTypeUncommitted
-	BlockListTypeAll         = generated.BlockListTypeAll
+	BlockListTypeCommitted   BlockListType = generated.BlockListTypeCommitted
+	BlockListTypeUncommitted BlockListType = generated.BlockListTypeUncommitted
+	BlockListTypeAll         BlockListType = generated.BlockListTypeAll
 )
 
 // PossibleBlockListTypeValues returns the possible values for the BlockListType const type.
 func PossibleBlockListTypeValues() []BlockListType {
-	return []BlockListType{
-		BlockListTypeCommitted,
-		BlockListTypeUncommitted,
-		BlockListTypeAll,
-	}
+	return generated.PossibleBlockListTypeValues()
 }

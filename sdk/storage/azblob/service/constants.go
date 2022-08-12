@@ -17,7 +17,7 @@ const (
 )
 
 // SKUName defines values for SkuName - LRS, GRS, RAGRS, ZRS, Premium LRS
-type SKUName string
+type SKUName = generated.SKUName
 
 const (
 	SKUNameStandardLRS   SKUName = "Standard_LRS"
@@ -29,17 +29,11 @@ const (
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
-	return []SKUName{
-		SKUNameStandardLRS,
-		SKUNameStandardGRS,
-		SKUNameStandardRAGRS,
-		SKUNameStandardZRS,
-		SKUNamePremiumLRS,
-	}
+	return generated.PossibleSKUNameValues()
 }
 
 // ListContainersIncludeType defines values for ListContainersIncludeType
-type ListContainersIncludeType string
+type ListContainersIncludeType = generated.ListContainersIncludeType
 
 const (
 	ListContainersIncludeTypeMetadata ListContainersIncludeType = "metadata"
@@ -49,49 +43,35 @@ const (
 
 // PossibleListContainersIncludeTypeValues returns the possible values for the ListContainersIncludeType const type.
 func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
-	return []ListContainersIncludeType{
-		ListContainersIncludeTypeMetadata,
-		ListContainersIncludeTypeDeleted,
-		ListContainersIncludeTypeSystem,
-	}
+	return generated.PossibleListContainersIncludeTypeValues()
 }
 
 // AccountKind defines values for AccountKind
 type AccountKind = generated.AccountKind
 
 const (
-	AccountKindStorage          = generated.AccountKindStorage
-	AccountKindBlobStorage      = generated.AccountKindBlobStorage
-	AccountKindStorageV2        = generated.AccountKindStorageV2
-	AccountKindFileStorage      = generated.AccountKindFileStorage
-	AccountKindBlockBlobStorage = generated.AccountKindBlockBlobStorage
+	AccountKindStorage          AccountKind = generated.AccountKindStorage
+	AccountKindBlobStorage      AccountKind = generated.AccountKindBlobStorage
+	AccountKindStorageV2        AccountKind = generated.AccountKindStorageV2
+	AccountKindFileStorage      AccountKind = generated.AccountKindFileStorage
+	AccountKindBlockBlobStorage AccountKind = generated.AccountKindBlockBlobStorage
 )
 
 // PossibleAccountKindValues returns the possible values for the AccountKind const type.
 func PossibleAccountKindValues() []AccountKind {
-	return []AccountKind{
-		AccountKindStorage,
-		AccountKindBlobStorage,
-		AccountKindStorageV2,
-		AccountKindFileStorage,
-		AccountKindBlockBlobStorage,
-	}
+	return generated.PossibleAccountKindValues()
 }
 
 // BlobGeoReplicationStatus - The status of the secondary location
 type BlobGeoReplicationStatus = generated.BlobGeoReplicationStatus
 
 const (
-	BlobGeoReplicationStatusLive        = generated.BlobGeoReplicationStatusLive
-	BlobGeoReplicationStatusBootstrap   = generated.BlobGeoReplicationStatusBootstrap
-	BlobGeoReplicationStatusUnavailable = generated.BlobGeoReplicationStatusUnavailable
+	BlobGeoReplicationStatusLive        BlobGeoReplicationStatus = generated.BlobGeoReplicationStatusLive
+	BlobGeoReplicationStatusBootstrap   BlobGeoReplicationStatus = generated.BlobGeoReplicationStatusBootstrap
+	BlobGeoReplicationStatusUnavailable BlobGeoReplicationStatus = generated.BlobGeoReplicationStatusUnavailable
 )
 
 // PossibleBlobGeoReplicationStatusValues returns the possible values for the BlobGeoReplicationStatus const type.
 func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
-	return []BlobGeoReplicationStatus{
-		BlobGeoReplicationStatusLive,
-		BlobGeoReplicationStatusBootstrap,
-		BlobGeoReplicationStatusUnavailable,
-	}
+	return generated.PossibleBlobGeoReplicationStatusValues()
 }

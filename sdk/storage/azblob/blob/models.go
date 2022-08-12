@@ -14,6 +14,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential
+
+// NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
+// storage account's name and either its primary or secondary key.
+func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+	return exported.NewSharedKeyCredential(accountName, accountKey)
+}
+
 // Type Declarations ---------------------------------------------------------------------
 
 // AccessConditions identifies blob-specific access conditions which you optionally set.
@@ -25,48 +34,20 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
-// AccessTier defines values for Blob Access Tier
-type AccessTier = generated.AccessTier
-
 // CpkInfo contains a group of parameters for client provided encryption key.
 type CpkInfo = generated.CpkInfo
 
 // CpkScopeInfo contains a group of parameters for client provided encryption scope.
 type CpkScopeInfo = generated.CpkScopeInfo
 
-// DeleteSnapshotsOptionType defines values for DeleteSnapshotsOptionType
-type DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionType
-
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
-
-// ImmutabilityPolicyMode defines values for BlobImmutabilityPolicyMode
-type ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyMode
-
-// CopyStatusType defines values for CopyStatusType
-type CopyStatusType = generated.CopyStatusType
-
-// EncryptionAlgorithmType defines values for EncryptionAlgorithmType
-type EncryptionAlgorithmType = generated.EncryptionAlgorithmType
-
-// RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate.
-// Valid values are High and Standard.
-type RehydratePriority = generated.RehydratePriority
 
 // SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
 // You parse a map of query parameters into its fields by calling Sign(). You add the components
 // to a query parameter map by calling AddToValues().
 // NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
 type SASQueryParameters = exported.SASQueryParameters
-
-// SharedKeyCredential contains an account's name and its primary or secondary key.
-type SharedKeyCredential = exported.SharedKeyCredential
-
-// NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
-// storage account's name and either its primary or secondary key.
-func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
-	return exported.NewSharedKeyCredential(accountName, accountKey)
-}
 
 // SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions

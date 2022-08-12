@@ -23,9 +23,6 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 // CpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
 type CpkScopeInfo = generated.ContainerCpkScopeInfo
 
-// PublicAccessType defines values for AccessType - private (default) or blob or container
-type PublicAccessType = generated.PublicAccessType
-
 // BlobItem - An Azure Storage blob
 type BlobItem = generated.BlobItemInternal
 
@@ -56,9 +53,6 @@ type SASSignatureValues = exported.BlobSASSignatureValues
 // Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type SASPermissions = exported.ContainerSASPermissions
-
-// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
-type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
 
 // ---------------------------------------------------------------------------------------------------------------------
 

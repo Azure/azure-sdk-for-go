@@ -7,22 +7,17 @@
 package pageblob
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
-// PremiumPageBlobAccessTier defines values for Premium PageBlob's AccessTier
-type PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTier
-
 // PageList - the list of pages
 type PageList = generated.PageList
-
-// SequenceNumberActionType defines values for SequenceNumberActionType
-type SequenceNumberActionType = generated.SequenceNumberActionType
 
 // SequenceNumberAccessConditions contains a group of parameters for the Client.UploadPages method.
 type SequenceNumberAccessConditions = generated.SequenceNumberAccessConditions

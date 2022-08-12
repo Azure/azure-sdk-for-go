@@ -8,6 +8,9 @@ package container
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 
+// PublicAccessType defines values for AccessType - private (default) or blob or container
+type PublicAccessType = generated.PublicAccessType
+
 const (
 	PublicAccessTypeBlob      PublicAccessType = "blob"
 	PublicAccessTypeContainer PublicAccessType = "container"
@@ -15,23 +18,23 @@ const (
 
 // PossiblePublicAccessTypeValues returns the possible values for the PublicAccessType const type.
 func PossiblePublicAccessTypeValues() []PublicAccessType {
-	return []PublicAccessType{
-		PublicAccessTypeBlob,
-		PublicAccessTypeContainer,
-	}
+	return generated.PossiblePublicAccessTypeValues()
 }
 
+// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
+type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
+
 const (
-	ListBlobsIncludeItemCopy                = generated.ListBlobsIncludeItemCopy
-	ListBlobsIncludeItemDeleted             = generated.ListBlobsIncludeItemDeleted
-	ListBlobsIncludeItemMetadata            = generated.ListBlobsIncludeItemMetadata
-	ListBlobsIncludeItemSnapshots           = generated.ListBlobsIncludeItemSnapshots
-	ListBlobsIncludeItemUncommittedblobs    = generated.ListBlobsIncludeItemUncommittedblobs
-	ListBlobsIncludeItemVersions            = generated.ListBlobsIncludeItemVersions
-	ListBlobsIncludeItemTags                = generated.ListBlobsIncludeItemTags
-	ListBlobsIncludeItemImmutabilitypolicy  = generated.ListBlobsIncludeItemImmutabilitypolicy
-	ListBlobsIncludeItemLegalhold           = generated.ListBlobsIncludeItemLegalhold
-	ListBlobsIncludeItemDeletedwithversions = generated.ListBlobsIncludeItemDeletedwithversions
+	ListBlobsIncludeItemCopy                ListBlobsIncludeItem = generated.ListBlobsIncludeItemCopy
+	ListBlobsIncludeItemDeleted             ListBlobsIncludeItem = generated.ListBlobsIncludeItemDeleted
+	ListBlobsIncludeItemMetadata            ListBlobsIncludeItem = generated.ListBlobsIncludeItemMetadata
+	ListBlobsIncludeItemSnapshots           ListBlobsIncludeItem = generated.ListBlobsIncludeItemSnapshots
+	ListBlobsIncludeItemUncommittedblobs    ListBlobsIncludeItem = generated.ListBlobsIncludeItemUncommittedblobs
+	ListBlobsIncludeItemVersions            ListBlobsIncludeItem = generated.ListBlobsIncludeItemVersions
+	ListBlobsIncludeItemTags                ListBlobsIncludeItem = generated.ListBlobsIncludeItemTags
+	ListBlobsIncludeItemImmutabilitypolicy  ListBlobsIncludeItem = generated.ListBlobsIncludeItemImmutabilitypolicy
+	ListBlobsIncludeItemLegalhold           ListBlobsIncludeItem = generated.ListBlobsIncludeItemLegalhold
+	ListBlobsIncludeItemDeletedwithversions ListBlobsIncludeItem = generated.ListBlobsIncludeItemDeletedwithversions
 )
 
 // PossibleListBlobsIncludeItemValues returns the possible values for the ListBlobsIncludeItem const type.
@@ -40,7 +43,7 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 }
 
 // SKUName defines values for SkuName - LRS, GRS, RAGRS, ZRS, Premium LRS
-type SKUName string
+type SKUName = generated.SKUName
 
 const (
 	SKUNameStandardLRS   SKUName = "Standard_LRS"
@@ -52,105 +55,77 @@ const (
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
-	return []SKUName{
-		SKUNameStandardLRS,
-		SKUNameStandardGRS,
-		SKUNameStandardRAGRS,
-		SKUNameStandardZRS,
-		SKUNamePremiumLRS,
-	}
+	return generated.PossibleSKUNameValues()
 }
 
 // AccountKind defines values for AccountKind
 type AccountKind = generated.AccountKind
 
 const (
-	AccountKindStorage          = generated.AccountKindStorage
-	AccountKindBlobStorage      = generated.AccountKindBlobStorage
-	AccountKindStorageV2        = generated.AccountKindStorageV2
-	AccountKindFileStorage      = generated.AccountKindFileStorage
-	AccountKindBlockBlobStorage = generated.AccountKindBlockBlobStorage
+	AccountKindStorage          AccountKind = generated.AccountKindStorage
+	AccountKindBlobStorage      AccountKind = generated.AccountKindBlobStorage
+	AccountKindStorageV2        AccountKind = generated.AccountKindStorageV2
+	AccountKindFileStorage      AccountKind = generated.AccountKindFileStorage
+	AccountKindBlockBlobStorage AccountKind = generated.AccountKindBlockBlobStorage
 )
 
 // PossibleAccountKindValues returns the possible values for the AccountKind const type.
 func PossibleAccountKindValues() []AccountKind {
-	return []AccountKind{
-		AccountKindStorage,
-		AccountKindBlobStorage,
-		AccountKindStorageV2,
-		AccountKindFileStorage,
-		AccountKindBlockBlobStorage,
-	}
+	return generated.PossibleAccountKindValues()
 }
 
 // BlobType defines values for BlobType
 type BlobType = generated.BlobType
 
 const (
-	BlobTypeBlockBlob  = generated.BlobTypeBlockBlob
-	BlobTypePageBlob   = generated.BlobTypePageBlob
-	BlobTypeAppendBlob = generated.BlobTypeAppendBlob
+	BlobTypeBlockBlob  BlobType = generated.BlobTypeBlockBlob
+	BlobTypePageBlob   BlobType = generated.BlobTypePageBlob
+	BlobTypeAppendBlob BlobType = generated.BlobTypeAppendBlob
 )
 
 // PossibleBlobTypeValues returns the possible values for the BlobType const type.
 func PossibleBlobTypeValues() []BlobType {
-	return []BlobType{
-		BlobTypeBlockBlob,
-		BlobTypePageBlob,
-		BlobTypeAppendBlob,
-	}
+	return generated.PossibleBlobTypeValues()
 }
 
 // LeaseStatusType defines values for LeaseStatusType
 type LeaseStatusType = generated.LeaseStatusType
 
+const (
+	LeaseStatusTypeLocked   LeaseStatusType = generated.LeaseStatusTypeLocked
+	LeaseStatusTypeUnlocked LeaseStatusType = generated.LeaseStatusTypeUnlocked
+)
+
+// PossibleLeaseStatusTypeValues returns the possible values for the LeaseStatusType const type.
+func PossibleLeaseStatusTypeValues() []LeaseStatusType {
+	return generated.PossibleLeaseStatusTypeValues()
+}
+
 // LeaseDurationType defines values for LeaseDurationType
 type LeaseDurationType = generated.LeaseDurationType
 
 const (
-	LeaseDurationTypeInfinite = generated.LeaseDurationTypeInfinite
-	LeaseDurationTypeFixed    = generated.LeaseDurationTypeFixed
+	LeaseDurationTypeInfinite LeaseDurationType = generated.LeaseDurationTypeInfinite
+	LeaseDurationTypeFixed    LeaseDurationType = generated.LeaseDurationTypeFixed
 )
 
 // PossibleLeaseDurationTypeValues returns the possible values for the LeaseDurationType const type.
 func PossibleLeaseDurationTypeValues() []LeaseDurationType {
-	return []LeaseDurationType{
-		LeaseDurationTypeInfinite,
-		LeaseDurationTypeFixed,
-	}
+	return generated.PossibleLeaseDurationTypeValues()
 }
 
 // LeaseStateType defines values for LeaseStateType
 type LeaseStateType = generated.LeaseStateType
 
 const (
-	LeaseStateTypeAvailable = generated.LeaseStateTypeAvailable
-	LeaseStateTypeLeased    = generated.LeaseStateTypeLeased
-	LeaseStateTypeExpired   = generated.LeaseStateTypeExpired
-	LeaseStateTypeBreaking  = generated.LeaseStateTypeBreaking
-	LeaseStateTypeBroken    = generated.LeaseStateTypeBroken
+	LeaseStateTypeAvailable LeaseStateType = generated.LeaseStateTypeAvailable
+	LeaseStateTypeLeased    LeaseStateType = generated.LeaseStateTypeLeased
+	LeaseStateTypeExpired   LeaseStateType = generated.LeaseStateTypeExpired
+	LeaseStateTypeBreaking  LeaseStateType = generated.LeaseStateTypeBreaking
+	LeaseStateTypeBroken    LeaseStateType = generated.LeaseStateTypeBroken
 )
 
 // PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
 func PossibleLeaseStateTypeValues() []LeaseStateType {
-	return []LeaseStateType{
-		LeaseStateTypeAvailable,
-		LeaseStateTypeLeased,
-		LeaseStateTypeExpired,
-		LeaseStateTypeBreaking,
-		LeaseStateTypeBroken,
-	}
-}
-
-const (
-	LeaseStatusTypeLocked   = generated.LeaseStatusTypeLocked
-	LeaseStatusTypeUnlocked = generated.LeaseStatusTypeUnlocked
-)
-
-// PossibleLeaseStatusTypeValues returns the possible values for the LeaseStatusType const type.
-func PossibleLeaseStatusTypeValues() []LeaseStatusType {
-	return []LeaseStatusType{
-		LeaseStatusTypeLocked,
-		LeaseStatusTypeUnlocked,
-	}
+	return generated.PossibleLeaseStateTypeValues()
 }

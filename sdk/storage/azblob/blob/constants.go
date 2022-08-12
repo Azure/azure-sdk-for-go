@@ -17,9 +17,12 @@ const (
 	DefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB
 )
 
+// DeleteSnapshotsOptionType defines values for DeleteSnapshotsOptionType
+type DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionType
+
 const (
-	DeleteSnapshotsOptionTypeInclude = generated.DeleteSnapshotsOptionTypeInclude
-	DeleteSnapshotsOptionTypeOnly    = generated.DeleteSnapshotsOptionTypeOnly
+	DeleteSnapshotsOptionTypeInclude DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionTypeInclude
+	DeleteSnapshotsOptionTypeOnly    DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionTypeOnly
 )
 
 // PossibleDeleteSnapshotsOptionTypeValues returns the possible values for the DeleteSnapshotsOptionType const type.
@@ -27,225 +30,182 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	return generated.PossibleDeleteSnapshotsOptionTypeValues()
 }
 
+// AccessTier defines values for Blob Access Tier
+type AccessTier = generated.AccessTier
+
 const (
-	AccessTierArchive = generated.AccessTierArchive
-	AccessTierCool    = generated.AccessTierCool
-	AccessTierHot     = generated.AccessTierHot
-	AccessTierP10     = generated.AccessTierP10
-	AccessTierP15     = generated.AccessTierP15
-	AccessTierP20     = generated.AccessTierP20
-	AccessTierP30     = generated.AccessTierP30
-	AccessTierP4      = generated.AccessTierP4
-	AccessTierP40     = generated.AccessTierP40
-	AccessTierP50     = generated.AccessTierP50
-	AccessTierP6      = generated.AccessTierP6
-	AccessTierP60     = generated.AccessTierP60
-	AccessTierP70     = generated.AccessTierP70
-	AccessTierP80     = generated.AccessTierP80
-	AccessTierPremium = generated.AccessTierPremium
+	AccessTierArchive AccessTier = generated.AccessTierArchive
+	AccessTierCool    AccessTier = generated.AccessTierCool
+	AccessTierHot     AccessTier = generated.AccessTierHot
+	AccessTierP10     AccessTier = generated.AccessTierP10
+	AccessTierP15     AccessTier = generated.AccessTierP15
+	AccessTierP20     AccessTier = generated.AccessTierP20
+	AccessTierP30     AccessTier = generated.AccessTierP30
+	AccessTierP4      AccessTier = generated.AccessTierP4
+	AccessTierP40     AccessTier = generated.AccessTierP40
+	AccessTierP50     AccessTier = generated.AccessTierP50
+	AccessTierP6      AccessTier = generated.AccessTierP6
+	AccessTierP60     AccessTier = generated.AccessTierP60
+	AccessTierP70     AccessTier = generated.AccessTierP70
+	AccessTierP80     AccessTier = generated.AccessTierP80
+	AccessTierPremium AccessTier = generated.AccessTierPremium
 )
 
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.
 func PossibleAccessTierValues() []AccessTier {
-	return []AccessTier{
-		AccessTierArchive,
-		AccessTierCool,
-		AccessTierHot,
-		AccessTierP10,
-		AccessTierP15,
-		AccessTierP20,
-		AccessTierP30,
-		AccessTierP4,
-		AccessTierP40,
-		AccessTierP50,
-		AccessTierP6,
-		AccessTierP60,
-		AccessTierP70,
-		AccessTierP80,
-		AccessTierPremium,
-	}
+	return generated.PossibleAccessTierValues()
 }
 
+// RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate.
+// Valid values are High and Standard.
+type RehydratePriority = generated.RehydratePriority
+
 const (
-	RehydratePriorityHigh     = generated.RehydratePriorityHigh
-	RehydratePriorityStandard = generated.RehydratePriorityStandard
+	RehydratePriorityHigh     RehydratePriority = generated.RehydratePriorityHigh
+	RehydratePriorityStandard RehydratePriority = generated.RehydratePriorityStandard
 )
 
 // PossibleRehydratePriorityValues returns the possible values for the RehydratePriority const type.
 func PossibleRehydratePriorityValues() []RehydratePriority {
-	return []RehydratePriority{
-		RehydratePriorityHigh,
-		RehydratePriorityStandard,
-	}
+	return generated.PossibleRehydratePriorityValues()
 }
 
+// ImmutabilityPolicyMode defines values for BlobImmutabilityPolicyMode
+type ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyMode
+
 const (
-	ImmutabilityPolicyModeMutable  = generated.BlobImmutabilityPolicyModeMutable
-	ImmutabilityPolicyModeUnlocked = generated.BlobImmutabilityPolicyModeUnlocked
-	ImmutabilityPolicyModeLocked   = generated.BlobImmutabilityPolicyModeLocked
+	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyModeMutable
+	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyModeUnlocked
+	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyModeLocked
 )
 
 // PossibleBlobImmutabilityPolicyModeValues returns the possible values for the BlobImmutabilityPolicyMode const type.
 func PossibleBlobImmutabilityPolicyModeValues() []ImmutabilityPolicyMode {
-	return []ImmutabilityPolicyMode{
-		ImmutabilityPolicyModeMutable,
-		ImmutabilityPolicyModeUnlocked,
-		ImmutabilityPolicyModeLocked,
-	}
+	return generated.PossibleBlobImmutabilityPolicyModeValues()
 }
 
+// CopyStatusType defines values for CopyStatusType
+type CopyStatusType = generated.CopyStatusType
+
 const (
-	CopyStatusTypePending = generated.CopyStatusTypePending
-	CopyStatusTypeSuccess = generated.CopyStatusTypeSuccess
-	CopyStatusTypeAborted = generated.CopyStatusTypeAborted
-	CopyStatusTypeFailed  = generated.CopyStatusTypeFailed
+	CopyStatusTypePending CopyStatusType = generated.CopyStatusTypePending
+	CopyStatusTypeSuccess CopyStatusType = generated.CopyStatusTypeSuccess
+	CopyStatusTypeAborted CopyStatusType = generated.CopyStatusTypeAborted
+	CopyStatusTypeFailed  CopyStatusType = generated.CopyStatusTypeFailed
 )
 
 // PossibleCopyStatusTypeValues returns the possible values for the CopyStatusType const type.
 func PossibleCopyStatusTypeValues() []CopyStatusType {
-	return []CopyStatusType{
-		CopyStatusTypePending,
-		CopyStatusTypeSuccess,
-		CopyStatusTypeAborted,
-		CopyStatusTypeFailed,
-	}
+	return generated.PossibleCopyStatusTypeValues()
 }
 
+// EncryptionAlgorithmType defines values for EncryptionAlgorithmType
+type EncryptionAlgorithmType = generated.EncryptionAlgorithmType
+
 const (
-	EncryptionAlgorithmTypeNone   = generated.EncryptionAlgorithmTypeNone
-	EncryptionAlgorithmTypeAES256 = generated.EncryptionAlgorithmTypeAES256
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = generated.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = generated.EncryptionAlgorithmTypeAES256
 )
 
 // PossibleEncryptionAlgorithmTypeValues returns the possible values for the EncryptionAlgorithmType const type.
 func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
-	return []EncryptionAlgorithmType{
-		EncryptionAlgorithmTypeNone,
-		EncryptionAlgorithmTypeAES256,
-	}
+	return generated.PossibleEncryptionAlgorithmTypeValues()
 }
 
 // ArchiveStatus defines values for ArchiveStatus
 type ArchiveStatus = generated.ArchiveStatus
 
 const (
-	ArchiveStatusRehydratePendingToCool = generated.ArchiveStatusRehydratePendingToCool
-	ArchiveStatusRehydratePendingToHot  = generated.ArchiveStatusRehydratePendingToHot
+	ArchiveStatusRehydratePendingToCool ArchiveStatus = generated.ArchiveStatusRehydratePendingToCool
+	ArchiveStatusRehydratePendingToHot  ArchiveStatus = generated.ArchiveStatusRehydratePendingToHot
 )
 
 // PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.
 func PossibleArchiveStatusValues() []ArchiveStatus {
-	return []ArchiveStatus{
-		ArchiveStatusRehydratePendingToCool,
-		ArchiveStatusRehydratePendingToHot,
-	}
+	return generated.PossibleArchiveStatusValues()
 }
 
 // DeleteType defines values for BlobDeleteType
 type DeleteType = generated.BlobDeleteType
 
 const (
-	DeleteTypeNone      = generated.BlobDeleteTypeNone
-	DeleteTypePermanent = generated.BlobDeleteTypePermanent
+	DeleteTypeNone      DeleteType = generated.BlobDeleteTypeNone
+	DeleteTypePermanent DeleteType = generated.BlobDeleteTypePermanent
 )
 
 // PossibleBlobDeleteTypeValues returns the possible values for the BlobDeleteType const type.
 func PossibleBlobDeleteTypeValues() []DeleteType {
-	return []DeleteType{
-		DeleteTypeNone,
-		DeleteTypePermanent,
-	}
+	return generated.PossibleBlobDeleteTypeValues()
 }
 
 // ExpiryOptions defines values for BlobExpiryOptions
 type ExpiryOptions = generated.BlobExpiryOptions
 
 const (
-	ExpiryOptionsAbsolute           = generated.BlobExpiryOptionsAbsolute
-	ExpiryOptionsNeverExpire        = generated.BlobExpiryOptionsNeverExpire
-	ExpiryOptionsRelativeToCreation = generated.BlobExpiryOptionsRelativeToCreation
-	ExpiryOptionsRelativeToNow      = generated.BlobExpiryOptionsRelativeToNow
+	ExpiryOptionsAbsolute           ExpiryOptions = generated.BlobExpiryOptionsAbsolute
+	ExpiryOptionsNeverExpire        ExpiryOptions = generated.BlobExpiryOptionsNeverExpire
+	ExpiryOptionsRelativeToCreation ExpiryOptions = generated.BlobExpiryOptionsRelativeToCreation
+	ExpiryOptionsRelativeToNow      ExpiryOptions = generated.BlobExpiryOptionsRelativeToNow
 )
 
 // PossibleBlobExpiryOptionsValues returns the possible values for the BlobExpiryOptions const type.
 func PossibleBlobExpiryOptionsValues() []ExpiryOptions {
-	return []ExpiryOptions{
-		ExpiryOptionsAbsolute,
-		ExpiryOptionsNeverExpire,
-		ExpiryOptionsRelativeToCreation,
-		ExpiryOptionsRelativeToNow,
-	}
+	return generated.PossibleBlobExpiryOptionsValues()
 }
 
 // QueryFormatType - The quick query format type.
 type QueryFormatType = generated.QueryFormatType
 
 const (
-	QueryFormatTypeDelimited = generated.QueryFormatTypeDelimited
-	QueryFormatTypeJSON      = generated.QueryFormatTypeJSON
-	QueryFormatTypeArrow     = generated.QueryFormatTypeArrow
-	QueryFormatTypeParquet   = generated.QueryFormatTypeParquet
+	QueryFormatTypeDelimited QueryFormatType = generated.QueryFormatTypeDelimited
+	QueryFormatTypeJSON      QueryFormatType = generated.QueryFormatTypeJSON
+	QueryFormatTypeArrow     QueryFormatType = generated.QueryFormatTypeArrow
+	QueryFormatTypeParquet   QueryFormatType = generated.QueryFormatTypeParquet
 )
 
 // PossibleQueryFormatTypeValues returns the possible values for the QueryFormatType const type.
 func PossibleQueryFormatTypeValues() []QueryFormatType {
-	return []QueryFormatType{
-		QueryFormatTypeDelimited,
-		QueryFormatTypeJSON,
-		QueryFormatTypeArrow,
-		QueryFormatTypeParquet,
-	}
+	return generated.PossibleQueryFormatTypeValues()
 }
 
 // LeaseDurationType defines values for LeaseDurationType
 type LeaseDurationType = generated.LeaseDurationType
 
 const (
-	LeaseDurationTypeInfinite = generated.LeaseDurationTypeInfinite
-	LeaseDurationTypeFixed    = generated.LeaseDurationTypeFixed
+	LeaseDurationTypeInfinite LeaseDurationType = generated.LeaseDurationTypeInfinite
+	LeaseDurationTypeFixed    LeaseDurationType = generated.LeaseDurationTypeFixed
 )
 
 // PossibleLeaseDurationTypeValues returns the possible values for the LeaseDurationType const type.
 func PossibleLeaseDurationTypeValues() []LeaseDurationType {
-	return []LeaseDurationType{
-		LeaseDurationTypeInfinite,
-		LeaseDurationTypeFixed,
-	}
+	return generated.PossibleLeaseDurationTypeValues()
 }
 
 // LeaseStateType defines values for LeaseStateType
 type LeaseStateType = generated.LeaseStateType
 
 const (
-	LeaseStateTypeAvailable = generated.LeaseStateTypeAvailable
-	LeaseStateTypeLeased    = generated.LeaseStateTypeLeased
-	LeaseStateTypeExpired   = generated.LeaseStateTypeExpired
-	LeaseStateTypeBreaking  = generated.LeaseStateTypeBreaking
-	LeaseStateTypeBroken    = generated.LeaseStateTypeBroken
+	LeaseStateTypeAvailable LeaseStateType = generated.LeaseStateTypeAvailable
+	LeaseStateTypeLeased    LeaseStateType = generated.LeaseStateTypeLeased
+	LeaseStateTypeExpired   LeaseStateType = generated.LeaseStateTypeExpired
+	LeaseStateTypeBreaking  LeaseStateType = generated.LeaseStateTypeBreaking
+	LeaseStateTypeBroken    LeaseStateType = generated.LeaseStateTypeBroken
 )
 
 // PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
 func PossibleLeaseStateTypeValues() []LeaseStateType {
-	return []LeaseStateType{
-		LeaseStateTypeAvailable,
-		LeaseStateTypeLeased,
-		LeaseStateTypeExpired,
-		LeaseStateTypeBreaking,
-		LeaseStateTypeBroken,
-	}
+	return generated.PossibleLeaseStateTypeValues()
 }
 
 // LeaseStatusType defines values for LeaseStatusType
 type LeaseStatusType = generated.LeaseStatusType
 
 const (
-	LeaseStatusTypeLocked   = generated.LeaseStatusTypeLocked
-	LeaseStatusTypeUnlocked = generated.LeaseStatusTypeUnlocked
+	LeaseStatusTypeLocked   LeaseStatusType = generated.LeaseStatusTypeLocked
+	LeaseStatusTypeUnlocked LeaseStatusType = generated.LeaseStatusTypeUnlocked
 )
 
 // PossibleLeaseStatusTypeValues returns the possible values for the LeaseStatusType const type.
 func PossibleLeaseStatusTypeValues() []LeaseStatusType {
-	return []LeaseStatusType{
-		LeaseStatusTypeLocked,
-		LeaseStatusTypeUnlocked,
-	}
+	return generated.PossibleLeaseStatusTypeValues()
 }

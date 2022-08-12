@@ -13,31 +13,38 @@ const (
 	PageBytes = 512
 )
 
-const (
-	PremiumPageBlobAccessTierP10 = generated.PremiumPageBlobAccessTierP10
-	PremiumPageBlobAccessTierP15 = generated.PremiumPageBlobAccessTierP15
-	PremiumPageBlobAccessTierP20 = generated.PremiumPageBlobAccessTierP20
-	PremiumPageBlobAccessTierP30 = generated.PremiumPageBlobAccessTierP30
-	PremiumPageBlobAccessTierP4  = generated.PremiumPageBlobAccessTierP4
-	PremiumPageBlobAccessTierP40 = generated.PremiumPageBlobAccessTierP40
-	PremiumPageBlobAccessTierP50 = generated.PremiumPageBlobAccessTierP50
-	PremiumPageBlobAccessTierP6  = generated.PremiumPageBlobAccessTierP6
-	PremiumPageBlobAccessTierP60 = generated.PremiumPageBlobAccessTierP60
-	PremiumPageBlobAccessTierP70 = generated.PremiumPageBlobAccessTierP70
-	PremiumPageBlobAccessTierP80 = generated.PremiumPageBlobAccessTierP80
-)
+// PremiumPageBlobAccessTier defines values for Premium PageBlob's AccessTier
+type PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTier
 
 const (
-	SequenceNumberActionTypeMax       = generated.SequenceNumberActionTypeMax
-	SequenceNumberActionTypeUpdate    = generated.SequenceNumberActionTypeUpdate
-	SequenceNumberActionTypeIncrement = generated.SequenceNumberActionTypeIncrement
+	PremiumPageBlobAccessTierP10 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP10
+	PremiumPageBlobAccessTierP15 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP15
+	PremiumPageBlobAccessTierP20 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP20
+	PremiumPageBlobAccessTierP30 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP30
+	PremiumPageBlobAccessTierP4  PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP4
+	PremiumPageBlobAccessTierP40 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP40
+	PremiumPageBlobAccessTierP50 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP50
+	PremiumPageBlobAccessTierP6  PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP6
+	PremiumPageBlobAccessTierP60 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP60
+	PremiumPageBlobAccessTierP70 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP70
+	PremiumPageBlobAccessTierP80 PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTierP80
+)
+
+// PossiblePremiumPageBlobAccessTierValues returns the possible values for the PremiumPageBlobAccessTier const type.
+func PossiblePremiumPageBlobAccessTierValues() []PremiumPageBlobAccessTier {
+	return generated.PossiblePremiumPageBlobAccessTierValues()
+}
+
+// SequenceNumberActionType defines values for SequenceNumberActionType
+type SequenceNumberActionType = generated.SequenceNumberActionType
+
+const (
+	SequenceNumberActionTypeMax       SequenceNumberActionType = generated.SequenceNumberActionTypeMax
+	SequenceNumberActionTypeUpdate    SequenceNumberActionType = generated.SequenceNumberActionTypeUpdate
+	SequenceNumberActionTypeIncrement SequenceNumberActionType = generated.SequenceNumberActionTypeIncrement
 )
 
 // PossibleSequenceNumberActionTypeValues returns the possible values for the SequenceNumberActionType const type.
 func PossibleSequenceNumberActionTypeValues() []SequenceNumberActionType {
-	return []SequenceNumberActionType{
-		SequenceNumberActionTypeMax,
-		SequenceNumberActionTypeUpdate,
-		SequenceNumberActionTypeIncrement,
-	}
+	return generated.PossibleSequenceNumberActionTypeValues()
 }

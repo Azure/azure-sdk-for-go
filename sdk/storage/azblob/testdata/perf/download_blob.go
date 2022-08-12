@@ -12,11 +12,9 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
 type downloadTestOptions struct {
@@ -107,7 +105,7 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := container.NewClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
+	containerClient, err := container.NewClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &container.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: d.PerfTestOptions.Transporter,
 		},

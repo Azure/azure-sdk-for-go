@@ -12,8 +12,8 @@ import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 type PublicAccessType = generated.PublicAccessType
 
 const (
-	PublicAccessTypeBlob      PublicAccessType = "blob"
-	PublicAccessTypeContainer PublicAccessType = "container"
+	PublicAccessTypeBlob      PublicAccessType = generated.PublicAccessTypeBlob
+	PublicAccessTypeContainer PublicAccessType = generated.PublicAccessTypeContainer
 )
 
 // PossiblePublicAccessTypeValues returns the possible values for the PublicAccessType const type.
@@ -46,11 +46,11 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 type SKUName = generated.SKUName
 
 const (
-	SKUNameStandardLRS   SKUName = "Standard_LRS"
-	SKUNameStandardGRS   SKUName = "Standard_GRS"
-	SKUNameStandardRAGRS SKUName = "Standard_RAGRS"
-	SKUNameStandardZRS   SKUName = "Standard_ZRS"
-	SKUNamePremiumLRS    SKUName = "Premium_LRS"
+	SKUNameStandardLRS   SKUName = generated.SKUNameStandardLRS
+	SKUNameStandardGRS   SKUName = generated.SKUNameStandardGRS
+	SKUNameStandardRAGRS SKUName = generated.SKUNameStandardRAGRS
+	SKUNameStandardZRS   SKUName = generated.SKUNameStandardZRS
+	SKUNamePremiumLRS    SKUName = generated.SKUNamePremiumLRS
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.

@@ -20,11 +20,11 @@ const (
 type SKUName = generated.SKUName
 
 const (
-	SKUNameStandardLRS   SKUName = "Standard_LRS"
-	SKUNameStandardGRS   SKUName = "Standard_GRS"
-	SKUNameStandardRAGRS SKUName = "Standard_RAGRS"
-	SKUNameStandardZRS   SKUName = "Standard_ZRS"
-	SKUNamePremiumLRS    SKUName = "Premium_LRS"
+	SKUNameStandardLRS   SKUName = generated.SKUNameStandardLRS
+	SKUNameStandardGRS   SKUName = generated.SKUNameStandardGRS
+	SKUNameStandardRAGRS SKUName = generated.SKUNameStandardRAGRS
+	SKUNameStandardZRS   SKUName = generated.SKUNameStandardZRS
+	SKUNamePremiumLRS    SKUName = generated.SKUNamePremiumLRS
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
@@ -36,9 +36,9 @@ func PossibleSKUNameValues() []SKUName {
 type ListContainersIncludeType = generated.ListContainersIncludeType
 
 const (
-	ListContainersIncludeTypeMetadata ListContainersIncludeType = "metadata"
-	ListContainersIncludeTypeDeleted  ListContainersIncludeType = "deleted"
-	ListContainersIncludeTypeSystem   ListContainersIncludeType = "system"
+	ListContainersIncludeTypeMetadata ListContainersIncludeType = generated.ListContainersIncludeTypeMetadata
+	ListContainersIncludeTypeDeleted  ListContainersIncludeType = generated.ListContainersIncludeTypeDeleted
+	ListContainersIncludeTypeSystem   ListContainersIncludeType = generated.ListContainersIncludeTypeSystem
 )
 
 // PossibleListContainersIncludeTypeValues returns the possible values for the ListContainersIncludeType const type.

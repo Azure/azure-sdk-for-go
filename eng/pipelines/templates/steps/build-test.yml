@@ -103,7 +103,7 @@ steps:
     parameters:
       ArtifactPath: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'apiview'
-    condition: and(succeeded(), eq(variables['create.apireview'], 'true'))
+      CustomCondition: and(succeeded(), eq(variables['create.apireview'], 'true'))
 
   - ${{if eq(variables['System.TeamProject'], 'internal') }}:
     - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0

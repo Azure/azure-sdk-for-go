@@ -81,29 +81,29 @@ steps:
       displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
 
-  - ${{if eq(variables['create.apireview'], 'true') }}:
-    - pwsh: |
-        Invoke-RestMethod -uri $(APIViewParserDownloadLink) -OutFile "./apiviewgo.zip"
-        Expand-Archive "./apiviewgo.zip" $(Build.BinariesDirectory)
-      displayName: 'Download API Review parser'
+  - pwsh: |
+      Invoke-RestMethod -uri $(APIViewParserDownloadLink) -OutFile "./apiviewgo.zip"
+      Expand-Archive "./apiviewgo.zip" $(Build.BinariesDirectory)
+    displayName: 'Download API Review parser'
+    condition: and(succeeded(), eq(variables['create.apireview'], 'true'))
 
-    - task: PowerShell@2
-      displayName: 'Generate API Review Code File'
-      condition: succeeded()
-      inputs:
-        targetType: 'filePath'
-        filePath: ./eng/scripts/Generate-Apiview-CodeFile.ps1
-        arguments: >
-          -ServiceDirectory '${{ parameters.ServiceDirectory }}'
-          -CodeFileOutDirectory '$(Build.ArtifactStagingDirectory)'
-          -ParserPath '$(Build.BinariesDirectory)/apiviewgo'
-        pwsh: true
+  - task: PowerShell@2
+    displayName: 'Generate API Review Code File'
+    condition: and(succeeded(), eq(variables['create.apireview'], 'true'))
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/Generate-Apiview-CodeFile.ps1
+      arguments: >
+        -ServiceDirectory '${{ parameters.ServiceDirectory }}'
+        -CodeFileOutDirectory '$(Build.ArtifactStagingDirectory)'
+        -ParserPath '$(Build.BinariesDirectory)/apiviewgo'
+      pwsh: true
 
-    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-      parameters:
-        ArtifactPath: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'apiview'
-      condition: succeeded()
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+    parameters:
+      ArtifactPath: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'apiview'
+    and(succeededOrFailed(), eq(variables['create.apireview'], 'true'))
 
   - ${{if eq(variables['System.TeamProject'], 'internal') }}:
     - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0

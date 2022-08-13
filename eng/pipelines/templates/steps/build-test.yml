@@ -18,6 +18,9 @@ parameters:
     type: string
     default: '600s'
 
+variables:
+  APIViewParserDownloadLink: "https://github.com/Azure/azure-sdk-tools/releases/download/APIView_Go_Parser_1/apiviewgo.zip"
+
 steps:
   - task: Powershell@2
     displayName: Build
@@ -80,6 +83,30 @@ steps:
         cat $(Build.SourcesDirectory)/test-proxy.log
       displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
+
+  - ${{if eq(variables['create.apireview'], 'true') }}:
+    - pwsh: |
+        Invoke-RestMethod -uri $(APIViewParserDownloadLink) -OutFile "./apiviewgo.zip"
+        Expand-Archive "./apiviewgo.zip" $(Build.BinariesDirectory)
+      displayName: 'Download API Review parser'
+
+    - task: PowerShell@2
+      displayName: 'Generate API Review Code File'
+      condition: succeeded()
+      inputs:
+        targetType: 'filePath'
+        filePath: ./eng/scripts/Generate-Apiview-CodeFile.ps1
+        arguments: >
+          -ServiceDirectory '${{ parameters.ServiceDirectory }}'
+          -CodeFileOutDirectory '$(Build.ArtifactStagingDirectory)'
+          -ParserPath '$(Build.BinariesDirectory)/apiviewgo'
+        pwsh: true
+
+    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+      parameters:
+        ArtifactPath: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'apiview'
+      condition: succeeded()
 
   - ${{if eq(variables['System.TeamProject'], 'internal') }}:
     - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0

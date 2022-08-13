@@ -86,6 +86,7 @@ stages:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
             go.version: '1.18.5'
+            create.apireview: true
           Windows_Go118:
             pool.name: azsdk-pool-mms-win-2019-general
             image.name: MMS2019

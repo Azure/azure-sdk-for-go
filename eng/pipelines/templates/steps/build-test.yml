@@ -18,9 +18,6 @@ parameters:
     type: string
     default: '600s'
 
-variables:
-  APIViewParserDownloadLink: "https://github.com/Azure/azure-sdk-tools/releases/download/APIView_Go_Parser_1/apiviewgo.zip"
-
 steps:
   - task: Powershell@2
     displayName: Build

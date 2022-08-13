@@ -5,3 +5,4 @@ variables:
   # https://docs.opensource.microsoft.com/tools/cg/index.html
   # https://github.com/microsoft/component-detection/blob/main/src/Microsoft.ComponentDetection.Detectors/go/GoComponentDetector.cs
   EnableGoCliScan: true
+  APIViewParserDownloadLink: "https://github.com/Azure/azure-sdk-tools/releases/download/APIView_Go_Parser_1/apiviewgo.zip"

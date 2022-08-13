@@ -5,14 +5,17 @@ param(
 )
 
 Set-StrictMode -Version 3
-# download APIView go parser from GitHub release
-$modules = Get-ChildItem "go.mod" -Path $ServiceDirectory -Recurse
-Write-Host $modules
-if ($modules)
+
+. (Join-Path $PSScriptRoot .. common scripts common.ps1)
+
+$sdks = Get-AllPackageInfoFromRepo $ServiceDirectory
+Write-Host $sdks
+if ($sdks)
 {
-    foreach ($module in $modules)
+    foreach ($sdk in $sdks)
     {
-        Write-Host "Processing module path $($module)"
+        $pkgRoot = $sdk.DirectoryPath
+        Write-Host "Processing SDK $($pkgRoot)"
         $pkgRoot = Split-Path -Path $module
         Write-Host "Generating API review file for package $($pkgRoot), review file: $($CodeFileOutDirectory)"
         &$ParserPath $pkgRoot $CodeFileOutDirectory

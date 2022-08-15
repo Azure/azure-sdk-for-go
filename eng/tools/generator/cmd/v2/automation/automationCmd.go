@@ -145,7 +145,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 			results = append(results, pipeline.PackageResult{
 				Version:       namespaceResult.Version,
-				PackageName:   namespaceResult.PackageName,
+				PackageName:   fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
 				Path:          []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
 				PackageFolder: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
 				ReadmeMd:      []string{readme},
@@ -154,8 +154,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 					HasBreakingChange:   &breaking,
 					BreakingChangeItems: &breakingChangeItems,
 				},
-				// APIViewArtifact: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName+".gosource"),
-				// Language:        "Go",
+				APIViewArtifact: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName+".gosource"),
+				Language:        "Go",
 			})
 		}
 		log.Printf("Finish to process readme file: %s", readme)

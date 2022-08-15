@@ -784,7 +784,7 @@ func (client *ContainerClient) ListBlobFlatSegmentCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// ListBlobFlatSegmentHandleResponse handles the ListBlobFlatSegment response.
+// listBlobFlatSegmentHandleResponse handles the ListBlobFlatSegment response.
 func (client *ContainerClient) ListBlobFlatSegmentHandleResponse(resp *http.Response) (ContainerClientListBlobFlatSegmentResponse, error) {
 	result := ContainerClientListBlobFlatSegmentResponse{}
 	if val := resp.Header.Get("Content-Type"); val != "" {

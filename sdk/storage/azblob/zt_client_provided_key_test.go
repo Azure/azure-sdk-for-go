@@ -786,6 +786,16 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	_require.EqualValues(destData, srcData)
 //}
 
+func rawPageRange(pr *pageblob.PageRange) (start, end int64) {
+	if pr.Start != nil {
+		start = *pr.Start
+	}
+	if pr.End != nil {
+		end = *pr.End
+	}
+	return
+}
+
 // nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_require := require.New(s.T())
@@ -816,7 +826,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 		_require.Nil(err)
 		pageListResp := resp.PageList.PageRange
 		start, end := int64(0), int64(contentSize-1)
-		rawStart, rawEnd := pageListResp[0].Raw()
+		rawStart, rawEnd := rawPageRange(pageListResp[0])
 		_require.Equal(rawStart, start)
 		_require.Equal(rawEnd, end)
 		if err != nil {
@@ -878,7 +888,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 		_require.Nil(err)
 		pageListResp := resp.PageList.PageRange
 		start, end := int64(0), int64(contentSize-1)
-		rawStart, rawEnd := pageListResp[0].Raw()
+		rawStart, rawEnd := rawPageRange(pageListResp[0])
 		_require.Equal(rawStart, start)
 		_require.Equal(rawEnd, end)
 		if err != nil {

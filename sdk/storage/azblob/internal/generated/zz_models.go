@@ -65,7 +65,7 @@ type AppendBlobClientCreateOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
@@ -185,7 +185,7 @@ type BlobClientCopyFromURLOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
@@ -237,12 +237,12 @@ type BlobClientDeleteImmutabilityPolicyOptions struct {
 
 // BlobClientDeleteOptions contains the optional parameters for the BlobClient.Delete method.
 type BlobClientDeleteOptions struct {
-	// Optional. Only possible value is 'permanent', which specifies to permanently delete a blob if blob soft delete is enabled.
-	BlobDeleteType *BlobDeleteType
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob
 	// itself
 	DeleteSnapshots *DeleteSnapshotsOptionType
+	// Optional. Only possible value is 'permanent', which specifies to permanently delete a blob if blob soft delete is enabled.
+	DeleteType *DeleteType
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -385,7 +385,7 @@ type BlobClientSetImmutabilityPolicyOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -464,7 +464,7 @@ type BlobClientStartCopyFromURLOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
@@ -594,17 +594,17 @@ type BlobPropertiesInternal struct {
 	DestinationSnapshot       *string         `xml:"DestinationSnapshot"`
 
 	// The name of the encryption scope under which the blob is encrypted.
-	EncryptionScope             *string                     `xml:"EncryptionScope"`
-	ExpiresOn                   *time.Time                  `xml:"Expiry-Time"`
-	ImmutabilityPolicyExpiresOn *time.Time                  `xml:"ImmutabilityPolicyUntilDate"`
-	ImmutabilityPolicyMode      *BlobImmutabilityPolicyMode `xml:"ImmutabilityPolicyMode"`
-	IncrementalCopy             *bool                       `xml:"IncrementalCopy"`
-	IsSealed                    *bool                       `xml:"Sealed"`
-	LastAccessedOn              *time.Time                  `xml:"LastAccessTime"`
-	LeaseDuration               *LeaseDurationType          `xml:"LeaseDuration"`
-	LeaseState                  *LeaseStateType             `xml:"LeaseState"`
-	LeaseStatus                 *LeaseStatusType            `xml:"LeaseStatus"`
-	LegalHold                   *bool                       `xml:"LegalHold"`
+	EncryptionScope             *string                 `xml:"EncryptionScope"`
+	ExpiresOn                   *time.Time              `xml:"Expiry-Time"`
+	ImmutabilityPolicyExpiresOn *time.Time              `xml:"ImmutabilityPolicyUntilDate"`
+	ImmutabilityPolicyMode      *ImmutabilityPolicyMode `xml:"ImmutabilityPolicyMode"`
+	IncrementalCopy             *bool                   `xml:"IncrementalCopy"`
+	IsSealed                    *bool                   `xml:"Sealed"`
+	LastAccessedOn              *time.Time              `xml:"LastAccessTime"`
+	LeaseDuration               *LeaseDurationType      `xml:"LeaseDuration"`
+	LeaseState                  *LeaseStateType         `xml:"LeaseState"`
+	LeaseStatus                 *LeaseStatusType        `xml:"LeaseStatus"`
+	LegalHold                   *bool                   `xml:"LegalHold"`
 
 	// If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are High
 	// and Standard.
@@ -644,7 +644,7 @@ type BlockBlobClientCommitBlockListOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
@@ -750,7 +750,7 @@ type BlockBlobClientUploadOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
@@ -1321,7 +1321,7 @@ type PageBlobClientCreateOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
@@ -1476,17 +1476,6 @@ type PageRange struct {
 
 	// REQUIRED
 	Start *int64 `xml:"Start"`
-}
-
-// Raw converts PageRange into primitive start, end integers of type int64
-func (pr *PageRange) Raw() (start, end int64) {
-	if pr.Start != nil {
-		start = *pr.Start
-	}
-	if pr.End != nil {
-		end = *pr.End
-	}
-	return
 }
 
 type QueryFormat struct {

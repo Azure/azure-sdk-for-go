@@ -291,7 +291,7 @@ type StartCopyFromURLOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Used to set blob tags in various blob operations.
@@ -417,7 +417,7 @@ type CopyFromURLOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the

@@ -195,12 +195,20 @@ func TestEnvironmentCredential_UsernamePasswordSet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
+	certData, err := os.ReadFile(liveSP.pfxPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	certs, _, err := ParseCertificates(certData, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
 	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
 	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
-	srv.AppendResponse(mock.WithPredicate(validateJWTRequestContainsHeader(t, "x5c")), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithPredicate(validateX5C(t, certs)), mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse()
 
 	vars := map[string]string{

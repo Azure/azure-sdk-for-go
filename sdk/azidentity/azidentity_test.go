@@ -8,6 +8,7 @@ package azidentity
 
 import (
 	"context"
+	"crypto/x509"
 	"errors"
 	"fmt"
 	"io"
@@ -122,7 +123,7 @@ const (
 	testHost = "https://localhost"
 )
 
-func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.ResponsePredicate {
+func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate {
 	return func(req *http.Request) bool {
 		body, err := io.ReadAll(req.Body)
 		if err != nil {
@@ -135,8 +136,10 @@ func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.Resp
 		if token == nil {
 			t.Fatalf("Failed to parse the JWT token: %s.", assertion[1])
 		}
-		if _, ok := token.Header[headerName]; !ok {
-			t.Fatalf("JWT did not contain the %s header", headerName)
+		if v, ok := token.Header["x5c"].([]any); !ok {
+			t.Fatal("missing x5c header")
+		} else if actual := len(v); actual != len(certs) {
+			t.Fatalf("expected %d certs, got %d", len(certs), actual)
 		}
 		return true
 	}

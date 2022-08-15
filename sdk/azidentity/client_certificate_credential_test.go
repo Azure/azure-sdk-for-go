@@ -39,6 +39,7 @@ func newCertTest(name, certPath string, password string) certTest {
 var allCertTests = []certTest{
 	newCertTest("pem", "testdata/certificate.pem", ""),
 	newCertTest("pemB", "testdata/certificate_formatB.pem", ""),
+	newCertTest("pemChain", "testdata/certificate-with-chain.pem", ""),
 	newCertTest("pkcs12", "testdata/certificate.pfx", ""),
 	newCertTest("pkcs12Encrypted", "testdata/certificate_encrypted_key.pfx", "password"),
 }
@@ -107,26 +108,29 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 	}
 }
 
-func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain_mock(t *testing.T) {
-	test := allCertTests[0]
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
-	srv.AppendResponse(mock.WithPredicate(validateJWTRequestContainsHeader(t, "x5c")), mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse()
+func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
+	for _, test := range allCertTests {
+		t.Run(test.name, func(t *testing.T) {
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
+			srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
+			srv.AppendResponse(mock.WithPredicate(validateX5C(t, test.certs)), mock.WithBody([]byte(accessTokenRespSuccess)))
+			srv.AppendResponse()
 
-	options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}, SendCertificateChain: true}
-	cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
-	if err != nil {
-		t.Fatal(err)
-	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if tk.Token != tokenValue {
-		t.Fatalf("unexpected token: %s", tk.Token)
+			options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}, SendCertificateChain: true}
+			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
+			if err != nil {
+				t.Fatal(err)
+			}
+			tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if tk.Token != tokenValue {
+				t.Fatalf("unexpected token: %s", tk.Token)
+			}
+		})
 	}
 }
 

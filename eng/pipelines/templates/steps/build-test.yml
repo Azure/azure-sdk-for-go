@@ -102,7 +102,7 @@ steps:
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:
       ArtifactPath: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'apiview'
+      ArtifactName: 'packages'
       CustomCondition: and(succeeded(), eq(variables['create.apireview'], 'true'))
 
   - ${{if eq(variables['System.TeamProject'], 'internal') }}:

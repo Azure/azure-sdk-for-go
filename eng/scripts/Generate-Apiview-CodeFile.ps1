@@ -19,7 +19,9 @@ if ($sdks)
         $stagingPath = Join-Path -Path $CodeFileOutDirectory $moduleName
         New-Item $stagingPath -Type Directory
 
-        Compress-Archive -Path $pkgRoot -DestinationPath $stagingPath
+        $fileName = Split-Path $pkgRoot -Leaf
+        $pkgOutPath = Join-Path -Path $stagingPath "$($fileName).zip"
+        Compress-Archive -Path $pkgRoot -DestinationPath $pkgOutPath
         Write-Host "Generating API review file for package $($pkgRoot), review file Path: $($stagingPath)"
         &$ParserPath $pkgRoot $stagingPath
     }

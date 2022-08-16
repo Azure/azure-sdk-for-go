@@ -274,6 +274,15 @@ if err != nil {
 // dealing with `resp`
 ```
 
+## Major version upgrade
+
+Go use [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility. For Azure Go management SDK, we usually need to pump major version due to service's breaking changes. Regarding it could be a complicated upgrade experience, we will try our best to keep the API stable and release new version in compatible ways. However, if any unavoidable breaking changes, you could use these command under your module folder to upgrade:
+
+```sh
+go get github.com/icholy/gomajor
+gomajor get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute@latest
+```
+
 ## Need help?
 
 - File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-go/issues)

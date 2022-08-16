@@ -19,6 +19,9 @@ import (
 // PageList - the list of pages
 type PageList = generated.PageList
 
+// PageRange defines a range of pages.
+type PageRange = generated.PageRange
+
 // SequenceNumberAccessConditions contains a group of parameters for the Client.UploadPages method.
 type SequenceNumberAccessConditions = generated.SequenceNumberAccessConditions
 

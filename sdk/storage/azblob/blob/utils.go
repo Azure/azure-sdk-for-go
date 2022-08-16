@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
 // ObjectReplicationRules struct
@@ -60,7 +59,14 @@ func deserializeORSPolicies(policies map[string]string) (objectReplicationPolici
 
 // ParseHTTPHeaders parses GetPropertiesResponse and returns HTTPHeaders
 func ParseHTTPHeaders(resp GetPropertiesResponse) HTTPHeaders {
-	return generated.ParseHTTPHeaders(resp)
+	return HTTPHeaders{
+		BlobContentType:        resp.ContentType,
+		BlobContentEncoding:    resp.ContentEncoding,
+		BlobContentLanguage:    resp.ContentLanguage,
+		BlobContentDisposition: resp.ContentDisposition,
+		BlobCacheControl:       resp.CacheControl,
+		BlobContentMD5:         resp.ContentMD5,
+	}
 }
 
 // ParseSASTimeString try to parse sas time string.

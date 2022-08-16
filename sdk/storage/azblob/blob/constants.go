@@ -17,6 +17,20 @@ const (
 	DefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB
 )
 
+// BlobType defines values for BlobType
+type BlobType = generated.BlobType
+
+const (
+	BlobTypeBlockBlob  BlobType = generated.BlobTypeBlockBlob
+	BlobTypePageBlob   BlobType = generated.BlobTypePageBlob
+	BlobTypeAppendBlob BlobType = generated.BlobTypeAppendBlob
+)
+
+// PossibleBlobTypeValues returns the possible values for the BlobType const type.
+func PossibleBlobTypeValues() []BlobType {
+	return generated.PossibleBlobTypeValues()
+}
+
 // DeleteSnapshotsOptionType defines values for DeleteSnapshotsOptionType
 type DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionType
 
@@ -70,18 +84,31 @@ func PossibleRehydratePriorityValues() []RehydratePriority {
 	return generated.PossibleRehydratePriorityValues()
 }
 
-// ImmutabilityPolicyMode defines values for BlobImmutabilityPolicyMode
-type ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyMode
+// ImmutabilityPolicyMode defines values for ImmutabilityPolicyMode
+type ImmutabilityPolicyMode = generated.ImmutabilityPolicyMode
 
 const (
-	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyModeMutable
-	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyModeUnlocked
-	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyModeLocked
+	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = generated.ImmutabilityPolicyModeMutable
+	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = generated.ImmutabilityPolicyModeUnlocked
+	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = generated.ImmutabilityPolicyModeLocked
 )
 
-// PossibleBlobImmutabilityPolicyModeValues returns the possible values for the BlobImmutabilityPolicyMode const type.
-func PossibleBlobImmutabilityPolicyModeValues() []ImmutabilityPolicyMode {
-	return generated.PossibleBlobImmutabilityPolicyModeValues()
+// PossibleImmutabilityPolicyModeValues returns the possible values for the ImmutabilityPolicyMode const type.
+func PossibleImmutabilityPolicyModeValues() []ImmutabilityPolicyMode {
+	return generated.PossibleImmutabilityPolicyModeValues()
+}
+
+// ImmutabilityPolicySetting returns the possible values for the ImmutabilityPolicySetting const type.
+type ImmutabilityPolicySetting = generated.ImmutabilityPolicySetting
+
+const (
+	ImmutabilityPolicySettingUnlocked ImmutabilityPolicySetting = generated.ImmutabilityPolicySettingUnlocked
+	ImmutabilityPolicySettingLocked   ImmutabilityPolicySetting = generated.ImmutabilityPolicySettingLocked
+)
+
+// PossibleImmutabilityPolicySettingValues returns the possible values for the ImmutabilityPolicySetting const type.
+func PossibleImmutabilityPolicySettingValues() []ImmutabilityPolicySetting {
+	return generated.PossibleImmutabilityPolicySettingValues()
 }
 
 // CopyStatusType defines values for CopyStatusType
@@ -125,32 +152,32 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 	return generated.PossibleArchiveStatusValues()
 }
 
-// DeleteType defines values for BlobDeleteType
-type DeleteType = generated.BlobDeleteType
+// DeleteType defines values for DeleteType
+type DeleteType = generated.DeleteType
 
 const (
-	DeleteTypeNone      DeleteType = generated.BlobDeleteTypeNone
-	DeleteTypePermanent DeleteType = generated.BlobDeleteTypePermanent
+	DeleteTypeNone      DeleteType = generated.DeleteTypeNone
+	DeleteTypePermanent DeleteType = generated.DeleteTypePermanent
 )
 
-// PossibleBlobDeleteTypeValues returns the possible values for the BlobDeleteType const type.
-func PossibleBlobDeleteTypeValues() []DeleteType {
-	return generated.PossibleBlobDeleteTypeValues()
+// PossibleDeleteTypeValues returns the possible values for the DeleteType const type.
+func PossibleDeleteTypeValues() []DeleteType {
+	return generated.PossibleDeleteTypeValues()
 }
 
-// ExpiryOptions defines values for BlobExpiryOptions
-type ExpiryOptions = generated.BlobExpiryOptions
+// ExpiryOptions defines values for ExpiryOptions
+type ExpiryOptions = generated.ExpiryOptions
 
 const (
-	ExpiryOptionsAbsolute           ExpiryOptions = generated.BlobExpiryOptionsAbsolute
-	ExpiryOptionsNeverExpire        ExpiryOptions = generated.BlobExpiryOptionsNeverExpire
-	ExpiryOptionsRelativeToCreation ExpiryOptions = generated.BlobExpiryOptionsRelativeToCreation
-	ExpiryOptionsRelativeToNow      ExpiryOptions = generated.BlobExpiryOptionsRelativeToNow
+	ExpiryOptionsAbsolute           ExpiryOptions = generated.ExpiryOptionsAbsolute
+	ExpiryOptionsNeverExpire        ExpiryOptions = generated.ExpiryOptionsNeverExpire
+	ExpiryOptionsRelativeToCreation ExpiryOptions = generated.ExpiryOptionsRelativeToCreation
+	ExpiryOptionsRelativeToNow      ExpiryOptions = generated.ExpiryOptionsRelativeToNow
 )
 
-// PossibleBlobExpiryOptionsValues returns the possible values for the BlobExpiryOptions const type.
-func PossibleBlobExpiryOptionsValues() []ExpiryOptions {
-	return generated.PossibleBlobExpiryOptionsValues()
+// PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
+func PossibleExpiryOptionsValues() []ExpiryOptions {
+	return generated.PossibleExpiryOptionsValues()
 }
 
 // QueryFormatType - The quick query format type.

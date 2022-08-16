@@ -425,7 +425,7 @@ type BlobClientDownloadResponse struct {
 	ImmutabilityPolicyExpiresOn *time.Time
 
 	// ImmutabilityPolicyMode contains the information returned from the x-ms-immutability-policy-mode header response.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicyMode
 
 	// IsCurrentVersion contains the information returned from the x-ms-is-current-version header response.
 	IsCurrentVersion *bool
@@ -590,7 +590,7 @@ type BlobClientGetPropertiesResponse struct {
 	ImmutabilityPolicyExpiresOn *time.Time
 
 	// ImmutabilityPolicyMode contains the information returned from the x-ms-immutability-policy-mode header response.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicyMode
 
 	// IsCurrentVersion contains the information returned from the x-ms-is-current-version header response.
 	IsCurrentVersion *bool
@@ -645,17 +645,6 @@ type BlobClientGetPropertiesResponse struct {
 
 	// VersionID contains the information returned from the x-ms-version-id header response.
 	VersionID *string
-}
-
-func ParseHTTPHeaders(r BlobClientGetPropertiesResponse) BlobHTTPHeaders {
-	return BlobHTTPHeaders{
-		BlobContentType:        r.ContentType,
-		BlobContentEncoding:    r.ContentEncoding,
-		BlobContentLanguage:    r.ContentLanguage,
-		BlobContentDisposition: r.ContentDisposition,
-		BlobCacheControl:       r.CacheControl,
-		BlobContentMD5:         r.ContentMD5,
-	}
 }
 
 // BlobClientGetTagsResponse contains the response from method BlobClient.GetTags.
@@ -881,7 +870,7 @@ type BlobClientSetImmutabilityPolicyResponse struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// ImmutabilityPolicyMode contains the information returned from the x-ms-immutability-policy-mode header response.
-	ImmutabilityPolicyMode *BlobImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicyMode
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string

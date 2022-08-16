@@ -9,7 +9,6 @@
 
 package generated
 
-// AccessTier defines values for Blob Access Tier
 type AccessTier string
 
 const (
@@ -51,7 +50,6 @@ func PossibleAccessTierValues() []AccessTier {
 	}
 }
 
-// AccountKind defines values for AccountKind
 type AccountKind string
 
 const (
@@ -73,7 +71,6 @@ func PossibleAccountKindValues() []AccountKind {
 	}
 }
 
-// ArchiveStatus defines values for ArchiveStatus
 type ArchiveStatus string
 
 const (
@@ -86,42 +83,6 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 	return []ArchiveStatus{
 		ArchiveStatusRehydratePendingToCool,
 		ArchiveStatusRehydratePendingToHot,
-	}
-}
-
-// BlobDeleteType defines values for BlobDeleteType
-type BlobDeleteType string
-
-const (
-	BlobDeleteTypeNone      BlobDeleteType = "None"
-	BlobDeleteTypePermanent BlobDeleteType = "Permanent"
-)
-
-// PossibleBlobDeleteTypeValues returns the possible values for the BlobDeleteType const type.
-func PossibleBlobDeleteTypeValues() []BlobDeleteType {
-	return []BlobDeleteType{
-		BlobDeleteTypeNone,
-		BlobDeleteTypePermanent,
-	}
-}
-
-// BlobExpiryOptions defines values for BlobExpiryOptions
-type BlobExpiryOptions string
-
-const (
-	BlobExpiryOptionsAbsolute           BlobExpiryOptions = "Absolute"
-	BlobExpiryOptionsNeverExpire        BlobExpiryOptions = "NeverExpire"
-	BlobExpiryOptionsRelativeToCreation BlobExpiryOptions = "RelativeToCreation"
-	BlobExpiryOptionsRelativeToNow      BlobExpiryOptions = "RelativeToNow"
-)
-
-// PossibleBlobExpiryOptionsValues returns the possible values for the BlobExpiryOptions const type.
-func PossibleBlobExpiryOptionsValues() []BlobExpiryOptions {
-	return []BlobExpiryOptions{
-		BlobExpiryOptionsAbsolute,
-		BlobExpiryOptionsNeverExpire,
-		BlobExpiryOptionsRelativeToCreation,
-		BlobExpiryOptionsRelativeToNow,
 	}
 }
 
@@ -143,25 +104,6 @@ func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
 	}
 }
 
-// BlobImmutabilityPolicyMode defines values for BlobImmutabilityPolicyMode
-type BlobImmutabilityPolicyMode string
-
-const (
-	BlobImmutabilityPolicyModeMutable  BlobImmutabilityPolicyMode = "Mutable"
-	BlobImmutabilityPolicyModeUnlocked BlobImmutabilityPolicyMode = "Unlocked"
-	BlobImmutabilityPolicyModeLocked   BlobImmutabilityPolicyMode = "Locked"
-)
-
-// PossibleBlobImmutabilityPolicyModeValues returns the possible values for the BlobImmutabilityPolicyMode const type.
-func PossibleBlobImmutabilityPolicyModeValues() []BlobImmutabilityPolicyMode {
-	return []BlobImmutabilityPolicyMode{
-		BlobImmutabilityPolicyModeMutable,
-		BlobImmutabilityPolicyModeUnlocked,
-		BlobImmutabilityPolicyModeLocked,
-	}
-}
-
-// BlobType defines values for BlobType
 type BlobType string
 
 const (
@@ -179,7 +121,6 @@ func PossibleBlobTypeValues() []BlobType {
 	}
 }
 
-// BlockListType defines values for BlockListType
 type BlockListType string
 
 const (
@@ -197,7 +138,6 @@ func PossibleBlockListTypeValues() []BlockListType {
 	}
 }
 
-// CopyStatusType defines values for CopyStatusType
 type CopyStatusType string
 
 const (
@@ -217,7 +157,6 @@ func PossibleCopyStatusTypeValues() []CopyStatusType {
 	}
 }
 
-// DeleteSnapshotsOptionType defines values for DeleteSnapshotsOptionType
 type DeleteSnapshotsOptionType string
 
 const (
@@ -233,7 +172,21 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	}
 }
 
-// EncryptionAlgorithmType defines values for EncryptionAlgorithmType
+type DeleteType string
+
+const (
+	DeleteTypeNone      DeleteType = "None"
+	DeleteTypePermanent DeleteType = "Permanent"
+)
+
+// PossibleDeleteTypeValues returns the possible values for the DeleteType const type.
+func PossibleDeleteTypeValues() []DeleteType {
+	return []DeleteType{
+		DeleteTypeNone,
+		DeleteTypePermanent,
+	}
+}
+
 type EncryptionAlgorithmType string
 
 const (
@@ -249,7 +202,57 @@ func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
 	}
 }
 
-// LeaseDurationType defines values for LeaseDurationType
+type ExpiryOptions string
+
+const (
+	ExpiryOptionsAbsolute           ExpiryOptions = "Absolute"
+	ExpiryOptionsNeverExpire        ExpiryOptions = "NeverExpire"
+	ExpiryOptionsRelativeToCreation ExpiryOptions = "RelativeToCreation"
+	ExpiryOptionsRelativeToNow      ExpiryOptions = "RelativeToNow"
+)
+
+// PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
+func PossibleExpiryOptionsValues() []ExpiryOptions {
+	return []ExpiryOptions{
+		ExpiryOptionsAbsolute,
+		ExpiryOptionsNeverExpire,
+		ExpiryOptionsRelativeToCreation,
+		ExpiryOptionsRelativeToNow,
+	}
+}
+
+type ImmutabilityPolicyMode string
+
+const (
+	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = "Mutable"
+	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = "Unlocked"
+	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = "Locked"
+)
+
+// PossibleImmutabilityPolicyModeValues returns the possible values for the ImmutabilityPolicyMode const type.
+func PossibleImmutabilityPolicyModeValues() []ImmutabilityPolicyMode {
+	return []ImmutabilityPolicyMode{
+		ImmutabilityPolicyModeMutable,
+		ImmutabilityPolicyModeUnlocked,
+		ImmutabilityPolicyModeLocked,
+	}
+}
+
+type ImmutabilityPolicySetting string
+
+const (
+	ImmutabilityPolicySettingUnlocked ImmutabilityPolicySetting = "Unlocked"
+	ImmutabilityPolicySettingLocked   ImmutabilityPolicySetting = "Locked"
+)
+
+// PossibleImmutabilityPolicySettingValues returns the possible values for the ImmutabilityPolicySetting const type.
+func PossibleImmutabilityPolicySettingValues() []ImmutabilityPolicySetting {
+	return []ImmutabilityPolicySetting{
+		ImmutabilityPolicySettingUnlocked,
+		ImmutabilityPolicySettingLocked,
+	}
+}
+
 type LeaseDurationType string
 
 const (
@@ -265,7 +268,6 @@ func PossibleLeaseDurationTypeValues() []LeaseDurationType {
 	}
 }
 
-// LeaseStateType defines values for LeaseStateType
 type LeaseStateType string
 
 const (
@@ -287,7 +289,6 @@ func PossibleLeaseStateTypeValues() []LeaseStateType {
 	}
 }
 
-// LeaseStatusType defines values for LeaseStatusType
 type LeaseStatusType string
 
 const (
@@ -303,7 +304,6 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 	}
 }
 
-// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
 type ListBlobsIncludeItem string
 
 const (
@@ -335,7 +335,6 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 	}
 }
 
-// ListContainersIncludeType defines values for ListContainersIncludeType
 type ListContainersIncludeType string
 
 const (
@@ -353,7 +352,6 @@ func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
 	}
 }
 
-// PremiumPageBlobAccessTier defines values for Premium PageBlob's AccessTier
 type PremiumPageBlobAccessTier string
 
 const (
@@ -387,7 +385,6 @@ func PossiblePremiumPageBlobAccessTierValues() []PremiumPageBlobAccessTier {
 	}
 }
 
-// PublicAccessType defines values for AccessType - private (default) or blob or container
 type PublicAccessType string
 
 const (
@@ -440,7 +437,6 @@ func PossibleRehydratePriorityValues() []RehydratePriority {
 	}
 }
 
-// SKUName defines values for SkuName - LRS, GRS, RAGRS, ZRS, Premium LRS
 type SKUName string
 
 const (
@@ -462,7 +458,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// SequenceNumberActionType defines values for SequenceNumberActionType
 type SequenceNumberActionType string
 
 const (

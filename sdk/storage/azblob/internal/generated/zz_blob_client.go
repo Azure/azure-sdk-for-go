@@ -729,8 +729,8 @@ func (client *BlobClient) deleteCreateRequest(ctx context.Context, options *Blob
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	if options != nil && options.BlobDeleteType != nil {
-		reqQP.Set("deletetype", string(*options.BlobDeleteType))
+	if options != nil && options.DeleteType != nil {
+		reqQP.Set("deletetype", string(*options.DeleteType))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
@@ -1122,7 +1122,7 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		result.ImmutabilityPolicyExpiresOn = &immutabilityPolicyExpiresOn
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
-		result.ImmutabilityPolicyMode = (*BlobImmutabilityPolicyMode)(&val)
+		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
 	}
 	if val := resp.Header.Get("x-ms-legal-hold"); val != "" {
 		legalHold, err := strconv.ParseBool(val)
@@ -1509,7 +1509,7 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		result.ImmutabilityPolicyExpiresOn = &immutabilityPolicyExpiresOn
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
-		result.ImmutabilityPolicyMode = (*BlobImmutabilityPolicyMode)(&val)
+		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
 	}
 	if val := resp.Header.Get("x-ms-legal-hold"); val != "" {
 		legalHold, err := strconv.ParseBool(val)
@@ -2014,7 +2014,7 @@ func (client *BlobClient) renewLeaseHandleResponse(resp *http.Response) (BlobCli
 // Generated from API version 2020-10-02
 // expiryOptions - Required. Indicates mode of the expiry time
 // options - BlobClientSetExpiryOptions contains the optional parameters for the BlobClient.SetExpiry method.
-func (client *BlobClient) SetExpiry(ctx context.Context, expiryOptions BlobExpiryOptions, options *BlobClientSetExpiryOptions) (BlobClientSetExpiryResponse, error) {
+func (client *BlobClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOptions, options *BlobClientSetExpiryOptions) (BlobClientSetExpiryResponse, error) {
 	req, err := client.setExpiryCreateRequest(ctx, expiryOptions, options)
 	if err != nil {
 		return BlobClientSetExpiryResponse{}, err
@@ -2030,7 +2030,7 @@ func (client *BlobClient) SetExpiry(ctx context.Context, expiryOptions BlobExpir
 }
 
 // setExpiryCreateRequest creates the SetExpiry request.
-func (client *BlobClient) setExpiryCreateRequest(ctx context.Context, expiryOptions BlobExpiryOptions, options *BlobClientSetExpiryOptions) (*policy.Request, error) {
+func (client *BlobClient) setExpiryCreateRequest(ctx context.Context, expiryOptions ExpiryOptions, options *BlobClientSetExpiryOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -2279,7 +2279,7 @@ func (client *BlobClient) setImmutabilityPolicyHandleResponse(resp *http.Respons
 		result.ImmutabilityPolicyExpiry = &immutabilityPolicyExpiry
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
-		result.ImmutabilityPolicyMode = (*BlobImmutabilityPolicyMode)(&val)
+		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
 	}
 	return result, nil
 }
@@ -2484,6 +2484,7 @@ func (client *BlobClient) setMetadataHandleResponse(resp *http.Response) (BlobCl
 // SetTags - The Set Tags operation enables users to set tags on a blob.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
+// tags - Blob tags
 // options - BlobClientSetTagsOptions contains the optional parameters for the BlobClient.SetTags method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.

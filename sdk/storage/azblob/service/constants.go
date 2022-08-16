@@ -75,3 +75,16 @@ const (
 func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
 	return generated.PossibleBlobGeoReplicationStatusValues()
 }
+
+// PublicAccessType defines values for AccessType - private (default) or blob or container
+type PublicAccessType = generated.PublicAccessType
+
+const (
+	PublicAccessTypeBlob      PublicAccessType = generated.PublicAccessTypeBlob
+	PublicAccessTypeContainer PublicAccessType = generated.PublicAccessTypeContainer
+)
+
+// PossiblePublicAccessTypeValues returns the possible values for the PublicAccessType const type.
+func PossiblePublicAccessTypeValues() []PublicAccessType {
+	return generated.PossiblePublicAccessTypeValues()
+}

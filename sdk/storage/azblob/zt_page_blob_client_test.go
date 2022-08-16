@@ -69,7 +69,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 		_require.NotNil(pageListResp.PageList)
 		pageRangeResp := pageListResp.PageList.PageRange
 		_require.Len(pageRangeResp, 1)
-		rawStart, rawEnd := (pageRangeResp)[0].Raw()
+		rawStart, rawEnd := rawPageRange((pageRangeResp)[0])
 		_require.Equal(rawStart, offset)
 		_require.Equal(rawEnd, count-1)
 		if err != nil {
@@ -274,7 +274,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 		pageRangeResp := pageListResp.PageList.PageRange
 		_require.NotNil(pageRangeResp)
 		_require.Len(pageRangeResp, 1)
-		rawStart, rawEnd := (pageRangeResp)[0].Raw()
+		rawStart, rawEnd := rawPageRange((pageRangeResp)[0])
 		_require.Equal(rawStart, int64(2048))
 		_require.Equal(rawEnd, int64(4095))
 		if err != nil {
@@ -2002,7 +2002,7 @@ func validateBasicGetPageRanges(_require *require.Assertions, resp pageblob.Page
 	_require.NotNil(resp.PageRange)
 	_require.Len(resp.PageRange, 1)
 	start, end := int64(0), int64(pageblob.PageBytes-1)
-	rawStart, rawEnd := (resp.PageRange)[0].Raw()
+	rawStart, rawEnd := rawPageRange((resp.PageRange)[0])
 	_require.Equal(rawStart, start)
 	_require.Equal(rawEnd, end)
 }
@@ -2090,12 +2090,12 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 		_require.Len(pageListResp, 2)
 
 		start, end := int64(0), int64(pageblob.PageBytes-1)
-		rawStart, rawEnd := pageListResp[0].Raw()
+		rawStart, rawEnd := rawPageRange(pageListResp[0])
 		_require.Equal(rawStart, start)
 		_require.Equal(rawEnd, end)
 
 		start, end = int64(pageblob.PageBytes*2), int64((pageblob.PageBytes*3)-1)
-		rawStart, rawEnd = pageListResp[1].Raw()
+		rawStart, rawEnd = rawPageRange(pageListResp[1])
 		_require.Equal(rawStart, start)
 		_require.Equal(rawEnd, end)
 		if err != nil {
@@ -2383,7 +2383,7 @@ func validateDiffPageRanges(_require *require.Assertions, resp pageblob.PageList
 	_require.Nil(err)
 	_require.NotNil(resp.PageRange)
 	_require.Len(resp.PageRange, 1)
-	rawStart, rawEnd := resp.PageRange[0].Raw()
+	rawStart, rawEnd := rawPageRange(resp.PageRange[0])
 	_require.EqualValues(rawStart, int64(0))
 	_require.EqualValues(rawEnd, int64(pageblob.PageBytes-1))
 }

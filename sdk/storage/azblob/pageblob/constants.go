@@ -13,6 +13,21 @@ const (
 	PageBytes = 512
 )
 
+// CopyStatusType defines values for CopyStatusType
+type CopyStatusType = generated.CopyStatusType
+
+const (
+	CopyStatusTypePending CopyStatusType = generated.CopyStatusTypePending
+	CopyStatusTypeSuccess CopyStatusType = generated.CopyStatusTypeSuccess
+	CopyStatusTypeAborted CopyStatusType = generated.CopyStatusTypeAborted
+	CopyStatusTypeFailed  CopyStatusType = generated.CopyStatusTypeFailed
+)
+
+// PossibleCopyStatusTypeValues returns the possible values for the CopyStatusType const type.
+func PossibleCopyStatusTypeValues() []CopyStatusType {
+	return generated.PossibleCopyStatusTypeValues()
+}
+
 // PremiumPageBlobAccessTier defines values for Premium PageBlob's AccessTier
 type PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTier
 

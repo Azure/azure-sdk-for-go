@@ -7,11 +7,12 @@
 package appendblob
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"time"
 )
 
 // AppendPositionAccessConditions contains a group of parameters for the Client.AppendBlock method.
@@ -25,7 +26,7 @@ type CreateOptions struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *blob.ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *blob.ImmutabilityPolicySetting
 
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool

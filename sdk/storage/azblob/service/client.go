@@ -51,9 +51,9 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
+// NewClientWithSharedKeyCredential creates a Client object using the specified URL, shared key, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -75,7 +75,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKey(parsed.ServiceURL, credential, options)
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)

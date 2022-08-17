@@ -52,8 +52,8 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
-func NewClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+// NewClientWithSharedKeyCredential creates a Client object using the specified URL, shared key, and options.
+func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -75,7 +75,7 @@ func NewClientFromConnectionString(connectionString string, containerName string
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKey(parsed.ServiceURL, credential, options)
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)

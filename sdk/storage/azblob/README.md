@@ -285,7 +285,7 @@ _, err = blockBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewR
 handleError(err)
 
 // Download the blob's contents and ensure that the download worked properly
-blobDownloadResponse, err := blockBlobClient.DownloadToStream(context.TODO(), nil)
+blobDownloadResponse, err := blockBlobClient.DownloadStream(context.TODO(), nil)
 handleError(err)
 
 // Use the bytes.Buffer object to read the downloaded data.

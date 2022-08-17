@@ -57,7 +57,7 @@ func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertio
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	// Download the blob to verify
-	downloadResponse, err := blobClient.DownloadToStream(ctx, nil)
+	downloadResponse, err := blobClient.DownloadStream(ctx, nil)
 	_require.Nil(err)
 
 	// Assert that the content is correct
@@ -169,9 +169,9 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 	}(destFileName)
 
 	// Perform download
-	err = bbClient.BlobClient().DownloadToFile(context.Background(),
+	_, err = bbClient.BlobClient().DownloadFile(context.Background(),
 		destFile,
-		&blob.DownloadToFileOptions{
+		&blob.DownloadFileOptions{
 			Count:       int64(downloadCount),
 			Offset:      int64(downloadOffset),
 			BlockSize:   int64(blockSize),
@@ -321,8 +321,8 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	}
 
 	// Download the blob to a buffer
-	err = bbClient.BlobClient().DownloadToBuffer(context.Background(),
-		destBuffer, &blob.DownloadToBufferOptions{
+	err = bbClient.BlobClient().DownloadBuffer(context.Background(),
+		destBuffer, &blob.DownloadBufferOptions{
 			Count:       int64(downloadCount),
 			Offset:      int64(downloadOffset),
 			BlockSize:   int64(blockSize),
@@ -579,7 +579,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	}
 
 	// Download the blob to verify
-	downloadResponse, err := bbClient.DownloadToStream(ctx, nil)
+	downloadResponse, err := bbClient.DownloadStream(ctx, nil)
 	_require.NoError(err)
 
 	// Assert that the content is correct

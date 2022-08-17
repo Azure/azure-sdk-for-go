@@ -51,9 +51,9 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 	return (*Client)(base.NewPageBlobClient(blobURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
+// NewClientWithSharedKeyCredential creates a ServiceClient object using the specified URL, shared key, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -75,7 +75,7 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKey(parsed.ServiceURL, credential, options)
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
@@ -294,12 +294,6 @@ func (pb *Client) StartCopyIncremental(ctx context.Context, copySource string, p
 
 // Redeclared APIs
 
-// DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (pb *Client) DownloadToStream(ctx context.Context, o *blob.DownloadToStreamOptions) (blob.DownloadToStreamResponse, error) {
-	return pb.BlobClient().DownloadToStream(ctx, o)
-}
-
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
@@ -381,18 +375,19 @@ func (pb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.Co
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
-// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
-func (pb *Client) DownloadToWriterAt(ctx context.Context, writer io.WriterAt, o *blob.DownloadToWriterAtOptions) error {
-	return pb.BlobClient().DownloadToWriterAt(ctx, writer, o)
+// DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
+func (pb *Client) DownloadStream(ctx context.Context, o *blob.DownloadStreamOptions) (blob.DownloadStreamResponse, error) {
+	return pb.BlobClient().DownloadStream(ctx, o)
 }
 
-// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
-func (pb *Client) DownloadToBuffer(ctx context.Context, _bytes []byte, o *blob.DownloadToBufferOptions) error {
-	return pb.BlobClient().DownloadToBuffer(ctx, shared.NewBytesWriter(_bytes), o)
+// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+func (pb *Client) DownloadBuffer(ctx context.Context, _bytes []byte, o *blob.DownloadBufferOptions) error {
+	return pb.BlobClient().DownloadBuffer(ctx, shared.NewBytesWriter(_bytes), o)
 }
 
-// DownloadToFile downloads an Azure blob to a local file.
+// DownloadFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
-func (pb *Client) DownloadToFile(ctx context.Context, file *os.File, o *blob.DownloadToFileOptions) error {
-	return pb.BlobClient().DownloadToFile(ctx, file, o)
+func (pb *Client) DownloadFile(ctx context.Context, file *os.File, o *blob.DownloadFileOptions) (int64, error) {
+	return pb.BlobClient().DownloadFile(ctx, file, o)
 }

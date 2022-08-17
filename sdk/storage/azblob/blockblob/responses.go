@@ -98,3 +98,7 @@ func toUploadReaderAtResponseFromCommitBlockListResponse(resp CommitBlockListRes
 		XMSContentCRC64:     resp.XMSContentCRC64,
 	}
 }
+
+type UploadFileResponse = UploadReaderAtResponse
+
+type UploadBufferResponse = UploadReaderAtResponse

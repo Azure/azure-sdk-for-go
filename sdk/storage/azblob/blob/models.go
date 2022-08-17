@@ -58,8 +58,8 @@ type SASPermissions = exported.BlobSASPermissions
 
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
-// DownloadToStreamOptions contains the optional parameters for the Client.Download method.
-type DownloadToStreamOptions struct {
+// DownloadStreamOptions contains the optional parameters for the Client.Download method.
+type DownloadStreamOptions struct {
 	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
 	// range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
@@ -73,7 +73,7 @@ type DownloadToStreamOptions struct {
 	CpkScopeInfo     *CpkScopeInfo
 }
 
-func (o *DownloadToStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
+func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -100,8 +100,8 @@ func (o *DownloadToStreamOptions) format() (*generated.BlobClientDownloadOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DownloadToWriterAtOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
-type DownloadToWriterAtOptions struct {
+// DownloadWriterAtOptions identifies options used by the DownloadBuffer and DownloadFile functions.
+type DownloadWriterAtOptions struct {
 	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
 	Count int64
 
@@ -128,15 +128,15 @@ type DownloadToWriterAtOptions struct {
 	RetryReaderOptionsPerBlock RetryReaderOptions
 }
 
-func (o *DownloadToWriterAtOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
+func (o *DownloadWriterAtOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
 	return &GetPropertiesOptions{
 		AccessConditions: o.AccessConditions,
 		CpkInfo:          o.CpkInfo,
 	}
 }
 
-func (o *DownloadToWriterAtOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadToStreamOptions {
-	return &DownloadToStreamOptions{
+func (o *DownloadWriterAtOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadStreamOptions {
+	return &DownloadStreamOptions{
 		AccessConditions:   o.AccessConditions,
 		CpkInfo:            o.CpkInfo,
 		CpkScopeInfo:       o.CpkScopeInfo,
@@ -146,11 +146,11 @@ func (o *DownloadToWriterAtOptions) getDownloadBlobOptions(offSet, count int64, 
 	}
 }
 
-// DownloadToBufferOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
-type DownloadToBufferOptions = DownloadToWriterAtOptions
+// DownloadBufferOptions identifies options used by the DownloadBuffer and DownloadFile functions.
+type DownloadBufferOptions = DownloadWriterAtOptions
 
-// DownloadToFileOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
-type DownloadToFileOptions = DownloadToWriterAtOptions
+// DownloadFileOptions identifies options used by the DownloadBuffer and DownloadFile functions.
+type DownloadFileOptions = DownloadWriterAtOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 

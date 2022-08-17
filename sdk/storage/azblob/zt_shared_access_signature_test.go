@@ -25,7 +25,7 @@ func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	_require.Nil(err)
 
-	serviceClient, err := service.NewClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	_require.Nil(err)
 
 	containerName := generateContainerName(testName)
@@ -71,7 +71,7 @@ func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
 //	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 //	_require.Nil(err)
 //
-//	serviceClient, err := service.NewClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+//	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 //	_require.Nil(err)
 //
 //	containerName := generateContainerName(testName)
@@ -103,7 +103,7 @@ func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
 //	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 //	_require.Nil(err)
 //
-//	serviceClient, err := service.NewClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+//	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 //	_require.Nil(err)
 //
 //	containerName := generateContainerName(testName)

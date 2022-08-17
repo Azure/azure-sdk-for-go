@@ -44,7 +44,7 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	sharedKeyCred, err := azblob.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
 	_require.Nil(err)
 
-	svcClient, err := service.NewClientWithSharedKey(parsedConnStr.ServiceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
 	_require.Nil(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)

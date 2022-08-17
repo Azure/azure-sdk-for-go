@@ -382,8 +382,8 @@ func (pb *Client) DownloadStream(ctx context.Context, o *blob.DownloadStreamOpti
 }
 
 // DownloadBuffer downloads an Azure blob to a buffer with parallel.
-func (pb *Client) DownloadBuffer(ctx context.Context, _bytes []byte, o *blob.DownloadBufferOptions) error {
-	return pb.BlobClient().DownloadBuffer(ctx, shared.NewBytesWriter(_bytes), o)
+func (pb *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.DownloadBufferOptions) (int64, error) {
+	return pb.BlobClient().DownloadBuffer(ctx, shared.NewBytesWriter(buffer), o)
 }
 
 // DownloadFile downloads an Azure blob to a local file.

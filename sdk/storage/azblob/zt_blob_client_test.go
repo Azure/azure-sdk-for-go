@@ -422,7 +422,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 //
 //	waitForCopy(_require, copyBlobClient, resp)
 //
-//	downloadBlobOptions := blob.DownloadWriterAtOptions{
+//	downloadBlobOptions := blob.downloadWriterAtOptions{
 //		Offset: to.Ptr[int64](0),
 //		Count:  to.Ptr(int64(len(blockBlobDefaultData))),
 //	}

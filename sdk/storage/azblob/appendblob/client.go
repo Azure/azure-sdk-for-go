@@ -252,7 +252,7 @@ func (ab *Client) DownloadStream(ctx context.Context, o *blob.DownloadStreamOpti
 }
 
 // DownloadBuffer downloads an Azure blob to a buffer with parallel.
-func (ab *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.DownloadBufferOptions) error {
+func (ab *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.DownloadBufferOptions) (int64, error) {
 	return ab.BlobClient().DownloadBuffer(ctx, shared.NewBytesWriter(buffer), o)
 }
 

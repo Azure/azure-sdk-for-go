@@ -321,7 +321,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	}
 
 	// Download the blob to a buffer
-	err = bbClient.BlobClient().DownloadBuffer(context.Background(),
+	_, err = bbClient.BlobClient().DownloadBuffer(context.Background(),
 		destBuffer, &blob.DownloadBufferOptions{
 			Count:       int64(downloadCount),
 			Offset:      int64(downloadOffset),

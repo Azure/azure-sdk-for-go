@@ -42,9 +42,6 @@ type UploadFileOptions = blockblob.UploadReaderAtToBlockBlobOptions
 // UploadStreamOptions provides set of configurations for UploadStream operation
 type UploadStreamOptions = blockblob.UploadStreamOptions
 
-// DownloadWriterAtOptions identifies options used by the DownloadBuffer and DownloadFile functions.
-type DownloadWriterAtOptions = blob.DownloadWriterAtOptions
-
 // DownloadBufferOptions identifies options used by the DownloadBuffer and DownloadFile functions.
 type DownloadBufferOptions = blob.DownloadBufferOptions
 

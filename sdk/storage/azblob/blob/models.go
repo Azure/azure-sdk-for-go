@@ -109,8 +109,8 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DownloadWriterAtOptions identifies options used by the DownloadBuffer and DownloadFile functions.
-type DownloadWriterAtOptions struct {
+// downloadWriterAtOptions identifies options used by the DownloadBuffer and DownloadFile functions.
+type downloadWriterAtOptions struct {
 	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
 	Count int64
 
@@ -137,14 +137,14 @@ type DownloadWriterAtOptions struct {
 	RetryReaderOptionsPerBlock RetryReaderOptions
 }
 
-func (o *DownloadWriterAtOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
+func (o *downloadWriterAtOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
 	return &GetPropertiesOptions{
 		AccessConditions: o.AccessConditions,
 		CpkInfo:          o.CpkInfo,
 	}
 }
 
-func (o *DownloadWriterAtOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadStreamOptions {
+func (o *downloadWriterAtOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadStreamOptions {
 	return &DownloadStreamOptions{
 		AccessConditions:   o.AccessConditions,
 		CpkInfo:            o.CpkInfo,
@@ -156,10 +156,10 @@ func (o *DownloadWriterAtOptions) getDownloadBlobOptions(offSet, count int64, ra
 }
 
 // DownloadBufferOptions identifies options used by the DownloadBuffer and DownloadFile functions.
-type DownloadBufferOptions = DownloadWriterAtOptions
+type DownloadBufferOptions = downloadWriterAtOptions
 
 // DownloadFileOptions identifies options used by the DownloadBuffer and DownloadFile functions.
-type DownloadFileOptions = DownloadWriterAtOptions
+type DownloadFileOptions = downloadWriterAtOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 

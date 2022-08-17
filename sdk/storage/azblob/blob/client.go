@@ -269,9 +269,9 @@ func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
 // downloadWriterAt downloads an Azure blob to a WriterAt in parallel.
-func (b *Client) downloadWriterAt(ctx context.Context, writer io.WriterAt, o *DownloadWriterAtOptions) error {
+func (b *Client) downloadWriterAt(ctx context.Context, writer io.WriterAt, o *downloadWriterAtOptions) (int64, error) {
 	if o == nil {
-		o = &DownloadWriterAtOptions{}
+		o = &downloadWriterAtOptions{}
 	}
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
@@ -283,14 +283,14 @@ func (b *Client) downloadWriterAt(ctx context.Context, writer io.WriterAt, o *Do
 		downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
 		dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 		if err != nil {
-			return err
+			return 0, err
 		}
 		count = *dr.ContentLength - o.Offset
 	}
 
 	if count <= 0 {
 		// The file is empty, there is nothing to download.
-		return nil
+		return 0, nil
 	}
 
 	// Prepare and do parallel download.
@@ -332,9 +332,9 @@ func (b *Client) downloadWriterAt(ctx context.Context, writer io.WriterAt, o *Do
 		},
 	})
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+	return count, nil
 }
 
 // DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
@@ -371,7 +371,7 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 }
 
 // DownloadBuffer downloads an Azure blob to a buffer with parallel.
-func (b *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) error {
+func (b *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
 	return b.downloadWriterAt(ctx, shared.NewBytesWriter(buffer), o)
 }
 
@@ -406,7 +406,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	if size > 0 {
-		return size, b.downloadWriterAt(ctx, file, o)
+		return b.downloadWriterAt(ctx, file, o)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}

@@ -142,8 +142,8 @@ func (c *Client) UploadStream(ctx context.Context, containerName string, blobNam
 }
 
 // DownloadBuffer downloads an Azure blob to a buffer with parallel.
-func (c *Client) DownloadBuffer(ctx context.Context, containerName string, blobName string, _bytes []byte, o *DownloadBufferOptions) error {
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadBuffer(ctx, shared.NewBytesWriter(_bytes), o)
+func (c *Client) DownloadBuffer(ctx context.Context, containerName string, blobName string, buffer []byte, o *DownloadBufferOptions) (int64, error) {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadBuffer(ctx, shared.NewBytesWriter(buffer), o)
 }
 
 // DownloadFile downloads an Azure blob to a local file.

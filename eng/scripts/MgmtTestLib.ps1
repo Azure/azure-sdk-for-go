@@ -17,6 +17,7 @@ function Invoke-MgmtTestgen ()
         [switch]$format,
         [switch]$tidy,
         [switch]$alwaysSetBodyParamRequired,
+        [switch]$removeUnreferencedTypes,
         [string]$autorestPath = "",
         [string]$config = "autorest.md",
         [string]$autorestVersion = "3.8.2",
@@ -68,8 +69,14 @@ function Invoke-MgmtTestgen ()
             $honorBodyPlacement = "true"
         }
 
-        Write-Host "autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement $autorestPath"
-        npx autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement $autorestPath
+        $removeUnreferencedTypesFlag = "false"
+        if ($removeUnreferencedTypes)
+        {
+            $removeUnreferencedTypesFlag = "true"
+        }
+
+        Write-Host "autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath"
+        npx autorest --version=$autorestVersion --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath
         if ($LASTEXITCODE)
         {
             Write-Host "##[error]Error running autorest.gotest"

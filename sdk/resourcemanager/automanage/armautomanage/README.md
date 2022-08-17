@@ -13,14 +13,24 @@ The `armautomanage` module provides operations for working with Azure Automanage
 - an [Azure subscription](https://azure.microsoft.com/free/)
 - Go 1.18 or above
 
-## Install the package
+## Install and import required packages
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Automanage module:
+Install the Azure Automanage and Azure Identity modules:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage
+go get "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage"
+go get "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+```
+
+Import the Azure Automanage and Azure Identity modules:
+
+```go
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage"
+)
 ```
 
 ## Authorization
@@ -38,7 +48,9 @@ For more information on authentication, please see the documentation for `aziden
 Azure Automanage modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client, err := armautomanage.NewReportsClient(<subscription ID>, cred, nil)
+reportsClient, err := armautomanage.NewReportsClient("<subscription ID>", cred, nil)
+configProfilesClient, err := armautomanage.NewConfigurationProfilesClient("<subscription ID>", cred, nil)
+assignmentClient, err := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription ID>", cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -49,8 +61,108 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-client, err := armautomanage.NewReportsClient(<subscription ID>, cred, &options)
+reportsClient, err := armautomanage.NewReportsClient("<subscription ID>", cred, &options)
 ```
+
+## Create or Update a Custom Automanage Configuration Profile
+
+To update a profile, provide a value for all properties as if you were creating a configuration profile (ID, Name, Type, Location, Properties, Tags)
+
+```go
+configuration := map[string]interface{}{
+    "Antimalware/Enable":                false,
+    "AzureSecurityCenter/Enable":        true,
+    "Backup/Enable":                     false,
+    "BootDiagnostics/Enable":            true,
+    "ChangeTrackingAndInventory/Enable": true,
+    "GuestConfiguration/Enable":         true,
+    "LogAnalytics/Enable":               true,
+    "UpdateManagement/Enable":           true,
+    "VMInsights/Enable":                 true,
+}
+
+properties := armautomanage.ConfigurationProfileProperties{
+    Configuration: configuration,
+}
+
+location := "eastus"
+environment := "dev"
+
+// tags may be omitted 
+tags := make(map[string]*string)
+tags["environment"] = &environment
+
+profile := armautomanage.ConfigurationProfile{
+    Location:   &location,
+    Properties: &properties,
+    Tags:       tags,
+}
+
+newProfile, err := configProfilesClient.CreateOrUpdate(context.Background(), configurationProfileName, "resourceGroupName", profile, nil)
+```
+
+
+## Get an Automanage Configuration Profile
+
+```go
+profile, err := configProfilesClient.Get(context.Background(), "configurationProfileName", "resourceGroupName", nil)
+data, err := json.MarshalIndent(profile, "", "   ")
+
+fmt.Println(string(data))
+```
+
+
+## Delete an Automanage Configuration Profile
+
+```go
+_, err := configProfilesClient.Delete(context.Background(), "resourceGroupName", "configurationProfileName", nil)
+```
+
+
+## Get an Automanage Profile Assignment
+
+```go
+assignment, err := assignmentClient.Get(context.Background(), "resourceGroupName", "default", "vmName", nil)
+data, err := json.MarshalIndent(assignment, "", "   ")
+fmt.Println(string(data))
+```
+
+
+## Create an Assignment between a VM and an Automanage Best Practices Production Configuration Profile
+
+```go
+configProfileId := "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+
+properties := armautomanage.ConfigurationProfileAssignmentProperties{
+    ConfigurationProfile: &configProfileId,
+}
+
+assignment := armautomanage.ConfigurationProfileAssignment{
+    Properties: &properties,
+}
+
+// assignment name must be 'default'
+newAssignment, err = assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
+```
+
+
+## Create an Assignment between a VM and a Custom Automanage Configuration Profile
+
+```go
+configProfileId := "/subscriptions/<subscription ID>/resourceGroups/resourceGroupName/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName"
+
+properties := armautomanage.ConfigurationProfileAssignmentProperties{
+    ConfigurationProfile: &configProfileId,
+}
+
+assignment := armautomanage.ConfigurationProfileAssignment{
+    Properties: &properties,
+}
+
+// assignment name must be 'default'
+newAssignment, err = assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
+```
+
 
 ## Provide Feedback
 

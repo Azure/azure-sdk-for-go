@@ -111,7 +111,7 @@ func (bb *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlockBlobClient(p.URL(), bb.generated().Pipeline(), bb.sharedKey())), nil
+	return (*Client)(base.NewBlockBlobClient(p.String(), bb.generated().Pipeline(), bb.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -123,7 +123,7 @@ func (bb *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlockBlobClient(p.URL(), bb.generated().Pipeline(), bb.sharedKey())), nil
+	return (*Client)(base.NewBlockBlobClient(p.String(), bb.generated().Pipeline(), bb.sharedKey())), nil
 }
 
 // Upload creates a new block blob or overwrites an existing block blob.

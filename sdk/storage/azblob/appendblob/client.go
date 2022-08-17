@@ -104,7 +104,7 @@ func (ab *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewAppendBlobClient(p.URL(), ab.generated().Pipeline(), ab.sharedKey())), nil
+	return (*Client)(base.NewAppendBlobClient(p.String(), ab.generated().Pipeline(), ab.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -116,7 +116,7 @@ func (ab *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewAppendBlobClient(p.URL(), ab.generated().Pipeline(), ab.sharedKey())), nil
+	return (*Client)(base.NewAppendBlobClient(p.String(), ab.generated().Pipeline(), ab.sharedKey())), nil
 }
 
 // Create creates a 0-size append blob. Call AppendBlock to append data to an append blob.

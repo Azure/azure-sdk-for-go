@@ -100,9 +100,9 @@ func ParseURL(u string) (URLParts, error) {
 	return up, nil
 }
 
-// URL returns a URL object whose fields are initialized from the URLParts fields. The URL's RawQuery
+// String returns a URL object whose fields are initialized from the URLParts fields. The URL's RawQuery
 // field contains the SAS, snapshot, and unparsed query parameters.
-func (up URLParts) URL() string {
+func (up URLParts) String() string {
 	path := ""
 	if IsIPEndpointStyle(up.Host) && up.IPEndpointStyleInfo.AccountName != "" {
 		path += "/" + up.IPEndpointStyleInfo.AccountName

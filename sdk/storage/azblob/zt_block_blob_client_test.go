@@ -1135,7 +1135,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 
 	srcBlobParts, _ := azblob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
-	srcBlobURLWithSAS := srcBlobParts.URL()
+	srcBlobURLWithSAS := srcBlobParts.String()
 
 	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot} {
 		destBlobName := strings.ToLower(string(tier)) + generateBlobName(testName)

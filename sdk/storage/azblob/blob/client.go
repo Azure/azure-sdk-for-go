@@ -101,7 +101,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -113,7 +113,7 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.

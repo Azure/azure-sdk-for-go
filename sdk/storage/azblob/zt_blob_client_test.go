@@ -84,7 +84,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_require.Nil(err)
 	parts.SAS = sasQueryParams
 	parts.Snapshot = currentTime.Format(service.SnapshotTimeFormat)
-	blobURLParts := parts.URL()
+	blobURLParts := parts.String()
 
 	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
 	// it is copied here
@@ -126,7 +126,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSASUsingC
 	_require.Nil(err)
 	parts.SAS = sasQueryParams
 	parts.Snapshot = currentTime.Format(service.SnapshotTimeFormat)
-	blobURLParts := parts.URL()
+	blobURLParts := parts.String()
 
 	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
 	// it is copied here
@@ -3120,7 +3120,7 @@ func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 		_require.Equal(sas.StartTime(), StartTimesExpected[i])
 		_require.Equal(sas.ExpiryTime(), ExpiryTimesExpected[i])
 
-		_require.Equal(parts.URL(), urlString)
+		_require.Equal(parts.String(), urlString)
 	}
 }
 

@@ -110,7 +110,7 @@ func (pb *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline(), pb.sharedKey())), nil
+	return (*Client)(base.NewPageBlobClient(p.String(), pb.generated().Pipeline(), pb.sharedKey())), nil
 }
 
 // WithVersionID creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
@@ -122,7 +122,7 @@ func (pb *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewPageBlobClient(p.URL(), pb.generated().Pipeline(), pb.sharedKey())), nil
+	return (*Client)(base.NewPageBlobClient(p.String(), pb.generated().Pipeline(), pb.sharedKey())), nil
 }
 
 // Create creates a page blob of the specified length. Call PutPage to upload data to a page blob.

@@ -242,15 +242,11 @@ func (o *UploadReaderAtToBlockBlobOptions) getCommitBlockListOptions() *CommitBl
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// TransferManager provides a buffer and thread pool manager for certain transfer options.
-// It is undefined behavior if code outside this package call any of these methods.
-type TransferManager = shared.TransferManager
-
 // UploadStreamOptions provides set of configurations for UploadStream operation
 type UploadStreamOptions struct {
 	// transferManager provides a transferManager that controls buffer allocation/reuse and
 	// concurrency. This overrides BufferSize and MaxBuffers if set.
-	transferManager      TransferManager
+	transferManager      shared.TransferManager
 	transferMangerNotSet bool
 	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, format to 1 MiB.
 	BufferSize int

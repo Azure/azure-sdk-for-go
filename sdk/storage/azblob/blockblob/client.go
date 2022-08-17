@@ -310,12 +310,12 @@ func (bb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.Co
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
 
-// uploadReaderAtToBlockBlob uploads a buffer in blocks to a block blob.
-func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o UploadReaderAtToBlockBlobOptions) (UploadReaderAtResponse, error) {
+// uploadFromReader uploads a buffer in blocks to a block blob.
+func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, readerSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
 	if o.BlockSize == 0 {
 		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
 		if readerSize > MaxStageBlockBytes*MaxBlocks {
-			return UploadReaderAtResponse{}, errors.New("buffer is too large to upload to a block blob")
+			return uploadFromReaderResponse{}, errors.New("buffer is too large to upload to a block blob")
 		}
 		// If bufferSize <= MaxUploadBlobBytes, then Upload should be used with just 1 I/O request
 		if readerSize <= MaxUploadBlobBytes {
@@ -349,7 +349,7 @@ func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.Reade
 	progressLock := &sync.Mutex{}
 
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
-		OperationName: "uploadReaderAtToBlockBlob",
+		OperationName: "uploadFromReader",
 		TransferSize:  readerSize,
 		ChunkSize:     o.BlockSize,
 		Parallelism:   o.Parallelism,
@@ -385,7 +385,7 @@ func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.Reade
 		},
 	})
 	if err != nil {
-		return UploadReaderAtResponse{}, err
+		return uploadFromReaderResponse{}, err
 	}
 	// All put blocks were successful, call Put Block List to finalize the blob
 	commitBlockListOptions := o.getCommitBlockListOptions()
@@ -396,29 +396,29 @@ func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.Reade
 
 // UploadBuffer uploads a buffer in blocks to a block blob.
 func (bb *Client) UploadBuffer(ctx context.Context, buffer []byte, o *UploadBufferOptions) (UploadBufferResponse, error) {
-	uploadOptions := UploadReaderAtToBlockBlobOptions{}
+	uploadOptions := uploadFromReaderOptions{}
 	if o != nil {
 		uploadOptions = *o
 	}
-	return bb.uploadReaderAtToBlockBlob(ctx, bytes.NewReader(buffer), int64(len(buffer)), uploadOptions)
+	return bb.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
 }
 
 // UploadFile uploads a file in blocks to a block blob.
-func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadReaderAtToBlockBlobOptions) (UploadFileResponse, error) {
+func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOptions) (UploadFileResponse, error) {
 	stat, err := file.Stat()
 	if err != nil {
-		return UploadReaderAtResponse{}, err
+		return uploadFromReaderResponse{}, err
 	}
-	uploadOptions := UploadReaderAtToBlockBlobOptions{}
+	uploadOptions := uploadFromReaderOptions{}
 	if o != nil {
 		uploadOptions = *o
 	}
-	return bb.uploadReaderAtToBlockBlob(ctx, file, stat.Size(), uploadOptions)
+	return bb.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
 }
 
 // UploadStream copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (CommitBlockListResponse, error) {
+func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (UploadStreamResponse, error) {
 	if err := o.format(); err != nil {
 		return CommitBlockListResponse{}, err
 	}

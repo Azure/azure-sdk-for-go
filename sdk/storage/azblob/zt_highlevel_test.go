@@ -144,7 +144,7 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 
 	// Upload the file to a block blob
 	_, err = bbClient.UploadFile(context.Background(), file,
-		&blockblob.UploadReaderAtToBlockBlobOptions{
+		&blockblob.UploadFileOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -301,7 +301,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
 	_, err = bbClient.UploadBuffer(context.Background(), bytesToUpload,
-		&blockblob.UploadReaderAtToBlockBlobOptions{
+		&blockblob.UploadBufferOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.

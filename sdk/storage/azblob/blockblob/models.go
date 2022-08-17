@@ -166,8 +166,8 @@ func (o *GetBlockListOptions) format() (*generated.BlockBlobClientGetBlockListOp
 
 // ------------------------------------------------------------
 
-// UploadReaderAtToBlockBlobOptions identifies options used by the UploadBuffer and UploadFile functions.
-type UploadReaderAtToBlockBlobOptions struct {
+// uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
+type uploadFromReaderOptions struct {
 	// BlockSize specifies the block size to use; the default (and maximum size) is MaxStageBlockBytes.
 	BlockSize int64
 
@@ -203,12 +203,12 @@ type UploadReaderAtToBlockBlobOptions struct {
 }
 
 // UploadBufferOptions provides set of configurations for UploadBuffer operation
-type UploadBufferOptions = UploadReaderAtToBlockBlobOptions
+type UploadBufferOptions = uploadFromReaderOptions
 
 // UploadFileOptions provides set of configurations for UploadFile operation
-type UploadFileOptions = UploadReaderAtToBlockBlobOptions
+type UploadFileOptions = uploadFromReaderOptions
 
-func (o *UploadReaderAtToBlockBlobOptions) getStageBlockOptions() *StageBlockOptions {
+func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 	leaseAccessConditions, _ := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &StageBlockOptions{
 		CpkInfo:               o.CpkInfo,
@@ -217,7 +217,7 @@ func (o *UploadReaderAtToBlockBlobOptions) getStageBlockOptions() *StageBlockOpt
 	}
 }
 
-func (o *UploadReaderAtToBlockBlobOptions) getUploadBlockBlobOptions() *UploadOptions {
+func (o *uploadFromReaderOptions) getUploadBlockBlobOptions() *UploadOptions {
 	return &UploadOptions{
 		Tags:             o.Tags,
 		Metadata:         o.Metadata,
@@ -229,7 +229,7 @@ func (o *UploadReaderAtToBlockBlobOptions) getUploadBlockBlobOptions() *UploadOp
 	}
 }
 
-func (o *UploadReaderAtToBlockBlobOptions) getCommitBlockListOptions() *CommitBlockListOptions {
+func (o *uploadFromReaderOptions) getCommitBlockListOptions() *CommitBlockListOptions {
 	return &CommitBlockListOptions{
 		Tags:         o.Tags,
 		Metadata:     o.Metadata,

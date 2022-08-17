@@ -36,10 +36,10 @@ type ListBlobsResponse = container.ListBlobsFlatResponse
 type ListContainersResponse = service.ListContainersResponse
 
 // UploadBufferResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
-type UploadBufferResponse = blockblob.UploadReaderAtResponse
+type UploadBufferResponse = blockblob.UploadBufferResponse
 
 // UploadFileResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
-type UploadFileResponse = blockblob.UploadReaderAtResponse
+type UploadFileResponse = blockblob.UploadFileResponse
 
 // UploadStreamResponse contains the response from method Client.CommitBlockList.
 type UploadStreamResponse = blockblob.CommitBlockListResponse

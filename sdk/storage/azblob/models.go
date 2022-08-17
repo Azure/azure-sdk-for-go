@@ -37,7 +37,7 @@ type ListContainersOptions = service.ListContainersOptions
 type UploadBufferOptions = blockblob.UploadBufferOptions
 
 // UploadFileOptions provides set of configurations for UploadFile operation
-type UploadFileOptions = blockblob.UploadReaderAtToBlockBlobOptions
+type UploadFileOptions = blockblob.UploadFileOptions
 
 // UploadStreamOptions provides set of configurations for UploadStream operation
 type UploadStreamOptions = blockblob.UploadStreamOptions

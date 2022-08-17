@@ -1437,7 +1437,7 @@ func Example_blockblob_Client_UploadFile() {
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
 	response, err := blockBlobClient.UploadFile(context.TODO(), file,
-		&blockblob.UploadReaderAtToBlockBlobOptions{
+		&blockblob.UploadFileOptions{
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				fmt.Printf("Uploaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())

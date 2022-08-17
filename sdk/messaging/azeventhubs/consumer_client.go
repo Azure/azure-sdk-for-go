@@ -47,7 +47,7 @@ type ConsumerClientOptions struct {
 	// When used, a consumer with a higher OwnerLevel will take ownership of a partition
 	// from consumers with a lower OwnerLevel.
 	// Default is off.
-	OwnerLevel *uint64
+	OwnerLevel *int64
 }
 
 // StartPosition indicates the position to start receiving events within a partition.
@@ -85,7 +85,7 @@ type ConsumerClient struct {
 	eventHub      string
 	consumerGroup string
 	partitionID   string
-	ownerLevel    *uint64
+	ownerLevel    *int64
 
 	offsetExpression string
 
@@ -281,16 +281,20 @@ func formatOffsetExpressionForSequence(op string, sequenceNumber int64) string {
 }
 
 func (cc *ConsumerClient) getEntityPath(partitionID string) string {
-	if cc.ownerLevel == nil {
-		return fmt.Sprintf("%s/ConsumerGroups/%s/Partitions/%s", cc.eventHub, cc.consumerGroup, partitionID)
-	} else {
-		return fmt.Sprintf("%s/ConsumerGroups/%s/Partitions/%s/epoch/%d", cc.eventHub, cc.consumerGroup, partitionID, *cc.ownerLevel)
-	}
+	return fmt.Sprintf("%s/ConsumerGroups/%s/Partitions/%s", cc.eventHub, cc.consumerGroup, partitionID)
 }
 
 const defaultLinkRxBuffer = 2048
 
 func (cc *ConsumerClient) newEventHubConsumerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (internal.AMQPReceiverCloser, error) {
+	var receiverProps map[string]interface{}
+
+	if cc.ownerLevel != nil {
+		receiverProps = map[string]interface{}{
+			"com.microsoft:epoch": *cc.ownerLevel,
+		}
+	}
+
 	receiver, err := session.NewReceiver(ctx, entityPath, &amqp.ReceiverOptions{
 		SettlementMode: to.Ptr(amqp.ModeFirst),
 		ManualCredits:  true,
@@ -298,6 +302,7 @@ func (cc *ConsumerClient) newEventHubConsumerLink(ctx context.Context, session a
 		Filters: []amqp.LinkFilter{
 			amqp.LinkFilterSelector(cc.offsetExpression),
 		},
+		Properties: receiverProps,
 	})
 
 	if err != nil {

@@ -276,7 +276,7 @@ if err != nil {
 
 ## Major version upgrade
 
-Go use [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility. For Azure Go management SDK, we usually need to pump major version due to service's breaking changes. Regarding it could be a complicated upgrade experience, we will try our best to keep the API stable and release new version in compatible ways. However, if any unavoidable breaking changes, you could use these command under your module folder to upgrade:
+Go uses [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility for modules. For Azure Go management SDK, we usually upgrade module version according to cooresponding service's API version. Regarding it could be a complicated experience for major version upgrade, we will try our best to keep the SDK API stable and release new version in backward compatible way. However, if any unavoidable breaking changes and a new major version releases for SDK modules, you could use these commands under your module folder to upgrade:
 
 ```sh
 go get github.com/icholy/gomajor

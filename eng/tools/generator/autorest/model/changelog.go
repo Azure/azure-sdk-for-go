@@ -129,6 +129,12 @@ func getNewContents(c *delta.Content) []string {
 			items = append(items, line)
 		}
 	}
+	if len(c.TypeAliases) > 0 {
+		for k := range c.TypeAliases {
+			line := fmt.Sprintf("New type alias `%s`", k)
+			items = append(items, line)
+		}
+	}
 	if len(c.Funcs) > 0 {
 		for k, v := range c.Funcs {
 			params := ""
@@ -199,6 +205,13 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 		}
 		// TODO -- sort?
 	}
+	// write type alias changes
+	if len(b.TypeAliases) > 0 {
+		for k, v := range b.TypeAliases {
+			line := fmt.Sprintf("Type alias `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
+			items = append(items, line)
+		}
+	}
 	// write function changes
 	if len(b.Funcs) > 0 {
 		for k, v := range b.Funcs {
@@ -236,6 +249,13 @@ func getRemovedContent(removed *delta.Content) []string {
 	if len(removed.Consts) > 0 {
 		for k := range removed.Consts {
 			line := fmt.Sprintf("Const `%s` has been removed", k)
+			items = append(items, line)
+		}
+	}
+	// write type alias
+	if len(removed.TypeAliases) > 0 {
+		for k := range removed.TypeAliases {
+			line := fmt.Sprintf("Type alias `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}

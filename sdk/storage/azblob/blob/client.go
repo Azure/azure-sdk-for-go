@@ -268,10 +268,10 @@ func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
-// downloadWriterAt downloads an Azure blob to a WriterAt in parallel.
-func (b *Client) downloadWriterAt(ctx context.Context, writer io.WriterAt, o *downloadWriterAtOptions) (int64, error) {
+// download downloads an Azure blob to a WriterAt in parallel.
+func (b *Client) download(ctx context.Context, writer io.WriterAt, o *downloadOptions) (int64, error) {
 	if o == nil {
-		o = &downloadWriterAtOptions{}
+		o = &downloadOptions{}
 	}
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
@@ -372,7 +372,7 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 
 // DownloadBuffer downloads an Azure blob to a buffer with parallel.
 func (b *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
-	return b.downloadWriterAt(ctx, shared.NewBytesWriter(buffer), o)
+	return b.download(ctx, shared.NewBytesWriter(buffer), o)
 }
 
 // DownloadFile downloads an Azure blob to a local file.
@@ -406,7 +406,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	if size > 0 {
-		return b.downloadWriterAt(ctx, file, o)
+		return b.download(ctx, file, o)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}

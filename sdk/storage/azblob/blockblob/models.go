@@ -15,7 +15,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
-// ---------------------------------------------------------------------------------------------------------------------
+// Type Declarations ---------------------------------------------------------------------
+
+// Block - Represents a single block in a block blob. It describes the block's ID and size.
+type Block = generated.Block
+
+// BlockList - type of blocklist (committed/uncommitted)
+type BlockList = generated.BlockList
+
+// Request Model Declaration -------------------------------------------------------------------------------------------
 
 // UploadOptions contains the optional parameters for the Client.Upload method.
 type UploadOptions struct {
@@ -240,9 +248,9 @@ type TransferManager = shared.TransferManager
 
 // UploadStreamOptions provides set of configurations for UploadStream operation
 type UploadStreamOptions struct {
-	// TransferManager provides a TransferManager that controls buffer allocation/reuse and
+	// transferManager provides a transferManager that controls buffer allocation/reuse and
 	// concurrency. This overrides BufferSize and MaxBuffers if set.
-	TransferManager      TransferManager
+	transferManager      TransferManager
 	transferMangerNotSet bool
 	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, format to 1 MiB.
 	BufferSize int
@@ -258,7 +266,7 @@ type UploadStreamOptions struct {
 }
 
 func (u *UploadStreamOptions) format() error {
-	if u == nil || u.TransferManager != nil {
+	if u == nil || u.transferManager != nil {
 		return nil
 	}
 
@@ -271,7 +279,7 @@ func (u *UploadStreamOptions) format() error {
 	}
 
 	var err error
-	u.TransferManager, err = shared.NewStaticBuffer(u.BufferSize, u.MaxBuffers)
+	u.transferManager, err = shared.NewStaticBuffer(u.BufferSize, u.MaxBuffers)
 	if err != nil {
 		return fmt.Errorf("bug: default transfer manager could not be created: %s", err)
 	}

@@ -256,7 +256,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 //	uploadDate := uploadSrcResp.Date
 //
 //	// Get source blob url with SAS for StageFromURL.
-//	srcBlobParts, _ := azblob.ParseBlobURL(srcBlob.URL())
+//	srcBlobParts, _ := azblob.ParseURL(srcBlob.URL())
 //
 //	srcBlobParts.SAS, err = BlobSASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)

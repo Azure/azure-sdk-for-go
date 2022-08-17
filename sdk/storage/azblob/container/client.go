@@ -281,7 +281,7 @@ func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry t
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
-	urlParts, err := exported.ParseBlobURL(c.URL())
+	urlParts, err := exported.ParseURL(c.URL())
 	if err != nil {
 		return "", err
 	}

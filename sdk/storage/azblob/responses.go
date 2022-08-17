@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
 
@@ -43,7 +44,8 @@ type UploadFileResponse = blockblob.UploadReaderAtResponse
 // UploadStreamResponse contains the response from method Client.CommitBlockList.
 type UploadStreamResponse = blockblob.CommitBlockListResponse
 
-// ObjectReplicationPolicy are deserialized attributes
-type ObjectReplicationPolicy = blob.ObjectReplicationPolicy
+// ListContainersSegmentResponse - An enumeration of containers
+type ListContainersSegmentResponse = generated.ListContainersSegmentResponse
 
-type RetryReaderOptions = blob.RetryReaderOptions
+// ListBlobsFlatSegmentResponse - An enumeration of blobs
+type ListBlobsFlatSegmentResponse = generated.ListBlobsFlatSegmentResponse

@@ -105,7 +105,7 @@ func (bb *Client) BlobClient() *blob.Client {
 // WithSnapshot creates a new Client object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (bb *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseBlobURL(bb.URL())
+	p, err := exported.ParseURL(bb.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func (bb *Client) WithSnapshot(snapshot string) (*Client, error) {
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (bb *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseBlobURL(bb.URL())
+	p, err := exported.ParseURL(bb.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -429,7 +429,7 @@ func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStr
 
 	// If we used the default manager, we need to close it.
 	if o.transferMangerNotSet {
-		defer o.TransferManager.Close()
+		defer o.transferManager.Close()
 	}
 
 	result, err := copyFromReader(ctx, body, bb, *o)

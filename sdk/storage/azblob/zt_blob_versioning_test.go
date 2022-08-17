@@ -178,7 +178,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	cred, err := getGenericCredential(nil, testAccountDefault)
 //	_require.Nil(err)
 //
-//	blobParts, err := azblob.ParseBlobURL(blobClient.URL())
+//	blobParts, err := azblob.ParseURL(blobClient.URL())
 //	_require.Nil(err)
 //	blobParts.VersionID = *versionId
 //	blobParts.SAS, err = service.SASSignatureValues{

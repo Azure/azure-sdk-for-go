@@ -137,17 +137,17 @@ func (c *copier) sendChunk() error {
 		return err
 	}
 
-	buffer := c.o.TransferManager.Get()
+	buffer := c.o.transferManager.Get()
 	if len(buffer) == 0 {
-		return fmt.Errorf("TransferManager returned a 0 size buffer, this is a bug in the manager")
+		return fmt.Errorf("transferManager returned a 0 size buffer, this is a bug in the manager")
 	}
 
 	n, err := io.ReadFull(c.reader, buffer)
 	if n > 0 {
-		// Some data was read, schedule the write.
+		// Some data was read, schedule the Write.
 		id := c.id.next()
 		c.wg.Add(1)
-		c.o.TransferManager.Run(
+		c.o.transferManager.Run(
 			func() {
 				defer c.wg.Done()
 				c.write(copierChunk{buffer: buffer, id: id, length: n})
@@ -155,7 +155,7 @@ func (c *copier) sendChunk() error {
 		)
 	} else {
 		// Return the unused buffer to the manager.
-		c.o.TransferManager.Put(buffer)
+		c.o.transferManager.Put(buffer)
 	}
 
 	if err == nil {
@@ -173,7 +173,7 @@ func (c *copier) sendChunk() error {
 
 // write uploads a chunk to blob storage.
 func (c *copier) write(chunk copierChunk) {
-	defer c.o.TransferManager.Put(chunk.buffer)
+	defer c.o.transferManager.Put(chunk.buffer)
 
 	if err := c.ctx.Err(); err != nil {
 		return

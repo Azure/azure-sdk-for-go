@@ -56,6 +56,9 @@ type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 // Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
 type SASPermissions = exported.BlobSASPermissions
 
+// Tags represent map of blob index tags
+type Tags = generated.BlobTag
+
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
 // DownloadStreamOptions contains the optional parameters for the Client.Download method.

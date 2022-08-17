@@ -95,7 +95,7 @@ func (b *Client) URL() string {
 // WithSnapshot creates a new Client object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseBlobURL(b.URL())
+	p, err := exported.ParseURL(b.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (b *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseBlobURL(b.URL())
+	p, err := exported.ParseURL(b.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -229,7 +229,7 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
-	urlParts, _ := exported.ParseBlobURL(b.URL())
+	urlParts, _ := exported.ParseURL(b.URL())
 
 	t, err := time.Parse(exported.SnapshotTimeFormat, urlParts.Snapshot)
 

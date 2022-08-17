@@ -25,7 +25,7 @@ var (
 // SASTimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
 // TODO: do these need to be exported?
 const (
-	SASTimeFormat = "2006-01-02T15:04:05Z" //"2017-07-27T00:00:00Z" // ISO 8601
+	SASTimeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
 )
 
 const (
@@ -131,44 +131,44 @@ type SASQueryParameters struct {
 	contentEncoding            string      `param:"rsce"`
 	contentLanguage            string      `param:"rscl"`
 	contentType                string      `param:"rsct"`
-	signedOid                  string      `param:"skoid"`
-	signedTid                  string      `param:"sktid"`
+	signedOID                  string      `param:"skoid"`
+	signedTID                  string      `param:"sktid"`
 	signedStart                time.Time   `param:"skt"`
 	signedService              string      `param:"sks"`
 	signedExpiry               time.Time   `param:"ske"`
 	signedVersion              string      `param:"skv"`
 	signedDirectoryDepth       string      `param:"sdd"`
-	preauthorizedAgentObjectId string      `param:"saoid"`
-	agentObjectId              string      `param:"suoid"`
-	correlationId              string      `param:"scid"`
+	preauthorizedAgentObjectID string      `param:"saoid"`
+	agentObjectID              string      `param:"suoid"`
+	correlationID              string      `param:"scid"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
 }
 
-// PreauthorizedAgentObjectId returns preauthorizedAgentObjectId
-func (p *SASQueryParameters) PreauthorizedAgentObjectId() string {
-	return p.preauthorizedAgentObjectId
+// PreauthorizedAgentObjectID returns preauthorizedAgentObjectID
+func (p *SASQueryParameters) PreauthorizedAgentObjectID() string {
+	return p.preauthorizedAgentObjectID
 }
 
-// AgentObjectId returns agentObjectId
-func (p *SASQueryParameters) AgentObjectId() string {
-	return p.agentObjectId
+// AgentObjectID returns agentObjectID
+func (p *SASQueryParameters) AgentObjectID() string {
+	return p.agentObjectID
 }
 
-// SignedCorrelationId returns signedCorrelationId
-func (p *SASQueryParameters) SignedCorrelationId() string {
-	return p.correlationId
+// SignedCorrelationID returns signedCorrelationID
+func (p *SASQueryParameters) SignedCorrelationID() string {
+	return p.correlationID
 }
 
-// SignedOid returns signedOid
-func (p *SASQueryParameters) SignedOid() string {
-	return p.signedOid
+// SignedOID returns signedOID
+func (p *SASQueryParameters) SignedOID() string {
+	return p.signedOID
 }
 
-// SignedTid returns signedTid
-func (p *SASQueryParameters) SignedTid() string {
-	return p.signedTid
+// SignedTID returns signedTID
+func (p *SASQueryParameters) SignedTID() string {
+	return p.signedTID
 }
 
 // SignedStart returns signedStart
@@ -320,9 +320,9 @@ func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	if p.permissions != "" {
 		v.Add("sp", p.permissions)
 	}
-	if p.signedOid != "" {
-		v.Add("skoid", p.signedOid)
-		v.Add("sktid", p.signedTid)
+	if p.signedOID != "" {
+		v.Add("skoid", p.signedOID)
+		v.Add("sktid", p.signedTID)
 		v.Add("skt", p.signedStart.Format(SASTimeFormat))
 		v.Add("ske", p.signedExpiry.Format(SASTimeFormat))
 		v.Add("sks", p.signedService)
@@ -349,14 +349,14 @@ func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	if p.signedDirectoryDepth != "" {
 		v.Add("sdd", p.signedDirectoryDepth)
 	}
-	if p.preauthorizedAgentObjectId != "" {
-		v.Add("saoid", p.preauthorizedAgentObjectId)
+	if p.preauthorizedAgentObjectID != "" {
+		v.Add("saoid", p.preauthorizedAgentObjectID)
 	}
-	if p.agentObjectId != "" {
-		v.Add("suoid", p.agentObjectId)
+	if p.agentObjectID != "" {
+		v.Add("suoid", p.agentObjectID)
 	}
-	if p.correlationId != "" {
-		v.Add("scid", p.correlationId)
+	if p.correlationID != "" {
+		v.Add("scid", p.correlationID)
 	}
 	return v
 }
@@ -412,9 +412,9 @@ func NewSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 		case "rsct":
 			p.contentType = val
 		case "skoid":
-			p.signedOid = val
+			p.signedOID = val
 		case "sktid":
-			p.signedTid = val
+			p.signedTID = val
 		case "skt":
 			p.signedStart, _ = time.Parse(SASTimeFormat, val)
 		case "ske":
@@ -426,11 +426,11 @@ func NewSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 		case "sdd":
 			p.signedDirectoryDepth = val
 		case "saoid":
-			p.preauthorizedAgentObjectId = val
+			p.preauthorizedAgentObjectID = val
 		case "suoid":
-			p.agentObjectId = val
+			p.agentObjectID = val
 		case "scid":
-			p.correlationId = val
+			p.correlationID = val
 		default:
 			isSASKey = false // We didn't recognize the query parameter
 		}

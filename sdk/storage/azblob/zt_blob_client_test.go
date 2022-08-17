@@ -41,7 +41,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClient() {
 	blobName := generateBlobName(testName)
 	bbClient := getBlockBlobClient(blobName, containerClient)
 
-	blobURLParts, err := azblob.ParseBlobURL(bbClient.URL())
+	blobURLParts, err := azblob.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	_require.Equal(blobURLParts.BlobName, blobName)
 	_require.Equal(blobURLParts.ContainerName, containerName)
@@ -80,7 +80,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	}.Sign(credential)
 	_require.Nil(err)
 
-	parts, err := exported.ParseBlobURL(bbClient.URL())
+	parts, err := exported.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	parts.SAS = sasQueryParams
 	parts.Snapshot = currentTime.Format(service.SnapshotTimeFormat)
@@ -122,7 +122,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSASUsingC
 	}.Sign(credential)
 	_require.Nil(err)
 
-	parts, err := exported.ParseBlobURL(bbClient.URL())
+	parts, err := exported.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	parts.SAS = sasQueryParams
 	parts.Snapshot = currentTime.Format(service.SnapshotTimeFormat)
@@ -3110,7 +3110,7 @@ func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 				"st=" + url.QueryEscape(StartTimesInputs[i]) + "&" +
 				"sv=2019-10-10"
 
-		parts, _ := azblob.ParseBlobURL(urlString)
+		parts, _ := azblob.ParseURL(urlString)
 		_require.Equal(parts.Scheme, "https")
 		_require.Equal(parts.Host, "myaccount.blob.core.windows.net")
 		_require.Equal(parts.ContainerName, "mycontainer")

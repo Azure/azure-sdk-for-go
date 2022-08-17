@@ -62,3 +62,12 @@ type AccessConditions = exported.BlobAccessConditions
 
 // ListBlobsIncludeItem defines values for ListBlobsIncludeItem
 type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
+
+// ListContainersDetail indicates what additional information the service should return with each container.
+type ListContainersDetail = service.ListContainersDetail
+
+// ObjectReplicationPolicy are deserialized attributes
+type ObjectReplicationPolicy = blob.ObjectReplicationPolicy
+
+// RetryReaderOptions contains properties which can help to decide when to do retry.
+type RetryReaderOptions = blob.RetryReaderOptions

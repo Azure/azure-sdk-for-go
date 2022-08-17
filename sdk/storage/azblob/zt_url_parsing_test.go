@@ -26,7 +26,7 @@ func (s *azblobTestSuite) TestURLParsing() {
 		snapshotID, versionID := "", "2021-10-25T05:41:32.5526810Z"
 		sasWithVersionID := "?versionId=" + versionID + "&" + sas
 		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s%s", testStorageAccount, testContainer, fileName, sasWithVersionID)
-		blobURLParts, err := azblob.ParseBlobURL(urlWithVersion)
+		blobURLParts, err := azblob.ParseURL(urlWithVersion)
 		_require.Nil(err)
 
 		_require.Equal(blobURLParts.Scheme, "https")
@@ -42,7 +42,7 @@ func (s *azblobTestSuite) TestURLParsing() {
 		snapshotID, versionID := "2011-03-09T01:42:34Z", ""
 		sasWithSnapshotID := "?snapshot=" + snapshotID + "&" + sas
 		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s%s", testStorageAccount, testContainer, fileName, sasWithSnapshotID)
-		blobURLParts, err := azblob.ParseBlobURL(urlWithVersion)
+		blobURLParts, err := azblob.ParseURL(urlWithVersion)
 		_require.Nil(err)
 
 		_require.Equal(blobURLParts.Scheme, "https")

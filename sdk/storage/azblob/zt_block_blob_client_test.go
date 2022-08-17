@@ -1133,7 +1133,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}.Sign(credential)
 	_require.Nil(err)
 
-	srcBlobParts, _ := azblob.ParseBlobURL(srcBlob.URL())
+	srcBlobParts, _ := azblob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.URL()
 

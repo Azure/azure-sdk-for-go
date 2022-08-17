@@ -23,8 +23,8 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 // ParsedConnectionString is parsed connection string
 type ParsedConnectionString = shared.ParsedConnectionString
 
-// ParseConnectionString returns ParsedConnectionString
-func ParseConnectionString(connectionString string) (ParsedConnectionString, error) {
+// parseConnectionString returns ParsedConnectionString
+func parseConnectionString(connectionString string) (ParsedConnectionString, error) {
 	return shared.ParseConnectionString(connectionString)
 }
 
@@ -32,15 +32,15 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 // Ex: "https://10.132.141.33/accountname/containername"
 type IPEndpointStyleInfo = exported.IPEndpointStyleInfo
 
-// BlobURLParts object represents the components that make up an Azure Storage Container/Blob URL. You parse an
+// URLParts object represents the components that make up an Azure Storage Container/Blob URL. You parse an
 // existing URL into its parts by calling NewBlobURLParts(). You construct a URL from parts by calling URL().
 // NOTE: Changing any SAS-related field requires computing a new SAS signature.
-type BlobURLParts = exported.BlobURLParts
+type URLParts = exported.URLParts
 
-// ParseBlobURL parses a URL initializing BlobURLParts' fields including any SAS-related & snapshot query parameters. Any other
-// query parameters remain in the UnparsedParams field. This method overwrites all fields in the BlobURLParts object.
-func ParseBlobURL(u string) (BlobURLParts, error) {
-	return exported.ParseBlobURL(u)
+// ParseURL parses a URL initializing URLParts' fields including any SAS-related & snapshot query parameters. Any other
+// query parameters remain in the UnparsedParams field. This method overwrites all fields in the URLParts object.
+func ParseURL(u string) (URLParts, error) {
+	return exported.ParseURL(u)
 }
 
 // SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
@@ -50,7 +50,7 @@ func ParseBlobURL(u string) (BlobURLParts, error) {
 // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 type SASQueryParameters = exported.SASQueryParameters
 
-// SASProtocol indicates the protocal in use for the SAS URL (http/https).
+// SASProtocol indicates the protocol in use for the SAS URL (http/https).
 type SASProtocol = exported.SASProtocol
 
 // IPRange represents a SAS IP range's start IP and (optionally) end IP.

@@ -65,7 +65,7 @@ type SASSignatureValues = exported.BlobSASSignatureValues
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type SASPermissions = exported.ContainerSASPermissions
 
-// ---------------------------------------------------------------------------------------------------------------------
+// Request Model Declaration -------------------------------------------------------------------------------------------
 
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {

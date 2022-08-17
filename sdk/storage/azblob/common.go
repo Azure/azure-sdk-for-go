@@ -8,7 +8,6 @@ package azblob
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -18,14 +17,6 @@ type SharedKeyCredential = exported.SharedKeyCredential
 // storage account's name and either its primary or secondary key.
 func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
 	return exported.NewSharedKeyCredential(accountName, accountKey)
-}
-
-// ParsedConnectionString is parsed connection string
-type ParsedConnectionString = shared.ParsedConnectionString
-
-// parseConnectionString returns ParsedConnectionString
-func parseConnectionString(connectionString string) (ParsedConnectionString, error) {
-	return shared.ParseConnectionString(connectionString)
 }
 
 // IPEndpointStyleInfo is used for IP endpoint style URL when working with Azure storage emulator.

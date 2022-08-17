@@ -43,6 +43,12 @@ type CpkScopeInfo = generated.CpkScopeInfo
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
 
+// SASProtocol indicates the http/https.
+type SASProtocol = exported.SASProtocol
+
+// IPRange represents a SAS IP range's start IP and (optionally) end IP.
+type IPRange = exported.IPRange
+
 // SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
 // You parse a map of query parameters into its fields by calling Sign(). You add the components
 // to a query parameter map by calling AddToValues().

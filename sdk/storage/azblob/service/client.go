@@ -240,7 +240,7 @@ func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermission
 	return endpoint, nil
 }
 
-// FindBlobsByTags operation finds all blobs in the storage account whose tags match a given search expression.
+// FilterBlobs operation finds all blobs in the storage account whose tags match a given search expression.
 // Filter blobs searches across all containers within a storage account but can be scoped within the expression to a single container.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"

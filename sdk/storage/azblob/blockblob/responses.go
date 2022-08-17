@@ -99,6 +99,8 @@ func toUploadReaderAtResponseFromCommitBlockListResponse(resp CommitBlockListRes
 	}
 }
 
+// UploadFileResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
 type UploadFileResponse = UploadReaderAtResponse
 
+// UploadBufferResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
 type UploadBufferResponse = UploadReaderAtResponse

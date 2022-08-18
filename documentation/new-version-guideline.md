@@ -7,6 +7,13 @@ You can find the full list of management modules [here](https://pkg.go.dev/githu
 
 In this guideline, we will give some instructions about the API usage pattern as well as trouble shooting method. For those are new to management Go SDK, please refer to [quickstart](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/new-version-quickstart.md). For those migrate from older versions of management Go SDK, please refer to [migration guide](https://aka.ms/azsdk/go/mgmt/migration).
 
+## Table of contents
+
+* [Pageable Operations](#pageable-operations)
+* [Long-Running Operations](#long-running-operations)
+* [Troubleshooting](#troubleshooting)
+* [Major Version Upgrade](#major-version-upgrade)
+
 ## Pageable Operations
 
 ### General usage
@@ -272,6 +279,15 @@ if err != nil {
     }
 }
 // dealing with `resp`
+```
+
+## Major Version Upgrade
+
+Go uses [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility for modules. For Azure Go management SDK, we usually upgrade module version according to cooresponding service's API version. Regarding it could be a complicated experience for major version upgrade, we will try our best to keep the SDK API stable and release new version in backward compatible way. However, if any unavoidable breaking changes and a new major version releases for SDK modules, you could use these commands under your module folder to upgrade:
+
+```sh
+go install github.com/icholy/gomajor@latest
+gomajor get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute@latest
 ```
 
 ## Need help?

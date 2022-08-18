@@ -1,4 +1,4 @@
-## Guide for migrating to `sdk/resourcemanager/**/arm**` from `services/**/mgmt/**`
+# Guide for migrating to `sdk/resourcemanager/**/arm**` from `services/**/mgmt/**`
 
 This document is intended for users that are familiar with the previous version of the Azure SDK For Go for management modules (`services/**/mgmt/**`) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/resourcemanager/**/arm**`)
 
@@ -10,6 +10,7 @@ This document is intended for users that are familiar with the previous version 
 * [General Changes](#general-changes)
 * [Breaking Changes](#breaking-changes)
     * [Authentication](#authentication)
+    * [Client Initialization](#client-initialization)
     * [Error Handling](#error-handling)
     * [Long Running Operations](#long-running-operations)
     * [Pagination](#pagination)
@@ -61,6 +62,59 @@ client, err := armresources.NewResourceGroupsClient("<SubscriptionId>", credenti
 ```
 
 For detailed information on the benefits of using the new authentication types, please refer to [this page](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/README.md)
+
+### Client Initialization
+
+In the previous version (`services/**/mgmt/**`), there are two functions to initialize the clients.
+
+In the latest version (`sdk/resourcemanager/**/arm**`), one initialization function with custom endpoint has removed. If you want to using a custom endpoint. You need to set endpoint with `*arm.ClientOptions` param.
+
+**Previous version (`services/**/mgmt/**`)**
+
+```go
+import "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute"
+```
+
+```go
+client := compute.NewVirtualMachinesClient("<SubscriptionId>")
+```
+
+**Latest version (`sdk/resourcemanager/**/arm**`)**
+
+```go
+import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+```
+
+```go
+client, err := armcompute.NewVirtualMachinesClient("<SubscriptionId>", credential, nil)
+```
+
+**Previous version (`services/**/mgmt/**`)**
+
+```go
+import "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute"
+```
+
+```go
+client := compute.NewVirtualMachinesClientWithBaseURI("<Endpoint>", "<SubscriptionId>")
+```
+
+**Latest version (`sdk/resourcemanager/**/arm**`)**
+
+```go
+import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+```
+
+```go
+options := arm.ClientOptions {
+    ClientOptions: azcore.ClientOptions {
+        Cloud: cloud.AzureChina,
+    },
+}
+client, err := armcompute.NewVirtualMachinesClient("<SubscriptionId>", credential, &options)
+```
+
+For detailed information on the cloud configuration, please refer to [this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud)
 
 ### Error Handling
 

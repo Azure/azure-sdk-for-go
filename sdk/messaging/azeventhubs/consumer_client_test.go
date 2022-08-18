@@ -4,12 +4,10 @@ package azeventhubs_test
 
 import (
 	"context"
-	"log"
 	"sync"
 	"testing"
 	"time"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
@@ -168,50 +166,158 @@ func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
 	}
 }
 
-func TestConsumerClient_Epochs(t *testing.T) {
-	azlog.SetEvents(azeventhubs.EventConsumer)
-	azlog.SetListener(func(e azlog.Event, s string) {
-		log.Printf("[%s] %s", e, s)
-	})
-
+func TestConsumerClient_Concurrent_NoEpoch(t *testing.T) {
 	testParams := getConnectionParams(t)
 
-	partitions := mustSendEventToAllPartitions(t, testParams.ConnectionString, testParams.EventHubName, &azeventhubs.EventData{
-		Body: []byte("hello world"),
+	partitions := mustSendEventsToAllPartitions(t, testParams.ConnectionString, testParams.EventHubName, []*azeventhubs.EventData{
+		{Body: []byte("hello world")},
 	})
 
-	const concurrentClients = 5 // max you can have with a single consumer group
+	const simultaneousClients = 5 // max you can have with a single consumer group for a single partition
 
-	clients := make(chan *azeventhubs.ConsumerClient, concurrentClients)
+	for i := 0; i < simultaneousClients; i++ {
+		client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
+			StartPosition: getStartPosition(partitions[0]),
+		})
+		require.NoError(t, err)
 
-	// this is fine - you can have multiple parallel consumers so long as nobody specifies an epoch
-	for i := 0; i < concurrentClients; i++ {
-		go func() {
-			client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
-				StartPosition: getStartPosition(partitions[0]),
-			})
+		// We want all the clients open while this for loop is going.
+		defer func() {
+			err := client.Close(context.Background())
 			require.NoError(t, err)
-
-			defer func() {
-				err := client.Close(context.Background())
-				require.NoError(t, err)
-			}()
-
-			ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-			defer cancel()
-
-			events, err := client.ReceiveEvents(ctx, 2, nil)
-			require.NoError(t, err)
-
-			require.Equal(t, 1, len(events))
-			clients <- client
 		}()
-	}
 
-	for i := 0; i < concurrentClients; i++ {
-		client := <-clients
-		require.NoError(t, client.Close(context.Background()))
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		events, err := client.ReceiveEvents(ctx, 1, nil)
+		require.NoError(t, err)
+
+		require.Equal(t, 1, len(events))
 	}
+}
+
+func TestConsumerClient_SameEpoch(t *testing.T) {
+	testParams := getConnectionParams(t)
+
+	highestEpoch := int64(2)
+
+	partitions := mustSendEventsToAllPartitions(t, testParams.ConnectionString, testParams.EventHubName, []*azeventhubs.EventData{
+		{Body: []byte("hello world 1")},
+		{Body: []byte("hello world 2")},
+	})
+
+	clientA, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
+		StartPosition: getStartPosition(partitions[0]),
+		OwnerLevel:    &highestEpoch,
+		// Today we treat the link stolen error as retryable. I've filed an issue to look at making this fatal
+		// instead since it's likely to be a configuration/runtime issue where the user has two consumers
+		//  starting up with the same ownerlevel. Having them fight with retries is probably undesirable.
+		RetryOptions: azeventhubs.RetryOptions{
+			MaxRetries: -1,
+		},
+	})
+	require.NoError(t, err)
+
+	defer func() {
+		err := clientA.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	events, err := clientA.ReceiveEvents(ctx, 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, 1, len(events))
+
+	// we have an active link, using epoch/owner level 1
+
+	/*
+		It might be worth making this a terminal error since it's typically not something you'd consider normal
+		and probably indicates a configuration error.
+
+		(connlost): link detached, reason: *Error{Condition: amqp:link:stolen, Description: New receiver 'nil' with higher epoch of '1' is created hence current receiver 'nil' with epoch '1' is getting disconnected. If you are recreating the receiver, make sure a higher epoch is used.
+	*/
+
+	// now we'll take over with another client.
+	clientB, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
+		StartPosition: getStartPosition(partitions[0]),
+		OwnerLevel:    &highestEpoch,
+	})
+	require.NoError(t, err)
+
+	defer func() {
+		err := clientB.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	// no need to timeout here, we know there's one event.
+	events, err = clientB.ReceiveEvents(ctx, 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, events)
+
+	// now if we attempt to use the first client we'll get an error that
+	// we've lost ownership.
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	events, err = clientA.ReceiveEvents(ctx, 1, nil)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "amqp:link:stolen")
+	require.Empty(t, events)
+
+	// now let's try to spin up another receiver, but with a _lower_ owner level.
+	lowerEpochClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
+		StartPosition: getStartPosition(partitions[0]),
+		OwnerLevel:    to.Ptr(highestEpoch - 1), // lower owner level than the max - automatically loses.
+		// Today we treat the link stolen error as retryable. I've filed an issue to look at making this fatal
+		// instead since it's likely to be a configuration/runtime issue where the user has two consumers
+		//  starting up with the same ownerlevel. Having them fight with retries is probably undesirable.
+		RetryOptions: azeventhubs.RetryOptions{
+			MaxRetries: -1,
+		},
+	})
+	require.NoError(t, err)
+
+	defer func() {
+		err := lowerEpochClient.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	_, err = lowerEpochClient.ReceiveEvents(ctx, 1, nil)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "amqp:link:stolen")
+
+	// and lastly, one without an owner level at all.
+	noEpochClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
+		StartPosition: getStartPosition(partitions[0]),
+		// Today we treat the link stolen error as retryable. I've filed an issue to look at making this fatal
+		// instead since it's likely to be a configuration/runtime issue where the user has two consumers
+		//  starting up with the same ownerlevel. Having them fight with retries is probably undesirable.
+		RetryOptions: azeventhubs.RetryOptions{
+			MaxRetries: -1,
+		},
+	})
+	require.NoError(t, err)
+
+	defer func() {
+		err := noEpochClient.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	_, err = noEpochClient.ReceiveEvents(ctx, 1, nil)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "amqp:link:stolen")
 }
 
 func TestConsumerClient_StartPositions(t *testing.T) {
@@ -374,7 +480,7 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 	}
 }
 
-// mustSendEventToAllPartitions sends the event given in evt to each partition in the
+// mustSendEventsToAllPartitions sends the event given in evt to each partition in the
 // eventHub, returning the sequence number just before the new message.
 //
 // This is useful for tests that need to work with a hub that might already have messages, and need
@@ -383,7 +489,7 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 // NOTE: the message that's passed in does get altered so don't count on it being unchanged after calling
 // this function. Each message gets an additional property (DestPartitionID), set to the parttion ID that
 // we sent it to.
-func mustSendEventToAllPartitions(t *testing.T, cs string, eventHub string, evt *azeventhubs.EventData) []azeventhubs.PartitionProperties {
+func mustSendEventsToAllPartitions(t *testing.T, cs string, eventHub string, events []*azeventhubs.EventData) []azeventhubs.PartitionProperties {
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(cs, eventHub, nil)
 	require.NoError(t, err)
 
@@ -414,14 +520,16 @@ func mustSendEventToAllPartitions(t *testing.T, cs string, eventHub string, evt 
 			})
 			require.NoError(t, err)
 
-			if evt.ApplicationProperties == nil {
-				evt.ApplicationProperties = map[string]any{}
+			for _, event := range events {
+				if event.ApplicationProperties == nil {
+					event.ApplicationProperties = map[string]any{}
+				}
+
+				event.ApplicationProperties["DestPartitionID"] = partitionID
+
+				err = batch.AddEventData(event, nil)
+				require.NoError(t, err)
 			}
-
-			evt.ApplicationProperties["DestPartitionID"] = partitionID
-
-			err = batch.AddEventData(evt, nil)
-			require.NoError(t, err)
 
 			err = producer.SendEventBatch(context.Background(), batch, nil)
 			require.NoError(t, err)

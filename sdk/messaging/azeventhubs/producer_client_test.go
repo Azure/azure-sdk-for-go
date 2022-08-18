@@ -250,10 +250,21 @@ func getConnectionParams(t *testing.T) struct {
 	_ = godotenv.Load()
 
 	cs := os.Getenv("EVENTHUB_CONNECTION_STRING")
+
+	if cs == "" {
+		t.Skipf("EVENTHUB_CONNECTION_STRING must be defined in the environment. Live test skipped.")
+
+		return struct {
+			ConnectionString  string
+			EventHubName      string
+			EventHubNamespace string
+		}{}
+	}
+
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 
-	if cs == "" || eventHubName == "" {
-		t.Skipf("EVENTHUB_CONNECTION_STRING and EVENTHUB_NAME must be defined in the environment. Live test skipped")
+	if eventHubName == "" {
+		t.Skipf("EVENTHUB_NAME must be defined in the environment. Live test skipped.")
 
 		return struct {
 			ConnectionString  string

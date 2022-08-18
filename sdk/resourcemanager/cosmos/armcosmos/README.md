@@ -1,6 +1,6 @@
 # Azure Cosmos DB Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2)
 
 The `armcosmos` module provides operations for working with Azure Cosmos DB.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Cosmos DB module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2
 ```
 
 ## Authorization
@@ -60,6 +60,15 @@ client, err := armcosmos.NewDatabaseClient(<subscription ID>, cred, &options)
 - [Mongo DB](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/mongodb)
 - [Sql](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/sql)
 - [Table](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/table)
+
+## Major Version Upgrade
+
+Go uses [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility for modules. For Azure Go management SDK, we usually upgrade module version according to cooresponding service's API version. Regarding it could be a complicated experience for major version upgrade, we will try our best to keep the SDK API stable and release new version in backward compatible way. However, if any unavoidable breaking changes and a new major version releases for SDK modules, you could use these commands under your module folder to upgrade:
+
+```sh
+go install github.com/icholy/gomajor@latest
+gomajor get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute@latest
+```
 
 ## Provide Feedback
 

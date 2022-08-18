@@ -1,6 +1,6 @@
 # Azure Event Grid Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2)
 
 The `armeventgrid` module provides operations for working with Azure Event Grid.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Event Grid module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2
 ```
 
 ## Authorization
@@ -58,6 +58,15 @@ client, err := armeventgrid.NewPartnerNamespacesClient(<subscription ID>, cred, 
 - [Domain Topic](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventgrid/domain_topic)
 - [System Topic](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventgrid/systemtopic)
 - [Topic](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/eventgrid/topic)
+
+## Major Version Upgrade
+
+Go uses [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility for modules. For Azure Go management SDK, we usually upgrade module version according to cooresponding service's API version. Regarding it could be a complicated experience for major version upgrade, we will try our best to keep the SDK API stable and release new version in backward compatible way. However, if any unavoidable breaking changes and a new major version releases for SDK modules, you could use these commands under your module folder to upgrade:
+
+```sh
+go install github.com/icholy/gomajor@latest
+gomajor get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute@latest
+```
 
 ## Provide Feedback
 

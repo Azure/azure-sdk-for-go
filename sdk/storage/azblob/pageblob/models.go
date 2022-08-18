@@ -16,8 +16,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// Type Declarations ---------------------------------------------------------------------
+
 // PageList - the list of pages
 type PageList = generated.PageList
+
+// ClearRange defines a range of pages.
+type ClearRange = generated.ClearRange
 
 // PageRange defines a range of pages.
 type PageRange = generated.PageRange
@@ -25,7 +30,7 @@ type PageRange = generated.PageRange
 // SequenceNumberAccessConditions contains a group of parameters for the Client.UploadPages method.
 type SequenceNumberAccessConditions = generated.SequenceNumberAccessConditions
 
-// ---------------------------------------------------------------------------------------------------------------------
+// Request Model Declaration -------------------------------------------------------------------------------------------
 
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {

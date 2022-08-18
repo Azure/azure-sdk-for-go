@@ -21,6 +21,15 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
+// AccessConditions identifies container-specific access conditions which you optionally set.
+type AccessConditions = exported.ContainerAccessConditions
+
+// CpkInfo contains a group of parameters for the BlobClient.Download method.
+type CpkInfo = generated.CpkInfo
+
+// CpkScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
+type CpkScopeInfo = generated.CpkScopeInfo
+
 // CreateContainerOptions contains the optional parameters for the container.Client.Create method.
 type CreateContainerOptions = container.CreateOptions
 
@@ -44,6 +53,34 @@ type Logging = generated.Logging
 
 // StaticWebsite - The properties that enable an account to host a static website
 type StaticWebsite = generated.StaticWebsite
+
+// StorageServiceProperties - Storage Service Properties.
+type StorageServiceProperties = generated.StorageServiceProperties
+
+// StorageServiceStats - Stats for the storage service.
+type StorageServiceStats = generated.StorageServiceStats
+
+// SASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
+type SASResourceTypes = exported.AccountSASResourceTypes
+
+// SASServices type simplifies creating the services string for an Azure Storage Account SAS.
+// Initialize an instance of this type and then call its String method to set SASServices' Services field.
+type SASServices = exported.AccountSASServices
+
+// SASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues' Permissions field.
+type SASPermissions = exported.AccountSASPermissions
+
+// SASProtocol indicates the http/https.
+type SASProtocol = exported.SASProtocol
+
+// IPRange represents a SAS IP range's start IP and (optionally) end IP.
+type IPRange = exported.IPRange
+
+// SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
+type SASSignatureValues = exported.AccountSASSignatureValues
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -153,3 +190,32 @@ func (o *GetStatisticsOptions) format() *generated.ServiceClientGetStatisticsOpt
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
+
+// FilterBlobsOptions provides set of options for Client.FindBlobsByTags
+type FilterBlobsOptions struct {
+	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
+	// operation returns the NextMarker value within the response body if the listing
+	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
+	// as the value for the marker parameter in a subsequent call to request the next
+	// page of list items. The marker value is opaque to the client.
+	Marker *string
+	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// greater than 5000, the server will return up to 5000 items. Note that if the
+	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
+	// of the results. For this reason, it is possible that the service will
+	// return fewer results than specified by maxresults, or than the default of 5000.
+	MaxResults *int32
+	// Filters the results to return only to return only blobs whose tags match the specified expression.
+	Where *string
+}
+
+func (o *FilterBlobsOptions) format() *generated.ServiceClientFilterBlobsOptions {
+	if o == nil {
+		return nil
+	}
+	return &generated.ServiceClientFilterBlobsOptions{
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Where:      o.Where,
+	}
+}

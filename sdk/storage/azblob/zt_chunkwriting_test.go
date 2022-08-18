@@ -170,7 +170,7 @@ package azblob_test
 //		c := copier{
 //			errCh: make(chan error, 1),
 //			ctx:   test.ctx,
-//			o:     UploadStreamOptions{TransferManager: tm},
+//			o:     UploadStreamOptions{transferManager: tm},
 //		}
 //		if test.err != nil {
 //			c.errCh <- test.err
@@ -272,7 +272,7 @@ package azblob_test
 //			ctx:      context.Background(),
 //			fileSize: 12 * _1MiB,
 //			o: UploadStreamOptions{
-//				TransferManager: spm,
+//				transferManager: spm,
 //			},
 //		},
 //	}

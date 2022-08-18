@@ -245,7 +245,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessNone() {
 	}
 
 	blobClient2 := containerClient2.NewBlockBlobClient(blobName)
-	_, err = blobClient2.DownloadToStream(ctx, nil)
+	_, err = blobClient2.DownloadStream(ctx, nil)
 	validateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
 }
 

@@ -53,8 +53,8 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 	return (*Client)(base.NewBlockBlobClient(blobURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
-func NewClientWithSharedKey(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
+// NewClientWithSharedKeyCredential creates a Client object using the specified URL, shared key, and options.
+func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -76,7 +76,7 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKey(parsed.ServiceURL, credential, options)
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
@@ -105,25 +105,25 @@ func (bb *Client) BlobClient() *blob.Client {
 // WithSnapshot creates a new Client object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (bb *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseBlobURL(bb.URL())
+	p, err := exported.ParseURL(bb.URL())
 	if err != nil {
 		return nil, err
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlockBlobClient(p.URL(), bb.generated().Pipeline(), bb.sharedKey())), nil
+	return (*Client)(base.NewBlockBlobClient(p.String(), bb.generated().Pipeline(), bb.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (bb *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseBlobURL(bb.URL())
+	p, err := exported.ParseURL(bb.URL())
 	if err != nil {
 		return nil, err
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlockBlobClient(p.URL(), bb.generated().Pipeline(), bb.sharedKey())), nil
+	return (*Client)(base.NewBlockBlobClient(p.String(), bb.generated().Pipeline(), bb.sharedKey())), nil
 }
 
 // Upload creates a new block blob or overwrites an existing block blob.
@@ -229,12 +229,6 @@ func (bb *Client) GetBlockList(ctx context.Context, listType BlockListType, opti
 
 // Redeclared APIs ----- Copy over to Append blob and Page blob as well.
 
-// DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (bb *Client) DownloadToStream(ctx context.Context, o *blob.DownloadToStreamOptions) (blob.DownloadToStreamResponse, error) {
-	return bb.BlobClient().DownloadToStream(ctx, o)
-}
-
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
@@ -316,12 +310,12 @@ func (bb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.Co
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
 
-// uploadReaderAtToBlockBlob uploads a buffer in blocks to a block blob.
-func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o UploadReaderAtToBlockBlobOptions) (UploadReaderAtResponse, error) {
+// uploadFromReader uploads a buffer in blocks to a block blob.
+func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, readerSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
 	if o.BlockSize == 0 {
 		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
 		if readerSize > MaxStageBlockBytes*MaxBlocks {
-			return UploadReaderAtResponse{}, errors.New("buffer is too large to upload to a block blob")
+			return uploadFromReaderResponse{}, errors.New("buffer is too large to upload to a block blob")
 		}
 		// If bufferSize <= MaxUploadBlobBytes, then Upload should be used with just 1 I/O request
 		if readerSize <= MaxUploadBlobBytes {
@@ -355,7 +349,7 @@ func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.Reade
 	progressLock := &sync.Mutex{}
 
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
-		OperationName: "uploadReaderAtToBlockBlob",
+		OperationName: "uploadFromReader",
 		TransferSize:  readerSize,
 		ChunkSize:     o.BlockSize,
 		Parallelism:   o.Parallelism,
@@ -391,7 +385,7 @@ func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.Reade
 		},
 	})
 	if err != nil {
-		return UploadReaderAtResponse{}, err
+		return uploadFromReaderResponse{}, err
 	}
 	// All put blocks were successful, call Put Block List to finalize the blob
 	commitBlockListOptions := o.getCommitBlockListOptions()
@@ -401,30 +395,30 @@ func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.Reade
 }
 
 // UploadBuffer uploads a buffer in blocks to a block blob.
-func (bb *Client) UploadBuffer(ctx context.Context, b []byte, o *UploadBufferOptions) (UploadReaderAtResponse, error) {
-	uploadOptions := UploadReaderAtToBlockBlobOptions{}
+func (bb *Client) UploadBuffer(ctx context.Context, buffer []byte, o *UploadBufferOptions) (UploadBufferResponse, error) {
+	uploadOptions := uploadFromReaderOptions{}
 	if o != nil {
 		uploadOptions = *o
 	}
-	return bb.uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), uploadOptions)
+	return bb.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
 }
 
 // UploadFile uploads a file in blocks to a block blob.
-func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadReaderAtToBlockBlobOptions) (UploadReaderAtResponse, error) {
+func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOptions) (UploadFileResponse, error) {
 	stat, err := file.Stat()
 	if err != nil {
-		return UploadReaderAtResponse{}, err
+		return uploadFromReaderResponse{}, err
 	}
-	uploadOptions := UploadReaderAtToBlockBlobOptions{}
+	uploadOptions := uploadFromReaderOptions{}
 	if o != nil {
 		uploadOptions = *o
 	}
-	return bb.uploadReaderAtToBlockBlob(ctx, file, stat.Size(), uploadOptions)
+	return bb.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
 }
 
 // UploadStream copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (CommitBlockListResponse, error) {
+func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (UploadStreamResponse, error) {
 	if err := o.format(); err != nil {
 		return CommitBlockListResponse{}, err
 	}
@@ -435,7 +429,7 @@ func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStr
 
 	// If we used the default manager, we need to close it.
 	if o.transferMangerNotSet {
-		defer o.TransferManager.Close()
+		defer o.transferManager.Close()
 	}
 
 	result, err := copyFromReader(ctx, body, bb, *o)
@@ -448,18 +442,19 @@ func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStr
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
-// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
-func (bb *Client) DownloadToWriterAt(ctx context.Context, writer io.WriterAt, o *blob.DownloadToWriterAtOptions) error {
-	return bb.BlobClient().DownloadToWriterAt(ctx, writer, o)
+// DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
+func (bb *Client) DownloadStream(ctx context.Context, o *blob.DownloadStreamOptions) (blob.DownloadStreamResponse, error) {
+	return bb.BlobClient().DownloadStream(ctx, o)
 }
 
-// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
-func (bb *Client) DownloadToBuffer(ctx context.Context, _bytes []byte, o *blob.DownloadToBufferOptions) error {
-	return bb.BlobClient().DownloadToBuffer(ctx, shared.NewBytesWriter(_bytes), o)
+// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+func (bb *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.DownloadBufferOptions) (int64, error) {
+	return bb.BlobClient().DownloadBuffer(ctx, shared.NewBytesWriter(buffer), o)
 }
 
-// DownloadToFile downloads an Azure blob to a local file.
+// DownloadFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
-func (bb *Client) DownloadToFile(ctx context.Context, file *os.File, o *blob.DownloadToFileOptions) error {
-	return bb.BlobClient().DownloadToFile(ctx, file, o)
+func (bb *Client) DownloadFile(ctx context.Context, file *os.File, o *blob.DownloadFileOptions) (int64, error) {
+	return bb.BlobClient().DownloadFile(ctx, file, o)
 }

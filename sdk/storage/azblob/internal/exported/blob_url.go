@@ -24,10 +24,10 @@ type IPEndpointStyleInfo struct {
 	AccountName string // "" if not using IP endpoint style
 }
 
-// BlobURLParts object represents the components that make up an Azure Storage Container/Blob URL. You parse an
+// URLParts object represents the components that make up an Azure Storage Container/Blob URL. You parse an
 // existing URL into its parts by calling NewBlobURLParts(). You construct a URL from parts by calling URL().
 // NOTE: Changing any SAS-related field requires computing a new SAS signature.
-type BlobURLParts struct {
+type URLParts struct {
 	Scheme              string // Ex: "https://"
 	Host                string // Ex: "account.blob.core.windows.net", "10.132.141.33", "10.132.141.33:80"
 	IPEndpointStyleInfo IPEndpointStyleInfo
@@ -39,15 +39,15 @@ type BlobURLParts struct {
 	VersionID           string // "" if not versioning enabled
 }
 
-// ParseBlobURL parses a URL initializing BlobURLParts' fields including any SAS-related & snapshot query parameters. Any other
-// query parameters remain in the UnparsedParams field. This method overwrites all fields in the BlobURLParts object.
-func ParseBlobURL(u string) (BlobURLParts, error) {
+// ParseURL parses a URL initializing URLParts' fields including any SAS-related & snapshot query parameters. Any other
+// query parameters remain in the UnparsedParams field. This method overwrites all fields in the URLParts object.
+func ParseURL(u string) (URLParts, error) {
 	uri, err := url.Parse(u)
 	if err != nil {
-		return BlobURLParts{}, err
+		return URLParts{}, err
 	}
 
-	up := BlobURLParts{
+	up := URLParts{
 		Scheme: uri.Scheme,
 		Host:   uri.Host,
 	}
@@ -100,9 +100,9 @@ func ParseBlobURL(u string) (BlobURLParts, error) {
 	return up, nil
 }
 
-// URL returns a URL object whose fields are initialized from the BlobURLParts fields. The URL's RawQuery
+// String returns a URL object whose fields are initialized from the URLParts fields. The URL's RawQuery
 // field contains the SAS, snapshot, and unparsed query parameters.
-func (up BlobURLParts) URL() string {
+func (up URLParts) String() string {
 	path := ""
 	if IsIPEndpointStyle(up.Host) && up.IPEndpointStyleInfo.AccountName != "" {
 		path += "/" + up.IPEndpointStyleInfo.AccountName

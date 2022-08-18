@@ -50,8 +50,8 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
-func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+// NewClientWithSharedKeyCredential creates a Client object using the specified URL, shared key, and options.
+func NewClientWithSharedKeyCredential(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -73,7 +73,7 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKey(parsed.ServiceURL, credential, options)
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
@@ -95,58 +95,25 @@ func (b *Client) URL() string {
 // WithSnapshot creates a new Client object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseBlobURL(b.URL())
+	p, err := exported.ParseURL(b.URL())
 	if err != nil {
 		return nil, err
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (b *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseBlobURL(b.URL())
+	p, err := exported.ParseURL(b.URL())
 	if err != nil {
 		return nil, err
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlobClient(p.URL(), b.generated().Pipeline(), b.sharedKey())), nil
-}
-
-// DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (b *Client) DownloadToStream(ctx context.Context, o *DownloadToStreamOptions) (DownloadToStreamResponse, error) {
-	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
-
-	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
-	if err != nil {
-		return DownloadToStreamResponse{}, err
-	}
-
-	offset := int64(0)
-	count := int64(CountToEnd)
-
-	if o != nil && o.Offset != nil {
-		offset = *o.Offset
-	}
-
-	if o != nil && o.Count != nil {
-		count = *o.Count
-	}
-
-	eTag := ""
-	if dr.ETag != nil {
-		eTag = *dr.ETag
-	}
-	return DownloadToStreamResponse{
-		b:                          b,
-		BlobClientDownloadResponse: dr,
-		getInfo:                    HTTPGetterInfo{Offset: offset, Count: count, ETag: eTag},
-		ObjectReplicationRules:     deserializeORSPolicies(dr.ObjectReplicationRules),
-	}, err
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.sharedKey())), nil
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
@@ -262,7 +229,7 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
-	urlParts, _ := exported.ParseBlobURL(b.URL())
+	urlParts, _ := exported.ParseURL(b.URL())
 
 	t, err := time.Parse(exported.SnapshotTimeFormat, urlParts.Snapshot)
 
@@ -301,10 +268,10 @@ func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
-// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
-func (b *Client) DownloadToWriterAt(ctx context.Context, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
+// download downloads an Azure blob to a WriterAt in parallel.
+func (b *Client) download(ctx context.Context, writer io.WriterAt, o *downloadOptions) (int64, error) {
 	if o == nil {
-		o = &DownloadToWriterAtOptions{}
+		o = &downloadOptions{}
 	}
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
@@ -314,16 +281,16 @@ func (b *Client) DownloadToWriterAt(ctx context.Context, writer io.WriterAt, o *
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
 		downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
-		dr, err := b.DownloadToStream(ctx, downloadBlobOptions)
+		dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 		if err != nil {
-			return err
+			return 0, err
 		}
 		count = *dr.ContentLength - o.Offset
 	}
 
 	if count <= 0 {
 		// The file is empty, there is nothing to download.
-		return nil
+		return 0, nil
 	}
 
 	// Prepare and do parallel download.
@@ -338,7 +305,7 @@ func (b *Client) DownloadToWriterAt(ctx context.Context, writer io.WriterAt, o *
 		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
 
 			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+o.Offset, count, nil)
-			dr, err := b.DownloadToStream(ctx, downloadBlobOptions)
+			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
 			}
@@ -365,19 +332,52 @@ func (b *Client) DownloadToWriterAt(ctx context.Context, writer io.WriterAt, o *
 		},
 	})
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+	return count, nil
 }
 
-// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
-func (b *Client) DownloadToBuffer(ctx context.Context, _bytes []byte, o *DownloadToBufferOptions) error {
-	return b.DownloadToWriterAt(ctx, shared.NewBytesWriter(_bytes), o)
+// DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
+func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
+
+	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
+	if err != nil {
+		return DownloadStreamResponse{}, err
+	}
+
+	offset := int64(0)
+	count := int64(CountToEnd)
+
+	if o != nil && o.Offset != nil {
+		offset = *o.Offset
+	}
+
+	if o != nil && o.Count != nil {
+		count = *o.Count
+	}
+
+	eTag := ""
+	if dr.ETag != nil {
+		eTag = *dr.ETag
+	}
+	return DownloadStreamResponse{
+		b:                          b,
+		BlobClientDownloadResponse: dr,
+		getInfo:                    HTTPGetterInfo{Offset: offset, Count: count, ETag: eTag},
+		ObjectReplicationRules:     deserializeORSPolicies(dr.ObjectReplicationRules),
+	}, err
 }
 
-// DownloadToFile downloads an Azure blob to a local file.
+// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+func (b *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
+	return b.download(ctx, shared.NewBytesWriter(buffer), o)
+}
+
+// DownloadFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
-func (b *Client) DownloadToFile(ctx context.Context, file *os.File, o *DownloadToFileOptions) error {
+func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
 	// 1. Calculate the size of the destination file
 	var size int64
 
@@ -387,7 +387,7 @@ func (b *Client) DownloadToFile(ctx context.Context, file *os.File, o *DownloadT
 		getBlobPropertiesOptions := o.getBlobPropertiesOptions()
 		props, err := b.GetProperties(ctx, getBlobPropertiesOptions)
 		if err != nil {
-			return err
+			return 0, err
 		}
 		size = *props.ContentLength - o.Offset
 	} else {
@@ -397,17 +397,17 @@ func (b *Client) DownloadToFile(ctx context.Context, file *os.File, o *DownloadT
 	// 2. Compare and try to resize local file's size if it doesn't match Azure blob's size.
 	stat, err := file.Stat()
 	if err != nil {
-		return err
+		return 0, err
 	}
 	if stat.Size() != size {
 		if err = file.Truncate(size); err != nil {
-			return err
+			return 0, err
 		}
 	}
 
 	if size > 0 {
-		return b.DownloadToWriterAt(ctx, file, o)
+		return b.download(ctx, file, o)
 	} else { // if the blob's size is 0, there is no need in downloading it
-		return nil
+		return 0, nil
 	}
 }

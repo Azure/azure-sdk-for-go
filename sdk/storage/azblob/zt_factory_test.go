@@ -149,7 +149,7 @@ func getServiceClient(t *testing.T, accountType testAccountType, options *servic
 		return nil, err
 	}
 
-	serviceClient, err := service.NewClientWithSharedKey("https://"+cred.AccountName()+".blob.core.windows.net/", cred, options)
+	serviceClient, err := service.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".blob.core.windows.net/", cred, options)
 
 	return serviceClient, err
 }

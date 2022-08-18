@@ -51,9 +51,9 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKey creates a Client object using the specified URL, shared key, and options.
+// NewClientWithSharedKeyCredential creates a Client object using the specified URL, shared key, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -75,7 +75,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKey(parsed.ServiceURL, credential, options)
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
@@ -210,28 +210,6 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 	return resp, err
 }
 
-// SASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
-type SASResourceTypes = exported.AccountSASResourceTypes
-
-// SASServices type simplifies creating the services string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set SASServices' Services field.
-type SASServices = exported.AccountSASServices
-
-// SASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues' Permissions field.
-type SASPermissions = exported.AccountSASPermissions
-
-const (
-	SASProtocolHTTPS = exported.SASProtocolHTTPS
-
-	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
-)
-
-// SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
-type SASSignatureValues = exported.AccountSASSignatureValues
-
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
@@ -262,14 +240,13 @@ func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermission
 	return endpoint, nil
 }
 
-//// FindBlobsByTags operation finds all blobs in the storage account whose tags match a given search expression.
-//// Filter blobs searches across all containers within a storage account but can be scoped within the expression to a single container.
-//// https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
-//// eg. "dog='germanshepherd' and penguin='emperorpenguin'"
-//// To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
-//func (s *Client) FindBlobsByTags(ctx context.Context, o *ServiceFilterBlobsOptions) (ServiceFilterBlobsResponse, error) {
-//	// TODO: Use pager here? Missing support from zz_generated_pagers.go
-//	serviceFilterBlobsOptions := o.pointer()
-//	resp, err := s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)
-//	return toServiceFilterBlobsResponse(resp), err
-//}
+// FilterBlobs operation finds all blobs in the storage account whose tags match a given search expression.
+// Filter blobs searches across all containers within a storage account but can be scoped within the expression to a single container.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
+// eg. "dog='germanshepherd' and penguin='emperorpenguin'"
+// To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
+func (s *Client) FilterBlobs(ctx context.Context, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
+	serviceFilterBlobsOptions := o.format()
+	resp, err := s.generated().FilterBlobs(ctx, serviceFilterBlobsOptions)
+	return resp, err
+}

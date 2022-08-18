@@ -43,6 +43,12 @@ type CpkScopeInfo = generated.CpkScopeInfo
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
 
+// SASProtocol indicates the http/https.
+type SASProtocol = exported.SASProtocol
+
+// IPRange represents a SAS IP range's start IP and (optionally) end IP.
+type IPRange = exported.IPRange
+
 // SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
 // You parse a map of query parameters into its fields by calling Sign(). You add the components
 // to a query parameter map by calling AddToValues().
@@ -56,10 +62,13 @@ type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 // Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
 type SASPermissions = exported.BlobSASPermissions
 
+// Tags represent map of blob index tags
+type Tags = generated.BlobTag
+
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
-// DownloadToStreamOptions contains the optional parameters for the Client.Download method.
-type DownloadToStreamOptions struct {
+// DownloadStreamOptions contains the optional parameters for the Client.Download method.
+type DownloadStreamOptions struct {
 	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
 	// range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
@@ -73,7 +82,7 @@ type DownloadToStreamOptions struct {
 	CpkScopeInfo     *CpkScopeInfo
 }
 
-func (o *DownloadToStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
+func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -100,8 +109,8 @@ func (o *DownloadToStreamOptions) format() (*generated.BlobClientDownloadOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DownloadToWriterAtOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
-type DownloadToWriterAtOptions struct {
+// downloadOptions identifies options used by the DownloadBuffer and DownloadFile functions.
+type downloadOptions struct {
 	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
 	Count int64
 
@@ -128,15 +137,15 @@ type DownloadToWriterAtOptions struct {
 	RetryReaderOptionsPerBlock RetryReaderOptions
 }
 
-func (o *DownloadToWriterAtOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
+func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
 	return &GetPropertiesOptions{
 		AccessConditions: o.AccessConditions,
 		CpkInfo:          o.CpkInfo,
 	}
 }
 
-func (o *DownloadToWriterAtOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadToStreamOptions {
-	return &DownloadToStreamOptions{
+func (o *downloadOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadStreamOptions {
+	return &DownloadStreamOptions{
 		AccessConditions:   o.AccessConditions,
 		CpkInfo:            o.CpkInfo,
 		CpkScopeInfo:       o.CpkScopeInfo,
@@ -146,11 +155,11 @@ func (o *DownloadToWriterAtOptions) getDownloadBlobOptions(offSet, count int64, 
 	}
 }
 
-// DownloadToBufferOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
-type DownloadToBufferOptions = DownloadToWriterAtOptions
+// DownloadBufferOptions identifies options used by the DownloadBuffer and DownloadFile functions.
+type DownloadBufferOptions = downloadOptions
 
-// DownloadToFileOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
-type DownloadToFileOptions = DownloadToWriterAtOptions
+// DownloadFileOptions identifies options used by the DownloadBuffer and DownloadFile functions.
+type DownloadFileOptions = downloadOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 

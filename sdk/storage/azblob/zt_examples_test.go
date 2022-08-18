@@ -60,7 +60,7 @@ func Example() {
 	handleError(err)
 
 	// The service URL for blob endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
-	serviceClient, err := service.NewClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	handleError(err)
 
 	// ===== 1. Create a container =====
@@ -91,7 +91,7 @@ func Example() {
 	handleError(err)
 
 	// Download the blob's contents and ensure that the download worked properly
-	blobDownloadResponse, err := blockBlobClient.DownloadToStream(context.TODO(), nil)
+	blobDownloadResponse, err := blockBlobClient.DownloadStream(context.TODO(), nil)
 	handleError(err)
 
 	// Use the bytes.Buffer object to read the downloaded data.
@@ -148,7 +148,7 @@ func Example_service_Client_NewClient() {
 	fmt.Println(serviceClient.URL())
 }
 
-func Example_service_Client_NewClientWithSharedKey() {
+func Example_service_Client_NewClientWithSharedKeyCredential() {
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
@@ -161,7 +161,7 @@ func Example_service_Client_NewClientWithSharedKey() {
 
 	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	serviceClient, err := service.NewClientWithSharedKey(serviceURL, cred, nil)
+	serviceClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
 	handleError(err)
 	fmt.Println(serviceClient.URL())
 }
@@ -269,7 +269,7 @@ func Example_service_Client_ListContainers() {
 func Example_service_Client_GetSASURL() {
 	cred, err := azblob.NewSharedKeyCredential("myAccountName", "myAccountKey")
 	handleError(err)
-	serviceClient, err := service.NewClientWithSharedKey("https://<myAccountName>.blob.core.windows.net", cred, nil)
+	serviceClient, err := service.NewClientWithSharedKeyCredential("https://<myAccountName>.blob.core.windows.net", cred, nil)
 	handleError(err)
 
 	resources := service.SASResourceTypes{Service: true}
@@ -344,7 +344,7 @@ func Example_container_NewClient() {
 	fmt.Println(containerClient.URL())
 }
 
-func Example_container_NewClientWithSharedKey() {
+func Example_container_NewClientWithSharedKeyCredential() {
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
@@ -358,7 +358,7 @@ func Example_container_NewClientWithSharedKey() {
 
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	containerClient, err := container.NewClientWithSharedKey(containerURL, cred, nil)
+	containerClient, err := container.NewClientWithSharedKeyCredential(containerURL, cred, nil)
 	handleError(err)
 	fmt.Println(containerClient.URL())
 }
@@ -757,7 +757,7 @@ func Example_blockblob_Client() {
 	}
 
 	// Download the blob in its entirety; download operations do not take blocks into account.
-	blobDownloadResponse, err := blockBlobClient.DownloadToStream(context.TODO(), nil)
+	blobDownloadResponse, err := blockBlobClient.DownloadStream(context.TODO(), nil)
 	handleError(err)
 
 	blobData := &bytes.Buffer{}
@@ -801,7 +801,7 @@ func Example_appendblob_Client() {
 	}
 
 	// Download the entire append blob's contents and read into a bytes.Buffer.
-	get, err := appendBlobClient.DownloadToStream(context.TODO(), nil)
+	get, err := appendBlobClient.DownloadStream(context.TODO(), nil)
 	handleError(err)
 	b := bytes.Buffer{}
 	reader := get.BodyReader(nil)
@@ -882,7 +882,7 @@ func Example_pageblob_Client() {
 		}
 	}
 
-	get, err := pageBlobClient.DownloadToStream(context.TODO(), nil)
+	get, err := pageBlobClient.DownloadStream(context.TODO(), nil)
 	handleError(err)
 	blobData := &bytes.Buffer{}
 	reader := get.BodyReader(nil)
@@ -913,7 +913,7 @@ func Example_pageblob_Client() {
 //
 //	// Create an containerClient object that wraps the container's URL and a default pipeline.
 //	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-//	containerClient, err := container.NewClientWithSharedKey(containerURL, credential, nil)
+//	containerClient, err := container.NewClientWithSharedKeyCredential(containerURL, credential, nil)
 //	handleError(err)
 //
 //	// Create a unique ID for the lease
@@ -973,17 +973,17 @@ func ExampleResponseError() {
 }
 
 // This example demonstrates splitting a URL into its parts so you can examine and modify the URL in an Azure Storage fluent way.
-func ExampleParseBlobURL() {
+func ExampleParseURL() {
 	// Here is an example of a blob snapshot.
 	u := "https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
 		"snapshot=2011-03-09T01:42:34Z&" +
 		"sv=2015-02-21&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&" +
 		"spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=92836758923659283652983562=="
 
-	// Breaking the URL down into it's parts by conversion to BlobURLParts
-	parts, _ := azblob.ParseBlobURL(u)
+	// Breaking the URL down into it's parts by conversion to URLParts
+	parts, _ := azblob.ParseURL(u)
 
-	// The BlobURLParts allows access to individual portions of a Blob URL
+	// The URLParts allows access to individual portions of a Blob URL
 	fmt.Printf("Host: %s\nContainerName: %s\nBlobName: %s\nSnapshot: %s\n", parts.Host, parts.ContainerName, parts.BlobName, parts.Snapshot)
 	fmt.Printf("Version: %s\nResource: %s\nStartTime: %s\nExpiryTime: %s\nPermissions: %s\n", parts.SAS.Version(), parts.SAS.Resource(), parts.SAS.StartTime(), parts.SAS.ExpiryTime(), parts.SAS.Permissions())
 }
@@ -1012,7 +1012,7 @@ func Example_service_SASSignatureValues_Sign() {
 	handleError(err)
 
 	// You can also break a blob URL up into it's constituent parts
-	blobURLParts, _ := azblob.ParseBlobURL(serviceClient.URL())
+	blobURLParts, _ := azblob.ParseURL(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
 
@@ -1055,11 +1055,11 @@ func Example_blob_AccessConditions() {
 
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	blockBlob, err := blockblob.NewClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/Data.txt", accountName), credential, nil)
+	blockBlob, err := blockblob.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/Data.txt", accountName), credential, nil)
 	handleError(err)
 
 	// This function displays the results of an operation
-	showResult := func(response *blob.DownloadToStreamResponse, err error) {
+	showResult := func(response *blob.DownloadStreamResponse, err error) {
 		if err != nil {
 			log.Fatalf("Failure: %s\n", err.Error())
 		} else {
@@ -1090,9 +1090,9 @@ func Example_blob_AccessConditions() {
 	showResultUpload(upload, err)
 
 	// Download blob content if the blob has been modified since we uploaded it (fails):
-	downloadResp, err := blockBlob.DownloadToStream(
+	downloadResp, err := blockBlob.DownloadStream(
 		context.TODO(),
-		&azblob.DownloadToStreamOptions{
+		&azblob.DownloadStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 					IfModifiedSince: upload.LastModified,
@@ -1103,9 +1103,9 @@ func Example_blob_AccessConditions() {
 	showResult(&downloadResp, err)
 
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
-	downloadResp, err = blockBlob.DownloadToStream(
+	downloadResp, err = blockBlob.DownloadStream(
 		context.TODO(),
-		&azblob.DownloadToStreamOptions{
+		&azblob.DownloadStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 					IfUnmodifiedSince: to.Ptr(time.Now().UTC().Add(time.Hour * -24))},
@@ -1126,9 +1126,9 @@ func Example_blob_AccessConditions() {
 	))
 
 	// Download content if it has changed since the version identified by ETag (fails):
-	downloadResp, err = blockBlob.DownloadToStream(
+	downloadResp, err = blockBlob.DownloadStream(
 		context.TODO(),
-		&azblob.DownloadToStreamOptions{
+		&azblob.DownloadStreamOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
 		})
@@ -1153,7 +1153,7 @@ func Example_blob_Client_SetMetadata() {
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/ReadMe.txt", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	blobClient, err := blockblob.NewClientWithSharedKey(u, credential, nil)
+	blobClient, err := blockblob.NewClientWithSharedKeyCredential(u, credential, nil)
 	handleError(err)
 
 	// Create a blob with metadata (string key/value pairs)
@@ -1198,7 +1198,7 @@ func Example_blob_HTTPHeaders() {
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/ReadMe.txt", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	blobClient, err := blockblob.NewClientWithSharedKey(u, credential, nil)
+	blobClient, err := blockblob.NewClientWithSharedKeyCredential(u, credential, nil)
 	handleError(err)
 
 	// Create a blob with HTTP headers
@@ -1237,7 +1237,7 @@ func Example_blob_Client_CreateSnapshot() {
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	containerClient, err := container.NewClientWithSharedKey(u, credential, nil)
+	containerClient, err := container.NewClientWithSharedKeyCredential(u, credential, nil)
 	handleError(err)
 
 	// Create a blockBlobClient object to a blob in the container.
@@ -1257,7 +1257,7 @@ func Example_blob_Client_CreateSnapshot() {
 	handleError(err)
 
 	// Download the modified blob:
-	get, err := baseBlobClient.DownloadToStream(context.TODO(), nil)
+	get, err := baseBlobClient.DownloadStream(context.TODO(), nil)
 	handleError(err)
 	b := bytes.Buffer{}
 	reader := get.BodyReader(nil)
@@ -1273,7 +1273,7 @@ func Example_blob_Client_CreateSnapshot() {
 
 	// Show snapshot blob via original blob URI & snapshot time:
 	snapshotBlobClient, _ := baseBlobClient.WithSnapshot(snapshot)
-	get, err = snapshotBlobClient.DownloadToStream(context.TODO(), nil)
+	get, err = snapshotBlobClient.DownloadStream(context.TODO(), nil)
 	handleError(err)
 	b.Reset()
 	reader = get.BodyReader(nil)
@@ -1331,7 +1331,7 @@ func Example_progressUploadDownload() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 
 	// Create an serviceClient object that wraps the service URL and a request pipeline to making requests.
-	containerClient, err := container.NewClientWithSharedKey(containerURL, credential, nil)
+	containerClient, err := container.NewClientWithSharedKeyCredential(containerURL, credential, nil)
 	handleError(err)
 
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
@@ -1353,7 +1353,7 @@ func Example_progressUploadDownload() {
 	handleError(err)
 
 	// Here's how to read the blob's data with progress reporting:
-	get, err := blobClient.DownloadToStream(context.TODO(), nil)
+	get, err := blobClient.DownloadStream(context.TODO(), nil)
 	handleError(err)
 
 	// Wrap the response body in a ResponseBodyProgress and pass a callback function for progress reporting.
@@ -1385,7 +1385,7 @@ func Example_blob_Client_StartCopyFromURL() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/CopiedBlob.bin", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	blobClient, err := blob.NewClientWithSharedKey(blobURL, credential, nil)
+	blobClient, err := blob.NewClientWithSharedKeyCredential(blobURL, credential, nil)
 	handleError(err)
 
 	src := "https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"
@@ -1430,14 +1430,14 @@ func Example_blockblob_Client_UploadFile() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blockBlobClient, err := blockblob.NewClientWithSharedKey(u, credential, nil)
+	blockBlobClient, err := blockblob.NewClientWithSharedKeyCredential(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
 	response, err := blockBlobClient.UploadFile(context.TODO(), file,
-		&blockblob.UploadReaderAtToBlockBlobOptions{
+		&blockblob.UploadFileOptions{
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				fmt.Printf("Uploaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
@@ -1460,8 +1460,8 @@ func Example_blockblob_Client_UploadFile() {
 	}(destFile)
 
 	// Perform download
-	err = blockBlobClient.DownloadToFile(context.TODO(), destFile,
-		&blob.DownloadToFileOptions{
+	_, err = blockBlobClient.DownloadFile(context.TODO(), destFile,
+		&blob.DownloadFileOptions{
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				fmt.Printf("Downloaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
@@ -1483,13 +1483,13 @@ func Example_blob_Client_Download() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlob.bin", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	blobClient, err := blob.NewClientWithSharedKey(blobURL, credential, nil)
+	blobClient, err := blob.NewClientWithSharedKeyCredential(blobURL, credential, nil)
 	handleError(err)
 
 	contentLength := int64(0) // Used for progress reporting to report the total number of bytes being downloaded.
 
 	// Download returns an intelligent retryable stream around a blob; it returns an io.ReadCloser.
-	dr, err := blobClient.DownloadToStream(context.TODO(), nil)
+	dr, err := blobClient.DownloadStream(context.TODO(), nil)
 	handleError(err)
 	rs := dr.BodyReader(nil)
 

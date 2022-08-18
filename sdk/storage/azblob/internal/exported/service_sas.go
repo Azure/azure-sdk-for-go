@@ -107,14 +107,14 @@ func (v BlobSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (
 	//	//I don't like this answer to combining the functions
 	//	//But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
 	//	signedIdentifier = strings.Join([]string{
-	//		udk.SignedOid,
-	//		udk.SignedTid,
+	//		udk.SignedOID,
+	//		udk.SignedTID,
 	//		udkStart,
 	//		udkExpiry,
 	//		udk.SignedService,
 	//		udk.SignedVersion,
 	//		v.PreauthorizedAgentObjectId,
-	//		v.AgentObjectId,
+	//		v.AgentObjectID,
 	//		v.CorrelationId,
 	//	}, "\n")
 	//}
@@ -163,17 +163,17 @@ func (v BlobSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (
 		contentType:                v.ContentType,
 		snapshotTime:               v.SnapshotTime,
 		signedDirectoryDepth:       getDirectoryDepth(v.Directory),
-		preauthorizedAgentObjectId: v.PreauthorizedAgentObjectId,
-		agentObjectId:              v.AgentObjectId,
-		correlationId:              v.CorrelationId,
+		preauthorizedAgentObjectID: v.PreauthorizedAgentObjectId,
+		agentObjectID:              v.AgentObjectId,
+		correlationID:              v.CorrelationId,
 		// Calculated SAS signature
 		signature: signature,
 	}
 
 	////User delegation SAS specific parameters
 	//if udk != nil {
-	//	p.signedOid = udk.SignedOid
-	//	p.signedTid = udk.SignedTid
+	//	p.signedOID = udk.SignedOID
+	//	p.signedTID = udk.SignedTID
 	//	p.signedStart = udk.SignedStart
 	//	p.signedExpiry = udk.SignedExpiry
 	//	p.signedService = udk.SignedService

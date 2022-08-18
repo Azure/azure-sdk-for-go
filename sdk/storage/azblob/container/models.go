@@ -20,8 +20,13 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
+// Request Model Declaration -------------------------------------------------------------------------------------------
+
 // CpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
 type CpkScopeInfo = generated.ContainerCpkScopeInfo
+
+// BlobProperties - Properties of a blob
+type BlobProperties = generated.BlobPropertiesInternal
 
 // BlobItem - An Azure Storage blob
 type BlobItem = generated.BlobItemInternal
@@ -45,6 +50,12 @@ type AccessPolicyPermission = exported.AccessPolicyPermission
 // SignedIdentifier - signed identifier
 type SignedIdentifier = generated.SignedIdentifier
 
+// SASProtocol indicates the http/https.
+type SASProtocol = exported.SASProtocol
+
+// IPRange represents a SAS IP range's start IP and (optionally) end IP.
+type IPRange = exported.IPRange
+
 // SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 type SASSignatureValues = exported.BlobSASSignatureValues
@@ -54,7 +65,7 @@ type SASSignatureValues = exported.BlobSASSignatureValues
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type SASPermissions = exported.ContainerSASPermissions
 
-// ---------------------------------------------------------------------------------------------------------------------
+// Request Model Declaration -------------------------------------------------------------------------------------------
 
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {

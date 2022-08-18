@@ -26,8 +26,8 @@ type StageBlockFromURLResponse = generated.BlockBlobClientStageBlockFromURLRespo
 // GetBlockListResponse contains the response from method Client.GetBlockList.
 type GetBlockListResponse = generated.BlockBlobClientGetBlockListResponse
 
-// UploadReaderAtResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
-type UploadReaderAtResponse struct {
+// uploadFromReaderResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
+type uploadFromReaderResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -66,8 +66,8 @@ type UploadReaderAtResponse struct {
 	XMSContentCRC64 []byte
 }
 
-func toUploadReaderAtResponseFromUploadResponse(resp UploadResponse) UploadReaderAtResponse {
-	return UploadReaderAtResponse{
+func toUploadReaderAtResponseFromUploadResponse(resp UploadResponse) uploadFromReaderResponse {
+	return uploadFromReaderResponse{
 		ClientRequestID:     resp.ClientRequestID,
 		ContentMD5:          resp.ContentMD5,
 		Date:                resp.Date,
@@ -82,8 +82,8 @@ func toUploadReaderAtResponseFromUploadResponse(resp UploadResponse) UploadReade
 	}
 }
 
-func toUploadReaderAtResponseFromCommitBlockListResponse(resp CommitBlockListResponse) UploadReaderAtResponse {
-	return UploadReaderAtResponse{
+func toUploadReaderAtResponseFromCommitBlockListResponse(resp CommitBlockListResponse) uploadFromReaderResponse {
+	return uploadFromReaderResponse{
 		ClientRequestID:     resp.ClientRequestID,
 		ContentMD5:          resp.ContentMD5,
 		Date:                resp.Date,
@@ -98,3 +98,12 @@ func toUploadReaderAtResponseFromCommitBlockListResponse(resp CommitBlockListRes
 		XMSContentCRC64:     resp.XMSContentCRC64,
 	}
 }
+
+// UploadFileResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
+type UploadFileResponse = uploadFromReaderResponse
+
+// UploadBufferResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
+type UploadBufferResponse = uploadFromReaderResponse
+
+// UploadStreamResponse contains the response from method Client.CommitBlockList.
+type UploadStreamResponse = CommitBlockListResponse

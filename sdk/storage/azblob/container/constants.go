@@ -129,3 +129,59 @@ const (
 func PossibleLeaseStateTypeValues() []LeaseStateType {
 	return generated.PossibleLeaseStateTypeValues()
 }
+
+// ArchiveStatus defines values for ArchiveStatus
+type ArchiveStatus = generated.ArchiveStatus
+
+const (
+	ArchiveStatusRehydratePendingToCool ArchiveStatus = generated.ArchiveStatusRehydratePendingToCool
+	ArchiveStatusRehydratePendingToHot  ArchiveStatus = generated.ArchiveStatusRehydratePendingToHot
+)
+
+// PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.
+func PossibleArchiveStatusValues() []ArchiveStatus {
+	return generated.PossibleArchiveStatusValues()
+}
+
+// CopyStatusType defines values for CopyStatusType
+type CopyStatusType = generated.CopyStatusType
+
+const (
+	CopyStatusTypePending CopyStatusType = generated.CopyStatusTypePending
+	CopyStatusTypeSuccess CopyStatusType = generated.CopyStatusTypeSuccess
+	CopyStatusTypeAborted CopyStatusType = generated.CopyStatusTypeAborted
+	CopyStatusTypeFailed  CopyStatusType = generated.CopyStatusTypeFailed
+)
+
+// PossibleCopyStatusTypeValues returns the possible values for the CopyStatusType const type.
+func PossibleCopyStatusTypeValues() []CopyStatusType {
+	return generated.PossibleCopyStatusTypeValues()
+}
+
+// ImmutabilityPolicyMode defines values for ImmutabilityPolicyMode
+type ImmutabilityPolicyMode = generated.ImmutabilityPolicyMode
+
+const (
+	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = generated.ImmutabilityPolicyModeMutable
+	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = generated.ImmutabilityPolicyModeUnlocked
+	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = generated.ImmutabilityPolicyModeLocked
+)
+
+// PossibleImmutabilityPolicyModeValues returns the possible values for the ImmutabilityPolicyMode const type.
+func PossibleImmutabilityPolicyModeValues() []ImmutabilityPolicyMode {
+	return generated.PossibleImmutabilityPolicyModeValues()
+}
+
+// RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate.
+// Valid values are High and Standard.
+type RehydratePriority = generated.RehydratePriority
+
+const (
+	RehydratePriorityHigh     RehydratePriority = generated.RehydratePriorityHigh
+	RehydratePriorityStandard RehydratePriority = generated.RehydratePriorityStandard
+)
+
+// PossibleRehydratePriorityValues returns the possible values for the RehydratePriority const type.
+func PossibleRehydratePriorityValues() []RehydratePriority {
+	return generated.PossibleRehydratePriorityValues()
+}

@@ -39,7 +39,7 @@ type azblobUnrecordedTestSuite struct {
 // Hookup to the testing framework
 func Test(t *testing.T) {
 	suite.Run(t, &azblobTestSuite{})
-	// suite.Run(t, &azblobUnrecordedTestSuite{})
+	//suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 const (
@@ -114,7 +114,7 @@ func disableSoftDelete(_require *require.Assertions, client *service.Client) {
 
 // nolint
 func validateUpload(_require *require.Assertions, blobClient *blockblob.Client) {
-	resp, err := blobClient.DownloadToStream(ctx, nil)
+	resp, err := blobClient.DownloadStream(ctx, nil)
 	_require.Nil(err)
 	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)

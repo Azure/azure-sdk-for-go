@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
 
@@ -25,8 +26,8 @@ type DeleteBlobResponse = blob.DeleteResponse
 // UploadResponse contains the response from method blockblob.Client.CommitBlockList.
 type UploadResponse = blockblob.CommitBlockListResponse
 
-// DownloadToStreamResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
-type DownloadToStreamResponse = blob.DownloadToStreamResponse
+// DownloadStreamResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
+type DownloadStreamResponse = blob.DownloadStreamResponse
 
 // ListBlobsResponse contains the response from method container.Client.ListBlobFlatSegment.
 type ListBlobsResponse = container.ListBlobsFlatResponse
@@ -35,10 +36,16 @@ type ListBlobsResponse = container.ListBlobsFlatResponse
 type ListContainersResponse = service.ListContainersResponse
 
 // UploadBufferResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
-type UploadBufferResponse = blockblob.UploadReaderAtResponse
+type UploadBufferResponse = blockblob.UploadBufferResponse
 
 // UploadFileResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
-type UploadFileResponse = blockblob.UploadReaderAtResponse
+type UploadFileResponse = blockblob.UploadFileResponse
 
 // UploadStreamResponse contains the response from method Client.CommitBlockList.
 type UploadStreamResponse = blockblob.CommitBlockListResponse
+
+// ListContainersSegmentResponse - An enumeration of containers
+type ListContainersSegmentResponse = generated.ListContainersSegmentResponse
+
+// ListBlobsFlatSegmentResponse - An enumeration of blobs
+type ListBlobsFlatSegmentResponse = generated.ListBlobsFlatSegmentResponse

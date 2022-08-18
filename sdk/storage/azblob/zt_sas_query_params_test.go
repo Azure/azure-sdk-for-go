@@ -57,8 +57,8 @@ func validateSAS(_require *require.Assertions, sas string, parameters blob.SASQu
 	_require.Equal(parameters.ContentEncoding(), sasCompMap["rsce"])
 	_require.Equal(parameters.ContentLanguage(), sasCompMap["rscl"])
 	_require.Equal(parameters.ContentType(), sasCompMap["rsct"])
-	_require.Equal(parameters.SignedOid(), sasCompMap["skoid"])
-	_require.Equal(parameters.SignedTid(), sasCompMap["sktid"])
+	_require.Equal(parameters.SignedOID(), sasCompMap["skoid"])
+	_require.Equal(parameters.SignedTID(), sasCompMap["sktid"])
 
 	if _, ok := sasCompMap["skt"]; ok {
 		signedStart, _, err := blob.ParseSASTimeString(sasCompMap["skt"])
@@ -75,9 +75,9 @@ func validateSAS(_require *require.Assertions, sas string, parameters blob.SASQu
 
 	_require.Equal(parameters.SignedVersion(), sasCompMap["skv"])
 	_require.Equal(parameters.SignedDirectoryDepth(), sasCompMap["sdd"])
-	_require.Equal(parameters.PreauthorizedAgentObjectId(), sasCompMap["saoid"])
-	_require.Equal(parameters.AgentObjectId(), sasCompMap["suoid"])
-	_require.Equal(parameters.SignedCorrelationId(), sasCompMap["scid"])
+	_require.Equal(parameters.PreauthorizedAgentObjectID(), sasCompMap["saoid"])
+	_require.Equal(parameters.AgentObjectID(), sasCompMap["suoid"])
+	_require.Equal(parameters.SignedCorrelationID(), sasCompMap["scid"])
 }
 
 func (s *azblobTestSuite) TestSASGeneration() {

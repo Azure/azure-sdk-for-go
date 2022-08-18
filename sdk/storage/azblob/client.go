@@ -59,9 +59,9 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	}, nil
 }
 
-// NewClientWithSharedKey creates a BlobClient object using the specified URL, shared key, and options.
-func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	svcClient, err := service.NewClientWithSharedKey(serviceURL, cred, (*service.ClientOptions)(options))
+// NewClientWithSharedKeyCredential creates a BlobClient object using the specified URL, shared key, and options.
+func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, (*service.ClientOptions)(options))
 	if err != nil {
 		return nil, err
 	}
@@ -126,8 +126,8 @@ func (c *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 }
 
 // UploadBuffer uploads a buffer in blocks to a block blob.
-func (c *Client) UploadBuffer(ctx context.Context, containerName string, blobName string, b []byte, o *UploadBufferOptions) (UploadBufferResponse, error) {
-	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadBuffer(ctx, b, o)
+func (c *Client) UploadBuffer(ctx context.Context, containerName string, blobName string, buffer []byte, o *UploadBufferOptions) (UploadBufferResponse, error) {
+	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadBuffer(ctx, buffer, o)
 }
 
 // UploadFile uploads a file in blocks to a block blob.
@@ -141,30 +141,20 @@ func (c *Client) UploadStream(ctx context.Context, containerName string, blobNam
 	return c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName).UploadStream(ctx, body, o)
 }
 
-// DownloadToStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
-func (c *Client) DownloadToStream(ctx context.Context, containerName string, blobName string, o *DownloadToStreamOptions) (DownloadToStreamResponse, error) {
-	o = shared.CopyOptions(o)
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToStream(ctx, o)
+// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+func (c *Client) DownloadBuffer(ctx context.Context, containerName string, blobName string, buffer []byte, o *DownloadBufferOptions) (int64, error) {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadBuffer(ctx, shared.NewBytesWriter(buffer), o)
 }
 
-// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
-func (c *Client) DownloadToWriterAt(ctx context.Context, containerName string, blobName string, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToWriterAt(ctx, writer, o)
-}
-
-// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
-func (c *Client) DownloadToBuffer(ctx context.Context, containerName string, blobName string, _bytes []byte, o *DownloadToBufferOptions) error {
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToBuffer(ctx, shared.NewBytesWriter(_bytes), o)
-}
-
-// DownloadToFile downloads an Azure blob to a local file.
+// DownloadFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
-func (c *Client) DownloadToFile(ctx context.Context, containerName string, blobName string, file *os.File, o *DownloadToFileOptions) error {
-	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadToFile(ctx, file, o)
+func (c *Client) DownloadFile(ctx context.Context, containerName string, blobName string, file *os.File, o *DownloadFileOptions) (int64, error) {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadFile(ctx, file, o)
 }
 
-// ServiceClient returns the underlying *service.Client for this client.
-func (c *Client) ServiceClient() *service.Client {
-	return c.svc
+// DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
+func (c *Client) DownloadStream(ctx context.Context, containerName string, blobName string, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	o = shared.CopyOptions(o)
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadStream(ctx, o)
 }

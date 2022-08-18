@@ -197,7 +197,7 @@ import (
 //		_require.Equal((*listResp.Date).IsZero(), false)
 //
 //		// Check data integrity through downloading.
-//		downloadResp, err := destBlob.BlobClient.DownloadToStream(ctx, nil)
+//		downloadResp, err := destBlob.BlobClient.DownloadStream(ctx, nil)
 //		_require.Nil(err)
 //		destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //		_require.Nil(err)
@@ -277,7 +277,7 @@ import (
 //		_require.EqualValues(metadata, map[string]string{"Foo": "bar"})
 //
 //		// Check data integrity through downloading.
-//		downloadResp, err := destBlob.DownloadToStream(ctx, nil)
+//		downloadResp, err := destBlob.DownloadStream(ctx, nil)
 //		_require.Nil(err)
 //		destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //		_require.Nil(err)
@@ -998,7 +998,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
 	_require.Nil(err)
 
-	resp, err := bbClient.DownloadToStream(ctx, nil)
+	resp, err := bbClient.DownloadStream(ctx, nil)
 	_require.Nil(err)
 	data, err := io.ReadAll(resp.BodyReader(nil))
 	_require.Nil(err)
@@ -1133,9 +1133,9 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}.Sign(credential)
 	_require.Nil(err)
 
-	srcBlobParts, _ := azblob.ParseBlobURL(srcBlob.URL())
+	srcBlobParts, _ := azblob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
-	srcBlobURLWithSAS := srcBlobParts.URL()
+	srcBlobURLWithSAS := srcBlobParts.String()
 
 	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot} {
 		destBlobName := strings.ToLower(string(tier)) + generateBlobName(testName)
@@ -1251,7 +1251,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 //	_require.Equal((*listResp.Date).IsZero(), false)
 //
 //	// Check data integrity through downloading.
-//	downloadResp, err := destBlob.DownloadToStream(ctx, nil)
+//	downloadResp, err := destBlob.DownloadStream(ctx, nil)
 //	_require.Nil(err)
 //	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)

@@ -15,10 +15,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+// Type Declarations ---------------------------------------------------------------------
+
 // AppendPositionAccessConditions contains a group of parameters for the Client.AppendBlock method.
 type AppendPositionAccessConditions = generated.AppendPositionAccessConditions
 
-// ---------------------------------------------------------------------------------------------------------------------
+// Request Model Declaration -------------------------------------------------------------------------------------------
 
 // CreateOptions provides set of configurations for Create Append Blob operation
 type CreateOptions struct {
@@ -50,9 +52,7 @@ type CreateOptions struct {
 	Metadata map[string]string
 }
 
-func (o *CreateOptions) format() (*generated.AppendBlobClientCreateOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions,
-	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.ModifiedAccessConditions) {
-
+func (o *CreateOptions) format() (*generated.AppendBlobClientCreateOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.CpkScopeInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}

@@ -8,6 +8,7 @@ package azblob_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -37,14 +38,14 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	accountName, _ := getAccountInfo(testAccountDefault)
 	connectionString := getConnectionString(testAccountDefault)
 
-	parsedConnStr, err := azblob.ParseConnectionString(connectionString)
+	parsedConnStr, err := shared.ParseConnectionString(connectionString)
 	_require.Nil(err)
 	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".blob.core.windows.net/")
 
 	sharedKeyCred, err := azblob.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
 	_require.Nil(err)
 
-	svcClient, err := service.NewClientWithSharedKey(parsedConnStr.ServiceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
 	_require.Nil(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)

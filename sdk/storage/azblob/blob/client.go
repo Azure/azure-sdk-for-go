@@ -269,10 +269,7 @@ func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
 // download downloads an Azure blob to a WriterAt in parallel.
-func (b *Client) download(ctx context.Context, writer io.WriterAt, o *downloadOptions) (int64, error) {
-	if o == nil {
-		o = &downloadOptions{}
-	}
+func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOptions) (int64, error) {
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
 	}
@@ -372,24 +369,32 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 
 // DownloadBuffer downloads an Azure blob to a buffer with parallel.
 func (b *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
-	return b.download(ctx, shared.NewBytesWriter(buffer), o)
+	if o == nil {
+		o = &DownloadBufferOptions{}
+	}
+	return b.download(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o))
 }
 
 // DownloadFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
 func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
+	if o == nil {
+		o = &DownloadFileOptions{}
+	}
+	do := (*downloadOptions)(o)
+
 	// 1. Calculate the size of the destination file
 	var size int64
 
-	count := o.Count
+	count := do.Count
 	if count == CountToEnd {
 		// Try to get Azure blob's size
-		getBlobPropertiesOptions := o.getBlobPropertiesOptions()
+		getBlobPropertiesOptions := do.getBlobPropertiesOptions()
 		props, err := b.GetProperties(ctx, getBlobPropertiesOptions)
 		if err != nil {
 			return 0, err
 		}
-		size = *props.ContentLength - o.Offset
+		size = *props.ContentLength - do.Offset
 	} else {
 		size = count
 	}
@@ -406,7 +411,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	if size > 0 {
-		return b.download(ctx, file, o)
+		return b.download(ctx, file, *do)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}

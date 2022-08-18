@@ -109,7 +109,7 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// downloadOptions identifies options used by the DownloadBuffer and DownloadFile functions.
+// downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
 	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
 	Count int64
@@ -138,6 +138,9 @@ type downloadOptions struct {
 }
 
 func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
+	if o == nil {
+		return nil
+	}
 	return &GetPropertiesOptions{
 		AccessConditions: o.AccessConditions,
 		CpkInfo:          o.CpkInfo,
@@ -145,6 +148,9 @@ func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
 }
 
 func (o *downloadOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadStreamOptions {
+	if o == nil {
+		return nil
+	}
 	return &DownloadStreamOptions{
 		AccessConditions:   o.AccessConditions,
 		CpkInfo:            o.CpkInfo,
@@ -155,11 +161,61 @@ func (o *downloadOptions) getDownloadBlobOptions(offSet, count int64, rangeGetCo
 	}
 }
 
-// DownloadBufferOptions identifies options used by the DownloadBuffer and DownloadFile functions.
-type DownloadBufferOptions = downloadOptions
+// DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
+type DownloadBufferOptions struct {
+	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
+	Count int64
 
-// DownloadFileOptions identifies options used by the DownloadBuffer and DownloadFile functions.
-type DownloadFileOptions = downloadOptions
+	// Offset is the byte offset within the blob to start the download.  The default value is zero.
+	Offset int64
+
+	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
+	BlockSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	AccessConditions *AccessConditions
+
+	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
+	CpkInfo      *CpkInfo
+	CpkScopeInfo *CpkScopeInfo
+
+	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)
+	Parallelism uint16
+
+	// RetryReaderOptionsPerBlock is used when downloading each block.
+	RetryReaderOptionsPerBlock RetryReaderOptions
+}
+
+// DownloadFileOptions contains the optional parameters for the DownloadFile method.
+type DownloadFileOptions struct {
+	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
+	Count int64
+
+	// Offset is the byte offset within the blob to start the download.  The default value is zero.
+	Offset int64
+
+	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
+	BlockSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	AccessConditions *AccessConditions
+
+	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
+	CpkInfo      *CpkInfo
+	CpkScopeInfo *CpkScopeInfo
+
+	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)
+	Parallelism uint16
+
+	// RetryReaderOptionsPerBlock is used when downloading each block.
+	RetryReaderOptionsPerBlock RetryReaderOptions
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
 

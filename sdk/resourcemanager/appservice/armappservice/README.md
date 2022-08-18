@@ -1,6 +1,6 @@
 # Azure App Service Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2)
 
 The `armappservice` module provides operations for working with Azure App Service.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure App Service module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2
 ```
 
 ## Authorization
@@ -57,6 +57,15 @@ client, err := armappservice.NewWebAppsClient(<subscription ID>, cred, &options)
 - [Static Site](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/appservice/staticsite)
 - [App Service Plan](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/appservice/web_plans)
 - [Web Site](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/appservice/webapp)
+
+## Major Version Upgrade
+
+Go uses [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility for modules. For Azure Go management SDK, we usually upgrade module version according to cooresponding service's API version. Regarding it could be a complicated experience for major version upgrade, we will try our best to keep the SDK API stable and release new version in backward compatible way. However, if any unavoidable breaking changes and a new major version releases for SDK modules, you could use these commands under your module folder to upgrade:
+
+```sh
+go install github.com/icholy/gomajor@latest
+gomajor get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute@latest
+```
 
 ## Provide Feedback
 

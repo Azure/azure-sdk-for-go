@@ -53,6 +53,29 @@ func Test_GetAddedExports(t *testing.T) {
 		})
 	}
 
+	// type aliases
+
+	if l := len(aContent.TypeAliases); l != 1 {
+		t.Logf("wrong number of consts added, have %v, want %v", l, 1)
+		t.Fail()
+	}
+
+	tAdded := map[string]exports.TypeAlias{
+		"Color": {UnderlayingType: "string"},
+	}
+
+	for k, v := range tAdded {
+		t.Run(fmt.Sprintf("const %s", k), func(t *testing.T) {
+			if c, ok := aContent.TypeAliases[k]; !ok {
+				t.Log("missing")
+				t.Fail()
+			} else if c.UnderlayingType != v.UnderlayingType {
+				t.Logf("mismatched type alias type, have %s, want %s", aContent.TypeAliases[k].UnderlayingType, v.UnderlayingType)
+				t.Fail()
+			}
+		})
+	}
+
 	// func
 
 	if l := len(aContent.Funcs); l != 6 {
@@ -240,6 +263,28 @@ func Test_GetConstTypeChanges(t *testing.T) {
 		"Tuesday":   change,
 		"Wednesday": change,
 		"Weekend":   change,
+	}
+
+	if !reflect.DeepEqual(cc, changed) {
+		t.Logf("mismatched changes, have %+v, want %+v", cc, changed)
+		t.Fail()
+	}
+}
+
+func Test_GetTypeAliasTypeChanges(t *testing.T) {
+	cc := delta.GetTypeAliasTypeChanges(oBreaking, nBreaking)
+
+	if l := len(cc); l != 1 {
+		t.Logf("wrong number of type alias changed, have %v, want %v", l, 1)
+		t.Fail()
+	}
+
+	change := delta.Signature{
+		From: "string",
+		To:   "int",
+	}
+	changed := map[string]delta.Signature{
+		"KeyType":    change,
 	}
 
 	if !reflect.DeepEqual(cc, changed) {

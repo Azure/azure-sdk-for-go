@@ -56,7 +56,8 @@ type PartitionClient struct {
 
 	offsetExpression string
 
-	links *internal.Links[amqpwrap.AMQPReceiverCloser]
+	//links *internal.Links[amqpwrap.AMQPReceiverCloser]
+	links internal.LinksForPartitionClient[amqpwrap.AMQPReceiverCloser]
 }
 
 // ReceiveEventsOptions contains optional parameters for the ReceiveEvents function
@@ -117,7 +118,11 @@ func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 
 // Close closes the consumer's link and the underlying AMQP connection.
 func (cc *PartitionClient) Close(ctx context.Context) error {
-	return cc.links.Close(ctx)
+	if cc.links != nil {
+		return cc.links.Close(ctx)
+	}
+
+	return nil
 }
 
 func (s *PartitionClient) getEntityPath(partitionID string) string {
@@ -150,6 +155,12 @@ func (s *PartitionClient) newEventHubConsumerLink(ctx context.Context, session a
 	}
 
 	return receiver, nil
+}
+
+func (pc *PartitionClient) init(ctx context.Context) error {
+	return pc.links.Retry(ctx, EventConsumer, "Init", pc.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error {
+		return nil
+	})
 }
 
 type partitionClientArgs struct {

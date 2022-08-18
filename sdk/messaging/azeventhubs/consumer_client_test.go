@@ -11,11 +11,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
@@ -151,7 +152,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 }
 
 func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
 	require.NoError(t, err)
@@ -174,7 +175,7 @@ func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
 }
 
 func TestConsumerClient_Concurrent_NoEpoch(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	partitions := mustSendEventsToAllPartitions(t, []*azeventhubs.EventData{
 		{Body: []byte("hello world")},
@@ -307,7 +308,7 @@ func TestConsumerClient_LowerEpochsAreRejected(t *testing.T) {
 }
 
 func newPartitionClientForTest(t *testing.T, partitionID string, subscribeOptions azeventhubs.NewPartitionClientOptions) (*azeventhubs.PartitionClient, func()) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	origClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "$Default", &azeventhubs.ConsumerClientOptions{
 		// Today we treat the link stolen error as retryable. I've filed an issue to look at making this fatal
@@ -332,7 +333,7 @@ func newPartitionClientForTest(t *testing.T, partitionID string, subscribeOption
 }
 
 func TestConsumerClient_StartPositions(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
@@ -448,7 +449,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 }
 
 func TestConsumerClient_StartPosition_Latest(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
 	require.NoError(t, err)
@@ -526,7 +527,7 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 // this function. Each message gets an additional property (DestPartitionID), set to the parttion ID that
 // we sent it to.
 func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData) []azeventhubs.PartitionProperties {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
 

@@ -109,7 +109,7 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// downloadOptions contain common options used by the DownloadBuffer and DownloadFile functions.
+// downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
 	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
 	Count int64

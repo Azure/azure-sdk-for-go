@@ -178,11 +178,11 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_require.Nil(err)
 
 	// Read the blob data to verify the copy
-	data, err := io.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_require.Equal(string(data), blockBlobDefaultData)
-	_ = resp.BodyReader(nil).Close()
+	_ = resp.Body.Close()
 }
 
 func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
@@ -1497,7 +1497,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	_require.Nil(err)
 
 	// Specifying a count of 0 results in the value being ignored
-	data, err := io.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1522,7 +1522,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 	resp, err := bbClient.DownloadStream(ctx, &options)
 	_require.Nil(err)
 
-	data, err := io.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1546,7 +1546,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	resp, err := bbClient.DownloadStream(ctx, &options)
 	_require.Nil(err)
 
-	data, err := io.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1571,7 +1571,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	resp, err := bbClient.DownloadStream(ctx, &options)
 	_require.Nil(err)
 
-	data, err := io.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }

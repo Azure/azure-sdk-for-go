@@ -143,7 +143,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 		_require.Nil(err)
 		dResp, err := blobClientWithVersionID.DownloadStream(ctx, nil)
 		_require.Nil(err)
-		d1, err := io.ReadAll(dResp.BodyReader(nil))
+		d1, err := io.ReadAll(dResp.Body)
 		_require.Nil(err)
 		_require.NotEqual(*dResp.Version, "")
 		_require.EqualValues(string(d1), string(data[i]))
@@ -274,7 +274,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 		_require.Nil(err)
 		downloadResp, err := bbClientWithVersionID.DownloadStream(ctx, nil)
 		_require.Nil(err)
-		destData, err := io.ReadAll(downloadResp.BodyReader(nil))
+		destData, err := io.ReadAll(downloadResp.Body)
 		_require.Nil(err)
 		_require.EqualValues(destData, "data"+strconv.Itoa(i))
 	}
@@ -431,7 +431,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 
 	contentResp, err := bbClient.DownloadStream(ctx, nil)
 	_require.Nil(err)
-	contentData, err := io.ReadAll(contentResp.BodyReader(nil))
+	contentData, err := io.ReadAll(contentResp.Body)
 	_require.Nil(err)
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }

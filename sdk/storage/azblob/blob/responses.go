@@ -13,29 +13,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
-// DownloadStreamResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
+// DownloadStreamResponse contains the response from the DownloadStream method.
+// To read from the stream, read from the Body field, or call the NewRetryReader method.
 type DownloadStreamResponse struct {
 	generated.BlobClientDownloadResponse
-	ctx                    context.Context
-	b                      *Client
-	getInfo                HTTPGetterInfo
 	ObjectReplicationRules []ObjectReplicationPolicy
+
+	client   *Client
+	getInfo  httpGetterInfo
+	cpkInfo  *CpkInfo
+	cpkScope *CpkScopeInfo
 }
 
-// NewRetryReader constructs new RetryReader stream for reading data. If a connection fails
-// while reading, it will make additional requests to reestablish a connection and
-// continue reading. Specifying a RetryReaderOption's with MaxRetryRequests set to 0
-// (the default), returns the original response body and no retries will be performed.
-// Pass in nil for options to accept the default options.
-func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *RetryReaderOptions) io.ReadCloser {
+// NewRetryReader constructs new RetryReader stream for reading data. If a connection fails while
+// reading, it will make additional requests to reestablish a connection and continue reading.
+// Pass nil for options to accept the default options.
+// Callers of this method should not access the DowloadStreamResponse.Body field.
+func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *RetryReaderOptions) *RetryReader {
 	if options == nil {
 		options = &RetryReaderOptions{}
 	}
 
-	if options.MaxRetryRequests == 0 { // No additional retries
-		return r.BlobClientDownloadResponse.Body
-	}
-	return NewRetryReader(ctx, r.Body, r.getInfo, func(ctx context.Context, getInfo HTTPGetterInfo) (io.ReadCloser, error) {
+	return newRetryReader(ctx, r.Body, r.getInfo, func(ctx context.Context, getInfo httpGetterInfo) (io.ReadCloser, error) {
 		accessConditions := &AccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
 		}
@@ -43,47 +42,15 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 			Offset:           &getInfo.Offset,
 			Count:            &getInfo.Count,
 			AccessConditions: accessConditions,
-			CpkInfo:          options.CpkInfo,
-			//CpkScopeInfo:         options.CpkScopeInfo,
+			CpkInfo:          r.cpkInfo,
+			CpkScopeInfo:     r.cpkScope,
 		}
-		resp, err := r.b.DownloadStream(ctx, &options)
+		resp, err := r.client.DownloadStream(ctx, &options)
 		if err != nil {
 			return nil, err
 		}
 		return resp.Body, err
-	}, options)
-}
-
-// BodyReader constructs new RetryReader stream for reading data. If a connection fails
-// while reading, it will make additional requests to reestablish a connection and
-// continue reading. Specifying a RetryReaderOption's with MaxRetryRequests set to 0
-// (the default), returns the original response body and no retries will be performed.
-// Pass in nil for options to accept the default options.
-func (r *DownloadStreamResponse) BodyReader(options *RetryReaderOptions) io.ReadCloser {
-	if options == nil {
-		options = &RetryReaderOptions{}
-	}
-
-	if options.MaxRetryRequests == 0 { // No additional retries
-		return r.BlobClientDownloadResponse.Body
-	}
-	return NewRetryReader(r.ctx, r.BlobClientDownloadResponse.Body, r.getInfo, func(ctx context.Context, getInfo HTTPGetterInfo) (io.ReadCloser, error) {
-		accessConditions := &AccessConditions{
-			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
-		}
-		options := DownloadStreamOptions{
-			Offset:           &getInfo.Offset,
-			Count:            &getInfo.Count,
-			AccessConditions: accessConditions,
-			CpkInfo:          options.CpkInfo,
-			CpkScopeInfo:     options.CpkScopeInfo,
-		}
-		resp, err := r.b.DownloadStream(ctx, &options)
-		if err != nil {
-			return nil, err
-		}
-		return resp.BlobClientDownloadResponse.Body, err
-	}, options)
+	}, *options)
 }
 
 // DeleteResponse contains the response from method BlobClient.Delete.

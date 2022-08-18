@@ -61,7 +61,7 @@ func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertio
 	_require.Nil(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := io.ReadAll(downloadResponse.BodyReader(nil))
+	actualBlobData, err := io.ReadAll(downloadResponse.Body)
 	_require.Nil(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)
@@ -583,7 +583,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	_require.NoError(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := io.ReadAll(downloadResponse.BodyReader(nil))
+	actualBlobData, err := io.ReadAll(downloadResponse.Body)
 	_require.NoError(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)

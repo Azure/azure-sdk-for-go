@@ -1000,7 +1000,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 
 	resp, err := bbClient.DownloadStream(ctx, nil)
 	_require.Nil(err)
-	data, err := io.ReadAll(resp.BodyReader(nil))
+	data, err := io.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }

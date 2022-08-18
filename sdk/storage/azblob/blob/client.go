@@ -306,7 +306,7 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 			if err != nil {
 				return err
 			}
-			body := dr.BodyReader(&o.RetryReaderOptionsPerBlock)
+			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
 			if o.Progress != nil {
 				rangeProgress := int64(0)
 				body = streaming.NewResponseProgress(
@@ -360,10 +360,12 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		eTag = *dr.ETag
 	}
 	return DownloadStreamResponse{
-		b:                          b,
+		client:                     b,
 		BlobClientDownloadResponse: dr,
-		getInfo:                    HTTPGetterInfo{Offset: offset, Count: count, ETag: eTag},
+		getInfo:                    httpGetterInfo{Offset: offset, Count: count, ETag: eTag},
 		ObjectReplicationRules:     deserializeORSPolicies(dr.ObjectReplicationRules),
+		cpkInfo:                    o.CpkInfo,
+		cpkScope:                   o.CpkScopeInfo,
 	}, err
 }
 

@@ -1,4 +1,4 @@
-## Guide for migrating to `sdk/resourcemanager/**/arm**` from `services/**/mgmt/**`
+# Guide for migrating to `sdk/resourcemanager/**/arm**` from `services/**/mgmt/**`
 
 This document is intended for users that are familiar with the previous version of the Azure SDK For Go for management modules (`services/**/mgmt/**`) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/resourcemanager/**/arm**`)
 

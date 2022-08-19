@@ -178,8 +178,10 @@ type DownloadBufferOptions struct {
 	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
 	AccessConditions *AccessConditions
 
-	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
-	CpkInfo      *CpkInfo
+	// CpkInfo contains a group of parameters for client provided encryption key.
+	CpkInfo *CpkInfo
+
+	// CpkScopeInfo contains a group of parameters for client provided encryption scope.
 	CpkScopeInfo *CpkScopeInfo
 
 	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)

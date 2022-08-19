@@ -130,12 +130,9 @@ func (d *downloadPerfTest) Run(ctx context.Context) error {
 		return err
 	}
 	downloadedData := &bytes.Buffer{}
-	reader := get.BodyReader(nil)
-	_, err = downloadedData.ReadFrom(reader)
-	if err != nil {
-		return err
-	}
-	return reader.Close()
+	defer get.Body.Close()
+	_, err = downloadedData.ReadFrom(get.Body)
+	return err
 }
 
 func (*downloadPerfTest) Cleanup(ctx context.Context) error {

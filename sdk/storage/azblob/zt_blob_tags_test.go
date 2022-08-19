@@ -194,7 +194,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 
 	contentResp, err := bbClient.DownloadStream(ctx, nil)
 	_require.Nil(err)
-	contentData, err := io.ReadAll(contentResp.BodyReader(nil))
+	contentData, err := io.ReadAll(contentResp.Body)
 	_require.Nil(err)
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 

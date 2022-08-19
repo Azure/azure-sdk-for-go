@@ -306,7 +306,7 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 			if err != nil {
 				return err
 			}
-			body := dr.BodyReader(&o.RetryReaderOptionsPerBlock)
+			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
 			if o.Progress != nil {
 				rangeProgress := int64(0)
 				body = streaming.NewResponseProgress(
@@ -338,6 +338,9 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
 	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
+	if o == nil {
+		o = &DownloadStreamOptions{}
+	}
 
 	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
@@ -347,11 +350,11 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	offset := int64(0)
 	count := int64(CountToEnd)
 
-	if o != nil && o.Offset != nil {
+	if o.Offset != nil {
 		offset = *o.Offset
 	}
 
-	if o != nil && o.Count != nil {
+	if o.Count != nil {
 		count = *o.Count
 	}
 
@@ -360,10 +363,12 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		eTag = *dr.ETag
 	}
 	return DownloadStreamResponse{
-		b:                          b,
+		client:                     b,
 		BlobClientDownloadResponse: dr,
-		getInfo:                    HTTPGetterInfo{Offset: offset, Count: count, ETag: eTag},
+		getInfo:                    httpGetterInfo{Offset: offset, Count: count, ETag: eTag},
 		ObjectReplicationRules:     deserializeORSPolicies(dr.ObjectReplicationRules),
+		cpkInfo:                    o.CpkInfo,
+		cpkScope:                   o.CpkScopeInfo,
 	}, err
 }
 

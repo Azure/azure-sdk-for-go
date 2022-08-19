@@ -338,6 +338,9 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
 	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
+	if o == nil {
+		o = &DownloadStreamOptions{}
+	}
 
 	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
@@ -347,11 +350,11 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	offset := int64(0)
 	count := int64(CountToEnd)
 
-	if o != nil && o.Offset != nil {
+	if o.Offset != nil {
 		offset = *o.Offset
 	}
 
-	if o != nil && o.Count != nil {
+	if o.Count != nil {
 		count = *o.Count
 	}
 

@@ -9,7 +9,6 @@ import (
 	"log"
 	"net/http"
 	"path"
-	"sort"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
@@ -48,8 +47,11 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 			tags = append(tags, tag["ref"].(string))
 		}
 	}
-	sort.Sort(sort.Reverse(sort.StringSlice(tags)))
-
+	// reverse tags
+	for left, right := 0, len(tags)-1; left < right; left++ {
+		tags[left], tags[right] = tags[right], tags[left]
+		right--
+	}
 	return tags, nil
 }
 

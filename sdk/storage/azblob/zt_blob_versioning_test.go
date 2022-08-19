@@ -8,129 +8,29 @@ package azblob_test
 
 import (
 	"bytes"
+	"context"
 	"io"
 	"strconv"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/stretchr/testify/require"
 )
 
-func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
+func (s *AZBlobRecordedTestsSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
-	bbClient := createNewBlockBlob(_require, generateBlobName(testName), containerClient)
-
-	blobProp, _ := bbClient.GetProperties(ctx, nil)
-
-	uploadBlockBlobOptions := blockblob.UploadOptions{
-		Metadata: basicMetadata,
-		AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: blobProp.ETag},
-		},
-	}
-	uploadResp, err := bbClient.Upload(ctx, getReaderToGeneratedBytes(1024), &uploadBlockBlobOptions)
-	_require.Nil(err)
-	_require.NotNil(uploadResp.VersionID)
-	blobProp, _ = bbClient.GetProperties(ctx, nil)
-	_require.EqualValues(uploadResp.VersionID, blobProp.VersionID)
-	_require.EqualValues(uploadResp.LastModified, blobProp.LastModified)
-	_require.Equal(*uploadResp.ETag, *blobProp.ETag)
-	_require.Equal(*blobProp.IsCurrentVersion, true)
-}
-
-func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
-	_require.NoError(err)
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
-	abClient := createNewAppendBlob(_require, generateBlobName(testName), containerClient)
-
-	blobProp, _ := abClient.GetProperties(ctx, nil)
-
-	createAppendBlobOptions := appendblob.CreateOptions{
-		Metadata: basicMetadata,
-		AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: blobProp.ETag},
-		},
-	}
-	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
-	_require.Nil(err)
-	_require.NotNil(createResp.VersionID)
-	blobProp, _ = abClient.GetProperties(ctx, nil)
-	_require.EqualValues(createResp.VersionID, blobProp.VersionID)
-	_require.EqualValues(createResp.LastModified, blobProp.LastModified)
-	_require.Equal(*createResp.ETag, *blobProp.ETag)
-	_require.Equal(*blobProp.IsCurrentVersion, true)
-}
-
-// nolint
-func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	_require.NoError(err)
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
-
-	bbName := generateName(testName)
-	bbClient := createNewBlockBlob(_require, bbName, containerClient)
-
-	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
-	resp, err := bbClient.SetMetadata(ctx, metadata, nil)
-	_require.Nil(err)
-	_require.NotNil(resp.VersionID)
-
-	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemMetadata},
-	})
-
-	if pager.More() {
-		pageResp, err := pager.NextPage(ctx)
-		_require.Nil(err) // check for an error first
-		//s.T().Fail()      // no page was gotten
-
-		_require.NotNil(pageResp.Segment.BlobItems)
-		blobList := pageResp.Segment.BlobItems
-		_require.Len(blobList, 1)
-		blobResp1 := blobList[0]
-		_require.Equal(*blobResp1.Name, bbName)
-		_require.NotNil(blobResp1.Metadata)
-		_require.Len(blobResp1.Metadata, 2)
-	}
-}
-
-func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
-	_require.NoError(err)
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 	data := []rune("-._/()$=',~0123456789")
 	for i := 0; i < len(data); i++ {
 		blobName := "abc" + string(data[i])
@@ -152,30 +52,30 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	}
 }
 
-//func (s *azblobUnrecordedTestSuite) TestDeleteSpecificBlobVersionWithBlobSAS() {
+//func (s *AZBlobUnrecordedTestsSuite) TestDeleteSpecificBlobVersionWithBlobSAS() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//	blobClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+//	containerName := testcommon.GenerateContainerName(testName)
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//	blobClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 //
-//	resp, err := blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("data"))), &blockblob.UploadOptions{Metadata: basicMetadata})
+//	resp, err := blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("data"))), &blockblob.UploadOptions{Metadata: testcommon.BasicMetadata})
 //	_require.Nil(err)
 //	versionId := resp.VersionID
 //	_require.NotNil(versionId)
 //
-//	resp, err = blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("updated_data"))), &blockblob.UploadOptions{Metadata: basicMetadata})
+//	resp, err = blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("updated_data"))), &blockblob.UploadOptions{Metadata: testcommon.BasicMetadata})
 //	_require.Nil(err)
 //	_require.NotNil(resp.VersionID)
 //
-//	cred, err := getGenericCredential(nil, testAccountDefault)
+//	cred, err := getGenericCredential(nil, testcommon.TestAccountDefault)
 //	_require.Nil(err)
 //
 //	blobParts, err := azblob.ParseURL(blobClient.URL())
@@ -209,21 +109,21 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //
 //}
 
-func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
+func (s *AZBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
-	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 
 	versions := make([]string, 0)
 	for i := 0; i < 5; i++ {
 		uploadResp, err := bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &blockblob.UploadOptions{
-			Metadata: basicMetadata,
+			Metadata: testcommon.BasicMetadata,
 		})
 		_require.Nil(err)
 		_require.NotNil(uploadResp.VersionID)
@@ -281,25 +181,25 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 }
 
 //
-//func (s *azblobTestSuite) TestCopyBlobFromURLWithSASReturnsVID() {
+//func (s *AZBlobRecordedTestsSuite) TestCopyBlobFromURLWithSASReturnsVID() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
-////	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+////	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
+//	containerName := testcommon.GenerateContainerName(testName)
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 //
 //	testSize := 4 * 1024 * 1024 // 4MB
-//	r, sourceData := getRandomDataAndReader(testSize)
+//	r, sourceData := testcommon.GetRandomDataAndReader(testSize)
 //	sourceDataMD5Value := md5.Sum(sourceData)
 //	ctx := ctx
-//	srcBlob := container.NewBlockBlobClient(generateBlobName())
-//	destBlob := container.NewBlockBlobClient(generateBlobName())
+//	srcBlob := container.NewBlockBlobClient(testcommon.GenerateBlobName())
+//	destBlob := container.NewBlockBlobClient(testcommon.GenerateBlobName())
 //
 //	uploadSrcResp, err := srcBlob.Upload(ctx, r, HTTPHeaders{}, Metadata{}, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.Nil(err)
@@ -336,7 +236,7 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //	_assert(destData, chk.DeepEquals, sourceData)
 //	_assert(downloadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //	_assert(len(downloadResp.NewMetadata()), chk.Equals, 1)
-//	_, badMD5 := getRandomDataAndReader(16)
+//	_, badMD5 := testcommon.GetRandomDataAndReader(16)
 //	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, badMD5, DefaultAccessTier, nil)
 //	_require.NotNil(err)
 //
@@ -348,23 +248,23 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //	_assert(resp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //}
 //
-//func (s *azblobTestSuite) TestCreateBlockBlobReturnsVID() {
+//func (s *AZBlobRecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
-////	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+////	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
+//	containerName := testcommon.GenerateContainerName(testName)
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 //
 //	testSize := 2 * 1024 * 1024 // 1MB
-//	r, _ := getRandomDataAndReader(testSize)
+//	r, _ := testcommon.GetRandomDataAndReader(testSize)
 //	ctx := ctx // Use default Background context
-//	blobURL := containerClient.NewBlockBlobClient(generateBlobName())
+//	blobURL := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName())
 //
 //	// Prepare source blob for copy.
 //	uploadResp, err := blobURL.Upload(ctx, r, HTTPHeaders{}, Metadata{}, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
@@ -400,24 +300,24 @@ func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
 //	_assert(blobs[0].Snapshot, chk.Equals, "")
 //}
 
-func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
+func (s *AZBlobRecordedTestsSuite) TestPutBlockListReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
 	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
 	base64BlockIDs := make([]string, len(data))
 
 	for index, d := range data {
-		base64BlockIDs[index] = blockIDIntToBase64(index)
+		base64BlockIDs[index] = testcommon.BlockIDIntToBase64(index)
 		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], streaming.NopCloser(strings.NewReader(d)), nil)
 		_require.Nil(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
@@ -437,21 +337,21 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 }
 
 // nolint
-func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
+func (s *AZBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	testSize := 2 * 1024 * 1024 // 1MB
-	r, _ := getRandomDataAndReader(testSize)
+	r, _ := testcommon.GetRandomDataAndReader(testSize)
 	ctx := ctx // Use default Background context
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
 	// Prepare source blob for copy.
 	uploadResp, err := bbClient.Upload(ctx, streaming.NopCloser(r), nil)
@@ -498,36 +398,4 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
 		}
 	}
 	_require.NotEqual(len(found), 0)
-}
-
-func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
-	_require.NoError(err)
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
-
-	pbClob := createNewPageBlob(_require, generateBlobName(testName), containerClient)
-
-	contentSize := 1 * 1024
-	r, _ := generateData(contentSize)
-	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(offset),
-		Count:  to.Ptr(count),
-	}
-	putResp, err := pbClob.UploadPages(ctx, r, &uploadPagesOptions)
-	_require.Nil(err)
-	//_require.Equal(putResp.RawResponse.StatusCode, 201)
-	_require.Equal(putResp.LastModified.IsZero(), false)
-	_require.NotNil(putResp.ETag)
-	_require.NotEqual(*putResp.Version, "")
-
-	gpResp, err := pbClob.GetProperties(ctx, nil)
-	_require.Nil(err)
-	_require.NotNil(gpResp)
 }

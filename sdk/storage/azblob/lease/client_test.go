@@ -4,33 +4,69 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azblob_test
+package lease_test
 
 import (
 	"context"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
+
+func Test(t *testing.T) {
+	suite.Run(t, &LeaseRecordedTestsSuite{})
+	//suite.Run(t, &LeaseUnrecordedTestsSuite{})
+}
+
+// nolint
+func (s *LeaseRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(s.T(), suite, test)
+}
+
+// nolint
+func (s *LeaseRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(s.T(), suite, test)
+}
+
+// nolint
+func (s *LeaseUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+
+}
+
+// nolint
+func (s *LeaseUnrecordedTestsSuite) AfterTest(suite string, test string) {
+
+}
+
+type LeaseRecordedTestsSuite struct {
+	suite.Suite
+}
+
+type LeaseUnrecordedTestsSuite struct {
+	suite.Suite
+}
 
 // var headersToIgnoreForLease = []string {"X-Ms-Proposed-Lease-Id", "X-Ms-Lease-Id"}
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
-func (s *azblobTestSuite) TestContainerAcquireLease() {
+func (s *LeaseRecordedTestsSuite) TestContainerAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	containerLeaseClient, _ := lease.NewContainerClient(containerClient, &lease.ContainerClientOptions{
 		LeaseID: proposedLeaseIDs[0],
@@ -46,16 +82,16 @@ func (s *azblobTestSuite) TestContainerAcquireLease() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
+func (s *LeaseRecordedTestsSuite) TestContainerDeleteContainerWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	containerLeaseClient, _ := lease.NewContainerClient(containerClient, &lease.ContainerClientOptions{
 		LeaseID: proposedLeaseIDs[0],
@@ -81,18 +117,18 @@ func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestContainerReleaseLease() {
+func (s *LeaseRecordedTestsSuite) TestContainerReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	containerLeaseClient, _ := lease.NewContainerClient(containerClient, &lease.ContainerClientOptions{
 		LeaseID: proposedLeaseIDs[0],
@@ -114,18 +150,18 @@ func (s *azblobTestSuite) TestContainerReleaseLease() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestContainerRenewLease() {
+func (s *LeaseRecordedTestsSuite) TestContainerRenewLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	containerLeaseClient, _ := lease.NewContainerClient(containerClient, &lease.ContainerClientOptions{
 		LeaseID: proposedLeaseIDs[0],
@@ -144,18 +180,18 @@ func (s *azblobTestSuite) TestContainerRenewLease() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestContainerChangeLease() {
+func (s *LeaseRecordedTestsSuite) TestContainerChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	containerLeaseClient, _ := lease.NewContainerClient(containerClient, &lease.ContainerClientOptions{
 		LeaseID: proposedLeaseIDs[0],
@@ -181,21 +217,21 @@ func (s *azblobTestSuite) TestContainerChangeLease() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestBlobAcquireLease() {
+func (s *LeaseRecordedTestsSuite) TestBlobAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_require, blobName, containerClient)
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 	blobLeaseClient, err := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
@@ -211,21 +247,21 @@ func (s *azblobTestSuite) TestBlobAcquireLease() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
+func (s *LeaseRecordedTestsSuite) TestDeleteBlobWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_require, blobName, containerClient)
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 	blobLeaseClient, err := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
@@ -251,21 +287,21 @@ func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestBlobReleaseLease() {
+func (s *LeaseRecordedTestsSuite) TestBlobReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_require, blobName, containerClient)
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 	blobLeaseClient, _ := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
@@ -286,18 +322,18 @@ func (s *azblobTestSuite) TestBlobReleaseLease() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestBlobRenewLease() {
+func (s *LeaseRecordedTestsSuite) TestBlobRenewLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_require, blobName, containerClient)
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 	blobLeaseClient, _ := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
@@ -315,21 +351,21 @@ func (s *azblobTestSuite) TestBlobRenewLease() {
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestBlobChangeLease() {
+func (s *LeaseRecordedTestsSuite) TestBlobChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_require, blobName, containerClient)
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 	blobLeaseClient, _ := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})

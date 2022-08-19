@@ -8,11 +8,12 @@ package azblob_test
 
 import (
 	"fmt"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/stretchr/testify/require"
-	"net/url"
-	"strings"
 )
 
 func validateSAS(_require *require.Assertions, sas string, parameters blob.SASQueryParameters) {
@@ -80,7 +81,7 @@ func validateSAS(_require *require.Assertions, sas string, parameters blob.SASQu
 	_require.Equal(parameters.SignedCorrelationID(), sasCompMap["scid"])
 }
 
-func (s *azblobTestSuite) TestSASGeneration() {
+func (s *AZBlobRecordedTestsSuite) TestSASGeneration() {
 	_require := require.New(s.T())
 	sas := "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
 	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)

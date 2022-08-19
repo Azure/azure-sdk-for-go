@@ -8,12 +8,13 @@ package azblob_test
 
 import (
 	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 
 	"github.com/stretchr/testify/require"
 )
 
-func (s *azblobTestSuite) TestURLParsing() {
+func (s *AZBlobRecordedTestsSuite) TestURLParsing() {
 	_require := require.New(s.T())
 	testStorageAccount := "fakestorageaccount"
 	host := fmt.Sprintf("%s.blob.core.windows.net", testStorageAccount)

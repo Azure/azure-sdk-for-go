@@ -461,7 +461,6 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkInfo:      &testCPKByValue,
 		CpkScopeInfo: &testCPKByScope,
 	}
 	downloadResp, err := bbClient.DownloadStream(ctx, &downloadBlobOptions)

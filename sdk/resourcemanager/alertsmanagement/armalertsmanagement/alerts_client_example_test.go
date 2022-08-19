@@ -27,9 +27,7 @@ func ExampleAlertsClient_MetaData() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.MetaData(ctx,
-		armalertsmanagement.IdentifierMonitorServiceList,
-		nil)
+	res, err := client.MetaData(ctx, armalertsmanagement.IdentifierMonitorServiceList, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -78,6 +76,25 @@ func ExampleAlertsClient_NewGetAllPager() {
 	}
 }
 
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_GetById.json
+func ExampleAlertsClient_GetByID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armalertsmanagement.NewAlertsClient("9e261de7-c804-4b9d-9ebf-6f50fe350a9a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.GetByID(ctx, "66114d64-d9d9-478b-95c9-b789d6502100", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_ChangeState.json
 func ExampleAlertsClient_ChangeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -89,10 +106,7 @@ func ExampleAlertsClient_ChangeState() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ChangeState(ctx,
-		"66114d64-d9d9-478b-95c9-b789d6502100",
-		armalertsmanagement.AlertStateAcknowledged,
-		nil)
+	res, err := client.ChangeState(ctx, "66114d64-d9d9-478b-95c9-b789d6502100", armalertsmanagement.AlertStateAcknowledged, &armalertsmanagement.AlertsClientChangeStateOptions{Comment: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -111,9 +125,7 @@ func ExampleAlertsClient_GetHistory() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetHistory(ctx,
-		"66114d64-d9d9-478b-95c9-b789d6502100",
-		nil)
+	res, err := client.GetHistory(ctx, "66114d64-d9d9-478b-95c9-b789d6502100", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -132,20 +144,18 @@ func ExampleAlertsClient_GetSummary() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSummary(ctx,
-		armalertsmanagement.AlertsSummaryGroupByFields("severity,alertState"),
-		&armalertsmanagement.AlertsClientGetSummaryOptions{IncludeSmartGroupsCount: nil,
-			TargetResource:      nil,
-			TargetResourceType:  nil,
-			TargetResourceGroup: nil,
-			MonitorService:      nil,
-			MonitorCondition:    nil,
-			Severity:            nil,
-			AlertState:          nil,
-			AlertRule:           nil,
-			TimeRange:           nil,
-			CustomTimeRange:     nil,
-		})
+	res, err := client.GetSummary(ctx, armalertsmanagement.AlertsSummaryGroupByFields("severity,alertState"), &armalertsmanagement.AlertsClientGetSummaryOptions{IncludeSmartGroupsCount: nil,
+		TargetResource:      nil,
+		TargetResourceType:  nil,
+		TargetResourceGroup: nil,
+		MonitorService:      nil,
+		MonitorCondition:    nil,
+		Severity:            nil,
+		AlertState:          nil,
+		AlertRule:           nil,
+		TimeRange:           nil,
+		CustomTimeRange:     nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

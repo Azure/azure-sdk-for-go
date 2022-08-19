@@ -9,9 +9,7 @@ Push-Location sdk/$serviceDirectory
 Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
 
 go test -timeout $testTimeout -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
-if ($LASTEXITCODE) {
-    exit $LASTEXITCODE
-}
+# go test will return a non-zero exit code on test failures so don't skip generating the report in this case
 
 Get-Content outfile.txt | go-junit-report > report.xml
 

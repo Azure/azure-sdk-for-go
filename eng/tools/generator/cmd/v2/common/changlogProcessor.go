@@ -50,11 +50,6 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 	}
 	sort.Sort(sort.Reverse(sort.StringSlice(tags)))
 
-	// // reverse tags
-	// for left, right := 0, len(tags)-1; left < right; left++ {
-	// 	tags[left], tags[right] = tags[right], tags[left]
-	// 	right--
-	// }
 	return tags, nil
 }
 

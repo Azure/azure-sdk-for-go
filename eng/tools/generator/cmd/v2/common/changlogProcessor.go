@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"path"
+	"sort"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
@@ -47,11 +48,13 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 			tags = append(tags, tag["ref"].(string))
 		}
 	}
-	// reverse tags
-	for left, right := 0, len(tags)-1; left < right; left++ {
-		tags[left], tags[right] = tags[right], tags[left]
-		right--
-	}
+	sort.Sort(sort.Reverse(sort.StringSlice(tags)))
+
+	// // reverse tags
+	// for left, right := 0, len(tags)-1; left < right; left++ {
+	// 	tags[left], tags[right] = tags[right], tags[left]
+	// 	right--
+	// }
 	return tags, nil
 }
 
@@ -88,6 +91,14 @@ func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
 func GetPreviousVersionTag(isCurrentPreview bool, allReleases []string) string {
 	if isCurrentPreview {
 		// for preview api, always compare with latest release
+		if !strings.Contains(allReleases[0], "beta") {
+			return allReleases[0]
+		}
+		for i := 1; i < len(allReleases); i++ {
+			if strings.Contains(allReleases[0], allReleases[i]) {
+				return allReleases[i]
+			}
+		}
 		return allReleases[0]
 	} else {
 		// for stable api, always compare with previous stable, if no stable, then latest release

@@ -81,8 +81,8 @@ type ClientBatchOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientExecuteOptions contains the optional parameters for the Client.Execute method.
-type ClientExecuteOptions struct {
+// ClientQueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
+type ClientQueryWorkspaceOptions struct {
 	// Optional. The prefer header to set server timeout, query statistics and visualization information.
 	Prefer *string
 }

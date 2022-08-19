@@ -19,7 +19,7 @@ import (
 	"strings"
 )
 
-// Client contains the methods for the Query group.
+// Client contains the methods for the Client group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
 	pl runtime.Pipeline
@@ -67,30 +67,30 @@ func (client *Client) batchHandleResponse(resp *http.Response) (ClientBatchRespo
 	return result, nil
 }
 
-// Execute - Executes an Analytics query for data. Here [https://dev.loganalytics.io/documentation/Using-the-API] is an example
-// for using POST with an Analytics query.
+// QueryWorkspace - Executes an Analytics query for data. Here [https://dev.loganalytics.io/documentation/Using-the-API] is
+// an example for using POST with an Analytics query.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-05-19_Preview
 // workspaceID - ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
 // body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
-// options - ClientExecuteOptions contains the optional parameters for the Client.Execute method.
-func (client *Client) Execute(ctx context.Context, workspaceID string, body Body, options *ClientExecuteOptions) (ClientExecuteResponse, error) {
-	req, err := client.executeCreateRequest(ctx, workspaceID, body, options)
+// options - ClientQueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
+func (client *Client) QueryWorkspace(ctx context.Context, workspaceID string, body Body, options *ClientQueryWorkspaceOptions) (ClientQueryWorkspaceResponse, error) {
+	req, err := client.queryWorkspaceCreateRequest(ctx, workspaceID, body, options)
 	if err != nil {
-		return ClientExecuteResponse{}, err
+		return ClientQueryWorkspaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClientExecuteResponse{}, err
+		return ClientQueryWorkspaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientExecuteResponse{}, runtime.NewResponseError(resp)
+		return ClientQueryWorkspaceResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.executeHandleResponse(resp)
+	return client.queryWorkspaceHandleResponse(resp)
 }
 
-// executeCreateRequest creates the Execute request.
-func (client *Client) executeCreateRequest(ctx context.Context, workspaceID string, body Body, options *ClientExecuteOptions) (*policy.Request, error) {
+// queryWorkspaceCreateRequest creates the QueryWorkspace request.
+func (client *Client) queryWorkspaceCreateRequest(ctx context.Context, workspaceID string, body Body, options *ClientQueryWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/workspaces/{workspaceId}/query"
 	if workspaceID == "" {
 		return nil, errors.New("parameter workspaceID cannot be empty")
@@ -107,11 +107,11 @@ func (client *Client) executeCreateRequest(ctx context.Context, workspaceID stri
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// executeHandleResponse handles the Execute response.
-func (client *Client) executeHandleResponse(resp *http.Response) (ClientExecuteResponse, error) {
-	result := ClientExecuteResponse{}
+// queryWorkspaceHandleResponse handles the QueryWorkspace response.
+func (client *Client) queryWorkspaceHandleResponse(resp *http.Response) (ClientQueryWorkspaceResponse, error) {
+	result := ClientQueryWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Results); err != nil {
-		return ClientExecuteResponse{}, err
+		return ClientQueryWorkspaceResponse{}, err
 	}
 	return result, nil
 }

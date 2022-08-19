@@ -23,9 +23,9 @@ directive:
         delete $["/workspaces/{workspaceId}/metadata"];
 
   # delete metadata operations
-  - remove-operation: "Metadata_Post"
-  - remove-operation: "Metadata_Get"
-  - remove-operation: "Query_Get"
+  - remove-operation: Metadata_Post
+  - remove-operation: Metadata_Get
+  - remove-operation: Query_Get
 
   # delete metadata models
   - remove-model: metadataResults
@@ -40,6 +40,14 @@ directive:
   - remove-model: metadataResource
   - remove-model: metadataPermissions
 
+ # rename log queries
+  - rename-operation:
+      from: Query_Execute
+      to: QueryWorkspace
+  - rename-operation:
+      from: Query_Batch
+      to: Batch
+ 
   # delete generated constructor
   - from: client.go
     where: $

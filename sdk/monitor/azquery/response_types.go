@@ -14,8 +14,8 @@ type ClientBatchResponse struct {
 	BatchResponse
 }
 
-// ClientExecuteResponse contains the response from method Client.Execute.
-type ClientExecuteResponse struct {
+// ClientQueryWorkspaceResponse contains the response from method Client.QueryWorkspace.
+type ClientQueryWorkspaceResponse struct {
 	Results
 }
 

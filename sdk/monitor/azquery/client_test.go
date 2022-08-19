@@ -23,13 +23,15 @@ func TestExecute_BasicQuerySuccess(t *testing.T) {
 
 	client := NewClient(cred, nil)
 
-	var strPointer = new(string)
-	*strPointer = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n" + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long"
+	query := "search * | take 5"
+	time := "2022-08-01/2022-08-02"
+
 	body := Body{
-		Query: strPointer,
+		Query:    &query,
+		Timespan: &time,
 	}
 
-	res, err := client.Execute(context.Background(), workspaceID, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
@@ -50,8 +52,8 @@ func TestExecute_BasicQuerySuccess(t *testing.T) {
 	if len(res.Results.Tables) != 1 {
 		t.Fatal("expected one table")
 	}
-	if len(res.Results.Tables[0].Rows) != 100 {
-		t.Fatal("expected 100 rows")
+	if len(res.Results.Tables[0].Rows) != 5 {
+		t.Fatal("expected 5 rows")
 	}
 }
 
@@ -69,7 +71,7 @@ func TestExecute_BasicQueryFailure(t *testing.T) {
 		Query: strPointer,
 	}
 
-	res, err := client.Execute(context.Background(), workspaceID, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
 	if err == nil {
 		t.Fatalf("expected BadArgumentError")
 	}
@@ -87,16 +89,15 @@ func TestExecute_AdvancedQuerySuccess(t *testing.T) {
 
 	client := NewClient(cred, nil)
 
-	var queryPointer = new(string)
-	*queryPointer = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n" + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long"
+	query := "search * | take 5"
 	body := Body{
-		Query: queryPointer,
+		Query: &query,
 	}
-	var optionsPointer = new(string)
-	*optionsPointer = "wait=180,include-statistics=true,include-render=true"
-	options := &ClientExecuteOptions{Prefer: optionsPointer}
 
-	res, err := client.Execute(context.Background(), workspaceID, body, options)
+	prefer := "wait=180,include-statistics=true,include-render=true"
+	options := &ClientQueryWorkspaceOptions{Prefer: &prefer}
+
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, options)
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
@@ -116,7 +117,28 @@ func TestExecute_AdvancedQuerySuccess(t *testing.T) {
 
 // batch query tests
 func TestBatch_QuerySuccess(t *testing.T) {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		t.Fatal("error constructing credential")
+	}
 
+	client := NewClient(cred, nil)
+	query := "search * | take 5"
+	time := "2022-08-01/2022-08-02"
+	id := "189285912908589803580198308859812"
+	workspaceID := "d2d0e126-fa1e-4b0a-b647-250cdd471e68"
+
+	body := Body{
+		Query:    &query,
+		Timespan: &time,
+	}
+
+	req1 := BatchQueryRequest{Body: &body, ID: &id, Workspace: &workspaceID}
+
+	batchRequest := BatchRequest{[]*BatchQueryRequest{&req1}}
+
+	res, err := client.Batch(context.Background(), batchRequest, nil)
+	_ = res
 }
 
 func TestBatch_QueryFailure(t *testing.T) {

@@ -27,7 +27,7 @@ func Example_consuming() {
 	//
 	// consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString(connectionString, "", "partition id", consumerGroup, nil)
 	//
-	consumerClient, err = azeventhubs.NewConsumerClient(eventHubNamespace, eventHubName, eventHubPartitionID, azeventhubs.DefaultConsumerGroup, defaultAzureCred, nil)
+	consumerClient, err = azeventhubs.NewConsumerClient(eventHubNamespace, eventHubName, azeventhubs.DefaultConsumerGroup, defaultAzureCred, nil)
 
 	if err != nil {
 		panic(err)
@@ -35,12 +35,20 @@ func Example_consuming() {
 
 	defer consumerClient.Close(context.TODO())
 
+	subscription, err := consumerClient.NewPartitionClient(eventHubPartitionID, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer subscription.Close(context.TODO())
+
 	for {
 		// ReceiveEvents will wait until it either receives the # of events requested (100, in this call)
 		// or if the context is cancelled, in which case it'll return any messages it has received.
-		ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 
-		events, err := consumerClient.ReceiveEvents(ctx, 100, nil)
+		events, err := subscription.ReceiveEvents(ctx, 100, nil)
 		cancel()
 
 		if err != nil {

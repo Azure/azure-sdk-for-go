@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Don't modify the original *http.Request during recording/perf as it causes failures during retries.
 
 ### Other Changes
 

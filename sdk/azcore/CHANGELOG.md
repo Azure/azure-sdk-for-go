@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Adjusted the initial retry delay to 800ms per the Azure SDK guidelines.
 
 ### Other Changes
 

@@ -1,15 +1,9 @@
 # Release History
 
-## 1.0.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.1 (2022-08-22)
 
 ### Bugs Fixed
 * Don't modify the original *http.Request during recording/perf as it causes failures during retries.
-
-### Other Changes
 
 ## 1.0.0 (2022-05-12)
 

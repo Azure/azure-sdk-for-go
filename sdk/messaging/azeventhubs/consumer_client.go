@@ -30,6 +30,7 @@ type ConsumerClientOptions struct {
 	RetryOptions RetryOptions
 }
 
+// ConsumerClient is used to receive events from an Event Hub partition.
 type ConsumerClient struct {
 	consumerGroup string
 	eventHub      string

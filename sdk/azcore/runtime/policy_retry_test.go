@@ -333,7 +333,7 @@ func TestRetryPolicyRequestTimedOut(t *testing.T) {
 	defer close()
 	srv.SetError(errors.New("bogus error"))
 	pl := exported.NewPipeline(srv, NewRetryPolicy(nil))
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 400*time.Millisecond)
 	defer cancel()
 	req, err := NewRequest(ctx, http.MethodPost, srv.URL())
 	if err != nil {

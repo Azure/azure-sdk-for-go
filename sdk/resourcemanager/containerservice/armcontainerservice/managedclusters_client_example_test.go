@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ContainerServiceGetOSOptions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ContainerServiceGetOSOptions.json
 func ExampleManagedClustersClient_GetOSOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleManagedClustersClient_GetOSOptions() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetOSOptions(ctx,
-		"location1",
-		&armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
+	res, err := client.GetOSOptions(ctx, "location1", &armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -38,7 +36,7 @@ func ExampleManagedClustersClient_GetOSOptions() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersList.json
 func ExampleManagedClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +60,7 @@ func ExampleManagedClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersListByResourceGroup.json
 func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,8 +71,7 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1",
-		nil)
+	pager := client.NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -87,7 +84,7 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersGetUpgradeProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersGetUpgradeProfile.json
 func ExampleManagedClustersClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,10 +95,7 @@ func ExampleManagedClustersClient_GetUpgradeProfile() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetUpgradeProfile(ctx,
-		"rg1",
-		"clustername1",
-		nil)
+	res, err := client.GetUpgradeProfile(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -109,7 +103,7 @@ func ExampleManagedClustersClient_GetUpgradeProfile() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersGetAccessProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersGetAccessProfile.json
 func ExampleManagedClustersClient_GetAccessProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,11 +114,7 @@ func ExampleManagedClustersClient_GetAccessProfile() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAccessProfile(ctx,
-		"rg1",
-		"clustername1",
-		"clusterUser",
-		nil)
+	res, err := client.GetAccessProfile(ctx, "rg1", "clustername1", "clusterUser", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -132,7 +122,7 @@ func ExampleManagedClustersClient_GetAccessProfile() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersListClusterCredentialResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,10 +133,7 @@ func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListClusterAdminCredentials(ctx,
-		"rg1",
-		"clustername1",
-		&armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{ServerFqdn: nil})
+	res, err := client.ListClusterAdminCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{ServerFqdn: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -154,53 +141,7 @@ func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersListClusterCredentialResult.json
-func ExampleManagedClustersClient_ListClusterUserCredentials() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.ListClusterUserCredentials(ctx,
-		"rg1",
-		"clustername1",
-		&armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{ServerFqdn: nil,
-			Format: nil,
-		})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersListClusterCredentialResult.json
-func ExampleManagedClustersClient_ListClusterMonitoringUserCredentials() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.ListClusterMonitoringUserCredentials(ctx,
-		"rg1",
-		"clustername1",
-		&armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{ServerFqdn: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersGet.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,10 +152,7 @@ func ExampleManagedClustersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"clustername1",
-		nil)
+	res, err := client.Get(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -222,8 +160,8 @@ func ExampleManagedClustersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersCreate_Snapshot.json
-func ExampleManagedClustersClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersAssociate_CRG.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_associateManagedClusterWithCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -233,73 +171,66 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"clustername1",
-		armcontainerservice.ManagedCluster{
-			Location: to.Ptr("location1"),
-			Tags: map[string]*string{
-				"archv2": to.Ptr(""),
-				"tier":   to.Ptr("production"),
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:                       to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					CapacityReservationGroupID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers//Microsoft.Compute/capacityReservationGroups/crg1"),
+					Count:                      to.Ptr[int32](3),
+					EnableNodePublicIP:         to.Ptr(true),
+					Mode:                       to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:                     to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:                     to.Ptr("Standard_DS2_v2"),
+					Name:                       to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
 			},
-			Properties: &armcontainerservice.ManagedClusterProperties{
-				AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
-				AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-					{
-						Type:  to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
-						Count: to.Ptr[int32](3),
-						CreationData: &armcontainerservice.CreationData{
-							SourceResourceID: to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
-						},
-						EnableFIPS:         to.Ptr(true),
-						EnableNodePublicIP: to.Ptr(true),
-						Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
-						OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
-						VMSize:             to.Ptr("Standard_DS2_v2"),
-						Name:               to.Ptr("nodepool1"),
-					}},
-				AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
-					ScaleDownDelayAfterAdd: to.Ptr("15m"),
-					ScanInterval:           to.Ptr("20s"),
-				},
-				DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-				DNSPrefix:               to.Ptr("dnsprefix1"),
-				EnablePodSecurityPolicy: to.Ptr(false),
-				EnableRBAC:              to.Ptr(true),
-				KubernetesVersion:       to.Ptr(""),
-				LinuxProfile: &armcontainerservice.LinuxProfile{
-					AdminUsername: to.Ptr("azureuser"),
-					SSH: &armcontainerservice.SSHConfiguration{
-						PublicKeys: []*armcontainerservice.SSHPublicKey{
-							{
-								KeyData: to.Ptr("keydata"),
-							}},
-					},
-				},
-				NetworkProfile: &armcontainerservice.NetworkProfile{
-					LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
-						ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
-							Count: to.Ptr[int32](2),
-						},
-					},
-					LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
-					OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
-				},
-				ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-					ClientID: to.Ptr("clientid"),
-					Secret:   to.Ptr("secret"),
-				},
-				WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
-					AdminPassword: to.Ptr("replacePassword1234$"),
-					AdminUsername: to.Ptr("azureuser"),
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
 				},
 			},
-			SKU: &armcontainerservice.ManagedClusterSKU{
-				Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
-				Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
 			},
 		},
-		nil)
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -311,7 +242,2285 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_MCSnapshot.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingAManagedClusterSnapshot() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableFIPS:         to.Ptr(true),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			CreationData: &armcontainerservice.CreationData{
+				SourceResourceID: to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
+			},
+			DNSPrefix:         to.Ptr("dnsprefix1"),
+			KubernetesVersion: to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_Snapshot.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingAnAgentPoolSnapshot() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:  to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count: to.Ptr[int32](3),
+					CreationData: &armcontainerservice.CreationData{
+						SourceResourceID: to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+					},
+					EnableFIPS:         to.Ptr(true),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(false),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_ManagedNATGateway.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAksManagedNatGatewayAsOutboundType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(false),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				NatGatewayProfile: &armcontainerservice.ManagedClusterNATGatewayProfile{
+					ManagedOutboundIPProfile: &armcontainerservice.ManagedClusterManagedOutboundIPProfile{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				OutboundType: to.Ptr(armcontainerservice.OutboundTypeManagedNATGateway),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAzureKeyVaultSecretsProviderAddon() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{
+				"azureKeyvaultSecretsProvider": {
+					Config: map[string]*string{
+						"enableSecretRotation": to.Ptr("true"),
+						"rotationPollInterval": to.Ptr("2m"),
+					},
+					Enabled: to.Ptr(true),
+				},
+			},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_EnableCustomCATrust.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithCustomCaTrustEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:                to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:               to.Ptr[int32](3),
+					EnableCustomCATrust: to.Ptr(true),
+					EnableNodePublicIP:  to.Ptr(true),
+					Mode:                to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:              to.Ptr("Standard_DS2_v2"),
+					Name:                to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_DedicatedHostGroup.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithDedicatedHostGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					HostGroupID:        to.Ptr("/subscriptions/subid1/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(false),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithEncryptionAtHostEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:                   to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:                  to.Ptr[int32](3),
+					EnableEncryptionAtHost: to.Ptr(true),
+					EnableNodePublicIP:     to.Ptr(true),
+					Mode:                   to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:                 to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:                 to.Ptr("Standard_DS2_v2"),
+					Name:                   to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_EnabledFIPS.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithFipsEnabledOs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableFIPS:         to.Ptr(true),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(false),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_GPUMIG.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithGpumig() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					GpuInstanceProfile: to.Ptr(armcontainerservice.GPUInstanceProfileMIG3G),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_ND96asr_v4"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
+				HTTPProxy:  to.Ptr("http://myproxy.server.com:8080"),
+				HTTPSProxy: to.Ptr("https://myproxy.server.com:8080"),
+				NoProxy: []*string{
+					to.Ptr("localhost"),
+					to.Ptr("127.0.0.1")},
+				TrustedCa: to.Ptr("Q29uZ3JhdHMhIFlvdSBoYXZlIGZvdW5kIGEgaGlkZGVuIG1lc3NhZ2U="),
+			},
+			KubernetesVersion: to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_HTTPProxy.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithHttpProxyConfigured() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
+				HTTPProxy:  to.Ptr("http://myproxy.server.com:8080"),
+				HTTPSProxy: to.Ptr("https://myproxy.server.com:8080"),
+				NoProxy: []*string{
+					to.Ptr("localhost"),
+					to.Ptr("127.0.0.1")},
+				TrustedCa: to.Ptr("Q29uZ3JhdHMhIFlvdSBoYXZlIGZvdW5kIGEgaGlkZGVuIG1lc3NhZ2U="),
+			},
+			KubernetesVersion: to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_NodePublicIPPrefix.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNodePublicIpPrefix() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:                 to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:                to.Ptr[int32](3),
+					EnableNodePublicIP:   to.Ptr(true),
+					Mode:                 to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					NodePublicIPPrefixID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.Network/publicIPPrefixes/public-ip-prefix"),
+					OSType:               to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:               to.Ptr("Standard_DS2_v2"),
+					Name:                 to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_OSSKU.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithOssku() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSSKU:              to.Ptr(armcontainerservice.OSSKUCBLMariner),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
+				HTTPProxy:  to.Ptr("http://myproxy.server.com:8080"),
+				HTTPSProxy: to.Ptr("https://myproxy.server.com:8080"),
+				NoProxy: []*string{
+					to.Ptr("localhost"),
+					to.Ptr("127.0.0.1")},
+				TrustedCa: to.Ptr("Q29uZ3JhdHMhIFlvdSBoYXZlIGZvdW5kIGEgaGlkZGVuIG1lc3NhZ2U="),
+			},
+			KubernetesVersion: to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_PPG.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPpg() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:                      to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:                     to.Ptr[int32](3),
+					EnableNodePublicIP:        to.Ptr(true),
+					Mode:                      to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:                    to.Ptr(armcontainerservice.OSTypeLinux),
+					ProximityPlacementGroupID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers//Microsoft.Compute/proximityPlacementGroups/ppg1"),
+					VMSize:                    to.Ptr("Standard_DS2_v2"),
+					Name:                      to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_PodIdentity.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPodIdentityEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			PodIdentityProfile: &armcontainerservice.ManagedClusterPodIdentityProfile{
+				AllowNetworkPluginKubenet: to.Ptr(true),
+				Enabled:                   to.Ptr(true),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_DisableRunCommand.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithRunCommandDisabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:                   to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:                  to.Ptr[int32](3),
+					EnableEncryptionAtHost: to.Ptr(true),
+					EnableNodePublicIP:     to.Ptr(true),
+					Mode:                   to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:                 to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:                 to.Ptr("Standard_DS2_v2"),
+					Name:                   to.Ptr("nodepool1"),
+				}},
+			APIServerAccessProfile: &armcontainerservice.ManagedClusterAPIServerAccessProfile{
+				DisableRunCommand: to.Ptr(true),
+			},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_SecurityProfile.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithSecurityProfileConfigured() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			DNSPrefix:         to.Ptr("dnsprefix1"),
+			KubernetesVersion: to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			SecurityProfile: &armcontainerservice.ManagedClusterSecurityProfile{
+				Defender: &armcontainerservice.ManagedClusterSecurityProfileDefender{
+					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/SUB_ID/resourcegroups/RG_NAME/providers/microsoft.operationalinsights/workspaces/WORKSPACE_NAME"),
+					SecurityMonitoring: &armcontainerservice.ManagedClusterSecurityProfileDefenderSecurityMonitoring{
+						Enabled: to.Ptr(true),
+					},
+				},
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_EnableUltraSSD.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUltraSsdEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					EnableUltraSSD:     to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_IngressProfile_WebAppRouting.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithWebAppRoutingIngressProfileConfigured() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			DNSPrefix: to.Ptr("dnsprefix1"),
+			IngressProfile: &armcontainerservice.ManagedClusterIngressProfile{
+				WebAppRouting: &armcontainerservice.ManagedClusterIngressProfileWebAppRouting{
+					DNSZoneResourceID: to.Ptr("/subscriptions/SUB_ID/resourceGroups/RG_NAME/providers/Microsoft.Network/dnszones/DNS_ZONE_NAME"),
+					Enabled:           to.Ptr(true),
+				},
+			},
+			KubernetesVersion: to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UserAssignedNATGateway.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUserAssignedNatGatewayAsOutboundType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(false),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeUserAssignedNATGateway),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateClusterWithPublicFqdnSpecified() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:                   to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:                  to.Ptr[int32](3),
+					EnableEncryptionAtHost: to.Ptr(true),
+					EnableNodePublicIP:     to.Ptr(true),
+					Mode:                   to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:                 to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:                 to.Ptr("Standard_DS2_v2"),
+					Name:                   to.Ptr("nodepool1"),
+				}},
+			APIServerAccessProfile: &armcontainerservice.ManagedClusterAPIServerAccessProfile{
+				EnablePrivateCluster:           to.Ptr(true),
+				EnablePrivateClusterPublicFQDN: to.Ptr(true),
+			},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateClusterWithFqdnSubdomainSpecified() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:                   to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:                  to.Ptr[int32](3),
+					EnableEncryptionAtHost: to.Ptr(true),
+					EnableNodePublicIP:     to.Ptr(true),
+					Mode:                   to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:                 to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:                 to.Ptr("Standard_DS2_v2"),
+					Name:                   to.Ptr("nodepool1"),
+				}},
+			APIServerAccessProfile: &armcontainerservice.ManagedClusterAPIServerAccessProfile{
+				EnablePrivateCluster: to.Ptr(true),
+				PrivateDNSZone:       to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.Network/privateDnsZones/privatelink.location1.azmk8s.io"),
+			},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			FqdnSubdomain:           to.Ptr("domain1"),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateAadManagedClusterWithEnableAzureRbac() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AADProfile: &armcontainerservice.ManagedClusterAADProfile{
+				EnableAzureRBAC: to.Ptr(true),
+				Managed:         to.Ptr(true),
+			},
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					AvailabilityZones: []*string{
+						to.Ptr("1"),
+						to.Ptr("2"),
+						to.Ptr("3")},
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS1_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_Update.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Identity: &armcontainerservice.ManagedClusterIdentity{
+			Type: to.Ptr(armcontainerservice.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerservice.ManagedServiceIdentityUserAssignedIdentitiesValue{
+				"/subscriptions/subid1/resourceGroups/rgName1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": {},
+			},
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					AvailabilityZones: []*string{
+						to.Ptr("1"),
+						to.Ptr("2"),
+						to.Ptr("3")},
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					ScaleDownMode:      to.Ptr(armcontainerservice.ScaleDownModeDeallocate),
+					VMSize:             to.Ptr("Standard_DS1_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				BalanceSimilarNodeGroups: to.Ptr("true"),
+				Expander:                 to.Ptr(armcontainerservice.ExpanderPriority),
+				MaxNodeProvisionTime:     to.Ptr("15m"),
+				NewPodScaleUpDelay:       to.Ptr("1m"),
+				ScaleDownDelayAfterAdd:   to.Ptr("15m"),
+				ScanInterval:             to.Ptr("20s"),
+				SkipNodesWithSystemPods:  to.Ptr("false"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UpdateWithAHUB.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithEnableAhub() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Identity: &armcontainerservice.ManagedClusterIdentity{
+			Type: to.Ptr(armcontainerservice.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerservice.ManagedServiceIdentityUserAssignedIdentitiesValue{
+				"/subscriptions/subid1/resourceGroups/rgName1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": {},
+			},
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					AvailabilityZones: []*string{
+						to.Ptr("1"),
+						to.Ptr("2"),
+						to.Ptr("3")},
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS1_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+				LicenseType:   to.Ptr(armcontainerservice.LicenseTypeWindowsServer),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UpdateWithEnableNamespaceResources.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithEnableNamespaceResources() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					AvailabilityZones: []*string{
+						to.Ptr("1"),
+						to.Ptr("2"),
+						to.Ptr("3")},
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS1_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:      to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:                to.Ptr("dnsprefix1"),
+			EnableNamespaceResources: to.Ptr(true),
+			EnablePodSecurityPolicy:  to.Ptr(true),
+			EnableRBAC:               to.Ptr(true),
+			KubernetesVersion:        to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithWindowsGMsaEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Identity: &armcontainerservice.ManagedClusterIdentity{
+			Type: to.Ptr(armcontainerservice.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerservice.ManagedServiceIdentityUserAssignedIdentitiesValue{
+				"/subscriptions/subid1/resourceGroups/rgName1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": {},
+			},
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					AvailabilityZones: []*string{
+						to.Ptr("1"),
+						to.Ptr("2"),
+						to.Ptr("3")},
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS1_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				ScaleDownDelayAfterAdd: to.Ptr("15m"),
+				ScanInterval:           to.Ptr("20s"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+				GmsaProfile: &armcontainerservice.WindowsGmsaProfile{
+					Enabled: to.Ptr(true),
+				},
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_DualStackNetworking.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithDualStackNetworking() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Identity: &armcontainerservice.ManagedClusterIdentity{
+			Type: to.Ptr(armcontainerservice.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerservice.ManagedServiceIdentityUserAssignedIdentitiesValue{
+				"/subscriptions/subid1/resourceGroups/rgName1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": {},
+			},
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					AvailabilityZones: []*string{
+						to.Ptr("1"),
+						to.Ptr("2"),
+						to.Ptr("3")},
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					ScaleDownMode:      to.Ptr(armcontainerservice.ScaleDownModeDeallocate),
+					VMSize:             to.Ptr("Standard_DS1_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
+				BalanceSimilarNodeGroups: to.Ptr("true"),
+				Expander:                 to.Ptr(armcontainerservice.ExpanderPriority),
+				MaxNodeProvisionTime:     to.Ptr("15m"),
+				NewPodScaleUpDelay:       to.Ptr("1m"),
+				ScaleDownDelayAfterAdd:   to.Ptr("15m"),
+				ScanInterval:             to.Ptr("20s"),
+				SkipNodesWithSystemPods:  to.Ptr("false"),
+			},
+			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:               to.Ptr("dnsprefix1"),
+			EnablePodSecurityPolicy: to.Ptr(true),
+			EnableRBAC:              to.Ptr(true),
+			KubernetesVersion:       to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				IPFamilies: []*armcontainerservice.IPFamily{
+					to.Ptr(armcontainerservice.IPFamilyIPv4),
+					to.Ptr(armcontainerservice.IPFamilyIPv6)},
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
+				AdminPassword: to.Ptr("replacePassword1234$"),
+				AdminUsername: to.Ptr("azureuser"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersUpdateTags.json
 func ExampleManagedClustersClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,16 +2531,12 @@ func ExampleManagedClustersClient_BeginUpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTags(ctx,
-		"rg1",
-		"clustername1",
-		armcontainerservice.TagsObject{
-			Tags: map[string]*string{
-				"archv3": to.Ptr(""),
-				"tier":   to.Ptr("testing"),
-			},
+	poller, err := client.BeginUpdateTags(ctx, "rg1", "clustername1", armcontainerservice.TagsObject{
+		Tags: map[string]*string{
+			"archv3": to.Ptr(""),
+			"tier":   to.Ptr("testing"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -343,7 +2548,7 @@ func ExampleManagedClustersClient_BeginUpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersDelete.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,10 +2559,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"clustername1",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientBeginDeleteOptions{IgnorePodDisruptionBudget: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -367,7 +2569,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersResetServicePrincipalProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersResetServicePrincipalProfile.json
 func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,14 +2580,10 @@ func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResetServicePrincipalProfile(ctx,
-		"rg1",
-		"clustername1",
-		armcontainerservice.ManagedClusterServicePrincipalProfile{
-			ClientID: to.Ptr("clientid"),
-			Secret:   to.Ptr("secret"),
-		},
-		nil)
+	poller, err := client.BeginResetServicePrincipalProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterServicePrincipalProfile{
+		ClientID: to.Ptr("clientid"),
+		Secret:   to.Ptr("secret"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -395,7 +2593,7 @@ func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersResetAADProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersResetAADProfile.json
 func ExampleManagedClustersClient_BeginResetAADProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,16 +2604,12 @@ func ExampleManagedClustersClient_BeginResetAADProfile() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResetAADProfile(ctx,
-		"rg1",
-		"clustername1",
-		armcontainerservice.ManagedClusterAADProfile{
-			ClientAppID:     to.Ptr("clientappid"),
-			ServerAppID:     to.Ptr("serverappid"),
-			ServerAppSecret: to.Ptr("serverappsecret"),
-			TenantID:        to.Ptr("tenantid"),
-		},
-		nil)
+	poller, err := client.BeginResetAADProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterAADProfile{
+		ClientAppID:     to.Ptr("clientappid"),
+		ServerAppID:     to.Ptr("serverappid"),
+		ServerAppSecret: to.Ptr("serverappsecret"),
+		TenantID:        to.Ptr("tenantid"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -425,7 +2619,24 @@ func ExampleManagedClustersClient_BeginResetAADProfile() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersRotateClusterCertificates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersAbortOperation.json
+func ExampleManagedClustersClient_AbortLatestOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.AbortLatestOperation(ctx, "rg1", "clustername1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersRotateClusterCertificates.json
 func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,10 +2647,7 @@ func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRotateClusterCertificates(ctx,
-		"rg1",
-		"clustername1",
-		nil)
+	poller, err := client.BeginRotateClusterCertificates(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -449,7 +2657,28 @@ func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersRotateServiceAccountSigningKeys.json
+func ExampleManagedClustersClient_BeginRotateServiceAccountSigningKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginRotateServiceAccountSigningKeys(ctx, "rg1", "clustername1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersStop.json
 func ExampleManagedClustersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -460,10 +2689,7 @@ func ExampleManagedClustersClient_BeginStop() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx,
-		"rg1",
-		"clustername1",
-		nil)
+	poller, err := client.BeginStop(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -473,7 +2699,7 @@ func ExampleManagedClustersClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ManagedClustersStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersStart.json
 func ExampleManagedClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -484,10 +2710,7 @@ func ExampleManagedClustersClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx,
-		"rg1",
-		"clustername1",
-		nil)
+	poller, err := client.BeginStart(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -497,7 +2720,7 @@ func ExampleManagedClustersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/RunCommandRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/RunCommandRequest.json
 func ExampleManagedClustersClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,15 +2731,11 @@ func ExampleManagedClustersClient_BeginRunCommand() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRunCommand(ctx,
-		"rg1",
-		"clustername1",
-		armcontainerservice.RunCommandRequest{
-			ClusterToken: to.Ptr(""),
-			Command:      to.Ptr("kubectl apply -f ns.yaml"),
-			Context:      to.Ptr(""),
-		},
-		nil)
+	poller, err := client.BeginRunCommand(ctx, "rg1", "clustername1", armcontainerservice.RunCommandRequest{
+		ClusterToken: to.Ptr(""),
+		Command:      to.Ptr("kubectl apply -f ns.yaml"),
+		Context:      to.Ptr(""),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -528,8 +2747,8 @@ func ExampleManagedClustersClient_BeginRunCommand() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/RunCommandResultFailed.json
-func ExampleManagedClustersClient_GetCommandResult() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/RunCommandResultFailed.json
+func ExampleManagedClustersClient_GetCommandResult_commandFailedResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -539,11 +2758,7 @@ func ExampleManagedClustersClient_GetCommandResult() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCommandResult(ctx,
-		"rg1",
-		"clustername1",
-		"def7b3ea71bd4f7e9d226ddbc0f00ad9",
-		nil)
+	res, err := client.GetCommandResult(ctx, "rg1", "clustername1", "def7b3ea71bd4f7e9d226ddbc0f00ad9", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -551,7 +2766,26 @@ func ExampleManagedClustersClient_GetCommandResult() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/OutboundNetworkDependenciesEndpointsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/RunCommandResultSucceed.json
+func ExampleManagedClustersClient_GetCommandResult_commandSucceedResult() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.GetCommandResult(ctx, "rg1", "clustername1", "def7b3ea71bd4f7e9d226ddbc0f00ad9", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/OutboundNetworkDependenciesEndpointsList.json
 func ExampleManagedClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -562,9 +2796,7 @@ func ExampleManagedClustersClient_NewListOutboundNetworkDependenciesEndpointsPag
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("rg1",
-		"clustername1",
-		nil)
+	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("rg1", "clustername1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

@@ -67,6 +67,7 @@ The aztables package supports any of the types that implement the `azcore.TokenC
 Use AAD authentication as the credential parameter to authenticate the client:
 ```go
 import (
+    "fmt"
     "os"
 
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -78,7 +79,7 @@ func main() {
     if !ok {
         panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
     }
-    serviceURL := accountName + ".table.core.windows.net"
+    serviceURL := fmt.Sprintf("https://%s.table.core.windows.net", accountName)
 
     cred, err := azidentity.NewDefaultAzureCredential(nil)
     if err != nil {

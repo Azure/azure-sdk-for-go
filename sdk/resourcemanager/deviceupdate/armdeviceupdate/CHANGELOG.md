@@ -2,7 +2,7 @@
 
 ## 1.0.0 (2022-08-11)
 ### Other Changes
-- Release GA version (no API change).
+- Release stable version.
 
 ## 0.5.0 (2022-05-17)
 

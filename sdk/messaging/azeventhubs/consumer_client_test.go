@@ -21,7 +21,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("EventHubProperties and PartitionProperties", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, dac, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, dac, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -66,10 +66,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		firstPartition, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
 		require.NoError(t, err)
 
-		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, firstPartition.PartitionID, azeventhubs.DefaultConsumerGroup, dac,
-			&azeventhubs.ConsumerClientOptions{
-				StartPosition: getStartPosition(firstPartition),
-			})
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, dac, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -90,12 +87,23 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		err = producerClient.SendEventBatch(context.Background(), eventDataBatch, nil)
 		require.NoError(t, err)
 
+		subscription, err := consumerClient.NewPartitionClient(firstPartition.PartitionID, &azeventhubs.NewPartitionClientOptions{
+			StartPosition: getStartPosition(firstPartition),
+		})
+		require.NoError(t, err)
+		require.NotNil(t, subscription)
+
+		defer func() {
+			err := subscription.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
 
-		events, err := consumerClient.ReceiveEvents(ctx, 1, nil)
+		events, err := subscription.ReceiveEvents(ctx, 1, nil)
 		require.NoError(t, err)
-		require.NotEmpty(t, events)
+
 		require.Equal(t, "hello", string(events[0].Body))
 
 		consumerPart, err := consumerClient.GetPartitionProperties(context.Background(), firstPartition.PartitionID, nil)
@@ -108,7 +116,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 	})
 
 	t.Run("EventHubProperties and PartitionProperties after send", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, dac, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, dac, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -140,13 +148,12 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 
 		require.Equal(t, producerPartProps, consumerPartProps)
 	})
-
 }
 
 func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
 	testParams := getConnectionParams(t)
 
-	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, nil)
+	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -169,16 +176,14 @@ func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
 func TestConsumerClient_Concurrent_NoEpoch(t *testing.T) {
 	testParams := getConnectionParams(t)
 
-	partitions := mustSendEventsToAllPartitions(t, testParams.ConnectionString, testParams.EventHubName, []*azeventhubs.EventData{
+	partitions := mustSendEventsToAllPartitions(t, []*azeventhubs.EventData{
 		{Body: []byte("hello world")},
 	})
 
 	const simultaneousClients = 5 // max you can have with a single consumer group for a single partition
 
 	for i := 0; i < simultaneousClients; i++ {
-		client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
-			StartPosition: getStartPosition(partitions[0]),
-		})
+		client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "$Default", nil)
 		require.NoError(t, err)
 
 		// We want all the clients open while this for loop is going.
@@ -187,93 +192,124 @@ func TestConsumerClient_Concurrent_NoEpoch(t *testing.T) {
 			require.NoError(t, err)
 		}()
 
+		partitionClient, err := client.NewPartitionClient(partitions[0].PartitionID, &azeventhubs.NewPartitionClientOptions{
+			StartPosition: getStartPosition(partitions[0]),
+		})
+		require.NoError(t, err)
+
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
 
-		events, err := client.ReceiveEvents(ctx, 1, nil)
+		events, err := partitionClient.ReceiveEvents(ctx, 1, nil)
 		require.NoError(t, err)
 
 		require.Equal(t, 1, len(events))
 	}
 }
 
-func TestConsumerClient_SameEpoch(t *testing.T) {
-	testParams := getConnectionParams(t)
-
-	highestEpoch := int64(2)
-
-	partitions := mustSendEventsToAllPartitions(t, testParams.ConnectionString, testParams.EventHubName, []*azeventhubs.EventData{
+func TestConsumerClient_SameEpoch_StealsLink(t *testing.T) {
+	partitions := mustSendEventsToAllPartitions(t, []*azeventhubs.EventData{
 		{Body: []byte("hello world 1")},
-		{Body: []byte("hello world 2")},
 	})
 
-	clientA, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
+	ownerLevel := int64(2)
+
+	origPartClient, cleanup := newPartitionClientForTest(t, partitions[0].PartitionID, azeventhubs.NewPartitionClientOptions{
 		StartPosition: getStartPosition(partitions[0]),
-		OwnerLevel:    &highestEpoch,
-		// Today we treat the link stolen error as retryable. I've filed an issue to look at making this fatal
-		// instead since it's likely to be a configuration/runtime issue where the user has two consumers
-		//  starting up with the same ownerlevel. Having them fight with retries is probably undesirable.
-		RetryOptions: azeventhubs.RetryOptions{
-			MaxRetries: -1,
-		},
+		OwnerLevel:    &ownerLevel,
 	})
-	require.NoError(t, err)
-
-	defer func() {
-		err := clientA.Close(context.Background())
-		require.NoError(t, err)
-	}()
+	defer cleanup()
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	events, err := clientA.ReceiveEvents(ctx, 1, nil)
-	require.NoError(t, err)
-	require.Equal(t, 1, len(events))
-
-	// we have an active link, using epoch/owner level 1
-
-	/*
-		It might be worth making this a terminal error since it's typically not something you'd consider normal
-		and probably indicates a configuration error.
-
-		(connlost): link detached, reason: *Error{Condition: amqp:link:stolen, Description: New receiver 'nil' with higher epoch of '1' is created hence current receiver 'nil' with epoch '1' is getting disconnected. If you are recreating the receiver, make sure a higher epoch is used.
-	*/
-
-	// now we'll take over with another client.
-	clientB, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
-		StartPosition: getStartPosition(partitions[0]),
-		OwnerLevel:    &highestEpoch,
-	})
-	require.NoError(t, err)
-
-	defer func() {
-		err := clientB.Close(context.Background())
-		require.NoError(t, err)
-	}()
-
-	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-
-	// no need to timeout here, we know there's one event.
-	events, err = clientB.ReceiveEvents(ctx, 1, nil)
+	// open up a link, with an owner level of 2
+	events, err := origPartClient.ReceiveEvents(ctx, 1, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, events)
 
-	// now if we attempt to use the first client we'll get an error that
-	// we've lost ownership.
+	// link with owner level of 2 is alive, so now we'll steal it.
+
+	thiefPartClient, cleanup := newPartitionClientForTest(t, partitions[0].PartitionID, azeventhubs.NewPartitionClientOptions{
+		StartPosition: getStartPosition(partitions[0]),
+		OwnerLevel:    &ownerLevel,
+	})
+	defer cleanup()
+
 	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	events, err = clientA.ReceiveEvents(ctx, 1, nil)
+	events, err = thiefPartClient.ReceiveEvents(ctx, 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, events)
+
+	// the link has been stolen at this point - 'stealerPartClient' owns the link since it's last-in-wins.
+
+	// using the original link reports that it was stolen
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	events, err = origPartClient.ReceiveEvents(ctx, 1, nil)
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "amqp:link:stolen")
 	require.Empty(t, events)
+}
 
-	// now let's try to spin up another receiver, but with a _lower_ owner level.
-	lowerEpochClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
+func TestConsumerClient_LowerEpochsAreRejected(t *testing.T) {
+	partitions := mustSendEventsToAllPartitions(t, []*azeventhubs.EventData{
+		{Body: []byte("hello world 1")},
+		{Body: []byte("hello world 2")},
+	})
+
+	highestOwnerLevel := int64(2)
+
+	origPartClient, cleanup := newPartitionClientForTest(t, partitions[0].PartitionID, azeventhubs.NewPartitionClientOptions{
 		StartPosition: getStartPosition(partitions[0]),
-		OwnerLevel:    to.Ptr(highestEpoch - 1), // lower owner level than the max - automatically loses.
+		OwnerLevel:    &highestOwnerLevel,
+	})
+	defer cleanup()
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	events, err := origPartClient.ReceiveEvents(ctx, 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, events)
+
+	lowerOwnerLevels := []*int64{
+		nil, // no owner level
+		to.Ptr(highestOwnerLevel - 1),
+	}
+
+	for _, ownerLevel := range lowerOwnerLevels {
+		origPartClient, cleanup := newPartitionClientForTest(t, partitions[0].PartitionID, azeventhubs.NewPartitionClientOptions{
+			StartPosition: getStartPosition(partitions[0]),
+			OwnerLevel:    ownerLevel,
+		})
+		defer cleanup()
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		events, err := origPartClient.ReceiveEvents(ctx, 1, nil)
+		require.Error(t, err)
+		// The typical error message is like this:
+		//  At least one receiver for the endpoint is created with epoch of '2', and so non-epoch receiver is not allowed.
+		//  Either reconnect with a higher epoch, or make sure all epoch receivers are closed or disconnected.
+		require.Contains(t, err.Error(), "amqp:link:stolen")
+		require.Empty(t, events)
+	}
+
+	// and the original client is unaffected
+	events, err = origPartClient.ReceiveEvents(ctx, 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, events)
+}
+
+func newPartitionClientForTest(t *testing.T, partitionID string, subscribeOptions azeventhubs.NewPartitionClientOptions) (*azeventhubs.PartitionClient, func()) {
+	testParams := getConnectionParams(t)
+
+	origClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "$Default", &azeventhubs.ConsumerClientOptions{
 		// Today we treat the link stolen error as retryable. I've filed an issue to look at making this fatal
 		// instead since it's likely to be a configuration/runtime issue where the user has two consumers
 		//  starting up with the same ownerlevel. Having them fight with retries is probably undesirable.
@@ -283,41 +319,16 @@ func TestConsumerClient_SameEpoch(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	defer func() {
-		err := lowerEpochClient.Close(context.Background())
-		require.NoError(t, err)
-	}()
-
-	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-
-	_, err = lowerEpochClient.ReceiveEvents(ctx, 1, nil)
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "amqp:link:stolen")
-
-	// and lastly, one without an owner level at all.
-	noEpochClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partitions[0].PartitionID, "$Default", &azeventhubs.ConsumerClientOptions{
-		StartPosition: getStartPosition(partitions[0]),
-		// Today we treat the link stolen error as retryable. I've filed an issue to look at making this fatal
-		// instead since it's likely to be a configuration/runtime issue where the user has two consumers
-		//  starting up with the same ownerlevel. Having them fight with retries is probably undesirable.
-		RetryOptions: azeventhubs.RetryOptions{
-			MaxRetries: -1,
-		},
-	})
+	partClient, err := origClient.NewPartitionClient(partitionID, &subscribeOptions)
 	require.NoError(t, err)
 
-	defer func() {
-		err := noEpochClient.Close(context.Background())
+	return partClient, func() {
+		err := partClient.Close(context.Background())
 		require.NoError(t, err)
-	}()
 
-	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-
-	_, err = noEpochClient.ReceiveEvents(ctx, 1, nil)
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "amqp:link:stolen")
+		err = origClient.Close(context.Background())
+		require.NoError(t, err)
+	}
 }
 
 func TestConsumerClient_StartPositions(t *testing.T) {
@@ -354,7 +365,15 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("offset", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		require.NoError(t, err)
+
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
+		subscription, err := consumerClient.NewPartitionClient("0", &azeventhubs.NewPartitionClientOptions{
 			StartPosition: azeventhubs.StartPosition{
 				Offset: &origPartProps.LastEnqueuedOffset,
 			},
@@ -362,49 +381,59 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 		require.NoError(t, err)
 
 		defer func() {
-			err := consumerClient.Close(context.Background())
+			err := subscription.Close(context.Background())
 			require.NoError(t, err)
 		}()
 
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
 
-		events, err := consumerClient.ReceiveEvents(ctx, 2, nil)
+		events, err := subscription.ReceiveEvents(ctx, 2, nil)
 		require.NoError(t, err)
 		require.Equal(t, []string{"message 1", "message 2"}, getSortedBodies(events))
 	})
 
 	t.Run("enqueuedTime", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		require.NoError(t, err)
+
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
+		subscription, err := consumerClient.NewPartitionClient("0", &azeventhubs.NewPartitionClientOptions{
 			StartPosition: azeventhubs.StartPosition{
 				EnqueuedTime: &origPartProps.LastEnqueuedOn,
 			},
 		})
 		require.NoError(t, err)
 
-		defer func() {
-			err := consumerClient.Close(context.Background())
-			require.NoError(t, err)
-		}()
-
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
 
-		events, err := consumerClient.ReceiveEvents(ctx, 2, nil)
+		events, err := subscription.ReceiveEvents(ctx, 2, nil)
 		require.NoError(t, err)
 		require.Equal(t, []string{"message 1", "message 2"}, getSortedBodies(events))
 	})
 
 	t.Run("earliest", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		require.NoError(t, err)
+
+		defer func() {
+			err := consumerClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
+		subscription, err := consumerClient.NewPartitionClient("0", &azeventhubs.NewPartitionClientOptions{
 			StartPosition: azeventhubs.StartPosition{
 				Earliest: to.Ptr(true),
 			},
 		})
 		require.NoError(t, err)
-
 		defer func() {
-			err := consumerClient.Close(context.Background())
+			err := subscription.Close(context.Background())
 			require.NoError(t, err)
 		}()
 
@@ -412,7 +441,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 		defer cancel()
 
 		// we know there are _at_ two events but it's okay if they're just any events.
-		events, err := consumerClient.ReceiveEvents(ctx, 2, nil)
+		events, err := subscription.ReceiveEvents(ctx, 2, nil)
 		require.NoError(t, err)
 		require.Equal(t, 2, len(events))
 	})
@@ -421,12 +450,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 	testParams := getConnectionParams(t)
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "0", azeventhubs.DefaultConsumerGroup,
-		&azeventhubs.ConsumerClientOptions{
-			StartPosition: azeventhubs.StartPosition{
-				Latest: to.Ptr(true),
-			},
-		})
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -441,7 +465,19 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 	latestEventsCh := make(chan []*azeventhubs.ReceivedEventData, 1)
 
 	go func() {
-		events, err := consumerClient.ReceiveEvents(context.Background(), 2, nil)
+		subscription, err := consumerClient.NewPartitionClient("0", &azeventhubs.NewPartitionClientOptions{
+			StartPosition: azeventhubs.StartPosition{
+				Latest: to.Ptr(true),
+			},
+		})
+		require.NoError(t, err)
+
+		defer func() {
+			err := subscription.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
+		events, err := subscription.ReceiveEvents(context.Background(), 2, nil)
 		require.NoError(t, err)
 		latestEventsCh <- events
 	}()
@@ -489,8 +525,9 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 // NOTE: the message that's passed in does get altered so don't count on it being unchanged after calling
 // this function. Each message gets an additional property (DestPartitionID), set to the parttion ID that
 // we sent it to.
-func mustSendEventsToAllPartitions(t *testing.T, cs string, eventHub string, events []*azeventhubs.EventData) []azeventhubs.PartitionProperties {
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(cs, eventHub, nil)
+func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData) []azeventhubs.PartitionProperties {
+	testParams := getConnectionParams(t)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
 
 	defer func() {

@@ -173,9 +173,7 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 		}
 	}
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(cs, hubName, partProps.PartitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
-		StartPosition: startPosition,
-	})
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(cs, hubName, azeventhubs.DefaultConsumerGroup, nil)
 
 	if err != nil {
 		return err
@@ -190,6 +188,14 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 	// read in 10 second chunks. If we ever end a 10 second chunk with no messages
 	// then we've probably just failed.
 
+	subscription, err := consumerClient.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
+		StartPosition: startPosition,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
 	sequenceNumbers := map[int64]int64{}
 
 	numEmptyBatches := 0
@@ -200,7 +206,7 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()
 
-			events, err := consumerClient.ReceiveEvents(ctx, 1000, nil)
+			events, err := subscription.ReceiveEvents(ctx, 1000, nil)
 
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) {

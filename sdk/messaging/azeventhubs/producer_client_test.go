@@ -107,9 +107,7 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 		go func(partProps azeventhubs.PartitionProperties) {
 			defer wg.Done()
 
-			consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, partProps.PartitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
-				StartPosition: getStartPosition(partProps),
-			})
+			consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
 			require.NoError(t, err)
 
 			defer func() {
@@ -117,7 +115,12 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 				require.NoError(t, err)
 			}()
 
-			events, err := consumer.ReceiveEvents(ctx, 1, nil)
+			subscription, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
+				StartPosition: getStartPosition(partProps),
+			})
+			require.NoError(t, err)
+
+			events, err := subscription.ReceiveEvents(ctx, 1, nil)
 
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
@@ -180,9 +183,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 	partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, &azeventhubs.GetPartitionPropertiesOptions{})
 	require.NoError(t, err)
 
-	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(cs, eventHubName, partitionID, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
-		StartPosition: getStartPosition(partProps),
-	})
+	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(cs, eventHubName, azeventhubs.DefaultConsumerGroup, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -222,8 +223,13 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 
 	var actualBodies []string
 
+	subscription, err := consumer.NewPartitionClient(partitionID, &azeventhubs.NewPartitionClientOptions{
+		StartPosition: getStartPosition(partProps),
+	})
+	require.NoError(t, err)
+
 	for {
-		events, err := consumer.ReceiveEvents(ctx, 100, nil)
+		events, err := subscription.ReceiveEvents(ctx, 100, nil)
 		require.NoError(t, err)
 
 		for _, event := range events {
@@ -242,11 +248,13 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 	require.Equal(t, expectedBodies, actualBodies)
 }
 
-func getConnectionParams(t *testing.T) struct {
+type connectionParams struct {
 	ConnectionString  string
 	EventHubName      string
 	EventHubNamespace string
-} {
+}
+
+func getConnectionParams(t *testing.T) connectionParams {
 	_ = godotenv.Load()
 
 	cs := os.Getenv("EVENTHUB_CONNECTION_STRING")
@@ -254,11 +262,7 @@ func getConnectionParams(t *testing.T) struct {
 	if cs == "" {
 		t.Skipf("EVENTHUB_CONNECTION_STRING must be defined in the environment. Live test skipped.")
 
-		return struct {
-			ConnectionString  string
-			EventHubName      string
-			EventHubNamespace string
-		}{}
+		return connectionParams{}
 	}
 
 	eventHubName := os.Getenv("EVENTHUB_NAME")
@@ -276,11 +280,7 @@ func getConnectionParams(t *testing.T) struct {
 	parsedConn, err := conn.ParsedConnectionFromStr(cs)
 	require.NoError(t, err)
 
-	return struct {
-		ConnectionString  string
-		EventHubName      string
-		EventHubNamespace string
-	}{
+	return connectionParams{
 		ConnectionString:  cs,
 		EventHubName:      eventHubName,
 		EventHubNamespace: parsedConn.Namespace,

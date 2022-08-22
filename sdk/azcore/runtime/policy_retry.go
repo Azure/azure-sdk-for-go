@@ -38,7 +38,7 @@ func setDefaults(o *policy.RetryOptions) {
 		o.MaxRetryDelay = math.MaxInt64
 	}
 	if o.RetryDelay == 0 {
-		o.RetryDelay = 4 * time.Second
+		o.RetryDelay = 800 * time.Millisecond
 	} else if o.RetryDelay < 0 {
 		o.RetryDelay = 0
 	}

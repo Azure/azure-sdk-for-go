@@ -473,7 +473,7 @@ func TestStartStopRecordingClient(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 	require.Equal(t, "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", data.Entries[0].RequestURI)
-	require.Equal(t, req.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
+	require.Equal(t, resp.Request.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
 }
 
 func TestStopRecordingNoStart(t *testing.T) {

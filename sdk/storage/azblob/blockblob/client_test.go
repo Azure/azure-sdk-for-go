@@ -13,6 +13,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -1653,4 +1654,205 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPKScope() {
 
 	_, err = snapshotURL.Delete(context.Background(), nil)
 	_require.Nil(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+	data := []rune("-._/()$=',~0123456789")
+	for i := 0; i < len(data); i++ {
+		blobName := "abc" + string(data[i])
+		blobClient := containerClient.NewBlockBlobClient(blobName)
+		resp, err := blobClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(string(data[i]))), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.VersionID)
+
+		blobClientWithVersionID, err := blobClient.WithVersionID(*resp.VersionID)
+		_require.Nil(err)
+		dResp, err := blobClientWithVersionID.DownloadStream(context.Background(), nil)
+		_require.Nil(err)
+		d1, err := io.ReadAll(dResp.Body)
+		_require.Nil(err)
+		_require.NotEqual(*dResp.Version, "")
+		_require.EqualValues(string(d1), string(data[i]))
+		_require.NotNil(dResp.VersionID)
+		_require.Equal(*dResp.VersionID, *resp.VersionID)
+	}
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	versions := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		uploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &blockblob.UploadOptions{
+			Metadata: testcommon.BasicMetadata,
+		})
+		_require.Nil(err)
+		_require.NotNil(uploadResp.VersionID)
+		versions = append(versions, *uploadResp.VersionID)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemVersions},
+	})
+
+	found := make([]*container.BlobItem, 0)
+	for listPager.More() {
+		resp, err := listPager.NextPage(context.Background())
+		_require.Nil(err)
+		if err != nil {
+			break
+		}
+		found = append(found, resp.Segment.BlobItems...)
+	}
+	_require.Len(found, 5)
+
+	// Deleting the 2nd and 3rd versions
+	for i := 0; i < 3; i++ {
+		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		_, err = bbClientWithVersionID.Delete(context.Background(), nil)
+		_require.Nil(err)
+		//_require.Equal(deleteResp.RawResponse.StatusCode, 202)
+	}
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemVersions},
+	})
+
+	found = make([]*container.BlobItem, 0)
+	for listPager.More() {
+		resp, err := listPager.NextPage(context.Background())
+		_require.Nil(err)
+		if err != nil {
+			break
+		}
+		found = append(found, resp.Segment.BlobItems...)
+	}
+	_require.Len(found, 2)
+
+	for i := 3; i < 5; i++ {
+		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		downloadResp, err := bbClientWithVersionID.DownloadStream(context.Background(), nil)
+		_require.Nil(err)
+		destData, err := io.ReadAll(downloadResp.Body)
+		_require.Nil(err)
+		_require.EqualValues(destData, "data"+strconv.Itoa(i))
+	}
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestPutBlockListReturnsVID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+
+	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
+	base64BlockIDs := make([]string, len(data))
+
+	for index, d := range data {
+		base64BlockIDs[index] = testcommon.BlockIDIntToBase64(index)
+		resp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(d)), nil)
+		_require.Nil(err)
+		// _require.Equal(resp.RawResponse.StatusCode, 201)
+		_require.NotNil(resp.Version)
+		_require.NotEqual(*resp.Version, "")
+	}
+
+	commitResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
+	_require.Nil(err)
+	_require.NotNil(commitResp.VersionID)
+
+	contentResp, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.Nil(err)
+	contentData, err := io.ReadAll(contentResp.Body)
+	_require.Nil(err)
+	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
+}
+
+// nolint
+func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	testSize := 2 * 1024 * 1024 // 1MB
+	r, _ := testcommon.GetRandomDataAndReader(testSize)
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+
+	// Prepare source blob for copy.
+	uploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(r), nil)
+	_require.Nil(err)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	_require.NotNil(uploadResp.VersionID)
+
+	csResp, err := bbClient.CreateSnapshot(context.Background(), nil)
+	_require.Nil(err)
+	//_require.Equal(csResp.RawResponse.StatusCode, 201)
+	_require.NotNil(csResp.VersionID)
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots},
+	})
+
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = bbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+	//_require.Equal(deleteResp.RawResponse.StatusCode, 202)
+
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots, container.ListBlobsIncludeItemVersions},
+	})
+
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.NotEqual(len(found), 0)
 }

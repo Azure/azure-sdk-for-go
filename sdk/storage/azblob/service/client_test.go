@@ -8,6 +8,8 @@ package service_test
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -480,4 +482,49 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+
+	resources := service.SASResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := service.SASPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Update: true,
+		Delete: true,
+	}
+	services := service.SASServices{
+		Blob: true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
+	_require.Nil(err)
+
+	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
+	_require.Nil(err)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName+"002", nil)
+	_require.Nil(err)
 }

@@ -84,7 +84,7 @@ func GetReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 
 func GetRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
-	rand.Read(data)
+	_, _ = rand.Read(data)
 	return bytes.NewReader(data), data
 }
 
@@ -182,12 +182,12 @@ func GetRequiredEnv(name string) (string, error) {
 
 func BeforeTest(t *testing.T, suite string, test string) {
 	const urlRegex = `https://\S+\.blob\.core\.windows\.net`
-	recording.AddURISanitizer(FakeStorageURL, urlRegex, nil)
-	recording.AddHeaderRegexSanitizer("x-ms-copy-source", FakeStorageURL, urlRegex, nil)
+	require.NoError(t, recording.AddURISanitizer(FakeStorageURL, urlRegex, nil))
+	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-copy-source", FakeStorageURL, urlRegex, nil))
 	// we freeze request IDs and timestamps to avoid creating noisy diffs
 	// NOTE: we can't freeze time stamps as that breaks some tests that use if-modified-since etc (maybe it can be fixed?)
 	//testframework.AddHeaderRegexSanitizer("X-Ms-Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
-	recording.AddHeaderRegexSanitizer("x-ms-request-id", "00000000-0000-0000-0000-000000000000", "", nil)
+	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-request-id", "00000000-0000-0000-0000-000000000000", "", nil))
 	//testframework.AddHeaderRegexSanitizer("Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
 	// TODO: more freezing
 	//testframework.AddBodyRegexSanitizer("RequestId:00000000-0000-0000-0000-000000000000", `RequestId:\w{8}-\w{4}-\w{4}-\w{4}-\w{12}`, nil)

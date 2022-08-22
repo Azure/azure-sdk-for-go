@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2021-09-01-preview/examples/Grafana_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/Grafana_List.json
 func ExampleGrafanaClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleGrafanaClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2021-09-01-preview/examples/Grafana_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/Grafana_ListByResourceGroup.json
 func ExampleGrafanaClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,8 +52,7 @@ func ExampleGrafanaClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("myResourceGroup",
-		nil)
+	pager := client.NewListByResourceGroupPager("myResourceGroup", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,7 +65,7 @@ func ExampleGrafanaClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2021-09-01-preview/examples/Grafana_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/Grafana_Get.json
 func ExampleGrafanaClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,10 +76,7 @@ func ExampleGrafanaClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroup",
-		"myWorkspace",
-		nil)
+	res, err := client.Get(ctx, "myResourceGroup", "myWorkspace", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,7 +84,7 @@ func ExampleGrafanaClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2021-09-01-preview/examples/Grafana_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/Grafana_Create.json
 func ExampleGrafanaClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,26 +95,30 @@ func ExampleGrafanaClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
-		"myResourceGroup",
-		"myWorkspace",
-		armdashboard.ManagedGrafana{
-			Identity: &armdashboard.ManagedIdentity{
-				Type: to.Ptr(armdashboard.IdentityTypeSystemAssigned),
-			},
-			Location: to.Ptr("West US"),
-			Properties: &armdashboard.ManagedGrafanaProperties{
-				ProvisioningState: to.Ptr(armdashboard.ProvisioningStateAccepted),
-				ZoneRedundancy:    to.Ptr(armdashboard.ZoneRedundancyEnabled),
-			},
-			SKU: &armdashboard.ResourceSKU{
-				Name: to.Ptr("Standard"),
-			},
-			Tags: map[string]*string{
-				"Environment": to.Ptr("Dev"),
-			},
+	poller, err := client.BeginCreate(ctx, "myResourceGroup", "myWorkspace", armdashboard.ManagedGrafana{
+		Identity: &armdashboard.ManagedServiceIdentity{
+			Type: to.Ptr(armdashboard.ManagedServiceIdentityTypeSystemAssigned),
 		},
-		nil)
+		Location: to.Ptr("West US"),
+		Properties: &armdashboard.ManagedGrafanaProperties{
+			APIKey:                  to.Ptr(armdashboard.APIKeyEnabled),
+			DeterministicOutboundIP: to.Ptr(armdashboard.DeterministicOutboundIPEnabled),
+			GrafanaIntegrations: &armdashboard.GrafanaIntegrations{
+				AzureMonitorWorkspaceIntegrations: []*armdashboard.AzureMonitorWorkspaceIntegration{
+					{
+						AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace"),
+					}},
+			},
+			PublicNetworkAccess: to.Ptr(armdashboard.PublicNetworkAccessEnabled),
+			ZoneRedundancy:      to.Ptr(armdashboard.ZoneRedundancyEnabled),
+		},
+		SKU: &armdashboard.ResourceSKU{
+			Name: to.Ptr("Standard"),
+		},
+		Tags: map[string]*string{
+			"Environment": to.Ptr("Dev"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -130,7 +130,7 @@ func ExampleGrafanaClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2021-09-01-preview/examples/Grafana_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/Grafana_Update.json
 func ExampleGrafanaClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,15 +141,21 @@ func ExampleGrafanaClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"myResourceGroup",
-		"myWorkspace",
-		armdashboard.ManagedGrafanaUpdateParameters{
-			Tags: map[string]*string{
-				"Environment": to.Ptr("Dev 2"),
+	res, err := client.Update(ctx, "myResourceGroup", "myWorkspace", armdashboard.ManagedGrafanaUpdateParameters{
+		Properties: &armdashboard.ManagedGrafanaPropertiesUpdateParameters{
+			APIKey:                  to.Ptr(armdashboard.APIKeyEnabled),
+			DeterministicOutboundIP: to.Ptr(armdashboard.DeterministicOutboundIPEnabled),
+			GrafanaIntegrations: &armdashboard.GrafanaIntegrations{
+				AzureMonitorWorkspaceIntegrations: []*armdashboard.AzureMonitorWorkspaceIntegration{
+					{
+						AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace"),
+					}},
 			},
 		},
-		nil)
+		Tags: map[string]*string{
+			"Environment": to.Ptr("Dev 2"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -157,7 +163,7 @@ func ExampleGrafanaClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2021-09-01-preview/examples/Grafana_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/Grafana_Delete.json
 func ExampleGrafanaClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,10 +174,7 @@ func ExampleGrafanaClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"myResourceGroup",
-		"myWorkspace",
-		nil)
+	poller, err := client.BeginDelete(ctx, "myResourceGroup", "myWorkspace", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

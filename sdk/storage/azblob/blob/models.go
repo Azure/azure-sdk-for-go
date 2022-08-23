@@ -258,6 +258,32 @@ func (o *UndeleteOptions) format() *generated.BlobClientUndeleteOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+type BlobDeleteType = generated.BlobDeleteType
+
+type PermanentDeleteOptions struct {
+	DeleteOptions
+	BlobDeleteType *BlobDeleteType
+}
+
+func (o *PermanentDeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil
+	}
+
+	basics := generated.BlobClientDeleteOptions{
+		DeleteSnapshots: o.DeleteSnapshots,
+		BlobDeleteType:  o.BlobDeleteType,
+	}
+
+	if o.AccessConditions == nil {
+		return &basics, nil, nil
+	}
+
+	return &basics, o.AccessConditions.LeaseAccessConditions, o.AccessConditions.ModifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // SetTierOptions contains the optional parameters for the Client.SetTier method.
 type SetTierOptions struct {
 	// Optional: Indicates the priority with which to rehydrate an archived blob.

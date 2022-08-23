@@ -59,6 +59,9 @@ type DeleteResponse = generated.BlobClientDeleteResponse
 // UndeleteResponse contains the response from method BlobClient.Undelete.
 type UndeleteResponse = generated.BlobClientUndeleteResponse
 
+// PermanentDeleteResponse contains the response from method BlobClient.PermanentDelete.
+type PermanentDeleteResponse = generated.BlobClientDeleteResponse
+
 // SetTierResponse contains the response from method BlobClient.SetTier.
 type SetTierResponse = generated.BlobClientSetTierResponse
 

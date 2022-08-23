@@ -2960,7 +2960,127 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
-// nolint
+func (s *azblobTestSuite) TestPermanentDelete() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	_require.Nil(err)
+
+	// Enable soft-delete by setting retention policy
+	days := int32(1)
+	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{
+		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(true), Days: &days, AllowPermanentDelete: to.Ptr(true)}})
+	_require.Nil(err)
+
+	time.Sleep(time.Second * 30) // Sleep for 30 seconds for account/container creation
+
+	// Create container and blob, upload blob to container
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	bbClient := getBlockBlobClient(blobName, containerClient)
+
+	_, err = bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	parts, err := exported.ParseBlobURL(bbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS and set Permanent Delete to true
+	parts.SAS, err = service.SASSignatureValues{
+		Protocol:      service.SASProtocolHTTPS,             // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(service.SASPermissions{Read: true, List: true, PermanentDelete: true}).String(),
+		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(service.SASResourceTypes{Container: true, Object: true}).String(),
+	}.Sign(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := bbClient.CreateSnapshot(ctx, &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
+
+	include := []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots}
+
+	// Ceck that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: include})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot (snapshot will be soft deleted)
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = bbClient.Delete(ctx, &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists (snapshot is soft-deleted)
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: include,
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Check that soft-deleted snapshot exists by including deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots, container.ListBlobsIncludeItemDeleted}})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Permanently delete soft-deleted snapshot
+	pdOptions := blob.PermanentDeleteOptions{
+		DeleteOptions:  blob.DeleteOptions{},
+		BlobDeleteType: to.Ptr(azblob.BlobDeleteTypePermanent),
+	}
+	pdResp, err := snapshotURL.PermanentDelete(ctx, &pdOptions)
+	_require.Nil(err)
+	_require.NotNil(pdResp)
+
+	// Check that only blob exists even after including snapshots and deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots, container.ListBlobsIncludeItemDeleted}})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+}
+
+//nolint
 func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *service.Client) error {
 	//containerClient := createNewContainer(_require, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(_require, containerClient)

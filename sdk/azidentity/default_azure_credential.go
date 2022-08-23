@@ -67,7 +67,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	msiCred, err := NewManagedIdentityCredential(o)
 	if err == nil {
 		creds = append(creds, msiCred)
-		msiCred.client.imdsTimeout = time.Second
+		msiCred.mic.imdsTimeout = time.Second
 	} else {
 		errorMessages = append(errorMessages, credNameManagedIdentity+": "+err.Error())
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameManagedIdentity, err: err})

@@ -9,6 +9,8 @@ package azquery
 // this file contains handwritten additions to the generated code
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -27,4 +29,8 @@ func NewClient(credential azcore.TokenCredential, options *ClientOptions) *Clien
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://api.loganalytics.io/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &Client{pl: pl}
+}
+
+func QueryTimeInterval(startTime time.Time, endTime time.Time) string {
+	return startTime.Format(time.RFC3339) + "/" + endTime.Format(time.RFC3339)
 }

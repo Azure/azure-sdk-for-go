@@ -4,31 +4,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azquery
+package azquery_test
 
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 )
 
 const workspaceID = "d2d0e126-fa1e-4b0a-b647-250cdd471e68"
 
-func TestExecute_BasicQuerySuccess(t *testing.T) {
+func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal("error constructing credential")
 	}
 
-	client := NewClient(cred, nil)
+	client := azquery.NewClient(cred, nil)
 
 	query := "search * | take 5"
-	time := "2022-08-01/2022-08-02"
+	timespan := azquery.QueryTimeInterval(time.Now().Add(-12*time.Hour), time.Now())
 
-	body := Body{
+	body := azquery.Body{
 		Query:    &query,
-		Timespan: &time,
+		Timespan: &timespan,
 	}
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
@@ -63,11 +65,11 @@ func TestExecute_BasicQueryFailure(t *testing.T) {
 		t.Fatal("error constructing credential")
 	}
 
-	client := NewClient(cred, nil)
+	client := azquery.NewClient(cred, nil)
 
 	var strPointer = new(string)
 	*strPointer = "not a valid query"
-	body := Body{
+	body := azquery.Body{
 		Query: strPointer,
 	}
 
@@ -80,22 +82,22 @@ func TestExecute_BasicQueryFailure(t *testing.T) {
 	}
 }
 
-func TestExecute_AdvancedQuerySuccess(t *testing.T) {
+func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	// special options: timeout, multiple workspaces, statistics, visualization
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal("error constructing credential")
 	}
 
-	client := NewClient(cred, nil)
+	client := azquery.NewClient(cred, nil)
 
 	query := "search * | take 5"
-	body := Body{
+	body := azquery.Body{
 		Query: &query,
 	}
 
 	prefer := "wait=180,include-statistics=true,include-render=true"
-	options := &ClientQueryWorkspaceOptions{Prefer: &prefer}
+	options := &azquery.ClientQueryWorkspaceOptions{Prefer: &prefer}
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, options)
 	if err != nil {
@@ -122,23 +124,29 @@ func TestBatch_QuerySuccess(t *testing.T) {
 		t.Fatal("error constructing credential")
 	}
 
-	client := NewClient(cred, nil)
+	client := azquery.NewClient(cred, nil)
 	query := "search * | take 5"
-	time := "2022-08-01/2022-08-02"
-	id := "189285912908589803580198308859812"
+	id := "1"
 	workspaceID := "d2d0e126-fa1e-4b0a-b647-250cdd471e68"
 
-	body := Body{
-		Query:    &query,
-		Timespan: &time,
+	body := azquery.Body{
+		Query: &query,
 	}
 
-	req1 := BatchQueryRequest{Body: &body, ID: &id, Workspace: &workspaceID}
+	path := azquery.BatchQueryRequestPathQuery
+	method := azquery.BatchQueryRequestMethodPOST
 
-	batchRequest := BatchRequest{[]*BatchQueryRequest{&req1}}
+	req1 := azquery.BatchQueryRequest{Body: &body, ID: &id, Workspace: &workspaceID, Path: &path, Method: &method}
 
-	res, err := client.Batch(context.Background(), batchRequest, nil)
-	_ = res
+	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{&req1}}
+
+	res, err := client.Batch(context.Background(), batchRequest, &azquery.ClientBatchOptions{})
+	if err != nil {
+		t.Fatalf("expected non nil error: %s", err.Error())
+	}
+	if *(res.Responses[0].ID) != "1" {
+		t.Fatalf("error, wrong response id")
+	}
 }
 
 func TestBatch_QueryFailure(t *testing.T) {

@@ -6,64 +6,8 @@
 
 package azblob_test
 
-import (
-	"context"
-	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
-	"github.com/stretchr/testify/require"
-	"os"
-	"time"
-)
-
-// nolint
-func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
-	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
-	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
-
-	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
-
-	containerName := generateContainerName(testName)
-
-	resources := service.SASResourceTypes{
-		Object:    true,
-		Service:   true,
-		Container: true,
-	}
-	permissions := service.SASPermissions{
-		Read:   true,
-		Add:    true,
-		Write:  true,
-		Create: true,
-		Update: true,
-		Delete: true,
-	}
-	services := service.SASServices{
-		Blob: true,
-	}
-	start := time.Now().Add(-time.Hour)
-	expiry := start.Add(time.Hour)
-
-	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
-	_require.Nil(err)
-
-	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
-	_require.Nil(err)
-
-	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
-
-	_, err = svcClient.DeleteContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
-}
-
 //
-//func (s *azblobUnrecordedTestSuite) TestSASContainerClient() {
+//func (s *AZBlobUnrecordedTestsSuite) TestSASContainerClient() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -74,7 +18,7 @@ func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
 //	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 //	_require.Nil(err)
 //
-//	containerName := generateContainerName(testName)
+//	containerName := testcommon.GenerateContainerName(testName)
 //	containerClient := serviceClient.NewContainerClient(containerName)
 //
 //	permissions := container.SASPermissions{
@@ -95,7 +39,7 @@ func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
 //	validateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 //}
 ////
-//func (s *azblobUnrecordedTestSuite) TestSASContainerClient2() {
+//func (s *AZBlobUnrecordedTestsSuite) TestSASContainerClient2() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -106,7 +50,7 @@ func (s *azblobUnrecordedTestSuite) TestSASServiceClient() {
 //	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 //	_require.Nil(err)
 //
-//	containerName := generateContainerName(testName)
+//	containerName := testcommon.GenerateContainerName(testName)
 //	containerClient := serviceClient.NewContainerClient(containerName)
 //
 //	sasUrlReadAdd, err := containerClient.GetSASURL(container.SASPermissions{Read: true, Add: true},

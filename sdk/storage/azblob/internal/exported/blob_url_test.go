@@ -4,17 +4,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azblob_test
+package exported
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-func (s *azblobTestSuite) TestURLParsing() {
-	_require := require.New(s.T())
+func TestParseURL(t *testing.T) {
 	testStorageAccount := "fakestorageaccount"
 	host := fmt.Sprintf("%s.blob.core.windows.net", testStorageAccount)
 	testContainer := "fakecontainer"
@@ -26,34 +25,33 @@ func (s *azblobTestSuite) TestURLParsing() {
 		snapshotID, versionID := "", "2021-10-25T05:41:32.5526810Z"
 		sasWithVersionID := "?versionId=" + versionID + "&" + sas
 		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s%s", testStorageAccount, testContainer, fileName, sasWithVersionID)
-		blobURLParts, err := azblob.ParseURL(urlWithVersion)
-		_require.Nil(err)
+		blobURLParts, err := ParseURL(urlWithVersion)
+		require.NoError(t, err)
 
-		_require.Equal(blobURLParts.Scheme, "https")
-		_require.Equal(blobURLParts.Host, host)
-		_require.Equal(blobURLParts.ContainerName, testContainer)
-		_require.Equal(blobURLParts.VersionID, versionID)
-		_require.Equal(blobURLParts.Snapshot, snapshotID)
+		require.Equal(t, blobURLParts.Scheme, "https")
+		require.Equal(t, blobURLParts.Host, host)
+		require.Equal(t, blobURLParts.ContainerName, testContainer)
+		require.Equal(t, blobURLParts.VersionID, versionID)
+		require.Equal(t, blobURLParts.Snapshot, snapshotID)
 
-		validateSAS(_require, sas, blobURLParts.SAS)
+		validateSAS(t, sas, blobURLParts.SAS)
 	}
 
 	for _, fileName := range fileNames {
 		snapshotID, versionID := "2011-03-09T01:42:34Z", ""
 		sasWithSnapshotID := "?snapshot=" + snapshotID + "&" + sas
 		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s%s", testStorageAccount, testContainer, fileName, sasWithSnapshotID)
-		blobURLParts, err := azblob.ParseURL(urlWithVersion)
-		_require.Nil(err)
+		blobURLParts, err := ParseURL(urlWithVersion)
+		require.NoError(t, err)
 
-		_require.Equal(blobURLParts.Scheme, "https")
-		_require.Equal(blobURLParts.Host, host)
-		_require.Equal(blobURLParts.ContainerName, testContainer)
-		_require.Equal(blobURLParts.VersionID, versionID)
-		_require.Equal(blobURLParts.Snapshot, snapshotID)
+		require.Equal(t, blobURLParts.Scheme, "https")
+		require.Equal(t, blobURLParts.Host, host)
+		require.Equal(t, blobURLParts.ContainerName, testContainer)
+		require.Equal(t, blobURLParts.VersionID, versionID)
+		require.Equal(t, blobURLParts.Snapshot, snapshotID)
 
-		validateSAS(_require, sas, blobURLParts.SAS)
+		validateSAS(t, sas, blobURLParts.SAS)
 	}
 
 	//urlWithIP := "https://127.0.0.1:5000/"
-
 }

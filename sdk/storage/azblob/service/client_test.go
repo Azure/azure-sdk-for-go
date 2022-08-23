@@ -4,12 +4,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azblob_test
+package service_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"fmt"
+	"os"
+	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -17,11 +22,41 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
 
-func (s *azblobTestSuite) TestGetAccountInfo() {
+func Test(t *testing.T) {
+	suite.Run(t, &ServiceRecordedTestsSuite{})
+	//suite.Run(t, &ServiceUnrecordedTestsSuite{})
+}
+
+func (s *ServiceRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(s.T(), suite, test)
+}
+
+func (s *ServiceRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(s.T(), suite, test)
+}
+
+func (s *ServiceUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+
+}
+
+func (s *ServiceUnrecordedTestsSuite) AfterTest(suite string, test string) {
+
+}
+
+type ServiceRecordedTestsSuite struct {
+	suite.Suite
+}
+
+type ServiceUnrecordedTestsSuite struct {
+	suite.Suite
+}
+
+func (s *ServiceRecordedTestsSuite) TestGetAccountInfo() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
@@ -31,12 +66,12 @@ func (s *azblobTestSuite) TestGetAccountInfo() {
 }
 
 // nolint
-func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	accountName, _ := getAccountInfo(testAccountDefault)
-	connectionString := getConnectionString(testAccountDefault)
+	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
+	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
 
 	parsedConnStr, err := shared.ParseConnectionString(connectionString)
 	_require.Nil(err)
@@ -47,38 +82,38 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 
 	svcClient, err := service.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
 	_require.Nil(err)
-	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-	defer deleteContainer(_require, containerClient)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 }
 
 // nolint
-func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
+func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 	md := map[string]string{
 		"foo": "foovalue",
 		"bar": "barvalue",
 	}
 
-	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
-	_, err = containerClient.Create(ctx, &container.CreateOptions{Metadata: md})
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: md})
 	defer func(containerClient *container.Client, ctx context.Context, options *container.DeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			_require.Nil(err)
 		}
-	}(containerClient, ctx, nil)
+	}(containerClient, context.Background(), nil)
 	_require.Nil(err)
-	prefix := containerPrefix
+	prefix := testcommon.ContainerPrefix
 	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersDetail{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
 
 	count := 0
 	for pager.More() {
-		resp, err := pager.NextPage(ctx)
+		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 		for _, ctnr := range resp.ContainerItems {
 			_require.NotNil(ctnr.Name)
@@ -113,33 +148,33 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 }
 
 // nolint
-func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString() {
+func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClientFromConnectionString(nil, testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClientFromConnectionString(nil, testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 	md := map[string]string{
 		"foo": "foovalue",
 		"bar": "barvalue",
 	}
 
-	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, svcClient)
-	_, err = containerClient.Create(ctx, &container.CreateOptions{Metadata: md})
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: md})
 	defer func(containerClient *container.Client, ctx context.Context, options *container.DeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
 			_require.Nil(err)
 		}
-	}(containerClient, ctx, nil)
+	}(containerClient, context.Background(), nil)
 	_require.Nil(err)
-	prefix := containerPrefix
+	prefix := testcommon.ContainerPrefix
 	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersDetail{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
 
 	count := 0
 	for pager.More() {
-		resp, err := pager.NextPage(ctx)
+		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 
 		for _, ctnr := range resp.ContainerItems {
@@ -174,11 +209,11 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	_require.GreaterOrEqual(count, 0)
 }
 
-//func (s *azblobTestSuite) TestListContainersPaged() {
+//func (s *ServiceRecordedTestsSuite) TestListContainersPaged() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//	svcClient, err := testcommon.GetServiceClient(_context.recording, testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -190,20 +225,20 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 //	containers := make([]containerClient, numContainers)
 //	expectedResults := make(map[string]bool)
 //	for i := 0; i < numContainers; i++ {
-//		containerName := pagedContainersPrefix + generateContainerName(testName) + string(i)
-//		containerClient := createNewContainer(_require, containerName, svcClient)
+//		containerName := pagedContainersPrefix + testcommon.GenerateContainerName(testName) + string(i)
+//		containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 //		containers[i] = containerClient
 //		expectedResults[containerName] = false
 //	}
 //
 //	defer func() {
 //		for i := range containers {
-//			deleteContainer(_require, containers[i])
+//			testcommon.DeleteContainer(context.Background(), _require, containers[i])
 //		}
 //	}()
 //
 //	// list for a first time
-//	prefix := containerPrefix + pagedContainersPrefix
+//	prefix := testcommon.ContainerPrefix + pagedContainersPrefix
 //	listOptions := ServiceListContainersOptions{MaxResults: &maxResults, Prefix: &prefix}
 //	count := 0
 //	results := make([]ContainerItem, 0)
@@ -240,22 +275,22 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 //	}
 //}
 
-func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
+func (s *ServiceRecordedTestsSuite) TestAccountListContainersEmptyPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient1 := createNewContainer(_require, generateContainerName(testName)+"1", svcClient)
-	defer deleteContainer(_require, containerClient1)
-	containerClient2 := createNewContainer(_require, generateContainerName(testName)+"2", svcClient)
-	defer deleteContainer(_require, containerClient2)
+	containerClient1 := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"1", svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient1)
+	containerClient2 := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"2", svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient2)
 
 	count := 0
 	pager := svcClient.NewListContainersPager(nil)
 
 	for pager.More() {
-		resp, err := pager.NextPage(ctx)
+		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 
 		for _, container := range resp.ContainerItems {
@@ -270,10 +305,10 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 }
 
 //// TODO re-enable after fixing error handling
-////func (s *azblobTestSuite) TestAccountListContainersMaxResultsNegative() {
-////	svcClient := getServiceClient()
+////func (s *ServiceRecordedTestsSuite) TestAccountListContainersMaxResultsNegative() {
+////	svcClient := testcommon.GetServiceClient()
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(_require, containerClient)
+////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 ////
 ////	illegalMaxResults := []int32{-2, 0}
 ////	for _, num := range illegalMaxResults {
@@ -288,15 +323,15 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 ////	}
 ////}
 //
-////func (s *azblobTestSuite) TestAccountListContainersMaxResultsExact() {
+////func (s *ServiceRecordedTestsSuite) TestAccountListContainersMaxResultsExact() {
 ////	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
-////	svcClient := getServiceClient()
+////	svcClient := testcommon.GetServiceClient()
 ////	containerClient1, containerName1 := createNewContainerWithSuffix(c, svcClient, "abc")
 ////	defer deleteContainer(containerClient1)
 ////	containerClient2, containerName2 := createNewContainerWithSuffix(c, svcClient, "abcde")
 ////	defer deleteContainer(containerClient2)
 ////
-////	prefix := containerPrefix + "abc"
+////	prefix := testcommon.ContainerPrefix + "abc"
 ////	maxResults := int32(2)
 ////	options := ServiceListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
 ////	pager, err := svcClient.NewListContainersPager(&options)
@@ -313,138 +348,183 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 ////	_require.(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
 ////}
 
-func (s *azblobTestSuite) TestAccountDeleteRetentionPolicy() {
+func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
 	_require.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
-	resp, err := svcClient.GetProperties(ctx, nil)
+	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	disabled := false
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &disabled}})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &disabled}})
 	_require.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
-	resp, err = svcClient.GetProperties(ctx, nil)
+	resp, err = svcClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, false)
 	_require.Nil(resp.StorageServiceProperties.DeleteRetentionPolicy.Days)
 }
 
-func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyEmpty() {
+func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyEmpty() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
 	_require.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
-	resp, err := svcClient.GetProperties(ctx, nil)
+	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Empty retention policy causes an error, this is different from track 1.5
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{}})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{}})
 	_require.NotNil(err)
 }
 
-func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil() {
+func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
 	_require.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
-	resp, err := svcClient.GetProperties(ctx, nil)
+	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{})
 	_require.Nil(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
-	resp, err = svcClient.GetProperties(ctx, nil)
+	resp, err = svcClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Disable for other tests
 	enabled = to.Ptr(false)
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled}})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled}})
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
+func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	days := int32(0) // Minimum days is 1. Validated on the client.
 	enabled := true
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled, Days: &days}})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled, Days: &days}})
 	_require.NotNil(err)
 }
 
 // nolint
-func (s *azblobUnrecordedTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
+func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_require := require.New(s.T())
 	var svcClient *service.Client
 	var err error
 	for i := 1; i <= 2; i++ {
 		if i == 1 {
-			svcClient, err = getServiceClient(nil, testAccountDefault, nil)
+			svcClient, err = testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
 		} else {
-			svcClient, err = getServiceClientFromConnectionString(nil, testAccountDefault, nil)
+			svcClient, err = testcommon.GetServiceClientFromConnectionString(nil, testcommon.TestAccountDefault, nil)
 		}
 		_require.Nil(err)
 
 		days := int32(366) // Max days is 365. Left to the service for validation.
 		enabled := true
-		_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled, Days: &days}})
+		_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled, Days: &days}})
 		_require.NotNil(err)
 
-		validateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
+		testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 	}
 }
 
-func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysOmitted() {
+func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(s.T(), testAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	// Days is required if enabled is true.
 	enabled := true
-	_, err = svcClient.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled}})
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled}})
 	_require.NotNil(err)
 
-	validateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+
+	resources := service.SASResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := service.SASPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Update: true,
+		Delete: true,
+	}
+	services := service.SASServices{
+		Blob: true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
+	_require.Nil(err)
+
+	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
+	_require.Nil(err)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName+"002", nil)
+	_require.Nil(err)
 }

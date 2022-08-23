@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/examples/Extensions_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/Extensions_Create.json
 func ExampleExtensionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,17 +27,13 @@ func ExampleExtensionsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Create(ctx,
-		"provider.extension",
-		"examples-farmbeatsResourceName",
-		"examples-rg",
-		nil)
+	_, err = client.Create(ctx, "examples-rg", "examples-farmbeatsResourceName", "provider.extension", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/examples/Extensions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/Extensions_Get.json
 func ExampleExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,11 +44,7 @@ func ExampleExtensionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"provider.extension",
-		"examples-farmbeatsResourceName",
-		"examples-rg",
-		nil)
+	res, err := client.Get(ctx, "examples-rg", "examples-farmbeatsResourceName", "provider.extension", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -60,7 +52,7 @@ func ExampleExtensionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/examples/Extensions_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/Extensions_Update.json
 func ExampleExtensionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,11 +63,7 @@ func ExampleExtensionsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"provider.extension",
-		"examples-farmbeatsResourceName",
-		"examples-rg",
-		nil)
+	res, err := client.Update(ctx, "examples-rg", "examples-farmbeatsResourceName", "provider.extension", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -83,7 +71,7 @@ func ExampleExtensionsClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/examples/Extensions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/Extensions_Delete.json
 func ExampleExtensionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,17 +82,13 @@ func ExampleExtensionsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"provider.extension",
-		"examples-farmbeatsResourceName",
-		"examples-rg",
-		nil)
+	_, err = client.Delete(ctx, "examples-rg", "examples-farmbeatsResourceName", "provider.extension", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/examples/Extensions_ListByFarmBeats.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/Extensions_ListByFarmBeats.json
 func ExampleExtensionsClient_NewListByFarmBeatsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,13 +99,11 @@ func ExampleExtensionsClient_NewListByFarmBeatsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFarmBeatsPager("examples-rg",
-		"examples-farmbeatsResourceName",
-		&armagrifood.ExtensionsClientListByFarmBeatsOptions{ExtensionIDs: []string{},
-			ExtensionCategories: []string{},
-			MaxPageSize:         nil,
-			SkipToken:           nil,
-		})
+	pager := client.NewListByFarmBeatsPager("examples-rg", "examples-farmbeatsResourceName", &armagrifood.ExtensionsClientListByFarmBeatsOptions{ExtensionIDs: []string{},
+		ExtensionCategories: []string{},
+		MaxPageSize:         nil,
+		SkipToken:           nil,
+	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

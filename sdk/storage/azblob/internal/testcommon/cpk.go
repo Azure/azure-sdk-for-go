@@ -31,7 +31,7 @@ var TestCPKByScope = blob.CpkScopeInfo{
 	EncryptionScope: &testEncryptedScope,
 }
 
-var testInvalidEncryptedScope = "mumbojumbo"
+var testInvalidEncryptedScope = "mumbojumboscope"
 var TestInvalidCPKByScope = blob.CpkScopeInfo{
 	EncryptionScope: &testInvalidEncryptedScope,
 }

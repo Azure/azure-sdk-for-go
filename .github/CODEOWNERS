@@ -26,10 +26,10 @@
 /sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter
 
 # PRLabel: %Internal
-/sdk/internal/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
+/sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
 
 # PRLabel: %App Configuration
-/sdk/data/azappconfig/        @antkmsft @jhendrixMSFT
+/sdk/data/azappconfig/        @antkmsft @jhendrixMSFT @rickwinter
 
 # PRLabel: %Cosmos
 /sdk/data/azcosmos/           @ealsur @kirankumarkolli
@@ -45,6 +45,9 @@
 
 # PRLabel: %Service Bus
 /sdk/messaging/internal       @richardpark-msft @jhendrixMSFT
+
+# PRLabel: %Monitor
+/sdk/monitor/                 @gracewilcox @chlowell @jhendrixMSFT
 
 # PRLabel: %Mgmt
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh

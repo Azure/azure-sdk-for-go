@@ -178,6 +178,7 @@ func Example_client_CreateContainer() {
 	resp, err := serviceClient.CreateContainer(context.TODO(), "testcontainer", &azblob.CreateContainerOptions{
 		Metadata: map[string]string{"hello": "world"},
 	})
+	handleError(err)
 	fmt.Println(resp)
 }
 
@@ -195,6 +196,7 @@ func Example_client_DeleteContainer() {
 	handleError(err)
 
 	resp, err := serviceClient.DeleteContainer(context.TODO(), "testcontainer", nil)
+	handleError(err)
 	fmt.Println(resp)
 }
 

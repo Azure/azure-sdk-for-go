@@ -8,11 +8,21 @@ package testutil
 
 import (
 	"fmt"
+	"math/rand"
 	"net/http"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+)
+
+const recordingRandomSeedVariableName = "recordingRandomSeed"
+
+var (
+	recordingRandomSeed int64
+	letterRunes         = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 )
 
 type recordingPolicy struct {
@@ -97,8 +107,37 @@ func StartRecording(t *testing.T, pathToPackage string) func() {
 
 // StopRecording stops the recording.
 func StopRecording(t *testing.T) {
-	err := recording.Stop(t, nil)
+	err := recording.Stop(t, &recording.RecordingOptions{Variables: map[string]interface{}{recordingRandomSeedVariableName: strconv.FormatInt(recordingRandomSeed, 10)}})
 	if err != nil {
 		t.Fatalf("Failed to stop recording: %v", err)
 	}
+}
+
+// GenerateAlphaNumericID will generate a random alpha numeric ID.
+// When handling live request, the random seed is generated.
+// Otherwise, the random seed is stable and will be stored in recording file.
+// The length parameter is the random part length, not include the prefix part.
+func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
+	if recording.GetRecordMode() != "live" {
+		if recordingRandomSeed == 0 {
+			variables := recording.GetVariables(t)
+			if seed, ok := variables[recordingRandomSeedVariableName]; ok {
+				seedNum, err := strconv.ParseInt(seed.(string), 10, 64)
+				if err != nil {
+					recordingRandomSeed = seedNum
+				}
+			}
+			if recordingRandomSeed == 0 {
+				recordingRandomSeed = time.Now().Unix()
+			}
+		}
+		rand.Seed(recordingRandomSeed)
+	} else {
+		rand.Seed(time.Now().Unix())
+	}
+	b := make([]rune, length)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return prefix + string(b)
 }

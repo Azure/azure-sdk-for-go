@@ -3058,7 +3058,7 @@ func (s *azblobTestSuite) TestPermanentDelete() {
 	// Permanently delete soft-deleted snapshot
 	pdOptions := blob.PermanentDeleteOptions{
 		DeleteOptions:  blob.DeleteOptions{},
-		BlobDeleteType: to.Ptr(azblob.BlobDeleteTypePermanent),
+		BlobDeleteType: to.Ptr(blob.DeleteTypePermanent),
 	}
 	pdResp, err := snapshotURL.PermanentDelete(ctx, &pdOptions)
 	_require.Nil(err)

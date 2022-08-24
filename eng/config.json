@@ -6,7 +6,7 @@
         },
         {
             "Name": "azblob",
-            "CoverageGoal": 0.00
+            "CoverageGoal": 0.30
         },
         {
             "Name": "azcore",

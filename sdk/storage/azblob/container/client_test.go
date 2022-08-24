@@ -9,10 +9,12 @@ package container_test
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
@@ -1273,5 +1275,59 @@ func (s *ContainerRecordedTestsSuite) TestListBlobIncludeMetadata() {
 			_require.NotNil(blob.Metadata)
 			_require.Len(blob.Metadata, len(testcommon.BasicMetadata))
 		}
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestBlobListWrapper() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	files := []string{"a123", "b234", "c345"}
+
+	testcommon.CreateNewBlobs(context.Background(), _require, files, containerClient)
+
+	found := make([]string, 0)
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		for _, blob := range resp.Segment.BlobItems {
+			found = append(found, *blob.Name)
+		}
+	}
+
+	sort.Strings(files)
+	sort.Strings(found)
+
+	_require.EqualValues(files, found)
+}
+
+func (s *ContainerRecordedTestsSuite) TestBlobListWrapperListingError() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.GetContainerClient(testcommon.GenerateContainerName(testName), svcClient)
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		var respErr *azcore.ResponseError
+		_require.ErrorAs(err, &respErr)
+		_require.Equal(bloberror.ContainerNotFound, bloberror.Code(respErr.ErrorCode))
+		_require.Empty(resp)
+		break
 	}
 }

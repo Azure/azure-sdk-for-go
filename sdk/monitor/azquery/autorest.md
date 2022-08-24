@@ -9,7 +9,7 @@ license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 openapi-type: "data-plane"
 output-folder: ../azquery
-override-client-name: Client
+override-client-name: LogsClient
 security: "AADToken"
 security-scopes:  "https://api.loganalytics.io/.default"
 use: "@autorest/go@4.0.0-preview.43"
@@ -49,6 +49,6 @@ directive:
       to: Batch
  
   # delete generated constructor
-  - from: client.go
+  - from: logs_client.go
     where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");
+    transform: return $.replace(/(?:\/\/.*\s)+func NewLogsClient.+\{\s(?:.+\s)+\}\s/, "");

@@ -9,13 +9,13 @@
 
 package azquery
 
-// ClientBatchResponse contains the response from method Client.Batch.
-type ClientBatchResponse struct {
+// LogsClientBatchResponse contains the response from method LogsClient.Batch.
+type LogsClientBatchResponse struct {
 	BatchResponse
 }
 
-// ClientQueryWorkspaceResponse contains the response from method Client.QueryWorkspace.
-type ClientQueryWorkspaceResponse struct {
+// LogsClientQueryWorkspaceResponse contains the response from method LogsClient.QueryWorkspace.
+type LogsClientQueryWorkspaceResponse struct {
 	Results
 }
 

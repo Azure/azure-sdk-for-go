@@ -22,13 +22,13 @@ type ClientOptions struct {
 }
 
 // NewClient creates a client that accesses a monitor.
-func NewClient(credential azcore.TokenCredential, options *ClientOptions) *Client {
+func NewLogsClient(credential azcore.TokenCredential, options *ClientOptions) *LogsClient {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://api.loganalytics.io/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &Client{pl: pl}
+	return &LogsClient{pl: pl}
 }
 
 func QueryTimeInterval(startTime time.Time, endTime time.Time) string {

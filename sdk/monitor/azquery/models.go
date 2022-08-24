@@ -76,17 +76,6 @@ type Body struct {
 	Workspaces []*string `json:"workspaces,omitempty"`
 }
 
-// ClientBatchOptions contains the optional parameters for the Client.Batch method.
-type ClientBatchOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientQueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
-type ClientQueryWorkspaceOptions struct {
-	// Optional. The prefer header to set server timeout, query statistics and visualization information.
-	Prefer *string
-}
-
 // Column - A column in a table.
 type Column struct {
 	// The name of this column.
@@ -139,6 +128,17 @@ type ErrorInfo struct {
 type ErrorResponse struct {
 	// REQUIRED; The error details.
 	Error *ErrorInfo `json:"error,omitempty"`
+}
+
+// LogsClientBatchOptions contains the optional parameters for the LogsClient.Batch method.
+type LogsClientBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
+type LogsClientQueryWorkspaceOptions struct {
+	// Optional. The prefer header to set server timeout, query statistics and visualization information.
+	Prefer *string
 }
 
 // Results - Contains the tables, columns & rows resulting from a query.

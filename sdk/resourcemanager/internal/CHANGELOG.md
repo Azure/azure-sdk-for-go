@@ -1,14 +1,9 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.1.0 (2022-08-24)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Add `GenerateAlphaNumericID` to testutil
 
 ## 1.0.1 (2022-06-23)
 

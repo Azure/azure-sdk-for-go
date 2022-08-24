@@ -16,23 +16,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/OperationResults/getOperationResult.json
-func ExampleOperationResultsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Usages/getUsages.json
+func ExampleUsagesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewOperationResultsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	client, err := armlabservices.NewUsagesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"a64149d8-84cb-4566-ab8e-b4ee1a074174",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := client.NewListByLocationPager("eastus2", &armlabservices.UsagesClientListByLocationOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	// TODO: use response item
-	_ = res
 }

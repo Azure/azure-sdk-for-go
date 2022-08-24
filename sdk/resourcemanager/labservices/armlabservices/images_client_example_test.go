@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Images/listImages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Images/listImages.json
 func ExampleImagesClient_NewListByLabPlanPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleImagesClient_NewListByLabPlanPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLabPlanPager("testrg123",
-		"testlabplan",
-		&armlabservices.ImagesClientListByLabPlanOptions{Filter: nil})
+	pager := client.NewListByLabPlanPager("testrg123", "testlabplan", &armlabservices.ImagesClientListByLabPlanOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleImagesClient_NewListByLabPlanPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Images/getImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Images/getImage.json
 func ExampleImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleImagesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"testrg123",
-		"testlabplan",
-		"image1",
-		nil)
+	res, err := client.Get(ctx, "testrg123", "testlabplan", "image1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleImagesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Images/putImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Images/putImage.json
 func ExampleImagesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,16 +71,11 @@ func ExampleImagesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"testrg123",
-		"testlabplan",
-		"image1",
-		armlabservices.Image{
-			Properties: &armlabservices.ImageProperties{
-				EnabledState: to.Ptr(armlabservices.EnableStateEnabled),
-			},
+	res, err := client.CreateOrUpdate(ctx, "testrg123", "testlabplan", "image1", armlabservices.Image{
+		Properties: &armlabservices.ImageProperties{
+			EnabledState: to.Ptr(armlabservices.EnableStateEnabled),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -94,7 +83,7 @@ func ExampleImagesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Images/patchImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Images/patchImage.json
 func ExampleImagesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,16 +94,11 @@ func ExampleImagesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"testrg123",
-		"testlabplan",
-		"image1",
-		armlabservices.ImageUpdate{
-			Properties: &armlabservices.ImageUpdateProperties{
-				EnabledState: to.Ptr(armlabservices.EnableStateEnabled),
-			},
+	res, err := client.Update(ctx, "testrg123", "testlabplan", "image1", armlabservices.ImageUpdate{
+		Properties: &armlabservices.ImageUpdateProperties{
+			EnabledState: to.Ptr(armlabservices.EnableStateEnabled),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

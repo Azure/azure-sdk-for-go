@@ -126,7 +126,7 @@ func Example() {
 	handleError(err)
 }
 
-// tiny blob client ----------------------------------------------------------------------------------------------------
+// blob client ----------------------------------------------------------------------------------------------------
 
 func Example_client_NewClient() {
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")

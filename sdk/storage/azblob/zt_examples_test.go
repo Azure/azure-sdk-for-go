@@ -76,7 +76,7 @@ func Example() {
 	uploadResp, err := client.UploadStream(context.TODO(),
 		containerName,
 		blobName,
-		streaming.NopCloser(strings.NewReader(blobData)),
+		strings.NewReader(blobData),
 		&azblob.UploadStreamOptions{
 			Metadata: map[string]string{"Foo": "Bar"},
 			Tags:     map[string]string{"Year": "2022"},
@@ -263,14 +263,10 @@ func Example_client_UploadFile() {
 	handleError(err)
 
 	// Upload the file to a block blob
-	containerName := "testcontainer"
-	blobName := "virtual/dir/path/" + fileName
-	blockSize := 1024
-	parallelism := 3
-	_, err = serviceClient.UploadFile(context.TODO(), containerName, blobName, fileHandler,
+	_, err = serviceClient.UploadFile(context.TODO(), "testcontainer", "virtual/dir/path/"+fileName, fileHandler,
 		&azblob.UploadFileOptions{
-			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			BlockSize:   int64(1024),
+			Parallelism: uint16(3),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				fmt.Println(bytesTransferred)
@@ -302,18 +298,15 @@ func Example_client_DownloadFile() {
 	handleError(err)
 
 	// Perform download
-	containerName := "testcontainer"
-	blobName := "virtual/dir/path/" + destFileName
-	blockSize := 1024
-	parallelism := 3
-	downloadOffset := 0
-	downloadCount := azblob.CountToEnd
-	_, err = serviceClient.DownloadFile(context.TODO(), containerName, blobName, destFile,
+	// 0 represents the end of the blob.
+	downloadOffset, downloadCount := 0, 0
+
+	_, err = serviceClient.DownloadFile(context.TODO(), "testcontainer", "virtual/dir/path/"+destFileName, destFile,
 		&blob.DownloadFileOptions{
 			Count:       int64(downloadCount),
 			Offset:      int64(downloadOffset),
-			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			BlockSize:   int64(1024),
+			Parallelism: uint16(3),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				fmt.Println(bytesTransferred)
@@ -322,20 +315,6 @@ func Example_client_DownloadFile() {
 
 	// Assert download was successful
 	handleError(err)
-
-	fileSize := 8 * 1024 * 1024 // assuming blob size is 8MB.
-
-	// Assert downloaded data is consistent
-	var destBuffer []byte
-	if downloadCount == azblob.CountToEnd {
-		destBuffer = make([]byte, fileSize-downloadOffset)
-	} else {
-		destBuffer = make([]byte, downloadCount)
-	}
-
-	_, err = destFile.Read(destBuffer)
-	handleError(err)
-
 }
 
 func Example_client_NewListBlobsPager() {
@@ -359,7 +338,10 @@ func Example_client_NewListBlobsPager() {
 		resp, err := pager.NextPage(ctx)
 		handleError(err) // if err is not nil, break the loop.
 		for _, _blob := range resp.Segment.BlobItems {
-			fmt.Printf("%v", _blob)
+			u := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, "testcontainer", *_blob.Name)
+			blobURLParts, err := azblob.ParseURL(u)
+			handleError(err) // if err is not nil, break the loop.
+			fmt.Printf("%s", blobURLParts.String())
 		}
 	}
 }
@@ -400,7 +382,7 @@ func Example_client_UploadStream() {
 	bufferSize := 8 * 1024 * 1024
 	blobName := "test_upload_stream.bin"
 	blobData := make([]byte, bufferSize)
-	blobContentReader := streaming.NopCloser(bytes.NewReader(blobData))
+	blobContentReader := bytes.NewReader(blobData)
 
 	// Perform UploadStream
 	resp, err := serviceClient.UploadStream(context.TODO(), containerName, blobName, blobContentReader,
@@ -423,17 +405,14 @@ func Example_client_DownloadStream() {
 	serviceClient, err := azblob.NewClient(serviceURL, cred, nil)
 	handleError(err)
 
-	// Download the blob to verify
-	containerName := "testcontainer"
-	bufferSize := 8 * 1024 * 1024 // assuming this is the size of the blob.
-	blobName := "test_download_stream.bin"
-	downloadResponse, err := serviceClient.DownloadStream(ctx, containerName, blobName, nil)
+	// Download the blob
+	downloadResponse, err := serviceClient.DownloadStream(ctx, "testcontainer", "test_download_stream.bin", nil)
 	handleError(err)
 
 	// Assert that the content is correct
 	actualBlobData, err := io.ReadAll(downloadResponse.Body)
 	handleError(err)
-	fmt.Printf("actualBlobDataLen: %v\n blobDataLen: %v\n", len(actualBlobData), bufferSize)
+	fmt.Println(len(actualBlobData))
 }
 
 // service client ------------------------------------------------------------------------------------------------------

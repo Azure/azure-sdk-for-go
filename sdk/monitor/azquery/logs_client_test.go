@@ -15,7 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 )
 
-const workspaceID = "d2d0e126-fa1e-4b0a-b647-250cdd471e68"
+const workspaceID1 = "d2d0e126-fa1e-4b0a-b647-250cdd471e68"
+const query = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n" + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long"
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -24,21 +25,18 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	}
 
 	client := azquery.NewLogsClient(cred, nil)
-
-	query := "search * | take 5"
+	query := query
 	timespan := azquery.QueryTimeInterval(time.Now().Add(-12*time.Hour), time.Now())
-
 	body := azquery.Body{
 		Query:    &query,
 		Timespan: &timespan,
 	}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
 
-	// test for correctness
 	if res.Results.Error != nil {
 		t.Fatal("expended Error to be nil")
 	}
@@ -48,14 +46,11 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	if res.Results.Statistics != nil {
 		t.Fatal("expended Statistics to be nil")
 	}
-	if *res.Results.Tables[0].Name != "PrimaryResult" {
-		t.Fatal("expended table name to be PrimaryResult")
-	}
 	if len(res.Results.Tables) != 1 {
 		t.Fatal("expected one table")
 	}
-	if len(res.Results.Tables[0].Rows) != 5 {
-		t.Fatal("expected 5 rows")
+	if len(res.Results.Tables[0].Rows) != 100 {
+		t.Fatal("expected 100 rows")
 	}
 }
 
@@ -66,14 +61,12 @@ func TestExecute_BasicQueryFailure(t *testing.T) {
 	}
 
 	client := azquery.NewLogsClient(cred, nil)
-
-	var strPointer = new(string)
-	*strPointer = "not a valid query"
+	query := "not a valid query"
 	body := azquery.Body{
-		Query: strPointer,
+		Query: &query,
 	}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
 	if err == nil {
 		t.Fatalf("expected BadArgumentError")
 	}
@@ -82,42 +75,43 @@ func TestExecute_BasicQueryFailure(t *testing.T) {
 	}
 }
 
+// tests for special options: timeout, statistics, visualization
 func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
-	// special options: timeout, multiple workspaces, statistics, visualization
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal("error constructing credential")
 	}
 
 	client := azquery.NewLogsClient(cred, nil)
-
-	query := "search * | take 5"
+	query := query
 	body := azquery.Body{
 		Query: &query,
 	}
-
 	prefer := "wait=180,include-statistics=true,include-render=true"
 	options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, options)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, options)
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
-
+	if res.Results.Tables == nil {
+		t.Fatal("expected Tables results")
+	}
 	if res.Results.Error != nil {
 		t.Fatal("expended Error to be nil")
 	}
 	if res.Results.Render == nil {
-		t.Fatal("expended Render have value")
+		t.Fatal("expended Render results")
 	}
 	if res.Results.Statistics == nil {
-		t.Fatal("expended Statistics have value")
+		t.Fatal("expended Statistics results")
 	}
 }
 
-// query with partial correctness??
+func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 
-// batch query tests
+}
+
 func TestBatch_QuerySuccess(t *testing.T) {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,27 +119,27 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	}
 
 	client := azquery.NewLogsClient(cred, nil)
-	query := "search * | take 5"
-	id := "1"
-	workspaceID := "d2d0e126-fa1e-4b0a-b647-250cdd471e68"
-
-	body := azquery.Body{
-		Query: &query,
+	query1, query2 := query, query+" | take 2"
+	id1, id2 := "1", "2"
+	workspaceID := workspaceID1
+	body1 := azquery.Body{
+		Query: &query1,
 	}
-
+	body2 := azquery.Body{
+		Query: &query2,
+	}
 	path := azquery.BatchQueryRequestPathQuery
 	method := azquery.BatchQueryRequestMethodPOST
+	req1 := azquery.BatchQueryRequest{Body: &body1, ID: &id1, Workspace: &workspaceID, Path: &path, Method: &method}
+	req2 := azquery.BatchQueryRequest{Body: &body2, ID: &id2, Workspace: &workspaceID, Path: &path, Method: &method}
+	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{&req1, &req2}}
 
-	req1 := azquery.BatchQueryRequest{Body: &body, ID: &id, Workspace: &workspaceID, Path: &path, Method: &method}
-
-	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{&req1}}
-
-	res, err := client.Batch(context.Background(), batchRequest, &azquery.LogsClientBatchOptions{})
+	res, err := client.Batch(context.Background(), batchRequest, nil)
 	if err != nil {
 		t.Fatalf("expected non nil error: %s", err.Error())
 	}
-	if *(res.Responses[0].ID) != "1" {
-		t.Fatalf("error, wrong response id")
+	if len(res.BatchResponse.Responses) != 2 {
+		t.Fatal("expected two responses")
 	}
 }
 

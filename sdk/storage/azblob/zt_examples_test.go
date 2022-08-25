@@ -338,10 +338,7 @@ func Example_client_NewListBlobsPager() {
 		resp, err := pager.NextPage(ctx)
 		handleError(err) // if err is not nil, break the loop.
 		for _, _blob := range resp.Segment.BlobItems {
-			u := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, "testcontainer", *_blob.Name)
-			blobURLParts, err := azblob.ParseURL(u)
-			handleError(err) // if err is not nil, break the loop.
-			fmt.Printf("%s", blobURLParts.String())
+			fmt.Printf("%v", _blob.Name)
 		}
 	}
 }

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ContainerServiceGetOSOptions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ContainerServiceGetOSOptions.json
 func ExampleManagedClustersClient_GetOSOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleManagedClustersClient_GetOSOptions() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersList.json
 func ExampleManagedClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleManagedClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersListByResourceGroup.json
 func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersGetUpgradeProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersGetUpgradeProfile.json
 func ExampleManagedClustersClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleManagedClustersClient_GetUpgradeProfile() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersGetAccessProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersGetAccessProfile.json
 func ExampleManagedClustersClient_GetAccessProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleManagedClustersClient_GetAccessProfile() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersListClusterCredentialResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersListClusterAdminCredentials.json
 func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,47 @@ func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersListClusterUserCredentials.json
+func ExampleManagedClustersClient_ListClusterUserCredentials() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListClusterUserCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{ServerFqdn: nil,
+		Format: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersListClusterMonitoringUserCredentials.json
+func ExampleManagedClustersClient_ListClusterMonitoringUserCredentials() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListClusterMonitoringUserCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{ServerFqdn: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersGet.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,153 +200,7 @@ func ExampleManagedClustersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersAssociate_CRG.json
-func ExampleManagedClustersClient_BeginCreateOrUpdate_associateManagedClusterWithCapacityReservationGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
-		Location: to.Ptr("location1"),
-		Tags: map[string]*string{
-			"archv2": to.Ptr(""),
-			"tier":   to.Ptr("production"),
-		},
-		Properties: &armcontainerservice.ManagedClusterProperties{
-			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
-			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-				{
-					Type:                       to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
-					CapacityReservationGroupID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers//Microsoft.Compute/capacityReservationGroups/crg1"),
-					Count:                      to.Ptr[int32](3),
-					EnableNodePublicIP:         to.Ptr(true),
-					Mode:                       to.Ptr(armcontainerservice.AgentPoolModeSystem),
-					OSType:                     to.Ptr(armcontainerservice.OSTypeLinux),
-					VMSize:                     to.Ptr("Standard_DS2_v2"),
-					Name:                       to.Ptr("nodepool1"),
-				}},
-			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
-				ScaleDownDelayAfterAdd: to.Ptr("15m"),
-				ScanInterval:           to.Ptr("20s"),
-			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
-			LinuxProfile: &armcontainerservice.LinuxProfile{
-				AdminUsername: to.Ptr("azureuser"),
-				SSH: &armcontainerservice.SSHConfiguration{
-					PublicKeys: []*armcontainerservice.SSHPublicKey{
-						{
-							KeyData: to.Ptr("keydata"),
-						}},
-				},
-			},
-			NetworkProfile: &armcontainerservice.NetworkProfile{
-				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
-					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
-						Count: to.Ptr[int32](2),
-					},
-				},
-				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
-				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
-			},
-			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-				ClientID: to.Ptr("clientid"),
-				Secret:   to.Ptr("secret"),
-			},
-			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
-				AdminPassword: to.Ptr("replacePassword1234$"),
-				AdminUsername: to.Ptr("azureuser"),
-			},
-		},
-		SKU: &armcontainerservice.ManagedClusterSKU{
-			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
-			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_MCSnapshot.json
-func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingAManagedClusterSnapshot() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
-		Location: to.Ptr("location1"),
-		Tags: map[string]*string{
-			"archv2": to.Ptr(""),
-			"tier":   to.Ptr("production"),
-		},
-		Properties: &armcontainerservice.ManagedClusterProperties{
-			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-				{
-					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
-					Count:              to.Ptr[int32](3),
-					EnableFIPS:         to.Ptr(true),
-					EnableNodePublicIP: to.Ptr(true),
-					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
-					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
-					VMSize:             to.Ptr("Standard_DS2_v2"),
-					Name:               to.Ptr("nodepool1"),
-				}},
-			CreationData: &armcontainerservice.CreationData{
-				SourceResourceID: to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
-			},
-			DNSPrefix:         to.Ptr("dnsprefix1"),
-			KubernetesVersion: to.Ptr(""),
-			LinuxProfile: &armcontainerservice.LinuxProfile{
-				AdminUsername: to.Ptr("azureuser"),
-				SSH: &armcontainerservice.SSHConfiguration{
-					PublicKeys: []*armcontainerservice.SSHPublicKey{
-						{
-							KeyData: to.Ptr("keydata"),
-						}},
-				},
-			},
-			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-				ClientID: to.Ptr("clientid"),
-				Secret:   to.Ptr("secret"),
-			},
-		},
-		SKU: &armcontainerservice.ManagedClusterSKU{
-			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
-			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_Snapshot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_Snapshot.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingAnAgentPoolSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,7 +285,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingA
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_ManagedNATGateway.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_ManagedNATGateway.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAksManagedNatGatewayAsOutboundType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -472,7 +366,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAk
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAzureKeyVaultSecretsProviderAddon() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -561,89 +455,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAz
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_EnableCustomCATrust.json
-func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithCustomCaTrustEnabled() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
-		Location: to.Ptr("location1"),
-		Tags: map[string]*string{
-			"archv2": to.Ptr(""),
-			"tier":   to.Ptr("production"),
-		},
-		Properties: &armcontainerservice.ManagedClusterProperties{
-			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
-			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-				{
-					Type:                to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
-					Count:               to.Ptr[int32](3),
-					EnableCustomCATrust: to.Ptr(true),
-					EnableNodePublicIP:  to.Ptr(true),
-					Mode:                to.Ptr(armcontainerservice.AgentPoolModeSystem),
-					OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
-					VMSize:              to.Ptr("Standard_DS2_v2"),
-					Name:                to.Ptr("nodepool1"),
-				}},
-			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
-				ScaleDownDelayAfterAdd: to.Ptr("15m"),
-				ScanInterval:           to.Ptr("20s"),
-			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
-			LinuxProfile: &armcontainerservice.LinuxProfile{
-				AdminUsername: to.Ptr("azureuser"),
-				SSH: &armcontainerservice.SSHConfiguration{
-					PublicKeys: []*armcontainerservice.SSHPublicKey{
-						{
-							KeyData: to.Ptr("keydata"),
-						}},
-				},
-			},
-			NetworkProfile: &armcontainerservice.NetworkProfile{
-				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
-					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
-						Count: to.Ptr[int32](2),
-					},
-				},
-				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
-				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
-			},
-			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-				ClientID: to.Ptr("clientid"),
-				Secret:   to.Ptr("secret"),
-			},
-			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
-				AdminPassword: to.Ptr("replacePassword1234$"),
-				AdminUsername: to.Ptr("azureuser"),
-			},
-		},
-		SKU: &armcontainerservice.ManagedClusterSKU{
-			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
-			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_DedicatedHostGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_DedicatedHostGroup.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -724,7 +536,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithDe
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithEncryptionAtHostEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -806,7 +618,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithEn
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_EnabledFIPS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_EnabledFIPS.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithFipsEnabledOs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -888,7 +700,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithFi
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_GPUMIG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_GPUMIG.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithGpumig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -978,7 +790,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithGp
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_HTTPProxy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_HTTPProxy.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithHttpProxyConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1067,7 +879,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithHt
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_NodePublicIPPrefix.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_NodePublicIPPrefix.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNodePublicIpPrefix() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1149,7 +961,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNo
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_OSSKU.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_OSSKU.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1239,7 +1051,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithOs
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_PPG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_PPG.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPpg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1321,7 +1133,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPp
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_PodIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_PodIdentity.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPodIdentityEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1406,7 +1218,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPo
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_DisableRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_DisableRunCommand.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithRunCommandDisabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1490,7 +1302,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithRu
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_SecurityProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_SecurityProfile.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithSecurityProfileConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1563,7 +1375,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithSe
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_EnableUltraSSD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_EnableUltraSSD.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUltraSsdEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1645,78 +1457,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUl
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_IngressProfile_WebAppRouting.json
-func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithWebAppRoutingIngressProfileConfigured() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
-		Location: to.Ptr("location1"),
-		Tags: map[string]*string{
-			"archv2": to.Ptr(""),
-			"tier":   to.Ptr("production"),
-		},
-		Properties: &armcontainerservice.ManagedClusterProperties{
-			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-				{
-					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
-					Count:              to.Ptr[int32](3),
-					EnableNodePublicIP: to.Ptr(true),
-					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
-					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
-					VMSize:             to.Ptr("Standard_DS2_v2"),
-					Name:               to.Ptr("nodepool1"),
-				}},
-			DNSPrefix: to.Ptr("dnsprefix1"),
-			IngressProfile: &armcontainerservice.ManagedClusterIngressProfile{
-				WebAppRouting: &armcontainerservice.ManagedClusterIngressProfileWebAppRouting{
-					DNSZoneResourceID: to.Ptr("/subscriptions/SUB_ID/resourceGroups/RG_NAME/providers/Microsoft.Network/dnszones/DNS_ZONE_NAME"),
-					Enabled:           to.Ptr(true),
-				},
-			},
-			KubernetesVersion: to.Ptr(""),
-			LinuxProfile: &armcontainerservice.LinuxProfile{
-				AdminUsername: to.Ptr("azureuser"),
-				SSH: &armcontainerservice.SSHConfiguration{
-					PublicKeys: []*armcontainerservice.SSHPublicKey{
-						{
-							KeyData: to.Ptr("keydata"),
-						}},
-				},
-			},
-			NetworkProfile: &armcontainerservice.NetworkProfile{
-				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
-					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
-						Count: to.Ptr[int32](2),
-					},
-				},
-				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
-				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
-			},
-		},
-		SKU: &armcontainerservice.ManagedClusterSKU{
-			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
-			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UserAssignedNATGateway.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_UserAssignedNATGateway.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUserAssignedNatGatewayAsOutboundType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1792,7 +1533,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUs
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateClusterWithPublicFqdnSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1877,7 +1618,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateClusterWithFqdnSubdomainSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1962,7 +1703,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateAadManagedClusterWithEnableAzureRbac() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2051,7 +1792,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateAadManagedClus
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_Update.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2148,7 +1889,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UpdateWithAHUB.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_UpdateWithAHUB.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithEnableAhub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2240,93 +1981,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UpdateWithEnableNamespaceResources.json
-func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithEnableNamespaceResources() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
-		Location: to.Ptr("location1"),
-		Tags: map[string]*string{
-			"archv2": to.Ptr(""),
-			"tier":   to.Ptr("production"),
-		},
-		Properties: &armcontainerservice.ManagedClusterProperties{
-			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
-			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
-				{
-					Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
-					AvailabilityZones: []*string{
-						to.Ptr("1"),
-						to.Ptr("2"),
-						to.Ptr("3")},
-					Count:              to.Ptr[int32](3),
-					EnableNodePublicIP: to.Ptr(true),
-					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
-					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
-					VMSize:             to.Ptr("Standard_DS1_v2"),
-					Name:               to.Ptr("nodepool1"),
-				}},
-			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
-				ScaleDownDelayAfterAdd: to.Ptr("15m"),
-				ScanInterval:           to.Ptr("20s"),
-			},
-			DiskEncryptionSetID:      to.Ptr("/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:                to.Ptr("dnsprefix1"),
-			EnableNamespaceResources: to.Ptr(true),
-			EnablePodSecurityPolicy:  to.Ptr(true),
-			EnableRBAC:               to.Ptr(true),
-			KubernetesVersion:        to.Ptr(""),
-			LinuxProfile: &armcontainerservice.LinuxProfile{
-				AdminUsername: to.Ptr("azureuser"),
-				SSH: &armcontainerservice.SSHConfiguration{
-					PublicKeys: []*armcontainerservice.SSHPublicKey{
-						{
-							KeyData: to.Ptr("keydata"),
-						}},
-				},
-			},
-			NetworkProfile: &armcontainerservice.NetworkProfile{
-				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
-					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
-						Count: to.Ptr[int32](2),
-					},
-				},
-				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
-				OutboundType:    to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
-			},
-			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
-				ClientID: to.Ptr("clientid"),
-				Secret:   to.Ptr("secret"),
-			},
-			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
-				AdminPassword: to.Ptr("replacePassword1234$"),
-				AdminUsername: to.Ptr("azureuser"),
-			},
-		},
-		SKU: &armcontainerservice.ManagedClusterSKU{
-			Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
-			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithWindowsGMsaEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2420,7 +2075,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersCreate_DualStackNetworking.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersCreate_DualStackNetworking.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithDualStackNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2520,7 +2175,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersUpdateTags.json
 func ExampleManagedClustersClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2548,7 +2203,7 @@ func ExampleManagedClustersClient_BeginUpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersDelete.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2559,7 +2214,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientBeginDeleteOptions{IgnorePodDisruptionBudget: nil})
+	poller, err := client.BeginDelete(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2569,7 +2224,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersResetServicePrincipalProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersResetServicePrincipalProfile.json
 func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2593,7 +2248,7 @@ func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersResetAADProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersResetAADProfile.json
 func ExampleManagedClustersClient_BeginResetAADProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2619,24 +2274,7 @@ func ExampleManagedClustersClient_BeginResetAADProfile() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersAbortOperation.json
-func ExampleManagedClustersClient_AbortLatestOperation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = client.AbortLatestOperation(ctx, "rg1", "clustername1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersRotateClusterCertificates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersRotateClusterCertificates.json
 func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2657,28 +2295,7 @@ func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersRotateServiceAccountSigningKeys.json
-func ExampleManagedClustersClient_BeginRotateServiceAccountSigningKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginRotateServiceAccountSigningKeys(ctx, "rg1", "clustername1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersStop.json
 func ExampleManagedClustersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2699,7 +2316,7 @@ func ExampleManagedClustersClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/ManagedClustersStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersStart.json
 func ExampleManagedClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2720,7 +2337,7 @@ func ExampleManagedClustersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/RunCommandRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/RunCommandRequest.json
 func ExampleManagedClustersClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2747,7 +2364,7 @@ func ExampleManagedClustersClient_BeginRunCommand() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/RunCommandResultFailed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/RunCommandResultFailed.json
 func ExampleManagedClustersClient_GetCommandResult_commandFailedResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2766,7 +2383,7 @@ func ExampleManagedClustersClient_GetCommandResult_commandFailedResult() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/RunCommandResultSucceed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/RunCommandResultSucceed.json
 func ExampleManagedClustersClient_GetCommandResult_commandSucceedResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2785,7 +2402,7 @@ func ExampleManagedClustersClient_GetCommandResult_commandSucceedResult() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-07-02-preview/examples/OutboundNetworkDependenciesEndpointsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/OutboundNetworkDependenciesEndpointsList.json
 func ExampleManagedClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

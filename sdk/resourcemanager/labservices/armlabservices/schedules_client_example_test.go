@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/listSchedule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Schedules/listSchedule.json
 func ExampleSchedulesClient_NewListByLabPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,9 +30,7 @@ func ExampleSchedulesClient_NewListByLabPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLabPager("testrg123",
-		"testlab",
-		&armlabservices.SchedulesClientListByLabOptions{Filter: nil})
+	pager := client.NewListByLabPager("testrg123", "testlab", &armlabservices.SchedulesClientListByLabOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -45,7 +43,7 @@ func ExampleSchedulesClient_NewListByLabPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/getSchedule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Schedules/getSchedule.json
 func ExampleSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,11 +54,7 @@ func ExampleSchedulesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"testrg123",
-		"testlab",
-		"schedule1",
-		nil)
+	res, err := client.Get(ctx, "testrg123", "testlab", "schedule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -68,7 +62,7 @@ func ExampleSchedulesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/putSchedule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Schedules/putSchedule.json
 func ExampleSchedulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,24 +73,19 @@ func ExampleSchedulesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"testrg123",
-		"testlab",
-		"schedule1",
-		armlabservices.Schedule{
-			Properties: &armlabservices.ScheduleProperties{
-				Notes: to.Ptr("Schedule 1 for students"),
-				RecurrencePattern: &armlabservices.RecurrencePattern{
-					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2020-08-14"); return t }()),
-					Frequency:      to.Ptr(armlabservices.RecurrenceFrequencyDaily),
-					Interval:       to.Ptr[int32](2),
-				},
-				StartAt:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T12:00:00Z"); return t }()),
-				StopAt:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T18:00:00Z"); return t }()),
-				TimeZoneID: to.Ptr("America/Los_Angeles"),
+	res, err := client.CreateOrUpdate(ctx, "testrg123", "testlab", "schedule1", armlabservices.Schedule{
+		Properties: &armlabservices.ScheduleProperties{
+			Notes: to.Ptr("Schedule 1 for students"),
+			RecurrencePattern: &armlabservices.RecurrencePattern{
+				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-14T23:59:59Z"); return t }()),
+				Frequency:      to.Ptr(armlabservices.RecurrenceFrequencyDaily),
+				Interval:       to.Ptr[int32](2),
 			},
+			StartAt:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T12:00:00Z"); return t }()),
+			StopAt:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T18:00:00Z"); return t }()),
+			TimeZoneID: to.Ptr("America/Los_Angeles"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -104,7 +93,7 @@ func ExampleSchedulesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/patchSchedule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Schedules/patchSchedule.json
 func ExampleSchedulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,20 +104,15 @@ func ExampleSchedulesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"testrg123",
-		"testlab",
-		"schedule1",
-		armlabservices.ScheduleUpdate{
-			Properties: &armlabservices.ScheduleUpdateProperties{
-				RecurrencePattern: &armlabservices.RecurrencePattern{
-					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2020-08-14"); return t }()),
-					Frequency:      to.Ptr(armlabservices.RecurrenceFrequencyDaily),
-					Interval:       to.Ptr[int32](2),
-				},
+	res, err := client.Update(ctx, "testrg123", "testlab", "schedule1", armlabservices.ScheduleUpdate{
+		Properties: &armlabservices.ScheduleUpdateProperties{
+			RecurrencePattern: &armlabservices.RecurrencePattern{
+				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-14T23:59:59Z"); return t }()),
+				Frequency:      to.Ptr(armlabservices.RecurrenceFrequencyDaily),
+				Interval:       to.Ptr[int32](2),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -136,7 +120,7 @@ func ExampleSchedulesClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/deleteSchedule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Schedules/deleteSchedule.json
 func ExampleSchedulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,11 +131,7 @@ func ExampleSchedulesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"testrg123",
-		"testlab",
-		"schedule1",
-		nil)
+	poller, err := client.BeginDelete(ctx, "testrg123", "testlab", "schedule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

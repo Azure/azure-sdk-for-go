@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/listLabPlans.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/listLabPlans.json
 func ExampleLabPlansClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleLabPlansClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/listResourceGroupLabPlans.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/listResourceGroupLabPlans.json
 func ExampleLabPlansClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,8 +52,7 @@ func ExampleLabPlansClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("testrg123",
-		nil)
+	pager := client.NewListByResourceGroupPager("testrg123", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,7 +65,7 @@ func ExampleLabPlansClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/getLabPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/getLabPlan.json
 func ExampleLabPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,10 +76,7 @@ func ExampleLabPlansClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"testrg123",
-		"testlabplan",
-		nil)
+	res, err := client.Get(ctx, "testrg123", "testlabplan", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,7 +84,7 @@ func ExampleLabPlansClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/putLabPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/putLabPlan.json
 func ExampleLabPlansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,39 +95,35 @@ func ExampleLabPlansClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"testrg123",
-		"testlabplan",
-		armlabservices.LabPlan{
-			Location: to.Ptr("westus"),
-			Properties: &armlabservices.LabPlanProperties{
-				DefaultAutoShutdownProfile: &armlabservices.AutoShutdownProfile{
-					DisconnectDelay:          to.Ptr("00:05"),
-					IdleDelay:                to.Ptr("01:00"),
-					NoConnectDelay:           to.Ptr("01:00"),
-					ShutdownOnDisconnect:     to.Ptr(armlabservices.EnableStateEnabled),
-					ShutdownOnIdle:           to.Ptr(armlabservices.ShutdownOnIdleModeUserAbsence),
-					ShutdownWhenNotConnected: to.Ptr(armlabservices.EnableStateEnabled),
-				},
-				DefaultConnectionProfile: &armlabservices.ConnectionProfile{
-					ClientRdpAccess: to.Ptr(armlabservices.ConnectionTypePublic),
-					ClientSSHAccess: to.Ptr(armlabservices.ConnectionTypePublic),
-					WebRdpAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
-					WebSSHAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
-				},
-				DefaultNetworkProfile: &armlabservices.LabPlanNetworkProfile{
-					SubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"),
-				},
-				SharedGalleryID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Compute/galleries/testsig"),
-				SupportInfo: &armlabservices.SupportInfo{
-					Email:        to.Ptr("help@contoso.com"),
-					Instructions: to.Ptr("Contact support for help."),
-					Phone:        to.Ptr("+1-202-555-0123"),
-					URL:          to.Ptr("help.contoso.com"),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "testrg123", "testlabplan", armlabservices.LabPlan{
+		Location: to.Ptr("westus"),
+		Properties: &armlabservices.LabPlanProperties{
+			DefaultAutoShutdownProfile: &armlabservices.AutoShutdownProfile{
+				DisconnectDelay:          to.Ptr("PT5M"),
+				IdleDelay:                to.Ptr("PT5M"),
+				NoConnectDelay:           to.Ptr("PT5M"),
+				ShutdownOnDisconnect:     to.Ptr(armlabservices.EnableStateEnabled),
+				ShutdownOnIdle:           to.Ptr(armlabservices.ShutdownOnIdleModeUserAbsence),
+				ShutdownWhenNotConnected: to.Ptr(armlabservices.EnableStateEnabled),
+			},
+			DefaultConnectionProfile: &armlabservices.ConnectionProfile{
+				ClientRdpAccess: to.Ptr(armlabservices.ConnectionTypePublic),
+				ClientSSHAccess: to.Ptr(armlabservices.ConnectionTypePublic),
+				WebRdpAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
+				WebSSHAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
+			},
+			DefaultNetworkProfile: &armlabservices.LabPlanNetworkProfile{
+				SubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"),
+			},
+			SharedGalleryID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Compute/galleries/testsig"),
+			SupportInfo: &armlabservices.SupportInfo{
+				Email:        to.Ptr("help@contoso.com"),
+				Instructions: to.Ptr("Contact support for help."),
+				Phone:        to.Ptr("+1-202-555-0123"),
+				URL:          to.Ptr("help.contoso.com"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -143,7 +135,7 @@ func ExampleLabPlansClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/patchLabPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/patchLabPlan.json
 func ExampleLabPlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,20 +146,16 @@ func ExampleLabPlansClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"testrg123",
-		"testlabplan",
-		armlabservices.LabPlanUpdate{
-			Properties: &armlabservices.LabPlanUpdateProperties{
-				DefaultConnectionProfile: &armlabservices.ConnectionProfile{
-					ClientRdpAccess: to.Ptr(armlabservices.ConnectionTypePublic),
-					ClientSSHAccess: to.Ptr(armlabservices.ConnectionTypePublic),
-					WebRdpAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
-					WebSSHAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
-				},
+	poller, err := client.BeginUpdate(ctx, "testrg123", "testlabplan", armlabservices.LabPlanUpdate{
+		Properties: &armlabservices.LabPlanUpdateProperties{
+			DefaultConnectionProfile: &armlabservices.ConnectionProfile{
+				ClientRdpAccess: to.Ptr(armlabservices.ConnectionTypePublic),
+				ClientSSHAccess: to.Ptr(armlabservices.ConnectionTypePublic),
+				WebRdpAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
+				WebSSHAccess:    to.Ptr(armlabservices.ConnectionTypeNone),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -179,7 +167,7 @@ func ExampleLabPlansClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/deleteLabPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/deleteLabPlan.json
 func ExampleLabPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,10 +178,7 @@ func ExampleLabPlansClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"testrg123",
-		"testlabplan",
-		nil)
+	poller, err := client.BeginDelete(ctx, "testrg123", "testlabplan", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -203,7 +188,7 @@ func ExampleLabPlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/saveImageVirtualMachine.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/saveImageVirtualMachine.json
 func ExampleLabPlansClient_BeginSaveImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,14 +199,10 @@ func ExampleLabPlansClient_BeginSaveImage() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSaveImage(ctx,
-		"testrg123",
-		"testlabplan",
-		armlabservices.SaveImageBody{
-			Name:                to.Ptr("Test Image"),
-			LabVirtualMachineID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.LabServices/labs/testlab/virtualMachines/template"),
-		},
-		nil)
+	poller, err := client.BeginSaveImage(ctx, "testrg123", "testlabplan", armlabservices.SaveImageBody{
+		Name:                to.Ptr("Test Image"),
+		LabVirtualMachineID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.LabServices/labs/testlab/virtualMachines/template"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

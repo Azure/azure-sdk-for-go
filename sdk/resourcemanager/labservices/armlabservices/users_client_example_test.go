@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/listUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/listUser.json
 func ExampleUsersClient_NewListByLabPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleUsersClient_NewListByLabPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLabPager("testrg123",
-		"testlab",
-		&armlabservices.UsersClientListByLabOptions{Filter: nil})
+	pager := client.NewListByLabPager("testrg123", "testlab", &armlabservices.UsersClientListByLabOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleUsersClient_NewListByLabPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/getUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/getUser.json
 func ExampleUsersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleUsersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"testrg123",
-		"testlab",
-		"testuser",
-		nil)
+	res, err := client.Get(ctx, "testrg123", "testlab", "testuser", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleUsersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/putUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/putUser.json
 func ExampleUsersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,17 +71,12 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"testrg123",
-		"testlab",
-		"testuser",
-		armlabservices.User{
-			Properties: &armlabservices.UserProperties{
-				AdditionalUsageQuota: to.Ptr("20:00"),
-				Email:                to.Ptr("testuser@contoso.com"),
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "testrg123", "testlab", "testuser", armlabservices.User{
+		Properties: &armlabservices.UserProperties{
+			AdditionalUsageQuota: to.Ptr("PT10H"),
+			Email:                to.Ptr("testuser@contoso.com"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,7 +88,7 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/patchUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/patchUser.json
 func ExampleUsersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,16 +99,11 @@ func ExampleUsersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"testrg123",
-		"testlab",
-		"testuser",
-		armlabservices.UserUpdate{
-			Properties: &armlabservices.UserUpdateProperties{
-				AdditionalUsageQuota: to.Ptr("20:00"),
-			},
+	poller, err := client.BeginUpdate(ctx, "testrg123", "testlab", "testuser", armlabservices.UserUpdate{
+		Properties: &armlabservices.UserUpdateProperties{
+			AdditionalUsageQuota: to.Ptr("PT10H"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -131,7 +115,7 @@ func ExampleUsersClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/deleteUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/deleteUser.json
 func ExampleUsersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,11 +126,7 @@ func ExampleUsersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"testrg123",
-		"testlab",
-		"testuser",
-		nil)
+	poller, err := client.BeginDelete(ctx, "testrg123", "testlab", "testuser", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -156,7 +136,7 @@ func ExampleUsersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/inviteUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/inviteUser.json
 func ExampleUsersClient_BeginInvite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,14 +147,9 @@ func ExampleUsersClient_BeginInvite() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginInvite(ctx,
-		"testrg123",
-		"testlab",
-		"testuser",
-		armlabservices.InviteBody{
-			Text: to.Ptr("Invitation to lab testlab"),
-		},
-		nil)
+	poller, err := client.BeginInvite(ctx, "testrg123", "testlab", "testuser", armlabservices.InviteBody{
+		Text: to.Ptr("Invitation to lab testlab"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

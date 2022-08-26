@@ -124,11 +124,6 @@ type ErrorInfo struct {
 	Innererror *ErrorInfo `json:"innererror,omitempty"`
 }
 
-// ErrorResponse - Contains details when the response code indicates an error.
-type ErrorResponse struct {
-	// REQUIRED; The error details.
-	Error *ErrorInfo `json:"error,omitempty"`
-}
 
 // LogsClientBatchOptions contains the optional parameters for the LogsClient.Batch method.
 type LogsClientBatchOptions struct {

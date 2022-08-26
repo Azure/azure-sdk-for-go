@@ -12,7 +12,7 @@ output-folder: ../azquery
 override-client-name: LogsClient
 security: "AADToken"
 security-scopes:  "https://api.loganalytics.io/.default"
-use: "@autorest/go@4.0.0-preview.44"
+use: "@autorest/go@4.0.0-preview.43"
 version: "^3.0.0"
 
 directive:
@@ -52,3 +52,11 @@ directive:
   - from: logs_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewLogsClient.+\{\s(?:.+\s)+\}\s/, "");
+
+# delete unused error models
+  - from: models.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+type (ErrorResponse).+\{(?:\s.+\s)+\}\s/g, "");
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(ErrorResponse)\).*\{\s(?:.+\s)+\}\s/g, "");

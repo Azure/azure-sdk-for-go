@@ -12,7 +12,7 @@ output-folder: ../azquery
 override-client-name: LogsClient
 security: "AADToken"
 security-scopes:  "https://api.loganalytics.io/.default"
-use: "@autorest/go@4.0.0-preview.43"
+use: "@autorest/go@4.0.0-preview.44"
 version: "^3.0.0"
 
 directive:

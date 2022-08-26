@@ -8,29 +8,49 @@ package azquery_test
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
+	"github.com/stretchr/testify/require"
 )
 
 const workspaceID1 = "d2d0e126-fa1e-4b0a-b647-250cdd471e68"
+const workspaceID2 = "9dad0092-fd13-403a-b367-a189a090a541"
 const query = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n" + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long"
 
-func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
+type serdeModel interface {
+	json.Marshaler
+	json.Unmarshaler
+}
+
+func testSerde[T serdeModel](t *testing.T, model T) {
+	data, err := model.MarshalJSON()
+	require.NoError(t, err)
+	err = model.UnmarshalJSON(data)
+	require.NoError(t, err)
+}
+
+func getClient(t *testing.T) *azquery.LogsClient {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal("error constructing credential")
 	}
 
-	client := azquery.NewLogsClient(cred, nil)
+	return azquery.NewLogsClient(cred, nil)
+}
+
+func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
+	client := getClient(t)
 	query := query
 	timespan := azquery.QueryTimeInterval(time.Now().Add(-12*time.Hour), time.Now())
 	body := azquery.Body{
 		Query:    &query,
 		Timespan: &timespan,
 	}
+	testSerde(t, &body)
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
 	if err != nil {
@@ -52,15 +72,12 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	if len(res.Results.Tables[0].Rows) != 100 {
 		t.Fatal("expected 100 rows")
 	}
+
+	testSerde(t, &res.Results)
 }
 
-func TestExecute_BasicQueryFailure(t *testing.T) {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		t.Fatal("error constructing credential")
-	}
-
-	client := azquery.NewLogsClient(cred, nil)
+func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
+	client := getClient(t)
 	query := "not a valid query"
 	body := azquery.Body{
 		Query: &query,
@@ -73,16 +90,30 @@ func TestExecute_BasicQueryFailure(t *testing.T) {
 	if res.Results.Tables != nil {
 		t.Fatalf("expected no results")
 	}
+	testSerde(t, &res.Results)
+}
+
+func TestQueryWorkspace_PartialError(t *testing.T) {
+	client := getClient(t)
+	query := "let Weight = 92233720368547758; range x from 1 to 3 step 1 | summarize percentilesw(x, Weight * 100, 50)"
+	body := azquery.Body{
+		Query: &query,
+	}
+
+	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
+	if err != nil {
+		t.Fatal("error with query")
+	}
+	if *res.Results.Error.Code != "PartialError" {
+		t.Fatal("expected a partial error")
+	}
+
+	testSerde(t, &res.Results)
 }
 
 // tests for special options: timeout, statistics, visualization
 func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		t.Fatal("error constructing credential")
-	}
-
-	client := azquery.NewLogsClient(cred, nil)
+	client := getClient(t)
 	query := query
 	body := azquery.Body{
 		Query: &query,
@@ -109,16 +140,30 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 }
 
 func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
+	client := getClient(t)
+	query := "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId"
+	workspaceID2 := workspaceID2
+	workspaces := []*string{&workspaceID2}
+	body := azquery.Body{
+		Query:      &query,
+		Workspaces: workspaces,
+	}
+	testSerde(t, &body)
 
+	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
+	if err != nil {
+		t.Fatalf("error with query, %s", err.Error())
+	}
+	if res.Results.Error != nil {
+		t.Fatal("result error should be nil")
+	}
+	if len(res.Results.Tables[0].Rows) != 2 {
+		t.Fatal("expected 2 results")
+	}
 }
 
 func TestBatch_QuerySuccess(t *testing.T) {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		t.Fatal("error constructing credential")
-	}
-
-	client := azquery.NewLogsClient(cred, nil)
+	client := getClient(t)
 	query1, query2 := query, query+" | take 2"
 	id1, id2 := "1", "2"
 	workspaceID := workspaceID1
@@ -133,6 +178,7 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	req1 := azquery.BatchQueryRequest{Body: &body1, ID: &id1, Workspace: &workspaceID, Path: &path, Method: &method}
 	req2 := azquery.BatchQueryRequest{Body: &body2, ID: &id2, Workspace: &workspaceID, Path: &path, Method: &method}
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{&req1, &req2}}
+	testSerde(t, &batchRequest)
 
 	res, err := client.Batch(context.Background(), batchRequest, nil)
 	if err != nil {
@@ -141,6 +187,7 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	if len(res.BatchResponse.Responses) != 2 {
 		t.Fatal("expected two responses")
 	}
+	testSerde(t, &res.BatchResponse)
 }
 
 func TestBatch_QueryFailure(t *testing.T) {

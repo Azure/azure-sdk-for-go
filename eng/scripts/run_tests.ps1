@@ -10,6 +10,7 @@ Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofil
 
 go test -timeout $testTimeout -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
 # go test will return a non-zero exit code on test failures so don't skip generating the report in this case
+$GOTESTEXITCODE = $LASTEXITCODE
 
 Get-Content outfile.txt | go-junit-report > report.xml
 
@@ -41,4 +42,8 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
         -config $repoRoot/eng/config.json `
         -serviceDirectory $serviceDirectory `
         -searchDirectory $repoRoot
+}
+
+if ($GOTESTEXITCODE) {
+    exit $GOTESTEXITCODE
 }

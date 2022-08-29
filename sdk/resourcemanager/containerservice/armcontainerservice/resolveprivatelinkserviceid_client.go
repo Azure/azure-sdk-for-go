@@ -57,7 +57,7 @@ func NewResolvePrivateLinkServiceIDClient(subscriptionID string, credential azco
 
 // POST - Gets the private link service ID for the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-02-preview
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.
 // parameters - Parameters required in order to resolve a private link service ID.
@@ -98,7 +98,7 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-02-preview")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

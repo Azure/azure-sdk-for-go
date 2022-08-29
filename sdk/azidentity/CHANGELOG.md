@@ -1,15 +1,12 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
+## 1.2.0-beta.3 (2022-09-06)
 
 ### Features Added
-
-### Breaking Changes
+* `ManagedIdentityCredential` caches tokens in-memory
 
 ### Bugs Fixed
 * `ClientCertificateCredential` sends only the leaf cert for SNI authentication
-
-### Other Changes
 
 ## 1.2.0-beta.2 (2022-08-10)
 

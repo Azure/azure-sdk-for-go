@@ -11,6 +11,30 @@ package azquery
 
 const host = "https://api.loganalytics.io/v1"
 
+// AggregationType - the aggregation type of the metric.
+type AggregationType string
+
+const (
+	AggregationTypeNone AggregationType = "None"
+	AggregationTypeAverage AggregationType = "Average"
+	AggregationTypeCount AggregationType = "Count"
+	AggregationTypeMinimum AggregationType = "Minimum"
+	AggregationTypeMaximum AggregationType = "Maximum"
+	AggregationTypeTotal AggregationType = "Total"
+)
+
+// PossibleAggregationTypeValues returns the possible values for the AggregationType const type.
+func PossibleAggregationTypeValues() []AggregationType {
+	return []AggregationType{	
+		AggregationTypeNone,
+		AggregationTypeAverage,
+		AggregationTypeCount,
+		AggregationTypeMinimum,
+		AggregationTypeMaximum,
+		AggregationTypeTotal,
+	}
+}
+
 type BatchQueryRequestMethod string
 
 const (
@@ -66,6 +90,99 @@ func PossibleLogsColumnTypeValues() []LogsColumnType {
 		LogsColumnTypeReal,
 		LogsColumnTypeString,
 		LogsColumnTypeTimespan,
+	}
+}
+
+// MetricClass - The class of the metric.
+type MetricClass string
+
+const (
+	MetricClassAvailability MetricClass = "Availability"
+	MetricClassErrors MetricClass = "Errors"
+	MetricClassLatency MetricClass = "Latency"
+	MetricClassSaturation MetricClass = "Saturation"
+	MetricClassTransactions MetricClass = "Transactions"
+)
+
+// PossibleMetricClassValues returns the possible values for the MetricClass const type.
+func PossibleMetricClassValues() []MetricClass {
+	return []MetricClass{	
+		MetricClassAvailability,
+		MetricClassErrors,
+		MetricClassLatency,
+		MetricClassSaturation,
+		MetricClassTransactions,
+	}
+}
+
+// MetricUnit - The unit of the metric.
+type MetricUnit string
+
+const (
+	MetricUnitBitsPerSecond MetricUnit = "BitsPerSecond"
+	MetricUnitByteSeconds MetricUnit = "ByteSeconds"
+	MetricUnitBytes MetricUnit = "Bytes"
+	MetricUnitBytesPerSecond MetricUnit = "BytesPerSecond"
+	MetricUnitCores MetricUnit = "Cores"
+	MetricUnitCount MetricUnit = "Count"
+	MetricUnitCountPerSecond MetricUnit = "CountPerSecond"
+	MetricUnitMilliCores MetricUnit = "MilliCores"
+	MetricUnitMilliSeconds MetricUnit = "MilliSeconds"
+	MetricUnitNanoCores MetricUnit = "NanoCores"
+	MetricUnitPercent MetricUnit = "Percent"
+	MetricUnitSeconds MetricUnit = "Seconds"
+	MetricUnitUnspecified MetricUnit = "Unspecified"
+)
+
+// PossibleMetricUnitValues returns the possible values for the MetricUnit const type.
+func PossibleMetricUnitValues() []MetricUnit {
+	return []MetricUnit{	
+		MetricUnitBitsPerSecond,
+		MetricUnitByteSeconds,
+		MetricUnitBytes,
+		MetricUnitBytesPerSecond,
+		MetricUnitCores,
+		MetricUnitCount,
+		MetricUnitCountPerSecond,
+		MetricUnitMilliCores,
+		MetricUnitMilliSeconds,
+		MetricUnitNanoCores,
+		MetricUnitPercent,
+		MetricUnitSeconds,
+		MetricUnitUnspecified,
+	}
+}
+
+// NamespaceClassification - Kind of namespace
+type NamespaceClassification string
+
+const (
+	NamespaceClassificationCustom NamespaceClassification = "Custom"
+	NamespaceClassificationPlatform NamespaceClassification = "Platform"
+	NamespaceClassificationQos NamespaceClassification = "Qos"
+)
+
+// PossibleNamespaceClassificationValues returns the possible values for the NamespaceClassification const type.
+func PossibleNamespaceClassificationValues() []NamespaceClassification {
+	return []NamespaceClassification{	
+		NamespaceClassificationCustom,
+		NamespaceClassificationPlatform,
+		NamespaceClassificationQos,
+	}
+}
+
+type ResultType string
+
+const (
+	ResultTypeData ResultType = "Data"
+	ResultTypeMetadata ResultType = "Metadata"
+)
+
+// PossibleResultTypeValues returns the possible values for the ResultType const type.
+func PossibleResultTypeValues() []ResultType {
+	return []ResultType{	
+		ResultTypeData,
+		ResultTypeMetadata,
 	}
 }
 

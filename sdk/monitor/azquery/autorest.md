@@ -1,17 +1,24 @@
 ## Go
 
 ``` yaml
+title: MonitorQueryClient
+description: Azure Monitor Query Go Client
+generated-metadata: false
+
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/preview/2021-05-19_Preview/OperationalInsights.json
+input-file: 
+    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/preview/2021-05-19_Preview/OperationalInsights.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 openapi-type: "data-plane"
 output-folder: ../azquery
 override-client-name: LogsClient
 security: "AADToken"
-security-scopes:  "https://api.loganalytics.io/.default"
 use: "@autorest/go@4.0.0-preview.43"
 version: "^3.0.0"
 
@@ -47,16 +54,19 @@ directive:
   - rename-operation:
       from: Query_Batch
       to: Batch
+
+ # rename ListMetricDefinitions and ListMetricNamespaces to generate in metrics_client.go
+  - rename-operation:
+      from: MetricDefinitions_List
+      to: Metrics_ListMetricDefinitions
+  - rename-operation:
+      from: MetricNamespaces_List
+      to: Metrics_ListMetricNamespaces
  
   # delete generated constructor
   - from: logs_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewLogsClient.+\{\s(?:.+\s)+\}\s/, "");
-
-# delete unused error models
-  - from: models.go
+  - from: metrics_client.go
     where: $
-    transform: return $.replace(/(?:\/\/.*\s)+type (ErrorResponse).+\{(?:\s.+\s)+\}\s/g, "");
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(ErrorResponse)\).*\{\s(?:.+\s)+\}\s/g, "");
+    transform: return $.replace(/(?:\/\/.*\s)+func NewMetricsClient.+\{\s(?:.+\s)+\}\s/, "");

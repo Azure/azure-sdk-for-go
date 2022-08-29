@@ -19,3 +19,18 @@ type LogsClientQueryWorkspaceResponse struct {
 	Results
 }
 
+// MetricsClientListMetricDefinitionsResponse contains the response from method MetricsClient.ListMetricDefinitions.
+type MetricsClientListMetricDefinitionsResponse struct {
+	MetricDefinitionCollection
+}
+
+// MetricsClientListMetricNamespacesResponse contains the response from method MetricsClient.ListMetricNamespaces.
+type MetricsClientListMetricNamespacesResponse struct {
+	MetricNamespaceCollection
+}
+
+// MetricsClientListResponse contains the response from method MetricsClient.List.
+type MetricsClientListResponse struct {
+	Response
+}
+

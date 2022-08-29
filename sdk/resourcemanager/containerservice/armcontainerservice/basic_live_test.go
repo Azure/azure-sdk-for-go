@@ -66,7 +66,7 @@ func TestBasicTestSuite(t *testing.T) {
 	suite.Run(t, new(BasicTestSuite))
 }
 
-//
+// Microsoft.ContainerService/managedClusters
 func (testsuite *BasicTestSuite) TestScenario0() {
 	var agentpoolId string
 	var commandId string

@@ -21,8 +21,8 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	}
 
 	client := azquery.NewMetricsClient(cred, nil)
-	resourceURI := "subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/ripark"
-	res, err := client.List(context.Background(), resourceURI, nil)
+	resourceURI := "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics"
+	res, err := client.QueryResource(context.Background(), resourceURI, nil)
 	if err != nil {
 		t.Fatal("error")
 	}

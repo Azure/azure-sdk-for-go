@@ -25,31 +25,139 @@ type MetricsClient struct {
 }
 
 
-// List - Lists the metric values for a resource.
+// NewListMetricDefinitionsPager - Lists the metric definitions for the resource.
+// Generated from API version 2018-01-01
+// resourceURI - The identifier of the resource.
+// options - MetricsClientListMetricDefinitionsOptions contains the optional parameters for the MetricsClient.ListMetricDefinitions
+// method.
+func (client *MetricsClient) NewListMetricDefinitionsPager(resourceURI string, options *MetricsClientListMetricDefinitionsOptions) (*runtime.Pager[MetricsClientListMetricDefinitionsResponse]) {
+	return runtime.NewPager(runtime.PagingHandler[MetricsClientListMetricDefinitionsResponse]{
+		More: func(page MetricsClientListMetricDefinitionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *MetricsClientListMetricDefinitionsResponse) (MetricsClientListMetricDefinitionsResponse, error) {
+			req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceURI, options)
+			if err != nil {
+				return MetricsClientListMetricDefinitionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MetricsClientListMetricDefinitionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MetricsClientListMetricDefinitionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMetricDefinitionsHandleResponse(resp)
+		},
+	})
+}
+
+// listMetricDefinitionsCreateRequest creates the ListMetricDefinitions request.
+func (client *MetricsClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListMetricDefinitionsOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metricDefinitions"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(	metricsHost, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2018-01-01")
+	if options != nil && options.Metricnamespace != nil {
+		reqQP.Set("metricnamespace", *options.Metricnamespace)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listMetricDefinitionsHandleResponse handles the ListMetricDefinitions response.
+func (client *MetricsClient) listMetricDefinitionsHandleResponse(resp *http.Response) (MetricsClientListMetricDefinitionsResponse, error) {
+	result := MetricsClientListMetricDefinitionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionCollection); err != nil {
+		return MetricsClientListMetricDefinitionsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListMetricNamespacesPager - Lists the metric namespaces for the resource.
+// Generated from API version 2017-12-01-preview
+// resourceURI - The identifier of the resource.
+// options - MetricsClientListMetricNamespacesOptions contains the optional parameters for the MetricsClient.ListMetricNamespaces
+// method.
+func (client *MetricsClient) NewListMetricNamespacesPager(resourceURI string, options *MetricsClientListMetricNamespacesOptions) (*runtime.Pager[MetricsClientListMetricNamespacesResponse]) {
+	return runtime.NewPager(runtime.PagingHandler[MetricsClientListMetricNamespacesResponse]{
+		More: func(page MetricsClientListMetricNamespacesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *MetricsClientListMetricNamespacesResponse) (MetricsClientListMetricNamespacesResponse, error) {
+			req, err := client.listMetricNamespacesCreateRequest(ctx, resourceURI, options)
+			if err != nil {
+				return MetricsClientListMetricNamespacesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MetricsClientListMetricNamespacesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MetricsClientListMetricNamespacesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMetricNamespacesHandleResponse(resp)
+		},
+	})
+}
+
+// listMetricNamespacesCreateRequest creates the ListMetricNamespaces request.
+func (client *MetricsClient) listMetricNamespacesCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListMetricNamespacesOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(	metricsHost, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2017-12-01-preview")
+	if options != nil && options.StartTime != nil {
+		reqQP.Set("startTime", *options.StartTime)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listMetricNamespacesHandleResponse handles the ListMetricNamespaces response.
+func (client *MetricsClient) listMetricNamespacesHandleResponse(resp *http.Response) (MetricsClientListMetricNamespacesResponse, error) {
+	result := MetricsClientListMetricNamespacesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MetricNamespaceCollection); err != nil {
+		return MetricsClientListMetricNamespacesResponse{}, err
+	}
+	return result, nil
+}
+
+// QueryResource - Lists the metric values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-01-01
 // resourceURI - The identifier of the resource.
-// options - MetricsClientListOptions contains the optional parameters for the MetricsClient.List method.
-func (client *MetricsClient) List(ctx context.Context, resourceURI string, options *MetricsClientListOptions) (MetricsClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceURI, options)
+// options - MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
+func (client *MetricsClient) QueryResource(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (MetricsClientQueryResourceResponse, error) {
+	req, err := client.queryResourceCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return MetricsClientListResponse{}, err
+		return MetricsClientQueryResourceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricsClientListResponse{}, err
+		return MetricsClientQueryResourceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricsClientListResponse{}, runtime.NewResponseError(resp)
+		return MetricsClientQueryResourceResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.listHandleResponse(resp)
+	return client.queryResourceHandleResponse(resp)
 }
 
-// listCreateRequest creates the List request.
-func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListOptions) (*policy.Request, error) {
+// queryResourceCreateRequest creates the QueryResource request.
+func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metrics"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(	host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(	metricsHost, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,121 +195,11 @@ func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI 
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *MetricsClient) listHandleResponse(resp *http.Response) (MetricsClientListResponse, error) {
-	result := MetricsClientListResponse{}
+// queryResourceHandleResponse handles the QueryResource response.
+func (client *MetricsClient) queryResourceHandleResponse(resp *http.Response) (MetricsClientQueryResourceResponse, error) {
+	result := MetricsClientQueryResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Response); err != nil {
-		return MetricsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListMetricDefinitionsPager - Lists the metric definitions for the resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2018-01-01
-// resourceURI - The identifier of the resource.
-// options - MetricsClientListMetricDefinitionsOptions contains the optional parameters for the MetricsClient.ListMetricDefinitions
-// method.
-func (client *MetricsClient) NewListMetricDefinitionsPager(resourceURI string, options *MetricsClientListMetricDefinitionsOptions) (*runtime.Pager[MetricsClientListMetricDefinitionsResponse]) {
-	return runtime.NewPager(runtime.PagingHandler[MetricsClientListMetricDefinitionsResponse]{
-		More: func(page MetricsClientListMetricDefinitionsResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *MetricsClientListMetricDefinitionsResponse) (MetricsClientListMetricDefinitionsResponse, error) {
-			req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceURI, options)
-			if err != nil {
-				return MetricsClientListMetricDefinitionsResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return MetricsClientListMetricDefinitionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MetricsClientListMetricDefinitionsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listMetricDefinitionsHandleResponse(resp)
-		},
-	})
-}
-
-// listMetricDefinitionsCreateRequest creates the ListMetricDefinitions request.
-func (client *MetricsClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListMetricDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metricDefinitions"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(	host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-01-01")
-	if options != nil && options.Metricnamespace != nil {
-		reqQP.Set("metricnamespace", *options.Metricnamespace)
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listMetricDefinitionsHandleResponse handles the ListMetricDefinitions response.
-func (client *MetricsClient) listMetricDefinitionsHandleResponse(resp *http.Response) (MetricsClientListMetricDefinitionsResponse, error) {
-	result := MetricsClientListMetricDefinitionsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionCollection); err != nil {
-		return MetricsClientListMetricDefinitionsResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListMetricNamespacesPager - Lists the metric namespaces for the resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2017-12-01-preview
-// resourceURI - The identifier of the resource.
-// options - MetricsClientListMetricNamespacesOptions contains the optional parameters for the MetricsClient.ListMetricNamespaces
-// method.
-func (client *MetricsClient) NewListMetricNamespacesPager(resourceURI string, options *MetricsClientListMetricNamespacesOptions) (*runtime.Pager[MetricsClientListMetricNamespacesResponse]) {
-	return runtime.NewPager(runtime.PagingHandler[MetricsClientListMetricNamespacesResponse]{
-		More: func(page MetricsClientListMetricNamespacesResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *MetricsClientListMetricNamespacesResponse) (MetricsClientListMetricNamespacesResponse, error) {
-			req, err := client.listMetricNamespacesCreateRequest(ctx, resourceURI, options)
-			if err != nil {
-				return MetricsClientListMetricNamespacesResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return MetricsClientListMetricNamespacesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MetricsClientListMetricNamespacesResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listMetricNamespacesHandleResponse(resp)
-		},
-	})
-}
-
-// listMetricNamespacesCreateRequest creates the ListMetricNamespaces request.
-func (client *MetricsClient) listMetricNamespacesCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListMetricNamespacesOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(	host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-12-01-preview")
-	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", *options.StartTime)
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listMetricNamespacesHandleResponse handles the ListMetricNamespaces response.
-func (client *MetricsClient) listMetricNamespacesHandleResponse(resp *http.Response) (MetricsClientListMetricNamespacesResponse, error) {
-	result := MetricsClientListMetricNamespacesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MetricNamespaceCollection); err != nil {
-		return MetricsClientListMetricNamespacesResponse{}, err
+		return MetricsClientQueryResourceResponse{}, err
 	}
 	return result, nil
 }

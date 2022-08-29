@@ -320,8 +320,8 @@ type MetricsClientListMetricNamespacesOptions struct {
 	StartTime *string
 }
 
-// MetricsClientListOptions contains the optional parameters for the MetricsClient.List method.
-type MetricsClientListOptions struct {
+// MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
+type MetricsClientQueryResourceOptions struct {
 	// The list of aggregation types (comma separated) to retrieve.
 	Aggregation *string
 	// The $filter is used to reduce the set of metric data returned. Example: Metric contains metadata A, B and C. - Return all

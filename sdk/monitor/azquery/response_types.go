@@ -29,8 +29,8 @@ type MetricsClientListMetricNamespacesResponse struct {
 	MetricNamespaceCollection
 }
 
-// MetricsClientListResponse contains the response from method MetricsClient.List.
-type MetricsClientListResponse struct {
+// MetricsClientQueryResourceResponse contains the response from method MetricsClient.QueryResource.
+type MetricsClientQueryResourceResponse struct {
 	Response
 }
 

@@ -44,3 +44,5 @@ func NewMetricsClient(credential azcore.TokenCredential, options *ClientOptions)
 func QueryTimeInterval(startTime time.Time, endTime time.Time) string {
 	return startTime.Format(time.RFC3339) + "/" + endTime.Format(time.RFC3339)
 }
+
+const metricsHost string = "https://management.azure.com"

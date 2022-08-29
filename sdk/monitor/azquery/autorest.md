@@ -19,7 +19,7 @@ openapi-type: "data-plane"
 output-folder: ../azquery
 override-client-name: LogsClient
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.43"
+use: "@autorest/go@4.0.0-preview.44"
 version: "^3.0.0"
 
 directive:
@@ -55,6 +55,11 @@ directive:
       from: Query_Batch
       to: Batch
 
+  # rename metric list to QueryResource
+  - rename-operation:
+      from: Metrics_List
+      to: Metrics_QueryResource
+
  # rename ListMetricDefinitions and ListMetricNamespaces to generate in metrics_client.go
   - rename-operation:
       from: MetricDefinitions_List
@@ -70,3 +75,12 @@ directive:
   - from: metrics_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewMetricsClient.+\{\s(?:.+\s)+\}\s/, "");
+
+ # - from: swagger-document
+  #  where: $.definitions.
+  #  transform: $["x-ms-client-default"] = "/query"
+
+  # point the metrics client to the correct host url
+  - from: metrics_client.go
+    where: $
+    transform: return $.replace(/host/g, "metricsHost");

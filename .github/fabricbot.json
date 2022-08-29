@@ -5,7 +5,7 @@
       "subCapability": "IssuesOnlyResponder",
       "version": "1.0",
       "config": {
-        "taskName": "Add needs triage label to new issues",
+        "taskName": "Add needs triage label and survey comment to new issues",
         "conditions": {
           "operator": "and",
           "operands": [
@@ -49,6 +49,12 @@
             "name": "addLabel",
             "parameters": {
               "label": "needs-triage"
+            }
+          },
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Hi @${issueAuthor}. Thank you for your feedback and we will look into it soon. Meanwhile, feel free to share your experience using the Azure SDK in this [survey](https://aka.ms/azsdk/go/issuesurvey)."
             }
           }
         ],

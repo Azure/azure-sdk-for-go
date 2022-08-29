@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/domains/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/get.json
 func ExampleDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,11 +28,7 @@ func ExampleDomainsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		"mydomain.com",
-		nil)
+	res, err := client.Get(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -40,7 +36,7 @@ func ExampleDomainsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/domains/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/createOrUpdate.json
 func ExampleDomainsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,17 +47,12 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		"mydomain.com",
-		armcommunication.DomainResource{
-			Location: to.Ptr("Global"),
-			Properties: &armcommunication.DomainProperties{
-				DomainManagement: to.Ptr(armcommunication.DomainManagementCustomerManaged),
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.DomainResource{
+		Location: to.Ptr("Global"),
+		Properties: &armcommunication.DomainProperties{
+			DomainManagement: to.Ptr(armcommunication.DomainManagementCustomerManaged),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -73,7 +64,7 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/domains/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/delete.json
 func ExampleDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,11 +75,7 @@ func ExampleDomainsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		"mydomain.com",
-		nil)
+	poller, err := client.BeginDelete(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -98,7 +85,7 @@ func ExampleDomainsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/domains/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/update.json
 func ExampleDomainsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,20 +96,15 @@ func ExampleDomainsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		"mydomain.com",
-		armcommunication.UpdateDomainRequestParameters{
-			Properties: &armcommunication.UpdateDomainProperties{
-				UserEngagementTracking: to.Ptr(armcommunication.UserEngagementTrackingEnabled),
-				ValidSenderUsernames: map[string]*string{
-					"info":   to.Ptr("MyDomain Info"),
-					"alerts": to.Ptr("MyDomain Alerts"),
-				},
+	poller, err := client.BeginUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.UpdateDomainRequestParameters{
+		Properties: &armcommunication.UpdateDomainProperties{
+			UserEngagementTracking: to.Ptr(armcommunication.UserEngagementTrackingEnabled),
+			ValidSenderUsernames: map[string]*string{
+				"info":   to.Ptr("MyDomain Info"),
+				"alerts": to.Ptr("MyDomain Alerts"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -134,7 +116,7 @@ func ExampleDomainsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/domains/listByEmailService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/listByEmailService.json
 func ExampleDomainsClient_NewListByEmailServiceResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,9 +127,7 @@ func ExampleDomainsClient_NewListByEmailServiceResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByEmailServiceResourcePager("MyResourceGroup",
-		"MyEmailServiceResource",
-		nil)
+	pager := client.NewListByEmailServiceResourcePager("MyResourceGroup", "MyEmailServiceResource", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -160,7 +140,7 @@ func ExampleDomainsClient_NewListByEmailServiceResourcePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/domains/initiateVerification.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/initiateVerification.json
 func ExampleDomainsClient_BeginInitiateVerification() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,14 +151,9 @@ func ExampleDomainsClient_BeginInitiateVerification() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginInitiateVerification(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		"mydomain.com",
-		armcommunication.VerificationParameter{
-			VerificationType: to.Ptr(armcommunication.VerificationTypeSPF),
-		},
-		nil)
+	poller, err := client.BeginInitiateVerification(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.VerificationParameter{
+		VerificationType: to.Ptr(armcommunication.VerificationTypeSPF),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -188,7 +163,7 @@ func ExampleDomainsClient_BeginInitiateVerification() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/domains/cancelVerification.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/cancelVerification.json
 func ExampleDomainsClient_BeginCancelVerification() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,14 +174,9 @@ func ExampleDomainsClient_BeginCancelVerification() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCancelVerification(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		"mydomain.com",
-		armcommunication.VerificationParameter{
-			VerificationType: to.Ptr(armcommunication.VerificationTypeSPF),
-		},
-		nil)
+	poller, err := client.BeginCancelVerification(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.VerificationParameter{
+		VerificationType: to.Ptr(armcommunication.VerificationTypeSPF),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

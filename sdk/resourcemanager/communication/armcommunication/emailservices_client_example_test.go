@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/get.json
 func ExampleEmailServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,10 +28,7 @@ func ExampleEmailServicesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		nil)
+	res, err := client.Get(ctx, "MyResourceGroup", "MyEmailServiceResource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -39,7 +36,7 @@ func ExampleEmailServicesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/createOrUpdate.json
 func ExampleEmailServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,16 +47,12 @@ func ExampleEmailServicesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		armcommunication.EmailServiceResource{
-			Location: to.Ptr("Global"),
-			Properties: &armcommunication.EmailServiceProperties{
-				DataLocation: to.Ptr("United States"),
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", armcommunication.EmailServiceResource{
+		Location: to.Ptr("Global"),
+		Properties: &armcommunication.EmailServiceProperties{
+			DataLocation: to.Ptr("United States"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -71,7 +64,7 @@ func ExampleEmailServicesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/delete.json
 func ExampleEmailServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,10 +75,7 @@ func ExampleEmailServicesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		nil)
+	poller, err := client.BeginDelete(ctx, "MyResourceGroup", "MyEmailServiceResource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,7 +85,7 @@ func ExampleEmailServicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/update.json
 func ExampleEmailServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,15 +96,11 @@ func ExampleEmailServicesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"MyResourceGroup",
-		"MyEmailServiceResource",
-		armcommunication.EmailServiceResourceUpdate{
-			Tags: map[string]*string{
-				"newTag": to.Ptr("newVal"),
-			},
+	poller, err := client.BeginUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", armcommunication.EmailServiceResourceUpdate{
+		Tags: map[string]*string{
+			"newTag": to.Ptr("newVal"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -126,7 +112,7 @@ func ExampleEmailServicesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/listBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/listBySubscription.json
 func ExampleEmailServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +136,7 @@ func ExampleEmailServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/listByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/listByResourceGroup.json
 func ExampleEmailServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,8 +147,7 @@ func ExampleEmailServicesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("MyResourceGroup",
-		nil)
+	pager := client.NewListByResourceGroupPager("MyResourceGroup", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -175,7 +160,7 @@ func ExampleEmailServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/getVerifiedExchangeOnlineDomains.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/getVerifiedExchangeOnlineDomains.json
 func ExampleEmailServicesClient_ListVerifiedExchangeOnlineDomains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,8 +171,7 @@ func ExampleEmailServicesClient_ListVerifiedExchangeOnlineDomains() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListVerifiedExchangeOnlineDomains(ctx,
-		nil)
+	res, err := client.ListVerifiedExchangeOnlineDomains(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

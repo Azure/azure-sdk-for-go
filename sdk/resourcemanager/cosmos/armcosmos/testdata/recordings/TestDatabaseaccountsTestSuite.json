@@ -1423,10 +1423,10 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20220829T062144Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "primaryMasterKey": "ic2BAInhaR3ZKEV2zoiSITwRhPgPgcxS1TvXOa5cFswOOR7P5F6a1H1gTIXErB64JiREaUOObhx5JQUIDSlgZg==",
-        "secondaryMasterKey": "ZJKJfElOTIWOKQsK0n9Zb7hMikhpsj6Osq6NYfN4uPlp0faH8mSkhyNBZp05sIlRQplZdu65vxBhZNg0P0zQ0Q==",
-        "primaryReadonlyMasterKey": "fuVhDGY5HfPa2KlcjgFgiiy42quMLUG8b4ix6QTNnVtVdnNS2TgEaiw1zOo2P5giMv3eOMJuvYR6oKu436KxSA==",
-        "secondaryReadonlyMasterKey": "Lr3YOOrWivDUUvYhdGGXKbWaQ3yrBGE3EK7woMpOOA2J0ICGmhO6pa6qXMSzoNNXT8610SpuRVbtij09iEB8bg=="
+        "primaryMasterKey": "secret",
+        "secondaryMasterKey": "secret",
+        "primaryReadonlyMasterKey": "secret",
+        "secondaryReadonlyMasterKey": "secret"
       }
     },
     {
@@ -1461,19 +1461,19 @@
       "ResponseBody": {
         "connectionStrings": [
           {
-            "connectionString": "AccountEndpoint=https://databaseaccountcosmos.documents.azure.com:443/;AccountKey=ic2BAInhaR3ZKEV2zoiSITwRhPgPgcxS1TvXOa5cFswOOR7P5F6a1H1gTIXErB64JiREaUOObhx5JQUIDSlgZg==;",
+            "connectionString": "AccountEndpoint=https://databaseaccountcosmos.documents.azure.com:443/;AccountKey=secret;",
             "description": "Primary SQL Connection String"
           },
           {
-            "connectionString": "AccountEndpoint=https://databaseaccountcosmos.documents.azure.com:443/;AccountKey=ZJKJfElOTIWOKQsK0n9Zb7hMikhpsj6Osq6NYfN4uPlp0faH8mSkhyNBZp05sIlRQplZdu65vxBhZNg0P0zQ0Q==;",
+            "connectionString": "AccountEndpoint=https://databaseaccountcosmos.documents.azure.com:443/;AccountKey=secret;",
             "description": "Secondary SQL Connection String"
           },
           {
-            "connectionString": "AccountEndpoint=https://databaseaccountcosmos.documents.azure.com:443/;AccountKey=fuVhDGY5HfPa2KlcjgFgiiy42quMLUG8b4ix6QTNnVtVdnNS2TgEaiw1zOo2P5giMv3eOMJuvYR6oKu436KxSA==;",
+            "connectionString": "AccountEndpoint=https://databaseaccountcosmos.documents.azure.com:443/;AccountKey=secret;",
             "description": "Primary Read-Only SQL Connection String"
           },
           {
-            "connectionString": "AccountEndpoint=https://databaseaccountcosmos.documents.azure.com:443/;AccountKey=Lr3YOOrWivDUUvYhdGGXKbWaQ3yrBGE3EK7woMpOOA2J0ICGmhO6pa6qXMSzoNNXT8610SpuRVbtij09iEB8bg==;",
+            "connectionString": "AccountEndpoint=https://databaseaccountcosmos.documents.azure.com:443/;AccountKey=secret;",
             "description": "Secondary Read-Only SQL Connection String"
           }
         ]
@@ -1508,8 +1508,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20220829T062146Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "primaryReadonlyMasterKey": "fuVhDGY5HfPa2KlcjgFgiiy42quMLUG8b4ix6QTNnVtVdnNS2TgEaiw1zOo2P5giMv3eOMJuvYR6oKu436KxSA==",
-        "secondaryReadonlyMasterKey": "Lr3YOOrWivDUUvYhdGGXKbWaQ3yrBGE3EK7woMpOOA2J0ICGmhO6pa6qXMSzoNNXT8610SpuRVbtij09iEB8bg=="
+        "primaryReadonlyMasterKey": "secret",
+        "secondaryReadonlyMasterKey": "secret"
       }
     },
     {
@@ -1542,8 +1542,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20220829T062148Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "primaryReadonlyMasterKey": "fuVhDGY5HfPa2KlcjgFgiiy42quMLUG8b4ix6QTNnVtVdnNS2TgEaiw1zOo2P5giMv3eOMJuvYR6oKu436KxSA==",
-        "secondaryReadonlyMasterKey": "Lr3YOOrWivDUUvYhdGGXKbWaQ3yrBGE3EK7woMpOOA2J0ICGmhO6pa6qXMSzoNNXT8610SpuRVbtij09iEB8bg=="
+        "primaryReadonlyMasterKey": "secret",
+        "secondaryReadonlyMasterKey": "secret"
       }
     },
     {

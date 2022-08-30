@@ -1,14 +1,9 @@
 # Release History
 
-## 1.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.1 (2022-08-30)
 
 ### Bugs Fixed
-
-### Other Changes
+* Fix seed not stable with `GenerateAlphaNumericID` when playback
 
 ## 1.1.0 (2022-08-24)
 

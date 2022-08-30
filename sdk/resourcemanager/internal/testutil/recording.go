@@ -123,7 +123,7 @@ func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
 			variables := recording.GetVariables(t)
 			if seed, ok := variables[recordingRandomSeedVariableName]; ok {
 				seedNum, err := strconv.ParseInt(seed.(string), 10, 64)
-				if err != nil {
+				if err == nil {
 					recordingRandomSeed = seedNum
 				}
 			}

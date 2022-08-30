@@ -58,7 +58,7 @@ func NewStreamingPoliciesClient(subscriptionID string, credential azcore.TokenCr
 
 // Create - Create a Streaming Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingPolicyName - The Streaming Policy name.
@@ -104,7 +104,7 @@ func (client *StreamingPoliciesClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -121,7 +121,7 @@ func (client *StreamingPoliciesClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes a Streaming Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingPolicyName - The Streaming Policy name.
@@ -166,7 +166,7 @@ func (client *StreamingPoliciesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -174,7 +174,7 @@ func (client *StreamingPoliciesClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get the details of a Streaming Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingPolicyName - The Streaming Policy name.
@@ -218,7 +218,7 @@ func (client *StreamingPoliciesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,7 +235,7 @@ func (client *StreamingPoliciesClient) getHandleResponse(resp *http.Response) (S
 
 // NewListPager - Lists the Streaming Policies in the account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
@@ -287,7 +287,7 @@ func (client *StreamingPoliciesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

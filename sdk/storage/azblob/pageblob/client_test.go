@@ -3866,3 +3866,310 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeWithCPK() {
 	resp, _ := pbClient.GetProperties(context.Background(), &getBlobPropertiesOptions)
 	_require.Equal(*resp.ContentLength, int64(pageblob.PageBytes))
 }
+
+//func (s *AZBlobUnrecordedTestsSuite) TestPageBlockFromURLWithCPK() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//
+//	contentSize := 8 * 1024 // 1MB
+//	r, srcData := getRandomDataAndReader(contentSize)
+//	md5Sum := md5.Sum(srcData)
+//	contentMD5 := md5Sum[:]
+//	ctx := ctx // Use default Background context
+//	srcPBName := "src" + testcommon.GenerateBlobName(testName)
+//	bbClient := createNewPageBlobWithSize(_require, srcPBName, containerClient, int64(contentSize))
+//	dstPBName := "dst" + testcommon.GenerateBlobName(testName)
+//	destBlob := createNewPageBlobWithCPK(_require, dstPBName, containerClient, int64(contentSize), &testcommon.TestCPKByValue, nil)
+//
+//	offset, count := int64(0), int64(contentSize)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
+//		Offset: to.Ptr(offset), Count: to.Ptr(count),
+//	}
+//	_, err = bbClient.UploadPages(ctx, streaming.NopCloser(r), &uploadPagesOptions)
+//	_require.Nil(err)
+//	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
+//	srcBlobParts, _ := NewBlobURLParts(bbClient.URL())
+//
+//	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
+//	_require.Nil(err)
+//	srcBlobParts.SAS, err = BlobSASSignatureValues{
+//		Protocol:      SASProtocolHTTPS,
+//		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+//		ContainerName: srcBlobParts.ContainerName,
+//		BlobName:      srcBlobParts.BlobName,
+//		Permissions:   BlobSASPermissions{Read: true}.String(),
+//	}.Sign(credential)
+//	if err != nil {
+//		s.T().Fatal(err)
+//	}
+//
+//	srcBlobURLWithSAS := srcBlobParts.URL()
+//	uploadPagesFromURLOptions := pageblob.UploadPagesFromURLOptions{
+//		SourceContentMD5: contentMD5,
+//		CpkInfo:          &testcommon.TestCPKByValue,
+//	}
+//	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+//	_require.Nil(err)
+//	// _require.Equal(resp.RawResponse.StatusCode, 201)
+//	_require.NotNil(resp.ETag)
+//	_require.NotNil(resp.LastModified)
+//	_require.NotNil(resp.ContentMD5)
+//	_require.EqualValues(resp.ContentMD5, contentMD5)
+//	_require.NotNil(resp.RequestID)
+//	_require.NotNil(resp.Version)
+//	_require.NotNil(resp.Date)
+//	_require.Equal((*resp.Date).IsZero(), false)
+//	_require.Equal(*resp.BlobSequenceNumber, int64(0))
+//	_require.Equal(*resp.IsServerEncrypted, true)
+//	_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+//
+//	_, err = destBlob.DownloadStream(ctx, nil)
+//	_require.NotNil(err)
+//
+//	downloadBlobOptions := blob.downloadWriterAtOptions{
+//		CpkInfo: &testcommon.TestInvalidCPKByValue,
+//	}
+//	_, err = destBlob.DownloadStream(ctx, &downloadBlobOptions)
+//	_require.NotNil(err)
+//
+//	// Download blob to do data integrity check.
+//	downloadBlobOptions = blob.downloadWriterAtOptions{
+//		CpkInfo: &testcommon.TestCPKByValue,
+//	}
+//	downloadResp, err := destBlob.DownloadStream(ctx, &downloadBlobOptions)
+//	_require.Nil(err)
+//	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+//
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	_require.Nil(err)
+//	_require.EqualValues(destData, srcData)
+//}
+
+//nolint
+//func (s *AZBlobUnrecordedTestsSuite) TestPageBlockFromURLWithCPKScope() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//
+//	contentSize := 8 * 1024 // 1MB
+//	r, srcData := getRandomDataAndReader(contentSize)
+//	md5Sum := md5.Sum(srcData)
+//	contentMD5 := md5Sum[:]
+//	ctx := ctx // Use default Background context
+//	srcPBName := "src" + testcommon.GenerateBlobName(testName)
+//	srcPBClient := createNewPageBlobWithSize(_require, srcPBName, containerClient, int64(contentSize))
+//	dstPBName := "dst" + testcommon.GenerateBlobName(testName)
+//	dstPBBlob := createNewPageBlobWithCPK(_require, dstPBName, containerClient, int64(contentSize), nil, &testcommon.TestCPKByScope)
+//
+//	offset, count := int64(0), int64(contentSize)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
+//		Offset: to.Ptr(offset), Count: to.Ptr(count),
+//	}
+//	_, err = srcPBClient.UploadPages(ctx, streaming.NopCloser(r), &uploadPagesOptions)
+//	_require.Nil(err)
+//	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
+//	srcBlobParts, _ := NewBlobURLParts(srcPBClient.URL())
+//
+//	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
+//	_require.Nil(err)
+//	srcBlobParts.SAS, err = BlobSASSignatureValues{
+//		Protocol:      SASProtocolHTTPS,
+//		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+//		ContainerName: srcBlobParts.ContainerName,
+//		BlobName:      srcBlobParts.BlobName,
+//		Permissions:   BlobSASPermissions{Read: true}.String(),
+//	}.Sign(credential)
+//	if err != nil {
+//		s.T().Fatal(err)
+//	}
+//
+//	srcBlobURLWithSAS := srcBlobParts.URL()
+//	uploadPagesFromURLOptions := pageblob.UploadPagesFromURLOptions{
+//		SourceContentMD5: contentMD5,
+//		CpkScopeInfo:     &testcommon.TestCPKByScope,
+//	}
+//	resp, err := dstPBBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+//	_require.Nil(err)
+//	// _require.Equal(resp.RawResponse.StatusCode, 201)
+//	_require.NotNil(resp.ETag)
+//	_require.NotNil(resp.LastModified)
+//	_require.NotNil(resp.ContentMD5)
+//	_require.EqualValues(resp.ContentMD5, contentMD5)
+//	_require.NotNil(resp.RequestID)
+//	_require.NotNil(resp.Version)
+//	_require.NotNil(resp.Date)
+//	_require.Equal((*resp.Date).IsZero(), false)
+//	_require.Equal(*resp.BlobSequenceNumber, int64(0))
+//	_require.Equal(*resp.IsServerEncrypted, true)
+//	_require.EqualValues(resp.EncryptionScope, testcommon.TestCPKByScope.EncryptionScope)
+//
+//	// Download blob to do data integrity check.
+//	downloadBlobOptions := blob.downloadWriterAtOptions{
+//		CpkScopeInfo: &testcommon.TestCPKByScope,
+//	}
+//	downloadResp, err := dstPBBlob.DownloadStream(ctx, &downloadBlobOptions)
+//	_require.Nil(err)
+//	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
+//
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	_require.Nil(err)
+//	_require.EqualValues(destData, srcData)
+//}
+
+//nolint
+//func (s *AZBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5WithCPK() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//
+//	contentSize := 8 * 1024
+//	r, srcData := getRandomDataAndReader(contentSize)
+//	md5Sum := md5.Sum(srcData)
+//	contentMD5 := md5Sum[:]
+//	srcPBName := "src" + testcommon.GenerateBlobName(testName)
+//	srcBlob := createNewPageBlobWithSize(_require, srcPBName, containerClient, int64(contentSize))
+//
+//	offset, count := int64(0), int64(contentSize)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
+//		Offset: to.Ptr(offset), Count: to.Ptr(count),
+//	}
+//	_, err = srcBlob.UploadPages(ctx, streaming.NopCloser(r), &uploadPagesOptions)
+//	_require.Nil(err)
+//	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
+//
+//	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
+//
+//	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
+//	_require.Nil(err)
+//	srcBlobParts.SAS, err = BlobSASSignatureValues{
+//		Protocol:      SASProtocolHTTPS,
+//		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+//		ContainerName: srcBlobParts.ContainerName,
+//		BlobName:      srcBlobParts.BlobName,
+//		Permissions:   BlobSASPermissions{Read: true}.String(),
+//	}.Sign(credential)
+//	if err != nil {
+//		s.T().Fatal(err)
+//	}
+//
+//	srcBlobURLWithSAS := srcBlobParts.URL()
+//	dstPBName := "dst" + testcommon.GenerateBlobName(testName)
+//	destPBClient := createNewPageBlobWithCPK(_require, dstPBName, containerClient, int64(contentSize), &testcommon.TestCPKByValue, nil)
+//	uploadPagesFromURLOptions := pageblob.UploadPagesFromURLOptions{
+//		SourceContentMD5: contentMD5,
+//		CpkInfo:          &testcommon.TestCPKByValue,
+//	}
+//	resp, err := destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+//	_require.Nil(err)
+//	// _require.Equal(resp.RawResponse.StatusCode, 201)
+//	_require.NotNil(resp.ETag)
+//	_require.NotNil(resp.LastModified)
+//	_require.NotNil(resp.ContentMD5)
+//	_require.EqualValues(resp.ContentMD5, contentMD5)
+//	_require.NotNil(resp.RequestID)
+//	_require.NotNil(resp.Version)
+//	_require.NotNil(resp.Date)
+//	_require.Equal((*resp.Date).IsZero(), false)
+//	_require.Equal(*resp.BlobSequenceNumber, int64(0))
+//	_require.Equal(*resp.IsServerEncrypted, true)
+//	_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+//
+//	_, err = destPBClient.DownloadStream(ctx, nil)
+//	_require.NotNil(err)
+//
+//	downloadBlobOptions := blob.downloadWriterAtOptions{
+//		CpkInfo: &testcommon.TestInvalidCPKByValue,
+//	}
+//	_, err = destPBClient.DownloadStream(ctx, &downloadBlobOptions)
+//	_require.NotNil(err)
+//
+//	// Download blob to do data integrity check.
+//	downloadBlobOptions = blob.downloadWriterAtOptions{
+//		CpkInfo: &testcommon.TestCPKByValue,
+//	}
+//	downloadResp, err := destPBClient.DownloadStream(ctx, &downloadBlobOptions)
+//	_require.Nil(err)
+//	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+//
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	_require.Nil(err)
+//	_require.EqualValues(destData, srcData)
+//
+//	_, badMD5 := getRandomDataAndReader(16)
+//	badContentMD5 := badMD5[:]
+//	uploadPagesFromURLOptions1 := pageblob.UploadPagesFromURLOptions{
+//		SourceContentMD5: badContentMD5,
+//	}
+//	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
+//	_require.NotNil(err)
+//
+//	testcommon.ValidateBlobErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
+//}
+
+//func (s *AZBlobRecordedTestsSuite) TestClearDiffPagesWithCPK() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+////	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//
+//	pbName := testcommon.GenerateBlobName(testName)
+//	pbClient := createNewPageBlobWithCPK(_require, pbName, containerClient, pageblob.PageBytes*10, &testcommon.TestCPKByValue, nil)
+//
+//	contentSize := 2 * 1024
+//	r := getReaderToGeneratedBytes(contentSize)
+//	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{Range: &HttpRange{offset, count}, CpkInfo: &testcommon.TestCPKByValue}
+//	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
+//	_require.Nil(err)
+//
+//	createBlobSnapshotOptions := blob.CreateSnapshotOptions{
+//		CpkInfo: &testcommon.TestCPKByValue,
+//	}
+//	snapshotResp, err := pbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
+//	_require.Nil(err)
+//
+//	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
+//	uploadPagesOptions1 := pageblob.UploadPagesOptions{Range: &HttpRange{offset1, count1}, CpkInfo: &testcommon.TestCPKByValue}
+//	_, err = pbClient.UploadPages(ctx, getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
+//	_require.Nil(err)
+//
+//	pageListResp, err := pbClient.NewGetPageRangesDiffPager(ctx, HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
+//	_require.Nil(err)
+//	pageRangeResp := pageListResp.PageList.Range
+//	_require.NotNil(pageRangeResp)
+//	_require.Len(pageRangeResp, 1)
+//	rawStart, rawEnd := pageRangeResp[0].Raw()
+//	_require.Equal(rawStart, offset1)
+//	_require.Equal(rawEnd, end1)
+//
+//	clearPagesOptions := PageBlobClearPagesOptions{
+//		CpkInfo: &testcommon.TestCPKByValue,
+//	}
+//	clearResp, err := pbClient.ClearPages(ctx, HttpRange{2048, 2048}, &clearPagesOptions)
+//	_require.Nil(err)
+//	_require.Equal(clearResp.RawResponse.StatusCode, 201)
+//
+//	pageListResp, err = pbClient.NewGetPageRangesDiffPager(ctx, HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
+//	_require.Nil(err)
+//	_require.Nil(pageListResp.PageList.Range)
+//}

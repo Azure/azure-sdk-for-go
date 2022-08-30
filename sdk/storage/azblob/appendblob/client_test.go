@@ -10,6 +10,8 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"io"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -1441,3 +1443,318 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
 		_require.Len(blobResp1.Metadata, 2)
 	}
 }
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		CpkInfo: &testcommon.TestCPKByValue,
+	}
+	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.Nil(err)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
+
+	words := []string{"AAA ", "BBB ", "CCC "}
+	for index, word := range words {
+		appendBlockOptions := appendblob.AppendBlockOptions{
+			CpkInfo: &testcommon.TestCPKByValue,
+		}
+		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
+		_require.Nil(err)
+		// _require.Equal(resp.RawResponse.StatusCode, 201)
+		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
+		_require.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
+		_require.NotNil(resp.ETag)
+		_require.NotNil(resp.LastModified)
+		_require.Equal(resp.LastModified.IsZero(), false)
+		_require.NotEqual(resp.ContentMD5, "")
+
+		_require.NotEqual(resp.Version, "")
+		_require.NotNil(resp.Date)
+		_require.Equal((*resp.Date).IsZero(), false)
+		_require.Equal(*resp.IsServerEncrypted, true)
+		_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
+
+	// Get blob content without encryption key should fail the request.
+	_, err = abClient.DownloadStream(context.Background(), nil)
+	_require.NotNil(err)
+
+	// Download blob to do data integrity check.
+	downloadBlobOptions := blob.DownloadStreamOptions{
+		CpkInfo: &testcommon.TestCPKByValue,
+	}
+	downloadResp, err := abClient.DownloadStream(context.Background(), &downloadBlobOptions)
+	_require.Nil(err)
+
+	data, err := io.ReadAll(downloadResp.Body)
+	_require.Nil(err)
+	_require.EqualValues(string(data), "AAA BBB CCC ")
+	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		CpkScopeInfo: &testcommon.TestCPKByScope,
+	}
+	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.Nil(err)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
+
+	words := []string{"AAA ", "BBB ", "CCC "}
+	for index, word := range words {
+		appendBlockOptions := appendblob.AppendBlockOptions{
+			CpkScopeInfo: &testcommon.TestCPKByScope,
+		}
+		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
+		_require.Nil(err)
+		// _require.Equal(resp.RawResponse.StatusCode, 201)
+		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
+		_require.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
+		_require.NotNil(resp.ETag)
+		_require.NotNil(resp.LastModified)
+		_require.Equal(resp.LastModified.IsZero(), false)
+		_require.NotEqual(resp.ContentMD5, "")
+
+		_require.NotEqual(resp.Version, "")
+		_require.NotNil(resp.Date)
+		_require.Equal((*resp.Date).IsZero(), false)
+		_require.Equal(*resp.IsServerEncrypted, true)
+		_require.EqualValues(resp.EncryptionScope, testcommon.TestCPKByScope.EncryptionScope)
+	}
+
+	// Download blob to do data integrity check.
+	downloadBlobOptions := blob.DownloadStreamOptions{
+		CpkScopeInfo: &testcommon.TestCPKByScope,
+	}
+	downloadResp, err := abClient.DownloadStream(context.Background(), &downloadBlobOptions)
+	_require.Nil(err)
+
+	data, err := io.ReadAll(downloadResp.Body)
+	_require.Nil(err)
+	_require.EqualValues(string(data), "AAA BBB CCC ")
+	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
+}
+
+//nolint
+//func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCPK() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//
+//	contentSize := 4 * 1024 * 1024 // 4MB
+//	r, srcData := getRandomDataAndReader(contentSize)
+//	md5Sum := md5.Sum(srcData)
+//	contentMD5 := md5Sum[:]
+//	ctx := ctx
+//	srcABClient := containerClient.NewAppendBlobClient(generateName("src"))
+//	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
+//
+//	_, err = srcABClient.Create(ctx, nil)
+//	_require.Nil(err)
+//	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
+//
+//	resp, err := srcABClient.AppendBlock(ctx, streaming.NopCloser(r), nil)
+//	_require.Nil(err)
+//	// _require.Equal(resp.RawResponse.StatusCode, 201)
+//	_require.Equal(*resp.BlobAppendOffset, "0")
+//	_require.Equal(*resp.BlobCommittedBlockCount, int32(1))
+//	_require.NotNil(resp.ETag)
+//	_require.NotNil(resp.LastModified)
+//	_require.Equal((*resp.LastModified).IsZero(), false)
+//	_require.Nil(resp.ContentMD5)
+//	_require.NotNil(resp.RequestID)
+//	_require.NotNil(resp.Version)
+//	_require.NotNil(resp.Date)
+//	_require.Equal((*resp.Date).IsZero(), false)
+//
+//	srcBlobParts, _ := NewBlobURLParts(srcABClient.URL())
+//
+//	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
+//	_require.Nil(err)
+//	srcBlobParts.SAS, err = BlobSASSignatureValues{
+//		Protocol:      SASProtocolHTTPS,
+//		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+//		ContainerName: srcBlobParts.ContainerName,
+//		BlobName:      srcBlobParts.BlobName,
+//		Permissions:   BlobSASPermissions{Read: true}.String(),
+//	}.Sign(credential)
+//	if err != nil {
+//		s.T().Fatal(err)
+//	}
+//
+//	srcBlobURLWithSAS := srcBlobParts.URL()
+//
+//	createAppendBlobOptions := appendblob.CreateOptions{
+//		CpkInfo: &testcommon.TestCPKByValue,
+//	}
+//	_, err = destBlob.Create(ctx, &createAppendBlobOptions)
+//	_require.Nil(err)
+//	//_require.Equal(cResp2.RawResponse.StatusCode, 201)
+//
+//	offset := int64(0)
+//	count := int64(contentSize)
+//	appendBlockURLOptions := AppendBlobAppendBlockFromURLOptions{
+//		Offset:  &offset,
+//		Count:   &count,
+//		CpkInfo: &testcommon.TestCPKByValue,
+//	}
+//	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
+//	_require.Nil(err)
+//	//_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
+//	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
+//	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
+//	_require.NotNil(appendFromURLResp.ETag)
+//	_require.NotNil(appendFromURLResp.LastModified)
+//	_require.Equal((*appendFromURLResp.LastModified).IsZero(), false)
+//	_require.NotNil(appendFromURLResp.ContentMD5)
+//	_require.EqualValues(appendFromURLResp.ContentMD5, contentMD5)
+//	_require.NotNil(appendFromURLResp.RequestID)
+//	_require.NotNil(appendFromURLResp.Version)
+//	_require.NotNil(appendFromURLResp.Date)
+//	_require.Equal((*appendFromURLResp.Date).IsZero(), false)
+//	_require.Equal(*appendFromURLResp.IsServerEncrypted, true)
+//
+//	// Get blob content without encryption key should fail the request.
+//	_, err = destBlob.DownloadStream(ctx, nil)
+//	_require.NotNil(err)
+//
+//	// Download blob to do data integrity check.
+//	downloadBlobOptions := blob.downloadWriterAtOptions{
+//		CpkInfo: &testcommon.TestInvalidCPKByValue,
+//	}
+//	_, err = destBlob.DownloadStream(ctx, &downloadBlobOptions)
+//	_require.NotNil(err)
+//
+//	// Download blob to do data integrity check.
+//	downloadBlobOptions = blob.downloadWriterAtOptions{
+//		CpkInfo: &testcommon.TestCPKByValue,
+//	}
+//	downloadResp, err := destBlob.DownloadStream(ctx, &downloadBlobOptions)
+//	_require.Nil(err)
+//
+//	_require.Equal(*downloadResp.IsServerEncrypted, true)
+//	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+//
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	_require.Nil(err)
+//	_require.EqualValues(destData, srcData)
+//}
+
+//nolint
+//func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCPKScope() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//
+//	contentSize := 4 * 1024 * 1024 // 4MB
+//	r, srcData := getRandomDataAndReader(contentSize)
+//	md5Sum := md5.Sum(srcData)
+//	contentMD5 := md5Sum[:]
+//	ctx := ctx
+//	srcClient := containerClient.NewAppendBlobClient(generateName("src"))
+//	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
+//
+//	_, err = srcClient.Create(ctx, nil)
+//	_require.Nil(err)
+//	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
+//
+//	resp, err := srcClient.AppendBlock(ctx, streaming.NopCloser(r), nil)
+//	_require.Nil(err)
+//	// _require.Equal(resp.RawResponse.StatusCode, 201)
+//	_require.Equal(*resp.BlobAppendOffset, "0")
+//	_require.Equal(*resp.BlobCommittedBlockCount, int32(1))
+//	_require.NotNil(resp.ETag)
+//	_require.NotNil(resp.LastModified)
+//	_require.Equal((*resp.LastModified).IsZero(), false)
+//	_require.Nil(resp.ContentMD5)
+//	_require.NotNil(resp.RequestID)
+//	_require.NotNil(resp.Version)
+//	_require.NotNil(resp.Date)
+//	_require.Equal((*resp.Date).IsZero(), false)
+//
+//	srcBlobParts, _ := NewBlobURLParts(srcClient.URL())
+//
+//	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
+//	_require.Nil(err)
+//	srcBlobParts.SAS, err = BlobSASSignatureValues{
+//		Protocol:      SASProtocolHTTPS,
+//		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+//		ContainerName: srcBlobParts.ContainerName,
+//		BlobName:      srcBlobParts.BlobName,
+//		Permissions:   BlobSASPermissions{Read: true}.String(),
+//	}.Sign(credential)
+//	if err != nil {
+//		s.T().Fatal(err)
+//	}
+//
+//	srcBlobURLWithSAS := srcBlobParts.URL()
+//
+//	createAppendBlobOptions := appendblob.CreateOptions{
+//		CpkScopeInfo: &testcommon.TestCPKByScope,
+//	}
+//	_, err = destBlob.Create(ctx, &createAppendBlobOptions)
+//	_require.Nil(err)
+//	//_require.Equal(cResp2.RawResponse.StatusCode, 201)
+//
+//	offset := int64(0)
+//	count := int64(contentSize)
+//	appendBlockURLOptions := AppendBlobAppendBlockFromURLOptions{
+//		Offset:       &offset,
+//		Count:        &count,
+//		CpkScopeInfo: &testcommon.TestCPKByScope,
+//	}
+//	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
+//	_require.Nil(err)
+//	//_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
+//	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
+//	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
+//	_require.NotNil(appendFromURLResp.ETag)
+//	_require.NotNil(appendFromURLResp.LastModified)
+//	_require.Equal((*appendFromURLResp.LastModified).IsZero(), false)
+//	_require.NotNil(appendFromURLResp.ContentMD5)
+//	_require.EqualValues(appendFromURLResp.ContentMD5, contentMD5)
+//	_require.NotNil(appendFromURLResp.RequestID)
+//	_require.NotNil(appendFromURLResp.Version)
+//	_require.NotNil(appendFromURLResp.Date)
+//	_require.Equal((*appendFromURLResp.Date).IsZero(), false)
+//	_require.Equal(*appendFromURLResp.IsServerEncrypted, true)
+//
+//	downloadBlobOptions := blob.downloadWriterAtOptions{
+//		CpkScopeInfo: &testcommon.TestCPKByScope,
+//	}
+//	downloadResp, err := destBlob.DownloadStream(ctx, &downloadBlobOptions)
+//	_require.Nil(err)
+//	_require.Equal(*downloadResp.IsServerEncrypted, true)
+//	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
+//
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	_require.Nil(err)
+//	_require.EqualValues(destData, srcData)
+//}

@@ -13,14 +13,17 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -368,7 +371,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessNone() {
 //		Access:   &access,
 //		Metadata: nil,
 //	}
-//	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
+//	_, err = containerClient.CreateIfNotExists(context.Background(), &createContainerOptions)
 //	_require.Nil(err)
 //
 //	// Ensure that next create call doesn't update the properties of already created container
@@ -394,7 +397,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessNone() {
 //		Access:   &access,
 //		Metadata: testcommon.BasicMetadata,
 //	}
-//	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
+//	_, err = containerClient.CreateIfNotExists(context.Background(), &createContainerOptions)
 //	_require.Nil(err)
 //	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 //
@@ -443,7 +446,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerDelete() {
 //	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 //	_require.Nil(err)
 //
-//	_, err = containerClient.DeleteIfExists(ctx, nil)
+//	_, err = containerClient.DeleteIfExists(context.Background(), nil)
 //	_require.Nil(err)
 //
 //	validateContainerDeleted(_require, containerClient)
@@ -460,7 +463,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerDelete() {
 //	containerName := testcommon.GenerateContainerName(testName)
 //	containerClient := testcommon.GetContainerClient(containerName, serviceClient)
 //
-//	_, err = containerClient.DeleteIfExists(ctx, nil)
+//	_, err = containerClient.DeleteIfExists(context.Background(), nil)
 //	_require.Nil(err)
 //}
 
@@ -619,7 +622,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerDeleteIfUnModifiedSinceFalse(
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
 ////		Prefix: &prefix,
 ////	}
-////	listResponse, errChan := containerClient.NewListBlobsFlatPager(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+////	listResponse, errChan := containerClient.NewListBlobsFlatPager(context.Background(), 3, 0, &containerListBlobFlatSegmentOptions)
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(listResponse, chk.IsNil)
 ////}
@@ -702,7 +705,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerDeleteIfUnModifiedSinceFalse(
 //	// initialize a blob and create a snapshot of it
 //	snapBlobName := testcommon.GenerateBlobName(testName)
 //	snapBlob := testcommon.CreateNewBlockBlob(context.Background(), _require, snapBlobName, containerClient)
-//	snap, err := snapBlob.CreateSnapshot(ctx, nil)
+//	snap, err := snapBlob.CreateSnapshot(context.Background(), nil)
 //	// snap.
 //	_require.Nil(err)
 //
@@ -765,7 +768,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_, err := blobMetadata.SetMetadata(context.Background(), Metadata{"field": "value"}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////
-////	resp, err := container.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
+////	resp, err := container.NewListBlobsFlatPager(context.Background(), Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
 ////
 ////	_require.Nil(err)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobNameNoMetadata)
@@ -779,10 +782,10 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	containerClient, _ := createNewContainer(c, svcClient)
 ////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 ////	blob, blobName := createNewBlockBlob(c, containerClient)
-////	_, err := blob.CreateSnapshot(ctx, Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
+////	_, err := blob.CreateSnapshot(context.Background(), Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////
-////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
+////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
 ////
 ////	_require.Nil(err)
@@ -799,10 +802,10 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 ////	bbClient, blobName := createNewBlockBlob(c, containerClient)
 ////	blobCopyURL, blobCopyName := createNewBlockBlobWithPrefix(c, containerClient, "copy")
-////	_, err := blobCopyURL.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, DefaultAccessTier, nil)
+////	_, err := blobCopyURL.StartCopyFromURL(context.Background(), bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, DefaultAccessTier, nil)
 ////	_require.Nil(err)
 ////
-////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
+////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Copy: true}})
 ////
 ////	// These are sufficient to show that the blob copy was in fact included
@@ -821,10 +824,10 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	containerClient, _ := createNewContainer(c, svcClient)
 ////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 ////	bbClient, blobName := getBlockBlobURL(c, containerClient)
-////	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(testcommon.BlockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
+////	_, err := bbClient.StageBlock(context.Background(), blockID, strings.NewReader(testcommon.BlockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////
-////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
+////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{UncommittedBlobs: true}})
 ////
 ////	_require.Nil(err)
@@ -837,7 +840,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
-////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
+////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
 ////	_require.Nil(err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
@@ -845,7 +848,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_, err = bbClient.Delete(context.Background(), DeleteSnapshotsOptionInclude, LeaseAccessConditions{})
 ////	_require.Nil(err)
 ////
-////	resp, err = containerClient.NewListBlobsFlatPager(ctx, Marker{},
+////	resp, err = containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
 ////	_require.Nil(err)
 ////	if len(resp.Segment.BlobItems) != 1 {
@@ -869,17 +872,17 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 ////
 ////	bbClient, _ := createNewBlockBlobWithPrefix(c, containerClient, "z")
-////	_, err := bbClient.CreateSnapshot(ctx, Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
+////	_, err := bbClient.CreateSnapshot(context.Background(), Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////	blobURL2, _ := createNewBlockBlobWithPrefix(c, containerClient, "copy")
-////	resp2, err := blobURL2.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, DefaultAccessTier, nil)
+////	resp2, err := blobURL2.StartCopyFromURL(context.Background(), bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, DefaultAccessTier, nil)
 ////	_require.Nil(err)
 ////	waitForCopy(c, blobURL2, resp2)
 ////	blobURL3, _ := createNewBlockBlobWithPrefix(c, containerClient, "deleted")
 ////
 ////	_, err = blobURL3.Delete(context.Background(), DeleteSnapshotsOptionNone, LeaseAccessConditions{})
 ////
-////	resp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{},
+////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true, Copy: true, Deleted: true, Versions: true}})
 ////
 ////	_require.Nil(err)
@@ -906,7 +909,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	containerClient, _ := createNewContainer(c, svcClient)
 ////
 ////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	_, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: -2})
+////	_, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{}, ListBlobsSegmentOptions{MaxResults: -2})
 ////	_assert(err, chk.Not(chk.IsNil))
 ////}
 //
@@ -917,7 +920,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	createNewBlockBlob(c, containerClient)
 ////
 ////	maxResults := int32(0)
-////	resp, errChan := containerClient.NewListBlobsFlatPager(ctx, 1, 0, &ContainerListBlobsFlatOptions{MaxResults: &maxResults})
+////	resp, errChan := containerClient.NewListBlobsFlatPager(context.Background(), 1, 0, &ContainerListBlobsFlatOptions{MaxResults: &maxResults})
 ////
 ////	_assert(<-errChan, chk.IsNil)
 ////	_assert(resp, chk.HasLen, 1)
@@ -932,7 +935,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	createNewBlockBlobWithPrefix(c, containerClient, "b")
 ////
 ////	maxResults := int32(1)
-////	resp, errChan := containerClient.NewListBlobsFlatPager(ctx, 3, 0, &ContainerListBlobsFlatOptions{MaxResults: &maxResults})
+////	resp, errChan := containerClient.NewListBlobsFlatPager(context.Background(), 3, 0, &ContainerListBlobsFlatOptions{MaxResults: &maxResults})
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(resp, chk.HasLen, 1)
 ////	_assert((<- resp).Name, chk.Equals, blobName)
@@ -1330,4 +1333,676 @@ func (s *ContainerRecordedTestsSuite) TestBlobListWrapperListingError() {
 		_require.Empty(resp)
 		break
 	}
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &container.SetAccessPolicyOptions{})
+	_require.Nil(err)
+}
+
+// nolint
+func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
+	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	permission := "r"
+	id := "1"
+
+	signedIdentifiers := make([]*container.SignedIdentifier, 0)
+
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		AccessPolicy: &container.AccessPolicy{
+			Expiry:     &expiration,
+			Start:      &start,
+			Permission: &permission,
+		},
+		ID: &id,
+	})
+
+	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	_require.Nil(err)
+}
+
+// nolint
+func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	id := "empty"
+
+	signedIdentifiers := make([]*container.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id,
+	})
+
+	permission2 := "r"
+	id2 := "partial"
+
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id2,
+		AccessPolicy: &container.AccessPolicy{
+			Permission: &permission2,
+		},
+	})
+
+	id3 := "full"
+	permission3 := "r"
+	start := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
+	expiry := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
+
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id3,
+		AccessPolicy: &container.AccessPolicy{
+			Start:      &start,
+			Expiry:     &expiry,
+			Permission: &permission3,
+		},
+	})
+
+	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	_require.Nil(err)
+
+	// Make a Get to assert two access policies
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, 3)
+}
+
+// nolint
+func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	id := "null"
+
+	signedIdentifiers := make([]*container.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id,
+	})
+
+	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	_require.Nil(err)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(len(resp.SignedIdentifiers), 1)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Define the policies
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	expiry := start.Add(5 * time.Minute)
+	expiry2 := start.Add(time.Minute)
+	readWrite := to.Ptr(container.AccessPolicyPermission{Read: true, Write: true}).String()
+	readOnly := to.Ptr(container.AccessPolicyPermission{Read: true}).String()
+	id1, id2 := "0000", "0001"
+	permissions := []*container.SignedIdentifier{
+		{ID: &id1,
+			AccessPolicy: &container.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &readWrite,
+			},
+		},
+		{ID: &id2,
+			AccessPolicy: &container.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry2,
+				Permission: &readOnly,
+			},
+		},
+	}
+
+	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, nil)
+
+	_require.Nil(err)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	access := container.PublicAccessTypeBlob
+	createContainerOptions := container.CreateOptions{
+		Access: &access,
+	}
+	_, err = containerClient.Create(context.Background(), &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
+	_require.Nil(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+
+	_require.Nil(err)
+	_require.Equal(*resp.BlobPublicAccess, container.PublicAccessTypeBlob)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessNone() {
+	// Test the basic one by making an anonymous request to ensure it's actually doing it and also with GetPermissions
+	// For all the others, can just use GetPermissions since we've validated that it at least registers on the server correctly
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	// Container is created with PublicAccessTypeBlob, so setting it to None will actually test that it is changed through this method
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_require.Nil(err)
+
+	bsu2, err := service.NewClientWithNoCredential(svcClient.URL(), nil)
+	_require.Nil(err)
+
+	containerClient2 := bsu2.NewContainerClient(containerName)
+
+	// Get permissions via the original container URL so the request succeeds
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(resp.BlobPublicAccess)
+	_require.Nil(err)
+
+	// If we cannot access a blob's data, we will also not be able to enumerate blobs
+	pager := containerClient2.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		_, err = pager.NextPage(context.Background())
+		_require.NotNil(err)
+		testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
+		break
+	}
+
+	blobClient2 := containerClient2.NewBlockBlobClient(blobName)
+	_, err = blobClient2.DownloadStream(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		Access: to.Ptr(container.PublicAccessTypeBlob),
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(*resp.BlobPublicAccess, container.PublicAccessTypeBlob)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		Access: to.Ptr(container.PublicAccessTypeContainer),
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(*resp.BlobPublicAccess, container.PublicAccessTypeContainer)
+}
+
+//
+//func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLSinglePolicy() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+////	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	containerName := testcommon.GenerateContainerName(testName)
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+//
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//
+//	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
+//
+//	start := time.Now().UTC().Add(-15 * time.Second)
+//	expiry := start.Add(5 * time.Minute).UTC()
+//	listOnly := AccessPolicyPermission{List: true}.String()
+//	id := "0000"
+//	permissions := []*container.SignedIdentifier{{
+//		ID: &id,
+//		AccessPolicy: &container.AccessPolicy{
+//			Start:      &start,
+//			Expiry:     &expiry,
+//			Permission: &listOnly,
+//		},
+//	}}
+//
+//	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+//		ContainerACL: permissions,
+//	}
+//	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+//	_require.Nil(err)
+//
+//	serviceSASValues := service.SASSignatureValues{Identifier: "0000", ContainerName: containerName}
+//	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
+//	if err != nil {
+//		s.T().Fatal(err)
+//	}
+//
+//	sasURL := svcClient.URL()
+//	sasURL.RawQuery = queryParams.Encode()
+//	sasPipeline := (NewAnonymousCredential(), PipelineOptions{})
+//	sasBlobServiceURL := service.NewServiceURL(sasURL, sasPipeline)
+//
+//	// Verifies that the SAS can access the resource
+//	sasContainer := sasBlobServiceURL.NewContainerClient(containerName)
+//	resp, err := sasContainer.NewListBlobsFlatPager(context.Background(), Marker{}, ListBlobsSegmentOptions{})
+//	_require.Nil(err)
+//	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
+//
+//	// Verifies that successful sas access is not just because it's public
+//	anonymousBlobService := NewServiceURL(svcClient.URL(), sasPipeline)
+//	anonymousContainer := anonymousBlobService.NewContainerClient(containerName)
+//	_, err = anonymousContainer.NewListBlobsFlatPager(context.Background(), Marker{}, ListBlobsSegmentOptions{})
+//	testcommon.ValidateBlobErrorCode(c, err, StorageErrorCodeNoAuthenticationInformation)
+//}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+	permissions := make([]*container.SignedIdentifier, 6)
+	listOnly := to.Ptr(container.AccessPolicyPermission{Read: true}).String()
+	for i := 0; i < 6; i++ {
+		id := "000" + strconv.Itoa(i)
+		permissions[i] = &container.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &container.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	access := container.PublicAccessTypeBlob
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		Access: &access,
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+	listOnly := to.Ptr(container.AccessPolicyPermission{Read: true}).String()
+	permissions := make([]*container.SignedIdentifier, 2)
+	for i := 0; i < 2; i++ {
+		id := "000" + strconv.Itoa(i)
+		permissions[i] = &container.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &container.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	access := container.PublicAccessTypeBlob
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		Access: &access,
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+
+	permissions = resp.SignedIdentifiers[:1] // Delete the first policy by removing it from the slice
+	newId := "0004"
+	permissions[0].ID = &newId // Modify the remaining policy which is at index 0 in the new slice
+	setAccessPolicyOptions1 := container.SetAccessPolicyOptions{
+		Access: &access,
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions1)
+	_require.Nil(err)
+
+	resp, err = containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, 1)
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolicies() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+	permissions := make([]*container.SignedIdentifier, 2)
+	listOnly := to.Ptr(container.AccessPolicyPermission{Read: true}).String()
+	for i := 0; i < 2; i++ {
+		id := "000" + strconv.Itoa(i)
+		permissions[i] = &container.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &container.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		Access: to.Ptr(container.PublicAccessTypeBlob),
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, len(permissions))
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+
+	setAccessPolicyOptions = container.SetAccessPolicyOptions{
+		Access: to.Ptr(container.PublicAccessTypeBlob),
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), []*container.SignedIdentifier{}, &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err = containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.SignedIdentifiers)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Swap start and expiry
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+	permissions := make([]*container.SignedIdentifier, 2)
+	listOnly := to.Ptr(container.AccessPolicyPermission{Read: true}).String()
+	for i := 0; i < 2; i++ {
+		id := "000" + strconv.Itoa(i)
+		permissions[i] = &container.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &container.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		Access: to.Ptr(container.PublicAccessTypeBlob),
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	_require.Nil(err)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsNilPolicySlice() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_require.Nil(err)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	id := ""
+	for i := 0; i < 65; i++ {
+		id += "a"
+	}
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	start := expiry.Add(5 * time.Minute).UTC()
+	permissions := make([]*container.SignedIdentifier, 2)
+	listOnly := to.Ptr(container.AccessPolicyPermission{Read: true}).String()
+	for i := 0; i < 2; i++ {
+		permissions[i] = &container.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &container.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		Access: to.Ptr(container.PublicAccessTypeBlob),
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	cResp, err := containerClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		AccessConditions: &container.AccessConditions{
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.BlobPublicAccess)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	cResp, err := containerClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	//_require.Equal(cResp.RawResponse.StatusCode, 201)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		AccessConditions: &container.AccessConditions{
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	cResp, err := containerClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	//_require.Equal(cResp.RawResponse.StatusCode, 201)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		AccessConditions: &container.AccessConditions{
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		},
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.BlobPublicAccess)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	cResp, err := containerClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	//_require.Equal(cResp.RawResponse.StatusCode, 201)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		AccessConditions: &container.AccessConditions{
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		},
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }

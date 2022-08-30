@@ -67,7 +67,15 @@ directive:
   - rename-operation:
       from: MetricNamespaces_List
       to: Metrics_ListMetricNamespaces
- 
+
+  # add default values for batch request path and method attributes
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.path
+    transform: $["x-ms-client-default"] = "/query"
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.method
+    transform: $["x-ms-client-default"] = "POST"
+
   # delete generated constructor
   - from: logs_client.go
     where: $
@@ -75,10 +83,6 @@ directive:
   - from: metrics_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewMetricsClient.+\{\s(?:.+\s)+\}\s/, "");
-
- # - from: swagger-document
-  #  where: $.definitions.
-  #  transform: $["x-ms-client-default"] = "/query"
 
   # point the metrics client to the correct host url
   - from: metrics_client.go

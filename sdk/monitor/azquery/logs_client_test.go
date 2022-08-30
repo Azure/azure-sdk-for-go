@@ -163,7 +163,7 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 }
 
 //TODO fix path and method attributes
-/*func TestBatch_QuerySuccess(t *testing.T) {
+func TestBatch_QuerySuccess(t *testing.T) {
 	client := getClient(t)
 	query1, query2 := query, query+" | take 2"
 	id1, id2 := "1", "2"
@@ -187,7 +187,7 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 		t.Fatal("expected two responses")
 	}
 	testSerde(t, &res.BatchResponse)
-}*/
+}
 
 func TestBatch_QueryFailure(t *testing.T) {
 

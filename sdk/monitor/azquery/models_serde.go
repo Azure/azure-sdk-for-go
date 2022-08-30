@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"reflect"
 )
 
@@ -22,7 +23,13 @@ func (b BatchQueryRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "body", b.Body)
 	populate(objectMap, "headers", b.Headers)
 	populate(objectMap, "id", b.ID)
+	if b.Method == nil {
+		b.Method = to.Ptr(BatchQueryRequestMethodPOST)
+	}
 	populate(objectMap, "method", b.Method)
+	if b.Path == nil {
+		b.Path = to.Ptr(BatchQueryRequestPathQuery)
+	}
 	populate(objectMap, "path", b.Path)
 	populate(objectMap, "workspace", b.Workspace)
 	return json.Marshal(objectMap)

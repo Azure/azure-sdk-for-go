@@ -1,5 +1,9 @@
 # Release History
 
+## 2.0.0-beta.2 (2022-08-14)
+### Other Changes
+- Replace API version `2021-10-01-preview` with `2022-07-01-preview`
+
 ## 2.0.0-beta.1 (2022-06-09)
 ### Breaking Changes
 

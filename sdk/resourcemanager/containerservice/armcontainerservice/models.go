@@ -627,7 +627,8 @@ type ManagedClusterAgentPoolProfile struct {
 	// see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
 	OSDiskType *OSDiskType `json:"osDiskType,omitempty"`
 
-	// Specifies an OS SKU. This value must not be specified if OSType is Windows.
+	// Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when
+	// Kubernetes = 1.25 if OSType is Windows.
 	OSSKU *OSSKU `json:"osSKU,omitempty"`
 
 	// The operating system type. The default is Linux.
@@ -782,7 +783,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
 	OSDiskType *OSDiskType `json:"osDiskType,omitempty"`
 
-	// Specifies an OS SKU. This value must not be specified if OSType is Windows.
+	// Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when
+	// Kubernetes = 1.25 if OSType is Windows.
 	OSSKU *OSSKU `json:"osSKU,omitempty"`
 
 	// The operating system type. The default is Linux.
@@ -1906,7 +1908,8 @@ type SnapshotProperties struct {
 	// READ-ONLY; The version of node image.
 	NodeImageVersion *string `json:"nodeImageVersion,omitempty" azure:"ro"`
 
-	// READ-ONLY; Specifies an OS SKU. This value must not be specified if OSType is Windows.
+	// READ-ONLY; Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
+	// when Kubernetes = 1.25 if OSType is Windows.
 	OSSKU *OSSKU `json:"osSku,omitempty" azure:"ro"`
 
 	// READ-ONLY; The operating system type. The default is Linux.

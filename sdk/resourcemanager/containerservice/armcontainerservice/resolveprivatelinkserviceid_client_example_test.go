@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/ResolvePrivateLinkServiceId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ResolvePrivateLinkServiceId.json
 func ExampleResolvePrivateLinkServiceIDClient_POST() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,13 +28,9 @@ func ExampleResolvePrivateLinkServiceIDClient_POST() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.POST(ctx,
-		"rg1",
-		"clustername1",
-		armcontainerservice.PrivateLinkResource{
-			Name: to.Ptr("management"),
-		},
-		nil)
+	res, err := client.POST(ctx, "rg1", "clustername1", armcontainerservice.PrivateLinkResource{
+		Name: to.Ptr("management"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

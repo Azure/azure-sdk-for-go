@@ -1,6 +1,6 @@
 # Release History
 
-## 0.6.1 (Unreleased)
+## 0.7.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.7.0 (2022-08-09)
+
+### Breaking Changes
+* Changed type of `NewClient` options parameter to `azkeys.ClientOptions`, which embeds
+  the former type, `azcore.ClientOptions`
 
 ## 0.6.0 (2022-07-07)
 

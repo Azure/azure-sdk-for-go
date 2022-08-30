@@ -11,7 +11,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
@@ -33,7 +32,7 @@ func initialResponse(method string, resp io.Reader) *http.Response {
 		panic(err)
 	}
 	return &http.Response{
-		Body:    ioutil.NopCloser(resp),
+		Body:    io.NopCloser(resp),
 		Header:  http.Header{},
 		Request: req,
 	}

@@ -322,7 +322,7 @@ Due to the complexity of this scenario, please [click here](https://aka.ms/azsdk
 
 More code samples for using the management library for Go SDK can be found in the following locations
 - [Go SDK Code Samples](https://aka.ms/azsdk/go/mgmt/samples)
-- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/ze_generated_example_loadbalancernetworkinterfaces_client_test.go)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/loadbalancernetworkinterfaces_client_example_test.go)
 
 ## Further Infomation
 

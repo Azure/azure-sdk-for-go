@@ -99,14 +99,13 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 // Returns a function that ends log capturing and returns any captured messages.
 // It's safe to call endCapture() multiple times, so a simple call pattern is:
 //
-//   endCapture := CaptureLogsForTest()
-//   defer endCapture()				// ensure cleanup in case of test assert failures
+//	endCapture := CaptureLogsForTest()
+//	defer endCapture()				// ensure cleanup in case of test assert failures
 //
-//   /* some test code */
+//	/* some test code */
 //
-//   messages := endCapture()
-//   /* do inspection of log messages */
-//
+//	messages := endCapture()
+//	/* do inspection of log messages */
 func CaptureLogsForTest() func() []string {
 	messagesCh := make(chan string, 10000)
 	return CaptureLogsForTestWithChannel(messagesCh)

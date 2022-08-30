@@ -1,17 +1,17 @@
 ## Go
 
-``` yaml
+```yaml
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/ac155b972d0619a6e5bf665a863fb05ee7eeb30f/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/keys.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/323a8c3fabad74fe18f4202926b8fd826551a7ce/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/keys.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
 openapi-type: "data-plane"
 output-folder: ../azkeys
 override-client-name: Client
 security: "AADToken"
-security-scopes:  "https://vault.azure.net/.default"
+security-scopes: "https://vault.azure.net/.default"
 use: "@autorest/go@4.0.0-preview.43"
 version: "^3.0.0"
 

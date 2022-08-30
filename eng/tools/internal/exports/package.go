@@ -89,10 +89,22 @@ func (pkg Package) GetExports() (c Content) {
 	ast.Inspect(pkg.p, func(n ast.Node) bool {
 		switch x := n.(type) {
 		case *ast.TypeSpec:
-			if t, ok := x.Type.(*ast.StructType); ok {
-				c.addStruct(pkg, x.Name.Name, t)
-			} else if t, ok := x.Type.(*ast.InterfaceType); ok {
+			switch t := x.Type.(type) {
+			case *ast.ArrayType:
+				text := pkg.getText(t.Pos(), t.End())
+				c.addTypeAlias(x.Name.Name, text)
+			case *ast.Ident:
+				c.addTypeAlias(x.Name.Name, t.Name)
+			case *ast.IndexExpr, *ast.IndexListExpr:
+				text := pkg.getText(t.Pos(), t.End())
+				c.addTypeAlias(x.Name.Name, text)
+			case *ast.InterfaceType:
 				c.addInterface(pkg, x.Name.Name, t)
+			case *ast.MapType:
+				text := pkg.getText(t.Pos(), t.End())
+				c.addTypeAlias(x.Name.Name, text)
+			case *ast.StructType:
+				c.addStruct(pkg, x.Name.Name, t)
 			}
 		case *ast.FuncDecl:
 			c.addFunc(pkg, x)

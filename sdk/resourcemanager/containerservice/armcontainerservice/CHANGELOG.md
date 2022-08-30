@@ -1,5 +1,12 @@
 # Release History
 
+## 2.1.0 (2022-08-25)
+### Features Added
+
+- New const `OSSKUWindows2019`
+- New const `OSSKUWindows2022`
+
+
 ## 2.0.0 (2022-07-22)
 ### Breaking Changes
 

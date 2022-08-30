@@ -1,6 +1,6 @@
 # Release History
 
-## 0.5.1 (Unreleased)
+## 0.6.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.6.0 (2022-08-09)
+
+### Breaking Changes
+* Changed type of `NewClient` options parameter to `azcertificates.ClientOptions`, which embeds
+  the former type, `azcore.ClientOptions`
 
 ## 0.5.0 (2022-07-07)
 

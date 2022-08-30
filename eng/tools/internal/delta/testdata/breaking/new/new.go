@@ -16,8 +16,11 @@ import (
 
 // summary of changes
 //
+// type alias
+// changed type DayOfWeek name to Day
+// changed type KeyType type to int
+//
 // const
-// changed type DayOfWeek to Day
 // removed Everyday
 //
 // func
@@ -54,11 +57,11 @@ const (
 	Weekend   Day = "Weekend"
 )
 
-type KeyType string
+type KeyType int
 
 const (
-	Primary   KeyType = "Primary"
-	Secondary KeyType = "Secondary"
+	Primary   KeyType = 1
+	Secondary KeyType = 2
 )
 
 type BaseClient struct {

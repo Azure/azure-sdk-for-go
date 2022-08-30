@@ -372,7 +372,7 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (Ass
 
 // NewListPager - This operation retrieves the list of all policy assignments associated with the given subscription that
 // match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()' or
-// 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated
+// 'policyDefinitionId eq '{value}”. If $filter is not provided, the unfiltered list includes all policy assignments associated
 // with the subscription, including those that apply directly or from
 // management groups that contain the given subscription, as well as any applied to objects contained within the subscription.
 // If $filter=atScope() is provided, the returned list includes all policy
@@ -449,7 +449,7 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 
 // NewListForManagementGroupPager - This operation retrieves the list of all policy assignments applicable to the management
 // group that match the given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()' or
-// 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments
+// 'policyDefinitionId eq '{value}”. If $filter=atScope() is provided, the returned list includes all policy assignments
 // that are assigned to the management group or the management group's ancestors. If
 // $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the management group.
 // If $filter=policyDefinitionId eq '{value}' is provided, the returned list
@@ -524,7 +524,7 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 
 // NewListForResourcePager - This operation retrieves the list of all policy assignments associated with the specified resource
 // in the given resource group and subscription that match the optional given $filter. Valid values for
-// $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered
+// $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}”. If $filter is not provided, the unfiltered
 // list includes all policy assignments associated with the resource, including
 // those that apply directly or from all containing scopes, as well as any applied to resources contained within the resource.
 // If $filter=atScope() is provided, the returned list includes all policy
@@ -534,14 +534,14 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 // the returned list includes all policy assignments of the policy definition
 // whose id is {value} that apply to the resource. Three parameters plus the resource name are used to identify a specific
 // resource. If the resource is not part of a parent resource (the more common
-// case), the parent resource path should not be provided (or provided as ''). For example a web app could be specified as
-// ({resourceProviderNamespace} == 'Microsoft.Web', {parentResourcePath} == '',
+// case), the parent resource path should not be provided (or provided as ”). For example a web app could be specified as
+// ({resourceProviderNamespace} == 'Microsoft.Web', {parentResourcePath} == ”,
 // {resourceType} == 'sites', {resourceName} == 'MyWebApp'). If the resource is part of a parent resource, then all parameters
 // should be provided. For example a virtual machine DNS name could be
 // specified as ({resourceProviderNamespace} == 'Microsoft.Compute', {parentResourcePath} == 'virtualMachines/MyVirtualMachine',
 // {resourceType} == 'domainNames', {resourceName} == 'MyComputerName'). A
 // convenient alternative to providing the namespace and type name separately is to provide both in the {resourceType} parameter,
-// format: ({resourceProviderNamespace} == '', {parentResourcePath} == '',
+// format: ({resourceProviderNamespace} == ”, {parentResourcePath} == ”,
 // {resourceType} == 'Microsoft.Web/sites', {resourceName} == 'MyWebApp').
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-01
@@ -632,7 +632,7 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 
 // NewListForResourceGroupPager - This operation retrieves the list of all policy assignments associated with the given resource
 // group in the given subscription that match the optional given $filter. Valid values for $filter are:
-// 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes
+// 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}”. If $filter is not provided, the unfiltered list includes
 // all policy assignments associated with the resource group, including those
 // that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource
 // group. If $filter=atScope() is provided, the returned list includes all policy

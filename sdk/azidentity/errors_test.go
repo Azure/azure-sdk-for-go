@@ -9,7 +9,7 @@ package azidentity
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -28,7 +28,7 @@ func TestAuthenticationFailedErrorInterface(t *testing.T) {
 	res := &http.Response{
 		Status:     "400 Bad Request",
 		StatusCode: 400,
-		Body:       ioutil.NopCloser(bytes.NewBufferString(resBodyString)),
+		Body:       io.NopCloser(bytes.NewBufferString(resBodyString)),
 		Request:    req,
 	}
 	err = newAuthenticationFailedError(credNameAzureCLI, "error message", res)

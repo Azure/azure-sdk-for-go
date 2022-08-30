@@ -11,7 +11,8 @@ import (
 
 // AMQPAnnotatedMessage represents the AMQP message, as received from Service Bus.
 // For details about these properties, refer to the AMQP specification:
-//   https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format
+//
+//	https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format
 //
 // Some fields in this struct are typed 'any', which means they will accept AMQP primitives, or in some
 // cases slices and maps.

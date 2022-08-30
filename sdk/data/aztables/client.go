@@ -27,7 +27,7 @@ type Client struct {
 }
 
 // NewClient creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with an Azure AD access token.
-// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
+// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.table.core.windows.net/<myTableName>".
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
@@ -45,7 +45,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 }
 
 // NewClientWithNoCredential creates a Client struct in the context of the table specified in the serviceURL.
-// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>?<SAS token>".
+// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.table.core.windows.net/<myTableName>?<SAS token>".
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	if options == nil {
@@ -63,7 +63,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 }
 
 // NewClientWithSharedKey creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with a shared key.
-// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
+// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.table.core.windows.net/<myTableName>".
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
@@ -215,8 +215,8 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 //
 // NewListEntitiesPager returns a Pager, which allows iteration through each page of results. Use nil for listOptions if you want to use the default options.
 // For more information about writing query strings, check out:
-//  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
-//  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
+//   - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+//   - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
 func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime.Pager[ListEntitiesResponse] {
 	if listOptions == nil {
 		listOptions = &ListEntitiesOptions{}

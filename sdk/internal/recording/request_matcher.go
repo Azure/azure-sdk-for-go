@@ -9,7 +9,7 @@ package recording
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"reflect"
 
@@ -112,7 +112,7 @@ func getBody(r *http.Request) string {
 		if err != nil {
 			return "could not parse body: " + err.Error()
 		}
-		r.Body = ioutil.NopCloser(&body)
+		r.Body = io.NopCloser(&body)
 	}
 	return body.String()
 }

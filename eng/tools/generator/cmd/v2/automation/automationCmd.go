@@ -31,7 +31,7 @@ func Command() *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			goVersion := "1.18"
+			goVersion := "1.19"
 			if len(args) == 3 {
 				goVersion = args[2]
 			}
@@ -145,7 +145,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 			results = append(results, pipeline.PackageResult{
 				Version:       namespaceResult.Version,
-				PackageName:   namespaceResult.PackageName,
+				PackageName:   fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
 				Path:          []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
 				PackageFolder: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
 				ReadmeMd:      []string{readme},

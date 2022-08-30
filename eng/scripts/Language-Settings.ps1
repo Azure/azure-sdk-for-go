@@ -43,7 +43,7 @@ function Get-GoModuleProperties($goModPath)
     $modName = $matches["modName"] # We may need to start readong this from the go.mod file if the path and mod config start to differ
     $serviceDir = $matches["serviceDir"]
     $sdkType = "client"
-    if ($modName.StartsWith("arm")) { $sdkType = "mgmt" }
+    if ($modName.StartsWith("arm") -or $modPath.Contains("resourcemanager")) { $sdkType = "mgmt" }
 
     $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
 

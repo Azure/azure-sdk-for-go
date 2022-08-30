@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.1.0"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -822,12 +822,15 @@ func PossibleOSDiskTypeValues() []OSDiskType {
 	}
 }
 
-// OSSKU - Specifies an OS SKU. This value must not be specified if OSType is Windows.
+// OSSKU - Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
+// when Kubernetes = 1.25 if OSType is Windows.
 type OSSKU string
 
 const (
-	OSSKUCBLMariner OSSKU = "CBLMariner"
-	OSSKUUbuntu     OSSKU = "Ubuntu"
+	OSSKUCBLMariner  OSSKU = "CBLMariner"
+	OSSKUUbuntu      OSSKU = "Ubuntu"
+	OSSKUWindows2019 OSSKU = "Windows2019"
+	OSSKUWindows2022 OSSKU = "Windows2022"
 )
 
 // PossibleOSSKUValues returns the possible values for the OSSKU const type.
@@ -835,6 +838,8 @@ func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
 		OSSKUCBLMariner,
 		OSSKUUbuntu,
+		OSSKUWindows2019,
+		OSSKUWindows2022,
 	}
 }
 

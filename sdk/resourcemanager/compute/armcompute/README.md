@@ -63,6 +63,15 @@ client, err := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, &option
 - [Snapshot](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/snapshot)
 - [Virtual Machine Scale Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/vmscaleset)
 
+## Major Version Upgrade
+
+Go uses [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility for modules. For Azure Go management SDK, we usually upgrade module version according to cooresponding service's API version. Regarding it could be a complicated experience for major version upgrade, we will try our best to keep the SDK API stable and release new version in backward compatible way. However, if any unavoidable breaking changes and a new major version releases for SDK modules, you could use these commands under your module folder to upgrade:
+
+```sh
+go install github.com/icholy/gomajor@latest
+gomajor get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute@latest
+```
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

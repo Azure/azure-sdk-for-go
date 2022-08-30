@@ -24,8 +24,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if id, ok := os.LookupEnv("AZURE_IDENTITY_TEST_MANAGED_IDENTITY_CLIENT_ID"); ok {
 		o.ID = azidentity.ClientID(id)
 	}
-    var err error
-    var client *azsecrets.Client
+	var err error
+	var client *azsecrets.Client
 	cred, err := azidentity.NewManagedIdentityCredential(&o)
 	if err == nil {
 		client, err = azsecrets.NewClient(v, cred, nil)
@@ -39,9 +39,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-    if err == nil {
-        fmt.Fprint(w, "test passed")
-    } else {
+	if err == nil {
+		fmt.Fprint(w, "test passed")
+	} else {
 		fmt.Fprintf(w, "test failed: %s", err.Error())
 	}
 }

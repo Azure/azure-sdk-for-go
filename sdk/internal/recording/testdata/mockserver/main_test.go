@@ -10,7 +10,7 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -26,7 +26,7 @@ func TestMain(t *testing.T) {
 	res := w.Result()
 	defer res.Body.Close()
 
-	data, err := ioutil.ReadAll(res.Body)
+	data, err := io.ReadAll(res.Body)
 	require.NoError(t, err)
 
 	var unmarshalled map[string]string

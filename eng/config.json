@@ -6,7 +6,7 @@
         },
         {
             "Name": "azblob",
-            "CoverageGoal": 0.45
+            "CoverageGoal": 0.30
         },
         {
             "Name": "azcore",
@@ -60,6 +60,10 @@
         {
             "Name": "messaging",
             "CoverageGoal": 0.10
+        },
+        {
+            "Name": "messaging/azeventhubs",
+            "CoverageGoal": 0.0
         },
         {
             "Name": "messaging/internal",

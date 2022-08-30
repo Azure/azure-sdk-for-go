@@ -64,7 +64,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
-	flagSet.String("go-version", "1.18", "Go version")
+	flagSet.String("go-version", "1.19", "Go version")
 	flagSet.String("rps", "", "Specify RP list to refresh, seperated by ','")
 }
 

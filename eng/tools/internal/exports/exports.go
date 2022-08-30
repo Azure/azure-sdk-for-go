@@ -15,6 +15,10 @@ type Content struct {
 	// key is the exported name, value is its type and value.
 	Consts map[string]Const `json:"consts,omitempty"`
 
+	// the list of exported type aliases.
+	// key is the exported name, value contains underlaying type.
+	TypeAliases map[string]TypeAlias `json:"typeAliases,omitempty"`
+
 	// the list of exported functions and methods.
 	// key is the exported name, for methods it's prefixed with the receiver type (e.g. "Type.Method").
 	// value contains the list of params and return types.
@@ -31,7 +35,7 @@ type Content struct {
 
 // Count returns the count of items
 func (c Content) Count() int {
-	return len(c.Consts) + len(c.Funcs) + len(c.Interfaces) + len(c.Structs)
+	return len(c.Consts) + len(c.TypeAliases) + len(c.Funcs) + len(c.Interfaces) + len(c.Structs)
 }
 
 // Const is a const definition.
@@ -70,19 +74,26 @@ type Struct struct {
 	Fields map[string]string `json:"fields,omitempty"`
 }
 
+// TypeAlias contains field info about a type.
+type TypeAlias struct {
+	// underlaying type
+	UnderlayingType string `json:"underlayingType,omitempty"`
+}
+
 // NewContent returns an initialized Content object.
 func NewContent() Content {
 	return Content{
-		Consts:     make(map[string]Const),
-		Funcs:      make(map[string]Func),
-		Interfaces: make(map[string]Interface),
-		Structs:    make(map[string]Struct),
+		Consts:      make(map[string]Const),
+		Funcs:       make(map[string]Func),
+		Interfaces:  make(map[string]Interface),
+		Structs:     make(map[string]Struct),
+		TypeAliases: make(map[string]TypeAlias),
 	}
 }
 
 // IsEmpty returns true if there is no content in any of the fields.
 func (c Content) IsEmpty() bool {
-	return len(c.Consts) == 0 && len(c.Funcs) == 0 && len(c.Interfaces) == 0 && len(c.Structs) == 0
+	return len(c.Consts) == 0 && len(c.TypeAliases) == 0 && len(c.Funcs) == 0 && len(c.Interfaces) == 0 && len(c.Structs) == 0
 }
 
 // adds the specified const declaration to the exports list
@@ -176,4 +187,9 @@ func (c *Content) addStruct(pkg Package, name string, s *ast.StructType) {
 		}
 	})
 	c.Structs[name] = sd
+}
+
+// adds the specified simple type to the exports list.
+func (c *Content) addTypeAlias(name string, underlayingType string) {
+	c.TypeAliases[name] = TypeAlias{UnderlayingType: underlayingType}
 }

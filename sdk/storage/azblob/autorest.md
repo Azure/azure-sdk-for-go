@@ -1,11 +1,8 @@
 # Code Generation - Azure Blob SDK for Golang
 
-<!-- autorest --use=@autorest/go@4.0.0-preview.35 https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json --file-prefix="zz_generated_" --modelerfour.lenient-model-deduplication --license-header=MICROSOFT_MIT_NO_VERSION --output-folder=generated/ --module=azblob --openapi-type="data-plane" --credential-scope=none -->
-
 ```bash
-cd swagger
 autorest autorest.md
-gofmt -w generated/*
+gofmt -w internal/generated/*
 ```
 
 ### Settings
@@ -15,21 +12,45 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json"
-module: "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e515b6251fdc21015282d2e84b85beec7c091763/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json"
 credential-scope: "https://storage.azure.com/.default"
-output-folder: internal/
-file-prefix: "zz_generated_"
+output-folder: internal/generated
+file-prefix: "zz_"
 openapi-type: "data-plane"
 verbose: true
 security: AzureKey
-module-version: "0.3.0"
 modelerfour:
   group-parameters: false
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
-export-clients: false
-use: "@autorest/go@4.0.0-preview.36"
+export-clients: true
+use: "@autorest/go@4.0.0-preview.43"
+```
+
+### Remove pager methods and export various generated methods in container client
+
+``` yaml
+directive:
+  - from: zz_container_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*ContainerClient\) NewListBlobFlatSegmentPager\(.+\/\/ listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request/s, `// listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request`).
+        replace(/\(client \*ContainerClient\) listBlobFlatSegmentCreateRequest\(/, `(client *ContainerClient) ListBlobFlatSegmentCreateRequest(`).
+        replace(/\(client \*ContainerClient\) listBlobFlatSegmentHandleResponse\(/, `(client *ContainerClient) ListBlobFlatSegmentHandleResponse(`);
+```
+
+### Remove pager methods and export various generated methods in service client
+
+``` yaml
+directive:
+  - from: zz_service_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*ServiceClient\) NewListContainersSegmentPager\(.+\/\/ listContainersSegmentCreateRequest creates the ListContainersSegment request/s, `// listContainersSegmentCreateRequest creates the ListContainersSegment request`).
+        replace(/\(client \*ServiceClient\) listContainersSegmentCreateRequest\(/, `(client *ServiceClient) ListContainersSegmentCreateRequest(`).
+        replace(/\(client \*ServiceClient\) listContainersSegmentHandleResponse\(/, `(client *ServiceClient) ListContainersSegmentHandleResponse(`);
 ```
 
 ### Fix BlobMetadata.
@@ -168,4 +189,58 @@ directive:
   transform: >
     $.BlobItemInternal.properties["OrMetadata"] = $.BlobItemInternal.properties["ObjectReplicationMetadata"];
     delete $.BlobItemInternal.properties["ObjectReplicationMetadata"];
+```
+
+# Export various createRequest/HandleResponse methods
+
+``` yaml
+directive:
+- from: zz_container_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/listBlobHierarchySegmentCreateRequest/g, function(_, s) { return `ListBlobHierarchySegmentCreateRequest` }).
+      replace(/listBlobHierarchySegmentHandleResponse/g, function(_, s) { return `ListBlobHierarchySegmentHandleResponse` });
+
+- from: zz_pageblob_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/getPageRanges(Diff)?CreateRequest/g, function(_, s) { if (s === undefined) { s = '' }; return `GetPageRanges${s}CreateRequest` }).
+      replace(/getPageRanges(Diff)?HandleResponse/g, function(_, s) { if (s === undefined) { s = '' }; return `GetPageRanges${s}HandleResponse` });
+```
+
+### Clean up some const type names so they don't stutter
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters['BlobDeleteType']
+  transform: >
+    $["x-ms-enum"].name = "DeleteType";
+    $["x-ms-client-name"] = "DeleteType";
+
+- from: swagger-document
+  where: $.parameters['BlobExpiryOptions']
+  transform: >
+    $["x-ms-enum"].name = "ExpiryOptions";
+    $["x-ms-client-name"].name = "ExpiryOptions";
+
+- from: swagger-document
+  where: $["x-ms-paths"][*].*.responses[*].headers["x-ms-immutability-policy-mode"]
+  transform: >
+    $["x-ms-client-name"].name = "ImmutabilityPolicyMode";
+    $.enum = [ "Mutable", "Unlocked", "Locked"];
+    $["x-ms-enum"] = { "name": "ImmutabilityPolicyMode", "modelAsString": false };
+
+- from: swagger-document
+  where: $.parameters['ImmutabilityPolicyMode']
+  transform: >
+    $["x-ms-enum"].name = "ImmutabilityPolicySetting";
+    $["x-ms-client-name"].name = "ImmutabilityPolicySetting";
+
+- from: swagger-document
+  where: $.definitions['BlobPropertiesInternal']
+  transform: >
+    $.properties.ImmutabilityPolicyMode["x-ms-enum"].name = "ImmutabilityPolicyMode";
 ```

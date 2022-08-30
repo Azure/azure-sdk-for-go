@@ -1,0 +1,182 @@
+
+{
+    "XMLName": {
+      "Space": "",
+      "Local": ""
+    },
+    "ID": "https://fakeservicebus/csharp/Subscriptions/subwithfilter/Rules/?api-version=2021-05",
+    "Title": "Rules",
+    "Entries": [
+      {
+        "XMLName": {
+          "Space": "",
+          "Local": ""
+        },
+        "ID": "https://fakeservicebus/csharp/Subscriptions/subwithfilter/Rules/CorrelationFilter1?api-version=2021-05",
+        "Title": "CorrelationFilter1",
+        "Author": null,
+        "Link": {
+          "XMLName": {
+            "Space": "http://www.w3.org/2005/Atom",
+            "Local": "link"
+          },
+          "Rel": "self",
+          "HREF": "CorrelationFilter1?api-version=2021-05"
+        },
+        "DataServiceSchema": "",
+        "DataServiceMetadataSchema": "",
+        "AtomSchema": "",
+        "Content": {
+          "XMLName": {
+            "Space": "http://www.w3.org/2005/Atom",
+            "Local": "content"
+          },
+          "Type": "application/xml",
+          "RuleDescription": {
+            "XMLName": {
+              "Space": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+              "Local": "RuleDescription"
+            },
+            "XMLNS": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+            "XMLNSI": "",
+            "InstanceMetadataSchema": null,
+            "ServiceBusSchema": null,
+            "CreatedAt": "2022-08-08T22:23:20.3432504Z",
+            "Filter": {
+              "XMLName": {
+                "Space": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "Local": "Filter"
+              },
+              "RawXML": "PENvcnJlbGF0aW9uSWQ+MTE8L0NvcnJlbGF0aW9uSWQ+PFByb3BlcnRpZXM+PEtleVZhbHVlT2ZzdHJpbmdhbnlUeXBlPjxLZXk+aGVsbG88L0tleT48VmFsdWUgaTp0eXBlPSJkNXAxOnN0cmluZyIgeG1sbnM6ZDVwMT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiPndvcmxkPC9WYWx1ZT48L0tleVZhbHVlT2ZzdHJpbmdhbnlUeXBlPjwvUHJvcGVydGllcz4=",
+              "RawAttrs": null,
+              "CorrelationID": "11",
+              "MessageID": null,
+              "To": null,
+              "ReplyTo": null,
+              "Label": null,
+              "SessionID": null,
+              "ReplyToSessionID": null,
+              "ContentType": null,
+              "Properties": {
+                "KeyValues": [
+                  {
+                    "Key": "hello",
+                    "Value": {
+                      "Type": "d5p1:string",
+                      "L28NS": "",
+                      "Text": "world"
+                    }
+                  },
+                  {
+                    "Key": "helloint",
+                    "Value": {
+                      "Type": "doesnotmatter:int",
+                      "L28NS": "",
+                      "Text": "101"
+                    }
+                  },
+                  {
+                    "Key": "hellodouble",
+                    "Value": {
+                      "Type": "d5p1:double",
+                      "L28NS": "",
+                      "Text": "1.1"
+                    }
+                  },
+                  {
+                    "Key": "hellodatetime",
+                    "Value": {
+                      "Type": "d6p1:dateTime",
+                      "L28NS": "",
+                      "Text": "2020-01-01T01:02:03Z"
+                    }
+                  }
+                ]
+              },
+              "Type": "CorrelationFilter",
+              "SQLExpression": null,
+              "CompatibilityLevel": 0,
+              "Parameters": null
+            },
+            "Action": {
+              "Type": "EmptyRuleAction",
+              "SQLExpression": "",
+              "Parameters": null,
+              "RawXML": null,
+              "RawAttrs": null
+            },
+            "Name": "CorrelationFilter1"
+          }
+        }
+      },
+      {
+        "XMLName": {
+          "Space": "",
+          "Local": ""
+        },
+        "ID": "https://fakeservicebus/csharp/Subscriptions/subwithfilter/Rules/SQLFilter1?api-version=2021-05",
+        "Title": "SQLFilter1",
+        "Author": null,
+        "Link": {
+          "XMLName": {
+            "Space": "http://www.w3.org/2005/Atom",
+            "Local": "link"
+          },
+          "Rel": "self",
+          "HREF": "SQLFilter1?api-version=2021-05"
+        },
+        "DataServiceSchema": "",
+        "DataServiceMetadataSchema": "",
+        "AtomSchema": "",
+        "Content": {
+          "XMLName": {
+            "Space": "http://www.w3.org/2005/Atom",
+            "Local": "content"
+          },
+          "Type": "application/xml",
+          "RuleDescription": {
+            "XMLName": {
+              "Space": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+              "Local": "RuleDescription"
+            },
+            "XMLNS": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+            "XMLNSI": "",
+            "InstanceMetadataSchema": null,
+            "ServiceBusSchema": null,
+            "CreatedAt": "2022-08-08T22:47:21.5507406Z",
+            "Filter": {
+              "XMLName": {
+                "Space": "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "Local": "Filter"
+              },
+              "RawXML": "PFNxbEV4cHJlc3Npb24+MT0xPC9TcWxFeHByZXNzaW9uPjxDb21wYXRpYmlsaXR5TGV2ZWw+MjA8L0NvbXBhdGliaWxpdHlMZXZlbD48UGFyYW1ldGVycy8+",
+              "RawAttrs": null,
+              "CorrelationID": null,
+              "MessageID": null,
+              "To": null,
+              "ReplyTo": null,
+              "Label": null,
+              "SessionID": null,
+              "ReplyToSessionID": null,
+              "ContentType": null,
+              "Properties": null,
+              "Type": "SqlFilter",
+              "SQLExpression": "1=1",
+              "CompatibilityLevel": 20,
+              "Parameters": {
+                "KeyValues": null
+              }
+            },
+            "Action": {
+              "Type": "EmptyRuleAction",
+              "SQLExpression": "",
+              "Parameters": null,
+              "RawXML": null,
+              "RawAttrs": null
+            },
+            "Name": "SQLFilter1"
+          }
+        }
+      }
+    ]
+  }

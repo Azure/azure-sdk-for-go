@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -578,10 +579,19 @@ func internalSQLParametersToPublic(kvlist *atom.KeyValueList) (map[string]interf
 	params := map[string]interface{}{}
 
 	for _, p := range kvlist.KeyValues {
-		switch p.Value.Type {
-		case "d6p1:string":
+		// we only care about the actual type here since we can assume the
+		// service is able to properly format/namespace its own XML
+		valueType := p.Value.Type
+		typeParts := strings.Split(p.Value.Type, ":")
+
+		if len(typeParts) == 2 {
+			valueType = typeParts[1]
+		}
+
+		switch valueType {
+		case "string":
 			params[p.Key] = p.Value.Text
-		case "d6p1:boolean":
+		case "boolean":
 			val, err := strconv.ParseBool(p.Value.Text)
 
 			if err != nil {
@@ -589,7 +599,7 @@ func internalSQLParametersToPublic(kvlist *atom.KeyValueList) (map[string]interf
 			}
 
 			params[p.Key] = val
-		case "d6p1:int":
+		case "int":
 			val, err := strconv.ParseInt(p.Value.Text, 10, 64)
 
 			if err != nil {
@@ -597,7 +607,7 @@ func internalSQLParametersToPublic(kvlist *atom.KeyValueList) (map[string]interf
 			}
 
 			params[p.Key] = val
-		case "d6p1:double":
+		case "double":
 			val, err := strconv.ParseFloat(p.Value.Text, 64)
 
 			if err != nil {
@@ -605,7 +615,7 @@ func internalSQLParametersToPublic(kvlist *atom.KeyValueList) (map[string]interf
 			}
 
 			params[p.Key] = val
-		case "d6p1:dateTime":
+		case "dateTime":
 			val, err := time.Parse(time.RFC3339Nano, p.Value.Text)
 
 			if err != nil {
@@ -615,7 +625,7 @@ func internalSQLParametersToPublic(kvlist *atom.KeyValueList) (map[string]interf
 			params[p.Key] = val.UTC()
 		default:
 			// TODO: timespan
-			return nil, fmt.Errorf("type %s of parameter %s is not a handled type for SQL parameters", p.Value.Type, p.Key)
+			return nil, fmt.Errorf("type %s of parameter %s is not a handled type for SQL parameters", valueType, p.Key)
 		}
 	}
 

@@ -48,9 +48,27 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 			tags = append(tags, tag["ref"].(string))
 		}
 	}
-	sort.Sort(sort.Reverse(sort.StringSlice(tags)))
+	sort.Sort(releaseTagsSort(tags))
 
 	return tags, nil
+}
+
+type releaseTagsSort []string
+
+func (t releaseTagsSort) Len() int {
+	return len(t)
+}
+
+func (t releaseTagsSort) Swap(i, j int) {
+	t[i], t[j] = t[j], t[i]
+}
+
+func (t releaseTagsSort) Less(i, j int) bool {
+	if t[i] > t[j] {
+		return !strings.Contains(t[i], t[j])
+	} else {
+		return strings.Contains(t[j], t[i])
+	}
 }
 
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {

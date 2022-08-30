@@ -9,7 +9,7 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net"
 	"net/http"
@@ -37,7 +37,7 @@ func init() {
 			panic(err)
 		}
 	}
-	cert, err := ioutil.ReadFile(localFile)
+	cert, err := os.ReadFile(localFile)
 	if err != nil {
 		log.Printf("could not read file set in PROXY_CERT variable at %s.\n", localFile)
 	}
@@ -131,8 +131,8 @@ func NewProxyTransport(options *TransportOptions) *RecordingHTTPClient {
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	if c.mode != liveMode {
-		err := c.replaceAuthority(req)
-		if err != nil {
+		var err error
+		if req, err = c.replaceAuthority(req); err != nil {
 			return nil, err
 		}
 	}
@@ -144,22 +144,29 @@ func (c *RecordingHTTPClient) SetMode(mode string) {
 	c.mode = mode
 }
 
-func (c *RecordingHTTPClient) replaceAuthority(rawReq *http.Request) error {
+func (c *RecordingHTTPClient) replaceAuthority(rawReq *http.Request) (*http.Request, error) {
 	parsedProxyURL, err := url.Parse(c.options.proxyURL)
 	if err != nil {
-		return fmt.Errorf("there was an error parsing url '%s': %s", c.options.proxyURL, err.Error())
+		return nil, fmt.Errorf("there was an error parsing url '%s': %s", c.options.proxyURL, err.Error())
 	}
 	originalURLHost := rawReq.URL.Host
 	originalURLScheme := rawReq.URL.Scheme
-	rawReq.URL.Scheme = parsedProxyURL.Scheme
-	rawReq.URL.Host = parsedProxyURL.Host
-	rawReq.Host = parsedProxyURL.Host
 
-	rawReq.Header.Set(upstreamURIHeader, fmt.Sprintf("%v://%v", originalURLScheme, originalURLHost))
-	rawReq.Header.Set(modeHeader, c.mode)
-	rawReq.Header.Set(idHeader, c.recID)
-	rawReq.Header.Set("x-recording-remove", "false")
-	return nil
+	// don't modify the original request
+	cp := *rawReq
+	cpURL := *cp.URL
+	cp.URL = &cpURL
+	cp.Header = rawReq.Header.Clone()
+
+	cp.URL.Scheme = parsedProxyURL.Scheme
+	cp.URL.Host = parsedProxyURL.Host
+	cp.Host = parsedProxyURL.Host
+
+	cp.Header.Set(upstreamURIHeader, fmt.Sprintf("%v://%v", originalURLScheme, originalURLHost))
+	cp.Header.Set(modeHeader, c.mode)
+	cp.Header.Set(idHeader, c.recID)
+	cp.Header.Set("x-recording-remove", "false")
+	return &cp, nil
 }
 
 // start tells the test proxy to begin accepting requests for a given test
@@ -182,7 +189,7 @@ func (c *RecordingHTTPClient) start() error {
 
 	recID := resp.Header.Get(idHeader)
 	if recID == "" {
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err != nil {
 			return fmt.Errorf("there was an error reading the body: %s", err.Error())
@@ -209,7 +216,7 @@ func (c *RecordingHTTPClient) stop() error {
 	req.Header.Set("x-recording-id", c.recID) //recTest)
 	resp, err := defaultHTTPClient.Do(req)
 	if resp.StatusCode != 200 {
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err == nil {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))

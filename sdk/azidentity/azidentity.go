@@ -11,7 +11,6 @@ import (
 	"context"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -94,7 +93,7 @@ func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
 		if rsc, ok := r.Body.(io.ReadSeekCloser); ok {
 			body = rsc
 		} else {
-			b, err := ioutil.ReadAll(r.Body)
+			b, err := io.ReadAll(r.Body)
 			if err != nil {
 				return nil, err
 			}

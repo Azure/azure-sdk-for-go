@@ -37,6 +37,7 @@ const (
 )
 
 // NewRequest creates a new policy.Request with the specified input.
+// The endpoint MUST be properly encoded before calling this function.
 func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*policy.Request, error) {
 	return exported.NewRequest(ctx, httpMethod, endpoint)
 }

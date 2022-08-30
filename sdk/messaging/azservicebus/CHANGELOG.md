@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0 (2022-08-09)
 
 ### Features Added
@@ -19,6 +29,7 @@
     not being delivered, but still incrementing their delivery count and requiring the message lock 
     timeout to expire.
   - Link detach could result in messages being ignored, requiring the message lock timeout to expire.
+- Subscription rules weren't deserializing properly when created from the portal (PR#18813)
 
 ## 1.0.2-beta.0 (2022-07-07)
 

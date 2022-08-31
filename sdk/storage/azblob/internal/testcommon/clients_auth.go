@@ -15,6 +15,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -82,16 +83,37 @@ var SpecialCharBlobTagsMap = map[string]string{
 	"GO ":             ".Net",
 }
 
+func setClientOptions(t *testing.T, opts *azcore.ClientOptions) {
+	opts.Logging.AllowedHeaders = []string{"X-Request-Mismatch", "X-Request-Mismatch-Error"}
+
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	opts.Transport = transport
+}
+
+func GetClient(t *testing.T, accountType TestAccountType, options *azblob.ClientOptions) (*azblob.Client, error) {
+	if options == nil {
+		options = &azblob.ClientOptions{}
+	}
+
+	setClientOptions(t, &options.ClientOptions)
+
+	cred, err := GetGenericCredential(accountType)
+	if err != nil {
+		return nil, err
+	}
+
+	client, err := azblob.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".blob.core.windows.net/", cred, options)
+
+	return client, err
+}
+
 func GetServiceClient(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {
 	if options == nil {
 		options = &service.ClientOptions{}
 	}
 
-	options.Logging.AllowedHeaders = []string{"X-Request-Mismatch", "X-Request-Mismatch-Error"}
-
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
-	options.Transport = transport
+	setClientOptions(t, &options.ClientOptions)
 
 	cred, err := GetGenericCredential(accountType)
 	if err != nil {

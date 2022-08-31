@@ -3163,3 +3163,62 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	_require.Equal(len(actualBlobData), blobSize)
 //	_require.EqualValues(actualBlobData, blobData)
 //}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	blobSize := 1024
+	bufferSize := 8 * 1024
+	maxBuffers := 3
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Set up test blob
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+	_require.Nil(err)
+	// Create some data to test the upload stream
+	blobContentReader, blobData := testcommon.GenerateData(blobSize)
+
+	// Perform UploadStream
+	_, err = bbClient.UploadStream(context.Background(), blobContentReader,
+		&blockblob.UploadStreamOptions{
+			BufferSize:  bufferSize,
+			MaxBuffers:  maxBuffers,
+			Metadata:    testcommon.BasicMetadata,
+			Tags:        testcommon.BasicBlobTagsMap,
+			HTTPHeaders: &testcommon.BasicHeaders,
+		})
+
+	// Assert that upload was successful
+	_require.Equal(err, nil)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
+
+	getPropertiesResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(getPropertiesResp.Metadata, testcommon.BasicMetadata)
+	_require.Equal(*getPropertiesResp.TagCount, int64(len(testcommon.BasicBlobTagsMap)))
+	_require.Equal(blob.ParseHTTPHeaders(getPropertiesResp), testcommon.BasicHeaders)
+
+	getTagsResp, err := bbClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, 3)
+	for _, blobTag := range getTagsResp.BlobTagSet {
+		_require.Equal(testcommon.BasicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	// Download the blob to verify
+	downloadResponse, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	// Assert that the content is correct
+	actualBlobData, err := io.ReadAll(downloadResponse.Body)
+	_require.NoError(err)
+	_require.Equal(len(actualBlobData), blobSize)
+	_require.EqualValues(actualBlobData, blobData)
+}

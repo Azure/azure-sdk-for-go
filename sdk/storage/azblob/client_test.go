@@ -20,7 +20,44 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
+
+var ctx = context.Background()
+
+type AZBlobRecordedTestsSuite struct {
+	suite.Suite
+}
+
+type AZBlobUnrecordedTestsSuite struct {
+	suite.Suite
+}
+
+// Hookup to the testing framework
+func Test(t *testing.T) {
+	suite.Run(t, &AZBlobRecordedTestsSuite{})
+	//suite.Run(t, &AZBlobUnrecordedTestsSuite{})
+}
+
+// nolint
+func (s *AZBlobRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(s.T(), suite, test)
+}
+
+// nolint
+func (s *AZBlobRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(s.T(), suite, test)
+}
+
+// nolint
+func (s *AZBlobUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+
+}
+
+// nolint
+func (s *AZBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
+
+}
 
 // create a test file
 // nolint
@@ -35,22 +72,25 @@ func generateFile(fileName string, fileSize int) []byte {
 
 // nolint
 func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
-	svcClient, err := testcommon.GetServiceClient(t, testcommon.TestAccountDefault, nil)
+	client, err := testcommon.GetClient(t, testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := client.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
 
 	// Set up test blob
 	blobName := testcommon.GenerateBlobName(testName)
-	blobClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 
 	// Create some data to test the upload stream
 	blobContentReader, blobData := testcommon.GenerateData(blobSize)
 
 	// Perform UploadStream
-	_, err = blobClient.UploadStream(ctx, blobContentReader,
+	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
 		&blockblob.UploadStreamOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 
 	// Assert that upload was successful
@@ -58,7 +98,7 @@ func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertio
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	// Download the blob to verify
-	downloadResponse, err := blobClient.DownloadStream(ctx, nil)
+	downloadResponse, err := client.DownloadStream(ctx, containerName, blobName, nil)
 	_require.Nil(err)
 
 	// Assert that the content is correct
@@ -134,17 +174,22 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		_ = os.Remove(name)
 	}(fileName)
 
-	svcClient, err := testcommon.GetServiceClient(t, testcommon.TestAccountDefault, nil)
+	client, err := testcommon.GetClient(t, testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := client.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
 
 	// Set up test blob
-	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	blobName := testcommon.GenerateBlobName(testName)
 
 	// Upload the file to a block blob
-	_, err = bbClient.UploadFile(context.Background(), file,
+	_, err = client.UploadFile(context.Background(), containerName, blobName, file,
 		&blockblob.UploadFileOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
@@ -153,13 +198,13 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
 			},
 		})
-	_require.Equal(err, nil)
+	_require.NoError(err)
 	//_require.Equal(response.StatusCode, 201)
 
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
 	destFile, err := os.Create(destFileName)
-	_require.Equal(err, nil)
+	_require.NoError(err)
 	defer func(destFile *os.File) {
 		_ = destFile.Close()
 
@@ -170,7 +215,9 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 	}(destFileName)
 
 	// Perform download
-	_, err = bbClient.BlobClient().DownloadFile(context.Background(),
+	_, err = client.DownloadFile(context.Background(),
+		containerName,
+		blobName,
 		destFile,
 		&blob.DownloadFileOptions{
 			Count:       int64(downloadCount),
@@ -184,7 +231,7 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		})
 
 	// Assert download was successful
-	_require.Equal(err, nil)
+	_require.NoError(err)
 
 	// Assert downloaded data is consistent
 	var destBuffer []byte
@@ -292,16 +339,21 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	_, bytesToUpload := testcommon.GenerateData(blobSize)
 
 	// Set up test container
-	svcClient, err := testcommon.GetServiceClient(t, testcommon.TestAccountDefault, nil)
+	client, err := testcommon.GetClient(t, testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := client.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
 
 	// Set up test blob
-	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	blobName := testcommon.GenerateBlobName(testName)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-	_, err = bbClient.UploadBuffer(context.Background(), bytesToUpload,
+	_, err = client.UploadBuffer(context.Background(), containerName, blobName, bytesToUpload,
 		&blockblob.UploadBufferOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
@@ -322,7 +374,9 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	}
 
 	// Download the blob to a buffer
-	_, err = bbClient.BlobClient().DownloadBuffer(context.Background(),
+	_, err = client.DownloadBuffer(context.Background(),
+		containerName,
+		blobName,
 		destBuffer, &blob.DownloadBufferOptions{
 			Count:       int64(downloadCount),
 			Offset:      int64(downloadOffset),
@@ -528,64 +582,4 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 	// simulate closing the mmf and make sure no panic occurs (as reported in #139)
 	mmf.isClosed = true
 	time.Sleep(time.Second * 5)
-}
-
-// nolint
-func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	blobSize := 1024
-	bufferSize := 8 * 1024
-	maxBuffers := 3
-
-	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
-	// Set up test blob
-	blobName := testcommon.GenerateBlobName(testName)
-	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
-	_require.Nil(err)
-	// Create some data to test the upload stream
-	blobContentReader, blobData := testcommon.GenerateData(blobSize)
-
-	// Perform UploadStream
-	_, err = bbClient.UploadStream(ctx, blobContentReader,
-		&blockblob.UploadStreamOptions{
-			BufferSize:  bufferSize,
-			MaxBuffers:  maxBuffers,
-			Metadata:    testcommon.BasicMetadata,
-			Tags:        testcommon.BasicBlobTagsMap,
-			HTTPHeaders: &testcommon.BasicHeaders,
-		})
-
-	// Assert that upload was successful
-	_require.Equal(err, nil)
-	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
-
-	getPropertiesResp, err := bbClient.GetProperties(ctx, nil)
-	_require.NoError(err)
-	_require.EqualValues(getPropertiesResp.Metadata, testcommon.BasicMetadata)
-	_require.Equal(*getPropertiesResp.TagCount, int64(len(testcommon.BasicBlobTagsMap)))
-	_require.Equal(blob.ParseHTTPHeaders(getPropertiesResp), testcommon.BasicHeaders)
-
-	getTagsResp, err := bbClient.GetTags(ctx, nil)
-	_require.NoError(err)
-	_require.Len(getTagsResp.BlobTagSet, 3)
-	for _, blobTag := range getTagsResp.BlobTagSet {
-		_require.Equal(testcommon.BasicBlobTagsMap[*blobTag.Key], *blobTag.Value)
-	}
-
-	// Download the blob to verify
-	downloadResponse, err := bbClient.DownloadStream(ctx, nil)
-	_require.NoError(err)
-
-	// Assert that the content is correct
-	actualBlobData, err := io.ReadAll(downloadResponse.Body)
-	_require.NoError(err)
-	_require.Equal(len(actualBlobData), blobSize)
-	_require.EqualValues(actualBlobData, blobData)
 }

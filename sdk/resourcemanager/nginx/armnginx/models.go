@@ -108,6 +108,7 @@ type ConfigurationPackage struct {
 type ConfigurationProperties struct {
 	Files             []*ConfigurationFile  `json:"files,omitempty"`
 	Package           *ConfigurationPackage `json:"package,omitempty"`
+	ProtectedFiles    []*ConfigurationFile  `json:"protectedFiles,omitempty"`
 	ProvisioningState *ProvisioningState    `json:"provisioningState,omitempty"`
 	RootFile          *string               `json:"rootFile,omitempty"`
 }

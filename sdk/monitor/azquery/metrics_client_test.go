@@ -14,19 +14,37 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 )
 
-func TestQueryResource_BasicQuerySuccess(t *testing.T) {
+const resourceURI1 = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/ripark/providers/Microsoft.Cache/Redis/ripark"
+
+func getMetricsClient(t *testing.T) *azquery.MetricsClient {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal("error constructing credential")
 	}
 
-	client := azquery.NewMetricsClient(cred, nil)
-	resourceURI := "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics"
-	res, err := client.QueryResource(context.Background(), resourceURI, nil)
+	return azquery.NewMetricsClient(cred, nil)
+}
+
+func TestQueryResource_BasicQuerySuccess(t *testing.T) {
+	client := getMetricsClient(t)
+	res, err := client.QueryResource(context.Background(), resourceURI1, nil)
 	if err != nil {
 		t.Fatal("error")
 	}
 	if res.Response.Timespan == nil {
 		t.Fatal("error")
 	}
+}
+
+func TestNewListMetricDefinitionsPager_Success(t *testing.T) {
+	//client := getMetricsClient(t)
+
+	//pager := client.NewListMetricDefinitionsPager(resourceURI1, nil)
+	//_ = res
+
+}
+
+func TestNewListMetricNamespacesPager_Success(t *testing.T) {
+	//client := getMetricsClient(t)
+
 }

@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
@@ -33,7 +34,7 @@ func testSerde[T serdeModel](t *testing.T, model T) {
 	require.NoError(t, err)
 }
 
-func getClient(t *testing.T) *azquery.LogsClient {
+func getLogsClient(t *testing.T) *azquery.LogsClient {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal("error constructing credential")
@@ -43,9 +44,9 @@ func getClient(t *testing.T) *azquery.LogsClient {
 }
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
-	client := getClient(t)
+	client := getLogsClient(t)
 	query := query
-	timespan := azquery.QueryTimeInterval(time.Now().Add(-12*time.Hour), time.Now())
+	timespan := azquery.TimeInterval(time.Now().Add(-12*time.Hour), time.Now())
 	body := azquery.Body{
 		Query:    &query,
 		Timespan: &timespan,
@@ -77,7 +78,7 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 }
 
 func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
-	client := getClient(t)
+	client := getLogsClient(t)
 	query := "not a valid query"
 	body := azquery.Body{
 		Query: &query,
@@ -94,7 +95,7 @@ func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
 }
 
 func TestQueryWorkspace_PartialError(t *testing.T) {
-	client := getClient(t)
+	client := getLogsClient(t)
 	query := "let Weight = 92233720368547758; range x from 1 to 3 step 1 | summarize percentilesw(x, Weight * 100, 50)"
 	body := azquery.Body{
 		Query: &query,
@@ -113,7 +114,7 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 
 // tests for special options: timeout, statistics, visualization
 func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
-	client := getClient(t)
+	client := getLogsClient(t)
 	query := query
 	body := azquery.Body{
 		Query: &query,
@@ -140,7 +141,7 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 }
 
 func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
-	client := getClient(t)
+	client := getLogsClient(t)
 	query := "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId"
 	workspaceID2 := workspaceID2
 	workspaces := []*string{&workspaceID2}
@@ -162,21 +163,14 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	}
 }
 
-//TODO fix path and method attributes
 func TestBatch_QuerySuccess(t *testing.T) {
-	client := getClient(t)
+	client := getLogsClient(t)
 	query1, query2 := query, query+" | take 2"
-	id1, id2 := "1", "2"
-	workspaceID := workspaceID1
-	body1 := azquery.Body{
-		Query: &query1,
-	}
-	body2 := azquery.Body{
-		Query: &query2,
-	}
-	req1 := azquery.BatchQueryRequest{Body: &body1, ID: &id1, Workspace: &workspaceID}
-	req2 := azquery.BatchQueryRequest{Body: &body2, ID: &id2, Workspace: &workspaceID}
-	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{&req1, &req2}}
+
+	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
+		{Body: &azquery.Body{Query: to.Ptr(query1)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID1)},
+		{Body: &azquery.Body{Query: to.Ptr(query2)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID1)},
+	}}
 	testSerde(t, &batchRequest)
 
 	res, err := client.Batch(context.Background(), batchRequest, nil)
@@ -189,6 +183,20 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	testSerde(t, &res.BatchResponse)
 }
 
-func TestBatch_QueryFailure(t *testing.T) {
+func TestBatch_PartialError(t *testing.T) {
+	client := getLogsClient(t)
 
+	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
+		{Body: &azquery.Body{Query: to.Ptr("not a valid query")}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID1)},
+		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID1)},
+	}}
+
+	res, err := client.Batch(context.Background(), batchRequest, nil)
+	if err != nil {
+		t.Fatalf("expected non nil error: %s", err.Error())
+	}
+	if len(res.BatchResponse.Responses) != 2 {
+		t.Fatal("expected two responses")
+	}
+	//TODO more checks
 }

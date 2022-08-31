@@ -17,14 +17,17 @@ import (
 )
 
 // ClientOptions contains optional settings for Client.
-type ClientOptions struct {
+type MetricsClientOptions struct {
+	azcore.ClientOptions
+}
+type LogsClientOptions struct {
 	azcore.ClientOptions
 }
 
 // NewLogsClient creates a client that accesses a monitor.
-func NewLogsClient(credential azcore.TokenCredential, options *ClientOptions) *LogsClient {
+func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions) *LogsClient {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &LogsClientOptions{}
 	}
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://api.loganalytics.io/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
@@ -32,17 +35,17 @@ func NewLogsClient(credential azcore.TokenCredential, options *ClientOptions) *L
 }
 
 // NewMetricsClient creates a client that accesses a monitor.
-func NewMetricsClient(credential azcore.TokenCredential, options *ClientOptions) *MetricsClient {
+func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientOptions) *MetricsClient {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &MetricsClientOptions{}
 	}
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://management.azure.com"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &MetricsClient{pl: pl}
 }
 
-func QueryTimeInterval(startTime time.Time, endTime time.Time) string {
-	return startTime.Format(time.RFC3339) + "/" + endTime.Format(time.RFC3339)
+func TimeInterval(start time.Time, end time.Time) string {
+	return start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339)
 }
 
 const metricsHost string = "https://management.azure.com"

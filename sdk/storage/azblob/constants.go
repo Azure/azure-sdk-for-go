@@ -35,3 +35,32 @@ const (
 func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	return generated.PossibleDeleteSnapshotsOptionTypeValues()
 }
+
+const (
+	ListBlobsIncludeItemCopy                ListBlobsIncludeItem = "copy"
+	ListBlobsIncludeItemDeleted             ListBlobsIncludeItem = "deleted"
+	ListBlobsIncludeItemMetadata            ListBlobsIncludeItem = "metadata"
+	ListBlobsIncludeItemSnapshots           ListBlobsIncludeItem = "snapshots"
+	ListBlobsIncludeItemUncommittedblobs    ListBlobsIncludeItem = "uncommittedblobs"
+	ListBlobsIncludeItemVersions            ListBlobsIncludeItem = "versions"
+	ListBlobsIncludeItemTags                ListBlobsIncludeItem = "tags"
+	ListBlobsIncludeItemImmutabilitypolicy  ListBlobsIncludeItem = "immutabilitypolicy"
+	ListBlobsIncludeItemLegalhold           ListBlobsIncludeItem = "legalhold"
+	ListBlobsIncludeItemDeletedwithversions ListBlobsIncludeItem = "deletedwithversions"
+)
+
+// PossibleListBlobsIncludeItemValues returns the possible values for the ListBlobsIncludeItem const type.
+func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
+	return []ListBlobsIncludeItem{
+		ListBlobsIncludeItemCopy,
+		ListBlobsIncludeItemDeleted,
+		ListBlobsIncludeItemMetadata,
+		ListBlobsIncludeItemSnapshots,
+		ListBlobsIncludeItemUncommittedblobs,
+		ListBlobsIncludeItemVersions,
+		ListBlobsIncludeItemTags,
+		ListBlobsIncludeItemImmutabilitypolicy,
+		ListBlobsIncludeItemLegalhold,
+		ListBlobsIncludeItemDeletedwithversions,
+	}
+}

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package checkpointstore_test
+package checkpoints_test
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpointstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
@@ -20,7 +20,7 @@ func TestBlobCheckpointStore_Checkpoints(t *testing.T) {
 	testData := getContainerClient(t)
 	defer testData.Cleanup()
 
-	store, err := checkpointstore.NewFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	store, err := checkpoints.NewBlobStoreFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
 	require.NoError(t, err)
 
 	checkpoints, err := store.ListCheckpoints(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
@@ -62,7 +62,7 @@ func TestBlobCheckpointStore_Ownership(t *testing.T) {
 	testData := getContainerClient(t)
 	defer testData.Cleanup()
 
-	store, err := checkpointstore.NewFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	store, err := checkpoints.NewBlobStoreFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
 	require.NoError(t, err)
 
 	ownerships, err := store.ListOwnership(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
@@ -152,7 +152,7 @@ func TestBlobCheckpointStore_ListAndClaim(t *testing.T) {
 	testData := getContainerClient(t)
 	defer testData.Cleanup()
 
-	store, err := checkpointstore.NewFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	store, err := checkpoints.NewBlobStoreFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
 	require.NoError(t, err)
 
 	address := azeventhubs.CheckpointStoreAddress{

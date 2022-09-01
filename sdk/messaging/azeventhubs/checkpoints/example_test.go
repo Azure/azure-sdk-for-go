@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package checkpointstore_test
+package checkpoints_test
 
 import (
 	"context"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpointstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 )
 
 func Example() {
@@ -16,7 +16,7 @@ func Example() {
 	// Create the checkpoint store
 	// NOTE: the container you pass in 'containerName' must already be created before the checkpoint
 	// store starts.
-	checkpointStore, err := checkpointstore.NewFromConnectionString(cs, containerName, nil)
+	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(cs, containerName, nil)
 
 	if err != nil {
 		panic(err)

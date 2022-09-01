@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package checkpointstore
+package checkpoints
 
 import (
 	"bytes"
@@ -47,7 +47,7 @@ func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *New
 // NewBlobCheckpointStore creates a checkpoint store that stores ownership and checkpoints in
 // Azure Blob storage. The container client will be used to store blobs.
 // NOTE: the container must exist before the checkpoint store can be used.
-func NewFromConnectionString(connectionString string, containerName string, options *NewBlobStoreOptions) (azeventhubs.CheckpointStore, error) {
+func NewBlobStoreFromConnectionString(connectionString string, containerName string, options *NewBlobStoreOptions) (azeventhubs.CheckpointStore, error) {
 	cc, err := blob.NewContainerClientFromConnectionString(connectionString, containerName, toContainerClientOptions(options))
 
 	if err != nil {

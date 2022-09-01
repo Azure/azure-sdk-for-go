@@ -6,12 +6,15 @@
 
 package blob
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+)
 
 const (
 	CountToEnd = 0
 
-	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
+	SnapshotTimeFormat = exported.SnapshotTimeFormat
 
 	// DefaultDownloadBlockSize is default block size
 	DefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB

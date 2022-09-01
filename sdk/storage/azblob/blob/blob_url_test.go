@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package exported
+package blob
 
 import (
 	"fmt"
@@ -12,21 +12,56 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/stretchr/testify/require"
 )
 
-func TestSAS(t *testing.T) {
-	const sas = "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
-	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
-	_uri, err := url.Parse(_url)
-	require.NoError(t, err)
-	sasQueryParams := NewSASQueryParameters(_uri.Query(), true)
-	validateSAS(t, sas, sasQueryParams)
+func TestParseURL(t *testing.T) {
+	testStorageAccount := "fakestorageaccount"
+	host := fmt.Sprintf("%s.blob.core.windows.net", testStorageAccount)
+	testContainer := "fakecontainer"
+	fileNames := []string{"/._.TESTT.txt", "/.gitignore/dummyfile1"}
+
+	const sasStr = "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
+
+	for _, fileName := range fileNames {
+		snapshotID, versionID := "", "2021-10-25T05:41:32.5526810Z"
+		sasWithVersionID := "?versionId=" + versionID + "&" + sasStr
+		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s%s", testStorageAccount, testContainer, fileName, sasWithVersionID)
+		blobURLParts, err := ParseURL(urlWithVersion)
+		require.NoError(t, err)
+
+		require.Equal(t, blobURLParts.Scheme, "https")
+		require.Equal(t, blobURLParts.Host, host)
+		require.Equal(t, blobURLParts.ContainerName, testContainer)
+		require.Equal(t, blobURLParts.VersionID, versionID)
+		require.Equal(t, blobURLParts.Snapshot, snapshotID)
+
+		validateSAS(t, sasStr, blobURLParts.SAS)
+	}
+
+	for _, fileName := range fileNames {
+		snapshotID, versionID := "2011-03-09T01:42:34Z", ""
+		sasWithSnapshotID := "?snapshot=" + snapshotID + "&" + sasStr
+		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s%s", testStorageAccount, testContainer, fileName, sasWithSnapshotID)
+		blobURLParts, err := ParseURL(urlWithVersion)
+		require.NoError(t, err)
+
+		require.Equal(t, blobURLParts.Scheme, "https")
+		require.Equal(t, blobURLParts.Host, host)
+		require.Equal(t, blobURLParts.ContainerName, testContainer)
+		require.Equal(t, blobURLParts.VersionID, versionID)
+		require.Equal(t, blobURLParts.Snapshot, snapshotID)
+
+		validateSAS(t, sasStr, blobURLParts.SAS)
+	}
+
+	//urlWithIP := "https://127.0.0.1:5000/"
 }
 
-func validateSAS(t *testing.T, sas string, parameters SASQueryParameters) {
+func validateSAS(t *testing.T, sasStr string, parameters sas.QueryParameters) {
 	sasCompMap := make(map[string]string)
-	for _, sasComp := range strings.Split(sas, "&") {
+	for _, sasComp := range strings.Split(sasStr, "&") {
 		comp := strings.Split(sasComp, "=")
 		sasCompMap[comp[0]] = comp[1]
 	}
@@ -36,18 +71,18 @@ func validateSAS(t *testing.T, sas string, parameters SASQueryParameters) {
 	require.Equal(t, parameters.ResourceTypes(), sasCompMap["srt"])
 	require.Equal(t, string(parameters.Protocol()), sasCompMap["spr"])
 	if _, ok := sasCompMap["st"]; ok {
-		startTime, _, err := ParseSASTimeString(sasCompMap["st"])
+		startTime, _, err := sas.ParseTime(sasCompMap["st"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.StartTime(), startTime)
 	}
 	if _, ok := sasCompMap["se"]; ok {
-		endTime, _, err := ParseSASTimeString(sasCompMap["se"])
+		endTime, _, err := sas.ParseTime(sasCompMap["se"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.ExpiryTime(), endTime)
 	}
 
 	if _, ok := sasCompMap["snapshot"]; ok {
-		snapshotTime, _, err := ParseSASTimeString(sasCompMap["snapshot"])
+		snapshotTime, _, err := sas.ParseTime(sasCompMap["snapshot"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SnapshotTime(), snapshotTime)
 	}
@@ -70,14 +105,14 @@ func validateSAS(t *testing.T, sas string, parameters SASQueryParameters) {
 	require.Equal(t, parameters.SignedTID(), sasCompMap["sktid"])
 
 	if _, ok := sasCompMap["skt"]; ok {
-		signedStart, _, err := ParseSASTimeString(sasCompMap["skt"])
+		signedStart, _, err := sas.ParseTime(sasCompMap["skt"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SignedStart(), signedStart)
 	}
 	require.Equal(t, parameters.SignedService(), sasCompMap["sks"])
 
 	if _, ok := sasCompMap["ske"]; ok {
-		signedExpiry, _, err := ParseSASTimeString(sasCompMap["ske"])
+		signedExpiry, _, err := sas.ParseTime(sasCompMap["ske"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SignedExpiry(), signedExpiry)
 	}

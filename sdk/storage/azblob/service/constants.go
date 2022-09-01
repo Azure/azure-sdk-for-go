@@ -7,14 +7,7 @@
 package service
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
-)
-
-const (
-	SASProtocolHTTPS = exported.SASProtocolHTTPS
-
-	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 )
 
 const (

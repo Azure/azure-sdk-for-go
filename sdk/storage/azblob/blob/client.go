@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -95,7 +96,7 @@ func (b *Client) URL() string {
 // WithSnapshot creates a new Client object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseURL(b.URL())
+	p, err := ParseURL(b.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +108,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (b *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseURL(b.URL())
+	p, err := ParseURL(b.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -228,10 +229,10 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
-	urlParts, _ := exported.ParseURL(b.URL())
+func (b *Client) GetSASToken(permissions sas.BlobPermissions, start time.Time, expiry time.Time) (string, error) {
+	urlParts, _ := ParseURL(b.URL())
 
-	t, err := time.Parse(exported.SnapshotTimeFormat, urlParts.Snapshot)
+	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
 
 	if err != nil {
 		t = time.Time{}
@@ -241,11 +242,11 @@ func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry
 		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
 	}
 
-	qps, err := exported.BlobSASSignatureValues{
+	qps, err := sas.BlobSignatureValues{
 		ContainerName: urlParts.ContainerName,
 		BlobName:      urlParts.BlobName,
 		SnapshotTime:  t,
-		Version:       exported.SASVersion,
+		Version:       sas.Version,
 
 		Permissions: permissions.String(),
 

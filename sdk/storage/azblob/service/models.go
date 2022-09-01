@@ -60,28 +60,6 @@ type StorageServiceProperties = generated.StorageServiceProperties
 // StorageServiceStats - Stats for the storage service.
 type StorageServiceStats = generated.StorageServiceStats
 
-// SASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
-type SASResourceTypes = exported.AccountSASResourceTypes
-
-// SASServices type simplifies creating the services string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set SASServices' Services field.
-type SASServices = exported.AccountSASServices
-
-// SASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues' Permissions field.
-type SASPermissions = exported.AccountSASPermissions
-
-// SASProtocol indicates the http/https.
-type SASProtocol = exported.SASProtocol
-
-// IPRange represents a SAS IP range's start IP and (optionally) end IP.
-type IPRange = exported.IPRange
-
-// SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
-type SASSignatureValues = exported.AccountSASSignatureValues
-
 // ---------------------------------------------------------------------------------------------------------------------
 
 // GetAccountInfoOptions provides set of options for Client.GetAccountInfo

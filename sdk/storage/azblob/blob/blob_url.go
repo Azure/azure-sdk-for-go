@@ -4,18 +4,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package exported
+package blob
 
 import (
 	"net"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 const (
-	snapshot           = "snapshot"
-	versionId          = "versionid"
-	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
+	snapshot  = "snapshot"
+	versionId = "versionid"
 )
 
 // IPEndpointStyleInfo is used for IP endpoint style URL when working with Azure storage emulator.
@@ -34,7 +35,7 @@ type URLParts struct {
 	ContainerName       string // "" if no container
 	BlobName            string // "" if no blob
 	Snapshot            string // "" if not a snapshot
-	SAS                 SASQueryParameters
+	SAS                 sas.QueryParameters
 	UnparsedParams      string
 	VersionID           string // "" if not versioning enabled
 }
@@ -95,7 +96,7 @@ func ParseURL(u string) (URLParts, error) {
 		delete(paramsMap, "versionId") // delete "versionId" from paramsMap
 	}
 
-	up.SAS = NewSASQueryParameters(paramsMap, true)
+	up.SAS = sas.NewQueryParameters(paramsMap, true)
 	up.UnparsedParams = paramsMap.Encode()
 	return up, nil
 }
@@ -118,8 +119,8 @@ func (up URLParts) String() string {
 	rawQuery := up.UnparsedParams
 
 	//If no snapshot is initially provided, fill it in from the SAS query properties to help the user
-	if up.Snapshot == "" && !up.SAS.snapshotTime.IsZero() {
-		up.Snapshot = up.SAS.snapshotTime.Format(SnapshotTimeFormat)
+	if up.Snapshot == "" && !up.SAS.SnapshotTime().IsZero() {
+		up.Snapshot = up.SAS.SnapshotTime().Format(SnapshotTimeFormat)
 	}
 
 	// Concatenate blob version id query parameter (if it exists)

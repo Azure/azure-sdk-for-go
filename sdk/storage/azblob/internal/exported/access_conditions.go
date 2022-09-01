@@ -8,6 +8,8 @@ package exported
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 
+const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
+
 // ContainerAccessConditions identifies container-specific access conditions which you optionally set.
 type ContainerAccessConditions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions

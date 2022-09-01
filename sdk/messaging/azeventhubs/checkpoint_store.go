@@ -44,7 +44,7 @@ type Checkpoint struct {
 	CheckpointData
 }
 
-// Address contains the properties needed to uniquely address checkpoints
+// CheckpointStoreAddress contains the properties needed to uniquely address checkpoints
 // or ownership.
 type CheckpointStoreAddress struct {
 	ConsumerGroup           string

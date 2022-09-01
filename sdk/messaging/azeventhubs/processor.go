@@ -12,6 +12,7 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
+// ProcessorStrategy specifies the load balancing strategy used by the Processor.
 type ProcessorStrategy string
 
 const (

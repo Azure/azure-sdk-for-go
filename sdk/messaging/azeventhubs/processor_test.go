@@ -294,21 +294,6 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	})
 	require.NoError(t, err)
 
-	runCtx, cancelRun := context.WithCancel(context.TODO())
-	defer cancelRun()
-
-	processorClosed := make(chan struct{})
-
-	// customer launches load balancer in a goroutine, and it continually runs
-	// until they cancel the context. There is no Close() function on the Processor()
-	go func() {
-		defer close(processorClosed)
-
-		t.Logf("Starting processor in separate goroutine")
-		err := processor.Run(runCtx)
-		require.NoError(t, err)
-	}()
-
 	// get the connection warmed up
 	ehProps, err := consumerClient.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
@@ -321,33 +306,40 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 		require.NoError(t, err)
 	}()
 
-	wg := sync.WaitGroup{}
+	runCtx, cancelRun := context.WithCancel(context.TODO())
+	defer cancelRun()
 
-	partitionsAcquired := map[string]bool{}
+	go func() {
+		defer cancelRun()
 
-	// acquire all the partitions
-	for i := 0; i < len(ehProps.PartitionIDs); i++ {
-		t.Logf("Waiting for next partition client")
-		partitionClient := processor.NextPartitionClient(runCtx)
+		wg := sync.WaitGroup{}
+		partitionsAcquired := map[string]bool{}
 
-		wg.Add(1)
+		// acquire all the partitions
+		for i := 0; i < len(ehProps.PartitionIDs); i++ {
+			t.Logf("Waiting for next partition client")
+			partitionClient := processor.NextPartitionClient(runCtx)
 
-		require.False(t, partitionsAcquired[partitionClient.PartitionID()], "No previous client for %s", partitionClient.PartitionID())
+			wg.Add(1)
 
-		go func(client *azeventhubs.ProcessorPartitionClient) {
-			defer wg.Done()
-			err := processEventsForTest(t, producerClient, client)
-			require.NoError(t, err)
-		}(partitionClient)
-	}
+			require.False(t, partitionsAcquired[partitionClient.PartitionID()], "No previous client for %s", partitionClient.PartitionID())
 
-	wg.Wait()
+			go func(client *azeventhubs.ProcessorPartitionClient) {
+				defer wg.Done()
+				err := processEventsForTest(t, producerClient, client)
+				require.NoError(t, err)
+			}(partitionClient)
+		}
 
-	// close all the clients.
-	t.Logf("All partitions acquired and tested. Closing processor...")
-	cancelRun()
+		wg.Wait()
 
-	<-processorClosed
+		// close all the clients.
+		t.Logf("All partitions acquired and tested. Closing processor...")
+	}()
+
+	t.Logf("Starting processor in separate goroutine")
+	err = processor.Run(runCtx)
+	require.NoError(t, err)
 }
 
 func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClient, partitionClient *azeventhubs.ProcessorPartitionClient) error {
@@ -401,9 +393,9 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 			return err
 		}
 
-		t.Logf("Processing %d event(s) for partition %s", len(events), partitionClient.PartitionID())
-
 		if len(events) != 0 {
+			t.Logf("Processing %d event(s) for partition %s", len(events), partitionClient.PartitionID())
+
 			allEvents = append(allEvents, events...)
 
 			// Update the checkpoint with the last event received. If the processor is restarted

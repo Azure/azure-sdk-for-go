@@ -40,7 +40,7 @@ func (testsuite *Basic2TestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.agentPoolName = testutil.GenerateAlphaNumericID(testsuite.T(), "agentpooln", 6)
-	testsuite.registryName = testutil.GenerateAlphaNumericID(testsuite.T(), "registryna", 6)
+	testsuite.registryName = testutil.GenerateAlphaNumericID(testsuite.T(), "registryna2", 6)
 	testsuite.taskName = testutil.GenerateAlphaNumericID(testsuite.T(), "taskname", 6)
 	testsuite.taskRunName = testutil.GenerateAlphaNumericID(testsuite.T(), "taskrunnam", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")

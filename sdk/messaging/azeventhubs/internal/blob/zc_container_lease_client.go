@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
-//ContainerLeaseClient represents lease client of container
+// ContainerLeaseClient represents lease client of container
 type ContainerLeaseClient struct {
 	ContainerClient
 	leaseID *string

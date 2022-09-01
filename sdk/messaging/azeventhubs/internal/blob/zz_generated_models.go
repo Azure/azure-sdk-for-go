@@ -883,7 +883,7 @@ func (q QueryRequest) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
-//QuerySerialization struct
+// QuerySerialization struct
 type QuerySerialization struct {
 	// REQUIRED
 	Format *QueryFormat `xml:"Format"`

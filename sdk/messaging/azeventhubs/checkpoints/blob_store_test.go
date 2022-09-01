@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestBlobCheckpointStore_Checkpoints(t *testing.T) {
+func TestBlobStore_Checkpoints(t *testing.T) {
 	testData := getContainerClient(t)
 	defer testData.Cleanup()
 
@@ -58,7 +58,7 @@ func TestBlobCheckpointStore_Checkpoints(t *testing.T) {
 	}, checkpoints[0])
 }
 
-func TestBlobCheckpointStore_Ownership(t *testing.T) {
+func TestBlobStore_Ownership(t *testing.T) {
 	testData := getContainerClient(t)
 	defer testData.Cleanup()
 
@@ -147,7 +147,7 @@ func TestBlobCheckpointStore_Ownership(t *testing.T) {
 	require.NotZero(t, ownerships[0].LastModifiedTime)
 }
 
-func TestBlobCheckpointStore_ListAndClaim(t *testing.T) {
+func TestBlobStore_ListAndClaim(t *testing.T) {
 	// listing ownerships is a slightly different code path
 	testData := getContainerClient(t)
 	defer testData.Cleanup()

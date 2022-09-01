@@ -109,9 +109,7 @@ func Example() {
 	pager := client.NewListBlobsPager(containerName, nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleError(err)
 		for _, v := range resp.Segment.BlobItems {
 			fmt.Println(*v.Name)
 		}
@@ -298,15 +296,9 @@ func Example_client_DownloadFile() {
 	handleError(err)
 
 	// Perform download
-	// 0 represents the end of the blob.
-	downloadOffset, downloadCount := 0, 0
 
 	_, err = serviceClient.DownloadFile(context.TODO(), "testcontainer", "virtual/dir/path/"+destFileName, destFile,
-		&blob.DownloadFileOptions{
-			Count:       int64(downloadCount),
-			Offset:      int64(downloadOffset),
-			BlockSize:   int64(1024),
-			Parallelism: uint16(3),
+		&azblob.DownloadFileOptions{
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				fmt.Println(bytesTransferred)
@@ -383,7 +375,9 @@ func Example_client_UploadStream() {
 
 	// Perform UploadStream
 	resp, err := serviceClient.UploadStream(context.TODO(), containerName, blobName, blobContentReader,
-		&azblob.UploadStreamOptions{BufferSize: bufferSize, Metadata: map[string]string{"hello": "world"}})
+		&azblob.UploadStreamOptions{
+			Metadata: map[string]string{"hello": "world"},
+		})
 	// Assert that upload was successful
 	handleError(err)
 	fmt.Println(resp)

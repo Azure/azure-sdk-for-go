@@ -64,7 +64,8 @@ type ReceiveEventsOptions struct {
 	// For future expansion
 }
 
-// ReceiveEvents receives events until the context has expired or been cancelled.
+// ReceiveEvents receives events until 'count' events have been received or the context has
+// expired or been cancelled.
 func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {
 	var events []*ReceivedEventData
 

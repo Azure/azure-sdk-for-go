@@ -15,7 +15,8 @@ type ProcessorPartitionClient struct {
 	consumerClientDetails consumerClientDetails
 }
 
-// ReceiveEvents receives events until the context has expired or been cancelled.
+// ReceiveEvents receives events until 'count' events have been received or the context has
+// expired or been cancelled.
 func (c *ProcessorPartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {
 	return c.innerClient.ReceiveEvents(ctx, count, options)
 }

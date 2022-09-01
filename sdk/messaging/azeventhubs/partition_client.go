@@ -56,7 +56,6 @@ type PartitionClient struct {
 
 	offsetExpression string
 
-	//links *internal.Links[amqpwrap.AMQPReceiverCloser]
 	links internal.LinksForPartitionClient[amqpwrap.AMQPReceiverCloser]
 }
 

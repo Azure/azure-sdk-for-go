@@ -200,7 +200,16 @@ func getContainerClient(t *testing.T) struct {
 } {
 	_ = godotenv.Load("../.env")
 
-	storageCS := os.Getenv("STORAGE_CHECKPOINTSTORE_CONNECTION_STRING")
+	storageCS := os.Getenv("CHECKPOINTSTORE_STORAGE_CONNECTION_STRING")
+
+	if storageCS == "" {
+		t.Skipf("CHECKPOINTSTORE_STORAGE_CONNECTION_STRING is not defined in the environment. Skipping blob checkpoint store live tests")
+		return struct {
+			ConnectionString string
+			ContainerName    string
+			Cleanup          func()
+		}{}
+	}
 
 	nano := time.Now().UTC().UnixNano()
 

@@ -334,7 +334,7 @@ func newCheckpointData(metadata map[string]*string) (azeventhubs.CheckpointData,
 	offset, err := strconv.ParseInt(*offsetStr, 10, 64)
 
 	if err != nil {
-		return azeventhubs.CheckpointData{}, fmt.Errorf("offset could not be parsed as an int64: %w", err)
+		return azeventhubs.CheckpointData{}, fmt.Errorf("offset could not be parsed as an int64: %s", err.Error())
 	}
 
 	return azeventhubs.CheckpointData{

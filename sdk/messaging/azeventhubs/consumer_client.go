@@ -15,11 +15,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 )
 
+// Error represents an Event Hub specific error.
+// NOTE: the Code is considered part of the published API but the message that
+// comes back from Error(), as well as the underlying wrapped error, are NOT and
+// are subject to change.
 type Error = exported.Error
 
 // Code is an error code, usable by consuming code to work with
 // programatically.
-type Code exported.Code
+type Code = exported.Code
 
 const (
 	// CodeConnectionLost means our connection was lost and all retry attempts failed.

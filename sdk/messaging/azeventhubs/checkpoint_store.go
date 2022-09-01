@@ -9,9 +9,17 @@ import (
 
 // CheckpointStore is used by multiple consumers to coordinate progress and ownership for partitions.
 type CheckpointStore interface {
+	// ClaimOwnership attempts to claim ownership of the partitions in partitionOwnership and returns
+	// the actual partitions that were claimed.
 	ClaimOwnership(ctx context.Context, partitionOwnership []Ownership, options *ClaimOwnershipOptions) ([]Ownership, error)
+
+	// ListCheckpoints lists all the available checkpoints.
 	ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListCheckpointsOptions) ([]Checkpoint, error)
+
+	// ListOwnership lists all ownerships.
 	ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListOwnershipOptions) ([]Ownership, error)
+
+	// UpdateCheckpoint updates a specific checkpoint with a sequence and offset.
 	UpdateCheckpoint(ctx context.Context, checkpoint Checkpoint, options *UpdateCheckpointOptions) error
 }
 

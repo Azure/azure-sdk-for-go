@@ -18,28 +18,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
 )
 
-// BlobCheckpointStore is a CheckpointStore implementation that uses Azure Blob storage.
-type BlobCheckpointStore struct {
+// BlobStore is a CheckpointStore implementation that uses Azure Blob storage.
+type BlobStore struct {
 	cc *blob.ContainerClient
 }
 
-// NewOptions contains optional parameters for the New, NewFromConnectionString and NewWithSharedKey
+// NewBlobStoreOptions contains optional parameters for the New, NewFromConnectionString and NewWithSharedKey
 // functions
-type NewOptions struct {
+type NewBlobStoreOptions struct {
 	azcore.ClientOptions
 }
 
-// New creates a checkpoint store that stores ownership and checkpoints in
+// NewBlobStore creates a checkpoint store that stores ownership and checkpoints in
 // Azure Blob storage. The container client will be used to store blobs.
 // NOTE: the container must exist before the checkpoint store can be used.
-func New(containerURL string, cred azcore.TokenCredential, options *NewOptions) (*BlobCheckpointStore, error) {
+func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *NewBlobStoreOptions) (*BlobStore, error) {
 	cc, err := blob.NewContainerClient(containerURL, cred, toContainerClientOptions(options))
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &BlobCheckpointStore{
+	return &BlobStore{
 		cc: cc,
 	}, nil
 }
@@ -47,19 +47,21 @@ func New(containerURL string, cred azcore.TokenCredential, options *NewOptions) 
 // NewBlobCheckpointStore creates a checkpoint store that stores ownership and checkpoints in
 // Azure Blob storage. The container client will be used to store blobs.
 // NOTE: the container must exist before the checkpoint store can be used.
-func NewFromConnectionString(connectionString string, containerName string, options *NewOptions) (azeventhubs.CheckpointStore, error) {
+func NewFromConnectionString(connectionString string, containerName string, options *NewBlobStoreOptions) (azeventhubs.CheckpointStore, error) {
 	cc, err := blob.NewContainerClientFromConnectionString(connectionString, containerName, toContainerClientOptions(options))
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &BlobCheckpointStore{
+	return &BlobStore{
 		cc: cc,
 	}, nil
 }
 
-func (b *BlobCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwnership []azeventhubs.Ownership, options *azeventhubs.ClaimOwnershipOptions) ([]azeventhubs.Ownership, error) {
+// ClaimOwnership attempts to claim ownership of the partitions in partitionOwnership and returns
+// the actual partitions that were claimed.
+func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []azeventhubs.Ownership, options *azeventhubs.ClaimOwnershipOptions) ([]azeventhubs.Ownership, error) {
 	var ownerships []azeventhubs.Ownership
 
 	// TODO: in parallel?
@@ -104,7 +106,8 @@ func (b *BlobCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwner
 	return ownerships, nil
 }
 
-func (b *BlobCheckpointStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListCheckpointsOptions) ([]azeventhubs.Checkpoint, error) {
+// ListCheckpoints lists all the available checkpoints.
+func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListCheckpointsOptions) ([]azeventhubs.Checkpoint, error) {
 	prefix, err := prefixForCheckpointBlobs(azeventhubs.CheckpointStoreAddress{
 		FullyQualifiedNamespace: fullyQualifiedNamespace,
 		EventHubName:            eventHubName,
@@ -156,7 +159,8 @@ func (b *BlobCheckpointStore) ListCheckpoints(ctx context.Context, fullyQualifie
 
 var partitionIDRegexp = regexp.MustCompile("[^/]+?$")
 
-func (b *BlobCheckpointStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListOwnershipOptions) ([]azeventhubs.Ownership, error) {
+// ListOwnership lists all ownerships.
+func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListOwnershipOptions) ([]azeventhubs.Ownership, error) {
 	prefix, err := prefixForOwnershipBlobs(azeventhubs.CheckpointStoreAddress{
 		FullyQualifiedNamespace: fullyQualifiedNamespace,
 		EventHubName:            eventHubName,
@@ -206,7 +210,8 @@ func (b *BlobCheckpointStore) ListOwnership(ctx context.Context, fullyQualifiedN
 	return ownerships, nil
 }
 
-func (b *BlobCheckpointStore) UpdateCheckpoint(ctx context.Context, checkpoint azeventhubs.Checkpoint, options *azeventhubs.UpdateCheckpointOptions) error {
+// UpdateCheckpoint updates a specific checkpoint with a sequence and offset.
+func (b *BlobStore) UpdateCheckpoint(ctx context.Context, checkpoint azeventhubs.Checkpoint, options *azeventhubs.UpdateCheckpointOptions) error {
 	blobName, err := nameForCheckpointBlob(checkpoint.CheckpointStoreAddress)
 
 	if err != nil {
@@ -222,7 +227,7 @@ func isBlobNotFoundError(err error) bool {
 	return errors.As(err, &storageErr) && storageErr.StatusCode() == http.StatusNotFound
 }
 
-func (b *BlobCheckpointStore) setMetadata(ctx context.Context, blobName string, blobMetadata map[string]string, etag *string) (*time.Time, string, error) {
+func (b *BlobStore) setMetadata(ctx context.Context, blobName string, blobMetadata map[string]string, etag *string) (*time.Time, string, error) {
 	blobClient, err := b.cc.NewBlockBlobClient(blobName)
 
 	if err != nil {
@@ -368,7 +373,7 @@ func newOwnershipBlobMetadata(od azeventhubs.OwnershipData) map[string]string {
 	}
 }
 
-func toContainerClientOptions(opts *NewOptions) *blob.ClientOptions {
+func toContainerClientOptions(opts *NewBlobStoreOptions) *blob.ClientOptions {
 	if opts == nil {
 		return nil
 	}

@@ -65,7 +65,7 @@ func TestProcessor_Contention(t *testing.T) {
 	ehProps, err := producerClient.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 
-	checkpointStore, err := checkpointstore.NewFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(testParams.StorageConnectionString, containerName, nil)
 	require.NoError(t, err)
 
 	type testData struct {
@@ -211,7 +211,7 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	// Create the checkpoint store
 	// NOTE: the container must exist before the checkpoint store can be used.
 	t.Logf("Checkpoint store created")
-	checkpointStore, err := checkpointstore.NewFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(testParams.StorageConnectionString, containerName, nil)
 	require.NoError(t, err)
 
 	t.Logf("Consumer client created")
@@ -280,7 +280,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	// Create the checkpoint store
 	// NOTE: the container must exist before the checkpoint store can be used.
 	t.Logf("Checkpoint store created")
-	checkpointStore, err := checkpointstore.NewFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(testParams.StorageConnectionString, containerName, nil)
 	require.NoError(t, err)
 
 	t.Logf("Consumer client created")

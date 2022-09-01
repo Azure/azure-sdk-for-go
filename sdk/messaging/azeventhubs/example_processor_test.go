@@ -23,7 +23,7 @@ func Example_processor() {
 
 	// Create the checkpoint store
 	// NOTE: the container must exist before the checkpoint store can be used.
-	checkpointStore, err := checkpointstore.NewFromConnectionString(storageCS, containerName, nil)
+	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(storageCS, containerName, nil)
 
 	if err != nil {
 		panic(err)

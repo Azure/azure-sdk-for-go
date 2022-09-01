@@ -41,6 +41,24 @@ func Example_processor() {
 		panic(err)
 	}
 
+	go func() {
+		// Loop continually - each time we acquire a new partition NextPartitionClient() will
+		// return it.
+		for {
+			partitionClient := processor.NextPartitionClient(context.TODO())
+
+			if partitionClient == nil {
+				break
+			}
+
+			go func() {
+				if err := processEvents(partitionClient); err != nil {
+					panic(err)
+				}
+			}()
+		}
+	}()
+
 	processorCtx, processorCancel := context.WithCancel(context.TODO())
 	defer processorCancel()
 
@@ -48,26 +66,8 @@ func Example_processor() {
 	// retrieve by calls to NextPartitionClient, in a loop. This is demonstrated below.
 	//
 	// To stop the processor cancel the context that you passed in to Run().
-	go func() {
-		if err := processor.Run(processorCtx); err != nil {
-			panic(err)
-		}
-	}()
-
-	// Loop continually - each time we acquire a new partition NextPartitionClient() will
-	// return it.
-	for {
-		partitionClient := processor.NextPartitionClient(context.TODO())
-
-		if partitionClient == nil {
-			break
-		}
-
-		go func() {
-			if err := processEvents(partitionClient); err != nil {
-				panic(err)
-			}
-		}()
+	if err := processor.Run(processorCtx); err != nil {
+		panic(err)
 	}
 }
 

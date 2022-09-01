@@ -30,17 +30,21 @@ const (
 type NewProcessorOptions struct {
 	// LoadBalancingStrategy dictates how concurrent Processor instances distribute
 	// ownership of partitions between them.
+	// The default strategy is ProcessorStrategyBalanced.
 	LoadBalancingStrategy ProcessorStrategy
 
 	// UpdateInterval controls how often attempt to claim partitions.
+	// The default value is 10 seconds.
 	UpdateInterval time.Duration
 
 	// PartitionExpirationDuration is the amount of time before a partition is considered
 	// unowned.
+	// The default value is 60 seconds.
 	PartitionExpirationDuration time.Duration
 
 	// StartPositions are the default start positions (configurable per partition, or with an overall
 	// default value) if a checkpoint is not found in the CheckpointStore.
+	// The default position is Latest.
 	StartPositions StartPositions
 }
 

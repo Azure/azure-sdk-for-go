@@ -3,17 +3,11 @@
 ## 2.0.0 (2022-09-01)
 ### Breaking Changes
 
-- Function `*LinkedServerClient.Delete` has been removed
-- Function `*Client.Update` has been removed
-- Struct `ClientUpdateOptions` has been removed
-- Struct `LinkedServerClientDeleteOptions` has been removed
+- Operation `LinkedServerClient.Delete` has been changed to LRO, use `LinkedServerClient.BeginDelete` instead
+- Operation `*Client.Update` has been changed to LRO, use `Client.BeginUpdate` instead
 
 ### Features Added
 
-- New function `*Client.BeginUpdate(context.Context, string, string, UpdateParameters, *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error)`
-- New function `*LinkedServerClient.BeginDelete(context.Context, string, string, string, *LinkedServerClientBeginDeleteOptions) (*runtime.Poller[LinkedServerClientDeleteResponse], error)`
-- New struct `ClientBeginUpdateOptions`
-- New struct `LinkedServerClientBeginDeleteOptions`
 - New field `Authnotrequired` in struct `CommonPropertiesRedisConfiguration`
 - New field `AofBackupEnabled` in struct `CommonPropertiesRedisConfiguration`
 - New field `PreferredDataArchiveAuthMethod` in struct `ImportRDBParameters`

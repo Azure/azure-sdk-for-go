@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accountFilters-list-all.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-list-all.json
 func ExampleAccountFiltersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleAccountFiltersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contoso",
-		"contosomedia",
-		nil)
+	pager := client.NewListPager("contoso", "contosomedia", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleAccountFiltersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accountFilters-get-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-get-by-name.json
 func ExampleAccountFiltersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleAccountFiltersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"contoso",
-		"contosomedia",
-		"accountFilterWithTrack",
-		nil)
+	res, err := client.Get(ctx, "contoso", "contosomedia", "accountFilterWithTrack", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleAccountFiltersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accountFilters-create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-create.json
 func ExampleAccountFiltersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,58 +71,53 @@ func ExampleAccountFiltersClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"contoso",
-		"contosomedia",
-		"newAccountFilter",
-		armmediaservices.AccountFilter{
-			Properties: &armmediaservices.MediaFilterProperties{
-				FirstQuality: &armmediaservices.FirstQuality{
-					Bitrate: to.Ptr[int32](128000),
-				},
-				PresentationTimeRange: &armmediaservices.PresentationTimeRange{
-					EndTimestamp:               to.Ptr[int64](170000000),
-					ForceEndTimestamp:          to.Ptr(false),
-					LiveBackoffDuration:        to.Ptr[int64](0),
-					PresentationWindowDuration: to.Ptr[int64](9223372036854775000),
-					StartTimestamp:             to.Ptr[int64](0),
-					Timescale:                  to.Ptr[int64](10000000),
-				},
-				Tracks: []*armmediaservices.FilterTrackSelection{
-					{
-						TrackSelections: []*armmediaservices.FilterTrackPropertyCondition{
-							{
-								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
-								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
-								Value:     to.Ptr("Audio"),
-							},
-							{
-								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
-								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeLanguage),
-								Value:     to.Ptr("en"),
-							},
-							{
-								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
-								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeFourCC),
-								Value:     to.Ptr("EC-3"),
-							}},
-					},
-					{
-						TrackSelections: []*armmediaservices.FilterTrackPropertyCondition{
-							{
-								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
-								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
-								Value:     to.Ptr("Video"),
-							},
-							{
-								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
-								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeBitrate),
-								Value:     to.Ptr("3000000-5000000"),
-							}},
-					}},
+	res, err := client.CreateOrUpdate(ctx, "contoso", "contosomedia", "newAccountFilter", armmediaservices.AccountFilter{
+		Properties: &armmediaservices.MediaFilterProperties{
+			FirstQuality: &armmediaservices.FirstQuality{
+				Bitrate: to.Ptr[int32](128000),
 			},
+			PresentationTimeRange: &armmediaservices.PresentationTimeRange{
+				EndTimestamp:               to.Ptr[int64](170000000),
+				ForceEndTimestamp:          to.Ptr(false),
+				LiveBackoffDuration:        to.Ptr[int64](0),
+				PresentationWindowDuration: to.Ptr[int64](9223372036854775000),
+				StartTimestamp:             to.Ptr[int64](0),
+				Timescale:                  to.Ptr[int64](10000000),
+			},
+			Tracks: []*armmediaservices.FilterTrackSelection{
+				{
+					TrackSelections: []*armmediaservices.FilterTrackPropertyCondition{
+						{
+							Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
+							Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
+							Value:     to.Ptr("Audio"),
+						},
+						{
+							Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
+							Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeLanguage),
+							Value:     to.Ptr("en"),
+						},
+						{
+							Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
+							Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeFourCC),
+							Value:     to.Ptr("EC-3"),
+						}},
+				},
+				{
+					TrackSelections: []*armmediaservices.FilterTrackPropertyCondition{
+						{
+							Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
+							Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
+							Value:     to.Ptr("Video"),
+						},
+						{
+							Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
+							Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeBitrate),
+							Value:     to.Ptr("3000000-5000000"),
+						}},
+				}},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -136,7 +125,7 @@ func ExampleAccountFiltersClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accountFilters-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-delete.json
 func ExampleAccountFiltersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,17 +136,13 @@ func ExampleAccountFiltersClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"contoso",
-		"contosomedia",
-		"accountFilterWithTimeWindowAndTrack",
-		nil)
+	_, err = client.Delete(ctx, "contoso", "contosomedia", "accountFilterWithTimeWindowAndTrack", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accountFilters-update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-update.json
 func ExampleAccountFiltersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,26 +153,21 @@ func ExampleAccountFiltersClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"contoso",
-		"contosomedia",
-		"accountFilterWithTimeWindowAndTrack",
-		armmediaservices.AccountFilter{
-			Properties: &armmediaservices.MediaFilterProperties{
-				FirstQuality: &armmediaservices.FirstQuality{
-					Bitrate: to.Ptr[int32](128000),
-				},
-				PresentationTimeRange: &armmediaservices.PresentationTimeRange{
-					EndTimestamp:               to.Ptr[int64](170000000),
-					ForceEndTimestamp:          to.Ptr(false),
-					LiveBackoffDuration:        to.Ptr[int64](0),
-					PresentationWindowDuration: to.Ptr[int64](9223372036854775000),
-					StartTimestamp:             to.Ptr[int64](10),
-					Timescale:                  to.Ptr[int64](10000000),
-				},
+	res, err := client.Update(ctx, "contoso", "contosomedia", "accountFilterWithTimeWindowAndTrack", armmediaservices.AccountFilter{
+		Properties: &armmediaservices.MediaFilterProperties{
+			FirstQuality: &armmediaservices.FirstQuality{
+				Bitrate: to.Ptr[int32](128000),
+			},
+			PresentationTimeRange: &armmediaservices.PresentationTimeRange{
+				EndTimestamp:               to.Ptr[int64](170000000),
+				ForceEndTimestamp:          to.Ptr(false),
+				LiveBackoffDuration:        to.Ptr[int64](0),
+				PresentationWindowDuration: to.Ptr[int64](9223372036854775000),
+				StartTimestamp:             to.Ptr[int64](10),
+				Timescale:                  to.Ptr[int64](10000000),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

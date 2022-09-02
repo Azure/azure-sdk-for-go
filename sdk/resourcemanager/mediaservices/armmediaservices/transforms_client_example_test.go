@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all.json
-func ExampleTransformsClient_NewListPager() {
+func ExampleTransformsClient_NewListPager_listsTheTransforms() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,11 +28,87 @@ func ExampleTransformsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contosoresources",
-		"contosomedia",
-		&armmediaservices.TransformsClientListOptions{Filter: nil,
-			Orderby: nil,
-		})
+	pager := client.NewListPager("contosoresources", "contosomedia", &armmediaservices.TransformsClientListOptions{Filter: nil,
+		Orderby: nil,
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-created.json
+func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByCreated() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewTransformsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", &armmediaservices.TransformsClientListOptions{Filter: to.Ptr("properties/created gt 2021-11-01T00:00:00.0000000Z and properties/created le 2021-11-01T00:00:10.0000000Z"),
+		Orderby: to.Ptr("properties/created"),
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-lastmodified.json
+func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByLastmodified() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewTransformsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", &armmediaservices.TransformsClientListOptions{Filter: to.Ptr("properties/lastmodified gt 2021-11-01T00:00:00.0000000Z and properties/lastmodified le 2021-11-01T00:00:10.0000000Z"),
+		Orderby: to.Ptr("properties/lastmodified desc"),
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-name.json
+func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByName() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewTransformsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", &armmediaservices.TransformsClientListOptions{Filter: to.Ptr("(name eq 'sampleEncode') or (name eq 'sampleEncodeAndVideoIndex')"),
+		Orderby: to.Ptr("name desc"),
+	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -56,11 +132,7 @@ func ExampleTransformsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"contosoresources",
-		"contosomedia",
-		"sampleTransform",
-		nil)
+	res, err := client.Get(ctx, "contosoresources", "contosomedia", "sampleTransform", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -79,23 +151,18 @@ func ExampleTransformsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"contosoresources",
-		"contosomedia",
-		"createdTransform",
-		armmediaservices.Transform{
-			Properties: &armmediaservices.TransformProperties{
-				Description: to.Ptr("Example Transform to illustrate create and update."),
-				Outputs: []*armmediaservices.TransformOutput{
-					{
-						Preset: &armmediaservices.BuiltInStandardEncoderPreset{
-							ODataType:  to.Ptr("#Microsoft.Media.BuiltInStandardEncoderPreset"),
-							PresetName: to.Ptr(armmediaservices.EncoderNamedPresetAdaptiveStreaming),
-						},
-					}},
-			},
+	res, err := client.CreateOrUpdate(ctx, "contosoresources", "contosomedia", "createdTransform", armmediaservices.Transform{
+		Properties: &armmediaservices.TransformProperties{
+			Description: to.Ptr("Example Transform to illustrate create and update."),
+			Outputs: []*armmediaservices.TransformOutput{
+				{
+					Preset: &armmediaservices.BuiltInStandardEncoderPreset{
+						ODataType:  to.Ptr("#Microsoft.Media.BuiltInStandardEncoderPreset"),
+						PresetName: to.Ptr(armmediaservices.EncoderNamedPresetAdaptiveStreaming),
+					},
+				}},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -114,11 +181,7 @@ func ExampleTransformsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"contosoresources",
-		"contosomedia",
-		"sampleTransform",
-		nil)
+	_, err = client.Delete(ctx, "contosoresources", "contosomedia", "sampleTransform", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -135,24 +198,19 @@ func ExampleTransformsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"contosoresources",
-		"contosomedia",
-		"transformToUpdate",
-		armmediaservices.Transform{
-			Properties: &armmediaservices.TransformProperties{
-				Description: to.Ptr("Example transform to illustrate update."),
-				Outputs: []*armmediaservices.TransformOutput{
-					{
-						Preset: &armmediaservices.BuiltInStandardEncoderPreset{
-							ODataType:  to.Ptr("#Microsoft.Media.BuiltInStandardEncoderPreset"),
-							PresetName: to.Ptr(armmediaservices.EncoderNamedPresetH264MultipleBitrate720P),
-						},
-						RelativePriority: to.Ptr(armmediaservices.PriorityHigh),
-					}},
-			},
+	res, err := client.Update(ctx, "contosoresources", "contosomedia", "transformToUpdate", armmediaservices.Transform{
+		Properties: &armmediaservices.TransformProperties{
+			Description: to.Ptr("Example transform to illustrate update."),
+			Outputs: []*armmediaservices.TransformOutput{
+				{
+					Preset: &armmediaservices.BuiltInStandardEncoderPreset{
+						ODataType:  to.Ptr("#Microsoft.Media.BuiltInStandardEncoderPreset"),
+						PresetName: to.Ptr(armmediaservices.EncoderNamedPresetH264MultipleBitrate720P),
+					},
+					RelativePriority: to.Ptr(armmediaservices.PriorityHigh),
+				}},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

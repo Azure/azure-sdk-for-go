@@ -8,7 +8,6 @@ package azquery_test
 
 import (
 	"context"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -44,7 +43,7 @@ func ExampleNewMetricsClient() {
 
 func ExampleLogsClient_QueryWorkspace() {
 	client := azquery.NewLogsClient(cred, nil)
-	timespan := azquery.TimeInterval(time.Now().Add(-12*time.Hour), time.Now())
+	timespan := "2022-08-30/2022-08-31"
 
 	res, err := client.QueryWorkspace(context.TODO(), workspaceID,
 		azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
@@ -56,12 +55,12 @@ func ExampleLogsClient_QueryWorkspace() {
 
 func ExampleLogsClient_Batch() {
 	client := azquery.NewLogsClient(cred, nil)
-	timespan := azquery.TimeInterval(time.Now().Add(-12*time.Hour), time.Now())
+	timespan := "2022-08-30/2022-08-31"
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 		{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
 		{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), Workspace: to.Ptr(workspaceID)},
 	}}
 
 	res, err := client.Batch(context.TODO(), batchRequest, nil)

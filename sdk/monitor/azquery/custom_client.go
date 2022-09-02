@@ -9,8 +9,6 @@ package azquery
 // this file contains handwritten additions to the generated code
 
 import (
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -42,10 +40,6 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://management.azure.com"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &MetricsClient{pl: pl}
-}
-
-func TimeInterval(start time.Time, end time.Time) string {
-	return start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339)
 }
 
 const metricsHost string = "https://management.azure.com"

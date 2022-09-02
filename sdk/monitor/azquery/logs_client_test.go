@@ -10,7 +10,6 @@ import (
 	"context"
 	"encoding/json"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -45,11 +44,10 @@ func getLogsClient(t *testing.T) *azquery.LogsClient {
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	client := getLogsClient(t)
-	query := query
-	timespan := azquery.TimeInterval(time.Now().Add(-12*time.Hour), time.Now())
+
 	body := azquery.Body{
-		Query:    &query,
-		Timespan: &timespan,
+		Query:    to.Ptr(query),
+		Timespan: to.Ptr("2015-12-31/2016-01-01"),
 	}
 	testSerde(t, &body)
 

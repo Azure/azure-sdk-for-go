@@ -10,6 +10,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 )
@@ -34,17 +35,48 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	if res.Response.Timespan == nil {
 		t.Fatal("error")
 	}
+	testSerde(t, &res.Response)
 }
 
 func TestNewListMetricDefinitionsPager_Success(t *testing.T) {
-	//client := getMetricsClient(t)
+	client := getMetricsClient(t)
 
-	//pager := client.NewListMetricDefinitionsPager(resourceURI1, nil)
-	//_ = res
+	pager := client.NewListMetricDefinitionsPager(resourceURI1, nil)
+
+	// test if first page is valid
+	if pager.More() {
+		res, err := pager.NextPage(context.Background())
+		if err != nil {
+			t.Fatalf("failed to advance page: %v", err)
+		}
+		if res.Value == nil {
+			t.Fatal("expected a response")
+		}
+		testSerde(t, &res.MetricDefinitionCollection)
+	} else {
+		t.Fatal("no response")
+	}
 
 }
 
 func TestNewListMetricNamespacesPager_Success(t *testing.T) {
-	//client := getMetricsClient(t)
+	client := getMetricsClient(t)
+
+	pager := client.NewListMetricNamespacesPager(resourceURI1,
+		&azquery.MetricsClientListMetricNamespacesOptions{StartTime: to.Ptr("2022-08-01T15:53:00Z")})
+
+	// test if first page is valid
+	if pager.More() {
+		res, err := pager.NextPage(context.Background())
+		if err != nil {
+			t.Fatalf("failed to advance page: %v", err)
+		}
+		if res.Value == nil {
+			t.Fatal("expected a response")
+		}
+		testSerde(t, &res.MetricNamespaceCollection)
+	} else {
+		t.Fatal("no response")
+	}
 
 }

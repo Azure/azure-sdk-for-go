@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheListPrivateEndpointConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2022-05-01/examples/RedisCacheListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rgtest01",
-		"cachetest01",
-		nil)
+	pager := client.NewListPager("rgtest01", "cachetest01", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheGetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2022-05-01/examples/RedisCacheGetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rgtest01",
-		"cachetest01",
-		"pectest01",
-		nil)
+	res, err := client.Get(ctx, "rgtest01", "cachetest01", "pectest01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePutPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2022-05-01/examples/RedisCachePutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,19 +71,14 @@ func ExamplePrivateEndpointConnectionsClient_BeginPut() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPut(ctx,
-		"rgtest01",
-		"cachetest01",
-		"pectest01",
-		armredis.PrivateEndpointConnection{
-			Properties: &armredis.PrivateEndpointConnectionProperties{
-				PrivateLinkServiceConnectionState: &armredis.PrivateLinkServiceConnectionState{
-					Description: to.Ptr("Auto-Approved"),
-					Status:      to.Ptr(armredis.PrivateEndpointServiceConnectionStatusApproved),
-				},
+	poller, err := client.BeginPut(ctx, "rgtest01", "cachetest01", "pectest01", armredis.PrivateEndpointConnection{
+		Properties: &armredis.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armredis.PrivateLinkServiceConnectionState{
+				Description: to.Ptr("Auto-Approved"),
+				Status:      to.Ptr(armredis.PrivateEndpointServiceConnectionStatusApproved),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,7 +88,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginPut() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheDeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2022-05-01/examples/RedisCacheDeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,11 +99,7 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"rgtest01",
-		"cachetest01",
-		"pectest01",
-		nil)
+	_, err = client.Delete(ctx, "rgtest01", "cachetest01", "pectest01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

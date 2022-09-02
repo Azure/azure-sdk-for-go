@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePatchSchedulesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2022-05-01/examples/RedisCachePatchSchedulesList.json
 func ExamplePatchSchedulesClient_NewListByRedisResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExamplePatchSchedulesClient_NewListByRedisResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRedisResourcePager("rg1",
-		"cache1",
-		nil)
+	pager := client.NewListByRedisResourcePager("rg1", "cache1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExamplePatchSchedulesClient_NewListByRedisResourcePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePatchSchedulesCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2022-05-01/examples/RedisCachePatchSchedulesCreateOrUpdate.json
 func ExamplePatchSchedulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,25 +52,20 @@ func ExamplePatchSchedulesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"rg1",
-		"cache1",
-		armredis.DefaultNameDefault,
-		armredis.PatchSchedule{
-			Properties: &armredis.ScheduleEntries{
-				ScheduleEntries: []*armredis.ScheduleEntry{
-					{
-						DayOfWeek:         to.Ptr(armredis.DayOfWeekMonday),
-						MaintenanceWindow: to.Ptr("PT5H"),
-						StartHourUTC:      to.Ptr[int32](12),
-					},
-					{
-						DayOfWeek:    to.Ptr(armredis.DayOfWeekTuesday),
-						StartHourUTC: to.Ptr[int32](12),
-					}},
-			},
+	res, err := client.CreateOrUpdate(ctx, "rg1", "cache1", armredis.DefaultNameDefault, armredis.PatchSchedule{
+		Properties: &armredis.ScheduleEntries{
+			ScheduleEntries: []*armredis.ScheduleEntry{
+				{
+					DayOfWeek:         to.Ptr(armredis.DayOfWeekMonday),
+					MaintenanceWindow: to.Ptr("PT5H"),
+					StartHourUTC:      to.Ptr[int32](12),
+				},
+				{
+					DayOfWeek:    to.Ptr(armredis.DayOfWeekTuesday),
+					StartHourUTC: to.Ptr[int32](12),
+				}},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -80,7 +73,7 @@ func ExamplePatchSchedulesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePatchSchedulesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2022-05-01/examples/RedisCachePatchSchedulesDelete.json
 func ExamplePatchSchedulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,17 +84,13 @@ func ExamplePatchSchedulesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"rg1",
-		"cache1",
-		armredis.DefaultNameDefault,
-		nil)
+	_, err = client.Delete(ctx, "rg1", "cache1", armredis.DefaultNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePatchSchedulesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2022-05-01/examples/RedisCachePatchSchedulesGet.json
 func ExamplePatchSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,11 +101,7 @@ func ExamplePatchSchedulesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"cache1",
-		armredis.DefaultNameDefault,
-		nil)
+	res, err := client.Get(ctx, "rg1", "cache1", armredis.DefaultNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

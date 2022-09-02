@@ -138,7 +138,6 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 		consumerClientDetails: consumerClient.getDetails(),
 		runCalled:             make(chan struct{}),
 		lb:                    newProcessorLoadBalancer(checkpointStore, consumerClient.getDetails(), strategy, partitionDurationExpiration),
-
 		// `nextClients` will be initialized when the user calls Run() since it needs to query the #
 		// of partitions on the Event Hub.
 	}, nil
@@ -196,11 +195,15 @@ func (p *Processor) runImpl(ctx context.Context) error {
 		return err
 	}
 
+	// note randSource is not thread-safe but it's not currently used in a way that requires
+	// it to be.
+	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+
 	for {
 		select {
 		case <-ctx.Done():
 			return nil
-		case <-time.After(calculateUpdateInterval(p.ownershipUpdateInterval)):
+		case <-time.After(calculateUpdateInterval(rnd, p.ownershipUpdateInterval)):
 			if err := p.dispatch(ctx, eventHubProperties, consumers); err != nil {
 				return err
 			}
@@ -208,10 +211,10 @@ func (p *Processor) runImpl(ctx context.Context) error {
 	}
 }
 
-func calculateUpdateInterval(updateInterval time.Duration) time.Duration {
+func calculateUpdateInterval(rnd *rand.Rand, updateInterval time.Duration) time.Duration {
 	// Introduce some jitter:  [0.0, 1.0) / 2 = [0.0, 0.5) + 0.8 = [0.8, 1.3)
 	// (copied from the retry code for calculating jitter)
-	return time.Duration(updateInterval.Seconds() * (rand.Float64()/2 + 0.8) * float64(time.Second))
+	return time.Duration(updateInterval.Seconds() * (rnd.Float64()/2 + 0.8) * float64(time.Second))
 }
 
 func (p *Processor) initNextClientsCh(ctx context.Context) (EventHubProperties, error) {
@@ -227,6 +230,9 @@ func (p *Processor) initNextClientsCh(ctx context.Context) (EventHubProperties, 
 	return eventHubProperties, nil
 }
 
+// dispatch uses the checkpoint store to figure out which partitions should be processed by this
+// instance and starts a PartitionClient, if there isn't one.
+// NOTE: due to random number usage in the load balancer, this function is not thread safe.
 func (p *Processor) dispatch(ctx context.Context, eventHubProperties EventHubProperties, consumers *sync.Map) error {
 	ownerships, err := p.lb.LoadBalance(ctx, eventHubProperties.PartitionIDs)
 

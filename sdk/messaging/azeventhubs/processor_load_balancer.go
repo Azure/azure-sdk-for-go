@@ -15,6 +15,9 @@ type processorLoadBalancer struct {
 	details                     consumerClientDetails
 	strategy                    ProcessorStrategy
 	partitionExpirationDuration time.Duration
+
+	// NOTE: when you create your own *rand.Rand it is not thread safe.
+	rnd *rand.Rand
 }
 
 func newProcessorLoadBalancer(checkpointStore CheckpointStore, details consumerClientDetails, strategy ProcessorStrategy, partitionExpiration time.Duration) *processorLoadBalancer {
@@ -23,6 +26,7 @@ func newProcessorLoadBalancer(checkpointStore CheckpointStore, details consumerC
 		details:                     details,
 		strategy:                    strategy,
 		partitionExpirationDuration: partitionExpiration,
+		rnd:                         rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
 }
 
@@ -52,6 +56,7 @@ type loadBalancerInfo struct {
 }
 
 // loadBalance calls through to the user's configured load balancing algorithm.
+// NOTE: this function is NOT thread safe!
 func (lb *processorLoadBalancer) LoadBalance(ctx context.Context, partitionIDs []string) ([]Ownership, error) {
 	lbinfo, err := lb.getAvailablePartitions(ctx, partitionIDs)
 
@@ -182,13 +187,13 @@ func (lb *processorLoadBalancer) greedyLoadBalancer(ctx context.Context, lbinfo 
 	ours := lbinfo.current
 
 	// try claiming from the completely unowned or expires ownerships _first_
-	randomOwnerships := getRandomOwnerships(lbinfo.unownedOrExpired, lbinfo.maxAllowed-len(ours))
+	randomOwnerships := getRandomOwnerships(lb.rnd, lbinfo.unownedOrExpired, lbinfo.maxAllowed-len(ours))
 	ours = append(ours, randomOwnerships...)
 
 	if len(ours) < lbinfo.maxAllowed {
 		// if that's not enough then we'll randomly steal from any owners that had partitions
 		// above the maximum.
-		randomOwnerships := getRandomOwnerships(lbinfo.aboveMax, lbinfo.maxAllowed-len(ours))
+		randomOwnerships := getRandomOwnerships(lb.rnd, lbinfo.aboveMax, lbinfo.maxAllowed-len(ours))
 		ours = append(ours, randomOwnerships...)
 	}
 
@@ -208,13 +213,13 @@ func (lb *processorLoadBalancer) greedyLoadBalancer(ctx context.Context, lbinfo 
 // know it exists until then.
 func (lb *processorLoadBalancer) balancedLoadBalancer(ctx context.Context, lbinfo loadBalancerInfo) *Ownership {
 	if len(lbinfo.unownedOrExpired) > 0 {
-		idx := rand.Intn(len(lbinfo.unownedOrExpired))
+		idx := lb.rnd.Intn(len(lbinfo.unownedOrExpired))
 		o := lb.resetOwnership(lbinfo.unownedOrExpired[idx])
 		return &o
 	}
 
 	if len(lbinfo.aboveMax) > 0 {
-		idx := rand.Intn(len(lbinfo.aboveMax))
+		idx := lb.rnd.Intn(len(lbinfo.aboveMax))
 		o := lb.resetOwnership(lbinfo.aboveMax[idx])
 		return &o
 	}
@@ -228,14 +233,14 @@ func (lb *processorLoadBalancer) resetOwnership(o Ownership) Ownership {
 	return o
 }
 
-func getRandomOwnerships(ownerships []Ownership, count int) []Ownership {
+func getRandomOwnerships(rnd *rand.Rand, ownerships []Ownership, count int) []Ownership {
 	limit := int(math.Min(float64(count), float64(len(ownerships))))
 
 	if limit == 0 {
 		return nil
 	}
 
-	choices := rand.Perm(limit)
+	choices := rnd.Perm(limit)
 
 	var newOwnerships []Ownership
 

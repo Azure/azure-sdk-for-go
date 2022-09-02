@@ -1,5 +1,9 @@
 # Release History
 
+## 1.1.1 (2022-09-02)
+### Other Changes
+
+
 ## 1.1.0 (2022-08-05)
 ### Features Added
 

@@ -9098,18 +9098,17 @@ type LoadBalancerPropertiesFormat struct {
 	// Object representing the frontend IPs to be used for the load balancer.
 	FrontendIPConfigurations []*FrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
 
-	// Defines an external port range for inbound NAT to a single backend port on NICs associated with a load balancer. Inbound
-	// NAT rules are created automatically for each NIC associated with the Load
-	// Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is mutually exclusive
-	// with defining inbound NAT rules. Inbound NAT pools are referenced from virtual
-	// machine scale sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They
-	// have to reference individual inbound NAT rules.
+	// Defines an port range to be used by inbound NAT Pools. Inbound NAT pools are used to define a range of NAT ports to be
+	// used by a VMSS cluster. After the creation of an inbound NAT pool, individual
+	// inbound NAT rules are automatically created for every VM in a VMSS cluster. Defining inbound NAT rules on your load balancer
+	// is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools
+	// are associated with VMSS, while inbound NAT rules are associated with individual VMs.
 	InboundNatPools []*InboundNatPool `json:"inboundNatPools,omitempty"`
 
-	// Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive
-	// with defining an inbound NAT pool. Inbound NAT pools are referenced from
-	// virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool.
-	// They have to reference individual inbound NAT rules.
+	// collection of inbound NAT Rules used by a load balancer. An inbound NAT rule is used to forward traffic from a load balancer
+	// frontend to one or more instances in the backend pool. Defining inbound NAT
+	// rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are associated with
+	// VMSS, while inbound NAT rules are associated with individual VMs.
 	InboundNatRules []*InboundNatRule `json:"inboundNatRules,omitempty"`
 
 	// Object collection representing the load balancing rules Gets the provisioning.

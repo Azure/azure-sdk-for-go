@@ -1,5 +1,200 @@
 # Release History
 
+## 2.0.0-beta.1 (2022-09-02)
+### Breaking Changes
+
+- Function `*ManagementClient.NewListConfigurationsPager` has been removed
+- Function `*ManagementClient.BeginUpdateOrderItem` has been removed
+- Function `NewManagementClient` has been removed
+- Function `*ManagementClient.NewListAddressesAtSubscriptionLevelPager` has been removed
+- Function `*ManagementClient.GetAddressByName` has been removed
+- Function `*ManagementClient.BeginUpdateAddress` has been removed
+- Function `*ManagementClient.BeginCreateAddress` has been removed
+- Function `*ManagementClient.NewListAddressesAtResourceGroupLevelPager` has been removed
+- Function `*ManagementClient.BeginReturnOrderItem` has been removed
+- Function `*ManagementClient.GetOrderItemByName` has been removed
+- Function `*ManagementClient.CancelOrderItem` has been removed
+- Function `*ManagementClient.GetOrderByName` has been removed
+- Function `*ManagementClient.NewListOrderAtResourceGroupLevelPager` has been removed
+- Function `*ManagementClient.BeginDeleteAddressByName` has been removed
+- Function `*ManagementClient.NewListOperationsPager` has been removed
+- Function `*ManagementClient.BeginCreateOrderItem` has been removed
+- Function `*ManagementClient.NewListOrderItemsAtResourceGroupLevelPager` has been removed
+- Function `*ManagementClient.NewListProductFamiliesPager` has been removed
+- Function `*ManagementClient.NewListOrderItemsAtSubscriptionLevelPager` has been removed
+- Function `*ManagementClient.NewListOrderAtSubscriptionLevelPager` has been removed
+- Function `*ManagementClient.NewListProductFamiliesMetadataPager` has been removed
+- Function `*ManagementClient.BeginDeleteOrderItemByName` has been removed
+- Struct `ConfigurationFilters` has been removed
+- Struct `ManagementClient` has been removed
+- Struct `ManagementClientBeginCreateAddressOptions` has been removed
+- Struct `ManagementClientBeginCreateOrderItemOptions` has been removed
+- Struct `ManagementClientBeginDeleteAddressByNameOptions` has been removed
+- Struct `ManagementClientBeginDeleteOrderItemByNameOptions` has been removed
+- Struct `ManagementClientBeginReturnOrderItemOptions` has been removed
+- Struct `ManagementClientBeginUpdateAddressOptions` has been removed
+- Struct `ManagementClientBeginUpdateOrderItemOptions` has been removed
+- Struct `ManagementClientCancelOrderItemOptions` has been removed
+- Struct `ManagementClientCancelOrderItemResponse` has been removed
+- Struct `ManagementClientCreateAddressResponse` has been removed
+- Struct `ManagementClientCreateOrderItemResponse` has been removed
+- Struct `ManagementClientDeleteAddressByNameResponse` has been removed
+- Struct `ManagementClientDeleteOrderItemByNameResponse` has been removed
+- Struct `ManagementClientGetAddressByNameOptions` has been removed
+- Struct `ManagementClientGetAddressByNameResponse` has been removed
+- Struct `ManagementClientGetOrderByNameOptions` has been removed
+- Struct `ManagementClientGetOrderByNameResponse` has been removed
+- Struct `ManagementClientGetOrderItemByNameOptions` has been removed
+- Struct `ManagementClientGetOrderItemByNameResponse` has been removed
+- Struct `ManagementClientListAddressesAtResourceGroupLevelOptions` has been removed
+- Struct `ManagementClientListAddressesAtResourceGroupLevelResponse` has been removed
+- Struct `ManagementClientListAddressesAtSubscriptionLevelOptions` has been removed
+- Struct `ManagementClientListAddressesAtSubscriptionLevelResponse` has been removed
+- Struct `ManagementClientListConfigurationsOptions` has been removed
+- Struct `ManagementClientListConfigurationsResponse` has been removed
+- Struct `ManagementClientListOperationsOptions` has been removed
+- Struct `ManagementClientListOperationsResponse` has been removed
+- Struct `ManagementClientListOrderAtResourceGroupLevelOptions` has been removed
+- Struct `ManagementClientListOrderAtResourceGroupLevelResponse` has been removed
+- Struct `ManagementClientListOrderAtSubscriptionLevelOptions` has been removed
+- Struct `ManagementClientListOrderAtSubscriptionLevelResponse` has been removed
+- Struct `ManagementClientListOrderItemsAtResourceGroupLevelOptions` has been removed
+- Struct `ManagementClientListOrderItemsAtResourceGroupLevelResponse` has been removed
+- Struct `ManagementClientListOrderItemsAtSubscriptionLevelOptions` has been removed
+- Struct `ManagementClientListOrderItemsAtSubscriptionLevelResponse` has been removed
+- Struct `ManagementClientListProductFamiliesMetadataOptions` has been removed
+- Struct `ManagementClientListProductFamiliesMetadataResponse` has been removed
+- Struct `ManagementClientListProductFamiliesOptions` has been removed
+- Struct `ManagementClientListProductFamiliesResponse` has been removed
+- Struct `ManagementClientReturnOrderItemResponse` has been removed
+- Struct `ManagementClientUpdateAddressResponse` has been removed
+- Struct `ManagementClientUpdateOrderItemResponse` has been removed
+- Struct `ResourceIdentity` has been removed
+- Struct `ShippingDetails` has been removed
+- Field `ConfigurationFilters` of struct `ConfigurationsRequest` has been removed
+- Field `ManagementRpDetails` of struct `OrderItemDetails` has been removed
+- Field `Count` of struct `ProductDetails` has been removed
+- Field `DeviceDetails` of struct `ProductDetails` has been removed
+
+### Features Added
+
+- New const `FulfillmentTypeExternal`
+- New const `OrderModeDefault`
+- New const `FulfillmentTypeMicrosoft`
+- New const `IdentificationTypeSerialNumber`
+- New const `AvailabilityStageDiscoverable`
+- New const `ChildConfigurationTypeDeviceConfiguration`
+- New const `OrderModeDoNotFulfill`
+- New const `ChildConfigurationTypeAdditionalConfiguration`
+- New const `LinkTypeDiscoverable`
+- New const `IdentificationTypeNotSupported`
+- New type alias `FulfillmentType`
+- New type alias `ChildConfigurationType`
+- New type alias `IdentificationType`
+- New type alias `OrderMode`
+- New function `*OrdersClient.NewListBySubscriptionPager(*OrdersClientListBySubscriptionOptions) *runtime.Pager[OrdersClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ProductsAndConfigurationsClient.NewListConfigurationsPager(ConfigurationsRequest, *ProductsAndConfigurationsClientListConfigurationsOptions) *runtime.Pager[ProductsAndConfigurationsClientListConfigurationsResponse]`
+- New function `*OrderItemsClient.BeginCreate(context.Context, string, string, OrderItemResource, *OrderItemsClientBeginCreateOptions) (*runtime.Poller[OrderItemsClientCreateResponse], error)`
+- New function `*AddressesClient.Get(context.Context, string, string, *AddressesClientGetOptions) (AddressesClientGetResponse, error)`
+- New function `*AddressesClient.NewListBySubscriptionPager(*AddressesClientListBySubscriptionOptions) *runtime.Pager[AddressesClientListBySubscriptionResponse]`
+- New function `*OrderItemsClient.NewListByResourceGroupPager(string, *OrderItemsClientListByResourceGroupOptions) *runtime.Pager[OrderItemsClientListByResourceGroupResponse]`
+- New function `PossibleChildConfigurationTypeValues() []ChildConfigurationType`
+- New function `NewAddressesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AddressesClient, error)`
+- New function `PossibleOrderModeValues() []OrderMode`
+- New function `NewOrdersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OrdersClient, error)`
+- New function `*AddressesClient.NewListByResourceGroupPager(string, *AddressesClientListByResourceGroupOptions) *runtime.Pager[AddressesClientListByResourceGroupResponse]`
+- New function `*AddressesClient.BeginCreate(context.Context, string, string, AddressResource, *AddressesClientBeginCreateOptions) (*runtime.Poller[AddressesClientCreateResponse], error)`
+- New function `*OrderItemsClient.BeginUpdate(context.Context, string, string, OrderItemUpdateParameter, *OrderItemsClientBeginUpdateOptions) (*runtime.Poller[OrderItemsClientUpdateResponse], error)`
+- New function `*ProductsAndConfigurationsClient.NewListProductFamiliesPager(ProductFamiliesRequest, *ProductsAndConfigurationsClientListProductFamiliesOptions) *runtime.Pager[ProductsAndConfigurationsClientListProductFamiliesResponse]`
+- New function `*AddressesClient.BeginDelete(context.Context, string, string, *AddressesClientBeginDeleteOptions) (*runtime.Poller[AddressesClientDeleteResponse], error)`
+- New function `*OrderItemsClient.Get(context.Context, string, string, *OrderItemsClientGetOptions) (OrderItemsClientGetResponse, error)`
+- New function `*OrdersClient.Get(context.Context, string, string, string, *OrdersClientGetOptions) (OrdersClientGetResponse, error)`
+- New function `PossibleIdentificationTypeValues() []IdentificationType`
+- New function `*OrderItemsClient.BeginDelete(context.Context, string, string, *OrderItemsClientBeginDeleteOptions) (*runtime.Poller[OrderItemsClientDeleteResponse], error)`
+- New function `*OrdersClient.NewListByResourceGroupPager(string, *OrdersClientListByResourceGroupOptions) *runtime.Pager[OrdersClientListByResourceGroupResponse]`
+- New function `PossibleFulfillmentTypeValues() []FulfillmentType`
+- New function `*OrderItemsClient.BeginReturn(context.Context, string, string, ReturnOrderItemDetails, *OrderItemsClientBeginReturnOptions) (*runtime.Poller[OrderItemsClientReturnResponse], error)`
+- New function `*OrderItemsClient.Cancel(context.Context, string, string, CancellationReason, *OrderItemsClientCancelOptions) (OrderItemsClientCancelResponse, error)`
+- New function `NewOperationsClient(azcore.TokenCredential, *arm.ClientOptions) (*OperationsClient, error)`
+- New function `*OrderItemsClient.NewListBySubscriptionPager(*OrderItemsClientListBySubscriptionOptions) *runtime.Pager[OrderItemsClientListBySubscriptionResponse]`
+- New function `NewOrderItemsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OrderItemsClient, error)`
+- New function `NewProductsAndConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProductsAndConfigurationsClient, error)`
+- New function `*ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager(*ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) *runtime.Pager[ProductsAndConfigurationsClientListProductFamiliesMetadataResponse]`
+- New function `*AddressesClient.BeginUpdate(context.Context, string, string, AddressUpdateParameter, *AddressesClientBeginUpdateOptions) (*runtime.Poller[AddressesClientUpdateResponse], error)`
+- New struct `AdditionalConfiguration`
+- New struct `AddressesClient`
+- New struct `AddressesClientBeginCreateOptions`
+- New struct `AddressesClientBeginDeleteOptions`
+- New struct `AddressesClientBeginUpdateOptions`
+- New struct `AddressesClientCreateResponse`
+- New struct `AddressesClientDeleteResponse`
+- New struct `AddressesClientGetOptions`
+- New struct `AddressesClientGetResponse`
+- New struct `AddressesClientListByResourceGroupOptions`
+- New struct `AddressesClientListByResourceGroupResponse`
+- New struct `AddressesClientListBySubscriptionOptions`
+- New struct `AddressesClientListBySubscriptionResponse`
+- New struct `AddressesClientUpdateResponse`
+- New struct `CategoryInformation`
+- New struct `ChildConfiguration`
+- New struct `ChildConfigurationFilter`
+- New struct `ChildConfigurationProperties`
+- New struct `ConfigurationDeviceDetails`
+- New struct `ConfigurationFilter`
+- New struct `GroupedChildConfigurations`
+- New struct `OperationsClient`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OrderItemsClient`
+- New struct `OrderItemsClientBeginCreateOptions`
+- New struct `OrderItemsClientBeginDeleteOptions`
+- New struct `OrderItemsClientBeginReturnOptions`
+- New struct `OrderItemsClientBeginUpdateOptions`
+- New struct `OrderItemsClientCancelOptions`
+- New struct `OrderItemsClientCancelResponse`
+- New struct `OrderItemsClientCreateResponse`
+- New struct `OrderItemsClientDeleteResponse`
+- New struct `OrderItemsClientGetOptions`
+- New struct `OrderItemsClientGetResponse`
+- New struct `OrderItemsClientListByResourceGroupOptions`
+- New struct `OrderItemsClientListByResourceGroupResponse`
+- New struct `OrderItemsClientListBySubscriptionOptions`
+- New struct `OrderItemsClientListBySubscriptionResponse`
+- New struct `OrderItemsClientReturnResponse`
+- New struct `OrderItemsClientUpdateResponse`
+- New struct `OrdersClient`
+- New struct `OrdersClientGetOptions`
+- New struct `OrdersClientGetResponse`
+- New struct `OrdersClientListByResourceGroupOptions`
+- New struct `OrdersClientListByResourceGroupResponse`
+- New struct `OrdersClientListBySubscriptionOptions`
+- New struct `OrdersClientListBySubscriptionResponse`
+- New struct `ProductsAndConfigurationsClient`
+- New struct `ProductsAndConfigurationsClientListConfigurationsOptions`
+- New struct `ProductsAndConfigurationsClientListConfigurationsResponse`
+- New struct `ProductsAndConfigurationsClientListProductFamiliesMetadataOptions`
+- New struct `ProductsAndConfigurationsClientListProductFamiliesMetadataResponse`
+- New struct `ProductsAndConfigurationsClientListProductFamiliesOptions`
+- New struct `ProductsAndConfigurationsClientListProductFamiliesResponse`
+- New struct `ResourceMoveRequest`
+- New field `FulfilledBy` in struct `CommonProperties`
+- New field `FulfilledBy` in struct `ProductLineProperties`
+- New field `FulfilledBy` in struct `ProductFamilyProperties`
+- New field `OrderMode` in struct `OrderProperties`
+- New field `FulfilledBy` in struct `BasicInformation`
+- New field `ConfigurationFilter` in struct `ConfigurationsRequest`
+- New field `OrderItemMode` in struct `OrderItemDetails`
+- New field `FulfilledBy` in struct `ConfigurationProperties`
+- New field `GroupedChildConfigurations` in struct `ConfigurationProperties`
+- New field `ChildConfigurationTypes` in struct `ConfigurationProperties`
+- New field `FulfilledBy` in struct `ProductProperties`
+- New field `ChildConfigurationDeviceDetails` in struct `ProductDetails`
+- New field `IdentificationType` in struct `ProductDetails`
+- New field `ParentDeviceDetails` in struct `ProductDetails`
+- New field `OptInAdditionalConfigurations` in struct `ProductDetails`
+
+
 ## 1.0.0 (2022-05-18)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

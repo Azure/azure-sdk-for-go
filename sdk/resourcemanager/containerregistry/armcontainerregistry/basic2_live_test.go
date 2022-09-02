@@ -82,7 +82,7 @@ func (testsuite *Basic2TestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 }
 
-//
+// Container Registry Build Test
 func (testsuite *Basic2TestSuite) TestContainerregisterBuild() {
 	var runId string
 	var err error

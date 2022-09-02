@@ -113,12 +113,17 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 				require.NoError(t, err)
 			}()
 
-			subscription, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
+			partClient, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
 				StartPosition: getStartPosition(partProps),
 			})
 			require.NoError(t, err)
 
-			events, err := subscription.ReceiveEvents(ctx, 1, nil)
+			defer func() {
+				err := partClient.Close(context.Background())
+				require.NoError(t, err)
+			}()
+
+			events, err := partClient.ReceiveEvents(ctx, 1, nil)
 
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {

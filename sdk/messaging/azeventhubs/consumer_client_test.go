@@ -198,6 +198,11 @@ func TestConsumerClient_Concurrent_NoEpoch(t *testing.T) {
 		})
 		require.NoError(t, err)
 
+		defer func() {
+			err := partitionClient.Close(context.Background())
+			require.NoError(t, err)
+		}()
+
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
 
@@ -539,7 +544,7 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 	hubProps, err := producer.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 
-	var partitions []azeventhubs.PartitionProperties
+	partitionsCh := make(chan azeventhubs.PartitionProperties, len(hubProps.PartitionIDs))
 
 	wg := sync.WaitGroup{}
 	wg.Add(len(hubProps.PartitionIDs))
@@ -550,7 +555,7 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 
 			partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, nil)
 			require.NoError(t, err)
-			partitions = append(partitions, partProps)
+			partitionsCh <- partProps
 
 			// send the message to the partition.
 			batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
@@ -575,6 +580,13 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 	}
 
 	wg.Wait()
+	close(partitionsCh)
+
+	var partitions []azeventhubs.PartitionProperties
+
+	for p := range partitionsCh {
+		partitions = append(partitions, p)
+	}
 
 	return partitions
 }

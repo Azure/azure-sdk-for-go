@@ -6,20 +6,18 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"sort"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
-	"github.com/joho/godotenv"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNewProducerClient_GetHubAndPartitionProperties(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
@@ -51,7 +49,7 @@ func TestNewProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 }
 
 func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
@@ -77,7 +75,7 @@ func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
 }
 
 func TestNewProducerClient_SendToAny(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 	partitions := getPartitions(t, testParams)
 
 	require.NotNil(t, partitions)
@@ -115,12 +113,17 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 				require.NoError(t, err)
 			}()
 
-			subscription, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
+			partClient, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
 				StartPosition: getStartPosition(partProps),
 			})
 			require.NoError(t, err)
 
-			events, err := subscription.ReceiveEvents(ctx, 1, nil)
+			defer func() {
+				err := partClient.Close(context.Background())
+				require.NoError(t, err)
+			}()
+
+			events, err := partClient.ReceiveEvents(ctx, 1, nil)
 
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
@@ -139,11 +142,7 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 	require.ErrorIs(t, ctx.Err(), context.Canceled)
 }
 
-func getPartitions(t *testing.T, testParams struct {
-	ConnectionString  string
-	EventHubName      string
-	EventHubNamespace string
-}) []azeventhubs.PartitionProperties {
+func getPartitions(t *testing.T, testParams test.ConnectionParamsForTest) []azeventhubs.PartitionProperties {
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
 
@@ -246,43 +245,4 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 
 	sort.Strings(actualBodies)
 	require.Equal(t, expectedBodies, actualBodies)
-}
-
-type connectionParams struct {
-	ConnectionString  string
-	EventHubName      string
-	EventHubNamespace string
-}
-
-func getConnectionParams(t *testing.T) connectionParams {
-	_ = godotenv.Load()
-
-	cs := os.Getenv("EVENTHUB_CONNECTION_STRING")
-
-	if cs == "" {
-		t.Skipf("EVENTHUB_CONNECTION_STRING must be defined in the environment. Live test skipped.")
-
-		return connectionParams{}
-	}
-
-	eventHubName := os.Getenv("EVENTHUB_NAME")
-
-	if eventHubName == "" {
-		t.Skipf("EVENTHUB_NAME must be defined in the environment. Live test skipped.")
-
-		return struct {
-			ConnectionString  string
-			EventHubName      string
-			EventHubNamespace string
-		}{}
-	}
-
-	parsedConn, err := conn.ParsedConnectionFromStr(cs)
-	require.NoError(t, err)
-
-	return connectionParams{
-		ConnectionString:  cs,
-		EventHubName:      eventHubName,
-		EventHubNamespace: parsedConn.Namespace,
-	}
 }

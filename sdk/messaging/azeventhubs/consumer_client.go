@@ -9,8 +9,31 @@ import (
 	"net"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
+)
+
+// Error represents an Event Hub specific error.
+// NOTE: the Code is considered part of the published API but the message that
+// comes back from Error(), as well as the underlying wrapped error, are NOT and
+// are subject to change.
+type Error = exported.Error
+
+// Code is an error code, usable by consuming code to work with
+// programatically.
+type Code = exported.Code
+
+const (
+	// CodeConnectionLost means our connection was lost and all retry attempts failed.
+	// This typically reflects an extended outage or connection disruption and may
+	// require manual intervention.
+	CodeConnectionLost = exported.CodeConnectionLost
+
+	// CodeOwnershipLost means that a partition that you were reading from was opened
+	// by another link with a higher epoch/owner level.
+	CodeOwnershipLost = exported.CodeOwnershipLost
 )
 
 // ConsumerClientOptions configures optional parameters for a ConsumerClient.
@@ -28,6 +51,17 @@ type ConsumerClientOptions struct {
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
 	RetryOptions RetryOptions
+
+	// StartPosition is the position we will start receiving events from,
+	// either an offset (inclusive) with Offset, or receiving events received
+	// after a specific time using EnqueuedTime.
+	StartPosition StartPosition
+
+	// OwnerLevel is the priority for this consumer, also known as the 'epoch' level.
+	// When used, a consumer with a higher OwnerLevel will take ownership of a partition
+	// from consumers with a lower OwnerLevel.
+	// Default is off.
+	OwnerLevel *uint64
 }
 
 // ConsumerClient can create PartitionClient instances, which can read events from
@@ -38,6 +72,8 @@ type ConsumerClient struct {
 	retryOptions  RetryOptions
 	namespace     *internal.Namespace
 	links         *internal.Links[amqpwrap.AMQPReceiverCloser]
+
+	clientID string
 }
 
 // NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication.
@@ -123,6 +159,22 @@ func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionI
 	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
 }
 
+type consumerClientDetails struct {
+	FullyQualifiedNamespace string
+	ConsumerGroup           string
+	EventHubName            string
+	ClientID                string
+}
+
+func (cc *ConsumerClient) getDetails() consumerClientDetails {
+	return consumerClientDetails{
+		FullyQualifiedNamespace: cc.namespace.FQDN,
+		ConsumerGroup:           cc.consumerGroup,
+		EventHubName:            cc.eventHub,
+		ClientID:                cc.clientID,
+	}
+}
+
 // Close closes the connection for this client.
 func (cc *ConsumerClient) Close(ctx context.Context) error {
 	return cc.namespace.Close(ctx, true)
@@ -144,9 +196,16 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 		options = &ConsumerClientOptions{}
 	}
 
+	clientUUID, err := uuid.New()
+
+	if err != nil {
+		return nil, err
+	}
+
 	client := &ConsumerClient{
 		consumerGroup: args.consumerGroup,
 		eventHub:      args.eventHub,
+		clientID:      clientUUID.String(),
 	}
 
 	var nsOptions []internal.NamespaceOption

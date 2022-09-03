@@ -203,7 +203,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 
 		err = batch.AddEventData(&azeventhubs.EventData{
 			Body: []byte(msg),
-			ApplicationProperties: map[string]any{
+			Properties: map[string]any{
 				"PartitionID": partitionID,
 				"RunID":       runID,
 			},
@@ -234,8 +234,8 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 		for _, event := range events {
 			actualBodies = append(actualBodies, string(event.Body))
 
-			require.Equal(t, partitionID, event.ApplicationProperties["PartitionID"], "No messages from other partitions")
-			require.Equal(t, runID, event.ApplicationProperties["RunID"], "No messages from older runs")
+			require.Equal(t, partitionID, event.Properties["PartitionID"], "No messages from other partitions")
+			require.Equal(t, runID, event.Properties["RunID"], "No messages from older runs")
 		}
 
 		if len(actualBodies) == len(expectedBodies) {

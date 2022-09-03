@@ -33,12 +33,6 @@ type EventData struct {
 	// If enabled, the duplicate detection feature identifies and removes further submissions
 	// of messages with the same MessageId.
 	MessageID *string
-
-	// PartitionKey is used with a partitioned entity and enables assigning related messages
-	// to the same internal partition. This ensures that the submission sequence order is correctly
-	// recorded. The partition is chosen by a hash function in Event Hubs and cannot be chosen
-	// directly.
-	PartitionKey *string
 }
 
 // ReceivedEventData is an event that has been received using the ConsumerClient.
@@ -95,12 +89,6 @@ func (e *EventData) toAMQPMessage() *amqp.Message {
 		for key, value := range e.Properties {
 			amqpMsg.ApplicationProperties[key] = value
 		}
-	}
-
-	amqpMsg.Annotations = map[any]any{}
-
-	if e.PartitionKey != nil {
-		amqpMsg.Annotations[partitionKeyAnnotation] = *e.PartitionKey
 	}
 
 	return amqpMsg

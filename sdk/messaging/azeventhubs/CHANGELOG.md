@@ -14,11 +14,23 @@
   multiple ConsumerClients if you wanted to consume multiple partitions. ConsumerClient can now create multiple PartitionClient
   instances (using ConsumerClient.NewPartitionClient), which allows you to share the same AMQP connection and receive from multiple
   partitions simultaneously.
-- ReceivedEventData now embeds EventData, which makes it simpler to resend.
+- Changes to EventData/ReceivedEventData:
+  - ReceivedEventData now embeds EventData for fields common between the two, making it easier to change and resend, if wanted.
+  - ApplicationProperties have been renamed to Properties.
+  - PartitionKey has been removed from EventData. To send events using a PartitionKey you need to set it in the options
+    when creating the EventDataBatch:
+
+    ```go
+    batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
+		  PartitionKey: to.Ptr("partition key"),
+	  })
+    ```
 
 ### Bugs Fixed
 
 - ReceivedEventData.Offset was being incorrectly parsed, resulting in it always being 0.
+- Added some missing fields to ReceivedEventData and EventData (CorrelationID)
+- PartitionKey property was not being populated for messages sent via batch.
 
 ## 0.1.0 (2022-08-11)
 

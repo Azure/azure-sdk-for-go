@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-created.json
-func ExampleJobsClient_NewListPager() {
+func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByCreated() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,12 +28,165 @@ func ExampleJobsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contosoresources",
-		"contosomedia",
-		"exampleTransform",
-		&armmediaservices.JobsClientListOptions{Filter: to.Ptr("properties/created ge 2021-11-01T00:00:10.0000000Z and properties/created le 2021-11-01T00:00:20.0000000Z"),
-			Orderby: to.Ptr("properties/created"),
-		})
+	pager := client.NewListPager("contosoresources", "contosomedia", "exampleTransform", &armmediaservices.JobsClientListOptions{Filter: to.Ptr("properties/created ge 2021-11-01T00:00:10.0000000Z and properties/created le 2021-11-01T00:00:20.0000000Z"),
+		Orderby: to.Ptr("properties/created"),
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-lastmodified.json
+func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByLastmodified() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", "exampleTransform", &armmediaservices.JobsClientListOptions{Filter: to.Ptr("properties/lastmodified ge 2021-11-01T00:00:10.0000000Z and properties/lastmodified le 2021-11-01T00:00:20.0000000Z"),
+		Orderby: to.Ptr("properties/lastmodified desc"),
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-name-and-state.json
+func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByNameAndState() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", "exampleTransform", &armmediaservices.JobsClientListOptions{Filter: to.Ptr("name eq 'job3' and properties/state eq Microsoft.Media.JobState'finished'"),
+		Orderby: nil,
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-name.json
+func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByName() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", "exampleTransform", &armmediaservices.JobsClientListOptions{Filter: to.Ptr("name eq 'job1' or name eq 'job2'"),
+		Orderby: to.Ptr("name"),
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-state-eq.json
+func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateEqual() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", "exampleTransform", &armmediaservices.JobsClientListOptions{Filter: to.Ptr("properties/state eq Microsoft.Media.JobState'Processing'"),
+		Orderby: nil,
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-state-ne.json
+func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateNotEqual() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", "exampleTransform", &armmediaservices.JobsClientListOptions{Filter: to.Ptr("properties/state ne Microsoft.Media.JobState'processing'"),
+		Orderby: nil,
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all.json
+func ExampleJobsClient_NewListPager_listsAllOfTheJobsForTheTransform() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosoresources", "contosomedia", "exampleTransform", &armmediaservices.JobsClientListOptions{Filter: nil,
+		Orderby: nil,
+	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -57,12 +210,7 @@ func ExampleJobsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"contosoresources",
-		"contosomedia",
-		"exampleTransform",
-		"job1",
-		nil)
+	res, err := client.Get(ctx, "contosoresources", "contosomedia", "exampleTransform", "job1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -81,29 +229,23 @@ func ExampleJobsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Create(ctx,
-		"contosoresources",
-		"contosomedia",
-		"exampleTransform",
-		"job1",
-		armmediaservices.Job{
-			Properties: &armmediaservices.JobProperties{
-				CorrelationData: map[string]*string{
-					"Key 2": to.Ptr("Value 2"),
-					"key1":  to.Ptr("value1"),
-				},
-				Input: &armmediaservices.JobInputAsset{
-					ODataType: to.Ptr("#Microsoft.Media.JobInputAsset"),
-					AssetName: to.Ptr("job1-InputAsset"),
-				},
-				Outputs: []armmediaservices.JobOutputClassification{
-					&armmediaservices.JobOutputAsset{
-						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
-						AssetName: to.Ptr("job1-OutputAsset"),
-					}},
+	_, err = client.Create(ctx, "contosoresources", "contosomedia", "exampleTransform", "job1", armmediaservices.Job{
+		Properties: &armmediaservices.JobProperties{
+			CorrelationData: map[string]*string{
+				"Key 2": to.Ptr("Value 2"),
+				"key1":  to.Ptr("value1"),
 			},
+			Input: &armmediaservices.JobInputAsset{
+				ODataType: to.Ptr("#Microsoft.Media.JobInputAsset"),
+				AssetName: to.Ptr("job1-InputAsset"),
+			},
+			Outputs: []armmediaservices.JobOutputClassification{
+				&armmediaservices.JobOutputAsset{
+					ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
+					AssetName: to.Ptr("job1-OutputAsset"),
+				}},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,12 +262,7 @@ func ExampleJobsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"contosoresources",
-		"contosomedia",
-		"exampleTransform",
-		"jobToDelete",
-		nil)
+	_, err = client.Delete(ctx, "contosoresources", "contosomedia", "exampleTransform", "jobToDelete", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -142,27 +279,21 @@ func ExampleJobsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"contosoresources",
-		"contosomedia",
-		"exampleTransform",
-		"job1",
-		armmediaservices.Job{
-			Properties: &armmediaservices.JobProperties{
-				Description: to.Ptr("Example job to illustrate update."),
-				Input: &armmediaservices.JobInputAsset{
-					ODataType: to.Ptr("#Microsoft.Media.JobInputAsset"),
-					AssetName: to.Ptr("job1-InputAsset"),
-				},
-				Outputs: []armmediaservices.JobOutputClassification{
-					&armmediaservices.JobOutputAsset{
-						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
-						AssetName: to.Ptr("job1-OutputAsset"),
-					}},
-				Priority: to.Ptr(armmediaservices.PriorityHigh),
+	res, err := client.Update(ctx, "contosoresources", "contosomedia", "exampleTransform", "job1", armmediaservices.Job{
+		Properties: &armmediaservices.JobProperties{
+			Description: to.Ptr("Example job to illustrate update."),
+			Input: &armmediaservices.JobInputAsset{
+				ODataType: to.Ptr("#Microsoft.Media.JobInputAsset"),
+				AssetName: to.Ptr("job1-InputAsset"),
 			},
+			Outputs: []armmediaservices.JobOutputClassification{
+				&armmediaservices.JobOutputAsset{
+					ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
+					AssetName: to.Ptr("job1-OutputAsset"),
+				}},
+			Priority: to.Ptr(armmediaservices.PriorityHigh),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -181,12 +312,7 @@ func ExampleJobsClient_CancelJob() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.CancelJob(ctx,
-		"contosoresources",
-		"contosomedia",
-		"exampleTransform",
-		"job1",
-		nil)
+	_, err = client.CancelJob(ctx, "contosoresources", "contosomedia", "exampleTransform", "job1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

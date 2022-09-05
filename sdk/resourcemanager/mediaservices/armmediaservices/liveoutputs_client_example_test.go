@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveoutput-list-all.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-list-all.json
 func ExampleLiveOutputsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,10 +28,7 @@ func ExampleLiveOutputsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("mediaresources",
-		"slitestmedia10",
-		"myLiveEvent1",
-		nil)
+	pager := client.NewListPager("mediaresources", "slitestmedia10", "myLiveEvent1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +41,7 @@ func ExampleLiveOutputsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveoutput-list-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-list-by-name.json
 func ExampleLiveOutputsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,12 +52,7 @@ func ExampleLiveOutputsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"mediaresources",
-		"slitestmedia10",
-		"myLiveEvent1",
-		"myLiveOutput1",
-		nil)
+	res, err := client.Get(ctx, "mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -68,7 +60,7 @@ func ExampleLiveOutputsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveoutput-create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-create.json
 func ExampleLiveOutputsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,23 +71,18 @@ func ExampleLiveOutputsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
-		"mediaresources",
-		"slitestmedia10",
-		"myLiveEvent1",
-		"myLiveOutput1",
-		armmediaservices.LiveOutput{
-			Properties: &armmediaservices.LiveOutputProperties{
-				Description:         to.Ptr("test live output 1"),
-				ArchiveWindowLength: to.Ptr("PT5M"),
-				AssetName:           to.Ptr("6f3264f5-a189-48b4-a29a-a40f22575212"),
-				Hls: &armmediaservices.Hls{
-					FragmentsPerTsSegment: to.Ptr[int32](5),
-				},
-				ManifestName: to.Ptr("testmanifest"),
+	poller, err := client.BeginCreate(ctx, "mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1", armmediaservices.LiveOutput{
+		Properties: &armmediaservices.LiveOutputProperties{
+			Description:         to.Ptr("test live output 1"),
+			ArchiveWindowLength: to.Ptr("PT5M"),
+			AssetName:           to.Ptr("6f3264f5-a189-48b4-a29a-a40f22575212"),
+			Hls: &armmediaservices.Hls{
+				FragmentsPerTsSegment: to.Ptr[int32](5),
 			},
+			ManifestName:       to.Ptr("testmanifest"),
+			RewindWindowLength: to.Ptr("PT4M"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -107,7 +94,7 @@ func ExampleLiveOutputsClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveoutput-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-delete.json
 func ExampleLiveOutputsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,12 +105,7 @@ func ExampleLiveOutputsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"mediaresources",
-		"slitestmedia10",
-		"myLiveEvent1",
-		"myLiveOutput1",
-		nil)
+	poller, err := client.BeginDelete(ctx, "mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -131,4 +113,42 @@ func ExampleLiveOutputsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/async-operation-result.json
+func ExampleLiveOutputsClient_AsyncOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewLiveOutputsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.AsyncOperation(ctx, "mediaresources", "slitestmedia10", "62e4d893-d233-4005-988e-a428d9f77076", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-operation-location.json
+func ExampleLiveOutputsClient_OperationLocation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewLiveOutputsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.OperationLocation(ctx, "mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1", "62e4d893-d233-4005-988e-a428d9f77076", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }

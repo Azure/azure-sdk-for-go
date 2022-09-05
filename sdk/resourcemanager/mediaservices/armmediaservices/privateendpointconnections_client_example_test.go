@@ -28,10 +28,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx,
-		"contoso",
-		"contososports",
-		nil)
+	res, err := client.List(ctx, "contoso", "contososports", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -50,11 +47,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"contoso",
-		"contososports",
-		"connectionName1",
-		nil)
+	res, err := client.Get(ctx, "contoso", "contososports", "connectionName1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -73,19 +66,14 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"contoso",
-		"contososports",
-		"connectionName1",
-		armmediaservices.PrivateEndpointConnection{
-			Properties: &armmediaservices.PrivateEndpointConnectionProperties{
-				PrivateLinkServiceConnectionState: &armmediaservices.PrivateLinkServiceConnectionState{
-					Description: to.Ptr("Test description."),
-					Status:      to.Ptr(armmediaservices.PrivateEndpointServiceConnectionStatusApproved),
-				},
+	res, err := client.CreateOrUpdate(ctx, "contoso", "contososports", "connectionName1", armmediaservices.PrivateEndpointConnection{
+		Properties: &armmediaservices.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armmediaservices.PrivateLinkServiceConnectionState{
+				Description: to.Ptr("Test description."),
+				Status:      to.Ptr(armmediaservices.PrivateEndpointServiceConnectionStatusApproved),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -104,11 +92,7 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"contoso",
-		"contososports",
-		"connectionName1",
-		nil)
+	_, err = client.Delete(ctx, "contoso", "contososports", "connectionName1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

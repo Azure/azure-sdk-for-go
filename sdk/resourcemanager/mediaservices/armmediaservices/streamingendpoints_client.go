@@ -56,9 +56,71 @@ func NewStreamingEndpointsClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
+// AsyncOperation - Get a streaming endpoint operation status.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-08-01
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// operationID - The ID of an ongoing async operation.
+// options - StreamingEndpointsClientAsyncOperationOptions contains the optional parameters for the StreamingEndpointsClient.AsyncOperation
+// method.
+func (client *StreamingEndpointsClient) AsyncOperation(ctx context.Context, resourceGroupName string, accountName string, operationID string, options *StreamingEndpointsClientAsyncOperationOptions) (StreamingEndpointsClientAsyncOperationResponse, error) {
+	req, err := client.asyncOperationCreateRequest(ctx, resourceGroupName, accountName, operationID, options)
+	if err != nil {
+		return StreamingEndpointsClientAsyncOperationResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return StreamingEndpointsClientAsyncOperationResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StreamingEndpointsClientAsyncOperationResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.asyncOperationHandleResponse(resp)
+}
+
+// asyncOperationCreateRequest creates the AsyncOperation request.
+func (client *StreamingEndpointsClient) asyncOperationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, operationID string, options *StreamingEndpointsClientAsyncOperationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/streamingEndpointOperations/{operationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// asyncOperationHandleResponse handles the AsyncOperation response.
+func (client *StreamingEndpointsClient) asyncOperationHandleResponse(resp *http.Response) (StreamingEndpointsClientAsyncOperationResponse, error) {
+	result := StreamingEndpointsClientAsyncOperationResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
+		return StreamingEndpointsClientAsyncOperationResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginCreate - Creates a streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
@@ -79,7 +141,7 @@ func (client *StreamingEndpointsClient) BeginCreate(ctx context.Context, resourc
 
 // Create - Creates a streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *StreamingEndpointsClient) create(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEndpoint, options *StreamingEndpointsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, streamingEndpointName, parameters, options)
 	if err != nil {
@@ -119,7 +181,7 @@ func (client *StreamingEndpointsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	if options != nil && options.AutoStart != nil {
 		reqQP.Set("autoStart", strconv.FormatBool(*options.AutoStart))
 	}
@@ -130,7 +192,7 @@ func (client *StreamingEndpointsClient) createCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes a streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
@@ -150,7 +212,7 @@ func (client *StreamingEndpointsClient) BeginDelete(ctx context.Context, resourc
 
 // Delete - Deletes a streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *StreamingEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, options *StreamingEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, streamingEndpointName, options)
 	if err != nil {
@@ -190,7 +252,7 @@ func (client *StreamingEndpointsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +260,7 @@ func (client *StreamingEndpointsClient) deleteCreateRequest(ctx context.Context,
 
 // Get - Gets a streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
@@ -242,7 +304,7 @@ func (client *StreamingEndpointsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,7 +321,7 @@ func (client *StreamingEndpointsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Lists the streaming endpoints in the account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.List method.
@@ -311,7 +373,7 @@ func (client *StreamingEndpointsClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,9 +388,76 @@ func (client *StreamingEndpointsClient) listHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
+// OperationLocation - Get a streaming endpoint operation status.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-08-01
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
+// operationID - The ID of an ongoing async operation.
+// options - StreamingEndpointsClientOperationLocationOptions contains the optional parameters for the StreamingEndpointsClient.OperationLocation
+// method.
+func (client *StreamingEndpointsClient) OperationLocation(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, operationID string, options *StreamingEndpointsClientOperationLocationOptions) (StreamingEndpointsClientOperationLocationResponse, error) {
+	req, err := client.operationLocationCreateRequest(ctx, resourceGroupName, accountName, streamingEndpointName, operationID, options)
+	if err != nil {
+		return StreamingEndpointsClientOperationLocationResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return StreamingEndpointsClientOperationLocationResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return StreamingEndpointsClientOperationLocationResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.operationLocationHandleResponse(resp)
+}
+
+// operationLocationCreateRequest creates the OperationLocation request.
+func (client *StreamingEndpointsClient) operationLocationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, operationID string, options *StreamingEndpointsClientOperationLocationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/streamingEndpoints/{streamingEndpointName}/operationLocations/{operationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if streamingEndpointName == "" {
+		return nil, errors.New("parameter streamingEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{streamingEndpointName}", url.PathEscape(streamingEndpointName))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// operationLocationHandleResponse handles the OperationLocation response.
+func (client *StreamingEndpointsClient) operationLocationHandleResponse(resp *http.Response) (StreamingEndpointsClientOperationLocationResponse, error) {
+	result := StreamingEndpointsClientOperationLocationResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingEndpoint); err != nil {
+		return StreamingEndpointsClientOperationLocationResponse{}, err
+	}
+	return result, nil
+}
+
 // SKUs - List streaming endpoint supported skus.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
@@ -372,7 +501,7 @@ func (client *StreamingEndpointsClient) skUsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -389,7 +518,7 @@ func (client *StreamingEndpointsClient) skUsHandleResponse(resp *http.Response) 
 
 // BeginScale - Scales an existing streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
@@ -410,7 +539,7 @@ func (client *StreamingEndpointsClient) BeginScale(ctx context.Context, resource
 
 // Scale - Scales an existing streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *StreamingEndpointsClient) scale(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEntityScaleUnit, options *StreamingEndpointsClientBeginScaleOptions) (*http.Response, error) {
 	req, err := client.scaleCreateRequest(ctx, resourceGroupName, accountName, streamingEndpointName, parameters, options)
 	if err != nil {
@@ -450,7 +579,7 @@ func (client *StreamingEndpointsClient) scaleCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -458,7 +587,7 @@ func (client *StreamingEndpointsClient) scaleCreateRequest(ctx context.Context, 
 
 // BeginStart - Starts an existing streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
@@ -478,7 +607,7 @@ func (client *StreamingEndpointsClient) BeginStart(ctx context.Context, resource
 
 // Start - Starts an existing streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *StreamingEndpointsClient) start(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, options *StreamingEndpointsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, streamingEndpointName, options)
 	if err != nil {
@@ -518,7 +647,7 @@ func (client *StreamingEndpointsClient) startCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -526,7 +655,7 @@ func (client *StreamingEndpointsClient) startCreateRequest(ctx context.Context, 
 
 // BeginStop - Stops an existing streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
@@ -546,7 +675,7 @@ func (client *StreamingEndpointsClient) BeginStop(ctx context.Context, resourceG
 
 // Stop - Stops an existing streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *StreamingEndpointsClient) stop(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, options *StreamingEndpointsClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, accountName, streamingEndpointName, options)
 	if err != nil {
@@ -586,7 +715,7 @@ func (client *StreamingEndpointsClient) stopCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -594,7 +723,7 @@ func (client *StreamingEndpointsClient) stopCreateRequest(ctx context.Context, r
 
 // BeginUpdate - Updates a existing streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingEndpointName - The name of the streaming endpoint, maximum length is 24.
@@ -615,7 +744,7 @@ func (client *StreamingEndpointsClient) BeginUpdate(ctx context.Context, resourc
 
 // Update - Updates a existing streaming endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *StreamingEndpointsClient) update(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEndpoint, options *StreamingEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, streamingEndpointName, parameters, options)
 	if err != nil {
@@ -655,7 +784,7 @@ func (client *StreamingEndpointsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

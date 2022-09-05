@@ -27,10 +27,7 @@ func ExampleOperationResultsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"westus",
-		"6FBA62C4-99B5-4FF8-9826-FC4744A8864F",
-		nil)
+	res, err := client.Get(ctx, "westus", "6FBA62C4-99B5-4FF8-9826-FC4744A8864F", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

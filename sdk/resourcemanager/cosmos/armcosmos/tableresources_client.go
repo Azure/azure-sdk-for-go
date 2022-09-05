@@ -57,7 +57,7 @@ func NewTableResourcesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateUpdateTable - Create or update an Azure Cosmos DB Table
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // tableName - Cosmos DB table name.
@@ -78,7 +78,7 @@ func (client *TableResourcesClient) BeginCreateUpdateTable(ctx context.Context, 
 
 // CreateUpdateTable - Create or update an Azure Cosmos DB Table
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 func (client *TableResourcesClient) createUpdateTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesClientBeginCreateUpdateTableOptions) (*http.Response, error) {
 	req, err := client.createUpdateTableCreateRequest(ctx, resourceGroupName, accountName, tableName, createUpdateTableParameters, options)
 	if err != nil {
@@ -118,7 +118,7 @@ func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createUpdateTableParameters)
@@ -126,7 +126,7 @@ func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.C
 
 // BeginDeleteTable - Deletes an existing Azure Cosmos DB Table.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // tableName - Cosmos DB table name.
@@ -146,7 +146,7 @@ func (client *TableResourcesClient) BeginDeleteTable(ctx context.Context, resour
 
 // DeleteTable - Deletes an existing Azure Cosmos DB Table.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 func (client *TableResourcesClient) deleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginDeleteTableOptions) (*http.Response, error) {
 	req, err := client.deleteTableCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
@@ -186,14 +186,14 @@ func (client *TableResourcesClient) deleteTableCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // GetTable - Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // tableName - Cosmos DB table name.
@@ -237,7 +237,7 @@ func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +255,7 @@ func (client *TableResourcesClient) getTableHandleResponse(resp *http.Response) 
 // GetTableThroughput - Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // tableName - Cosmos DB table name.
@@ -300,7 +300,7 @@ func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -317,7 +317,7 @@ func (client *TableResourcesClient) getTableThroughputHandleResponse(resp *http.
 
 // NewListTablesPager - Lists the Tables under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // options - TableResourcesClientListTablesOptions contains the optional parameters for the TableResourcesClient.ListTables
@@ -364,7 +364,7 @@ func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -381,7 +381,7 @@ func (client *TableResourcesClient) listTablesHandleResponse(resp *http.Response
 
 // BeginMigrateTableToAutoscale - Migrate an Azure Cosmos DB Table from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // tableName - Cosmos DB table name.
@@ -401,7 +401,7 @@ func (client *TableResourcesClient) BeginMigrateTableToAutoscale(ctx context.Con
 
 // MigrateTableToAutoscale - Migrate an Azure Cosmos DB Table from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 func (client *TableResourcesClient) migrateTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToAutoscaleOptions) (*http.Response, error) {
 	req, err := client.migrateTableToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
@@ -441,7 +441,7 @@ func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -449,7 +449,7 @@ func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx con
 
 // BeginMigrateTableToManualThroughput - Migrate an Azure Cosmos DB Table from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // tableName - Cosmos DB table name.
@@ -469,7 +469,7 @@ func (client *TableResourcesClient) BeginMigrateTableToManualThroughput(ctx cont
 
 // MigrateTableToManualThroughput - Migrate an Azure Cosmos DB Table from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 func (client *TableResourcesClient) migrateTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToManualThroughputOptions) (*http.Response, error) {
 	req, err := client.migrateTableToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
@@ -509,86 +509,15 @@ func (client *TableResourcesClient) migrateTableToManualThroughputCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a table.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// tableName - Cosmos DB table name.
-// location - The name of the continuous backup restore location.
-// options - TableResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the
-// TableResourcesClient.BeginRetrieveContinuousBackupInformation method.
-func (client *TableResourcesClient) BeginRetrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, tableName string, location ContinuousBackupRestoreLocation, options *TableResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*runtime.Poller[TableResourcesClientRetrieveContinuousBackupInformationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.retrieveContinuousBackupInformation(ctx, resourceGroupName, accountName, tableName, location, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[TableResourcesClientRetrieveContinuousBackupInformationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[TableResourcesClientRetrieveContinuousBackupInformationResponse](options.ResumeToken, client.pl, nil)
-	}
-}
-
-// RetrieveContinuousBackupInformation - Retrieves continuous backup information for a table.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
-func (client *TableResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, tableName string, location ContinuousBackupRestoreLocation, options *TableResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
-	req, err := client.retrieveContinuousBackupInformationCreateRequest(ctx, resourceGroupName, accountName, tableName, location, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// retrieveContinuousBackupInformationCreateRequest creates the RetrieveContinuousBackupInformation request.
-func (client *TableResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, location ContinuousBackupRestoreLocation, options *TableResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/retrieveContinuousBackupInformation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if tableName == "" {
-		return nil, errors.New("parameter tableName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, location)
-}
-
 // BeginUpdateTableThroughput - Update RUs per second of an Azure Cosmos DB Table
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // tableName - Cosmos DB table name.
@@ -609,7 +538,7 @@ func (client *TableResourcesClient) BeginUpdateTableThroughput(ctx context.Conte
 
 // UpdateTableThroughput - Update RUs per second of an Azure Cosmos DB Table
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 func (client *TableResourcesClient) updateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesClientBeginUpdateTableThroughputOptions) (*http.Response, error) {
 	req, err := client.updateTableThroughputCreateRequest(ctx, resourceGroupName, accountName, tableName, updateThroughputParameters, options)
 	if err != nil {
@@ -649,7 +578,7 @@ func (client *TableResourcesClient) updateTableThroughputCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)

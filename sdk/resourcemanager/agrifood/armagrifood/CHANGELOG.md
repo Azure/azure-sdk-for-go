@@ -8,7 +8,6 @@
 ### Features Added
 
 - Sensor, Private endpoint & managedIdentity support added.
-- Refer [https://github.com/MicrosoftDocs/Azure-FarmBeats/tree/main/documentation](https://github.com/MicrosoftDocs/Azure-FarmBeats/tree/main/documentation) for more details.
 
 ## 0.6.0 (2022-05-17)
 

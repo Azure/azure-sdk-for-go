@@ -115,3 +115,22 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 		},
 	}, re.toAMQPMessage())
 }
+
+func TestEventData_newReceivedEventData_sequenceNumberPromotion(t *testing.T) {
+	intValues := []any{
+		int(101), int8(101), int16(101), int32(101), int64(101),
+	}
+
+	for _, iv := range intValues {
+		t.Run(fmt.Sprintf("%T", iv), func(t *testing.T) {
+			re, err := newReceivedEventData(&amqp.Message{
+				Annotations: map[any]any{
+					"x-opt-sequence-number": iv,
+				},
+			})
+
+			require.NoError(t, err)
+			require.Equal(t, int64(101), re.SequenceNumber)
+		})
+	}
+}

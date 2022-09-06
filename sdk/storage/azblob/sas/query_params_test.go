@@ -36,18 +36,18 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	require.Equal(t, parameters.ResourceTypes(), sasCompMap["srt"])
 	require.Equal(t, string(parameters.Protocol()), sasCompMap["spr"])
 	if _, ok := sasCompMap["st"]; ok {
-		startTime, _, err := ParseTime(sasCompMap["st"])
+		startTime, _, err := parseTime(sasCompMap["st"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.StartTime(), startTime)
 	}
 	if _, ok := sasCompMap["se"]; ok {
-		endTime, _, err := ParseTime(sasCompMap["se"])
+		endTime, _, err := parseTime(sasCompMap["se"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.ExpiryTime(), endTime)
 	}
 
 	if _, ok := sasCompMap["snapshot"]; ok {
-		snapshotTime, _, err := ParseTime(sasCompMap["snapshot"])
+		snapshotTime, _, err := parseTime(sasCompMap["snapshot"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SnapshotTime(), snapshotTime)
 	}
@@ -70,14 +70,14 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	require.Equal(t, parameters.SignedTID(), sasCompMap["sktid"])
 
 	if _, ok := sasCompMap["skt"]; ok {
-		signedStart, _, err := ParseTime(sasCompMap["skt"])
+		signedStart, _, err := parseTime(sasCompMap["skt"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SignedStart(), signedStart)
 	}
 	require.Equal(t, parameters.SignedService(), sasCompMap["sks"])
 
 	if _, ok := sasCompMap["ske"]; ok {
-		signedExpiry, _, err := ParseTime(sasCompMap["ske"])
+		signedExpiry, _, err := parseTime(sasCompMap["ske"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SignedExpiry(), signedExpiry)
 	}

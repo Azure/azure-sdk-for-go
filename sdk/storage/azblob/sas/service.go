@@ -18,8 +18,8 @@ import (
 // BlobSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 type BlobSignatureValues struct {
-	Version                    string    `param:"sv"`  // If not specified, this format to SASVersion
-	Protocol                   Protocol  `param:"spr"` // See the SASProtocol* constants
+	Version                    string    `param:"sv"`  // If not specified, this defaults to Version
+	Protocol                   Protocol  `param:"spr"` // See the Protocol* constants
 	StartTime                  time.Time `param:"st"`  // Not specified if IsZero
 	ExpiryTime                 time.Time `param:"se"`  // Not specified if IsZero
 	SnapshotTime               time.Time
@@ -50,55 +50,35 @@ func getDirectoryDepth(path string) string {
 // Sign uses an account's StorageAccountCredential to sign this signature values to produce the proper SAS query parameters.
 // See: StorageAccountCredential. Compatible with both UserDelegationCredential and SharedKeyCredential
 func (v BlobSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
-	resource := "c"
 	if sharedKeyCredential == nil {
 		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without Shared Key Credential")
 	}
 
+	//Make sure the permission characters are in the correct order
+	perms, err := parseBlobPermissions(v.Permissions)
+	if err != nil {
+		return QueryParameters{}, err
+	}
+	v.Permissions = perms.String()
+
+	resource := "c"
 	if !v.SnapshotTime.IsZero() {
 		resource = "bs"
-		//Make sure the permission characters are in the correct order
-		perms := &BlobPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return QueryParameters{}, err
-		}
-		v.Permissions = perms.String()
 	} else if v.BlobVersion != "" {
 		resource = "bv"
-		//Make sure the permission characters are in the correct order
-		perms := &BlobPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return QueryParameters{}, err
-		}
-		v.Permissions = perms.String()
 	} else if v.Directory != "" {
 		resource = "d"
 		v.BlobName = ""
-		perms := &BlobPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return QueryParameters{}, err
-		}
-		v.Permissions = perms.String()
 	} else if v.BlobName == "" {
-		// Make sure the permission characters are in the correct order
-		perms := &ContainerPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return QueryParameters{}, err
-		}
-		v.Permissions = perms.String()
+		// do nothing
 	} else {
 		resource = "b"
-		// Make sure the permission characters are in the correct order
-		perms := &BlobPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return QueryParameters{}, err
-		}
-		v.Permissions = perms.String()
 	}
+
 	if v.Version == "" {
 		v.Version = Version
 	}
-	startTime, expiryTime, snapshotTime := FormatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
+	startTime, expiryTime, snapshotTime := formatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
 
 	signedIdentifier := v.Identifier
 
@@ -140,7 +120,6 @@ func (v BlobSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (Que
 		v.ContentType},       // rsct
 		"\n")
 
-	signature := ""
 	signature, err := exported.ComputeHMACSHA256(sharedKeyCredential, stringToSign)
 	if err != nil {
 		return QueryParameters{}, err
@@ -247,8 +226,8 @@ func (p *ContainerPermissions) String() string {
 }
 
 // Parse initializes the ContainerSASPermissions' fields from a string.
-func (p *ContainerPermissions) Parse(s string) error {
-	*p = ContainerPermissions{} // Clear the flags
+func parseContainerPermissions(s string) (ContainerPermissions, error) {
+	p := ContainerPermissions{} // Clear the flags
 	for _, r := range s {
 		switch r {
 		case 'r':
@@ -274,10 +253,10 @@ func (p *ContainerPermissions) Parse(s string) error {
 		case 'p':
 			p.ModifyPermissions = true
 		default:
-			return fmt.Errorf("invalid permission: '%v'", r)
+			return ContainerPermissions{}, fmt.Errorf("invalid permission: '%v'", r)
 		}
 	}
-	return nil
+	return p, nil
 }
 
 // BlobPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
@@ -330,8 +309,8 @@ func (p *BlobPermissions) String() string {
 }
 
 // Parse initializes the BlobSASPermissions's fields from a string.
-func (p *BlobPermissions) Parse(s string) error {
-	*p = BlobPermissions{} // Clear the flags
+func parseBlobPermissions(s string) (BlobPermissions, error) {
+	p := BlobPermissions{} // Clear the flags
 	for _, r := range s {
 		switch r {
 		case 'r':
@@ -359,8 +338,8 @@ func (p *BlobPermissions) Parse(s string) error {
 		case 'p':
 			p.Permissions = true
 		default:
-			return fmt.Errorf("invalid permission: '%v'", r)
+			return BlobPermissions{}, fmt.Errorf("invalid permission: '%v'", r)
 		}
 	}
-	return nil
+	return p, nil
 }

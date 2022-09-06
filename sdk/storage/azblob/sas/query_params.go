@@ -22,12 +22,13 @@ const (
 )
 
 var (
+	// Version is the default version encoded in the SAS token.
 	Version = "2019-12-12"
-
-	// TimeFormats ISO 8601 format.
-	// Please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
-	TimeFormats = []string{"2006-01-02T15:04:05.0000000Z", TimeFormat, "2006-01-02T15:04Z", "2006-01-02"}
 )
+
+// TimeFormats ISO 8601 format.
+// Please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
+var timeFormats = []string{"2006-01-02T15:04:05.0000000Z", TimeFormat, "2006-01-02T15:04Z", "2006-01-02"}
 
 // Protocol indicates the http/https.
 type Protocol string
@@ -42,7 +43,7 @@ const (
 
 // FormatTimesForSigning converts a time.Time to a snapshotTimeFormat string suitable for a
 // Field's StartTime or ExpiryTime fields. Returns "" if value.IsZero().
-func FormatTimesForSigning(startTime, expiryTime, snapshotTime time.Time) (string, string, string) {
+func formatTimesForSigning(startTime, expiryTime, snapshotTime time.Time) (string, string, string) {
 	ss := ""
 	if !startTime.IsZero() {
 		ss = formatTimeWithDefaultFormat(&startTime)
@@ -71,9 +72,9 @@ func formatTime(t *time.Time, format string) string {
 	return t.Format(TimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
-// ParseTime try to parse sas time string.
-func ParseTime(val string) (t time.Time, timeFormat string, err error) {
-	for _, sasTimeFormat := range TimeFormats {
+// ParseTime try to parse a SAS time string.
+func parseTime(val string) (t time.Time, timeFormat string, err error) {
+	for _, sasTimeFormat := range timeFormats {
 		t, err = time.Parse(sasTimeFormat, val)
 		if err == nil {
 			timeFormat = sasTimeFormat
@@ -285,12 +286,7 @@ func (p *QueryParameters) SignedDirectoryDepth() string {
 // Encode encodes the SAS query parameters into URL encoded form sorted by key.
 func (p *QueryParameters) Encode() string {
 	v := url.Values{}
-	p.addToValues(v)
-	return v.Encode()
-}
 
-// AddToValues adds the SAS components to the specified query parameters map.
-func (p *QueryParameters) addToValues(v url.Values) url.Values {
 	if p.version != "" {
 		v.Add("sv", p.version)
 	}
@@ -359,7 +355,8 @@ func (p *QueryParameters) addToValues(v url.Values) url.Values {
 	if p.correlationID != "" {
 		v.Add("scid", p.correlationID)
 	}
-	return v
+
+	return v.Encode()
 }
 
 // NewQueryParameters creates and initializes a SASQueryParameters object based on the
@@ -383,9 +380,9 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 		case "snapshot":
 			p.snapshotTime, _ = time.Parse(exported.SnapshotTimeFormat, val)
 		case "st":
-			p.startTime, p.stTimeFormat, _ = ParseTime(val)
+			p.startTime, p.stTimeFormat, _ = parseTime(val)
 		case "se":
-			p.expiryTime, p.seTimeFormat, _ = ParseTime(val)
+			p.expiryTime, p.seTimeFormat, _ = parseTime(val)
 		case "sip":
 			dashIndex := strings.Index(val, "-")
 			if dashIndex == -1 {

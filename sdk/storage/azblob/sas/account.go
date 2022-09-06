@@ -42,13 +42,13 @@ func (v AccountSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (
 	if v.Version == "" {
 		v.Version = Version
 	}
-	perms := &AccountPermissions{}
-	if err := perms.Parse(v.Permissions); err != nil {
+	perms, err := parseAccountPermissions(v.Permissions)
+	if err != nil {
 		return QueryParameters{}, err
 	}
 	v.Permissions = perms.String()
 
-	startTime, expiryTime, _ := FormatTimesForSigning(v.StartTime, v.ExpiryTime, time.Time{})
+	startTime, expiryTime, _ := formatTimesForSigning(v.StartTime, v.ExpiryTime, time.Time{})
 
 	stringToSign := strings.Join([]string{
 		sharedKeyCredential.AccountName(),
@@ -134,8 +134,8 @@ func (p *AccountPermissions) String() string {
 }
 
 // Parse initializes the AccountSASPermissions' fields from a string.
-func (p *AccountPermissions) Parse(s string) error {
-	*p = AccountPermissions{} // Clear out the flags
+func parseAccountPermissions(s string) (AccountPermissions, error) {
+	p := AccountPermissions{} // Clear out the flags
 	for _, r := range s {
 		switch r {
 		case 'r':
@@ -161,10 +161,10 @@ func (p *AccountPermissions) Parse(s string) error {
 		case 'f':
 			p.FilterByTags = true
 		default:
-			return fmt.Errorf("invalid permission character: '%v'", r)
+			return AccountPermissions{}, fmt.Errorf("invalid permission character: '%v'", r)
 		}
 	}
-	return nil
+	return p, nil
 }
 
 // AccountServices type simplifies creating the services string for an Azure Storage Account SAS.
@@ -190,8 +190,8 @@ func (s *AccountServices) String() string {
 }
 
 // Parse initializes the AccountSASServices' fields from a string.
-func (s *AccountServices) Parse(str string) error {
-	*s = AccountServices{} // Clear out the flags
+func parseAccountServices(str string) (AccountServices, error) {
+	s := AccountServices{} // Clear out the flags
 	for _, r := range str {
 		switch r {
 		case 'b':
@@ -201,10 +201,10 @@ func (s *AccountServices) Parse(str string) error {
 		case 'f':
 			s.File = true
 		default:
-			return fmt.Errorf("invalid service character: '%v'", r)
+			return AccountServices{}, fmt.Errorf("invalid service character: '%v'", r)
 		}
 	}
-	return nil
+	return s, nil
 }
 
 // AccountResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
@@ -230,8 +230,8 @@ func (rt *AccountResourceTypes) String() string {
 }
 
 // Parse initializes the AccountResourceTypes's fields from a string.
-func (rt *AccountResourceTypes) Parse(s string) error {
-	*rt = AccountResourceTypes{} // Clear out the flags
+func parseAccountResourceTypes(s string) (AccountResourceTypes, error) {
+	rt := AccountResourceTypes{} // Clear out the flags
 	for _, r := range s {
 		switch r {
 		case 's':
@@ -241,8 +241,8 @@ func (rt *AccountResourceTypes) Parse(s string) error {
 		case 'o':
 			rt.Object = true
 		default:
-			return fmt.Errorf("invalid resource type: '%v'", r)
+			return AccountResourceTypes{}, fmt.Errorf("invalid resource type: '%v'", r)
 		}
 	}
-	return nil
+	return rt, nil
 }

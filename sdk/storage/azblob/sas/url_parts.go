@@ -4,14 +4,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package blob
+package sas
 
 import (
-	"net"
 	"net/url"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 const (
@@ -25,8 +25,7 @@ type IPEndpointStyleInfo struct {
 	AccountName string // "" if not using IP endpoint style
 }
 
-// URLParts object represents the components that make up an Azure Storage Container/Blob URL. You parse an
-// existing URL into its parts by calling NewBlobURLParts(). You construct a URL from parts by calling URL().
+// URLParts object represents the components that make up an Azure Storage Container/Blob URL.
 // NOTE: Changing any SAS-related field requires computing a new SAS signature.
 type URLParts struct {
 	Scheme              string // Ex: "https://"
@@ -35,13 +34,13 @@ type URLParts struct {
 	ContainerName       string // "" if no container
 	BlobName            string // "" if no blob
 	Snapshot            string // "" if not a snapshot
-	SAS                 sas.QueryParameters
+	SAS                 QueryParameters
 	UnparsedParams      string
 	VersionID           string // "" if not versioning enabled
 }
 
-// ParseURL parses a URL initializing URLParts' fields including any SAS-related & snapshot query parameters. Any other
-// query parameters remain in the UnparsedParams field. This method overwrites all fields in the URLParts object.
+// ParseURL parses a URL initializing URLParts' fields including any SAS-related & snapshot query parameters.
+// Any other query parameters remain in the UnparsedParams field.
 func ParseURL(u string) (URLParts, error) {
 	uri, err := url.Parse(u)
 	if err != nil {
@@ -59,7 +58,7 @@ func ParseURL(u string) (URLParts, error) {
 		if path[0] == '/' {
 			path = path[1:] // If path starts with a slash, remove it
 		}
-		if IsIPEndpointStyle(up.Host) {
+		if shared.IsIPEndpointStyle(up.Host) {
 			if accountEndIndex := strings.Index(path, "/"); accountEndIndex == -1 { // Slash not found; path has account name & no container name or blob
 				up.IPEndpointStyleInfo.AccountName = path
 				path = "" // No ContainerName present in the URL so path should be empty
@@ -96,7 +95,7 @@ func ParseURL(u string) (URLParts, error) {
 		delete(paramsMap, "versionId") // delete "versionId" from paramsMap
 	}
 
-	up.SAS = sas.NewQueryParameters(paramsMap, true)
+	up.SAS = NewQueryParameters(paramsMap, true)
 	up.UnparsedParams = paramsMap.Encode()
 	return up, nil
 }
@@ -105,7 +104,7 @@ func ParseURL(u string) (URLParts, error) {
 // field contains the SAS, snapshot, and unparsed query parameters.
 func (up URLParts) String() string {
 	path := ""
-	if IsIPEndpointStyle(up.Host) && up.IPEndpointStyleInfo.AccountName != "" {
+	if shared.IsIPEndpointStyle(up.Host) && up.IPEndpointStyleInfo.AccountName != "" {
 		path += "/" + up.IPEndpointStyleInfo.AccountName
 	}
 	// Concatenate container & blob names (if they exist)
@@ -120,7 +119,7 @@ func (up URLParts) String() string {
 
 	//If no snapshot is initially provided, fill it in from the SAS query properties to help the user
 	if up.Snapshot == "" && !up.SAS.SnapshotTime().IsZero() {
-		up.Snapshot = up.SAS.SnapshotTime().Format(SnapshotTimeFormat)
+		up.Snapshot = up.SAS.SnapshotTime().Format(exported.SnapshotTimeFormat)
 	}
 
 	// Concatenate blob version id query parameter (if it exists)
@@ -152,25 +151,6 @@ func (up URLParts) String() string {
 		RawQuery: rawQuery,
 	}
 	return u.String()
-}
-
-// IsIPEndpointStyle checkes if URL's host is IP, in this case the storage account endpoint will be composed as:
-// http(s)://IP(:port)/storageaccount/container/...
-// As url's Host property, host could be both host or host:port
-func IsIPEndpointStyle(host string) bool {
-	if host == "" {
-		return false
-	}
-	if h, _, err := net.SplitHostPort(host); err == nil {
-		host = h
-	}
-	// For IPv6, there could be case where SplitHostPort fails for cannot finding port.
-	// In this case, eliminate the '[' and ']' in the URL.
-	// For details about IPv6 URL, please refer to https://tools.ietf.org/html/rfc2732
-	if host[0] == '[' && host[len(host)-1] == ']' {
-		host = host[1 : len(host)-1]
-	}
-	return net.ParseIP(host) != nil
 }
 
 type caseInsensitiveValues url.Values // map[string][]string

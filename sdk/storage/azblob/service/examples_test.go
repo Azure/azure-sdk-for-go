@@ -236,8 +236,7 @@ func Example_service_SASSignatureValues_Sign() {
 	}.Sign(credential)
 	handleError(err)
 
-	queryParams := sasQueryParams.Encode()
-	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, queryParams)
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
 
 	// This URL can be used to authenticate requests now
 	serviceClient, err := service.NewClientWithNoCredential(sasURL, nil)

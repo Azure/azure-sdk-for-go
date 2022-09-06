@@ -1,0 +1,82 @@
+{
+  "profileName": "hybrid20200901",
+  "modules": [
+    {
+      "rp": "authorization",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "commerce",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "compute",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "containerregistry",
+      "tag": "package-2019-05-only"
+    },
+    {
+      "rp": "containerservice",
+      "tag": "profile-hybrid-2020-09-01",
+      "additionalConfig": "directive: \n- rename-model: \n    from: 'ContainerServiceOrchestratorProfile'\n    to: 'BasicOrchestratorProfile'"
+    },
+    {
+      "rp": "databoxedge",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "dns",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "eventhub",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "iothub",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "keyvault",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "monitor",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "network",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "resources",
+      "namespace": "armlocks",
+      "tag": "package-locks-2016-09"
+    },
+    {
+      "rp": "resources",
+      "namespace": "armpolicy",
+      "tag": "package-policy-2016-12"
+    },
+    {
+      "rp": "resources",
+      "namespace": "armsubscriptions",
+      "tag": "package-subscriptions-2016-06",
+      "additionalConfig": "modelerfour:\n  lenient-model-deduplication: true"
+    },
+    {
+      "rp": "resources",
+      "tag": "package-resources-2019-10"
+    },
+    {
+      "rp": "storage",
+      "tag": "profile-hybrid-2020-09-01"
+    },
+    {
+      "rp": "web",
+      "tag": "profile-hybrid-2020-09-01"
+    }
+  ]
+}

@@ -359,7 +359,7 @@ func (p *QueryParameters) Encode() string {
 	return v.Encode()
 }
 
-// NewQueryParameters creates and initializes a SASQueryParameters object based on the
+// NewQueryParameters creates and initializes a QueryParameters object based on the
 // query parameter map's passed-in values. If deleteSASParametersFromValues is true,
 // all SAS-related query parameters are removed from the passed-in map. If
 // deleteSASParametersFromValues is false, the map passed-in map is unaltered.

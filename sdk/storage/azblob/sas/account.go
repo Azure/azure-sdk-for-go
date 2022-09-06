@@ -190,7 +190,7 @@ func (s *AccountServices) String() string {
 }
 
 // Parse initializes the AccountSASServices' fields from a string.
-func parseAccountServices(str string) (AccountServices, error) {
+/*func parseAccountServices(str string) (AccountServices, error) {
 	s := AccountServices{} // Clear out the flags
 	for _, r := range str {
 		switch r {
@@ -205,7 +205,7 @@ func parseAccountServices(str string) (AccountServices, error) {
 		}
 	}
 	return s, nil
-}
+}*/
 
 // AccountResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
@@ -230,7 +230,7 @@ func (rt *AccountResourceTypes) String() string {
 }
 
 // Parse initializes the AccountResourceTypes's fields from a string.
-func parseAccountResourceTypes(s string) (AccountResourceTypes, error) {
+/*func parseAccountResourceTypes(s string) (AccountResourceTypes, error) {
 	rt := AccountResourceTypes{} // Clear out the flags
 	for _, r := range s {
 		switch r {
@@ -245,4 +245,4 @@ func parseAccountResourceTypes(s string) (AccountResourceTypes, error) {
 		}
 	}
 	return rt, nil
-}
+}*/

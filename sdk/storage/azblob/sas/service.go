@@ -226,7 +226,7 @@ func (p *ContainerPermissions) String() string {
 }
 
 // Parse initializes the ContainerSASPermissions' fields from a string.
-func parseContainerPermissions(s string) (ContainerPermissions, error) {
+/*func parseContainerPermissions(s string) (ContainerPermissions, error) {
 	p := ContainerPermissions{} // Clear the flags
 	for _, r := range s {
 		switch r {
@@ -257,7 +257,7 @@ func parseContainerPermissions(s string) (ContainerPermissions, error) {
 		}
 	}
 	return p, nil
-}
+}*/
 
 // BlobPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
 // Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.

@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/processor"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/hashicorp/go-multierror"
 )
@@ -32,11 +32,11 @@ func NewRemoteValidator(ctx context.Context, client *query.Client) Validator {
 		client: client,
 	}
 }
-func ParseTrack2(config *config.Config, specRoot string) (armServices map[string][]common.PackageInfo, errResult error) {
-	armServices = make(map[string][]common.PackageInfo)
+func ParseTrack2(config *config.Config, specRoot string) (armServices map[string][]processor.PackageInfo, errResult error) {
+	armServices = make(map[string][]processor.PackageInfo)
 	for readme, track2Request := range config.Track2Requests {
 		for _, request := range track2Request {
-			service, err := common.ReadV2ModuleNameToGetNamespace(filepath.Join(specRoot, getReadmeGoFromReadme(readme)))
+			service, err := processor.ReadV2ModuleNameToGetNamespace(filepath.Join(specRoot, getReadmeGoFromReadme(readme)))
 			if err != nil {
 				errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
 				continue
@@ -56,7 +56,7 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 			}
 
 			for arm, packageInfos := range service {
-				armServices[arm] = make([]common.PackageInfo, 0)
+				armServices[arm] = make([]processor.PackageInfo, 0)
 				if subService == "" || len(packageInfos) == 1 {
 					armServices[arm] = packageInfos
 				} else {

@@ -5,13 +5,14 @@ package refresh
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"path"
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/processor"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -59,12 +60,12 @@ type Flags struct {
 
 func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("version-number", "", "Specify the version number of this release")
-	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
-	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
+	flagSet.String("sdk-repo", common.DefaultSDKRepo, "Specifies the sdk repo URL for generation")
+	flagSet.String("spec-repo", common.DefaultSpecRepo, "Specifies the swagger repo URL for generation")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
-	flagSet.String("go-version", "1.18", "Go version")
+	flagSet.String("go-version", common.DefaultGoVersion, "Go version")
 	flagSet.String("rps", "", "Specify RP list to refresh, seperated by ','")
 }
 
@@ -86,17 +87,17 @@ type commandContext struct {
 }
 
 func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
-	sdkRepo, err := common.GetSDKRepo(sdkRepoParam, c.flags.SDKRepo)
+	sdkRepo, err := processor.GetSDKRepo(sdkRepoParam, c.flags.SDKRepo)
 	if err != nil {
 		return err
 	}
 
-	specCommitHash, err := common.GetSpecCommit(specRepoParam)
+	specCommitHash, err := processor.GetSpecCommit(specRepoParam)
 	if err != nil {
 		return err
 	}
 
-	generateCtx := common.GenerateContext{
+	generateCtx := processor.GenerateContext{
 		SDKPath:        sdkRepo.Root(),
 		SDKRepo:        &sdkRepo,
 		SpecCommitHash: specCommitHash,
@@ -113,7 +114,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 
 	var rpNames []string
 	if c.flags.RPs == "" {
-		rps, err := ioutil.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager"))
+		rps, err := os.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager"))
 		if err != nil {
 			return fmt.Errorf("failed to get all rps: %+v", err)
 		}
@@ -125,18 +126,18 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	}
 
 	for _, rpName := range rpNames {
-		namespaces, err := ioutil.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName))
+		namespaces, err := os.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName))
 		if err != nil {
 			continue
 		}
 
 		for _, namespace := range namespaces {
 			log.Printf("Release generation for rp: %s, namespace: %s", rpName, namespace.Name())
-			specRpName, err := common.GetSpecRpName(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName, namespace.Name()))
+			specRpName, err := processor.GetSpecRpName(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName, namespace.Name()))
 			if err != nil {
 				continue
 			}
-			result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
+			result, err := generateCtx.GenerateForSingleRPNamespace(&processor.GenerateParam{
 				RPName:              rpName,
 				NamespaceName:       namespace.Name(),
 				SpecficPackageTitle: "",

@@ -5,13 +5,13 @@ package template
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -60,7 +60,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("commit", "", "Specifies the commit hash of azure-rest-api-specs")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.String("package-config", "", "Additional config for package")
-	flagSet.String("go-version", "1.18", "Go version")
+	flagSet.String("go-version", common.DefaultGoVersion, "Go version")
 	flagSet.String("package-version", "", "Specify the version number of this release")
 }
 
@@ -82,6 +82,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 type Flags struct {
 	SDKRoot        string
 	TemplatePath   string
+	PackagePath    string
 	PackageTitle   string
 	Commit         string
 	ReleaseDate    string
@@ -102,7 +103,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	} else {
 		absTemplateDir = filepath.Join(root, flags.TemplatePath)
 	}
-	fileList, err := ioutil.ReadDir(absTemplateDir)
+	fileList, err := os.ReadDir(absTemplateDir)
 	if err != nil {
 		return fmt.Errorf("cannot read the directory '%s': %+v", absTemplateDir, err)
 	}
@@ -118,7 +119,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 			return err
 		}
 
-		dirPath := filepath.Join(root, "sdk", "resourcemanager", rpName, packageName)
+		dirPath := filepath.Join(root, flags.PackagePath)
 		if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
 			return fmt.Errorf("cannot create directory '%s': %+v", dirPath, err)
 		}
@@ -150,7 +151,7 @@ func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID,
 }
 
 func readAndReplace(path string) (string, error) {
-	b, err := ioutil.ReadFile(path)
+	b, err := os.ReadFile(path)
 	if err != nil {
 		return "", fmt.Errorf("cannot read from file '%s': %+v", path, err)
 	}
@@ -163,12 +164,17 @@ func readAndReplace(path string) (string, error) {
 	return content, nil
 }
 
-func createNewFile(path, content string) error {
+func createNewFile(path, content string) (err error) {
 	file, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("cannot create file '%s': %+v", path, err)
 	}
-	defer file.Close()
+	defer func() {
+		cerr := file.Close()
+		if err == nil {
+			err = cerr
+		}
+	}()
 
 	if _, err := file.WriteString(content); err != nil {
 		return fmt.Errorf("cannot write to file '%s': %+v", path, err)

@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/release"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/template"
 	automation_v2 "github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/automation"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/profile"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/readme"
 	refresh_v2 "github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/refresh"
 	release_v2 "github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/release"
@@ -51,6 +52,7 @@ func Command() *cobra.Command {
 		release_v2.Command(),
 		refresh_v2.Command(),
 		readme.Command(),
+		profile.GenerateSDKCommand(),
 	)
 
 	return rootCmd

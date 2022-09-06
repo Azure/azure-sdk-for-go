@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package common
+package processor
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"path"
 	"sort"
 	"strings"
@@ -32,7 +33,7 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -74,14 +75,14 @@ func (t releaseTagsSort) Less(i, j int) bool {
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
 	log.Printf("Judge whether contains preview API version from '%s' ...", packagePath)
 
-	files, err := ioutil.ReadDir(packagePath)
+	files, err := os.ReadDir(packagePath)
 	if err != nil {
 		return false, err
 	}
 
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".go") {
-			b, err := ioutil.ReadFile(path.Join(packagePath, file.Name()))
+			b, err := os.ReadFile(path.Join(packagePath, file.Name()))
 			if err != nil {
 				return false, err
 			}

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package common
+package processor
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -32,7 +32,7 @@ var (
 	v2BeginRegex                    = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
 	v2EndRegex                      = regexp.MustCompile("^\\s*```\\s*$")
 	newClientMethodNameRegex        = regexp.MustCompile("^New.*Client$")
-	versionLineRegex                = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
+	versionLineRegex                = regexp.MustCompile(`moduleVersion\s*=\s*".*v.+"`)
 	changelogPosWithPreviewRegex    = regexp.MustCompile(`##\s*(?P<version>.+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
 	changelogPosWithoutPreviewRegex = regexp.MustCompile(`##\s*(?P<version>\d+\.\d+\.\d+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
 	packageConfigRegex              = regexp.MustCompile(`\$\((package-.+)\)`)
@@ -55,7 +55,7 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 	}
 
 	log.Printf("Parsing module and package name from readme.go.md ...")
-	b, err := ioutil.ReadAll(file)
+	b, err := io.ReadAll(file)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 // remove all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
 	log.Printf("Removing all sdk generated files in '%s'...", path)
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		return err
 	}
@@ -120,7 +120,7 @@ func CleanSDKGeneratedFiles(path string) error {
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".go") {
 			fileWithPath := filepath.Join(path, file.Name())
-			b, err := ioutil.ReadFile(fileWithPath)
+			b, err := os.ReadFile(fileWithPath)
 			if err != nil {
 				return err
 			}
@@ -139,7 +139,7 @@ func CleanSDKGeneratedFiles(path string) error {
 // replace repo commit with local path in autorest.md file
 func ChangeConfigWithLocalPath(path, readmeFile, readmeGoFile string) error {
 	log.Printf("Replacing repo commit with local path in autorest.md ...")
-	b, err := ioutil.ReadFile(path)
+	b, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -153,13 +153,13 @@ func ChangeConfigWithLocalPath(path, readmeFile, readmeGoFile string) error {
 		}
 	}
 
-	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
 // replace repo URL and commit id in autorest.md file
 func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error {
 	log.Printf("Replacing repo URL and commit id in autorest.md ...")
-	b, err := ioutil.ReadFile(path)
+	b, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -173,13 +173,13 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 		}
 	}
 
-	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
 // RemoveTagSet delete tag set in config file
 func RemoveTagSet(path string) error {
 	log.Printf("Removing tag set in autorest.md ...")
-	b, err := ioutil.ReadFile(path)
+	b, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -192,12 +192,12 @@ func RemoveTagSet(path string) error {
 		}
 	}
 
-	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
 // get swagger rp folder name from autorest.md file
 func GetSpecRpName(packageRootPath string) (string, error) {
-	b, err := ioutil.ReadFile(path.Join(packageRootPath, "autorest.md"))
+	b, err := os.ReadFile(path.Join(packageRootPath, "autorest.md"))
 	if err != nil {
 		return "", err
 	}
@@ -216,10 +216,10 @@ func GetSpecRpName(packageRootPath string) (string, error) {
 	return "", fmt.Errorf("cannot get sepc rp name from config")
 }
 
-// replace version: use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in constants.go file
+// ReplaceVersion use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in constants.go file
 func ReplaceVersion(packageRootPath string, newVersion string) error {
-	path := filepath.Join(packageRootPath, "autorest.md")
-	b, err := ioutil.ReadFile(path)
+	autorestPath := filepath.Join(packageRootPath, "autorest.md")
+	b, err := os.ReadFile(autorestPath)
 	if err != nil {
 		return err
 	}
@@ -232,17 +232,17 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 		}
 	}
 
-	if err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644); err != nil {
+	if err = os.WriteFile(autorestPath, []byte(strings.Join(lines, "\n")), 0644); err != nil {
 		return err
 	}
 
-	path = filepath.Join(packageRootPath, "constants.go")
-	if b, err = ioutil.ReadFile(path); err != nil {
+	autorestPath = filepath.Join(packageRootPath, "constants.go")
+	if b, err = os.ReadFile(autorestPath); err != nil {
 		return err
 	}
 	contents := versionLineRegex.ReplaceAllString(string(b), "moduleVersion = \"v"+newVersion+"\"")
 
-	return ioutil.WriteFile(path, []byte(contents), 0644)
+	return os.WriteFile(autorestPath, []byte(contents), 0644)
 }
 
 // calculate new version by changelog using semver package
@@ -310,10 +310,10 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 	return &newVersion, nil
 }
 
-// add new changelog md to changelog file
+// AddChangelogToFile add new changelog md to changelog file
 func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
-	path := filepath.Join(packageRootPath, common.ChangelogFilename)
-	b, err := ioutil.ReadFile(path)
+	changelogPath := filepath.Join(packageRootPath, common.ChangelogFilename)
+	b, err := os.ReadFile(changelogPath)
 	if err != nil {
 		return "", err
 	}
@@ -336,16 +336,16 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 		break
 	}
 
-	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)
+	err = os.WriteFile(changelogPath, []byte(newChangelog), 0644)
 	if err != nil {
 		return "", err
 	}
 	return additionalChangelog, nil
 }
 
-// replace `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
+// ReplaceNewClientNamePlaceholder replace `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
-	path := filepath.Join(packageRootPath, "README.md")
+	readmePath := filepath.Join(packageRootPath, "README.md")
 	var clientName string
 	for k, v := range exports.Funcs {
 		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
@@ -354,20 +354,20 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 		}
 	}
 
-	b, err := ioutil.ReadFile(path)
+	b, err := os.ReadFile(readmePath)
 	if err != nil {
-		return fmt.Errorf("cannot read from file '%s': %+v", path, err)
+		return fmt.Errorf("cannot read from file '%s': %+v", readmePath, err)
 	}
 
 	var content = strings.ReplaceAll(string(b), "{{NewClientName}}", clientName)
-	return ioutil.WriteFile(path, []byte(content), 0644)
+	return os.WriteFile(readmePath, []byte(content), 0644)
 }
 
 func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, version *semver.Version) error {
 	if version.Major() > 1 {
-		path := filepath.Join(packageRootPath, "go.mod")
+		gomodPath := filepath.Join(packageRootPath, "go.mod")
 
-		b, err := ioutil.ReadFile(path)
+		b, err := os.ReadFile(gomodPath)
 		if err != nil {
 			return fmt.Errorf("cannot parse version from changelog")
 		}
@@ -383,7 +383,7 @@ func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, versi
 				break
 			}
 		}
-		if err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644); err != nil {
+		if err = os.WriteFile(gomodPath, []byte(strings.Join(lines, "\n")), 0644); err != nil {
 			return err
 		}
 	}
@@ -392,13 +392,13 @@ func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, versi
 
 func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error {
 	changelogPath := filepath.Join(packageRootPath, common.ChangelogFilename)
-	b, err := ioutil.ReadFile(changelogPath)
+	b, err := os.ReadFile(changelogPath)
 	if err != nil {
 		return err
 	}
 
 	newChangelog := regexp.MustCompile("\\d\\.\\d\\.\\d").ReplaceAllString(string(b), versionNumber)
-	err = ioutil.WriteFile(changelogPath, []byte(newChangelog), 0644)
+	err = os.WriteFile(changelogPath, []byte(newChangelog), 0644)
 	if err != nil {
 		return err
 	}

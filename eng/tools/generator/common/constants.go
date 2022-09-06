@@ -12,5 +12,8 @@ const (
 	MetadataFilename  = "_meta.json"
 	RelativeVersionGo = "version/version.go"
 
-	Root = "github.com/Azure/azure-sdk-for-go"
+	Root             = "github.com/Azure/azure-sdk-for-go"
+	DefaultGoVersion = "1.18"
+	DefaultSpecRepo  = "https://github.com/Azure/azure-rest-api-specs"
+	DefaultSDKRepo   = "https://github.com/Azure/azure-sdk-for-go"
 )

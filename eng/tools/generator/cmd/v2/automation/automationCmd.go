@@ -14,7 +14,8 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/automation/pipeline"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/processor"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/spf13/cobra"
@@ -31,7 +32,7 @@ func Command() *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			goVersion := "1.18"
+			goVersion := common.DefaultGoVersion
 			if len(args) == 3 {
 				goVersion = args[2]
 			}
@@ -119,13 +120,13 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			}
 		}
 
-		generateCtx := common.GenerateContext{
+		generateCtx := processor.GenerateContext{
 			SDKPath:  sdkRepo.Root(),
 			SDKRepo:  &sdkRepo,
 			SpecPath: ctx.specRoot,
 		}
 
-		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL, ctx.goVersion)
+		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, ctx.goVersion)
 		if len(errors) != 0 {
 			errorBuilder.add(errors...)
 			continue

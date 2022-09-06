@@ -124,7 +124,7 @@ func newReceivedEventData(amqpMsg *amqp.Message) *ReceivedEventData {
 }
 
 // the "SystemProperties" in an EventData are any annotations that are
-// NOT available at the top level as normal fields. So excluing  sequence
+// NOT available at the top level as normal fields. So excluding sequence
 // number, offset, enqueued time, and  partition key.
 func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) {
 	if src.Annotations == nil {

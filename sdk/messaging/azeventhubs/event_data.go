@@ -62,7 +62,6 @@ type ReceivedEventData struct {
 const (
 	// Annotation properties
 	partitionKeyAnnotation   = "x-opt-partition-key"
-	partitionIDAnnotation    = "x-opt-partition-id"
 	sequenceNumberAnnotation = "x-opt-sequence-number"
 	offsetNumberAnnotation   = "x-opt-offset"
 	enqueuedTimeAnnotation   = "x-opt-enqueued-time"
@@ -159,7 +158,6 @@ func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) {
 				}
 			}
 		default:
-
 			if dest.SystemProperties == nil {
 				dest.SystemProperties = map[string]any{}
 			}

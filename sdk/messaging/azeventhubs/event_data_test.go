@@ -60,7 +60,7 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 			"x-opt-enqueued-time":   now,
 		},
 		ApplicationProperties: map[string]any{
-			"application property 1": "application prioperty value 1",
+			"application property 1": "application property value 1",
 		},
 	}
 
@@ -71,7 +71,7 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 	}
 
 	expectedAppProperties := map[string]any{
-		"application property 1": "application prioperty value 1",
+		"application property 1": "application property value 1",
 	}
 
 	require.Equal(t, &ReceivedEventData{
@@ -97,10 +97,9 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 			MessageID:     "message id",
 			CorrelationID: to.Ptr("correlation id"),
 		},
-		Data:        [][]byte{[]byte("hello world")},
-		Annotations: map[any]any{},
+		Data: [][]byte{[]byte("hello world")},
 		ApplicationProperties: map[string]any{
-			"application property 1": "application prioperty value 1",
+			"application property 1": "application property value 1",
 		},
 	}, re.toAMQPMessage())
 }

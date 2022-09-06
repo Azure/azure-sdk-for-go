@@ -3,10 +3,12 @@
 package azeventhubs
 
 import (
+	"errors"
 	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
@@ -96,7 +98,7 @@ func (e *EventData) toAMQPMessage() *amqp.Message {
 // newReceivedEventData creates a received message from an AMQP message.
 // NOTE: this converter assumes that the Body of this message will be the first
 // serialized byte array in the Data section of the messsage.
-func newReceivedEventData(amqpMsg *amqp.Message) *ReceivedEventData {
+func newReceivedEventData(amqpMsg *amqp.Message) (*ReceivedEventData, error) {
 	re := &ReceivedEventData{}
 
 	if len(amqpMsg.Data) == 1 {
@@ -119,16 +121,19 @@ func newReceivedEventData(amqpMsg *amqp.Message) *ReceivedEventData {
 		}
 	}
 
-	updateFromAMQPAnnotations(amqpMsg, re)
-	return re
+	if err := updateFromAMQPAnnotations(amqpMsg, re); err != nil {
+		return nil, err
+	}
+
+	return re, nil
 }
 
 // the "SystemProperties" in an EventData are any annotations that are
 // NOT available at the top level as normal fields. So excluing  sequence
 // number, offset, enqueued time, and  partition key.
-func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) {
+func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) error {
 	if src.Annotations == nil {
-		return
+		return nil
 	}
 
 	for kAny, v := range src.Annotations {
@@ -140,23 +145,34 @@ func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) {
 
 		switch keyStr {
 		case sequenceNumberAnnotation:
-			if asInt64, ok := v.(int64); ok {
+			if asInt64, ok := eh.ConvertToInt64(v); ok {
 				dest.SequenceNumber = asInt64
+				continue
 			}
+
+			return errors.New("sequence number cannot be converted to an int64")
 		case partitionKeyAnnotation:
 			if asString, ok := v.(string); ok {
 				dest.PartitionKey = to.Ptr(asString)
+				continue
 			}
+
+			return errors.New("partition key cannot be converted to a string")
 		case enqueuedTimeAnnotation:
 			if asTime, ok := v.(time.Time); ok {
 				dest.EnqueuedTime = &asTime
+				continue
 			}
+
+			return errors.New("enqueued time cannot be converted to a time.Time")
 		case offsetNumberAnnotation:
 			if offsetStr, ok := v.(string); ok {
 				if offset, err := strconv.ParseInt(offsetStr, 10, 64); err == nil {
 					dest.Offset = &offset
+					continue
 				}
 			}
+			return errors.New("offset cannot be converted to an int64")
 		default:
 			if dest.SystemProperties == nil {
 				dest.SystemProperties = map[string]any{}
@@ -165,4 +181,6 @@ func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) {
 			dest.SystemProperties[keyStr] = v
 		}
 	}
+
+	return nil
 }

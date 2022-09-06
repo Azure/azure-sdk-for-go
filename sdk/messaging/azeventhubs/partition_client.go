@@ -91,14 +91,25 @@ func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 				prefetched := getAllPrefetched(lwid.Link, count-len(events))
 
 				for _, amqpMsg := range prefetched {
-					events = append(events, newReceivedEventData(amqpMsg))
+					re, err := newReceivedEventData(amqpMsg)
+
+					if err != nil {
+						return err
+					}
+
+					events = append(events, re)
 				}
 
 				// this lets cancel errors just return
 				return err
 			}
 
-			receivedEvent := newReceivedEventData(amqpMessage)
+			receivedEvent, err := newReceivedEventData(amqpMessage)
+
+			if err != nil {
+				return err
+			}
+
 			events = append(events, receivedEvent)
 
 			if len(events) == count {

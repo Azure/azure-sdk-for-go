@@ -3,6 +3,7 @@
 package azeventhubs
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -13,7 +14,8 @@ import (
 
 func TestEventData_Annotations(t *testing.T) {
 	t.Run("empty", func(t *testing.T) {
-		re := newReceivedEventData(&amqp.Message{})
+		re, err := newReceivedEventData(&amqp.Message{})
+		require.NoError(t, err)
 
 		require.Empty(t, re.Body)
 		require.Nil(t, re.EnqueuedTime)
@@ -22,23 +24,32 @@ func TestEventData_Annotations(t *testing.T) {
 		require.Nil(t, re.PartitionKey)
 	})
 
-	t.Run("invalid types", func(t *testing.T) {
-		// invalid types for properties doesn't crash us
-		re := newReceivedEventData(&amqp.Message{
-			Annotations: amqp.Annotations{
-				"x-opt-partition-key":   99,
-				"x-opt-sequence-number": "101",
-				"x-opt-offset":          102,
-				"x-opt-enqueued-time":   "now",
-			},
+	type badAnnotationValue struct {
+		Name  string
+		Value any
+		Error string
+	}
+
+	badAnnotationValues := []badAnnotationValue{
+		{Name: "x-opt-partition-key", Value: 99, Error: "partition key cannot be converted to a string"},
+		{Name: "x-opt-sequence-number", Value: "101", Error: "sequence number cannot be converted to an int64"},
+		{Name: "x-opt-enqueued-time", Value: "now", Error: "enqueued time cannot be converted to a time.Time"},
+		{Name: "x-opt-offset", Value: 102, Error: "offset cannot be converted to an int64"},
+	}
+
+	for _, bav := range badAnnotationValues {
+		t.Run(fmt.Sprintf("invalid types (%s)", bav.Name), func(t *testing.T) {
+			// invalid types for properties doesn't crash us
+			re, err := newReceivedEventData(&amqp.Message{
+				Annotations: amqp.Annotations{
+					bav.Name: bav.Value,
+				},
+			})
+
+			require.Nil(t, re)
+			require.EqualError(t, err, bav.Error)
 		})
-
-		require.Empty(t, re.Body)
-		require.Nil(t, re.EnqueuedTime)
-		require.Equal(t, int64(0), re.SequenceNumber)
-		require.Nil(t, re.Offset)
-		require.Nil(t, re.PartitionKey)
-	})
+	}
 }
 
 func TestEventData_newReceivedEventData(t *testing.T) {
@@ -64,7 +75,8 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 		},
 	}
 
-	re := newReceivedEventData(origAMQPMessage)
+	re, err := newReceivedEventData(origAMQPMessage)
+	require.NoError(t, err)
 
 	expectedBody := [][]byte{
 		[]byte("hello world"),

@@ -18,8 +18,6 @@ var cred *azidentity.DefaultAzureCredential
 var kustoQuery1 string
 var kustoQuery2 string
 var kustoQuery3 string
-var workspaceID string
-var resourceURI string
 
 func ExampleNewLogsClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -72,7 +70,17 @@ func ExampleLogsClient_Batch() {
 
 func ExampleMetricsClient_QueryResource() {
 	client := azquery.NewMetricsClient(cred, nil)
-	res, err := client.QueryResource(context.Background(), resourceURI, nil)
+	res, err := client.QueryResource(context.Background(), resourceURI,
+		&azquery.MetricsClientQueryResourceOptions{Timespan: to.Ptr("2017-04-14T02:20:00Z/2017-04-14T04:20:00Z"),
+			Interval:        to.Ptr("PT1M"),
+			Metricnames:     nil,
+			Aggregation:     to.Ptr("Average,count"),
+			Top:             to.Ptr[int32](3),
+			Orderby:         to.Ptr("Average asc"),
+			Filter:          to.Ptr("BlobType eq '*'"),
+			ResultType:      nil,
+			Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+		})
 	if err != nil {
 		// TODO: handle error
 	}

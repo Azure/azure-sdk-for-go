@@ -8,42 +8,17 @@ package azquery_test
 
 import (
 	"context"
-	"encoding/json"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
 )
 
-const workspaceID1 = "d2d0e126-fa1e-4b0a-b647-250cdd471e68"
-const workspaceID2 = "9dad0092-fd13-403a-b367-a189a090a541"
-const query = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n" + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long"
-
-type serdeModel interface {
-	json.Marshaler
-	json.Unmarshaler
-}
-
-func testSerde[T serdeModel](t *testing.T, model T) {
-	data, err := model.MarshalJSON()
-	require.NoError(t, err)
-	err = model.UnmarshalJSON(data)
-	require.NoError(t, err)
-}
-
-func getLogsClient(t *testing.T) *azquery.LogsClient {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		t.Fatal("error constructing credential")
-	}
-
-	return azquery.NewLogsClient(cred, nil)
-}
+var query string = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n" + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long"
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
-	client := getLogsClient(t)
+	client := startLogsTest(t)
 
 	body := azquery.Body{
 		Query:    to.Ptr(query),
@@ -51,7 +26,7 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	}
 	testSerde(t, &body)
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
@@ -76,13 +51,13 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 }
 
 func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
-	client := getLogsClient(t)
+	client := startLogsTest(t)
 	query := "not a valid query"
 	body := azquery.Body{
 		Query: &query,
 	}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
 	if err == nil {
 		t.Fatalf("expected BadArgumentError")
 	}
@@ -93,13 +68,13 @@ func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
 }
 
 func TestQueryWorkspace_PartialError(t *testing.T) {
-	client := getLogsClient(t)
+	client := startLogsTest(t)
 	query := "let Weight = 92233720368547758; range x from 1 to 3 step 1 | summarize percentilesw(x, Weight * 100, 50)"
 	body := azquery.Body{
 		Query: &query,
 	}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
 	if err != nil {
 		t.Fatal("error with query")
 	}
@@ -112,7 +87,7 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 
 // tests for special options: timeout, statistics, visualization
 func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
-	client := getLogsClient(t)
+	client := startLogsTest(t)
 	query := query
 	body := azquery.Body{
 		Query: &query,
@@ -120,7 +95,7 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	prefer := "wait=180,include-statistics=true,include-render=true"
 	options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, options)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, options)
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
@@ -138,10 +113,9 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	}
 }
 
-func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
-	client := getLogsClient(t)
+/*func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
+	client := startLogsTest(t)
 	query := "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId"
-	workspaceID2 := workspaceID2
 	workspaces := []*string{&workspaceID2}
 	body := azquery.Body{
 		Query:      &query,
@@ -149,7 +123,7 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	}
 	testSerde(t, &body)
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID1, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
@@ -159,15 +133,15 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	if len(res.Results.Tables[0].Rows) != 2 {
 		t.Fatal("expected 2 results")
 	}
-}
+}*/
 
 func TestBatch_QuerySuccess(t *testing.T) {
-	client := getLogsClient(t)
+	client := startLogsTest(t)
 	query1, query2 := query, query+" | take 2"
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(query1)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID1)},
-		{Body: &azquery.Body{Query: to.Ptr(query2)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID1)},
+		{Body: &azquery.Body{Query: to.Ptr(query1)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query2)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
 	}}
 	testSerde(t, &batchRequest)
 
@@ -182,11 +156,11 @@ func TestBatch_QuerySuccess(t *testing.T) {
 }
 
 func TestBatch_PartialError(t *testing.T) {
-	client := getLogsClient(t)
+	client := startLogsTest(t)
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr("not a valid query")}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID1)},
-		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID1)},
+		{Body: &azquery.Body{Query: to.Ptr("not a valid query")}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
 	}}
 
 	res, err := client.Batch(context.Background(), batchRequest, nil)
@@ -197,4 +171,20 @@ func TestBatch_PartialError(t *testing.T) {
 		t.Fatal("expected two responses")
 	}
 	//TODO more checks
+}
+
+//func TestQueryWorkspace_BasicQueryFailure(t *testing.T)
+
+func TestLogConstants(t *testing.T) {
+	batchMethod := []azquery.BatchQueryRequestMethod{azquery.BatchQueryRequestMethodPOST}
+	batchMethodRes := azquery.PossibleBatchQueryRequestMethodValues()
+	require.Equal(t, batchMethod, batchMethodRes)
+
+	batchPath := []azquery.BatchQueryRequestPath{azquery.BatchQueryRequestPathQuery}
+	batchPathRes := azquery.PossibleBatchQueryRequestPathValues()
+	require.Equal(t, batchPath, batchPathRes)
+
+	logsColumnType := []azquery.LogsColumnType{azquery.LogsColumnTypeBool, azquery.LogsColumnTypeDatetime, azquery.LogsColumnTypeDecimal, azquery.LogsColumnTypeDynamic, azquery.LogsColumnTypeGUID, azquery.LogsColumnTypeInt, azquery.LogsColumnTypeLong, azquery.LogsColumnTypeReal, azquery.LogsColumnTypeString, azquery.LogsColumnTypeTimespan}
+	logsColumnTypeRes := azquery.PossibleLogsColumnTypeValues()
+	require.Equal(t, logsColumnType, logsColumnTypeRes)
 }

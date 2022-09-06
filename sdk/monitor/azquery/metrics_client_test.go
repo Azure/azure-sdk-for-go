@@ -11,37 +11,41 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
+	"github.com/stretchr/testify/require"
 )
 
-const resourceURI1 = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/ripark/providers/Microsoft.Cache/Redis/ripark"
-
-func getMetricsClient(t *testing.T) *azquery.MetricsClient {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		t.Fatal("error constructing credential")
-	}
-
-	return azquery.NewMetricsClient(cred, nil)
-}
-
-func TestQueryResource_BasicQuerySuccess(t *testing.T) {
-	client := getMetricsClient(t)
-	res, err := client.QueryResource(context.Background(), resourceURI1, nil)
-	if err != nil {
-		t.Fatal("error")
-	}
+/*func TestQueryResource_BasicQuerySuccess(t *testing.T) {
+	client := startMetricsTest(t)
+	timespan := time.Now().Add(-12*time.Hour).Format(time.RFC3339) + "/" + time.Now().Format(time.RFC3339)
+	res, err := client.QueryResource(context.Background(), resourceURI,
+		&azquery.MetricsClientQueryResourceOptions{Timespan: to.Ptr(timespan),
+			Interval:        to.Ptr("PT1M"),
+			Metricnames:     nil,
+			Aggregation:     to.Ptr("Average,count"),
+			Top:             nil,
+			Orderby:         to.Ptr("Average asc"),
+			Filter:          nil,
+			ResultType:      nil,
+			Metricnamespace: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
+		})
+	require.NoError(t, err)
 	if res.Response.Timespan == nil {
 		t.Fatal("error")
 	}
+	require.Equal(t, *res.Response.Value[0].ErrorCode, "Success")
+	require.Equal(t, *res.Response.Namespace, "Microsoft.AppConfiguration/configurationStores")
 	testSerde(t, &res.Response)
-}
+	testSerde(t, res.Response.Value[0])
+	testSerde(t, res.Response.Value[0].Name)
+	testSerde(t, res.Response.Value[0].Timeseries[0])
+	//testSerde(t, res.Response.Value[0].Timeseries[0].Metadatavalues[0])
+}*/
 
 func TestNewListMetricDefinitionsPager_Success(t *testing.T) {
-	client := getMetricsClient(t)
+	client := startMetricsTest(t)
 
-	pager := client.NewListMetricDefinitionsPager(resourceURI1, nil)
+	pager := client.NewListMetricDefinitionsPager(resourceURI, nil)
 
 	// test if first page is valid
 	if pager.More() {
@@ -60,9 +64,9 @@ func TestNewListMetricDefinitionsPager_Success(t *testing.T) {
 }
 
 func TestNewListMetricNamespacesPager_Success(t *testing.T) {
-	client := getMetricsClient(t)
+	client := startMetricsTest(t)
 
-	pager := client.NewListMetricNamespacesPager(resourceURI1,
+	pager := client.NewListMetricNamespacesPager(resourceURI,
 		&azquery.MetricsClientListMetricNamespacesOptions{StartTime: to.Ptr("2022-08-01T15:53:00Z")})
 
 	// test if first page is valid
@@ -79,4 +83,26 @@ func TestNewListMetricNamespacesPager_Success(t *testing.T) {
 		t.Fatal("no response")
 	}
 
+}
+
+func TestMetricConstants(t *testing.T) {
+	aggregationType := []azquery.AggregationType{azquery.AggregationTypeNone, azquery.AggregationTypeAverage, azquery.AggregationTypeCount, azquery.AggregationTypeMinimum, azquery.AggregationTypeMaximum, azquery.AggregationTypeTotal}
+	aggregationTypeRes := azquery.PossibleAggregationTypeValues()
+	require.Equal(t, aggregationType, aggregationTypeRes)
+
+	metricType := []azquery.MetricClass{azquery.MetricClassAvailability, azquery.MetricClassErrors, azquery.MetricClassLatency, azquery.MetricClassSaturation, azquery.MetricClassTransactions}
+	metricTypeRes := azquery.PossibleMetricClassValues()
+	require.Equal(t, metricType, metricTypeRes)
+
+	metricUnit := []azquery.MetricUnit{azquery.MetricUnitBitsPerSecond, azquery.MetricUnitByteSeconds, azquery.MetricUnitBytes, azquery.MetricUnitBytesPerSecond, azquery.MetricUnitCores, azquery.MetricUnitCount, azquery.MetricUnitCountPerSecond, azquery.MetricUnitMilliCores, azquery.MetricUnitMilliSeconds, azquery.MetricUnitNanoCores, azquery.MetricUnitPercent, azquery.MetricUnitSeconds, azquery.MetricUnitUnspecified}
+	metricUnitRes := azquery.PossibleMetricUnitValues()
+	require.Equal(t, metricUnit, metricUnitRes)
+
+	namespaceClassification := []azquery.NamespaceClassification{azquery.NamespaceClassificationCustom, azquery.NamespaceClassificationPlatform, azquery.NamespaceClassificationQos}
+	namespaceClassificationRes := azquery.PossibleNamespaceClassificationValues()
+	require.Equal(t, namespaceClassification, namespaceClassificationRes)
+
+	resultType := []azquery.ResultType{azquery.ResultTypeData, azquery.ResultTypeMetadata}
+	resultTypeRes := azquery.PossibleResultTypeValues()
+	require.Equal(t, resultType, resultTypeRes)
 }

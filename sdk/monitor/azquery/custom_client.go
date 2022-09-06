@@ -37,7 +37,7 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	if options == nil {
 		options = &MetricsClientOptions{}
 	}
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://management.azure.com"}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://management.azure.com/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &MetricsClient{pl: pl}
 }

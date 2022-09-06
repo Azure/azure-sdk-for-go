@@ -24,7 +24,7 @@ type EventData struct {
 
 	// CorrelationID is a client-specific id that can be used to mark or identify messages
 	// between clients.
-	// The type of CorrelationID can be a uint64, UUID, []byte, or string
+	// CorrelationID can be a uint64, UUID, []byte, or string
 	CorrelationID any
 
 	// MessageID is an application-defined value that uniquely identifies

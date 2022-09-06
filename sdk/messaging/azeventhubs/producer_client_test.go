@@ -79,8 +79,8 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 	// there are two ways to "send to any" partition
 	// 1. Don't specify a partition ID or a partition key when creating the batch
 	// 2. Specify a partition key. This is useful if you want to send events and have them
-	//  be placed into the same partition but let the overall distribution of the partition keys
-	// happen through Event Hubs.
+	//    be placed into the same partition but let the overall distribution of the partition keys
+	//    happen through Event Hubs.
 
 	partitionKeys := map[string]*string{
 		"nil":                  nil,

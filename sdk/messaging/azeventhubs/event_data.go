@@ -26,7 +26,7 @@ type EventData struct {
 
 	// CorrelationID is a client-specific id that can be used to mark or identify messages
 	// between clients.
-	// The type of CorrelationID can be a uint64, UUID, []byte, or string
+	// CorrelationID can be a uint64, UUID, []byte, or string
 	CorrelationID any
 
 	// MessageID is an application-defined value that uniquely identifies
@@ -129,7 +129,7 @@ func newReceivedEventData(amqpMsg *amqp.Message) (*ReceivedEventData, error) {
 }
 
 // the "SystemProperties" in an EventData are any annotations that are
-// NOT available at the top level as normal fields. So excluing  sequence
+// NOT available at the top level as normal fields. So excluding sequence
 // number, offset, enqueued time, and  partition key.
 func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) error {
 	if src.Annotations == nil {

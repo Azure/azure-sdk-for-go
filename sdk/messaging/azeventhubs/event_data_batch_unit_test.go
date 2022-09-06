@@ -102,19 +102,19 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 
 		err = mb.AddEventData(&EventData{
 			Body: []byte("small body"),
-			ApplicationProperties: map[string]interface{}{
+			Properties: map[string]interface{}{
 				"small": "value",
 			},
 		}, nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, mb.NumMessages())
-		require.EqualValues(t, 196, mb.NumBytes())
+		require.EqualValues(t, 172, mb.NumBytes())
 
 		actualBytes, err := mb.toAMQPMessage().MarshalBinary()
 		require.NoError(t, err)
 
-		require.Equal(t, 196, len(actualBytes))
+		require.Equal(t, 172, len(actualBytes))
 	})
 
 	t.Run("sizeCalculationsAreCorrectVBin32", func(t *testing.T) {
@@ -123,7 +123,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 
 		err = mb.AddEventData(&EventData{
 			Body: []byte("small body"),
-			ApplicationProperties: map[string]interface{}{
+			Properties: map[string]interface{}{
 				"hello":      "world",
 				"anInt":      100,
 				"aFLoat":     100.1,
@@ -133,12 +133,12 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, mb.NumMessages())
-		require.EqualValues(t, 4381, mb.NumBytes())
+		require.EqualValues(t, 4357, mb.NumBytes())
 
 		actualBytes, err := mb.toAMQPMessage().MarshalBinary()
 		require.NoError(t, err)
 
-		require.Equal(t, 4381, len(actualBytes))
+		require.Equal(t, 4357, len(actualBytes))
 	})
 
 	// the first message gets special treatment since it gets used as the actual
@@ -166,7 +166,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 			Body: []byte("hello world"),
 		}, nil)
 		require.NoError(t, err)
-		require.EqualValues(t, 145, mb.currentSize)
+		require.EqualValues(t, 121, mb.currentSize)
 
 		sizeBefore := mb.NumBytes()
 		countBefore := mb.NumMessages()

@@ -564,11 +564,11 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 			require.NoError(t, err)
 
 			for _, event := range events {
-				if event.ApplicationProperties == nil {
-					event.ApplicationProperties = map[string]any{}
+				if event.Properties == nil {
+					event.Properties = map[string]any{}
 				}
 
-				event.ApplicationProperties["DestPartitionID"] = partitionID
+				event.Properties["DestPartitionID"] = partitionID
 
 				err = batch.AddEventData(event, nil)
 				require.NoError(t, err)

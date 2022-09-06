@@ -70,7 +70,7 @@ func TestMain(m *testing.M) {
 		}
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddURISanitizer(fakeWorkspaceID, workspaceID, nil)
+		/*err := recording.AddURISanitizer(fakeWorkspaceID, workspaceID, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -81,7 +81,7 @@ func TestMain(m *testing.M) {
 		err = recording.AddBodyRegexSanitizer(fakeResourceURI, resourceURI, nil)
 		if err != nil {
 			panic(err)
-		}
+		}*/
 		defer func() {
 			err := recording.ResetProxy(nil)
 			if err != nil {

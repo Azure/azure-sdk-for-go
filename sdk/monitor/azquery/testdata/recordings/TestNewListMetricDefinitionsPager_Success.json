@@ -12,32 +12,31 @@
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Access-Control-Expose-Headers": "Request-Context",
+        "Access-Control-Allow-Origin": "*",
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
-        "Content-Type": "application/json",
-        "Date": "Tue, 06 Sep 2022 22:16:07 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 06 Sep 2022 23:02:04 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
-        "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": [
           "Accept-Encoding",
           "Accept-Encoding"
         ],
-        "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "3851a239-5b49-4b04-9774-348c025e7114",
+        "x-ms-correlation-request-id": "fcd59a16-7ecd-4dd9-8e2e-f3821d98cca0",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "399",
-        "x-ms-request-id": "{3851a239-5b49-4b04-9774-348c025e7114}",
-        "x-ms-routing-request-id": "CENTRALUS:20220906T221607Z:3851a239-5b49-4b04-9774-348c025e7114",
-        "X-Powered-By": "ASP.NET"
+        "x-ms-request-id": "{fcd59a16-7ecd-4dd9-8e2e-f3821d98cca0}",
+        "x-ms-routing-request-id": "CENTRALUS:20220906T230205Z:fcd59a16-7ecd-4dd9-8e2e-f3821d98cca0"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricdefinitions/HttpIncomingRequestCount",
-            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example",
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-gracewilcoxazquery/providers/Microsoft.AppConfiguration/configurationStores/gracewilcoxazquery/providers/microsoft.insights/metricdefinitions/HttpIncomingRequestCount",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-gracewilcoxazquery/providers/Microsoft.AppConfiguration/configurationStores/gracewilcoxazquery",
             "namespace": "Microsoft.AppConfiguration/configurationStores",
             "name": {
               "value": "HttpIncomingRequestCount",
@@ -101,8 +100,8 @@
             ]
           },
           {
-            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricdefinitions/HttpIncomingRequestDuration",
-            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example",
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-gracewilcoxazquery/providers/Microsoft.AppConfiguration/configurationStores/gracewilcoxazquery/providers/microsoft.insights/metricdefinitions/HttpIncomingRequestDuration",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-gracewilcoxazquery/providers/Microsoft.AppConfiguration/configurationStores/gracewilcoxazquery",
             "namespace": "Microsoft.AppConfiguration/configurationStores",
             "name": {
               "value": "HttpIncomingRequestDuration",
@@ -166,8 +165,8 @@
             ]
           },
           {
-            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricdefinitions/ThrottledHttpRequestCount",
-            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example",
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-gracewilcoxazquery/providers/Microsoft.AppConfiguration/configurationStores/gracewilcoxazquery/providers/microsoft.insights/metricdefinitions/ThrottledHttpRequestCount",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-gracewilcoxazquery/providers/Microsoft.AppConfiguration/configurationStores/gracewilcoxazquery",
             "namespace": "Microsoft.AppConfiguration/configurationStores",
             "name": {
               "value": "ThrottledHttpRequestCount",

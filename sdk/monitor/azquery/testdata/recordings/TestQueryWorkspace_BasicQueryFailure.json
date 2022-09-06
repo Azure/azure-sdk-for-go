@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://api.loganalytics.io/v1/workspaces/32d1e136-gg81-4b0a-b647-260cdc471f68/query",
+      "RequestUri": "https://api.loganalytics.io/v1/workspaces/cbfe3310-58e3-4f81-9077-e4922af0e216/query",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -21,17 +21,17 @@
         "Connection": "keep-alive",
         "Content-Length": "355",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 06 Sep 2022 22:15:51 GMT",
+        "Date": "Tue, 06 Sep 2022 23:01:48 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-6b467c4794-tqthq",
+        "Via": "1.1 draft-oms-6b467c4794-zl4zf",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
         "error": {
           "message": "The request had some invalid properties",
           "code": "BadArgumentError",
-          "correlationId": "85924365-1817-4d9f-a973-b3daa030c72b",
+          "correlationId": "6458ec13-66ba-45ea-a34a-19bb72710459",
           "innererror": {
             "code": "SyntaxError",
             "message": "A recognition error occurred in the query.",

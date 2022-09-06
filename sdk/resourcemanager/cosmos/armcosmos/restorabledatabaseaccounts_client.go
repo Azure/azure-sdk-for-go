@@ -58,7 +58,7 @@ func NewRestorableDatabaseAccountsClient(subscriptionID string, credential azcor
 // GetByLocation - Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableDatabaseAccountsClientGetByLocationOptions contains the optional parameters for the RestorableDatabaseAccountsClient.GetByLocation
@@ -98,7 +98,7 @@ func (client *RestorableDatabaseAccountsClient) getByLocationCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +116,7 @@ func (client *RestorableDatabaseAccountsClient) getByLocationHandleResponse(resp
 // NewListPager - Lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // options - RestorableDatabaseAccountsClientListOptions contains the optional parameters for the RestorableDatabaseAccountsClient.List
 // method.
 func (client *RestorableDatabaseAccountsClient) NewListPager(options *RestorableDatabaseAccountsClientListOptions) *runtime.Pager[RestorableDatabaseAccountsClientListResponse] {
@@ -153,7 +153,7 @@ func (client *RestorableDatabaseAccountsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +172,7 @@ func (client *RestorableDatabaseAccountsClient) listHandleResponse(resp *http.Re
 // in a region. This call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read'
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // options - RestorableDatabaseAccountsClientListByLocationOptions contains the optional parameters for the RestorableDatabaseAccountsClient.ListByLocation
 // method.
@@ -214,7 +214,7 @@ func (client *RestorableDatabaseAccountsClient) listByLocationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

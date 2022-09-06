@@ -59,7 +59,7 @@ func NewRestorableSQLContainersClient(subscriptionID string, credential azcore.T
 // This helps in scenario where container was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableSQLContainersClientListOptions contains the optional parameters for the RestorableSQLContainersClient.List
@@ -106,7 +106,7 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	if options != nil && options.RestorableSQLDatabaseRid != nil {
 		reqQP.Set("restorableSqlDatabaseRid", *options.RestorableSQLDatabaseRid)
 	}

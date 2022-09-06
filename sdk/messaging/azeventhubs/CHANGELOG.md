@@ -30,7 +30,7 @@
 
 - ReceivedEventData.Offset was incorrectly parsed, resulting in it always being 0.
 - Added missing fields to ReceivedEventData and EventData (CorrelationID)
-- PartitionKey property was not being populated for messages sent via batch.
+- PartitionKey property was not populated for messages sent via batch.
 
 ## 0.1.0 (2022-08-11)
 
